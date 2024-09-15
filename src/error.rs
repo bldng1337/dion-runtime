@@ -70,11 +70,6 @@ impl From<serde_json::Error> for Error {
         Error::Serialization(value)
     }
 }
-impl Into<rquickjs::Error> for Error {
-    fn into(self) -> rquickjs::Error {
-        rquickjs::Error::new_into_js("", "")
-    }
-}
 
 impl<'js> IntoJs<'js> for Error {
     fn into_js(self, ctx: &rquickjs::Ctx<'js>) -> rquickjs::Result<Value<'js>> {
