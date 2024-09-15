@@ -1,26 +1,46 @@
 use rquickjs::Object;
 use serde::{ Deserialize, Serialize };
+use tokio::sync::RwLock;
 use core::fmt::Debug;
+use std::sync::LazyLock;
 
 use crate::error::Error;
+//TODO: Rework this 4am mess
+#[derive(Debug, Default)]
+pub struct PermissionSingelton {
+    pub requester: Option<Box<dyn PermissionRequester + Send + Sync>>,
+}
+pub static PERMISSION: LazyLock<RwLock<PermissionSingelton>> = LazyLock::new(||
+    RwLock::new(PermissionSingelton::default())
+);
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(tag = "id")]
 pub enum Permission {
-    StoragePermission {
+    #[serde(alias = "storage")] StoragePermission {
         path: String,
+        #[serde(default)]
         write: bool,
     },
 }
 
-trait PermissionRequester: Debug {
-    fn request(&self, permission: &Permission, msg: Option<String>) -> bool;
+impl std::fmt::Display for Permission {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Permission::StoragePermission { path, write } =>
+                write!(f, "StoragePermission(path:{}, write:{})", path, write),
+        }
+    }
+}
+
+#[async_trait::async_trait]
+pub trait PermissionRequester: Debug {
+    async fn request(&self, permission: &Permission, msg: Option<String>) -> bool;
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PermissionStore {
     permissions: Vec<Permission>,
-    #[serde(skip)]
-    requester: Option<Box<dyn PermissionRequester + Send + Sync>>,
 }
 
 impl PermissionStore {
@@ -62,14 +82,14 @@ impl PermissionStore {
         self.permissions.iter().any(|permission| Self::has_permission(tocheck, permission))
     }
 
-    pub fn request_permission(
+    pub async fn request_permission(
         &mut self,
         permission: Permission,
         msg: Option<String>
     ) -> Result<bool, Error> {
-        match &self.requester {
+        match &PERMISSION.read().await.requester {
             Some(requester) => {
-                if requester.as_ref().request(&permission, msg) {
+                if requester.as_ref().request(&permission, msg).await {
                     self.add_permission(permission);
                     return Ok(true);
                 }
