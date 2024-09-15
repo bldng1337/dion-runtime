@@ -16,7 +16,6 @@ rquickjs = { git = "https://github.com/DelSkayn/rquickjs.git", rev = "4dabdc2", 
 serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0.128"
 reqwest = { version = "0.12.7", features = ["json", "cookies"] }
-lazy_static = "1.5.0"
 reqwest_cookie_store = "0.8.0"
 tokio-util = "0.7.12"
 governor = "0.6.3"

@@ -376,7 +376,6 @@ dependencies = [
  "governor",
  "http",
  "http-cache-reqwest",
- "lazy_static",
  "nonzero_ext",
  "reqwest",
  "reqwest-middleware",
