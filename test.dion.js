@@ -1,6 +1,7 @@
 //{"repo":"repo","icon":"https://9animetv.to/images/favicon.png","name":"9Anime","version":"1.0.0","description":"A Anime Streaming Site","author":"","license":"0BSD","keywords":["anime","series"],"nsfw":false,"lang":["en"],"media_type":["video"],"url":"https://9animetv.to"}
 import { fetch, getCookies } from "network";
 import { registerSetting, getSetting } from "setting";
+import { requestPermission } from "permission";
 
 function test() {
   print("external test");
@@ -139,6 +140,8 @@ export default class {
     this.test = "some test";
   }
   async load() {
+    const permission = await requestPermission({id:"storage",path:"some"},"some permission");
+    assert(permission==true,"permission not working");
     print("other");
     print({ some: "test" });
     test();
@@ -149,6 +152,8 @@ export default class {
     await fetch("www.google.com");
     const cookies = await getCookies();
     assert(cookies.length > 0, "cookies not working");
+
+    
   }
   /*
   pub async fn browse(

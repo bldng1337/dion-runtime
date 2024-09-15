@@ -14,14 +14,28 @@ mod tests {
     use jsextension::ExtensionManager;
     use rquickjs::AsyncRuntime;
 
-    use crate::{datastructs, error::Error, jsextension};
+    use crate::{datastructs, error::Error, jsextension, permission::{PermissionRequester, PERMISSION}};
     
+    #[derive(Debug,Default)]
+    struct TestPermission;
+
+    #[async_trait::async_trait]
+    impl PermissionRequester for TestPermission {
+        async fn request(&self, permission: &crate::permission::Permission, msg: Option<String>) -> bool {
+            println!("Asked for: {}",msg.unwrap_or_default());
+            return true;
+        }
+    }
 
     #[tokio::test]
     async fn my_test() -> Result<(), Error> {
         let rt = AsyncRuntime::new()?;
         let mut extm: ExtensionManager = Default::default();
         extm.add_from_file(r#".\test.dion.js"#).await?;
+        {
+            let mut a=PERMISSION.write().await;
+            a.requester=Some(Box::new(TestPermission));
+        }
         for ext in extm.iter_mut() {
             ext.enable(&rt).await?;
             println!("Enabled Extension");
