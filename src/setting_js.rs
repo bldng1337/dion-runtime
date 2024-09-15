@@ -35,7 +35,9 @@ mod setting {
     ) -> Result<Value<'js>, rquickjs::Error> {
         match internal_get_setting(ctx.clone(), &settingid).await {
             Ok(data) => Ok(data.into_js(&ctx)?),
-            Err(err) => Err(err.into()),
+            Err(err) => {
+                Err(err.into_js(&ctx).err().unwrap())
+            },
         }
     }
 
@@ -93,7 +95,9 @@ mod setting {
     ) -> Result<(), rquickjs::Error> {
         match internal_set_ui(ctx.clone(), &settingid, uidefinition).await {
             Ok(data) => Ok(data),
-            Err(err) => Err(err.into()),
+            Err(err) => {
+                Err(err.into_js(&ctx).err().unwrap())
+            },
         }
     }
 
@@ -149,7 +153,9 @@ mod setting {
     ) -> Result<(), rquickjs::Error> {
         match internal_register_setting(ctx.clone(), settingid, settingtype, default).await {
             Ok(data) => Ok(data),
-            Err(err) => Err(err.into()),
+            Err(err) => {
+                Err(err.into_js(&ctx).err().unwrap())
+            },
         }
     }
 }

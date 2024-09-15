@@ -74,7 +74,7 @@ impl Default for NetworkManager {
 #[rquickjs::module(rename_vars = "camelCase")]
 mod internal_network {
     use http::Method;
-    use rquickjs::{ Ctx, Object };
+    use rquickjs::{ Ctx, IntoJs, Object };
 
     use crate::error::Error;
 
@@ -147,9 +147,11 @@ mod internal_network {
 
     #[rquickjs::function]
     pub async fn get_cookies<'js>(ctx: Ctx<'js>) -> Result<Vec<Object<'js>>, rquickjs::Error> {
-        match internal_get_cookies(ctx).await {
+        match internal_get_cookies(ctx.clone()).await {
             Ok(data) => Ok(data),
-            Err(err) => Err(err.into()),
+            Err(err) => {
+                Err(err.into_js(&ctx).err().unwrap())
+            },
         }
     }
 
