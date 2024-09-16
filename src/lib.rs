@@ -1,12 +1,12 @@
 mod error;
-mod jsextension;
-mod permission;
-mod settings;
+pub mod jsextension;
+pub mod permission;
+pub mod settings;
 mod networking_js;
 mod utils;
 mod permission_js;
 mod setting_js;
-mod datastructs;
+pub mod datastructs;
 
 #[cfg(test)]
 mod tests {
