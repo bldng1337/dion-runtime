@@ -32,7 +32,7 @@ impl<'js> IntoJs<'js> for Settingvalue{
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum SettingUI {
     //String
     PathSelection {
@@ -59,7 +59,7 @@ pub enum SettingUI {
     },
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Settingtype {
     Extension,
     Entry,
@@ -67,7 +67,7 @@ pub enum Settingtype {
 }
 
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Setting {
     pub val: Settingvalue,
     pub settingtype: Settingtype,
@@ -80,6 +80,22 @@ pub struct SettingStore {
 }
 
 impl SettingStore {
+    
+
+    pub fn set_setting(&mut self,name: String,setting:Setting){
+        self.settings.insert(name, setting);
+    }
+
+    pub fn frb_override_get_setting(&self, name: &String)-> Result<Setting, Error> {
+        match self.settings.get(name) {
+            Some(setting) => Ok(setting.clone()),
+            None => Err(Error::ExtensionError(format!("Couldnt find id {} in settings ", name))),
+        }
+    }
+
+
+
+    /// flutter_rust_bridge:ignore
     pub fn get_setting_mut(&mut self, name: &String) -> Result<&mut Setting, Error> {
         match self.settings.get_mut(name) {
             Some(setting) => Ok(setting),
@@ -87,13 +103,15 @@ impl SettingStore {
         }
     }
 
-    pub fn add_setting(&mut self, name: String,mut setting:Setting) {
+    pub(crate) fn add_setting(&mut self, name: String,mut setting:Setting) {
         if self.settings.contains_key(&name) {
+            //TODO: Technically not correct since it overwrites default
             setting.val=self.settings.remove(&name).unwrap().val
         }
         self.settings.insert(name, setting);
     }
 
+    /// flutter_rust_bridge:ignore
     pub fn get_setting(&self, name: &String) -> Result<&Setting, Error> {
         match self.settings.get(name) {
             Some(setting) => Ok(setting),
