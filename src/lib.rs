@@ -1,4 +1,4 @@
-mod error;
+pub mod error;
 pub mod jsextension;
 pub mod permission;
 pub mod settings;

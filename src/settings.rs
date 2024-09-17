@@ -21,6 +21,7 @@ pub enum Settingvalue {
     },
 }
 
+/// flutter_rust_bridge:ignore
 impl<'js> IntoJs<'js> for Settingvalue{
     fn into_js(self, ctx: &rquickjs::Ctx<'js>) -> rquickjs::Result<rquickjs::Value<'js>> {
         match self {
@@ -72,7 +73,7 @@ pub struct Setting {
     pub settingtype: Settingtype,
     pub ui: Option<SettingUI>,
 }
-
+/// flutter_rust_bridge:opaque
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct SettingStore {
     settings: HashMap<String, Setting>,

@@ -6,10 +6,12 @@ use std::sync::LazyLock;
 
 use crate::error::Error;
 //TODO: Rework this 4am mess
+/// flutter_rust_bridge:ignore
 #[derive(Debug, Default)]
 pub struct PermissionSingelton {
     pub requester: Option<Box<dyn PermissionRequester + Send + Sync>>,
 }
+/// flutter_rust_bridge:ignore
 pub static PERMISSION: LazyLock<RwLock<PermissionSingelton>> = LazyLock::new(||
     RwLock::new(PermissionSingelton::default())
 );
@@ -32,12 +34,12 @@ impl std::fmt::Display for Permission {
         }
     }
 }
-
+/// flutter_rust_bridge:ignore
 #[async_trait::async_trait]
 pub trait PermissionRequester: Debug {
     async fn request(&self, permission: &Permission, msg: Option<String>) -> bool;
 }
-
+/// flutter_rust_bridge:opaque
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PermissionStore {
     permissions: Vec<Permission>,

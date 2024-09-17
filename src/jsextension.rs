@@ -28,8 +28,13 @@ impl Default for ExtensionManager {
         Self { extensions: Default::default() }
     }
 }
-
+/// flutter_rust_bridge:opaque
 impl ExtensionManager {
+
+    pub async fn frb_override_add_from_file(&mut self, path: &str)->Result<()> {
+        self.add_from_file(path).await
+    }
+
     pub async fn add_from_file(&mut self, path: impl AsRef<Path>) -> Result<()> {
         self.extensions.push(ExtensionContainer::create(path).await?);
         Ok(())
@@ -43,6 +48,7 @@ impl ExtensionManager {
     }
 }
 
+/// flutter_rust_bridge:opaque
 pub struct ExtensionContainer {
     extension: Arc<RwLock<JSExtension>>,
     context: Option<AsyncContext>,
@@ -223,8 +229,8 @@ impl ExtensionContainer {
     }
 }
 
-pub type ExtensionUserData = SharedUserContextContainer<JSExtension>;
-
+pub(crate) type ExtensionUserData = SharedUserContextContainer<JSExtension>;
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ExtensionData {
     repo: String,
@@ -243,7 +249,7 @@ pub struct ExtensionData {
     url: Option<String>,
     icon: Option<String>,
 }
-
+/// flutter_rust_bridge:opaque
 pub struct JSExtension {
     #[allow(unused)]
     pub data: ExtensionData,
