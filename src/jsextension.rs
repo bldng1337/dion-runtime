@@ -237,21 +237,21 @@ pub(crate) type ExtensionUserData = SharedUserContextContainer<JSExtension>;
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ExtensionData {
-    repo: String,
-    name: String,
+    pub repo: String,
+    pub name: String,
     #[serde(alias = "type")]
-    media_type: Option<Vec<MediaType>>,
+    pub media_type: Option<Vec<MediaType>>,
 
-    giturl: Option<String>,
-    version: Option<String>,
-    desc: Option<String>,
-    author: Option<String>,
-    license: Option<String>,
-    tags: Option<Vec<String>>,
-    nsfw: Option<bool>,
-    lang: Vec<String>,
-    url: Option<String>,
-    icon: Option<String>,
+    pub giturl: Option<String>,
+    pub version: Option<String>,
+    pub desc: Option<String>,
+    pub author: Option<String>,
+    pub license: Option<String>,
+    pub tags: Option<Vec<String>>,
+    pub nsfw: Option<bool>,
+    pub lang: Vec<String>,
+    pub url: Option<String>,
+    pub icon: Option<String>,
 }
 /// flutter_rust_bridge:opaque
 pub struct JSExtension {
