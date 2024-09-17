@@ -31,6 +31,10 @@ impl Default for ExtensionManager {
 /// flutter_rust_bridge:opaque
 impl ExtensionManager {
 
+    pub async fn new() -> Self {
+        Default::default()
+    }
+
     pub async fn frb_override_add_from_file(&mut self, path: &str)->Result<()> {
         self.add_from_file(path).await
     }
