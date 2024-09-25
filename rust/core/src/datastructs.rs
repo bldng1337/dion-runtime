@@ -3,7 +3,9 @@ use std::collections::HashMap;
 use rquickjs::{Ctx, IntoJs, Value};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum MediaType {
     #[serde(alias = "video")]
     Video,
@@ -16,7 +18,10 @@ pub enum MediaType {
     #[serde(alias = "unknown")]
     Unknown,
 }
-#[derive(Serialize, Deserialize, Debug)]
+
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Entry {
     pub id: String,
     pub url: String,
@@ -34,7 +39,9 @@ pub struct Entry {
     pub length: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Episode {
     pub id: String,
     pub name: String,
@@ -45,12 +52,15 @@ pub struct Episode {
     pub timestamp: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EpisodeList {
     pub title: String,
     pub episodes: Vec<Episode>,
 }
-#[derive(Serialize, Deserialize, Debug)]
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ReleaseStatus {
     #[serde(alias = "releasing")]
     Releasing,
@@ -60,7 +70,8 @@ pub enum ReleaseStatus {
     Unknown,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EntryDetailed {
     pub id: String,
     pub url: String,
@@ -82,14 +93,16 @@ pub struct EntryDetailed {
     pub length: Option<i64>,
 }
 
-
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Sort {
     Popular,
     Latest,
     Updated,
 }
-#[derive(Serialize, Deserialize, Debug)]
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "sourcetype")]
 pub enum Source {
     #[serde(alias = "data")] Data {
@@ -100,7 +113,8 @@ pub enum Source {
     },
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum LinkSource {
     #[serde(alias = "epub")] Epub {
@@ -120,19 +134,22 @@ pub enum LinkSource {
     },
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Subtitles {
     pub title: String,
     pub url: String,
 }
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ImageListAudio {
     pub link: String,
     pub from: i64,
     pub to: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum DataSource {
     #[serde(alias = "paragraphlist")] Paragraphlist {
@@ -140,7 +157,9 @@ pub enum DataSource {
     },
 }
 
+/// flutter_rust_bridge:ignore
 impl<'js> IntoJs<'js> for Sort {
+    /// flutter_rust_bridge:ignore
     fn into_js(self, ctx: &Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         match self {
             Sort::Popular => "popular".into_js(ctx),

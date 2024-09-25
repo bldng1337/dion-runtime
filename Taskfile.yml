@@ -1,0 +1,12 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  test:
+    cmds:
+      - cd rust/core && cargo test
+      - cd dart/rdion_runtime/example && flutter test integration_test/simple_test.dart
+  codegen:
+    cmds:
+      - cd dart/rdion_runtime && flutter_rust_bridge_codegen generate

@@ -21,7 +21,7 @@ mod tests {
 
     #[async_trait::async_trait]
     impl PermissionRequester for TestPermission {
-        async fn request(&self, permission: &crate::permission::Permission, msg: Option<String>) -> bool {
+        async fn request(&self, _permission: &crate::permission::Permission, msg: Option<String>) -> bool {
             println!("Asked for: {}",msg.unwrap_or_default());
             return true;
         }
@@ -31,7 +31,7 @@ mod tests {
     async fn my_test() -> Result<(), Error> {
         let rt = AsyncRuntime::new()?;
         let mut extm: ExtensionManager = Default::default();
-        extm.add_from_file(r#".\test.dion.js"#).await?;
+        extm.add_from_file(r#"./../../testextensions/test.dion.js"#).await?;
         {
             let mut a=PERMISSION.write().await;
             a.requester=Some(Box::new(TestPermission));

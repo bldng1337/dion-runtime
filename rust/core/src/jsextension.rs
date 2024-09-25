@@ -18,18 +18,42 @@ use crate::{
     settings::SettingStore,
     utils::{ val_to_string, wrapcatch, ReadOnlyUserContextContainer, SharedUserContextContainer },
 };
+pub type ArcExtensionManager=InnerExtensionManager<Arc<ExtensionContainer>>;
+pub type ExtensionManager=InnerExtensionManager<ExtensionContainer>;
 
-pub struct ExtensionManager {
-    extensions: Vec<ExtensionContainer>,
+pub trait Extension {
+    fn wrap_ext(ext:ExtensionContainer)->Self;
 }
 
-impl Default for ExtensionManager {
+impl Extension for ExtensionContainer {
+    fn wrap_ext(ext:ExtensionContainer)->Self{
+        ext
+    }
+}
+
+impl Extension for Arc<ExtensionContainer> {
+    fn wrap_ext(ext:ExtensionContainer)->Self{
+        Arc::new(ext)
+    }
+}
+
+impl Extension for Arc<RwLock<ExtensionContainer>> {
+    fn wrap_ext(ext:ExtensionContainer)->Self {
+        Arc::new(RwLock::new(ext))
+    }
+}
+
+pub struct InnerExtensionManager<T> where T : Extension {
+    extensions: Vec<T>,
+}
+
+impl<T> Default for InnerExtensionManager<T> where T : Extension {
     fn default() -> Self {
         Self { extensions: Default::default() }
     }
 }
 /// flutter_rust_bridge:opaque
-impl ExtensionManager {
+impl<T> InnerExtensionManager<T> where T : Extension {
 
     pub async fn new() -> Self {
         Default::default()
@@ -40,14 +64,17 @@ impl ExtensionManager {
     }
 
     pub async fn add_from_file(&mut self, path: impl AsRef<Path>) -> Result<()> {
-        self.extensions.push(ExtensionContainer::create(path).await?);
+        self.extensions.push(T::wrap_ext(ExtensionContainer::create(path).await?));
         Ok(())
     }
 
-    pub fn iter(&self) -> Iter<'_, ExtensionContainer> {
+    /// flutter_rust_bridge:ignore
+    pub fn iter(&self) -> Iter<'_, T> {
         self.extensions.iter()
     }
-    pub fn iter_mut(&mut self) -> IterMut<'_, ExtensionContainer> {
+
+    /// flutter_rust_bridge:ignore
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         self.extensions.iter_mut()
     }
 }
@@ -60,6 +87,11 @@ pub struct ExtensionContainer {
 }
 
 impl ExtensionContainer {
+
+    pub async  fn get_extension(&self) -> tokio::sync::RwLockReadGuard<'_, JSExtension, > {
+        self.extension.read().await
+    }
+
     pub fn is_enabled(&self) -> bool {
         self.context.is_some()
     }
@@ -235,7 +267,7 @@ impl ExtensionContainer {
 
 pub(crate) type ExtensionUserData = SharedUserContextContainer<JSExtension>;
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct ExtensionData {
     pub repo: String,
     pub name: String,

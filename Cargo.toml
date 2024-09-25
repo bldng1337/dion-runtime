@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+    "rust/core",
+    "dart/rdion_runtime/rust"
+]
+
+#dion-runtime = { path = "../../../rust/core" }

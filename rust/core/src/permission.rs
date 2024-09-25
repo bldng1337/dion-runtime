@@ -15,15 +15,15 @@ pub struct PermissionSingelton {
 pub static PERMISSION: LazyLock<RwLock<PermissionSingelton>> = LazyLock::new(||
     RwLock::new(PermissionSingelton::default())
 );
-
-#[derive(Serialize, Deserialize, Debug)]
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug,Clone)]
 #[serde(tag = "id")]
 pub enum Permission {
     #[serde(alias = "storage")] StoragePermission {
         path: String,
         #[serde(default)]
         write: bool,
-    },
+    }
 }
 
 impl std::fmt::Display for Permission {
