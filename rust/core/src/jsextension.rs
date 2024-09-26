@@ -92,6 +92,10 @@ impl ExtensionContainer {
         self.extension.read().await
     }
 
+    pub async  fn get_extension_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, JSExtension> {
+        self.extension.write().await
+    }
+
     pub fn is_enabled(&self) -> bool {
         self.context.is_some()
     }
@@ -269,7 +273,8 @@ pub(crate) type ExtensionUserData = SharedUserContextContainer<JSExtension>;
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct ExtensionData {
-    pub repo: String,
+    pub id: String,
+    pub repo: Option<String>,
     pub name: String,
     #[serde(alias = "type")]
     pub media_type: Option<Vec<MediaType>>,

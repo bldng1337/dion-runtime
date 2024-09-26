@@ -1,4 +1,4 @@
-//{"repo":"repo","icon":"https://9animetv.to/images/favicon.png","name":"9Anime","version":"1.0.0","description":"A Anime Streaming Site","author":"","license":"0BSD","keywords":["anime","series"],"nsfw":false,"lang":["en"],"media_type":["video"],"url":"https://9animetv.to"}
+//{"id":"123","repo":"repo","icon":"https://9animetv.to/images/favicon.png","name":"9Anime","version":"1.0.0","description":"A Anime Streaming Site","author":"","license":"0BSD","keywords":["anime","series"],"nsfw":false,"lang":["en"],"media_type":["video"],"url":"https://9animetv.to"}
 import { fetch, getCookies } from "network";
 import { registerSetting, getSetting } from "setting";
 import { requestPermission } from "permission";
@@ -164,6 +164,7 @@ export default class {
     )-> Result<Vec<Entry>>
         */
   async browse(page, sort) {
+    assert((await getSetting("someid")) == "othervalue", "setting not working");
     assert(typeof page == "number", "page must be a number");
     assert(typeof sort == "string", "sort must be a string");
     return [getEntry()];

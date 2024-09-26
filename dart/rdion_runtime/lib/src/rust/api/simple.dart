@@ -7,6 +7,7 @@ import '../frb_generated.dart';
 import '../third_party/dion_runtime/datastructs.dart';
 import '../third_party/dion_runtime/jsextension.dart';
 import '../third_party/dion_runtime/permission.dart';
+import '../third_party/dion_runtime/settings.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `new`
@@ -49,12 +50,23 @@ abstract class ExtensionProxy implements RustOpaqueInterface {
 
   Future<Entry?> fromurl({required String url, CancelToken? token});
 
+  Future<Setting> getSetting({required String name});
+
   Future<bool> isEnabled();
+
+  Future<List<Permission>> permissionsIter();
+
+  Future<void> removePermissions({required Permission permission});
 
   Future<List<Entry>> search(
       {required PlatformInt64 page,
       required String filter,
       CancelToken? token});
+
+  Future<void> setSetting(
+      {required String name, required Settingvalue setting});
+
+  Future<List<String>> settingIdsIter();
 
   Future<Source> source({required Episode ep, CancelToken? token});
 }

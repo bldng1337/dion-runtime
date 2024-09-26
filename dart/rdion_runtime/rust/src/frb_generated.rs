@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.4.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -147716948;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1963556615;
 
 // Section: executor
 
@@ -419,6 +419,55 @@ fn wire__crate__api__simple__ExtensionProxy_fromurl_impl(
         },
     )
 }
+fn wire__crate__api__simple__ExtensionProxy_get_setting_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
+    >,
+    name: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_get_setting",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_name = name.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::simple::ExtensionProxy::get_setting(
+                            &*api_that_guard,
+                            &api_name,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__simple__ExtensionProxy_is_enabled_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
@@ -456,6 +505,103 @@ fn wire__crate__api__simple__ExtensionProxy_is_enabled_impl(
                         let output_ok = Result::<_, ()>::Ok(
                             crate::api::simple::ExtensionProxy::is_enabled(&*api_that_guard).await,
                         )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionProxy_permissions_iter_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_permissions_iter",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::simple::ExtensionProxy::permissions_iter(&*api_that_guard)
+                                .await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionProxy_remove_permissions_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
+    >,
+    permission: impl CstDecode<dion_runtime::permission::Permission>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_remove_permissions",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_permission = permission.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok({
+                            crate::api::simple::ExtensionProxy::remove_permissions(
+                                &*api_that_guard,
+                                &api_permission,
+                            )
+                            .await;
+                        })?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -511,6 +657,104 @@ fn wire__crate__api__simple__ExtensionProxy_search_impl(
                             api_token,
                         )
                         .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionProxy_set_setting_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
+    >,
+    name: impl CstDecode<String>,
+    setting: impl CstDecode<dion_runtime::settings::Settingvalue>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_set_setting",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_name = name.cst_decode();
+            let api_setting = setting.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::simple::ExtensionProxy::set_setting(
+                            &*api_that_guard,
+                            &api_name,
+                            api_setting,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionProxy_setting_ids_iter_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_setting_ids_iter",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::simple::ExtensionProxy::setting_ids_iter(&*api_that_guard)
+                                .await,
+                        )?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -725,7 +969,8 @@ const _: fn() = || {
     }
     {
         let ExtensionData = None::<dion_runtime::jsextension::ExtensionData>.unwrap();
-        let _: String = ExtensionData.repo;
+        let _: String = ExtensionData.id;
+        let _: Option<String> = ExtensionData.repo;
         let _: String = ExtensionData.name;
         let _: Option<Vec<dion_runtime::datastructs::MediaType>> = ExtensionData.media_type;
         let _: Option<String> = ExtensionData.giturl;
@@ -772,6 +1017,53 @@ const _: fn() = || {
             let _: bool = write;
         }
     }
+    {
+        let Setting = None::<dion_runtime::settings::Setting>.unwrap();
+        let _: dion_runtime::settings::Settingvalue = Setting.val;
+        let _: dion_runtime::settings::Settingtype = Setting.settingtype;
+        let _: Option<dion_runtime::settings::SettingUI> = Setting.ui;
+    }
+    match None::<dion_runtime::settings::SettingUI>.unwrap() {
+        dion_runtime::settings::SettingUI::PathSelection { label, pickfolder } => {
+            let _: String = label;
+            let _: bool = pickfolder;
+        }
+        dion_runtime::settings::SettingUI::Slider {
+            label,
+            min,
+            max,
+            step,
+        } => {
+            let _: String = label;
+            let _: f64 = min;
+            let _: f64 = max;
+            let _: f64 = step;
+        }
+        dion_runtime::settings::SettingUI::Checkbox { label } => {
+            let _: String = label;
+        }
+        dion_runtime::settings::SettingUI::Textbox { label } => {
+            let _: String = label;
+        }
+        dion_runtime::settings::SettingUI::Dropdown { label, options } => {
+            let _: String = label;
+            let _: Vec<(String, String)> = options;
+        }
+    }
+    match None::<dion_runtime::settings::Settingvalue>.unwrap() {
+        dion_runtime::settings::Settingvalue::String { val, default_val } => {
+            let _: String = val;
+            let _: String = default_val;
+        }
+        dion_runtime::settings::Settingvalue::Number { val, default_val } => {
+            let _: f64 = val;
+            let _: f64 = default_val;
+        }
+        dion_runtime::settings::Settingvalue::Boolean { val, default_val } => {
+            let _: bool = val;
+            let _: bool = default_val;
+        }
+    }
     match None::<dion_runtime::datastructs::Source>.unwrap() {
         dion_runtime::datastructs::Source::Data { sourcedata } => {
             let _: dion_runtime::datastructs::DataSource = sourcedata;
@@ -798,6 +1090,12 @@ impl CstDecode<bool> for bool {
 impl CstDecode<f32> for f32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> f32 {
+        self
+    }
+}
+impl CstDecode<f64> for f64 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> f64 {
         self
     }
 }
@@ -834,6 +1132,17 @@ impl CstDecode<dion_runtime::datastructs::ReleaseStatus> for i32 {
             1 => dion_runtime::datastructs::ReleaseStatus::Complete,
             2 => dion_runtime::datastructs::ReleaseStatus::Unknown,
             _ => unreachable!("Invalid variant for ReleaseStatus: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::settings::Settingtype> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::settings::Settingtype {
+        match self {
+            0 => dion_runtime::settings::Settingtype::Extension,
+            1 => dion_runtime::settings::Settingtype::Entry,
+            2 => dion_runtime::settings::Settingtype::Search,
+            _ => unreachable!("Invalid variant for Settingtype: {}", self),
         }
     }
 }
@@ -1107,7 +1416,8 @@ impl SseDecode for dion_runtime::datastructs::EpisodeList {
 impl SseDecode for dion_runtime::jsextension::ExtensionData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_repo = <String>::sse_decode(deserializer);
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_repo = <Option<String>>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_mediaType =
             <Option<Vec<dion_runtime::datastructs::MediaType>>>::sse_decode(deserializer);
@@ -1122,6 +1432,7 @@ impl SseDecode for dion_runtime::jsextension::ExtensionData {
         let mut var_url = <Option<String>>::sse_decode(deserializer);
         let mut var_icon = <Option<String>>::sse_decode(deserializer);
         return dion_runtime::jsextension::ExtensionData {
+            id: var_id,
             repo: var_repo,
             name: var_name,
             media_type: var_mediaType,
@@ -1143,6 +1454,13 @@ impl SseDecode for f32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_f32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for f64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_f64::<NativeEndian>().unwrap()
     }
 }
 
@@ -1307,6 +1625,20 @@ impl SseDecode for Vec<dion_runtime::datastructs::MediaType> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::permission::Permission> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::permission::Permission>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1439,6 +1771,19 @@ impl SseDecode for Option<i64> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::settings::SettingUI> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::settings::SettingUI>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<Vec<String>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1514,6 +1859,117 @@ impl SseDecode for dion_runtime::datastructs::ReleaseStatus {
             2 => dion_runtime::datastructs::ReleaseStatus::Unknown,
             _ => unreachable!("Invalid variant for ReleaseStatus: {}", inner),
         };
+    }
+}
+
+impl SseDecode for dion_runtime::settings::Setting {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_val = <dion_runtime::settings::Settingvalue>::sse_decode(deserializer);
+        let mut var_settingtype = <dion_runtime::settings::Settingtype>::sse_decode(deserializer);
+        let mut var_ui = <Option<dion_runtime::settings::SettingUI>>::sse_decode(deserializer);
+        return dion_runtime::settings::Setting {
+            val: var_val,
+            settingtype: var_settingtype,
+            ui: var_ui,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::settings::SettingUI {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_label = <String>::sse_decode(deserializer);
+                let mut var_pickfolder = <bool>::sse_decode(deserializer);
+                return dion_runtime::settings::SettingUI::PathSelection {
+                    label: var_label,
+                    pickfolder: var_pickfolder,
+                };
+            }
+            1 => {
+                let mut var_label = <String>::sse_decode(deserializer);
+                let mut var_min = <f64>::sse_decode(deserializer);
+                let mut var_max = <f64>::sse_decode(deserializer);
+                let mut var_step = <f64>::sse_decode(deserializer);
+                return dion_runtime::settings::SettingUI::Slider {
+                    label: var_label,
+                    min: var_min,
+                    max: var_max,
+                    step: var_step,
+                };
+            }
+            2 => {
+                let mut var_label = <String>::sse_decode(deserializer);
+                return dion_runtime::settings::SettingUI::Checkbox { label: var_label };
+            }
+            3 => {
+                let mut var_label = <String>::sse_decode(deserializer);
+                return dion_runtime::settings::SettingUI::Textbox { label: var_label };
+            }
+            4 => {
+                let mut var_label = <String>::sse_decode(deserializer);
+                let mut var_options = <Vec<(String, String)>>::sse_decode(deserializer);
+                return dion_runtime::settings::SettingUI::Dropdown {
+                    label: var_label,
+                    options: var_options,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseDecode for dion_runtime::settings::Settingtype {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::settings::Settingtype::Extension,
+            1 => dion_runtime::settings::Settingtype::Entry,
+            2 => dion_runtime::settings::Settingtype::Search,
+            _ => unreachable!("Invalid variant for Settingtype: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::settings::Settingvalue {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_val = <String>::sse_decode(deserializer);
+                let mut var_defaultVal = <String>::sse_decode(deserializer);
+                return dion_runtime::settings::Settingvalue::String {
+                    val: var_val,
+                    default_val: var_defaultVal,
+                };
+            }
+            1 => {
+                let mut var_val = <f64>::sse_decode(deserializer);
+                let mut var_defaultVal = <f64>::sse_decode(deserializer);
+                return dion_runtime::settings::Settingvalue::Number {
+                    val: var_val,
+                    default_val: var_defaultVal,
+                };
+            }
+            2 => {
+                let mut var_val = <bool>::sse_decode(deserializer);
+                let mut var_defaultVal = <bool>::sse_decode(deserializer);
+                return dion_runtime::settings::Settingvalue::Boolean {
+                    val: var_val,
+                    default_val: var_defaultVal,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -1815,6 +2271,7 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Epi
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::jsextension::ExtensionData> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
+            self.0.id.into_into_dart().into_dart(),
             self.0.repo.into_into_dart().into_dart(),
             self.0.name.into_into_dart().into_dart(),
             self.0.media_type.into_into_dart().into_dart(),
@@ -2000,6 +2457,141 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Rel
     for dion_runtime::datastructs::ReleaseStatus
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ReleaseStatus> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Setting> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.val.into_into_dart().into_dart(),
+            self.0.settingtype.into_into_dart().into_dart(),
+            self.0.ui.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::settings::Setting>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::Setting>>
+    for dion_runtime::settings::Setting
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::Setting> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::SettingUI> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::settings::SettingUI::PathSelection { label, pickfolder } => [
+                0.into_dart(),
+                label.into_into_dart().into_dart(),
+                pickfolder.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::settings::SettingUI::Slider {
+                label,
+                min,
+                max,
+                step,
+            } => [
+                1.into_dart(),
+                label.into_into_dart().into_dart(),
+                min.into_into_dart().into_dart(),
+                max.into_into_dart().into_dart(),
+                step.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::settings::SettingUI::Checkbox { label } => {
+                [2.into_dart(), label.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::settings::SettingUI::Textbox { label } => {
+                [3.into_dart(), label.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::settings::SettingUI::Dropdown { label, options } => [
+                4.into_dart(),
+                label.into_into_dart().into_dart(),
+                options.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::settings::SettingUI>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::SettingUI>>
+    for dion_runtime::settings::SettingUI
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::SettingUI> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Settingtype> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::settings::Settingtype::Extension => 0.into_dart(),
+            dion_runtime::settings::Settingtype::Entry => 1.into_dart(),
+            dion_runtime::settings::Settingtype::Search => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::settings::Settingtype>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::Settingtype>>
+    for dion_runtime::settings::Settingtype
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::Settingtype> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Settingvalue> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::settings::Settingvalue::String { val, default_val } => [
+                0.into_dart(),
+                val.into_into_dart().into_dart(),
+                default_val.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::settings::Settingvalue::Number { val, default_val } => [
+                1.into_dart(),
+                val.into_into_dart().into_dart(),
+                default_val.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::settings::Settingvalue::Boolean { val, default_val } => [
+                2.into_dart(),
+                val.into_into_dart().into_dart(),
+                default_val.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::settings::Settingvalue>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::Settingvalue>>
+    for dion_runtime::settings::Settingvalue
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::Settingvalue> {
         self.into()
     }
 }
@@ -2276,7 +2868,8 @@ impl SseEncode for dion_runtime::datastructs::EpisodeList {
 impl SseEncode for dion_runtime::jsextension::ExtensionData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.repo, serializer);
+        <String>::sse_encode(self.id, serializer);
+        <Option<String>>::sse_encode(self.repo, serializer);
         <String>::sse_encode(self.name, serializer);
         <Option<Vec<dion_runtime::datastructs::MediaType>>>::sse_encode(
             self.media_type,
@@ -2299,6 +2892,13 @@ impl SseEncode for f32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_f32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for f64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_f64::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -2429,6 +3029,16 @@ impl SseEncode for Vec<dion_runtime::datastructs::MediaType> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::permission::Permission> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::permission::Permission>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2548,6 +3158,16 @@ impl SseEncode for Option<i64> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::settings::SettingUI> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::settings::SettingUI>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<Vec<String>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2614,6 +3234,99 @@ impl SseEncode for dion_runtime::datastructs::ReleaseStatus {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for dion_runtime::settings::Setting {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <dion_runtime::settings::Settingvalue>::sse_encode(self.val, serializer);
+        <dion_runtime::settings::Settingtype>::sse_encode(self.settingtype, serializer);
+        <Option<dion_runtime::settings::SettingUI>>::sse_encode(self.ui, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::settings::SettingUI {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::settings::SettingUI::PathSelection { label, pickfolder } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(label, serializer);
+                <bool>::sse_encode(pickfolder, serializer);
+            }
+            dion_runtime::settings::SettingUI::Slider {
+                label,
+                min,
+                max,
+                step,
+            } => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(label, serializer);
+                <f64>::sse_encode(min, serializer);
+                <f64>::sse_encode(max, serializer);
+                <f64>::sse_encode(step, serializer);
+            }
+            dion_runtime::settings::SettingUI::Checkbox { label } => {
+                <i32>::sse_encode(2, serializer);
+                <String>::sse_encode(label, serializer);
+            }
+            dion_runtime::settings::SettingUI::Textbox { label } => {
+                <i32>::sse_encode(3, serializer);
+                <String>::sse_encode(label, serializer);
+            }
+            dion_runtime::settings::SettingUI::Dropdown { label, options } => {
+                <i32>::sse_encode(4, serializer);
+                <String>::sse_encode(label, serializer);
+                <Vec<(String, String)>>::sse_encode(options, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseEncode for dion_runtime::settings::Settingtype {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::settings::Settingtype::Extension => 0,
+                dion_runtime::settings::Settingtype::Entry => 1,
+                dion_runtime::settings::Settingtype::Search => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::settings::Settingvalue {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::settings::Settingvalue::String { val, default_val } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(val, serializer);
+                <String>::sse_encode(default_val, serializer);
+            }
+            dion_runtime::settings::Settingvalue::Number { val, default_val } => {
+                <i32>::sse_encode(1, serializer);
+                <f64>::sse_encode(val, serializer);
+                <f64>::sse_encode(default_val, serializer);
+            }
+            dion_runtime::settings::Settingvalue::Boolean { val, default_val } => {
+                <i32>::sse_encode(2, serializer);
+                <bool>::sse_encode(val, serializer);
+                <bool>::sse_encode(default_val, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -2899,6 +3612,27 @@ mod io {
             CstDecode::<dion_runtime::datastructs::LinkSource>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<dion_runtime::permission::Permission> for *mut wire_cst_permission {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::permission::Permission {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::permission::Permission>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::settings::SettingUI> for *mut wire_cst_setting_ui {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::settings::SettingUI {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::settings::SettingUI>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::settings::Settingvalue> for *mut wire_cst_settingvalue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::settings::Settingvalue {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::settings::Settingvalue>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::datastructs::DataSource> for wire_cst_data_source {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::datastructs::DataSource {
@@ -2977,6 +3711,7 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::jsextension::ExtensionData {
             dion_runtime::jsextension::ExtensionData {
+                id: self.id.cst_decode(),
                 repo: self.repo.cst_decode(),
                 name: self.name.cst_decode(),
                 media_type: self.media_type.cst_decode(),
@@ -3110,6 +3845,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::permission::Permission>> for *mut wire_cst_list_permission {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::permission::Permission> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<u8>> for *mut wire_cst_list_prim_u_8_strict {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<u8> {
@@ -3167,6 +3912,88 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> (String, String) {
             (self.field0.cst_decode(), self.field1.cst_decode())
+        }
+    }
+    impl CstDecode<dion_runtime::settings::Setting> for wire_cst_setting {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::settings::Setting {
+            dion_runtime::settings::Setting {
+                val: self.val.cst_decode(),
+                settingtype: self.settingtype.cst_decode(),
+                ui: self.ui.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::settings::SettingUI> for wire_cst_setting_ui {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::settings::SettingUI {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.PathSelection };
+                    dion_runtime::settings::SettingUI::PathSelection {
+                        label: ans.label.cst_decode(),
+                        pickfolder: ans.pickfolder.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.Slider };
+                    dion_runtime::settings::SettingUI::Slider {
+                        label: ans.label.cst_decode(),
+                        min: ans.min.cst_decode(),
+                        max: ans.max.cst_decode(),
+                        step: ans.step.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.Checkbox };
+                    dion_runtime::settings::SettingUI::Checkbox {
+                        label: ans.label.cst_decode(),
+                    }
+                }
+                3 => {
+                    let ans = unsafe { self.kind.Textbox };
+                    dion_runtime::settings::SettingUI::Textbox {
+                        label: ans.label.cst_decode(),
+                    }
+                }
+                4 => {
+                    let ans = unsafe { self.kind.Dropdown };
+                    dion_runtime::settings::SettingUI::Dropdown {
+                        label: ans.label.cst_decode(),
+                        options: ans.options.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::settings::Settingvalue> for wire_cst_settingvalue {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::settings::Settingvalue {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.String };
+                    dion_runtime::settings::Settingvalue::String {
+                        val: ans.val.cst_decode(),
+                        default_val: ans.default_val.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.Number };
+                    dion_runtime::settings::Settingvalue::Number {
+                        val: ans.val.cst_decode(),
+                        default_val: ans.default_val.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.Boolean };
+                    dion_runtime::settings::Settingvalue::Boolean {
+                        val: ans.val.cst_decode(),
+                        default_val: ans.default_val.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
+            }
         }
     }
     impl CstDecode<dion_runtime::datastructs::Source> for wire_cst_source {
@@ -3290,6 +4117,7 @@ mod io {
     impl NewWithNullPtr for wire_cst_extension_data {
         fn new_with_null_ptr() -> Self {
             Self {
+                id: core::ptr::null_mut(),
                 repo: core::ptr::null_mut(),
                 name: core::ptr::null_mut(),
                 media_type: core::ptr::null_mut(),
@@ -3373,6 +4201,46 @@ mod io {
         }
     }
     impl Default for wire_cst_record_string_string {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_setting {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                val: Default::default(),
+                settingtype: Default::default(),
+                ui: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_setting {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_setting_ui {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: SettingUIKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_setting_ui {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_settingvalue {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: SettingvalueKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_settingvalue {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -3481,11 +4349,37 @@ mod io {
     }
 
     #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_get_setting(
+        port_: i64,
+        that: usize,
+        name: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_get_setting_impl(port_, that, name)
+    }
+
+    #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_is_enabled(
         port_: i64,
         that: usize,
     ) {
         wire__crate__api__simple__ExtensionProxy_is_enabled_impl(port_, that)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_permissions_iter(
+        port_: i64,
+        that: usize,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_permissions_iter_impl(port_, that)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_remove_permissions(
+        port_: i64,
+        that: usize,
+        permission: *mut wire_cst_permission,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_remove_permissions_impl(port_, that, permission)
     }
 
     #[no_mangle]
@@ -3497,6 +4391,24 @@ mod io {
         token: *mut usize,
     ) {
         wire__crate__api__simple__ExtensionProxy_search_impl(port_, that, page, filter, token)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_set_setting(
+        port_: i64,
+        that: usize,
+        name: *mut wire_cst_list_prim_u_8_strict,
+        setting: *mut wire_cst_settingvalue,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_set_setting_impl(port_, that, name, setting)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_setting_ids_iter(
+        port_: i64,
+        that: usize,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_setting_ids_iter_impl(port_, that)
     }
 
     #[no_mangle]
@@ -3658,6 +4570,30 @@ mod io {
     }
 
     #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_permission(
+    ) -> *mut wire_cst_permission {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_permission::new_with_null_ptr(),
+        )
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_setting_ui(
+    ) -> *mut wire_cst_setting_ui {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_setting_ui::new_with_null_ptr(),
+        )
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_settingvalue(
+    ) -> *mut wire_cst_settingvalue {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_settingvalue::new_with_null_ptr(),
+        )
+    }
+
+    #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(len: i32) -> *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy{
         let wrap = wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy { ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len), len };
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
@@ -3739,6 +4675,20 @@ mod io {
     ) -> *mut wire_cst_list_media_type {
         let wrap = wire_cst_list_media_type {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_permission(
+        len: i32,
+    ) -> *mut wire_cst_list_permission {
+        let wrap = wire_cst_list_permission {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_permission>::new_with_null_ptr(),
+                len,
+            ),
             len,
         };
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
@@ -3851,6 +4801,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_extension_data {
+        id: *mut wire_cst_list_prim_u_8_strict,
         repo: *mut wire_cst_list_prim_u_8_strict,
         name: *mut wire_cst_list_prim_u_8_strict,
         media_type: *mut wire_cst_list_media_type,
@@ -3955,6 +4906,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_permission {
+        ptr: *mut wire_cst_permission,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_prim_u_8_strict {
         ptr: *mut u8,
         len: i32,
@@ -4000,6 +4957,91 @@ mod io {
     pub struct wire_cst_record_string_string {
         field0: *mut wire_cst_list_prim_u_8_strict,
         field1: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_setting {
+        val: wire_cst_settingvalue,
+        settingtype: i32,
+        ui: *mut wire_cst_setting_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_setting_ui {
+        tag: i32,
+        kind: SettingUIKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union SettingUIKind {
+        PathSelection: wire_cst_SettingUI_PathSelection,
+        Slider: wire_cst_SettingUI_Slider,
+        Checkbox: wire_cst_SettingUI_Checkbox,
+        Textbox: wire_cst_SettingUI_Textbox,
+        Dropdown: wire_cst_SettingUI_Dropdown,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingUI_PathSelection {
+        label: *mut wire_cst_list_prim_u_8_strict,
+        pickfolder: bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingUI_Slider {
+        label: *mut wire_cst_list_prim_u_8_strict,
+        min: f64,
+        max: f64,
+        step: f64,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingUI_Checkbox {
+        label: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingUI_Textbox {
+        label: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingUI_Dropdown {
+        label: *mut wire_cst_list_prim_u_8_strict,
+        options: *mut wire_cst_list_record_string_string,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_settingvalue {
+        tag: i32,
+        kind: SettingvalueKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union SettingvalueKind {
+        String: wire_cst_Settingvalue_String,
+        Number: wire_cst_Settingvalue_Number,
+        Boolean: wire_cst_Settingvalue_Boolean,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Settingvalue_String {
+        val: *mut wire_cst_list_prim_u_8_strict,
+        default_val: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Settingvalue_Number {
+        val: f64,
+        default_val: f64,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Settingvalue_Boolean {
+        val: bool,
+        default_val: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

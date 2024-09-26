@@ -105,26 +105,26 @@ mod setting {
         ctx: Ctx<'js>,
         settingid: String,
         settingtype: String,
-        default: Value<'js>
+        default_val: Value<'js>
     ) -> Result<(), Error> {
         let Some(binding) = ctx.userdata::<ExtensionUserData>() else {
             return Err(Error::ExtensionError("Data not initialised".to_string()))
         };
         let mut ext = binding.get_mut().await;
-        let settingval = (match default.type_of() {
+        let settingval = (match default_val.type_of() {
             rquickjs::Type::Bool =>
                 Ok(Settingvalue::Boolean {
-                    val: default.as_bool().unwrap_or_default(),
-                    default: default.as_bool().unwrap_or_default(),
+                    val: default_val.as_bool().unwrap_or_default(),
+                    default_val: default_val.as_bool().unwrap_or_default(),
                 }),
             rquickjs::Type::Int | rquickjs::Type::Float =>
                 Ok(Settingvalue::Number {
-                    val: default.as_number().unwrap_or_default(),
-                    default: default.as_number().unwrap_or_default(),
+                    val: default_val.as_number().unwrap_or_default(),
+                    default_val: default_val.as_number().unwrap_or_default(),
                 }),
             rquickjs::Type::String => {
-                let default = String::from_js(&ctx, default)?;
-                Ok(Settingvalue::String { val: default.clone(), default: default })
+                let default_val = String::from_js(&ctx, default_val)?;
+                Ok(Settingvalue::String { val: default_val.clone(), default_val: default_val })
             }
             sometype =>
                 Err(Error::ExtensionError(format!("Unknown SettingType {}", sometype.to_string()))),
@@ -136,6 +136,7 @@ mod setting {
             str => Err(Error::ExtensionError(format!("Unknown SettingType: {}", str))),
         })?;
         ext.setting.add_setting(settingid, Setting {
+            
             val: settingval,
             settingtype: stype,
             ui: None,
@@ -149,9 +150,9 @@ mod setting {
         ctx: Ctx<'js>,
         settingid: String,
         settingtype: String,
-        default: Value<'js>
+        default_val: Value<'js>
     ) -> Result<(), rquickjs::Error> {
-        match internal_register_setting(ctx.clone(), settingid, settingtype, default).await {
+        match internal_register_setting(ctx.clone(), settingid, settingtype, default_val).await {
             Ok(data) => Ok(data),
             Err(err) => {
                 Err(err.into_js(&ctx).err().unwrap())

@@ -19,6 +19,11 @@ void main() {
     final extensions = await em.iter();
     for (var extension in extensions) {
       await extension.enable();
+      final setting=await extension.getSetting(name: "someid");
+      expect(setting.val.val, "somevalue", reason: "Setting is not correct");
+      extension.setSetting(name: "someid", setting: const Settingvalue.string(val: "othervalue", defaultVal: "defaultVal"));
+      final data=await extension.data();
+      expect(data.id, '123', reason: 'Extension data is not correct');
       final entries = await extension.browse(page: 1, sort: Sort.popular);
       final entry = await extension.detail(entry: entries[0]);
       final source = await extension.source(ep: entry.episodes[0].episodes[0]);

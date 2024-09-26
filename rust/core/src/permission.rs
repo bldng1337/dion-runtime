@@ -46,6 +46,7 @@ pub struct PermissionStore {
 }
 
 impl PermissionStore {
+
     fn has_permission(tocheck: &Permission, permission: &Permission) -> bool {
         match (tocheck, permission) {
             (
@@ -64,6 +65,10 @@ impl PermissionStore {
                 true
             }
         }
+    }
+
+    pub fn get_permissions(&self)->std::slice::Iter<'_, Permission>{
+        self.permissions.iter()
     }
 
     pub fn add_permission(&mut self, permission: Permission) {

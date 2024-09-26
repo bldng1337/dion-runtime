@@ -9,7 +9,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// flutter_rust_bridge:non_opaque
 class ExtensionData {
-  final String repo;
+  final String id;
+  final String? repo;
   final String name;
   final List<MediaType>? mediaType;
   final String? giturl;
@@ -24,7 +25,8 @@ class ExtensionData {
   final String? icon;
 
   const ExtensionData({
-    required this.repo,
+    required this.id,
+    this.repo,
     required this.name,
     this.mediaType,
     this.giturl,
@@ -41,6 +43,7 @@ class ExtensionData {
 
   @override
   int get hashCode =>
+      id.hashCode ^
       repo.hashCode ^
       name.hashCode ^
       mediaType.hashCode ^
@@ -60,6 +63,7 @@ class ExtensionData {
       identical(this, other) ||
       other is ExtensionData &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           repo == other.repo &&
           name == other.name &&
           mediaType == other.mediaType &&
