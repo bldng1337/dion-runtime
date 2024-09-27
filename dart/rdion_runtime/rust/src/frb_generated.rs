@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.4.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1963556615;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1977752366;
 
 // Section: executor
 
@@ -168,6 +168,59 @@ fn wire__crate__api__simple__ExtensionManagerProxy_new_impl(
                     Result::<_, ()>::Ok(crate::api::simple::ExtensionManagerProxy::new())?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionManagerProxy_remove_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionManagerProxy>,
+        >,
+    >,
+    id: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionManagerProxy_remove",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_id = id.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok({
+                            crate::api::simple::ExtensionManagerProxy::remove(
+                                &mut *api_that_guard,
+                                &api_id,
+                            )
+                            .await;
+                        })?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -4299,6 +4352,15 @@ mod io {
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_new(
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__simple__ExtensionManagerProxy_new_impl()
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_remove(
+        port_: i64,
+        that: usize,
+        id: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__simple__ExtensionManagerProxy_remove_impl(port_, that, id)
     }
 
     #[no_mangle]

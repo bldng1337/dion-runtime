@@ -1,7 +1,9 @@
 use deadqueue::limited::Queue;
 use dion_runtime::datastructs::{Entry, EntryDetailed, Episode, Sort, Source};
 use dion_runtime::error::{Error, Result};
-use dion_runtime::jsextension::{ExtensionContainer, ExtensionData, InnerExtensionManager};
+use dion_runtime::jsextension::{
+    Extension, ExtensionContainer, ExtensionData, InnerExtensionManager,
+};
 use dion_runtime::permission::{self, Permission, PermissionRequester, PERMISSION};
 
 use dion_runtime::settings::{Setting, Settingvalue};
@@ -93,8 +95,23 @@ impl ExtensionManagerProxy {
             engine: Arc::new(AsyncRuntime::new().unwrap()),
         }
     }
-    pub async fn add_from_file(&mut self, path: String) -> Result<()> {
-        self.inner.frb_override_add_from_file(&path).await
+    pub async fn add_from_file(&mut self, path: String) -> Result<ExtensionProxy> {
+        self.inner
+            .add_from_file(&path)
+            .await
+            .map(|a| ExtensionProxy::new(a.clone(), self.engine.clone()))
+    }
+
+    pub async fn remove(&mut self, id: &String) {
+        let mut res: Option<usize>=None;
+        for (cpos, ext) in self.inner.iter().enumerate() {
+            if ext.read().await.get_extension().await.data.id == *id {
+                res=Some(cpos)
+            }
+        }
+        if res.is_some() {
+            self.inner.remove(res.unwrap());
+        }
     }
 
     pub fn iter(&self) -> Vec<ExtensionProxy> {
@@ -108,6 +125,15 @@ impl ExtensionManagerProxy {
 pub struct ExtensionProxy {
     inner: Arc<RwLock<ExtensionContainer>>,
     engine: Arc<AsyncRuntime>,
+}
+
+impl Clone for ExtensionProxy {
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            engine: self.engine.clone(),
+        }
+    }
 }
 
 impl ExtensionProxy {

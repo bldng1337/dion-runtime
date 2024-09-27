@@ -72,7 +72,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => 1963556615;
+  int get rustContentHash => 1977752366;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -85,13 +85,16 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 abstract class RustLibApi extends BaseApi {
   CancelToken crateApiSimpleCancelTokenNew();
 
-  Future<void> crateApiSimpleExtensionManagerProxyAddFromFile(
+  Future<ExtensionProxy> crateApiSimpleExtensionManagerProxyAddFromFile(
       {required ExtensionManagerProxy that, required String path});
 
   Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyIter(
       {required ExtensionManagerProxy that});
 
   ExtensionManagerProxy crateApiSimpleExtensionManagerProxyNew();
+
+  Future<void> crateApiSimpleExtensionManagerProxyRemove(
+      {required ExtensionManagerProxy that, required String id});
 
   Future<List<Entry>> crateApiSimpleExtensionProxyBrowse(
       {required ExtensionProxy that,
@@ -217,7 +220,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiSimpleExtensionManagerProxyAddFromFile(
+  Future<ExtensionProxy> crateApiSimpleExtensionManagerProxyAddFromFile(
       {required ExtensionManagerProxy that, required String path}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -230,7 +233,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
                 port_, arg0, arg1);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_unit,
+        decodeSuccessData:
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy,
         decodeErrorData: dco_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleExtensionManagerProxyAddFromFileConstMeta,
@@ -294,6 +298,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ExtensionManagerProxy_new",
         argNames: [],
+      );
+
+  @override
+  Future<void> crateApiSimpleExtensionManagerProxyRemove(
+      {required ExtensionManagerProxy that, required String id}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
+                that);
+        var arg1 = cst_encode_String(id);
+        return wire.wire__crate__api__simple__ExtensionManagerProxy_remove(
+            port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleExtensionManagerProxyRemoveConstMeta,
+      argValues: [that, id],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleExtensionManagerProxyRemoveConstMeta =>
+      const TaskConstMeta(
+        debugName: "ExtensionManagerProxy_remove",
+        argNames: ["that", "id"],
       );
 
   @override
@@ -3238,13 +3270,17 @@ class ExtensionManagerProxyImpl extends RustOpaque
         .instance.api.rust_arc_decrement_strong_count_ExtensionManagerProxyPtr,
   );
 
-  Future<void> addFromFile({required String path}) => RustLib.instance.api
+  Future<ExtensionProxy> addFromFile({required String path}) => RustLib
+      .instance.api
       .crateApiSimpleExtensionManagerProxyAddFromFile(that: this, path: path);
 
   Future<List<ExtensionProxy>> iter() =>
       RustLib.instance.api.crateApiSimpleExtensionManagerProxyIter(
         that: this,
       );
+
+  Future<void> remove({required String id}) => RustLib.instance.api
+      .crateApiSimpleExtensionManagerProxyRemove(that: this, id: id);
 }
 
 @sealed

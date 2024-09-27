@@ -21,6 +21,7 @@ use crate::{
 pub type ArcExtensionManager=InnerExtensionManager<Arc<ExtensionContainer>>;
 pub type ExtensionManager=InnerExtensionManager<ExtensionContainer>;
 
+
 pub trait Extension {
     fn wrap_ext(ext:ExtensionContainer)->Self;
 }
@@ -29,12 +30,14 @@ impl Extension for ExtensionContainer {
     fn wrap_ext(ext:ExtensionContainer)->Self{
         ext
     }
+    
 }
 
 impl Extension for Arc<ExtensionContainer> {
     fn wrap_ext(ext:ExtensionContainer)->Self{
         Arc::new(ext)
     }
+    
 }
 
 impl Extension for Arc<RwLock<ExtensionContainer>> {
@@ -59,13 +62,9 @@ impl<T> InnerExtensionManager<T> where T : Extension {
         Default::default()
     }
 
-    pub async fn frb_override_add_from_file(&mut self, path: &str)->Result<()> {
-        self.add_from_file(path).await
-    }
-
-    pub async fn add_from_file(&mut self, path: impl AsRef<Path>) -> Result<()> {
+    pub async fn add_from_file(&mut self, path: impl AsRef<Path>) -> Result<&T> {
         self.extensions.push(T::wrap_ext(ExtensionContainer::create(path).await?));
-        Ok(())
+        self.extensions.last().ok_or(Error::ExtensionError("There are no extension loaded despite adding one currently".to_owned()))
     }
 
     /// flutter_rust_bridge:ignore
@@ -76,6 +75,10 @@ impl<T> InnerExtensionManager<T> where T : Extension {
     /// flutter_rust_bridge:ignore
     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         self.extensions.iter_mut()
+    }
+
+    pub fn remove(&mut self,i:usize) {
+        self.extensions.remove(i);
     }
 }
 

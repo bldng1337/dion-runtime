@@ -69,6 +69,7 @@ mod tests {
             let src = ext.source(&detail.episodes[0].episodes[0].id, None).await?;
             dbg!(src);
         }
+        extm.remove(0);
         Ok(())
     }
 }

@@ -1634,6 +1634,28 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__simple__ExtensionManagerProxy_newPtr
           .asFunction<WireSyncRust2DartDco Function()>();
 
+  void wire__crate__api__simple__ExtensionManagerProxy_remove(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> id,
+  ) {
+    return _wire__crate__api__simple__ExtensionManagerProxy_remove(
+      port_,
+      that,
+      id,
+    );
+  }
+
+  late final _wire__crate__api__simple__ExtensionManagerProxy_removePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.UintPtr,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+      'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_remove');
+  late final _wire__crate__api__simple__ExtensionManagerProxy_remove =
+      _wire__crate__api__simple__ExtensionManagerProxy_removePtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
   void wire__crate__api__simple__ExtensionProxy_browse(
     int port_,
     int that,
