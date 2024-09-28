@@ -28,8 +28,8 @@ void main() {
       final data = await extension.data();
       expect(data.id, '123', reason: 'Extension data is not correct');
       final entries = await extension.browse(page: 1, sort: Sort.popular);
-      final entry = await extension.detail(entry: entries[0]);
-      final source = await extension.source(ep: entry.episodes[0].episodes[0]);
+      final entry = await extension.detail(entryid: entries[0].id);
+      final source = await extension.source(epid: entry.episodes[0].episodes[0].id);
       expect(source is Source_Directlink, true,
           reason: 'Source is not a direct link');
       final sourceData = (source as Source_Directlink).sourcedata;
@@ -49,7 +49,7 @@ void main() {
       return true;
     });
     final extension = await ExtensionProxy.newInstance(filepath: "../../../testextensions/test.dion.js");
-  
+
     await extension.enable();
     final setting = await extension.getSetting(name: "someid");
     expect(setting.val.val, "somevalue", reason: "Setting is not correct");
@@ -60,8 +60,8 @@ void main() {
     final data = await extension.data();
     expect(data.id, '123', reason: 'Extension data is not correct');
     final entries = await extension.browse(page: 1, sort: Sort.popular);
-    final entry = await extension.detail(entry: entries[0]);
-    final source = await extension.source(ep: entry.episodes[0].episodes[0]);
+    final entry = await extension.detail(entryid: entries[0].id);
+    final source = await extension.source(epid: entry.episodes[0].episodes[0].id);
     expect(source is Source_Directlink, true,
         reason: 'Source is not a direct link');
     final sourceData = (source as Source_Directlink).sourcedata;

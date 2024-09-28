@@ -46,7 +46,7 @@ abstract class ExtensionProxy implements RustOpaqueInterface {
 
   Future<ExtensionData> data();
 
-  Future<EntryDetailed> detail({required Entry entry, CancelToken? token});
+  Future<EntryDetailed> detail({required String entryid, CancelToken? token});
 
   Future<void> disable();
 
@@ -76,7 +76,7 @@ abstract class ExtensionProxy implements RustOpaqueInterface {
 
   Future<List<String>> settingIdsIter();
 
-  Future<Source> source({required Episode ep, CancelToken? token});
+  Future<Source> source({required String epid, CancelToken? token});
 }
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<QueueStore>>

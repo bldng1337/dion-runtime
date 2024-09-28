@@ -123,9 +123,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Entry dco_decode_box_autoadd_entry(dynamic raw);
 
   @protected
-  Episode dco_decode_box_autoadd_episode(dynamic raw);
-
-  @protected
   double dco_decode_box_autoadd_f_32(dynamic raw);
 
   @protected
@@ -379,9 +376,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Entry sse_decode_box_autoadd_entry(SseDeserializer deserializer);
 
   @protected
-  Episode sse_decode_box_autoadd_episode(SseDeserializer deserializer);
-
-  @protected
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer);
 
   @protected
@@ -617,14 +611,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_entry();
     cst_api_fill_to_wire_entry(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_episode> cst_encode_box_autoadd_episode(Episode raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_episode();
-    cst_api_fill_to_wire_episode(raw, ptr.ref);
     return ptr;
   }
 
@@ -891,12 +877,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_autoadd_entry(
       Entry apiObj, ffi.Pointer<wire_cst_entry> wireObj) {
     cst_api_fill_to_wire_entry(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_episode(
-      Episode apiObj, ffi.Pointer<wire_cst_episode> wireObj) {
-    cst_api_fill_to_wire_episode(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1342,9 +1322,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_entry(Entry self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_episode(Episode self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer);
 
   @protected
@@ -1701,25 +1678,28 @@ class RustLibWire implements BaseWire {
   void wire__crate__api__simple__ExtensionProxy_detail(
     int port_,
     int that,
-    ffi.Pointer<wire_cst_entry> entry,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> entryid,
     ffi.Pointer<ffi.UintPtr> token,
   ) {
     return _wire__crate__api__simple__ExtensionProxy_detail(
       port_,
       that,
-      entry,
+      entryid,
       token,
     );
   }
 
   late final _wire__crate__api__simple__ExtensionProxy_detailPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Int64, ffi.UintPtr,
-                  ffi.Pointer<wire_cst_entry>, ffi.Pointer<ffi.UintPtr>)>>(
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.UintPtr,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Pointer<ffi.UintPtr>)>>(
       'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_detail');
   late final _wire__crate__api__simple__ExtensionProxy_detail =
       _wire__crate__api__simple__ExtensionProxy_detailPtr.asFunction<
-          void Function(int, int, ffi.Pointer<wire_cst_entry>,
+          void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               ffi.Pointer<ffi.UintPtr>)>();
 
   void wire__crate__api__simple__ExtensionProxy_disable(
@@ -1962,25 +1942,28 @@ class RustLibWire implements BaseWire {
   void wire__crate__api__simple__ExtensionProxy_source(
     int port_,
     int that,
-    ffi.Pointer<wire_cst_episode> ep,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> epid,
     ffi.Pointer<ffi.UintPtr> token,
   ) {
     return _wire__crate__api__simple__ExtensionProxy_source(
       port_,
       that,
-      ep,
+      epid,
       token,
     );
   }
 
   late final _wire__crate__api__simple__ExtensionProxy_sourcePtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Int64, ffi.UintPtr,
-                  ffi.Pointer<wire_cst_episode>, ffi.Pointer<ffi.UintPtr>)>>(
+              ffi.Void Function(
+                  ffi.Int64,
+                  ffi.UintPtr,
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                  ffi.Pointer<ffi.UintPtr>)>>(
       'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_source');
   late final _wire__crate__api__simple__ExtensionProxy_source =
       _wire__crate__api__simple__ExtensionProxy_sourcePtr.asFunction<
-          void Function(int, int, ffi.Pointer<wire_cst_episode>,
+          void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               ffi.Pointer<ffi.UintPtr>)>();
 
   void wire__crate__api__simple__QueueStore_default(
@@ -2230,16 +2213,6 @@ class RustLibWire implements BaseWire {
           'frbgen_rdion_runtime_cst_new_box_autoadd_entry');
   late final _cst_new_box_autoadd_entry = _cst_new_box_autoadd_entryPtr
       .asFunction<ffi.Pointer<wire_cst_entry> Function()>();
-
-  ffi.Pointer<wire_cst_episode> cst_new_box_autoadd_episode() {
-    return _cst_new_box_autoadd_episode();
-  }
-
-  late final _cst_new_box_autoadd_episodePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_episode> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_episode');
-  late final _cst_new_box_autoadd_episode = _cst_new_box_autoadd_episodePtr
-      .asFunction<ffi.Pointer<wire_cst_episode> Function()>();
 
   ffi.Pointer<ffi.Float> cst_new_box_autoadd_f_32(
     double value,
@@ -2517,49 +2490,6 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_record_string_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field1;
-}
-
-final class wire_cst_list_record_string_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_record_string_string> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_list_String extends ffi.Struct {
-  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_entry extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
-
-  @ffi.Int32()
-  external int media_type;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
-
-  external ffi.Pointer<wire_cst_list_record_string_string> cover_header;
-
-  external ffi.Pointer<wire_cst_list_String> auther;
-
-  external ffi.Pointer<ffi.Float> rating;
-
-  external ffi.Pointer<ffi.Float> views;
-
-  external ffi.Pointer<ffi.Int64> length;
-}
-
 final class wire_cst_Permission_StoragePermission extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> path;
 
@@ -2615,18 +2545,11 @@ final class wire_cst_settingvalue extends ffi.Struct {
   external SettingvalueKind kind;
 }
 
-final class wire_cst_episode extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+final class wire_cst_list_String extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
 
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
-
-  external ffi.Pointer<wire_cst_list_record_string_string> cover_header;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+  @ffi.Int32()
+  external int len;
 }
 
 final class wire_cst_DataSource_Paragraphlist extends ffi.Struct {
@@ -2642,6 +2565,42 @@ final class wire_cst_data_source extends ffi.Struct {
   external int tag;
 
   external DataSourceKind kind;
+}
+
+final class wire_cst_record_string_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field1;
+}
+
+final class wire_cst_list_record_string_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_record_string_string> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_entry extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  @ffi.Int32()
+  external int media_type;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> cover_header;
+
+  external ffi.Pointer<wire_cst_list_String> auther;
+
+  external ffi.Pointer<ffi.Float> rating;
+
+  external ffi.Pointer<ffi.Float> views;
+
+  external ffi.Pointer<ffi.Int64> length;
 }
 
 final class wire_cst_LinkSource_Epub extends ffi.Struct {
@@ -2779,6 +2738,20 @@ final class wire_cst_list_entry extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
+}
+
+final class wire_cst_episode extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> cover_header;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
 }
 
 final class wire_cst_list_episode extends ffi.Struct {

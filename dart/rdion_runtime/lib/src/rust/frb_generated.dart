@@ -106,7 +106,9 @@ abstract class RustLibApi extends BaseApi {
       {required ExtensionProxy that});
 
   Future<EntryDetailed> crateApiSimpleExtensionProxyDetail(
-      {required ExtensionProxy that, required Entry entry, CancelToken? token});
+      {required ExtensionProxy that,
+      required String entryid,
+      CancelToken? token});
 
   Future<void> crateApiSimpleExtensionProxyDisable(
       {required ExtensionProxy that});
@@ -147,7 +149,7 @@ abstract class RustLibApi extends BaseApi {
       {required ExtensionProxy that});
 
   Future<Source> crateApiSimpleExtensionProxySource(
-      {required ExtensionProxy that, required Episode ep, CancelToken? token});
+      {required ExtensionProxy that, required String epid, CancelToken? token});
 
   Future<QueueStore> crateApiSimpleQueueStoreDefault();
 
@@ -398,14 +400,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<EntryDetailed> crateApiSimpleExtensionProxyDetail(
       {required ExtensionProxy that,
-      required Entry entry,
+      required String entryid,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
                 that);
-        var arg1 = cst_encode_box_autoadd_entry(entry);
+        var arg1 = cst_encode_String(entryid);
         var arg2 =
             cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 token);
@@ -417,7 +419,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: dco_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleExtensionProxyDetailConstMeta,
-      argValues: [that, entry, token],
+      argValues: [that, entryid, token],
       apiImpl: this,
     ));
   }
@@ -425,7 +427,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleExtensionProxyDetailConstMeta =>
       const TaskConstMeta(
         debugName: "ExtensionProxy_detail",
-        argNames: ["that", "entry", "token"],
+        argNames: ["that", "entryid", "token"],
       );
 
   @override
@@ -743,13 +745,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<Source> crateApiSimpleExtensionProxySource(
-      {required ExtensionProxy that, required Episode ep, CancelToken? token}) {
+      {required ExtensionProxy that,
+      required String epid,
+      CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
                 that);
-        var arg1 = cst_encode_box_autoadd_episode(ep);
+        var arg1 = cst_encode_String(epid);
         var arg2 =
             cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 token);
@@ -761,7 +765,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: dco_decode_AnyhowException,
       ),
       constMeta: kCrateApiSimpleExtensionProxySourceConstMeta,
-      argValues: [that, ep, token],
+      argValues: [that, epid, token],
       apiImpl: this,
     ));
   }
@@ -769,7 +773,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleExtensionProxySourceConstMeta =>
       const TaskConstMeta(
         debugName: "ExtensionProxy_source",
-        argNames: ["that", "ep", "token"],
+        argNames: ["that", "epid", "token"],
       );
 
   @override
@@ -1049,12 +1053,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Entry dco_decode_box_autoadd_entry(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_entry(raw);
-  }
-
-  @protected
-  Episode dco_decode_box_autoadd_episode(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_episode(raw);
   }
 
   @protected
@@ -1744,12 +1742,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Entry sse_decode_box_autoadd_entry(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_entry(deserializer));
-  }
-
-  @protected
-  Episode sse_decode_box_autoadd_episode(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_episode(deserializer));
   }
 
   @protected
@@ -2723,12 +2715,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_episode(Episode self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_episode(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_32(self, serializer);
@@ -3372,9 +3358,9 @@ class ExtensionProxyImpl extends RustOpaque implements ExtensionProxy {
         that: this,
       );
 
-  Future<EntryDetailed> detail({required Entry entry, CancelToken? token}) =>
+  Future<EntryDetailed> detail({required String entryid, CancelToken? token}) =>
       RustLib.instance.api.crateApiSimpleExtensionProxyDetail(
-          that: this, entry: entry, token: token);
+          that: this, entryid: entryid, token: token);
 
   Future<void> disable() =>
       RustLib.instance.api.crateApiSimpleExtensionProxyDisable(
@@ -3424,9 +3410,9 @@ class ExtensionProxyImpl extends RustOpaque implements ExtensionProxy {
         that: this,
       );
 
-  Future<Source> source({required Episode ep, CancelToken? token}) =>
-      RustLib.instance.api
-          .crateApiSimpleExtensionProxySource(that: this, ep: ep, token: token);
+  Future<Source> source({required String epid, CancelToken? token}) => RustLib
+      .instance.api
+      .crateApiSimpleExtensionProxySource(that: this, epid: epid, token: token);
 }
 
 @sealed

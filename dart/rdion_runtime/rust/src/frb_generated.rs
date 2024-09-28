@@ -329,7 +329,7 @@ fn wire__crate__api__simple__ExtensionProxy_detail_impl(
     that: impl CstDecode<
         RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
     >,
-    entry: impl CstDecode<dion_runtime::datastructs::Entry>,
+    entryid: impl CstDecode<String>,
     token: impl CstDecode<Option<CancelToken>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
@@ -340,7 +340,7 @@ fn wire__crate__api__simple__ExtensionProxy_detail_impl(
         },
         move || {
             let api_that = that.cst_decode();
-            let api_entry = entry.cst_decode();
+            let api_entryid = entryid.cst_decode();
             let api_token = token.cst_decode();
             move |context| async move {
                 transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -364,7 +364,7 @@ fn wire__crate__api__simple__ExtensionProxy_detail_impl(
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok = crate::api::simple::ExtensionProxy::detail(
                             &*api_that_guard,
-                            api_entry,
+                            &api_entryid,
                             api_token,
                         )
                         .await?;
@@ -891,7 +891,7 @@ fn wire__crate__api__simple__ExtensionProxy_source_impl(
     that: impl CstDecode<
         RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>,
     >,
-    ep: impl CstDecode<dion_runtime::datastructs::Episode>,
+    epid: impl CstDecode<String>,
     token: impl CstDecode<Option<CancelToken>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
@@ -902,7 +902,7 @@ fn wire__crate__api__simple__ExtensionProxy_source_impl(
         },
         move || {
             let api_that = that.cst_decode();
-            let api_ep = ep.cst_decode();
+            let api_epid = epid.cst_decode();
             let api_token = token.cst_decode();
             move |context| async move {
                 transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -926,7 +926,7 @@ fn wire__crate__api__simple__ExtensionProxy_source_impl(
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok = crate::api::simple::ExtensionProxy::source(
                             &*api_that_guard,
-                            &api_ep,
+                            &api_epid,
                             api_token,
                         )
                         .await?;
@@ -3709,13 +3709,6 @@ mod io {
             CstDecode::<dion_runtime::datastructs::Entry>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<dion_runtime::datastructs::Episode> for *mut wire_cst_episode {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Episode {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::Episode>::cst_decode(*wrap).into()
-        }
-    }
     impl CstDecode<f32> for *mut f32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> f32 {
@@ -4456,10 +4449,10 @@ mod io {
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_detail(
         port_: i64,
         that: usize,
-        entry: *mut wire_cst_entry,
+        entryid: *mut wire_cst_list_prim_u_8_strict,
         token: *mut usize,
     ) {
-        wire__crate__api__simple__ExtensionProxy_detail_impl(port_, that, entry, token)
+        wire__crate__api__simple__ExtensionProxy_detail_impl(port_, that, entryid, token)
     }
 
     #[no_mangle]
@@ -4563,10 +4556,10 @@ mod io {
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_source(
         port_: i64,
         that: usize,
-        ep: *mut wire_cst_episode,
+        epid: *mut wire_cst_list_prim_u_8_strict,
         token: *mut usize,
     ) {
-        wire__crate__api__simple__ExtensionProxy_source_impl(port_, that, ep, token)
+        wire__crate__api__simple__ExtensionProxy_source_impl(port_, that, epid, token)
     }
 
     #[no_mangle]
@@ -4692,11 +4685,6 @@ mod io {
     #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_entry() -> *mut wire_cst_entry {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_entry::new_with_null_ptr())
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_episode() -> *mut wire_cst_episode {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_episode::new_with_null_ptr())
     }
 
     #[no_mangle]

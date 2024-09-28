@@ -253,19 +253,19 @@ impl ExtensionProxy {
             .await
     }
 
-    pub async fn detail(&self, entry: Entry, token: Option<CancelToken>) -> Result<EntryDetailed> {
+    pub async fn detail(&self, entryid: &String, token: Option<CancelToken>) -> Result<EntryDetailed> {
         self.inner
             .read()
             .await
-            .detail(&entry.id, token.map(|a| a.into()))
+            .detail(entryid, token.map(|a| a.into()))
             .await
     }
 
-    pub async fn source(&self, ep: &Episode, token: Option<CancelToken>) -> Result<Source> {
+    pub async fn source(&self, epid: &String, token: Option<CancelToken>) -> Result<Source> {
         self.inner
             .read()
             .await
-            .source(&ep.id, token.map(|a| a.into()))
+            .source(epid, token.map(|a| a.into()))
             .await
     }
 
