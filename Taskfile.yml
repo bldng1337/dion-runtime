@@ -15,3 +15,7 @@ tasks:
         - cd rust/core && cargo test
         - task: platform_dependent:shexec
           vars: { CMD: 'cd dart/rdion_runtime/example && flutter test integration_test/simple_test.dart' }
+  generate:
+      cmds:
+        - task: platform_dependent:shexec
+          vars: { CMD: 'cd dart/rdion_runtime && flutter_rust_bridge_codegen generate' }
