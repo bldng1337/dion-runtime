@@ -48,6 +48,8 @@ abstract class ExtensionProxy implements RustOpaqueInterface {
 
   Future<EntryDetailed> detail({required Entry entry, CancelToken? token});
 
+  Future<void> disable();
+
   Future<void> enable();
 
   Future<Entry?> fromurl({required String url, CancelToken? token});

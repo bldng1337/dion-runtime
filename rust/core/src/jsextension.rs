@@ -226,6 +226,10 @@ impl ExtensionContainer {
         }
     }
 
+    pub async fn disable(&mut self){
+        self.context=None
+    }
+
     pub async fn enable(&mut self, rt: &AsyncRuntime) -> Result<()> {
         let context = AsyncContext::full(&rt).await?;
         let a = SharedUserContextContainer::from(self.extension.clone());
@@ -253,6 +257,7 @@ impl ExtensionContainer {
         self.context = Some(context);
         Ok(())
     }
+
     pub async fn create(path: impl AsRef<Path>) -> Result<Self> {
         let contents: String = String::from_utf8(fs::read(path).await?)?;
         let data: ExtensionData = serde_json::from_str(

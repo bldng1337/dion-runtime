@@ -218,6 +218,10 @@ impl ExtensionProxy {
         self.inner.write().await.enable(self.engine.deref()).await
     }
 
+    pub async fn disable(&self) {
+        self.inner.write().await.disable().await
+    }
+
     pub async fn is_enabled(&self) -> bool {
         self.inner.read().await.is_enabled()
     }

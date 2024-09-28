@@ -72,7 +72,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => -1885940721;
+  int get rustContentHash => -847142033;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -107,6 +107,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<EntryDetailed> crateApiSimpleExtensionProxyDetail(
       {required ExtensionProxy that, required Entry entry, CancelToken? token});
+
+  Future<void> crateApiSimpleExtensionProxyDisable(
+      {required ExtensionProxy that});
 
   Future<void> crateApiSimpleExtensionProxyEnable(
       {required ExtensionProxy that});
@@ -423,6 +426,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ExtensionProxy_detail",
         argNames: ["that", "entry", "token"],
+      );
+
+  @override
+  Future<void> crateApiSimpleExtensionProxyDisable(
+      {required ExtensionProxy that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+                that);
+        return wire.wire__crate__api__simple__ExtensionProxy_disable(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleExtensionProxyDisableConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleExtensionProxyDisableConstMeta =>
+      const TaskConstMeta(
+        debugName: "ExtensionProxy_disable",
+        argNames: ["that"],
       );
 
   @override
@@ -3345,6 +3375,11 @@ class ExtensionProxyImpl extends RustOpaque implements ExtensionProxy {
   Future<EntryDetailed> detail({required Entry entry, CancelToken? token}) =>
       RustLib.instance.api.crateApiSimpleExtensionProxyDetail(
           that: this, entry: entry, token: token);
+
+  Future<void> disable() =>
+      RustLib.instance.api.crateApiSimpleExtensionProxyDisable(
+        that: this,
+      );
 
   Future<void> enable() =>
       RustLib.instance.api.crateApiSimpleExtensionProxyEnable(
