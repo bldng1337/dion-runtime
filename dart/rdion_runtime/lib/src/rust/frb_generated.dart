@@ -72,7 +72,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => 1977752366;
+  int get rustContentHash => -1885940721;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -119,6 +119,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<bool> crateApiSimpleExtensionProxyIsEnabled(
       {required ExtensionProxy that});
+
+  Future<ExtensionProxy> crateApiSimpleExtensionProxyNew(
+      {required String filepath});
 
   Future<List<Permission>> crateApiSimpleExtensionProxyPermissionsIter(
       {required ExtensionProxy that});
@@ -533,6 +536,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ExtensionProxy_is_enabled",
         argNames: ["that"],
+      );
+
+  @override
+  Future<ExtensionProxy> crateApiSimpleExtensionProxyNew(
+      {required String filepath}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_String(filepath);
+        return wire.wire__crate__api__simple__ExtensionProxy_new(port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData:
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiSimpleExtensionProxyNewConstMeta,
+      argValues: [filepath],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleExtensionProxyNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "ExtensionProxy_new",
+        argNames: ["filepath"],
       );
 
   @override

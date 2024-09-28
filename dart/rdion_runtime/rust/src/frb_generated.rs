@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.4.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1977752366;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1885940721;
 
 // Section: executor
 
@@ -558,6 +558,31 @@ fn wire__crate__api__simple__ExtensionProxy_is_enabled_impl(
                         let output_ok = Result::<_, ()>::Ok(
                             crate::api::simple::ExtensionProxy::is_enabled(&*api_that_guard).await,
                         )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__simple__ExtensionProxy_new_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    filepath: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ExtensionProxy_new",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_filepath = filepath.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::simple::ExtensionProxy::new(&api_filepath).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -4425,6 +4450,14 @@ mod io {
         that: usize,
     ) {
         wire__crate__api__simple__ExtensionProxy_is_enabled_impl(port_, that)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_new(
+        port_: i64,
+        filepath: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__simple__ExtensionProxy_new_impl(port_, filepath)
     }
 
     #[no_mangle]

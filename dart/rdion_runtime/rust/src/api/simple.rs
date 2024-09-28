@@ -99,14 +99,14 @@ impl ExtensionManagerProxy {
         self.inner
             .add_from_file(&path)
             .await
-            .map(|a| ExtensionProxy::new(a.clone(), self.engine.clone()))
+            .map(|a| ExtensionProxy::construct(a.clone(), self.engine.clone()))
     }
 
     pub async fn remove(&mut self, id: &String) {
-        let mut res: Option<usize>=None;
+        let mut res: Option<usize> = None;
         for (cpos, ext) in self.inner.iter().enumerate() {
             if ext.read().await.get_extension().await.data.id == *id {
-                res=Some(cpos)
+                res = Some(cpos)
             }
         }
         if res.is_some() {
@@ -117,7 +117,7 @@ impl ExtensionManagerProxy {
     pub fn iter(&self) -> Vec<ExtensionProxy> {
         self.inner
             .iter()
-            .map(|a| ExtensionProxy::new(a.clone(), self.engine.clone()))
+            .map(|a| ExtensionProxy::construct(a.clone(), self.engine.clone()))
             .collect()
     }
 }
@@ -137,11 +137,17 @@ impl Clone for ExtensionProxy {
 }
 
 impl ExtensionProxy {
-    fn new(inner: Arc<RwLock<ExtensionContainer>>, engine: Arc<AsyncRuntime>) -> Self {
+    fn construct(inner: Arc<RwLock<ExtensionContainer>>, engine: Arc<AsyncRuntime>) -> Self {
         ExtensionProxy {
             inner: inner,
             engine: engine,
         }
+    }
+    pub async fn new(filepath: &String) -> Result<Self> {
+        Ok(ExtensionProxy {
+            inner: Arc::new(RwLock::new(ExtensionContainer::create(filepath).await?)),
+            engine: Arc::new(AsyncRuntime::new()?),
+        })
     }
 
     //PERMISSIONS

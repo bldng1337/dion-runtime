@@ -253,7 +253,7 @@ impl ExtensionContainer {
         self.context = Some(context);
         Ok(())
     }
-    async fn create(path: impl AsRef<Path>) -> Result<Self> {
+    pub async fn create(path: impl AsRef<Path>) -> Result<Self> {
         let contents: String = String::from_utf8(fs::read(path).await?)?;
         let data: ExtensionData = serde_json::from_str(
             contents.lines().next().unwrap_or_default().strip_prefix("//").unwrap_or_default()
