@@ -1,0 +1,10 @@
+targets:
+  $default:
+    sources:
+      exclude:
+        - example/ios/.symlinks
+        - example/linux/.symlinks
+        - example/android/.symlinks
+        - example/linux/flutter/ephemeral/.plugin_symlinks
+        - example/android/flutter/ephemeral/.plugin_symlinks
+        - example/ios/flutter/ephemeral/.plugin_symlinks

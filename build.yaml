@@ -1,7 +1,0 @@
-targets:
-  $default:
-    sources:
-      exclude:
-        - example/ios/.symlinks
-        - example/linux/.symlinks
-        - example/android/.symlinks
