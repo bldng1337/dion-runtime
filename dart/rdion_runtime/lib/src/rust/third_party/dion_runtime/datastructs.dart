@@ -8,6 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'datastructs.freezed.dart';
 
+// These types are ignored because they are not used by any `pub` functions: `CustomUI`, `TimestampType`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `into_js`
 
@@ -25,7 +26,6 @@ class Entry {
   final String id;
   final String url;
   final String title;
-  final MediaType mediaType;
   final String? cover;
   final Map<String, String>? coverHeader;
   final List<String>? auther;
@@ -37,7 +37,6 @@ class Entry {
     required this.id,
     required this.url,
     required this.title,
-    required this.mediaType,
     this.cover,
     this.coverHeader,
     this.auther,
@@ -51,7 +50,6 @@ class Entry {
       id.hashCode ^
       url.hashCode ^
       title.hashCode ^
-      mediaType.hashCode ^
       cover.hashCode ^
       coverHeader.hashCode ^
       auther.hashCode ^
@@ -67,81 +65,8 @@ class Entry {
           id == other.id &&
           url == other.url &&
           title == other.title &&
-          mediaType == other.mediaType &&
           cover == other.cover &&
           coverHeader == other.coverHeader &&
-          auther == other.auther &&
-          rating == other.rating &&
-          views == other.views &&
-          length == other.length;
-}
-
-/// flutter_rust_bridge:non_opaque
-class EntryDetailed {
-  final String id;
-  final String url;
-  final String title;
-  final MediaType mediaType;
-  final ReleaseStatus status;
-  final String? cover;
-  final Map<String, String>? coverHeader;
-  final List<EpisodeList> episodes;
-  final List<String>? genres;
-  final List<String>? alttitles;
-  final List<String>? auther;
-  final double? rating;
-  final double? views;
-  final PlatformInt64? length;
-
-  const EntryDetailed({
-    required this.id,
-    required this.url,
-    required this.title,
-    required this.mediaType,
-    required this.status,
-    this.cover,
-    this.coverHeader,
-    required this.episodes,
-    this.genres,
-    this.alttitles,
-    this.auther,
-    this.rating,
-    this.views,
-    this.length,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      url.hashCode ^
-      title.hashCode ^
-      mediaType.hashCode ^
-      status.hashCode ^
-      cover.hashCode ^
-      coverHeader.hashCode ^
-      episodes.hashCode ^
-      genres.hashCode ^
-      alttitles.hashCode ^
-      auther.hashCode ^
-      rating.hashCode ^
-      views.hashCode ^
-      length.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EntryDetailed &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          url == other.url &&
-          title == other.title &&
-          mediaType == other.mediaType &&
-          status == other.status &&
-          cover == other.cover &&
-          coverHeader == other.coverHeader &&
-          episodes == other.episodes &&
-          genres == other.genres &&
-          alttitles == other.alttitles &&
           auther == other.auther &&
           rating == other.rating &&
           views == other.views &&

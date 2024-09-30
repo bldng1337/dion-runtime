@@ -1670,6 +1670,8 @@ dependencies = [
  "dion-runtime",
  "flutter_rust_bridge",
  "rquickjs",
+ "serde",
+ "serde_json",
  "tokio",
  "tokio-util",
 ]

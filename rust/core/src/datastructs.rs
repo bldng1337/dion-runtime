@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use rquickjs::{Ctx, IntoJs, Value};
 use serde::{Deserialize, Serialize};
+use serde_json::Map;
 
 
 /// flutter_rust_bridge:non_opaque
@@ -26,9 +27,7 @@ pub struct Entry {
     pub id: String,
     pub url: String,
     pub title: String,
-    #[serde(alias = "type")]
-    pub media_type: MediaType,
-
+    
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]
     pub cover_header: Option<HashMap<String, String>>,
@@ -69,16 +68,55 @@ pub enum ReleaseStatus {
     #[serde(alias = "unknown")]
     Unknown,
 }
+pub enum TimestampType{
+    Relative,
+    Absolute
+}
+pub enum CustomUI{
+    Text {
+        text:String
+    },
+    Image {
+        image:String,
+        header:Option<Map<String,String>>
+    },
+    Link {
+        link:String,
+        label:String
+    },
+    TimeStamp {
+        timestamp:String,
+        display: TimestampType,
+    },
+    Metadata {
+        key:String,
+        data:serde_json::Value,
+    },  
+    EntryCard {
+        entry:Entry
+    },
+    Column {
+        children:Vec<CustomUI>
+    },
+    Row {
+        children:Vec<CustomUI>
+    }
+}
 
-/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:ignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EntryDetailed {
     pub id: String,
     pub url: String,
     pub title: String,
+
+    pub ui: serde_json::Value,//This contains cyclic data so not sure how to handle that to keep it serde and dart usw friendly
+
     #[serde(alias = "type")]
     pub media_type: MediaType,
     pub status: ReleaseStatus,
+    pub description: String,
+    pub language: String,
 
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]

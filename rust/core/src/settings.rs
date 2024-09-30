@@ -128,7 +128,7 @@ pub enum SettingUI {
     },
 }
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub enum Settingtype {
     Extension,
     Entry,
@@ -162,6 +162,12 @@ impl SettingStore {
     ) -> std::collections::hash_map::Keys<'_, std::string::String, Setting> {
         self.settings.keys()
     }
+
+    pub fn iter(&self) -> std::collections::hash_map::Iter<'_, std::string::String, Setting>{
+        self.settings.iter()
+    }
+
+    
 
     pub fn get_setting_mut(&mut self, name: &String) -> Result<&mut Setting> {
         match self.settings.get_mut(name) {

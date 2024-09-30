@@ -5,6 +5,8 @@ targets:
         - example/ios/.symlinks
         - example/linux/.symlinks
         - example/android/.symlinks
+        - example/windows/.symlinks
         - example/linux/flutter/ephemeral/.plugin_symlinks
         - example/android/flutter/ephemeral/.plugin_symlinks
         - example/ios/flutter/ephemeral/.plugin_symlinks
+        - example/windows/flutter/ephemeral/.plugin_symlinks

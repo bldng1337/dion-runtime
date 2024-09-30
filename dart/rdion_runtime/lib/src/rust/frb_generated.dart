@@ -72,7 +72,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => -847142033;
+  int get rustContentHash => -560010883;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -145,8 +145,11 @@ abstract class RustLibApi extends BaseApi {
       required String name,
       required Settingvalue setting});
 
-  Future<List<String>> crateApiSimpleExtensionProxySettingIdsIter(
+  Future<List<String>> crateApiSimpleExtensionProxySettingIds(
       {required ExtensionProxy that});
+
+  Future<List<String>> crateApiSimpleExtensionProxySettingIdsFiltered(
+      {required ExtensionProxy that, required Settingtype settingtype});
 
   Future<Source> crateApiSimpleExtensionProxySource(
       {required ExtensionProxy that, required String epid, CancelToken? token});
@@ -717,30 +720,59 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<String>> crateApiSimpleExtensionProxySettingIdsIter(
+  Future<List<String>> crateApiSimpleExtensionProxySettingIds(
       {required ExtensionProxy that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
                 that);
-        return wire.wire__crate__api__simple__ExtensionProxy_setting_ids_iter(
+        return wire.wire__crate__api__simple__ExtensionProxy_setting_ids(
             port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_list_String,
         decodeErrorData: null,
       ),
-      constMeta: kCrateApiSimpleExtensionProxySettingIdsIterConstMeta,
+      constMeta: kCrateApiSimpleExtensionProxySettingIdsConstMeta,
       argValues: [that],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiSimpleExtensionProxySettingIdsIterConstMeta =>
+  TaskConstMeta get kCrateApiSimpleExtensionProxySettingIdsConstMeta =>
       const TaskConstMeta(
-        debugName: "ExtensionProxy_setting_ids_iter",
+        debugName: "ExtensionProxy_setting_ids",
         argNames: ["that"],
+      );
+
+  @override
+  Future<List<String>> crateApiSimpleExtensionProxySettingIdsFiltered(
+      {required ExtensionProxy that, required Settingtype settingtype}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+                that);
+        var arg1 = cst_encode_settingtype(settingtype);
+        return wire
+            .wire__crate__api__simple__ExtensionProxy_setting_ids_filtered(
+                port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_list_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleExtensionProxySettingIdsFilteredConstMeta,
+      argValues: [that, settingtype],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleExtensionProxySettingIdsFilteredConstMeta =>
+      const TaskConstMeta(
+        debugName: "ExtensionProxy_setting_ids_filtered",
+        argNames: ["that", "settingtype"],
       );
 
   @override
@@ -1108,19 +1140,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Entry dco_decode_entry(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return Entry(
       id: dco_decode_String(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
-      mediaType: dco_decode_media_type(arr[3]),
-      cover: dco_decode_opt_String(arr[4]),
-      coverHeader: dco_decode_opt_Map_String_String(arr[5]),
-      auther: dco_decode_opt_list_String(arr[6]),
-      rating: dco_decode_opt_box_autoadd_f_32(arr[7]),
-      views: dco_decode_opt_box_autoadd_f_32(arr[8]),
-      length: dco_decode_opt_box_autoadd_i_64(arr[9]),
+      cover: dco_decode_opt_String(arr[3]),
+      coverHeader: dco_decode_opt_Map_String_String(arr[4]),
+      auther: dco_decode_opt_list_String(arr[5]),
+      rating: dco_decode_opt_box_autoadd_f_32(arr[6]),
+      views: dco_decode_opt_box_autoadd_f_32(arr[7]),
+      length: dco_decode_opt_box_autoadd_i_64(arr[8]),
     );
   }
 
@@ -1128,23 +1159,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EntryDetailed dco_decode_entry_detailed(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 14)
-      throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
+    if (arr.length != 17)
+      throw Exception('unexpected arr length: expect 17 but see ${arr.length}');
     return EntryDetailed(
       id: dco_decode_String(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
-      mediaType: dco_decode_media_type(arr[3]),
-      status: dco_decode_release_status(arr[4]),
-      cover: dco_decode_opt_String(arr[5]),
-      coverHeader: dco_decode_opt_Map_String_String(arr[6]),
-      episodes: dco_decode_list_episode_list(arr[7]),
-      genres: dco_decode_opt_list_String(arr[8]),
-      alttitles: dco_decode_opt_list_String(arr[9]),
-      auther: dco_decode_opt_list_String(arr[10]),
-      rating: dco_decode_opt_box_autoadd_f_32(arr[11]),
-      views: dco_decode_opt_box_autoadd_f_32(arr[12]),
-      length: dco_decode_opt_box_autoadd_i_64(arr[13]),
+      ui: dco_decode_String(arr[3]),
+      mediaType: dco_decode_media_type(arr[4]),
+      status: dco_decode_release_status(arr[5]),
+      description: dco_decode_String(arr[6]),
+      language: dco_decode_String(arr[7]),
+      cover: dco_decode_opt_String(arr[8]),
+      coverHeader: dco_decode_opt_Map_String_String(arr[9]),
+      episodes: dco_decode_list_episode_list(arr[10]),
+      genres: dco_decode_opt_list_String(arr[11]),
+      alttitles: dco_decode_opt_list_String(arr[12]),
+      auther: dco_decode_opt_list_String(arr[13]),
+      rating: dco_decode_opt_box_autoadd_f_32(arr[14]),
+      views: dco_decode_opt_box_autoadd_f_32(arr[15]),
+      length: dco_decode_opt_box_autoadd_i_64(arr[16]),
     );
   }
 
@@ -1801,7 +1835,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_id = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
-    var var_mediaType = sse_decode_media_type(deserializer);
     var var_cover = sse_decode_opt_String(deserializer);
     var var_coverHeader = sse_decode_opt_Map_String_String(deserializer);
     var var_auther = sse_decode_opt_list_String(deserializer);
@@ -1812,7 +1845,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         id: var_id,
         url: var_url,
         title: var_title,
-        mediaType: var_mediaType,
         cover: var_cover,
         coverHeader: var_coverHeader,
         auther: var_auther,
@@ -1827,8 +1859,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_id = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
+    var var_ui = sse_decode_String(deserializer);
     var var_mediaType = sse_decode_media_type(deserializer);
     var var_status = sse_decode_release_status(deserializer);
+    var var_description = sse_decode_String(deserializer);
+    var var_language = sse_decode_String(deserializer);
     var var_cover = sse_decode_opt_String(deserializer);
     var var_coverHeader = sse_decode_opt_Map_String_String(deserializer);
     var var_episodes = sse_decode_list_episode_list(deserializer);
@@ -1842,8 +1877,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         id: var_id,
         url: var_url,
         title: var_title,
+        ui: var_ui,
         mediaType: var_mediaType,
         status: var_status,
+        description: var_description,
+        language: var_language,
         cover: var_cover,
         coverHeader: var_coverHeader,
         episodes: var_episodes,
@@ -2773,7 +2811,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
-    sse_encode_media_type(self.mediaType, serializer);
     sse_encode_opt_String(self.cover, serializer);
     sse_encode_opt_Map_String_String(self.coverHeader, serializer);
     sse_encode_opt_list_String(self.auther, serializer);
@@ -2788,8 +2825,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
+    sse_encode_String(self.ui, serializer);
     sse_encode_media_type(self.mediaType, serializer);
     sse_encode_release_status(self.status, serializer);
+    sse_encode_String(self.description, serializer);
+    sse_encode_String(self.language, serializer);
     sse_encode_opt_String(self.cover, serializer);
     sse_encode_opt_Map_String_String(self.coverHeader, serializer);
     sse_encode_list_episode_list(self.episodes, serializer);
@@ -3405,10 +3445,14 @@ class ExtensionProxyImpl extends RustOpaque implements ExtensionProxy {
       RustLib.instance.api.crateApiSimpleExtensionProxySetSetting(
           that: this, name: name, setting: setting);
 
-  Future<List<String>> settingIdsIter() =>
-      RustLib.instance.api.crateApiSimpleExtensionProxySettingIdsIter(
+  Future<List<String>> settingIds() =>
+      RustLib.instance.api.crateApiSimpleExtensionProxySettingIds(
         that: this,
       );
+
+  Future<List<String>> settingIdsFiltered({required Settingtype settingtype}) =>
+      RustLib.instance.api.crateApiSimpleExtensionProxySettingIdsFiltered(
+          that: this, settingtype: settingtype);
 
   Future<Source> source({required String epid, CancelToken? token}) => RustLib
       .instance.api

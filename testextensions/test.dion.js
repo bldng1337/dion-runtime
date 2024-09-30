@@ -13,25 +13,6 @@ function assert(condition, msg = "Extension error") {
   }
 }
 
-/*
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Entry {
-    pub id: String,
-    pub url: String,
-    pub title: String,
-    #[serde(alias = "type")]
-    pub media_type: MediaType,
-
-    pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
-    pub cover_header: Option<HashMap<String, String>>,
-
-    pub auther: Option<Vec<String>>,
-    pub rating: Option<f32>,
-    pub views: Option<f32>,
-    pub length: Option<i64>,
-}
-*/
 function getEntry() {
   return {
     id: "someid",
@@ -46,18 +27,6 @@ function getEntry() {
     length: 1000,
   };
 }
-/*
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Episode {
-    pub id: String,
-    pub name: String,
-    pub url: String,
-    pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
-    pub cover_header: Option<HashMap<String, String>>,
-    pub timestamp: Option<String>,
-}
-    */
 function getEpisode() {
   return {
     id: "someid",
@@ -69,13 +38,6 @@ function getEpisode() {
   };
 }
 
-/*
-#[derive(Serialize, Deserialize, Debug)]
-pub struct EpisodeList {
-    pub title: String,
-    pub episodes: Vec<Episode>,
-}
-    */
 function getEpisodeList() {
   return {
     title: "sometext",
@@ -83,29 +45,6 @@ function getEpisodeList() {
   };
 }
 
-/*
-#[derive(Serialize, Deserialize, Debug)]
-pub struct EntryDetailed {
-    pub id: String,
-    pub url: String,
-    pub title: String,
-    #[serde(alias = "type")]
-    pub media_type: MediaType,
-    pub status: ReleaseStatus,
-
-    pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
-    pub cover_header: Option<HashMap<String, String>>,
-    
-    pub episodes: Vec<EpisodeList>,
-    pub genres: Option<Vec<String>>,
-    pub alttitles: Option<Vec<String>>,
-    pub auther: Option<Vec<String>>,
-    pub rating: Option<f32>,
-    pub views: Option<f32>,
-    pub length: Option<i64>,
-}
-    */
 function getEntryDetailed() {
   return {
     id: "someid",
@@ -113,6 +52,9 @@ function getEntryDetailed() {
     title: "sometext",
     media_type: "video",
     status: "Complete",
+    language: "somelanguage",
+    description: "somedescription",
+    ui: {},
     cover: "somecover",
     cover_header: { some: "header" },
     episodes: [getEpisodeList()],
@@ -155,47 +97,21 @@ export default class {
 
     
   }
-  /*
-  pub async fn browse(
-        &self,
-        page: i64,
-        sort: Sort,
-        token: Option<CancellationToken>
-    )-> Result<Vec<Entry>>
-        */
   async browse(page, sort) {
     assert((await getSetting("someid")) == "othervalue", "setting not working");
     assert(typeof page == "number", "page must be a number");
     assert(typeof sort == "string", "sort must be a string");
     return [getEntry()];
   }
-  /*
-  pub async fn search(
-        &self,
-        page: i64,
-        filter: &str,
-        token: Option<CancellationToken>
-    )-> Result<Vec<Entry>>
-        */
   async search(page, filter) {
     assert(typeof page == "number", "page must be a number");
     assert(typeof filter == "string", "filter must be a string");
     return [getEntry()];
   }
-  /*
-  pub async fn detail(
-        &self,
-        entryid: &str,
-        token: Option<CancellationToken>
-    )-> Result<EntryDetailed> 
-        */
   async detail(entryid) {
     assert(typeof entryid == "string", "entryid must be a string");
     return getEntryDetailed();
   }
-  /*
-  pub async fn source(&self, epid: &String, token: Option<CancellationToken>)-> Result<Source> 
-  */
   async source(epid) {
     assert(typeof epid == "string", "epid must be a string");
     return getSource();

@@ -919,7 +919,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.id = cst_encode_String(apiObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.title = cst_encode_String(apiObj.title);
-    wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
     wireObj.cover = cst_encode_opt_String(apiObj.cover);
     wireObj.cover_header = cst_encode_opt_Map_String_String(apiObj.coverHeader);
     wireObj.auther = cst_encode_opt_list_String(apiObj.auther);
@@ -934,8 +933,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.id = cst_encode_String(apiObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.title = cst_encode_String(apiObj.title);
+    wireObj.ui = cst_encode_String(apiObj.ui);
     wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
     wireObj.status = cst_encode_release_status(apiObj.status);
+    wireObj.description = cst_encode_String(apiObj.description);
+    wireObj.language = cst_encode_String(apiObj.language);
     wireObj.cover = cst_encode_opt_String(apiObj.cover);
     wireObj.cover_header = cst_encode_opt_Map_String_String(apiObj.coverHeader);
     wireObj.episodes = cst_encode_list_episode_list(apiObj.episodes);
@@ -1922,22 +1924,43 @@ class RustLibWire implements BaseWire {
           void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
               ffi.Pointer<wire_cst_settingvalue>)>();
 
-  void wire__crate__api__simple__ExtensionProxy_setting_ids_iter(
+  void wire__crate__api__simple__ExtensionProxy_setting_ids(
     int port_,
     int that,
   ) {
-    return _wire__crate__api__simple__ExtensionProxy_setting_ids_iter(
+    return _wire__crate__api__simple__ExtensionProxy_setting_ids(
       port_,
       that,
     );
   }
 
-  late final _wire__crate__api__simple__ExtensionProxy_setting_ids_iterPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_setting_ids_iter');
-  late final _wire__crate__api__simple__ExtensionProxy_setting_ids_iter =
-      _wire__crate__api__simple__ExtensionProxy_setting_ids_iterPtr
+  late final _wire__crate__api__simple__ExtensionProxy_setting_idsPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+      'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_setting_ids');
+  late final _wire__crate__api__simple__ExtensionProxy_setting_ids =
+      _wire__crate__api__simple__ExtensionProxy_setting_idsPtr
           .asFunction<void Function(int, int)>();
+
+  void wire__crate__api__simple__ExtensionProxy_setting_ids_filtered(
+    int port_,
+    int that,
+    int settingtype,
+  ) {
+    return _wire__crate__api__simple__ExtensionProxy_setting_ids_filtered(
+      port_,
+      that,
+      settingtype,
+    );
+  }
+
+  late final _wire__crate__api__simple__ExtensionProxy_setting_ids_filteredPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.Int32)>>(
+          'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_setting_ids_filtered');
+  late final _wire__crate__api__simple__ExtensionProxy_setting_ids_filtered =
+      _wire__crate__api__simple__ExtensionProxy_setting_ids_filteredPtr
+          .asFunction<void Function(int, int, int)>();
 
   void wire__crate__api__simple__ExtensionProxy_source(
     int port_,
@@ -2587,9 +2610,6 @@ final class wire_cst_entry extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
 
-  @ffi.Int32()
-  external int media_type;
-
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
 
   external ffi.Pointer<wire_cst_list_record_string_string> cover_header;
@@ -2795,11 +2815,17 @@ final class wire_cst_entry_detailed extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
 
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> ui;
+
   @ffi.Int32()
   external int media_type;
 
   @ffi.Int32()
   external int status;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> language;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
 
