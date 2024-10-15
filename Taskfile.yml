@@ -18,4 +18,4 @@ tasks:
   generate:
       cmds:
         - task: platform_dependent:shexec
-          vars: { CMD: 'cd dart/rdion_runtime && flutter_rust_bridge_codegen generate' }
+          vars: { CMD: 'cd dart/rdion_runtime && flutter pub run build_runner clean && flutter_rust_bridge_codegen generate' }
