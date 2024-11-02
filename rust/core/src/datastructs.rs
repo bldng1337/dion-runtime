@@ -4,6 +4,25 @@ use rquickjs::{Ctx, IntoJs, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::Map;
 
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct ExtensionData {
+    pub id: String,
+    pub repo: Option<String>,
+    pub name: String,
+    #[serde(alias = "type")]
+    pub media_type: Option<Vec<MediaType>>,
+
+    pub giturl: Option<String>,
+    pub version: Option<String>,
+    pub desc: Option<String>,
+    pub author: Option<String>,
+    pub license: Option<String>,
+    pub tags: Option<Vec<String>>,
+    pub nsfw: Option<bool>,
+    pub lang: Vec<String>,
+    pub url: Option<String>,
+    pub icon: Option<String>,
+}
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -27,6 +46,8 @@ pub struct Entry {
     pub id: String,
     pub url: String,
     pub title: String,
+    #[serde(alias = "type")]
+    pub media_type: MediaType,
     
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]

@@ -1,5 +1,6 @@
 pub mod datastructs;
 pub mod error;
+pub mod extension;
 pub mod jsextension;
 mod networking_js;
 pub mod permission;
@@ -12,11 +13,11 @@ mod utils;
 mod tests {
     use datastructs::Sort;
     use jsextension::ExtensionManager;
-    use rquickjs::AsyncRuntime;
 
     use crate::{
         datastructs,
         error::Error,
+        extension::{TExtension, TExtensionManager},
         jsextension,
         permission::{PermissionRequester, PERMISSION},
         settings::Settingvalue,
@@ -39,19 +40,23 @@ mod tests {
 
     #[tokio::test]
     async fn my_test() -> Result<(), Error> {
-        let rt = AsyncRuntime::new()?;
-        let mut extm: ExtensionManager = Default::default();
-        extm.add_from_file(r#"./../../testextensions/test.dion.js"#)
-            .await?;
+        let extm: ExtensionManager = ExtensionManager::new(r#"./../../testextensions"#);
+        let mut exts: Vec<jsextension::ExtensionContainer> = extm.get_extensions().await.unwrap();
         {
             let mut a = PERMISSION.write().await;
             a.requester = Some(Box::new(TestPermission));
         }
-        for ext in extm.iter_mut() {
-            ext.enable(&rt).await?;
+        for ext in exts.iter_mut() {
+            ext.set_enabled(true).await?;
             println!("Enabled Extension");
             assert!(
-                ext.get_extension().await.setting.get_setting(&"someid".to_string())?.val.get_string()?=="somevalue"
+                ext.get_extension()
+                    .await
+                    .setting
+                    .get_setting(&"someid".to_string())?
+                    .val
+                    .get_string()?
+                    == "somevalue"
             );
             ext.get_extension_mut()
                 .await
@@ -69,7 +74,6 @@ mod tests {
             let src = ext.source(&detail.episodes[0].episodes[0].id, None).await?;
             dbg!(src);
         }
-        extm.remove(0);
         Ok(())
     }
 }

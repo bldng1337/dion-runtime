@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.4.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -560010883;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -2051070925;
 
 // Section: executor
 
@@ -62,24 +62,22 @@ fn wire__crate__api__simple__CancelToken_new_impl(
         },
     )
 }
-fn wire__crate__api__simple__ExtensionManagerProxy_add_from_file_impl(
+fn wire__crate__api__simple__ExtensionManagerProxy_get_extensions_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
         RustOpaqueNom<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionManagerProxy>,
         >,
     >,
-    path: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ExtensionManagerProxy_add_from_file",
+            debug_name: "ExtensionManagerProxy_get_extensions",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
             let api_that = that.cst_decode();
-            let api_path = path.cst_decode();
             move |context| async move {
                 transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
                     (move || async move {
@@ -87,22 +85,21 @@ fn wire__crate__api__simple__ExtensionManagerProxy_add_from_file_impl(
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
                                 vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, true,
+                                    &api_that, 0, false,
                                 )],
                             );
                         for i in decode_indices_ {
                             match i {
                                 0 => {
                                     api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                        Some(api_that.lockable_decode_async_ref().await)
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        let mut api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::simple::ExtensionManagerProxy::add_from_file(
-                            &mut *api_that_guard,
-                            api_path,
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::simple::ExtensionManagerProxy::get_extensions(
+                            &*api_that_guard,
                         )
                         .await?;
                         Ok(output_ok)
@@ -113,113 +110,25 @@ fn wire__crate__api__simple__ExtensionManagerProxy_add_from_file_impl(
         },
     )
 }
-fn wire__crate__api__simple__ExtensionManagerProxy_iter_impl(
+fn wire__crate__api__simple__ExtensionManagerProxy_new_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionManagerProxy>,
-        >,
-    >,
+    path: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ExtensionManagerProxy_iter",
+            debug_name: "ExtensionManagerProxy_new",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
         move || {
-            let api_that = that.cst_decode();
+            let api_path = path.cst_decode();
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let mut api_that_guard = None;
-                    let decode_indices_ =
-                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api_that, 0, false,
-                            ),
-                        ]);
-                    for i in decode_indices_ {
-                        match i {
-                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
-                            _ => unreachable!(),
-                        }
-                    }
-                    let api_that_guard = api_that_guard.unwrap();
                     let output_ok = Result::<_, ()>::Ok(
-                        crate::api::simple::ExtensionManagerProxy::iter(&*api_that_guard),
+                        crate::api::simple::ExtensionManagerProxy::new(&api_path),
                     )?;
                     Ok(output_ok)
                 })())
-            }
-        },
-    )
-}
-fn wire__crate__api__simple__ExtensionManagerProxy_new_impl(
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ExtensionManagerProxy_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
-        },
-        move || {
-            transform_result_dco::<_, _, ()>((move || {
-                let output_ok =
-                    Result::<_, ()>::Ok(crate::api::simple::ExtensionManagerProxy::new())?;
-                Ok(output_ok)
-            })())
-        },
-    )
-}
-fn wire__crate__api__simple__ExtensionManagerProxy_remove_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionManagerProxy>,
-        >,
-    >,
-    id: impl CstDecode<String>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ExtensionManagerProxy_remove",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_that = that.cst_decode();
-            let api_id = id.cst_decode();
-            move |context| async move {
-                transform_result_dco::<_, _, ()>(
-                    (move || async move {
-                        let mut api_that_guard = None;
-                        let decode_indices_ =
-                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
-                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, true,
-                                )],
-                            );
-                        for i in decode_indices_ {
-                            match i {
-                                0 => {
-                                    api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref_mut().await)
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        let mut api_that_guard = api_that_guard.unwrap();
-                        let output_ok = Result::<_, ()>::Ok({
-                            crate::api::simple::ExtensionManagerProxy::remove(
-                                &mut *api_that_guard,
-                                &api_id,
-                            )
-                            .await;
-                        })?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
             }
         },
     )
@@ -397,21 +306,21 @@ fn wire__crate__api__simple__ExtensionProxy_disable_impl(
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
                                 vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, false,
+                                    &api_that, 0, true,
                                 )],
                             );
                         for i in decode_indices_ {
                             match i {
                                 0 => {
                                     api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref().await)
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        let api_that_guard = api_that_guard.unwrap();
+                        let mut api_that_guard = api_that_guard.unwrap();
                         let output_ok = Result::<_, ()>::Ok({
-                            crate::api::simple::ExtensionProxy::disable(&*api_that_guard).await;
+                            crate::api::simple::ExtensionProxy::disable(&mut *api_that_guard).await;
                         })?;
                         Ok(output_ok)
                     })()
@@ -442,21 +351,22 @@ fn wire__crate__api__simple__ExtensionProxy_enable_impl(
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
                                 vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, false,
+                                    &api_that, 0, true,
                                 )],
                             );
                         for i in decode_indices_ {
                             match i {
                                 0 => {
                                     api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref().await)
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        let api_that_guard = api_that_guard.unwrap();
+                        let mut api_that_guard = api_that_guard.unwrap();
                         let output_ok =
-                            crate::api::simple::ExtensionProxy::enable(&*api_that_guard).await?;
+                            crate::api::simple::ExtensionProxy::enable(&mut *api_that_guard)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -603,31 +513,6 @@ fn wire__crate__api__simple__ExtensionProxy_is_enabled_impl(
                         let output_ok = Result::<_, ()>::Ok(
                             crate::api::simple::ExtensionProxy::is_enabled(&*api_that_guard).await,
                         )?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
-fn wire__crate__api__simple__ExtensionProxy_new_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    filepath: impl CstDecode<String>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ExtensionProxy_new",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_filepath = filepath.cst_decode();
-            move |context| async move {
-                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let output_ok =
-                            crate::api::simple::ExtensionProxy::new(&api_filepath).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -1086,6 +971,26 @@ fn wire__crate__api__simple__internal_set_permission_request_listener_impl(
         },
     )
 }
+fn wire__dion_runtime__datastructs__extension_data_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "extension_data_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::datastructs::ExtensionData::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 
 // Section: static_checks
 
@@ -1101,6 +1006,7 @@ const _: fn() = || {
         let _: String = Entry.id;
         let _: String = Entry.url;
         let _: String = Entry.title;
+        let _: dion_runtime::datastructs::MediaType = Entry.media_type;
         let _: Option<String> = Entry.cover;
         let _: Option<std::collections::HashMap<String, String>> = Entry.cover_header;
         let _: Option<Vec<String>> = Entry.auther;
@@ -1123,7 +1029,7 @@ const _: fn() = || {
         let _: Vec<dion_runtime::datastructs::Episode> = EpisodeList.episodes;
     }
     {
-        let ExtensionData = None::<dion_runtime::jsextension::ExtensionData>.unwrap();
+        let ExtensionData = None::<dion_runtime::datastructs::ExtensionData>.unwrap();
         let _: String = ExtensionData.id;
         let _: Option<String> = ExtensionData.repo;
         let _: String = ExtensionData.name;
@@ -1474,6 +1380,7 @@ impl SseDecode for dion_runtime::datastructs::Entry {
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_mediaType = <dion_runtime::datastructs::MediaType>::sse_decode(deserializer);
         let mut var_cover = <Option<String>>::sse_decode(deserializer);
         let mut var_coverHeader =
             <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
@@ -1485,6 +1392,7 @@ impl SseDecode for dion_runtime::datastructs::Entry {
             id: var_id,
             url: var_url,
             title: var_title,
+            media_type: var_mediaType,
             cover: var_cover,
             cover_header: var_coverHeader,
             auther: var_auther,
@@ -1572,7 +1480,7 @@ impl SseDecode for dion_runtime::datastructs::EpisodeList {
     }
 }
 
-impl SseDecode for dion_runtime::jsextension::ExtensionData {
+impl SseDecode for dion_runtime::datastructs::ExtensionData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_id = <String>::sse_decode(deserializer);
@@ -1590,7 +1498,7 @@ impl SseDecode for dion_runtime::jsextension::ExtensionData {
         let mut var_lang = <Vec<String>>::sse_decode(deserializer);
         let mut var_url = <Option<String>>::sse_decode(deserializer);
         let mut var_icon = <Option<String>>::sse_decode(deserializer);
-        return dion_runtime::jsextension::ExtensionData {
+        return dion_runtime::datastructs::ExtensionData {
             id: var_id,
             repo: var_repo,
             name: var_name,
@@ -2325,6 +2233,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
             self.0.id.into_into_dart().into_dart(),
             self.0.url.into_into_dart().into_dart(),
             self.0.title.into_into_dart().into_dart(),
+            self.0.media_type.into_into_dart().into_dart(),
             self.0.cover.into_into_dart().into_dart(),
             self.0.cover_header.into_into_dart().into_dart(),
             self.0.auther.into_into_dart().into_dart(),
@@ -2429,7 +2338,7 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Epi
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::jsextension::ExtensionData> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ExtensionData> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.id.into_into_dart().into_dart(),
@@ -2451,13 +2360,13 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::jsextension::Ext
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::jsextension::ExtensionData>
+    for FrbWrapper<dion_runtime::datastructs::ExtensionData>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::jsextension::ExtensionData>>
-    for dion_runtime::jsextension::ExtensionData
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ExtensionData>>
+    for dion_runtime::datastructs::ExtensionData
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::jsextension::ExtensionData> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ExtensionData> {
         self.into()
     }
 }
@@ -2967,6 +2876,7 @@ impl SseEncode for dion_runtime::datastructs::Entry {
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.title, serializer);
+        <dion_runtime::datastructs::MediaType>::sse_encode(self.media_type, serializer);
         <Option<String>>::sse_encode(self.cover, serializer);
         <Option<std::collections::HashMap<String, String>>>::sse_encode(
             self.cover_header,
@@ -3028,7 +2938,7 @@ impl SseEncode for dion_runtime::datastructs::EpisodeList {
     }
 }
 
-impl SseEncode for dion_runtime::jsextension::ExtensionData {
+impl SseEncode for dion_runtime::datastructs::ExtensionData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.id, serializer);
@@ -3810,6 +3720,7 @@ mod io {
                 id: self.id.cst_decode(),
                 url: self.url.cst_decode(),
                 title: self.title.cst_decode(),
+                media_type: self.media_type.cst_decode(),
                 cover: self.cover.cst_decode(),
                 cover_header: self.cover_header.cst_decode(),
                 auther: self.auther.cst_decode(),
@@ -3865,10 +3776,10 @@ mod io {
             }
         }
     }
-    impl CstDecode<dion_runtime::jsextension::ExtensionData> for wire_cst_extension_data {
+    impl CstDecode<dion_runtime::datastructs::ExtensionData> for wire_cst_extension_data {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::jsextension::ExtensionData {
-            dion_runtime::jsextension::ExtensionData {
+        fn cst_decode(self) -> dion_runtime::datastructs::ExtensionData {
+            dion_runtime::datastructs::ExtensionData {
                 id: self.id.cst_decode(),
                 repo: self.repo.cst_decode(),
                 name: self.name.cst_decode(),
@@ -4202,6 +4113,7 @@ mod io {
                 id: core::ptr::null_mut(),
                 url: core::ptr::null_mut(),
                 title: core::ptr::null_mut(),
+                media_type: Default::default(),
                 cover: core::ptr::null_mut(),
                 cover_header: core::ptr::null_mut(),
                 auther: core::ptr::null_mut(),
@@ -4439,35 +4351,19 @@ mod io {
     }
 
     #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_add_from_file(
-        port_: i64,
-        that: usize,
-        path: *mut wire_cst_list_prim_u_8_strict,
-    ) {
-        wire__crate__api__simple__ExtensionManagerProxy_add_from_file_impl(port_, that, path)
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_iter(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_get_extensions(
         port_: i64,
         that: usize,
     ) {
-        wire__crate__api__simple__ExtensionManagerProxy_iter_impl(port_, that)
+        wire__crate__api__simple__ExtensionManagerProxy_get_extensions_impl(port_, that)
     }
 
     #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_new(
-    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
-        wire__crate__api__simple__ExtensionManagerProxy_new_impl()
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_remove(
         port_: i64,
-        that: usize,
-        id: *mut wire_cst_list_prim_u_8_strict,
+        path: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__simple__ExtensionManagerProxy_remove_impl(port_, that, id)
+        wire__crate__api__simple__ExtensionManagerProxy_new_impl(port_, path)
     }
 
     #[no_mangle]
@@ -4540,14 +4436,6 @@ mod io {
         that: usize,
     ) {
         wire__crate__api__simple__ExtensionProxy_is_enabled_impl(port_, that)
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__simple__ExtensionProxy_new(
-        port_: i64,
-        filepath: *mut wire_cst_list_prim_u_8_strict,
-    ) {
-        wire__crate__api__simple__ExtensionProxy_new_impl(port_, filepath)
     }
 
     #[no_mangle]
@@ -4641,6 +4529,13 @@ mod io {
         request: *mut wire_cst_list_prim_u_8_strict,
     ) {
         wire__crate__api__simple__internal_set_permission_request_listener_impl(port_, request)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__extension_data_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__datastructs__extension_data_default_impl(port_)
     }
 
     #[no_mangle]
@@ -4945,6 +4840,7 @@ mod io {
         id: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
         title: *mut wire_cst_list_prim_u_8_strict,
+        media_type: i32,
         cover: *mut wire_cst_list_prim_u_8_strict,
         cover_header: *mut wire_cst_list_record_string_string,
         auther: *mut wire_cst_list_String,

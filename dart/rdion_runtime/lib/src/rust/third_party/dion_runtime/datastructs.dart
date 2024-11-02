@@ -9,7 +9,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'datastructs.freezed.dart';
 
 // These types are ignored because they are not used by any `pub` functions: `CustomUI`, `TimestampType`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `into_js`
 
 @freezed
@@ -26,6 +26,7 @@ class Entry {
   final String id;
   final String url;
   final String title;
+  final MediaType mediaType;
   final String? cover;
   final Map<String, String>? coverHeader;
   final List<String>? auther;
@@ -37,6 +38,7 @@ class Entry {
     required this.id,
     required this.url,
     required this.title,
+    required this.mediaType,
     this.cover,
     this.coverHeader,
     this.auther,
@@ -50,6 +52,7 @@ class Entry {
       id.hashCode ^
       url.hashCode ^
       title.hashCode ^
+      mediaType.hashCode ^
       cover.hashCode ^
       coverHeader.hashCode ^
       auther.hashCode ^
@@ -65,6 +68,7 @@ class Entry {
           id == other.id &&
           url == other.url &&
           title == other.title &&
+          mediaType == other.mediaType &&
           cover == other.cover &&
           coverHeader == other.coverHeader &&
           auther == other.auther &&
@@ -133,6 +137,80 @@ class EpisodeList {
           runtimeType == other.runtimeType &&
           title == other.title &&
           episodes == other.episodes;
+}
+
+class ExtensionData {
+  final String id;
+  final String? repo;
+  final String name;
+  final List<MediaType>? mediaType;
+  final String? giturl;
+  final String? version;
+  final String? desc;
+  final String? author;
+  final String? license;
+  final List<String>? tags;
+  final bool? nsfw;
+  final List<String> lang;
+  final String? url;
+  final String? icon;
+
+  const ExtensionData({
+    required this.id,
+    this.repo,
+    required this.name,
+    this.mediaType,
+    this.giturl,
+    this.version,
+    this.desc,
+    this.author,
+    this.license,
+    this.tags,
+    this.nsfw,
+    required this.lang,
+    this.url,
+    this.icon,
+  });
+
+  static Future<ExtensionData> default_() =>
+      RustLib.instance.api.dionRuntimeDatastructsExtensionDataDefault();
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      repo.hashCode ^
+      name.hashCode ^
+      mediaType.hashCode ^
+      giturl.hashCode ^
+      version.hashCode ^
+      desc.hashCode ^
+      author.hashCode ^
+      license.hashCode ^
+      tags.hashCode ^
+      nsfw.hashCode ^
+      lang.hashCode ^
+      url.hashCode ^
+      icon.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExtensionData &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          repo == other.repo &&
+          name == other.name &&
+          mediaType == other.mediaType &&
+          giturl == other.giturl &&
+          version == other.version &&
+          desc == other.desc &&
+          author == other.author &&
+          license == other.license &&
+          tags == other.tags &&
+          nsfw == other.nsfw &&
+          lang == other.lang &&
+          url == other.url &&
+          icon == other.icon;
 }
 
 /// flutter_rust_bridge:non_opaque

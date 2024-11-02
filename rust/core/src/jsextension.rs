@@ -1,101 +1,171 @@
-use std::{ path::Path, slice::{ Iter, IterMut }, sync::Arc };
+use std::{ path::Path, sync::Arc };
 
 use rquickjs::{
     async_with, function::Args, AsyncContext, AsyncRuntime, Ctx, Function, Module, Object, Promise, Value
 };
-use serde::{ Deserialize, Serialize };
 
-use tokio::{ fs, select, sync::RwLock, task::yield_now };
+use tokio::{ fs::{self, read_dir}, select, sync::RwLock, task::yield_now };
 use tokio_util::sync::CancellationToken;
 
 use crate::{
-    datastructs::{ Entry, EntryDetailed, MediaType, Sort, Source },
-    error::{ Error, Result },
-    networking_js,
-    permission::PermissionStore,
-    permission_js,
-    setting_js,
-    settings::SettingStore,
-    utils::{ val_to_string, wrapcatch, ReadOnlyUserContextContainer, SharedUserContextContainer },
+    datastructs::{ self, Entry, EntryDetailed, ExtensionData, Sort, Source }, error::{ Error, Result }, extension::{TExtension, TExtensionManager}, networking_js, permission::PermissionStore, permission_js, setting_js, settings::SettingStore, utils::{ val_to_string, wrapcatch, ReadOnlyUserContextContainer, SharedUserContextContainer }
 };
-pub type ArcExtensionManager=InnerExtensionManager<Arc<ExtensionContainer>>;
-pub type ExtensionManager=InnerExtensionManager<ExtensionContainer>;
 
 
-pub trait Extension {
-    fn wrap_ext(ext:ExtensionContainer)->Self;
+
+pub struct ExtensionManager {
+    path:String
 }
 
-impl Extension for ExtensionContainer {
-    fn wrap_ext(ext:ExtensionContainer)->Self{
-        ext
-    }
-    
-}
-
-impl Extension for Arc<ExtensionContainer> {
-    fn wrap_ext(ext:ExtensionContainer)->Self{
-        Arc::new(ext)
-    }
-    
-}
-
-impl Extension for Arc<RwLock<ExtensionContainer>> {
-    fn wrap_ext(ext:ExtensionContainer)->Self {
-        Arc::new(RwLock::new(ext))
+impl ExtensionManager {
+    pub fn new<T>(path:T)->Self where T:Into<String> {
+        ExtensionManager { path:path.into() }
     }
 }
 
-pub struct InnerExtensionManager<T> where T : Extension {
-    extensions: Vec<T>,
-}
-
-impl<T> Default for InnerExtensionManager<T> where T : Extension {
-    fn default() -> Self {
-        Self { extensions: Default::default() }
+#[async_trait::async_trait]
+impl TExtensionManager<ExtensionContainer> for ExtensionManager {
+    async fn get_extensions(&self)->Result<Vec<ExtensionContainer>> {
+        let mut dir=read_dir(&self.path).await?;
+        let mut ret=Vec::new();
+        let rt = AsyncRuntime::new()?;
+        while let Some(file) = dir.next_entry().await? {
+            if !file.file_name().into_string().or(Err(Error::ExtensionError("Filename conversion failed".to_string())))?.ends_with(".dion.js") {
+                continue;
+            }
+            println!("Got Extension {}",file.file_name().to_str().unwrap());
+            ret.push(ExtensionContainer::create(file.path(),rt.clone()).await?);
+        }
+        Ok(ret)
     }
 }
-/// flutter_rust_bridge:opaque
-impl<T> InnerExtensionManager<T> where T : Extension {
 
-    pub async fn new() -> Self {
-        Default::default()
-    }
-
-    pub async fn add_from_file(&mut self, path: impl AsRef<Path>) -> Result<&T> {
-        self.extensions.push(T::wrap_ext(ExtensionContainer::create(path).await?));
-        self.extensions.last().ok_or(Error::ExtensionError("There are no extension loaded despite adding one currently".to_owned()))
-    }
-
-    /// flutter_rust_bridge:ignore
-    pub fn iter(&self) -> Iter<'_, T> {
-        self.extensions.iter()
-    }
-
-    /// flutter_rust_bridge:ignore
-    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
-        self.extensions.iter_mut()
-    }
-
-    pub fn remove(&mut self,i:usize) {
-        self.extensions.remove(i);
-    }
-}
 
 /// flutter_rust_bridge:opaque
 pub struct ExtensionContainer {
     extension: Arc<RwLock<JSExtension>>,
     context: Option<AsyncContext>,
     code: String,
+    rt: AsyncRuntime,
+}
+
+#[async_trait::async_trait]
+impl TExtension for ExtensionContainer {
+    fn is_enabled(&self) -> bool {
+        self.context.is_some()
+    }
+
+    async fn set_enabled(&mut self,enabled:bool)->Result<()> {
+        match (enabled,self.context.is_some()) {
+            (true, true) => Ok(()),
+            (true, false) => self.enable().await,
+            (false, true) => Ok(self.disable()),
+            (false, false) => Ok(()),
+        }
+    }
+
+    async fn get_data(&self)-> datastructs::ExtensionData {
+        self.extension.read().await.data.clone()
+    }
+
+    async fn browse(
+        &self,
+        page: i64,
+        sort: Sort,
+        token: Option<CancellationToken>
+    ) -> Result<Vec<Entry>> {
+        match &self.context {
+            Some(context) =>
+                async_with!(context => |ctx| {
+                    let cancel = token.unwrap_or_default();
+                    let mut args=Args::new(ctx.clone(), 2);
+                    args.push_arg(page)?;
+                    args.push_arg(sort)?;
+                    let str=self.exec(ctx, "browse", args, cancel).await?;
+                    Ok(serde_json::from_str(&str)?)
+                }).await,
+            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
+        }
+    }
+
+    async fn search(
+        &self,
+        page: i64,
+        filter: &str,
+        token: Option<CancellationToken>
+    ) -> Result<Vec<Entry>> {
+        match &self.context {
+            Some(context) =>
+                async_with!(context => |ctx| {
+                    let cancel = token.unwrap_or_default();
+                    let mut args=Args::new(ctx.clone(), 2);
+                    args.push_arg(page)?;
+                    args.push_arg(filter)?;
+                    let str=self.exec(ctx, "search", args, cancel).await?;
+                    Ok(serde_json::from_str(&str)?)
+                }).await,
+            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
+        }
+    }
+
+    async fn detail(
+        &self,
+        entryid: &str,
+        token: Option<CancellationToken>
+    ) -> Result<EntryDetailed> {
+        match &self.context {
+            Some(context) =>
+                async_with!(context => |ctx| {
+                    let cancel = token.unwrap_or_default();
+                    let mut args=Args::new(ctx.clone(), 2);
+                    args.push_arg(entryid)?;
+                    let str=self.exec(ctx, "detail", args, cancel).await?;
+                    Ok(serde_json::from_str(&str)?)
+                }).await,
+            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
+        }
+    }
+
+    async fn source(&self, epid: &String, token: Option<CancellationToken>) -> Result<Source> {
+        match &self.context {
+            Some(context) =>
+                async_with!(context => |ctx| {
+                    let cancel = token.unwrap_or_default();
+                    let mut args=Args::new(ctx.clone(), 2);
+                    args.push_arg(epid)?;
+                    let str=self.exec(ctx, "source", args, cancel).await?;
+                    Ok(serde_json::from_str(&str)?)
+                }).await,
+            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
+        }
+    }
+
+    async fn fromurl(
+        &self,
+        url: String,
+        token: Option<CancellationToken>
+    ) -> Result<Option<Entry>> {
+        match &self.context {
+            Some(context) =>
+                async_with!(context => |ctx| {
+                    let cancel = token.unwrap_or_default();
+                    let mut args=Args::new(ctx.clone(), 2);
+                    args.push_arg(url)?;
+                    let str=self.exec(ctx, "fromurl", args, cancel).await?;
+                    Ok(serde_json::from_str(&str)?)
+                }).await,
+            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
+        }
+    }
 }
 
 impl ExtensionContainer {
 
-    pub async  fn get_extension(&self) -> tokio::sync::RwLockReadGuard<'_, JSExtension, > {
+    pub async fn get_extension(&self) -> tokio::sync::RwLockReadGuard<'_, JSExtension, > {
         self.extension.read().await
     }
 
-    pub async  fn get_extension_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, JSExtension> {
+    pub async fn get_extension_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, JSExtension> {
         self.extension.write().await
     }
 
@@ -139,99 +209,12 @@ impl ExtensionContainer {
         Ok(str)
     }
 
-    pub async fn browse(
-        &self,
-        page: i64,
-        sort: Sort,
-        token: Option<CancellationToken>
-    ) -> Result<Vec<Entry>> {
-        match &self.context {
-            Some(context) =>
-                async_with!(context => |ctx| {
-                    let cancel = token.unwrap_or_default();
-                    let mut args=Args::new(ctx.clone(), 2);
-                    args.push_arg(page)?;
-                    args.push_arg(sort)?;
-                    let str=self.exec(ctx, "browse", args, cancel).await?;
-                    Ok(serde_json::from_str(&str)?)
-                }).await,
-            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
-        }
-    }
-
-    pub async fn search(
-        &self,
-        page: i64,
-        filter: &str,
-        token: Option<CancellationToken>
-    ) -> Result<Vec<Entry>> {
-        match &self.context {
-            Some(context) =>
-                async_with!(context => |ctx| {
-                    let cancel = token.unwrap_or_default();
-                    let mut args=Args::new(ctx.clone(), 2);
-                    args.push_arg(page)?;
-                    args.push_arg(filter)?;
-                    let str=self.exec(ctx, "search", args, cancel).await?;
-                    Ok(serde_json::from_str(&str)?)
-                }).await,
-            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
-        }
-    }
-    pub async fn detail(
-        &self,
-        entryid: &str,
-        token: Option<CancellationToken>
-    ) -> Result<EntryDetailed> {
-        match &self.context {
-            Some(context) =>
-                async_with!(context => |ctx| {
-                    let cancel = token.unwrap_or_default();
-                    let mut args=Args::new(ctx.clone(), 2);
-                    args.push_arg(entryid)?;
-                    let str=self.exec(ctx, "detail", args, cancel).await?;
-                    Ok(serde_json::from_str(&str)?)
-                }).await,
-            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
-        }
-    }
-    pub async fn source(&self, epid: &String, token: Option<CancellationToken>) -> Result<Source> {
-        match &self.context {
-            Some(context) =>
-                async_with!(context => |ctx| {
-                    let cancel = token.unwrap_or_default();
-                    let mut args=Args::new(ctx.clone(), 2);
-                    args.push_arg(epid)?;
-                    let str=self.exec(ctx, "source", args, cancel).await?;
-                    Ok(serde_json::from_str(&str)?)
-                }).await,
-            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
-        }
-    }
-    pub async fn fromurl(
-        &self,
-        url: String,
-        token: Option<CancellationToken>
-    ) -> Result<Option<Entry>> {
-        match &self.context {
-            Some(context) =>
-                async_with!(context => |ctx| {
-                    let cancel = token.unwrap_or_default();
-                    let mut args=Args::new(ctx.clone(), 2);
-                    args.push_arg(url)?;
-                    let str=self.exec(ctx, "fromurl", args, cancel).await?;
-                    Ok(serde_json::from_str(&str)?)
-                }).await,
-            None => Err(Error::ExtensionError("Extension not enabled".to_string())),
-        }
-    }
-
-    pub async fn disable(&mut self){
+    pub fn disable(&mut self){
         self.context=None
     }
 
-    pub async fn enable(&mut self, rt: &AsyncRuntime) -> Result<()> {
-        let context = AsyncContext::full(&rt).await?;
+    pub async fn enable(&mut self) -> Result<()> {
+        let context = AsyncContext::full(&self.rt).await?;
         let a = SharedUserContextContainer::from(self.extension.clone());
         let code = self.code.as_str();
         async_with!(context => |ctx| {
@@ -258,7 +241,7 @@ impl ExtensionContainer {
         Ok(())
     }
 
-    pub async fn create(path: impl AsRef<Path>) -> Result<Self> {
+    pub async fn create(path: impl AsRef<Path>, rt: AsyncRuntime) -> Result<Self> {
         let contents: String = String::from_utf8(fs::read(path).await?)?;
         let data: ExtensionData = serde_json::from_str(
             contents.lines().next().unwrap_or_default().strip_prefix("//").unwrap_or_default()
@@ -272,35 +255,16 @@ impl ExtensionContainer {
             extension: Arc::new(RwLock::new(ext)),
             context: None,
             code: contents,
+            rt:rt
         };
         Ok(extcontainer)
     }
 }
 
 pub(crate) type ExtensionUserData = SharedUserContextContainer<JSExtension>;
-/// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Default, Clone)]
-pub struct ExtensionData {
-    pub id: String,
-    pub repo: Option<String>,
-    pub name: String,
-    #[serde(alias = "type")]
-    pub media_type: Option<Vec<MediaType>>,
 
-    pub giturl: Option<String>,
-    pub version: Option<String>,
-    pub desc: Option<String>,
-    pub author: Option<String>,
-    pub license: Option<String>,
-    pub tags: Option<Vec<String>>,
-    pub nsfw: Option<bool>,
-    pub lang: Vec<String>,
-    pub url: Option<String>,
-    pub icon: Option<String>,
-}
 /// flutter_rust_bridge:opaque
 pub struct JSExtension {
-    #[allow(unused)]
     pub data: ExtensionData,
     pub permission: PermissionStore,
     pub setting: SettingStore,

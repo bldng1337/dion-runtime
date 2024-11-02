@@ -72,23 +72,38 @@ impl<'de> Deserializer<'de> {
 // depending on what Rust types the deserializer is able to consume as input.
 //
 // This basic deserializer supports only `from_str`.
-pub fn from_str<'a, T>(s: &'a str) -> Result<T>
-where
-    T: Deserialize<'a>,
-{
-    let mut deserializer = Deserializer::from_str(s);
-    T::deserialize(&mut deserializer)
-}
+// pub fn from_str<'a, T>(s: &'a str) -> Result<T>
+// where
+//     T: Deserialize<'a>,
+// {
+//     let mut deserializer = Deserializer::from_str(s);
+//     T::deserialize(&mut deserializer)
+// }
 
 impl<'de> Deserializer<'de> {
     fn curr(&self)->&Value<'de>{
         &self.input
     }
 
-    fn de_any<V>(&self,visitor: V,curr:&Value<'de>) -> Result<V::Value>
+    fn de_any<V>(&mut self,visitor: V,curr:&Value<'de>) -> Result<V::Value>
     where
     V: Visitor<'de>,
     {
+        
+    }
+}
+
+impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
+    type Error = Error;
+
+    
+
+
+    fn deserialize_any<V>(self, visitor: V) -> Result<V::Value>
+    where
+        V: Visitor<'de>,
+    {
+        let curr=self.curr();
         match curr.type_of() {
             rquickjs::Type::Uninitialized => Err(Error::UnexpectedType("Uninitialized".into())),
             rquickjs::Type::Unknown => Err(Error::UnexpectedType("Unknown".into())),
@@ -105,24 +120,10 @@ impl<'de> Deserializer<'de> {
             rquickjs::Type::Int => visitor.visit_i32(curr.get()?),
             rquickjs::Type::Float => visitor.visit_f64(curr.get()?),
             rquickjs::Type::String => visitor.visit_string(curr.get()?),
-            rquickjs::Type::Array => todo!(),
+            rquickjs::Type::Array => visitor.visit_seq(JSArray{de:self}),
             rquickjs::Type::Object => todo!(),
             rquickjs::Type::BigInt => todo!(),
         }
-    }
-}
-
-impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
-    type Error = Error;
-
-    
-
-
-    fn deserialize_any<V>(self, visitor: V) -> Result<V::Value>
-    where
-        V: Visitor<'de>,
-    {
-        self.de_any(visitor,self.curr())
     }
 
     fn deserialize_bool<V>(self, visitor: V) -> Result<V::Value>
@@ -190,7 +191,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         visitor.visit_u64(self.curr().get()?)
     }
 
-    // Float parsing is stupidly hard.
     fn deserialize_f32<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -198,7 +198,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         visitor.visit_f32(self.curr().get()?)
     }
 
-    // Float parsing is stupidly hard.
     fn deserialize_f64<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -206,8 +205,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         visitor.visit_f64(self.curr().get()?)
     }
 
-    // The `Serializer` implementation on the previous page serialized chars as
-    // single-character strings so handle that representation here.
     fn deserialize_char<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -231,8 +228,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         visitor.visit_string(self.curr().get()?)
     }
 
-    // The `Serializer` implementation on the previous page serialized byte
-    // arrays as JSON arrays of bytes. Handle that representation here.
     fn deserialize_bytes<V>(self, _visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -247,14 +242,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         Err(Error::NotImplemented)
     }
 
-    // An absent optional is represented as the JSON `null` and a present
-    // optional is represented as just the contained value.
-    //
-    // As commented in `Serializer` implementation, this is a lossy
-    // representation. For example the values `Some(())` and `None` both
-    // serialize as just `null`. Unfortunately this is typically what people
-    // expect when working with JSON. Other formats are encouraged to behave
-    // more intelligently if possible.
     fn deserialize_option<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -266,7 +253,6 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         }
     }
 
-    // In Serde, unit means an anonymous value containing no data.
     fn deserialize_unit<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -311,19 +297,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     where
         V: Visitor<'de>,
     {
-        // Parse the opening bracket of the sequence.
-        if self.next_char()? == '[' {
-            // Give the visitor access to each element of the sequence.
-            let value = visitor.visit_seq(CommaSeparated::new(self))?;
-            // Parse the closing bracket of the sequence.
-            if self.next_char()? == ']' {
-                Ok(value)
-            } else {
-                Err(Error::ExpectedArrayEnd)
-            }
-        } else {
-            Err(Error::ExpectedArray)
-        }
+        visitor.visit_seq(ArrayDe{ de: self })
     }
 
     // Tuples look just like sequences in JSON. Some formats may be able to
@@ -451,19 +425,47 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
 
 struct ArrayDe<'a, 'de: 'a>{
     de: &'a mut Deserializer<'de>,
-    arr:Array<'de>
+    pos:usize,
 }
+impl<'a, 'de> ArrayDe<'a, 'de> {
+    
+    fn new(de:&'a mut Deserializer<'de>)->Self{
+        ArrayDe {de:de,pos:0}
+    }
+}
+
 impl<'de, 'a> SeqAccess<'de> for ArrayDe<'a, 'de> {
     type Error = Error;
 
     fn next_element_seed<T>(&mut self, seed: T) -> std::result::Result<Option<T::Value>, Self::Error>
     where
         T: DeserializeSeed<'de> {
-        // self.arr.get(idx)
+        let arr=self.de.curr().as_array().ok_or(Error::ConvertFail)?;
+        if arr.len()==self.pos {
+            Ok(None)
+        }else{
+            let val=arr.get(self.pos)?;
+            self.pos+=1;
+            val
+        }
     }
 }
 
+struct JSArray<'a, 'de: 'a> {
+    de: &'a mut Deserializer<'de>,
+}
 
+impl<'de, 'a> SeqAccess<'de> for JSArray<'a, 'de> {
+    type Error = Error;
+    
+    fn next_element_seed<T>(&mut self, seed: T) -> std::result::Result<Option<T::Value>, Self::Error>
+    where
+        T: DeserializeSeed<'de> {
+
+        todo!()
+    }
+
+}
 
 
 // In order to handle commas correctly when deserializing a JSON array or map,

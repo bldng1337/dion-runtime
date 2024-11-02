@@ -11,7 +11,6 @@ import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'third_party/dion_runtime/datastructs.dart';
-import 'third_party/dion_runtime/jsextension.dart';
 import 'third_party/dion_runtime/permission.dart';
 import 'third_party/dion_runtime/settings.dart';
 
@@ -72,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => -560010883;
+  int get rustContentHash => -2051070925;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -85,16 +84,11 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 abstract class RustLibApi extends BaseApi {
   CancelToken crateApiSimpleCancelTokenNew();
 
-  Future<ExtensionProxy> crateApiSimpleExtensionManagerProxyAddFromFile(
-      {required ExtensionManagerProxy that, required String path});
-
-  Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyIter(
+  Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyGetExtensions(
       {required ExtensionManagerProxy that});
 
-  ExtensionManagerProxy crateApiSimpleExtensionManagerProxyNew();
-
-  Future<void> crateApiSimpleExtensionManagerProxyRemove(
-      {required ExtensionManagerProxy that, required String id});
+  Future<ExtensionManagerProxy> crateApiSimpleExtensionManagerProxyNew(
+      {required String path});
 
   Future<List<Entry>> crateApiSimpleExtensionProxyBrowse(
       {required ExtensionProxy that,
@@ -124,9 +118,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<bool> crateApiSimpleExtensionProxyIsEnabled(
       {required ExtensionProxy that});
-
-  Future<ExtensionProxy> crateApiSimpleExtensionProxyNew(
-      {required String filepath});
 
   Future<List<Permission>> crateApiSimpleExtensionProxyPermissionsIter(
       {required ExtensionProxy that});
@@ -163,6 +154,8 @@ abstract class RustLibApi extends BaseApi {
 
   Stream<PermissionRequest>
       crateApiSimpleInternalSetPermissionRequestListener();
+
+  Future<ExtensionData> dionRuntimeDatastructsExtensionDataDefault();
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken;
@@ -231,68 +224,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<ExtensionProxy> crateApiSimpleExtensionManagerProxyAddFromFile(
-      {required ExtensionManagerProxy that, required String path}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 =
-            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
-                that);
-        var arg1 = cst_encode_String(path);
-        return wire
-            .wire__crate__api__simple__ExtensionManagerProxy_add_from_file(
-                port_, arg0, arg1);
-      },
-      codec: DcoCodec(
-        decodeSuccessData:
-            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy,
-        decodeErrorData: dco_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiSimpleExtensionManagerProxyAddFromFileConstMeta,
-      argValues: [that, path],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiSimpleExtensionManagerProxyAddFromFileConstMeta =>
-      const TaskConstMeta(
-        debugName: "ExtensionManagerProxy_add_from_file",
-        argNames: ["that", "path"],
-      );
-
-  @override
-  Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyIter(
+  Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyGetExtensions(
       {required ExtensionManagerProxy that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
                 that);
-        return wire.wire__crate__api__simple__ExtensionManagerProxy_iter(
-            port_, arg0);
+        return wire
+            .wire__crate__api__simple__ExtensionManagerProxy_get_extensions(
+                port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData:
             dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy,
-        decodeErrorData: null,
+        decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiSimpleExtensionManagerProxyIterConstMeta,
+      constMeta: kCrateApiSimpleExtensionManagerProxyGetExtensionsConstMeta,
       argValues: [that],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiSimpleExtensionManagerProxyIterConstMeta =>
-      const TaskConstMeta(
-        debugName: "ExtensionManagerProxy_iter",
-        argNames: ["that"],
-      );
+  TaskConstMeta
+      get kCrateApiSimpleExtensionManagerProxyGetExtensionsConstMeta =>
+          const TaskConstMeta(
+            debugName: "ExtensionManagerProxy_get_extensions",
+            argNames: ["that"],
+          );
 
   @override
-  ExtensionManagerProxy crateApiSimpleExtensionManagerProxyNew() {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        return wire.wire__crate__api__simple__ExtensionManagerProxy_new();
+  Future<ExtensionManagerProxy> crateApiSimpleExtensionManagerProxyNew(
+      {required String path}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 = cst_encode_String(path);
+        return wire.wire__crate__api__simple__ExtensionManagerProxy_new(
+            port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData:
@@ -300,7 +268,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: null,
       ),
       constMeta: kCrateApiSimpleExtensionManagerProxyNewConstMeta,
-      argValues: [],
+      argValues: [path],
       apiImpl: this,
     ));
   }
@@ -308,35 +276,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleExtensionManagerProxyNewConstMeta =>
       const TaskConstMeta(
         debugName: "ExtensionManagerProxy_new",
-        argNames: [],
-      );
-
-  @override
-  Future<void> crateApiSimpleExtensionManagerProxyRemove(
-      {required ExtensionManagerProxy that, required String id}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 =
-            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
-                that);
-        var arg1 = cst_encode_String(id);
-        return wire.wire__crate__api__simple__ExtensionManagerProxy_remove(
-            port_, arg0, arg1);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_unit,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiSimpleExtensionManagerProxyRemoveConstMeta,
-      argValues: [that, id],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiSimpleExtensionManagerProxyRemoveConstMeta =>
-      const TaskConstMeta(
-        debugName: "ExtensionManagerProxy_remove",
-        argNames: ["that", "id"],
+        argNames: ["path"],
       );
 
   @override
@@ -439,7 +379,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
                 that);
         return wire.wire__crate__api__simple__ExtensionProxy_disable(
             port_, arg0);
@@ -466,7 +406,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
                 that);
         return wire.wire__crate__api__simple__ExtensionProxy_enable(
             port_, arg0);
@@ -571,31 +511,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ExtensionProxy_is_enabled",
         argNames: ["that"],
-      );
-
-  @override
-  Future<ExtensionProxy> crateApiSimpleExtensionProxyNew(
-      {required String filepath}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 = cst_encode_String(filepath);
-        return wire.wire__crate__api__simple__ExtensionProxy_new(port_, arg0);
-      },
-      codec: DcoCodec(
-        decodeSuccessData:
-            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy,
-        decodeErrorData: dco_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiSimpleExtensionProxyNewConstMeta,
-      argValues: [filepath],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiSimpleExtensionProxyNewConstMeta =>
-      const TaskConstMeta(
-        debugName: "ExtensionProxy_new",
-        argNames: ["filepath"],
       );
 
   @override
@@ -908,6 +823,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             argNames: ["request"],
           );
 
+  @override
+  Future<ExtensionData> dionRuntimeDatastructsExtensionDataDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__datastructs__extension_data_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_extension_data,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDatastructsExtensionDataDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDatastructsExtensionDataDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "extension_data_default",
+        argNames: [],
+      );
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
@@ -979,11 +917,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ExtensionManagerProxy
-      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
+  ExtensionProxy
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ExtensionManagerProxyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return ExtensionProxyImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1140,18 +1078,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Entry dco_decode_entry(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return Entry(
       id: dco_decode_String(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
-      cover: dco_decode_opt_String(arr[3]),
-      coverHeader: dco_decode_opt_Map_String_String(arr[4]),
-      auther: dco_decode_opt_list_String(arr[5]),
-      rating: dco_decode_opt_box_autoadd_f_32(arr[6]),
-      views: dco_decode_opt_box_autoadd_f_32(arr[7]),
-      length: dco_decode_opt_box_autoadd_i_64(arr[8]),
+      mediaType: dco_decode_media_type(arr[3]),
+      cover: dco_decode_opt_String(arr[4]),
+      coverHeader: dco_decode_opt_Map_String_String(arr[5]),
+      auther: dco_decode_opt_list_String(arr[6]),
+      rating: dco_decode_opt_box_autoadd_f_32(arr[7]),
+      views: dco_decode_opt_box_autoadd_f_32(arr[8]),
+      length: dco_decode_opt_box_autoadd_i_64(arr[9]),
     );
   }
 
@@ -1660,11 +1599,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ExtensionManagerProxy
-      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
+  ExtensionProxy
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return ExtensionManagerProxyImpl.frbInternalSseDecode(
+    return ExtensionProxyImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -1835,6 +1774,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_id = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
+    var var_mediaType = sse_decode_media_type(deserializer);
     var var_cover = sse_decode_opt_String(deserializer);
     var var_coverHeader = sse_decode_opt_Map_String_String(deserializer);
     var var_auther = sse_decode_opt_list_String(deserializer);
@@ -1845,6 +1785,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         id: var_id,
         url: var_url,
         title: var_title,
+        mediaType: var_mediaType,
         cover: var_cover,
         coverHeader: var_coverHeader,
         auther: var_auther,
@@ -2463,11 +2404,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
-      ExtensionManagerProxy raw) {
+  int cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+      ExtensionProxy raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
-    return (raw as ExtensionManagerProxyImpl).frbInternalCstEncode(move: false);
+    return (raw as ExtensionProxyImpl).frbInternalCstEncode(move: false);
   }
 
   @protected
@@ -2625,11 +2566,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
-          ExtensionManagerProxy self, SseSerializer serializer) {
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+          ExtensionProxy self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as ExtensionManagerProxyImpl).frbInternalSseEncode(move: false),
+        (self as ExtensionProxyImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
@@ -2811,6 +2752,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
+    sse_encode_media_type(self.mediaType, serializer);
     sse_encode_opt_String(self.cover, serializer);
     sse_encode_opt_Map_String_String(self.coverHeader, serializer);
     sse_encode_opt_list_String(self.auther, serializer);
@@ -3354,17 +3296,10 @@ class ExtensionManagerProxyImpl extends RustOpaque
         .instance.api.rust_arc_decrement_strong_count_ExtensionManagerProxyPtr,
   );
 
-  Future<ExtensionProxy> addFromFile({required String path}) => RustLib
-      .instance.api
-      .crateApiSimpleExtensionManagerProxyAddFromFile(that: this, path: path);
-
-  Future<List<ExtensionProxy>> iter() =>
-      RustLib.instance.api.crateApiSimpleExtensionManagerProxyIter(
+  Future<List<ExtensionProxy>> getExtensions() =>
+      RustLib.instance.api.crateApiSimpleExtensionManagerProxyGetExtensions(
         that: this,
       );
-
-  Future<void> remove({required String id}) => RustLib.instance.api
-      .crateApiSimpleExtensionManagerProxyRemove(that: this, id: id);
 }
 
 @sealed

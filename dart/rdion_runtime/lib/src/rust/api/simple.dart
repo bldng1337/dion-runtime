@@ -5,15 +5,13 @@
 
 import '../frb_generated.dart';
 import '../third_party/dion_runtime/datastructs.dart';
-import '../third_party/dion_runtime/jsextension.dart';
 import '../third_party/dion_runtime/permission.dart';
 import '../third_party/dion_runtime/settings.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `construct`
 // These functions are ignored because they have generic arguments: `request`
 // These types are ignored because they are not used by any `pub` functions: `PermissionSink`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `fmt`, `from`, `into`, `into`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`, `from`, `into`, `into`
 
 Stream<PermissionRequest> internalSetPermissionRequestListener() =>
     RustLib.instance.api.crateApiSimpleInternalSetPermissionRequestListener();
@@ -29,14 +27,11 @@ abstract class CancelToken implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionManagerProxy>>
 abstract class ExtensionManagerProxy implements RustOpaqueInterface {
-  Future<ExtensionProxy> addFromFile({required String path});
+  Future<List<ExtensionProxy>> getExtensions();
 
-  Future<List<ExtensionProxy>> iter();
-
-  factory ExtensionManagerProxy() =>
-      RustLib.instance.api.crateApiSimpleExtensionManagerProxyNew();
-
-  Future<void> remove({required String id});
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<ExtensionManagerProxy> newInstance({required String path}) =>
+      RustLib.instance.api.crateApiSimpleExtensionManagerProxyNew(path: path);
 }
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionProxy>>
@@ -57,10 +52,6 @@ abstract class ExtensionProxy implements RustOpaqueInterface {
   Future<Setting> getSetting({required String name});
 
   Future<bool> isEnabled();
-
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  static Future<ExtensionProxy> newInstance({required String filepath}) =>
-      RustLib.instance.api.crateApiSimpleExtensionProxyNew(filepath: filepath);
 
   Future<List<Permission>> permissionsIter();
 
