@@ -22,6 +22,10 @@ Future<void> internalSendPermissionRequestAnswer({required bool answer}) =>
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
 abstract class CancelToken implements RustOpaqueInterface {
+  Future<void> cancel();
+
+  Future<CancelToken> child();
+
   factory CancelToken() => RustLib.instance.api.crateApiSimpleCancelTokenNew();
 }
 
@@ -29,8 +33,7 @@ abstract class CancelToken implements RustOpaqueInterface {
 abstract class ExtensionManagerProxy implements RustOpaqueInterface {
   Future<List<ExtensionProxy>> getExtensions();
 
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  static Future<ExtensionManagerProxy> newInstance({required String path}) =>
+  factory ExtensionManagerProxy({required String path}) =>
       RustLib.instance.api.crateApiSimpleExtensionManagerProxyNew(path: path);
 }
 

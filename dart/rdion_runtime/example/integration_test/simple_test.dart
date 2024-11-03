@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +14,7 @@ void main() {
       return true;
     });
     // final em = ExtensionManagerProxy
-    final em = await ExtensionManagerProxy.newInstance(
+    final em = ExtensionManagerProxy(
         path: "../../../testextensions");
     final extensions = await em.getExtensions();
 

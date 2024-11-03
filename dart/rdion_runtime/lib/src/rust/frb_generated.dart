@@ -71,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.4.0';
 
   @override
-  int get rustContentHash => -2051070925;
+  int get rustContentHash => -1562844753;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -82,12 +82,17 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<void> crateApiSimpleCancelTokenCancel({required CancelToken that});
+
+  Future<CancelToken> crateApiSimpleCancelTokenChild(
+      {required CancelToken that});
+
   CancelToken crateApiSimpleCancelTokenNew();
 
   Future<List<ExtensionProxy>> crateApiSimpleExtensionManagerProxyGetExtensions(
       {required ExtensionManagerProxy that});
 
-  Future<ExtensionManagerProxy> crateApiSimpleExtensionManagerProxyNew(
+  ExtensionManagerProxy crateApiSimpleExtensionManagerProxyNew(
       {required String path});
 
   Future<List<Entry>> crateApiSimpleExtensionProxyBrowse(
@@ -201,6 +206,58 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  Future<void> crateApiSimpleCancelTokenCancel({required CancelToken that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+                that);
+        return wire.wire__crate__api__simple__CancelToken_cancel(port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleCancelTokenCancelConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleCancelTokenCancelConstMeta =>
+      const TaskConstMeta(
+        debugName: "CancelToken_cancel",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<CancelToken> crateApiSimpleCancelTokenChild(
+      {required CancelToken that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+                that);
+        return wire.wire__crate__api__simple__CancelToken_child(port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData:
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSimpleCancelTokenChildConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSimpleCancelTokenChildConstMeta =>
+      const TaskConstMeta(
+        debugName: "CancelToken_child",
+        argNames: ["that"],
+      );
+
+  @override
   CancelToken crateApiSimpleCancelTokenNew() {
     return handler.executeSync(SyncTask(
       callFfi: () {
@@ -254,13 +311,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
 
   @override
-  Future<ExtensionManagerProxy> crateApiSimpleExtensionManagerProxyNew(
+  ExtensionManagerProxy crateApiSimpleExtensionManagerProxyNew(
       {required String path}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         var arg0 = cst_encode_String(path);
-        return wire.wire__crate__api__simple__ExtensionManagerProxy_new(
-            port_, arg0);
+        return wire.wire__crate__api__simple__ExtensionManagerProxy_new(arg0);
       },
       codec: DcoCodec(
         decodeSuccessData:
@@ -922,6 +978,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  CancelToken
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CancelTokenImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1604,6 +1668,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  CancelToken
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CancelTokenImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -2412,6 +2485,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      CancelToken raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as CancelTokenImpl).frbInternalCstEncode(move: false);
+  }
+
+  @protected
   int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
       ExtensionManagerProxy raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2571,6 +2652,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as ExtensionProxyImpl).frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          CancelToken self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CancelTokenImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
@@ -3273,6 +3364,15 @@ class CancelTokenImpl extends RustOpaque implements CancelToken {
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_CancelTokenPtr,
   );
+
+  Future<void> cancel() => RustLib.instance.api.crateApiSimpleCancelTokenCancel(
+        that: this,
+      );
+
+  Future<CancelToken> child() =>
+      RustLib.instance.api.crateApiSimpleCancelTokenChild(
+        that: this,
+      );
 }
 
 @sealed

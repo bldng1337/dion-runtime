@@ -65,6 +65,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  CancelToken
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          dynamic raw);
+
+  @protected
   ExtensionManagerProxy
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           dynamic raw);
@@ -313,6 +318,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   ExtensionProxy
       sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+          SseDeserializer deserializer);
+
+  @protected
+  CancelToken
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
 
   @protected
@@ -1182,6 +1192,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionProxy raw);
 
   @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      CancelToken raw);
+
+  @protected
   int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
       ExtensionManagerProxy raw);
 
@@ -1263,6 +1277,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
           ExtensionProxy self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          CancelToken self, SseSerializer serializer);
 
   @protected
   void
@@ -1550,6 +1569,40 @@ class RustLibWire implements BaseWire {
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
 
+  void wire__crate__api__simple__CancelToken_cancel(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__simple__CancelToken_cancel(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__simple__CancelToken_cancelPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+          'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_cancel');
+  late final _wire__crate__api__simple__CancelToken_cancel =
+      _wire__crate__api__simple__CancelToken_cancelPtr
+          .asFunction<void Function(int, int)>();
+
+  void wire__crate__api__simple__CancelToken_child(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__simple__CancelToken_child(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__simple__CancelToken_childPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+          'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_child');
+  late final _wire__crate__api__simple__CancelToken_child =
+      _wire__crate__api__simple__CancelToken_childPtr
+          .asFunction<void Function(int, int)>();
+
   WireSyncRust2DartDco wire__crate__api__simple__CancelToken_new() {
     return _wire__crate__api__simple__CancelToken_new();
   }
@@ -1578,24 +1631,23 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__simple__ExtensionManagerProxy_get_extensionsPtr
           .asFunction<void Function(int, int)>();
 
-  void wire__crate__api__simple__ExtensionManagerProxy_new(
-    int port_,
+  WireSyncRust2DartDco wire__crate__api__simple__ExtensionManagerProxy_new(
     ffi.Pointer<wire_cst_list_prim_u_8_strict> path,
   ) {
     return _wire__crate__api__simple__ExtensionManagerProxy_new(
-      port_,
       path,
     );
   }
 
   late final _wire__crate__api__simple__ExtensionManagerProxy_newPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Int64, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
+              WireSyncRust2DartDco Function(
+                  ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
       'frbgen_rdion_runtime_wire__crate__api__simple__ExtensionManagerProxy_new');
   late final _wire__crate__api__simple__ExtensionManagerProxy_new =
       _wire__crate__api__simple__ExtensionManagerProxy_newPtr.asFunction<
-          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+          WireSyncRust2DartDco Function(
+              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__simple__ExtensionProxy_browse(
     int port_,

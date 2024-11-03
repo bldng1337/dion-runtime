@@ -97,6 +97,7 @@ pub struct ExtensionManagerProxy {
 }
 
 impl ExtensionManagerProxy {
+    #[frb(sync)]
     pub fn new(path: &str) -> Self {
         ExtensionManagerProxy {
             inner: ExtensionManager::new(path),
@@ -455,6 +456,16 @@ impl CancelToken {
     pub fn new() -> Self {
         CancelToken {
             tok: CancellationToken::new(),
+        }
+    }
+
+    pub fn cancel(&self) {
+        self.tok.cancel();
+    }
+
+    pub fn child(&self) -> CancelToken {
+        CancelToken {
+            tok: self.tok.child_token()
         }
     }
 }
