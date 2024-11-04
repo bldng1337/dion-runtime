@@ -28,9 +28,9 @@ dependencies = [
 
 [[package]]
 name = "allo-isolate"
-version = "0.1.25"
+version = "0.1.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97b6d794345b06592d0ebeed8e477e41b71e5a0a49df4fc0e4184d5938b99509"
+checksum = "1f67642eb6773fb42a95dd3b348c305ee18dee6642274c6b412d67e985e3befc"
 dependencies = [
  "anyhow",
  "atomic",
@@ -597,9 +597,9 @@ checksum = "e8c02a5121d4ea3eb16a80748c74f5549a5665e4c21333c6098f283870fbdea6"
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "2.4.0"
+version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ff967a5893be60d849e4362910762acdc275febe44333153a11dcec1bca2cd2"
+checksum = "2f052ec223b70cbdf2248376a9ad5af9281b3fdf8ea3c7d3f66fff52a9aaf1fa"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -616,6 +616,7 @@ dependencies = [
  "lazy_static",
  "log",
  "oslog",
+ "portable-atomic",
  "threadpool",
  "tokio",
  "wasm-bindgen",
@@ -625,9 +626,9 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge_macros"
-version = "2.4.0"
+version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d48b4d3fae9d29377b19134a38386d8792bde70b9448cde49e96391bcfc8fed1"
+checksum = "23414fe526f51870c6d89d27bbffbee52ebe0900164a4147b32caf1d3e131682"
 dependencies = [
  "hex",
  "md-5",
@@ -1491,9 +1492,9 @@ checksum = "d231b230927b5e4ad203db57bbcbee2802f6bce620b1e4a9024a07d94e2907ec"
 
 [[package]]
 name = "portable-atomic"
-version = "1.7.0"
+version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da544ee218f0d287a911e9c99a39a8c9bc8fcad3cb8db5959940044ecfc67265"
+checksum = "cc9c68a3f6da06753e9335d63e27f6b9754dd1920d941135b7ea8224f141adb2"
 
 [[package]]
 name = "powerfmt"

@@ -126,6 +126,7 @@ pub enum CustomUI{
 
 /// flutter_rust_bridge:ignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
+/// flutter_rust_bridge:ignore
 pub struct EntryDetailed {
     pub id: String,
     pub url: String,
