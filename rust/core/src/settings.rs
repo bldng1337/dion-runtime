@@ -1,11 +1,12 @@
 use std::collections::HashMap;
-
+use ts_rs::TS;
 use rquickjs::IntoJs;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{Error, Result};
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone,TS)]
+#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
 pub enum Settingvalue {
     String {
         val: String,
@@ -101,7 +102,8 @@ impl<'js> IntoJs<'js> for Settingvalue {
     }
 }
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone,TS)]
+#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
 pub enum SettingUI {
     //String
     PathSelection {
@@ -128,7 +130,8 @@ pub enum SettingUI {
     },
 }
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq,TS)]
+#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
 pub enum Settingtype {
     Extension,
     Entry,

@@ -25,4 +25,6 @@ reqwest-middleware = "0.3.0"
 http-cache-reqwest = "0.14.0"
 async-trait = "0.1.0"
 http = "1.1.0"
+ts-rs = {version = "10.0.0", features = ["serde-json-impl"]}
+openssl = { version = "0.10", features = ["vendored"] }
 # cacache = "13.0.0"

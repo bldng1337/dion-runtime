@@ -3,7 +3,7 @@ use serde::{ Deserialize, Serialize };
 use tokio::sync::RwLock;
 use core::fmt::Debug;
 use std::sync::LazyLock;
-
+use ts_rs::TS;
 use crate::error::Error;
 //TODO: Rework this 4am mess
 /// flutter_rust_bridge:ignore
@@ -16,7 +16,8 @@ pub static PERMISSION: LazyLock<RwLock<PermissionSingelton>> = LazyLock::new(||
     RwLock::new(PermissionSingelton::default())
 );
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug,Clone)]
+#[derive(Serialize, Deserialize, Debug,Clone,TS)]
+#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
 #[serde(tag = "id")]
 pub enum Permission {
     #[serde(alias = "storage")] StoragePermission {
