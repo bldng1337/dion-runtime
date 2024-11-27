@@ -123,6 +123,7 @@ pub enum TimestampType{
 
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
+#[serde(tag = "type")]
 pub enum CustomUI{
     Text {
         text:String
