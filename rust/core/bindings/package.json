@@ -1,6 +1,6 @@
 {
   "name": "dion-runtime-types",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bldng1337/dion-runtime.git"

@@ -57,7 +57,7 @@ export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type SettingUI = { "PathSelection": { label: string, pickfolder: boolean, } } | { "Slider": { label: string, min: number, max: number, step: number, } } | { "Checkbox": { label: string, } } | { "Textbox": { label: string, } } | { "Dropdown": { label: string, options: Array<[string, string]>, } };
+export type SettingUI = { "type": "PathSelection", label: string, pickfolder: boolean, } | { "type": "Slider", label: string, min: number, max: number, step: number, } | { "type": "Checkbox", label: string, } | { "type": "Textbox", label: string, } | { "type": "Dropdown", label: string, options: Array<[string, string]>, };
 
 /**
  * flutter_rust_bridge:non_opaque

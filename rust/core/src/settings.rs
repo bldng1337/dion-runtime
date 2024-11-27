@@ -104,6 +104,7 @@ impl<'js> IntoJs<'js> for Settingvalue {
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
+#[serde(tag = "type")]
 pub enum SettingUI {
     //String
     PathSelection {
