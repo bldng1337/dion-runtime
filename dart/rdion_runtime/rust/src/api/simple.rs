@@ -1,6 +1,6 @@
 use deadqueue::limited::Queue;
 use dion_runtime::datastructs::{
-    Entry, EpisodeList, ExtensionData, MediaType, ReleaseStatus, Sort, Source,
+    Entry, EntryDetailed, EpisodeList, ExtensionData, MediaType, ReleaseStatus, Sort, Source
 };
 use dion_runtime::error::{Error, Result};
 use dion_runtime::jsextension::{ExtensionContainer, ExtensionManager};
@@ -482,78 +482,78 @@ impl Into<CancellationToken> for CancelToken {
     }
 }
 
-/// flutter_rust_bridge:non_opaque
-pub struct EntryDetailed {
-    pub id: String,
-    pub url: String,
-    pub title: String,
+// /// flutter_rust_bridge:non_opaque
+// pub struct EntryDetailed {
+//     pub id: String,
+//     pub url: String,
+//     pub title: String,
 
-    pub ui: String, //This contains cyclic data so not sure how to handle that to keep it serde and dart usw friendly
+//     pub ui: Option<String>, //This contains cyclic data so not sure how to handle that to keep it serde and dart usw friendly
 
-    pub media_type: MediaType,
-    pub status: ReleaseStatus,
-    pub description: String,
-    pub language: String,
+//     pub media_type: MediaType,
+//     pub status: ReleaseStatus,
+//     pub description: String,
+//     pub language: String,
 
-    pub cover: Option<String>,
-    pub cover_header: Option<HashMap<String, String>>,
+//     pub cover: Option<String>,
+//     pub cover_header: Option<HashMap<String, String>>,
 
-    pub episodes: Vec<EpisodeList>,
-    pub genres: Option<Vec<String>>,
-    pub alttitles: Option<Vec<String>>,
-    pub auther: Option<Vec<String>>,
-    pub rating: Option<f32>,
-    pub views: Option<f32>,
-    pub length: Option<i64>,
-}
+//     pub episodes: Vec<EpisodeList>,
+//     pub genres: Option<Vec<String>>,
+//     pub alttitles: Option<Vec<String>>,
+//     pub author: Option<Vec<String>>,
+//     pub rating: Option<f32>,
+//     pub views: Option<f32>,
+//     pub length: Option<i32>,
+// }
 
-impl Into<dion_runtime::datastructs::EntryDetailed> for EntryDetailed {
-    fn into(self) -> dion_runtime::datastructs::EntryDetailed {
-        dion_runtime::datastructs::EntryDetailed {
-            id: self.id,
-            url: self.url,
-            title: self.title,
-            ui: serde_json::from_str(&self.ui).unwrap_or_default(),
-            media_type: self.media_type,
-            status: self.status,
-            description: self.description,
-            language: self.language,
-            cover: self.cover,
-            cover_header: self.cover_header,
-            episodes: self.episodes,
-            genres: self.genres,
-            alttitles: self.alttitles,
-            auther: self.auther,
-            rating: self.rating,
-            views: self.views,
-            length: self.length,
-        }
-    }
-}
+// impl Into<dion_runtime::datastructs::EntryDetailed> for EntryDetailed {
+//     fn into(self) -> dion_runtime::datastructs::EntryDetailed {
+//         dion_runtime::datastructs::EntryDetailed {
+//             id: self.id,
+//             url: self.url,
+//             title: self.title,
+//             ui: serde_json::from_str(&self.ui).unwrap_or_default(),
+//             media_type: self.media_type,
+//             status: self.status,
+//             description: self.description,
+//             language: self.language,
+//             cover: self.cover,
+//             cover_header: self.cover_header,
+//             episodes: self.episodes,
+//             genres: self.genres,
+//             alttitles: self.alttitles,
+//             author: self.author,
+//             rating: self.rating,
+//             views: self.views,
+//             length: self.length,
+//         }
+//     }
+// }
 
-impl From<dion_runtime::datastructs::EntryDetailed> for EntryDetailed {
-    fn from(value: dion_runtime::datastructs::EntryDetailed) -> Self {
-        Self {
-            id: value.id,
-            url: value.url,
-            title: value.title,
-            ui: serde_json::to_string(&value.ui).unwrap_or_default(),
-            media_type: value.media_type,
-            status: value.status,
-            description: value.description,
-            language: value.language,
-            cover: value.cover,
-            cover_header: value.cover_header,
-            episodes: value.episodes,
-            genres: value.genres,
-            alttitles: value.alttitles,
-            auther: value.auther,
-            rating: value.rating,
-            views: value.views,
-            length: value.length,
-        }
-    }
-}
+// impl From<dion_runtime::datastructs::EntryDetailed> for EntryDetailed {
+//     fn from(value: dion_runtime::datastructs::EntryDetailed) -> Self {
+//         Self {
+//             id: value.id,
+//             url: value.url,
+//             title: value.title,
+//             ui: serde_json::to_string(&value.ui).unwrap_or_default(),
+//             media_type: value.media_type,
+//             status: value.status,
+//             description: value.description,
+//             language: value.language,
+//             cover: value.cover,
+//             cover_header: value.cover_header,
+//             episodes: value.episodes,
+//             genres: value.genres,
+//             alttitles: value.alttitles,
+//             author: value.author,
+//             rating: value.rating,
+//             views: value.views,
+//             length: value.length,
+//         }
+//     }
+// }
 
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {

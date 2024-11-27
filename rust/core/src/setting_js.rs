@@ -13,7 +13,7 @@ mod setting {
     use crate::{
         error::Error,
         jsextension::ExtensionUserData,
-        settings::{ Setting, SettingUI, Settingtype, Settingvalue },
+        settings::{ Setting, SettingUI, Settingtype, Settingvalue }, utils::convertfromjs,
     };
 
     async fn internal_get_setting<'js>(
@@ -51,37 +51,37 @@ mod setting {
         };
         let mut ext = binding.get_mut().await;
         let key: String = uidefinition.get("type")?;
-
-        let newsetting = (match key.as_str() {
-            "slider" =>
-                Ok(SettingUI::Slider {
-                    label: uidefinition.get("label")?,
-                    min: uidefinition.get("mmin")?,
-                    max: uidefinition.get("max")?,
-                    step: uidefinition.get("step")?,
-                }),
-            "checkbox" => Ok(SettingUI::Checkbox { label: uidefinition.get("label")? }),
-            "textbox" => Ok(SettingUI::Textbox { label: uidefinition.get("label")? }),
-            "dropdown" =>
-                Ok(SettingUI::Dropdown {
-                    label: uidefinition.get("label")?,
-                    options: uidefinition
-                        .get::<_, Vec<Object>>("options")?
-                        .into_iter()
-                        .map(|a: Object| {
-                            Ok((a.get::<_, String>("label")?, a.get::<_, String>("value")?))
-                        })
-                        .filter(|a| a.is_ok())
-                        .map(|a: Result<(String, String), Error>| a.unwrap())
-                        .collect(),
-                }),
-            "path" =>
-                Ok(SettingUI::PathSelection {
-                    label: uidefinition.get("label")?,
-                    pickfolder: uidefinition.get::<_, String>("picktype")? == "folder",
-                }),
-            str => Err(Error::ExtensionError(format!("Unknown SettingUI type: {}", str))),
-        })?;
+        let newsetting:SettingUI =convertfromjs(uidefinition,&ctx)?;
+        // let newsetting = (match key.as_str() {
+        //     "slider" =>
+        //         Ok(SettingUI::Slider {
+        //             label: uidefinition.get("label")?,
+        //             min: uidefinition.get("mmin")?,
+        //             max: uidefinition.get("max")?,
+        //             step: uidefinition.get("step")?,
+        //         }),
+        //     "checkbox" => Ok(SettingUI::Checkbox { label: uidefinition.get("label")? }),
+        //     "textbox" => Ok(SettingUI::Textbox { label: uidefinition.get("label")? }),
+        //     "dropdown" =>
+        //         Ok(SettingUI::Dropdown {
+        //             label: uidefinition.get("label")?,
+        //             options: uidefinition
+        //                 .get::<_, Vec<Object>>("options")?
+        //                 .into_iter()
+        //                 .map(|a: Object| {
+        //                     Ok((a.get::<_, String>("label")?, a.get::<_, String>("value")?))
+        //                 })
+        //                 .filter(|a| a.is_ok())
+        //                 .map(|a: Result<(String, String), Error>| a.unwrap())
+        //                 .collect(),
+        //         }),
+        //     "path" =>
+        //         Ok(SettingUI::PathSelection {
+        //             label: uidefinition.get("label")?,
+        //             pickfolder: uidefinition.get::<_, String>("picktype")? == "folder",
+        //         }),
+        //     str => Err(Error::ExtensionError(format!("Unknown SettingUI type: {}", str))),
+        // })?;
         ext.setting.get_setting_mut(setting)?.ui = Some(newsetting);
         Ok(())
     }

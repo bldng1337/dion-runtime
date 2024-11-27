@@ -1,31 +1,40 @@
-use std::sync::Arc;
+use crate::{
+    error::Error,
+    utils::{wrapcatch, UserContextContainer},
+};
 use governor::{DefaultKeyedRateLimiter, Quota, RateLimiter};
-use nonzero_ext::nonzero;
-use reqwest::{ IntoUrl, Method, Request, Response, Url };
-use reqwest_cookie_store::{ CookieStore, CookieStoreMutex };
-use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, RequestBuilder};
 use http::Extensions;
-use rquickjs::{ Ctx, Module };
-use crate::{ error::Error, utils::{ wrapcatch, UserContextContainer } };
-
+use nonzero_ext::nonzero;
+use reqwest::{IntoUrl, Method, Request, Response, Url};
+use reqwest_cookie_store::{CookieStore, CookieStoreMutex};
+use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, RequestBuilder};
+use rquickjs::{Ctx, Module};
+use serde::{Deserialize, Serialize};
+use std::sync::Arc;
+use ts_rs::TS;
 
 pub fn declare<'js>(ctx: Ctx<'js>) -> Result<(), Error> {
     Module::declare_def::<crate::networking_js::js_internal_network, _>(
         ctx.clone(),
-        "internal_network"
+        "internal_network",
     )?;
-    wrapcatch(&ctx, Module::declare(ctx.clone(), "network", include_str!("js/network_js.js")))?;
+    wrapcatch(
+        &ctx,
+        Module::declare(ctx.clone(), "network", include_str!("js/network_js.js")),
+    )?;
     ctx.store_userdata(NetworkContainer::default())?;
     Ok(())
 }
 
-struct RateLimitingMiddleware{
-    ratelimiter:DefaultKeyedRateLimiter<Url>
+struct RateLimitingMiddleware {
+    ratelimiter: DefaultKeyedRateLimiter<Url>,
 }
 
-impl Default for RateLimitingMiddleware{
+impl Default for RateLimitingMiddleware {
     fn default() -> Self {
-        Self { ratelimiter: RateLimiter::keyed(Quota::per_second(nonzero!(10u32))) }
+        Self {
+            ratelimiter: RateLimiter::keyed(Quota::per_second(nonzero!(10u32))),
+        }
     }
 }
 
@@ -42,9 +51,6 @@ impl Middleware for RateLimitingMiddleware {
     }
 }
 
-
-
-
 type NetworkContainer = UserContextContainer<NetworkManager>;
 pub struct NetworkManager {
     nclient: ClientWithMiddleware,
@@ -60,10 +66,13 @@ impl Default for NetworkManager {
         let cookie_store = CookieStore::default();
         let cookie_store = reqwest_cookie_store::CookieStoreMutex::new(cookie_store);
         let cookie_store = std::sync::Arc::new(cookie_store);
-        let client=reqwest::Client::builder().cookie_provider(cookie_store.clone()).build().unwrap();
+        let client = reqwest::Client::builder()
+            .cookie_provider(cookie_store.clone())
+            .build()
+            .unwrap();
         let client = ClientBuilder::new(client)
-        .with(RateLimitingMiddleware::default())
-        .build();
+            .with(RateLimitingMiddleware::default())
+            .build();
         Self {
             cookies: cookie_store.clone(),
             nclient: client,
@@ -74,7 +83,7 @@ impl Default for NetworkManager {
 #[rquickjs::module(rename_vars = "camelCase")]
 mod internal_network {
     use http::Method;
-    use rquickjs::{ Ctx, IntoJs, Object };
+    use rquickjs::{Ctx, IntoJs, Object};
 
     use crate::error::Error;
 
@@ -84,7 +93,7 @@ mod internal_network {
     pub async fn fetch<'js>(
         ctx: Ctx<'js>,
         resource: String,
-        options: Object<'js>
+        options: Object<'js>,
     ) -> Result<Object<'js>, rquickjs::Error> {
         let method = if options.contains_key("method")? {
             match options.get::<&str, String>("method")?.as_str() {
@@ -139,7 +148,11 @@ mod internal_network {
         }
         retval.set("headers", headermap)?;
         let Ok(text) = response.text().await else {
-            return Err(rquickjs::Error::new_resolving_message("", "", "Text decoding failed"));
+            return Err(rquickjs::Error::new_resolving_message(
+                "",
+                "",
+                "Text decoding failed",
+            ));
         };
         retval.set("body", text)?;
         Ok(retval)
@@ -149,16 +162,15 @@ mod internal_network {
     pub async fn get_cookies<'js>(ctx: Ctx<'js>) -> Result<Vec<Object<'js>>, rquickjs::Error> {
         match internal_get_cookies(ctx.clone()).await {
             Ok(data) => Ok(data),
-            Err(err) => {
-                Err(err.into_js(&ctx).err().unwrap())
-            },
+            Err(err) => Err(err.into_js(&ctx).err().unwrap()),
         }
     }
 
     async fn internal_get_cookies<'js>(ctx: Ctx<'js>) -> Result<Vec<Object<'js>>, Error> {
         let networkcontainer = ctx.userdata::<NetworkContainer>().unwrap();
         let networkmanager = networkcontainer.inner.read().await;
-        let a = networkmanager.cookies
+        let a = networkmanager
+            .cookies
             .lock()?
             .iter_unexpired()
             .map(|c| {

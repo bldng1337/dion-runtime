@@ -16,7 +16,19 @@ rquickjs = { git = "https://github.com/DelSkayn/rquickjs.git", rev = "4dabdc2", 
 ] }
 serde = { version = "1.0.0", features = ["derive"] }
 serde_json = "1.0.0"
-reqwest = { version = "0.12.0", features = ["json", "cookies"] }
+reqwest = { version = "0.12.0",default-features = false, features = [
+    "charset",
+    "http2",
+    # "http3",
+    "rustls-tls",
+    "rustls-tls-native-roots",
+    
+    "json",
+    "cookies",
+
+    "brotli",
+    "gzip",
+] }
 reqwest_cookie_store = "0.8.0"
 tokio-util = "0.7.0"
 governor = "0.6.0"
@@ -25,6 +37,6 @@ reqwest-middleware = "0.3.0"
 http-cache-reqwest = "0.14.0"
 async-trait = "0.1.0"
 http = "1.1.0"
-ts-rs = {version = "10.0.0", features = ["serde-json-impl"]}
-openssl = { version = "0.10", features = ["vendored"] }
+ts-rs = { version = "10.0.0", features = ["serde-json-impl"] }
+# openssl = { version = "0.10", features = ["vendored"] }
 # cacache = "13.0.0"

@@ -8,9 +8,13 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'datastructs.freezed.dart';
 
-// These types are ignored because they are not used by any `pub` functions: `CustomUI`, `TimestampType`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `into_js`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `into_js`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`
+
+// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
+abstract class CustomUi implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MetaData>>
+abstract class MetaData implements RustOpaqueInterface {}
 
 @freezed
 sealed class DataSource with _$DataSource {
@@ -29,7 +33,7 @@ class Entry {
   final MediaType mediaType;
   final String? cover;
   final Map<String, String>? coverHeader;
-  final List<String>? auther;
+  final List<String>? author;
   final double? rating;
   final double? views;
   final PlatformInt64? length;
@@ -41,7 +45,7 @@ class Entry {
     required this.mediaType,
     this.cover,
     this.coverHeader,
-    this.auther,
+    this.author,
     this.rating,
     this.views,
     this.length,
@@ -55,7 +59,7 @@ class Entry {
       mediaType.hashCode ^
       cover.hashCode ^
       coverHeader.hashCode ^
-      auther.hashCode ^
+      author.hashCode ^
       rating.hashCode ^
       views.hashCode ^
       length.hashCode;
@@ -71,7 +75,94 @@ class Entry {
           mediaType == other.mediaType &&
           cover == other.cover &&
           coverHeader == other.coverHeader &&
-          auther == other.auther &&
+          author == other.author &&
+          rating == other.rating &&
+          views == other.views &&
+          length == other.length;
+}
+
+class EntryDetailed {
+  final String id;
+  final String url;
+  final String title;
+  final List<String>? author;
+  final CustomUi? ui;
+  final List<MetaData>? meta;
+  final MediaType mediaType;
+  final ReleaseStatus status;
+  final String description;
+  final String language;
+  final String? cover;
+  final Map<String, String>? coverHeader;
+  final List<EpisodeList> episodes;
+  final List<String>? genres;
+  final List<String>? alttitles;
+  final double? rating;
+  final double? views;
+  final int? length;
+
+  const EntryDetailed({
+    required this.id,
+    required this.url,
+    required this.title,
+    this.author,
+    this.ui,
+    this.meta,
+    required this.mediaType,
+    required this.status,
+    required this.description,
+    required this.language,
+    this.cover,
+    this.coverHeader,
+    required this.episodes,
+    this.genres,
+    this.alttitles,
+    this.rating,
+    this.views,
+    this.length,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      url.hashCode ^
+      title.hashCode ^
+      author.hashCode ^
+      ui.hashCode ^
+      meta.hashCode ^
+      mediaType.hashCode ^
+      status.hashCode ^
+      description.hashCode ^
+      language.hashCode ^
+      cover.hashCode ^
+      coverHeader.hashCode ^
+      episodes.hashCode ^
+      genres.hashCode ^
+      alttitles.hashCode ^
+      rating.hashCode ^
+      views.hashCode ^
+      length.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EntryDetailed &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          url == other.url &&
+          title == other.title &&
+          author == other.author &&
+          ui == other.ui &&
+          meta == other.meta &&
+          mediaType == other.mediaType &&
+          status == other.status &&
+          description == other.description &&
+          language == other.language &&
+          cover == other.cover &&
+          coverHeader == other.coverHeader &&
+          episodes == other.episodes &&
+          genres == other.genres &&
+          alttitles == other.alttitles &&
           rating == other.rating &&
           views == other.views &&
           length == other.length;
@@ -317,4 +408,13 @@ class Subtitles {
           runtimeType == other.runtimeType &&
           title == other.title &&
           url == other.url;
+}
+
+enum TimestampType {
+  relative,
+  absolute,
+  ;
+
+  static Future<TimestampType> default_() =>
+      RustLib.instance.api.dionRuntimeDatastructsTimestampTypeDefault();
 }

@@ -71,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.5.1';
 
   @override
-  int get rustContentHash => -1562844753;
+  int get rustContentHash => -880389407;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -162,6 +162,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<ExtensionData> dionRuntimeDatastructsExtensionDataDefault();
 
+  Future<TimestampType> dionRuntimeDatastructsTimestampTypeDefault();
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken;
 
@@ -169,6 +171,14 @@ abstract class RustLibApi extends BaseApi {
       get rust_arc_decrement_strong_count_CancelToken;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CancelTokenPtr;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_CustomUi;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_CustomUi;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CustomUiPtr;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ExtensionManagerProxy;
@@ -187,6 +197,14 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_ExtensionProxyPtr;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_MetaData;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_MetaData;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_MetaDataPtr;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_QueueStore;
@@ -902,6 +920,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         argNames: [],
       );
 
+  @override
+  Future<TimestampType> dionRuntimeDatastructsTimestampTypeDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__datastructs__timestamp_type_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_timestamp_type,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDatastructsTimestampTypeDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDatastructsTimestampTypeDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "timestamp_type_default",
+        argNames: [],
+      );
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
@@ -909,6 +950,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_CancelToken => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_CustomUi => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_CustomUi => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ExtensionManagerProxy => wire
@@ -925,6 +974,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_ExtensionProxy => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_MetaData => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_MetaData => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_QueueStore => wire
@@ -949,6 +1006,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CustomUiImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ExtensionManagerProxy
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           dynamic raw) {
@@ -962,6 +1027,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  MetaData
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MetaDataImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1020,6 +1093,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CustomUiImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ExtensionManagerProxy
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           dynamic raw) {
@@ -1033,6 +1114,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  MetaData
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MetaDataImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1072,6 +1161,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+        raw);
+  }
+
+  @protected
   bool dco_decode_box_autoadd_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
@@ -1093,6 +1191,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double dco_decode_box_autoadd_f_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
+  }
+
+  @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -1151,7 +1255,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       mediaType: dco_decode_media_type(arr[3]),
       cover: dco_decode_opt_String(arr[4]),
       coverHeader: dco_decode_opt_Map_String_String(arr[5]),
-      auther: dco_decode_opt_list_String(arr[6]),
+      author: dco_decode_opt_list_String(arr[6]),
       rating: dco_decode_opt_box_autoadd_f_32(arr[7]),
       views: dco_decode_opt_box_autoadd_f_32(arr[8]),
       length: dco_decode_opt_box_autoadd_i_64(arr[9]),
@@ -1162,26 +1266,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EntryDetailed dco_decode_entry_detailed(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 17)
-      throw Exception('unexpected arr length: expect 17 but see ${arr.length}');
+    if (arr.length != 18)
+      throw Exception('unexpected arr length: expect 18 but see ${arr.length}');
     return EntryDetailed(
       id: dco_decode_String(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
-      ui: dco_decode_String(arr[3]),
-      mediaType: dco_decode_media_type(arr[4]),
-      status: dco_decode_release_status(arr[5]),
-      description: dco_decode_String(arr[6]),
-      language: dco_decode_String(arr[7]),
-      cover: dco_decode_opt_String(arr[8]),
-      coverHeader: dco_decode_opt_Map_String_String(arr[9]),
-      episodes: dco_decode_list_episode_list(arr[10]),
-      genres: dco_decode_opt_list_String(arr[11]),
-      alttitles: dco_decode_opt_list_String(arr[12]),
-      auther: dco_decode_opt_list_String(arr[13]),
-      rating: dco_decode_opt_box_autoadd_f_32(arr[14]),
-      views: dco_decode_opt_box_autoadd_f_32(arr[15]),
-      length: dco_decode_opt_box_autoadd_i_64(arr[16]),
+      author: dco_decode_opt_list_String(arr[3]),
+      ui: dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          arr[4]),
+      meta:
+          dco_decode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+              arr[5]),
+      mediaType: dco_decode_media_type(arr[6]),
+      status: dco_decode_release_status(arr[7]),
+      description: dco_decode_String(arr[8]),
+      language: dco_decode_String(arr[9]),
+      cover: dco_decode_opt_String(arr[10]),
+      coverHeader: dco_decode_opt_Map_String_String(arr[11]),
+      episodes: dco_decode_list_episode_list(arr[12]),
+      genres: dco_decode_opt_list_String(arr[13]),
+      alttitles: dco_decode_opt_list_String(arr[14]),
+      rating: dco_decode_opt_box_autoadd_f_32(arr[15]),
+      views: dco_decode_opt_box_autoadd_f_32(arr[16]),
+      length: dco_decode_opt_box_autoadd_i_32(arr[17]),
     );
   }
 
@@ -1314,6 +1422,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<MetaData>
+      dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData)
+        .toList();
+  }
+
+  @protected
   List<String> dco_decode_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_String).toList();
@@ -1403,6 +1522,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi?
+      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+            raw);
+  }
+
+  @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_bool(raw);
@@ -1421,6 +1551,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_i_32(raw);
+  }
+
+  @protected
   PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_i_64(raw);
@@ -1430,6 +1566,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SettingUI? dco_decode_opt_box_autoadd_setting_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_setting_ui(raw);
+  }
+
+  @protected
+  List<MetaData>?
+      dco_decode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+            raw);
   }
 
   @protected
@@ -1602,6 +1749,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TimestampType dco_decode_timestamp_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TimestampType.values[raw as int];
+  }
+
+  @protected
   int dco_decode_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -1636,6 +1789,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CustomUiImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ExtensionManagerProxy
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           SseDeserializer deserializer) {
@@ -1650,6 +1812,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  MetaData
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MetaDataImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -1716,6 +1887,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CustomUiImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ExtensionManagerProxy
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           SseDeserializer deserializer) {
@@ -1730,6 +1910,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ExtensionProxyImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  MetaData
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MetaDataImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -1773,6 +1962,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi
+      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+        deserializer));
+  }
+
+  @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_bool(deserializer));
@@ -1794,6 +1992,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_f_32(deserializer));
+  }
+
+  @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_i_32(deserializer));
   }
 
   @protected
@@ -1850,7 +2054,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_mediaType = sse_decode_media_type(deserializer);
     var var_cover = sse_decode_opt_String(deserializer);
     var var_coverHeader = sse_decode_opt_Map_String_String(deserializer);
-    var var_auther = sse_decode_opt_list_String(deserializer);
+    var var_author = sse_decode_opt_list_String(deserializer);
     var var_rating = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_views = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_length = sse_decode_opt_box_autoadd_i_64(deserializer);
@@ -1861,7 +2065,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         mediaType: var_mediaType,
         cover: var_cover,
         coverHeader: var_coverHeader,
-        auther: var_auther,
+        author: var_author,
         rating: var_rating,
         views: var_views,
         length: var_length);
@@ -1873,7 +2077,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_id = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
-    var var_ui = sse_decode_String(deserializer);
+    var var_author = sse_decode_opt_list_String(deserializer);
+    var var_ui =
+        sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+            deserializer);
+    var var_meta =
+        sse_decode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+            deserializer);
     var var_mediaType = sse_decode_media_type(deserializer);
     var var_status = sse_decode_release_status(deserializer);
     var var_description = sse_decode_String(deserializer);
@@ -1883,15 +2093,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_episodes = sse_decode_list_episode_list(deserializer);
     var var_genres = sse_decode_opt_list_String(deserializer);
     var var_alttitles = sse_decode_opt_list_String(deserializer);
-    var var_auther = sse_decode_opt_list_String(deserializer);
     var var_rating = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_views = sse_decode_opt_box_autoadd_f_32(deserializer);
-    var var_length = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_length = sse_decode_opt_box_autoadd_i_32(deserializer);
     return EntryDetailed(
         id: var_id,
         url: var_url,
         title: var_title,
+        author: var_author,
         ui: var_ui,
+        meta: var_meta,
         mediaType: var_mediaType,
         status: var_status,
         description: var_description,
@@ -1901,7 +2112,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         episodes: var_episodes,
         genres: var_genres,
         alttitles: var_alttitles,
-        auther: var_auther,
         rating: var_rating,
         views: var_views,
         length: var_length);
@@ -2038,6 +2248,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(
           sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+              deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<MetaData>
+      sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <MetaData>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+          sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
               deserializer));
     }
     return ans_;
@@ -2205,6 +2431,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CustomUi?
+      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -2238,6 +2478,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_i_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -2255,6 +2506,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_setting_ui(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<MetaData>?
+      sse_decode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          deserializer));
     } else {
       return null;
     }
@@ -2428,6 +2693,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TimestampType sse_decode_timestamp_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return TimestampType.values[inner];
+  }
+
+  @protected
   int sse_decode_u_8(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8();
@@ -2453,6 +2725,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+      CustomUi raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as CustomUiImpl).frbInternalCstEncode(move: true);
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
       ExtensionManagerProxy raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2466,6 +2746,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as ExtensionProxyImpl).frbInternalCstEncode(move: true);
+  }
+
+  @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+      MetaData raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as MetaDataImpl).frbInternalCstEncode(move: true);
   }
 
   @protected
@@ -2517,6 +2805,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+      CustomUi raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as CustomUiImpl).frbInternalCstEncode();
+  }
+
+  @protected
   int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
       ExtensionManagerProxy raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2530,6 +2826,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as ExtensionProxyImpl).frbInternalCstEncode();
+  }
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+      MetaData raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as MetaDataImpl).frbInternalCstEncode();
   }
 
   @protected
@@ -2589,6 +2893,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_timestamp_type(TimestampType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
   int cst_encode_u_8(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
@@ -2618,6 +2928,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          CustomUi self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CustomUiImpl).frbInternalSseEncode(move: true), serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           ExtensionManagerProxy self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2634,6 +2953,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_usize(
         (self as ExtensionProxyImpl).frbInternalSseEncode(move: true),
         serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          MetaData self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as MetaDataImpl).frbInternalSseEncode(move: true), serializer);
   }
 
   @protected
@@ -2704,6 +3032,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          CustomUi self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as CustomUiImpl).frbInternalSseEncode(move: null), serializer);
+  }
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           ExtensionManagerProxy self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2720,6 +3057,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_usize(
         (self as ExtensionProxyImpl).frbInternalSseEncode(move: null),
         serializer);
+  }
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          MetaData self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as MetaDataImpl).frbInternalSseEncode(move: null), serializer);
   }
 
   @protected
@@ -2766,6 +3112,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          CustomUi self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+        self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_bool(self, serializer);
@@ -2788,6 +3143,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self, serializer);
   }
 
   @protected
@@ -2846,7 +3207,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_media_type(self.mediaType, serializer);
     sse_encode_opt_String(self.cover, serializer);
     sse_encode_opt_Map_String_String(self.coverHeader, serializer);
-    sse_encode_opt_list_String(self.auther, serializer);
+    sse_encode_opt_list_String(self.author, serializer);
     sse_encode_opt_box_autoadd_f_32(self.rating, serializer);
     sse_encode_opt_box_autoadd_f_32(self.views, serializer);
     sse_encode_opt_box_autoadd_i_64(self.length, serializer);
@@ -2858,7 +3219,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
-    sse_encode_String(self.ui, serializer);
+    sse_encode_opt_list_String(self.author, serializer);
+    sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+        self.ui, serializer);
+    sse_encode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+        self.meta, serializer);
     sse_encode_media_type(self.mediaType, serializer);
     sse_encode_release_status(self.status, serializer);
     sse_encode_String(self.description, serializer);
@@ -2868,10 +3233,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_list_episode_list(self.episodes, serializer);
     sse_encode_opt_list_String(self.genres, serializer);
     sse_encode_opt_list_String(self.alttitles, serializer);
-    sse_encode_opt_list_String(self.auther, serializer);
     sse_encode_opt_box_autoadd_f_32(self.rating, serializer);
     sse_encode_opt_box_autoadd_f_32(self.views, serializer);
-    sse_encode_opt_box_autoadd_i_64(self.length, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.length, serializer);
   }
 
   @protected
@@ -2980,6 +3344,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy(
+          item, serializer);
+    }
+  }
+
+  @protected
+  void
+      sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          List<MetaData> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
           item, serializer);
     }
   }
@@ -3120,6 +3496,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          CustomUi? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
+          self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3150,6 +3539,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_i_32(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_i_64(
       PlatformInt64? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3168,6 +3567,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_setting_ui(self, serializer);
+    }
+  }
+
+  @protected
+  void
+      sse_encode_opt_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          List<MetaData>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData(
+          self, serializer);
     }
   }
 
@@ -3329,6 +3741,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_timestamp_type(TimestampType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
@@ -3373,6 +3791,26 @@ class CancelTokenImpl extends RustOpaque implements CancelToken {
       RustLib.instance.api.crateApiSimpleCancelTokenChild(
         that: this,
       );
+}
+
+@sealed
+class CustomUiImpl extends RustOpaque implements CustomUi {
+  // Not to be used by end users
+  CustomUiImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  CustomUiImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_CustomUi,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_CustomUi,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_CustomUiPtr,
+  );
 }
 
 @sealed
@@ -3492,6 +3930,26 @@ class ExtensionProxyImpl extends RustOpaque implements ExtensionProxy {
   Future<Source> source({required String epid, CancelToken? token}) => RustLib
       .instance.api
       .crateApiSimpleExtensionProxySource(that: this, epid: epid, token: token);
+}
+
+@sealed
+class MetaDataImpl extends RustOpaque implements MetaData {
+  // Not to be used by end users
+  MetaDataImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  MetaDataImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_MetaData,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MetaData,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MetaDataPtr,
+  );
 }
 
 @sealed

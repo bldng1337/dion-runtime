@@ -17,7 +17,7 @@ pub static PERMISSION: LazyLock<RwLock<PermissionSingelton>> = LazyLock::new(||
 );
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug,Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "id")]
 pub enum Permission {
     #[serde(alias = "storage")] StoragePermission {

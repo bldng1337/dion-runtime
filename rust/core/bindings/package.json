@@ -1,0 +1,15 @@
+{
+  "name": "dion-runtime-types",
+  "version": "0.3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bldng1337/dion-runtime.git"
+  },
+  "author": "bldng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bldng1337/dion-runtime/issues"
+  },
+  "homepage": "https://github.com/bldng1337/dion-runtime#readme",
+  "description": ""
+}

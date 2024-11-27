@@ -5,29 +5,39 @@ use serde::{Deserialize, Serialize};
 use serde_json::Map;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ExtensionData {
     pub id: String,
+    #[ts(optional)]
     pub repo: Option<String>,
     pub name: String,
+    #[ts(optional)]
     #[serde(alias = "type")]
     pub media_type: Option<Vec<MediaType>>,
-
+    #[ts(optional)]
     pub giturl: Option<String>,
+    #[ts(optional)]
     pub version: Option<String>,
+    #[ts(optional)]
     pub desc: Option<String>,
+    #[ts(optional)]
     pub author: Option<String>,
+    #[ts(optional)]
     pub license: Option<String>,
+    #[ts(optional)]
     pub tags: Option<Vec<String>>,
+    #[ts(optional)]
     pub nsfw: Option<bool>,
     pub lang: Vec<String>,
+    #[ts(optional)]
     pub url: Option<String>,
+    #[ts(optional)]
     pub icon: Option<String>,
 }
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum MediaType {
     #[serde(alias = "video")]
     Video,
@@ -44,41 +54,48 @@ pub enum MediaType {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Entry {
     pub id: String,
     pub url: String,
     pub title: String,
     #[serde(alias = "type")]
     pub media_type: MediaType,
-    
+    #[ts(optional)]
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]
+    #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
-
-    pub auther: Option<Vec<String>>,
+    #[ts(optional)]
+    pub author: Option<Vec<String>>,
+    #[ts(optional)]
     pub rating: Option<f32>,
+    #[ts(optional)]
     pub views: Option<f32>,
+    #[ts(optional)]
     pub length: Option<i64>,
 }
 
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Episode {
     pub id: String,
     pub name: String,
     pub url: String,
+    #[ts(optional)]
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]
+    #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
+    #[ts(optional)]
     pub timestamp: Option<String>,
 }
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct EpisodeList {
     pub title: String,
     pub episodes: Vec<Episode>,
@@ -86,7 +103,7 @@ pub struct EpisodeList {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum ReleaseStatus {
     #[serde(alias = "releasing")]
     Releasing,
@@ -96,30 +113,35 @@ pub enum ReleaseStatus {
     Unknown,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone,TS,Default)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum TimestampType{
+    #[default]
     Relative,
     Absolute
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone,TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum CustomUI{
     Text {
         text:String
     },
     Image {
         image:String,
-        header:Option<Map<String,String>>
+        #[ts(optional)]
+        header:Option<HashMap<String, String>>
     },
     Link {
         link:String,
-        label:String
+        #[ts(optional)]
+        label:Option<String>
     },
     TimeStamp {
         timestamp:String,
+        #[serde(default)]
         display: TimestampType,
     },
-    Metadata {
-        key:String,
-        data:serde_json::Value,
-    },  
     EntryCard {
         entry:Entry
     },
@@ -131,16 +153,26 @@ pub enum CustomUI{
     }
 }
 
-/// flutter_rust_bridge:ignore
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
+pub struct MetaData {
+    key:String,
+    value:serde_json::Value,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone,TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct EntryDetailed {
     pub id: String,
     pub url: String,
     pub title: String,
-    pub auther: Option<Vec<String>>,
+    #[ts(optional)]
+    pub author: Option<Vec<String>>,
 
-    pub ui: serde_json::Value,//This contains cyclic data so not sure how to handle that to keep it serde and dart usw friendly
+    #[ts(optional)]
+    pub ui: Option<CustomUI>,
+    #[ts(optional)]
+    pub meta: Option<Vec<MetaData>>,
 
     #[serde(alias = "type")]
     pub media_type: MediaType,
@@ -148,21 +180,28 @@ pub struct EntryDetailed {
     pub description: String,
     pub language: String,
 
+    #[ts(optional)]
     pub cover: Option<String>,
     #[serde(alias = "coverheader")]
+    #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
     
     pub episodes: Vec<EpisodeList>,
+    #[ts(optional)]
     pub genres: Option<Vec<String>>,
+    #[ts(optional)]
     pub alttitles: Option<Vec<String>>,
+    #[ts(optional)]
     pub rating: Option<f32>,
+    #[ts(optional)]
     pub views: Option<f32>,
-    pub length: Option<i64>,
+    #[ts(optional)]
+    pub length: Option<i32>,
 }
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum Sort {
     Popular,
     Latest,
@@ -171,7 +210,7 @@ pub enum Sort {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "sourcetype")]
 pub enum Source {
     #[serde(alias = "data")] Data {
@@ -184,7 +223,7 @@ pub enum Source {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
 pub enum LinkSource {
     #[serde(alias = "epub")] Epub {
@@ -206,14 +245,14 @@ pub enum LinkSource {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Subtitles {
     pub title: String,
     pub url: String,
 }
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ImageListAudio {
     pub link: String,
     pub from: i64,
@@ -222,7 +261,7 @@ pub struct ImageListAudio {
 
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
-#[ts(export, export_to = "src/generated/RuntimeTypes.ts")]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
 pub enum DataSource {
     #[serde(alias = "paragraphlist")] Paragraphlist {
@@ -230,9 +269,9 @@ pub enum DataSource {
     },
 }
 
-/// flutter_rust_bridge:ignore
+
 impl<'js> IntoJs<'js> for Sort {
-    /// flutter_rust_bridge:ignore
+    
     fn into_js(self, ctx: &Ctx<'js>) -> rquickjs::Result<Value<'js>> {
         match self {
             Sort::Popular => "popular".into_js(ctx),
