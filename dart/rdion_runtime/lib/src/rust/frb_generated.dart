@@ -181,6 +181,14 @@ abstract class RustLibApi extends BaseApi {
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CustomUiPtr;
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_DropdownItem;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_DropdownItem;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DropdownItemPtr;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ExtensionManagerProxy;
 
   RustArcDecrementStrongCountFnType
@@ -960,6 +968,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI;
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_DropdownItem => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_DropdownItem => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ExtensionManagerProxy => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy;
 
@@ -1011,6 +1027,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return CustomUiImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  DropdownItem
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return DropdownItemImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1098,6 +1122,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return CustomUiImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  DropdownItem
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return DropdownItemImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1397,8 +1429,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 2:
         return LinkSource_Imagelist(
           links: dco_decode_list_String(raw[1]),
-          header: dco_decode_Map_String_String(raw[2]),
-          audio: dco_decode_list_image_list_audio(raw[3]),
+          header: dco_decode_opt_Map_String_String(raw[2]),
+          audio: dco_decode_opt_list_image_list_audio(raw[3]),
         );
       case 3:
         return LinkSource_M3u8(
@@ -1408,6 +1440,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw Exception("unreachable");
     }
+  }
+
+  @protected
+  List<DropdownItem>
+      dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem)
+        .toList();
   }
 
   @protected
@@ -1586,6 +1629,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<ImageListAudio>? dco_decode_opt_list_image_list_audio(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_image_list_audio(raw);
+  }
+
+  @protected
   List<MediaType>? dco_decode_opt_list_media_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_media_type(raw);
@@ -1676,7 +1725,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 4:
         return SettingUI_Dropdown(
           label: dco_decode_String(raw[1]),
-          options: dco_decode_list_record_string_string(raw[2]),
+          options:
+              dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+                  raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -1798,6 +1849,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DropdownItem
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return DropdownItemImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ExtensionManagerProxy
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           SseDeserializer deserializer) {
@@ -1892,6 +1952,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return CustomUiImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  DropdownItem
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return DropdownItemImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -2224,8 +2293,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return LinkSource_Pdf(link: var_link);
       case 2:
         var var_links = sse_decode_list_String(deserializer);
-        var var_header = sse_decode_Map_String_String(deserializer);
-        var var_audio = sse_decode_list_image_list_audio(deserializer);
+        var var_header = sse_decode_opt_Map_String_String(deserializer);
+        var var_audio = sse_decode_opt_list_image_list_audio(deserializer);
         return LinkSource_Imagelist(
             links: var_links, header: var_header, audio: var_audio);
       case 3:
@@ -2235,6 +2304,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  List<DropdownItem>
+      sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <DropdownItem>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+          sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+              deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -2537,6 +2622,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<ImageListAudio>? sse_decode_opt_list_image_list_audio(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_image_list_audio(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   List<MediaType>? sse_decode_opt_list_media_type(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2623,7 +2720,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return SettingUI_Textbox(label: var_label);
       case 4:
         var var_label = sse_decode_String(deserializer);
-        var var_options = sse_decode_list_record_string_string(deserializer);
+        var var_options =
+            sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+                deserializer);
         return SettingUI_Dropdown(label: var_label, options: var_options);
       default:
         throw UnimplementedError('');
@@ -2733,6 +2832,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+      DropdownItem raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as DropdownItemImpl).frbInternalCstEncode(move: true);
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
       ExtensionManagerProxy raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2810,6 +2917,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as CustomUiImpl).frbInternalCstEncode();
+  }
+
+  @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+      DropdownItem raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as DropdownItemImpl).frbInternalCstEncode();
   }
 
   @protected
@@ -2937,6 +3052,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          DropdownItem self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as DropdownItemImpl).frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
           ExtensionManagerProxy self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3037,6 +3162,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as CustomUiImpl).frbInternalSseEncode(move: null), serializer);
+  }
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          DropdownItem self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as DropdownItemImpl).frbInternalSseEncode(move: null),
+        serializer);
   }
 
   @protected
@@ -3325,14 +3460,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         ):
         sse_encode_i_32(2, serializer);
         sse_encode_list_String(links, serializer);
-        sse_encode_Map_String_String(header, serializer);
-        sse_encode_list_image_list_audio(audio, serializer);
+        sse_encode_opt_Map_String_String(header, serializer);
+        sse_encode_opt_list_image_list_audio(audio, serializer);
       case LinkSource_M3u8(link: final link, sub: final sub):
         sse_encode_i_32(3, serializer);
         sse_encode_String(link, serializer);
         sse_encode_list_subtitles(sub, serializer);
       default:
         throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  void
+      sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          List<DropdownItem> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+          item, serializer);
     }
   }
 
@@ -3595,6 +3742,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_list_image_list_audio(
+      List<ImageListAudio>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_image_list_audio(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_list_media_type(
       List<MediaType>? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3679,7 +3837,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case SettingUI_Dropdown(label: final label, options: final options):
         sse_encode_i_32(4, serializer);
         sse_encode_String(label, serializer);
-        sse_encode_list_record_string_string(options, serializer);
+        sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+            options, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -3810,6 +3969,26 @@ class CustomUiImpl extends RustOpaque implements CustomUi {
         RustLib.instance.api.rust_arc_decrement_strong_count_CustomUi,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_CustomUiPtr,
+  );
+}
+
+@sealed
+class DropdownItemImpl extends RustOpaque implements DropdownItem {
+  // Not to be used by end users
+  DropdownItemImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  DropdownItemImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_DropdownItem,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_DropdownItem,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_DropdownItemPtr,
   );
 }
 

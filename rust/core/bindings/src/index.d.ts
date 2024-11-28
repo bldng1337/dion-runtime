@@ -39,9 +39,7 @@ interface DionResponse {
   json: any;
   ok: boolean;
 }
-interface UIDefinition {
-  type: SettingUI;
-}
+
 type Settingvalues= string | number | boolean;
 
 declare function print(a: any): void;
@@ -55,7 +53,7 @@ declare module "permission" {
 }
 declare module "setting" {
   function getSetting<T extends Settingvalues>(settingid: string): Promise<T>;
-  function setUI(settingid: string, definition: UIDefinition): Promise<void>;
+  function setUI(settingid: string, definition: SettingUI): Promise<void>;
   function registerSetting<T extends Settingvalues>(
     settingid: string,
     settingtype: Settingtype,

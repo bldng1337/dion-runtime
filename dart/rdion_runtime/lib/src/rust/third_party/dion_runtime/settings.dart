@@ -8,6 +8,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'settings.freezed.dart';
 
+// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>
+abstract class DropdownItem implements RustOpaqueInterface {}
+
 /// flutter_rust_bridge:non_opaque
 class Setting {
   final Settingvalue val;
@@ -55,7 +58,7 @@ sealed class SettingUI with _$SettingUI {
   }) = SettingUI_Textbox;
   const factory SettingUI.dropdown({
     required String label,
-    required List<(String, String)> options,
+    required List<DropdownItem> options,
   }) = SettingUI_Dropdown;
 }
 

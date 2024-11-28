@@ -24,7 +24,7 @@ mixin _$SettingUI {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) =>
       throw _privateConstructorUsedError;
@@ -35,7 +35,7 @@ mixin _$SettingUI {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,7 +44,7 @@ mixin _$SettingUI {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -207,7 +207,7 @@ class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) {
     return pathSelection(label, pickfolder);
@@ -221,7 +221,7 @@ class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) {
     return pathSelection?.call(label, pickfolder);
   }
@@ -233,7 +233,7 @@ class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) {
     if (pathSelection != null) {
@@ -406,7 +406,7 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) {
     return slider(label, min, max, step);
@@ -420,7 +420,7 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) {
     return slider?.call(label, min, max, step);
   }
@@ -432,7 +432,7 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) {
     if (slider != null) {
@@ -580,7 +580,7 @@ class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) {
     return checkbox(label);
@@ -594,7 +594,7 @@ class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) {
     return checkbox?.call(label);
   }
@@ -606,7 +606,7 @@ class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) {
     if (checkbox != null) {
@@ -748,7 +748,7 @@ class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) {
     return textbox(label);
@@ -762,7 +762,7 @@ class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) {
     return textbox?.call(label);
   }
@@ -774,7 +774,7 @@ class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) {
     if (textbox != null) {
@@ -848,7 +848,7 @@ abstract class _$$SettingUI_DropdownImplCopyWith<$Res>
       __$$SettingUI_DropdownImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String label, List<(String, String)> options});
+  $Res call({String label, List<DropdownItem> options});
 }
 
 /// @nodoc
@@ -875,7 +875,7 @@ class __$$SettingUI_DropdownImplCopyWithImpl<$Res>
       options: null == options
           ? _value._options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<(String, String)>,
+              as List<DropdownItem>,
     ));
   }
 }
@@ -884,15 +884,15 @@ class __$$SettingUI_DropdownImplCopyWithImpl<$Res>
 
 class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
   const _$SettingUI_DropdownImpl(
-      {required this.label, required final List<(String, String)> options})
+      {required this.label, required final List<DropdownItem> options})
       : _options = options,
         super._();
 
   @override
   final String label;
-  final List<(String, String)> _options;
+  final List<DropdownItem> _options;
   @override
-  List<(String, String)> get options {
+  List<DropdownItem> get options {
     if (_options is EqualUnmodifiableListView) return _options;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_options);
@@ -933,7 +933,7 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
         slider,
     required TResult Function(String label) checkbox,
     required TResult Function(String label) textbox,
-    required TResult Function(String label, List<(String, String)> options)
+    required TResult Function(String label, List<DropdownItem> options)
         dropdown,
   }) {
     return dropdown(label, options);
@@ -947,7 +947,7 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
         slider,
     TResult? Function(String label)? checkbox,
     TResult? Function(String label)? textbox,
-    TResult? Function(String label, List<(String, String)> options)? dropdown,
+    TResult? Function(String label, List<DropdownItem> options)? dropdown,
   }) {
     return dropdown?.call(label, options);
   }
@@ -959,7 +959,7 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
     TResult Function(String label, double min, double max, double step)? slider,
     TResult Function(String label)? checkbox,
     TResult Function(String label)? textbox,
-    TResult Function(String label, List<(String, String)> options)? dropdown,
+    TResult Function(String label, List<DropdownItem> options)? dropdown,
     required TResult orElse(),
   }) {
     if (dropdown != null) {
@@ -1011,14 +1011,13 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
 
 abstract class SettingUI_Dropdown extends SettingUI {
   const factory SettingUI_Dropdown(
-          {required final String label,
-          required final List<(String, String)> options}) =
-      _$SettingUI_DropdownImpl;
+      {required final String label,
+      required final List<DropdownItem> options}) = _$SettingUI_DropdownImpl;
   const SettingUI_Dropdown._() : super._();
 
   @override
   String get label;
-  List<(String, String)> get options;
+  List<DropdownItem> get options;
 
   /// Create a copy of SettingUI
   /// with the given fields replaced by the non-null parameter values.

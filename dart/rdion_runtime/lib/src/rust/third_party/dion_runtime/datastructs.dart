@@ -341,8 +341,8 @@ sealed class LinkSource with _$LinkSource {
   }) = LinkSource_Pdf;
   const factory LinkSource.imagelist({
     required List<String> links,
-    required Map<String, String> header,
-    required List<ImageListAudio> audio,
+    Map<String, String>? header,
+    List<ImageListAudio>? audio,
   }) = LinkSource_Imagelist;
   const factory LinkSource.m3U8({
     required String link,

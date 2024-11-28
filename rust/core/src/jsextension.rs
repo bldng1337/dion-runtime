@@ -1,7 +1,7 @@
 use std::{ path::Path, sync::Arc };
 
 use rquickjs::{
-    async_with, function::Args, AsyncContext, AsyncRuntime, Ctx, Function, Module, Object, Promise, Value
+    async_with, function::Args, AsyncContext, AsyncRuntime, Class, Ctx, Function, Module, Object, Promise, Value
 };
 
 use tokio::{ fs::{self, read_dir}, select, sync::RwLock, task::yield_now };
@@ -193,6 +193,7 @@ impl ExtensionContainer {
                         }
                         ret = async {
                             let extension=Self::getextension(&ctx)?;
+                            
                             let func=extension.get::<&str,Function>(funcname)?;
                             
                             let obj=wrapcatch(&ctx,wrapcatch(&ctx, func.call_arg::<Promise>(args))?.into_future::<Object>().await)?;

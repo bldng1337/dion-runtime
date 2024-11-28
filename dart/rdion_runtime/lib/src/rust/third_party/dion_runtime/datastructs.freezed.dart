@@ -251,8 +251,8 @@ mixin _$LinkSource {
   TResult when<TResult extends Object?>({
     required TResult Function(String link) epub,
     required TResult Function(String link) pdf,
-    required TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
   }) =>
@@ -261,8 +261,8 @@ mixin _$LinkSource {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String link)? epub,
     TResult? Function(String link)? pdf,
-    TResult? Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
   }) =>
@@ -271,8 +271,8 @@ mixin _$LinkSource {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String link)? epub,
     TResult Function(String link)? pdf,
-    TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
     required TResult orElse(),
@@ -397,8 +397,8 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
   TResult when<TResult extends Object?>({
     required TResult Function(String link) epub,
     required TResult Function(String link) pdf,
-    required TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
   }) {
@@ -410,8 +410,8 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String link)? epub,
     TResult? Function(String link)? pdf,
-    TResult? Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
   }) {
@@ -423,8 +423,8 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String link)? epub,
     TResult Function(String link)? pdf,
-    TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
     required TResult orElse(),
@@ -558,8 +558,8 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
   TResult when<TResult extends Object?>({
     required TResult Function(String link) epub,
     required TResult Function(String link) pdf,
-    required TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
   }) {
@@ -571,8 +571,8 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String link)? epub,
     TResult? Function(String link)? pdf,
-    TResult? Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
   }) {
@@ -584,8 +584,8 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String link)? epub,
     TResult Function(String link)? pdf,
-    TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
     required TResult orElse(),
@@ -656,8 +656,8 @@ abstract class _$$LinkSource_ImagelistImplCopyWith<$Res> {
   @useResult
   $Res call(
       {List<String> links,
-      Map<String, String> header,
-      List<ImageListAudio> audio});
+      Map<String, String>? header,
+      List<ImageListAudio>? audio});
 }
 
 /// @nodoc
@@ -674,22 +674,22 @@ class __$$LinkSource_ImagelistImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? links = null,
-    Object? header = null,
-    Object? audio = null,
+    Object? header = freezed,
+    Object? audio = freezed,
   }) {
     return _then(_$LinkSource_ImagelistImpl(
       links: null == links
           ? _value._links
           : links // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      header: null == header
+      header: freezed == header
           ? _value._header
           : header // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
-      audio: null == audio
+              as Map<String, String>?,
+      audio: freezed == audio
           ? _value._audio
           : audio // ignore: cast_nullable_to_non_nullable
-              as List<ImageListAudio>,
+              as List<ImageListAudio>?,
     ));
   }
 }
@@ -699,8 +699,8 @@ class __$$LinkSource_ImagelistImplCopyWithImpl<$Res>
 class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
   const _$LinkSource_ImagelistImpl(
       {required final List<String> links,
-      required final Map<String, String> header,
-      required final List<ImageListAudio> audio})
+      final Map<String, String>? header,
+      final List<ImageListAudio>? audio})
       : _links = links,
         _header = header,
         _audio = audio,
@@ -714,20 +714,24 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     return EqualUnmodifiableListView(_links);
   }
 
-  final Map<String, String> _header;
+  final Map<String, String>? _header;
   @override
-  Map<String, String> get header {
+  Map<String, String>? get header {
+    final value = _header;
+    if (value == null) return null;
     if (_header is EqualUnmodifiableMapView) return _header;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_header);
+    return EqualUnmodifiableMapView(value);
   }
 
-  final List<ImageListAudio> _audio;
+  final List<ImageListAudio>? _audio;
   @override
-  List<ImageListAudio> get audio {
+  List<ImageListAudio>? get audio {
+    final value = _audio;
+    if (value == null) return null;
     if (_audio is EqualUnmodifiableListView) return _audio;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_audio);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -767,8 +771,8 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
   TResult when<TResult extends Object?>({
     required TResult Function(String link) epub,
     required TResult Function(String link) pdf,
-    required TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
   }) {
@@ -780,8 +784,8 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String link)? epub,
     TResult? Function(String link)? pdf,
-    TResult? Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
   }) {
@@ -793,8 +797,8 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String link)? epub,
     TResult Function(String link)? pdf,
-    TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
     required TResult orElse(),
@@ -846,13 +850,13 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
 abstract class LinkSource_Imagelist extends LinkSource {
   const factory LinkSource_Imagelist(
       {required final List<String> links,
-      required final Map<String, String> header,
-      required final List<ImageListAudio> audio}) = _$LinkSource_ImagelistImpl;
+      final Map<String, String>? header,
+      final List<ImageListAudio>? audio}) = _$LinkSource_ImagelistImpl;
   const LinkSource_Imagelist._() : super._();
 
   List<String> get links;
-  Map<String, String> get header;
-  List<ImageListAudio> get audio;
+  Map<String, String>? get header;
+  List<ImageListAudio>? get audio;
 
   /// Create a copy of LinkSource
   /// with the given fields replaced by the non-null parameter values.
@@ -949,8 +953,8 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
   TResult when<TResult extends Object?>({
     required TResult Function(String link) epub,
     required TResult Function(String link) pdf,
-    required TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
   }) {
@@ -962,8 +966,8 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String link)? epub,
     TResult? Function(String link)? pdf,
-    TResult? Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
   }) {
@@ -975,8 +979,8 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String link)? epub,
     TResult Function(String link)? pdf,
-    TResult Function(List<String> links, Map<String, String> header,
-            List<ImageListAudio> audio)?
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
     required TResult orElse(),

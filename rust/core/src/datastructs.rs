@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 use ts_rs::TS;
-use rquickjs::{Ctx, IntoJs, Value};
+use rquickjs::{prelude::Opt, Ctx, IntoJs, Value};
 use serde::{Deserialize, Serialize};
-use serde_json::Map;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
@@ -235,8 +234,10 @@ pub enum LinkSource {
     },
     #[serde(alias = "imagelist")] Imagelist {
         links: Vec<String>,
-        header: HashMap<String, String>,
-        audio: Vec<ImageListAudio>,
+        #[ts(optional)]
+        header: Option<HashMap<String, String>>,
+        #[ts(optional)]
+        audio: Option<Vec<ImageListAudio>>,
     },
     #[serde(alias = "m3u8")] M3u8 {
         link: String,

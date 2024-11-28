@@ -127,8 +127,14 @@ pub enum SettingUI {
     },
     Dropdown {
         label: String,
-        options: Vec<(String, String)>,
+        options: Vec<DropdownItem>,
     },
+}
+#[derive(Serialize, Deserialize, Debug, Clone,TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
+pub struct DropdownItem {
+    label:String,
+    value:String,
 }
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq,TS)]

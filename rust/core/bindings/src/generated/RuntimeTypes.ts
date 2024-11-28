@@ -8,6 +8,8 @@ export type CustomUI = { "type": "Text", text: string, } | { "type": "Image", im
  */
 export type DataSource = { "type": "Paragraphlist", paragraphs: Array<string>, };
 
+export type DropdownItem = { label: string, value: string, };
+
 /**
  * flutter_rust_bridge:non_opaque
  */
@@ -35,7 +37,7 @@ export type ImageListAudio = { link: string, from: bigint, to: bigint, };
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type LinkSource = { "type": "Epub", link: string, } | { "type": "Pdf", link: string, } | { "type": "Imagelist", links: Array<string>, header: { [key in string]?: string }, audio: Array<ImageListAudio>, } | { "type": "M3u8", link: string, sub: Array<Subtitles>, };
+export type LinkSource = { "type": "Epub", link: string, } | { "type": "Pdf", link: string, } | { "type": "Imagelist", links: Array<string>, header?: { [key in string]?: string }, audio?: Array<ImageListAudio>, } | { "type": "M3u8", link: string, sub: Array<Subtitles>, };
 
 /**
  * flutter_rust_bridge:non_opaque
@@ -57,7 +59,7 @@ export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type SettingUI = { "type": "PathSelection", label: string, pickfolder: boolean, } | { "type": "Slider", label: string, min: number, max: number, step: number, } | { "type": "Checkbox", label: string, } | { "type": "Textbox", label: string, } | { "type": "Dropdown", label: string, options: Array<[string, string]>, };
+export type SettingUI = { "type": "PathSelection", label: string, pickfolder: boolean, } | { "type": "Slider", label: string, min: number, max: number, step: number, } | { "type": "Checkbox", label: string, } | { "type": "Textbox", label: string, } | { "type": "Dropdown", label: string, options: Array<DropdownItem>, };
 
 /**
  * flutter_rust_bridge:non_opaque

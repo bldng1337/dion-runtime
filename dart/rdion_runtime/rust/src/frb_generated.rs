@@ -27,6 +27,7 @@
 
 use crate::api::simple::*;
 use dion_runtime::datastructs::*;
+use dion_runtime::settings::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -1180,8 +1181,8 @@ const _: fn() = || {
             audio,
         } => {
             let _: Vec<String> = links;
-            let _: std::collections::HashMap<String, String> = header;
-            let _: Vec<dion_runtime::datastructs::ImageListAudio> = audio;
+            let _: Option<std::collections::HashMap<String, String>> = header;
+            let _: Option<Vec<dion_runtime::datastructs::ImageListAudio>> = audio;
         }
         dion_runtime::datastructs::LinkSource::M3u8 { link, sub } => {
             let _: String = link;
@@ -1224,7 +1225,7 @@ const _: fn() = || {
         }
         dion_runtime::settings::SettingUI::Dropdown { label, options } => {
             let _: String = label;
-            let _: Vec<(String, String)> = options;
+            let _: Vec<DropdownItem> = options;
         }
     }
     match None::<dion_runtime::settings::Settingvalue>.unwrap() {
@@ -1384,6 +1385,16 @@ impl SseDecode for CustomUI {
     }
 }
 
+impl SseDecode for DropdownItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueNom<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
 impl SseDecode for ExtensionManagerProxy {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1444,6 +1455,16 @@ impl SseDecode
 
 impl SseDecode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return unsafe { decode_rust_opaque_nom(inner) };
+    }
+}
+
+impl SseDecode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1743,9 +1764,11 @@ impl SseDecode for dion_runtime::datastructs::LinkSource {
             2 => {
                 let mut var_links = <Vec<String>>::sse_decode(deserializer);
                 let mut var_header =
-                    <std::collections::HashMap<String, String>>::sse_decode(deserializer);
+                    <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
                 let mut var_audio =
-                    <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_decode(deserializer);
+                    <Option<Vec<dion_runtime::datastructs::ImageListAudio>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::datastructs::LinkSource::Imagelist {
                     links: var_links,
                     header: var_header,
@@ -1765,6 +1788,18 @@ impl SseDecode for dion_runtime::datastructs::LinkSource {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for Vec<DropdownItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<DropdownItem>::sse_decode(deserializer));
+        }
+        return ans_;
     }
 }
 
@@ -2075,6 +2110,19 @@ impl SseDecode for Option<Vec<String>> {
     }
 }
 
+impl SseDecode for Option<Vec<dion_runtime::datastructs::ImageListAudio>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<Vec<dion_runtime::datastructs::MediaType>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2191,7 +2239,7 @@ impl SseDecode for dion_runtime::settings::SettingUI {
             }
             4 => {
                 let mut var_label = <String>::sse_decode(deserializer);
-                let mut var_options = <Vec<(String, String)>>::sse_decode(deserializer);
+                let mut var_options = <Vec<DropdownItem>>::sse_decode(deserializer);
                 return dion_runtime::settings::SettingUI::Dropdown {
                     label: var_label,
                     options: var_options,
@@ -2388,6 +2436,21 @@ impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<
 
 impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CustomUI>> for CustomUI {
     fn into_into_dart(self) -> FrbWrapper<CustomUI> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<DropdownItem> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<DropdownItem> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<DropdownItem>> for DropdownItem {
+    fn into_into_dart(self) -> FrbWrapper<DropdownItem> {
         self.into()
     }
 }
@@ -3034,6 +3097,13 @@ impl SseEncode for CustomUI {
     }
 }
 
+impl SseEncode for DropdownItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for ExtensionManagerProxy {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3087,6 +3157,17 @@ impl SseEncode
 
 impl SseEncode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3331,8 +3412,10 @@ impl SseEncode for dion_runtime::datastructs::LinkSource {
             } => {
                 <i32>::sse_encode(2, serializer);
                 <Vec<String>>::sse_encode(links, serializer);
-                <std::collections::HashMap<String, String>>::sse_encode(header, serializer);
-                <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_encode(audio, serializer);
+                <Option<std::collections::HashMap<String, String>>>::sse_encode(header, serializer);
+                <Option<Vec<dion_runtime::datastructs::ImageListAudio>>>::sse_encode(
+                    audio, serializer,
+                );
             }
             dion_runtime::datastructs::LinkSource::M3u8 { link, sub } => {
                 <i32>::sse_encode(3, serializer);
@@ -3342,6 +3425,16 @@ impl SseEncode for dion_runtime::datastructs::LinkSource {
             _ => {
                 unimplemented!("");
             }
+        }
+    }
+}
+
+impl SseEncode for Vec<DropdownItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <DropdownItem>::sse_encode(item, serializer);
         }
     }
 }
@@ -3605,6 +3698,16 @@ impl SseEncode for Option<Vec<String>> {
     }
 }
 
+impl SseEncode for Option<Vec<dion_runtime::datastructs::ImageListAudio>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<Vec<dion_runtime::datastructs::MediaType>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3705,7 +3808,7 @@ impl SseEncode for dion_runtime::settings::SettingUI {
             dion_runtime::settings::SettingUI::Dropdown { label, options } => {
                 <i32>::sse_encode(4, serializer);
                 <String>::sse_encode(label, serializer);
-                <Vec<(String, String)>>::sse_encode(options, serializer);
+                <Vec<DropdownItem>>::sse_encode(options, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -3849,6 +3952,7 @@ mod io {
     use super::*;
     use crate::api::simple::*;
     use dion_runtime::datastructs::*;
+    use dion_runtime::settings::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -3884,6 +3988,18 @@ mod io {
         fn cst_decode(self) -> CustomUI {
             flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
                 RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
+    impl CstDecode<DropdownItem> for usize {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> DropdownItem {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>,
+                >,
             >::cst_decode(
                 self
             ))
@@ -3962,6 +4078,19 @@ mod io {
         fn cst_decode(
             self,
         ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
+        {
+            unsafe { decode_rust_opaque_nom(self as _) }
+        }
+    }
+    impl
+        CstDecode<
+            RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>,
+        > for usize
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>
         {
             unsafe { decode_rust_opaque_nom(self as _) }
         }
@@ -4269,6 +4398,16 @@ mod io {
             }
         }
     }
+    impl CstDecode<Vec<DropdownItem>> for *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem {
+            // Codec=Cst (C-struct based), see doc to use other codecs
+            fn cst_decode(self) -> Vec<DropdownItem> {
+                let vec = unsafe {
+        let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+        flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+    };
+    vec.into_iter().map(CstDecode::cst_decode).collect()
+            }
+        }
     impl CstDecode<Vec<ExtensionProxy>> for *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy {
             // Codec=Cst (C-struct based), see doc to use other codecs
             fn cst_decode(self) -> Vec<ExtensionProxy> {
@@ -5035,6 +5174,24 @@ mod io {
     }
 
     #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionManagerProxy(
         ptr: *const std::ffi::c_void,
     ) {
@@ -5183,6 +5340,12 @@ mod io {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
             wire_cst_settingvalue::new_with_null_ptr(),
         )
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(len: i32) -> *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem{
+        let wrap = wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem { ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len), len };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
     #[no_mangle]
@@ -5463,6 +5626,13 @@ length: *mut i32 }
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem
+    {
+        ptr: *mut usize,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionProxy
     {
         ptr: *mut usize,
@@ -5614,10 +5784,8 @@ length: *mut i32 }
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingUI_Dropdown {
-        label: *mut wire_cst_list_prim_u_8_strict,
-        options: *mut wire_cst_list_record_string_string,
-    }
+    pub struct wire_cst_SettingUI_Dropdown { label: *mut wire_cst_list_prim_u_8_strict,
+options: *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem, }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_settingvalue {
