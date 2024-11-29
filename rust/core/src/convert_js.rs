@@ -17,11 +17,19 @@ mod convert {
 
     #[rquickjs::function]
     pub fn decode_base64(str: String) -> Result<String, rquickjs::Error> {
-        String::from_utf8(
-            STANDARD
-                .decode(str)
-                .map_err(|_e| rquickjs::Error::Exception)?,
-        )
-        .map_err(|_e| rquickjs::Error::Exception)
+        String::from_utf8(STANDARD.decode(str.clone()).map_err(|e| {
+            rquickjs::Error::new_resolving_message(
+                "",
+                "",
+                format!("Failed to parse: {} Error: {}", str, e),
+            )
+        })?)
+        .map_err(|e| {
+            rquickjs::Error::new_resolving_message(
+                "",
+                "",
+                format!("Failed to convert base64 to utf-8 {} Error: {}", str, e),
+            )
+        })
     }
 }
