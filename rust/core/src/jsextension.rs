@@ -8,7 +8,7 @@ use tokio::{ fs::{self, read_dir}, select, sync::RwLock, task::yield_now };
 use tokio_util::sync::CancellationToken;
 
 use crate::{
-    datastructs::{ self, Entry, EntryDetailed, ExtensionData, Sort, Source }, error::{ Error, Result }, extension::{TExtension, TExtensionManager}, networking_js, permission::PermissionStore, permission_js, setting_js, settings::SettingStore, utils::{ val_to_string, wrapcatch, ReadOnlyUserContextContainer, SharedUserContextContainer }
+    convert_js, datastructs::{ self, Entry, EntryDetailed, ExtensionData, Sort, Source }, error::{ Error, Result }, extension::{TExtension, TExtensionManager}, networking_js, permission::PermissionStore, permission_js, setting_js, settings::SettingStore, utils::{ val_to_string, wrapcatch, ReadOnlyUserContextContainer, SharedUserContextContainer }
 };
 
 
@@ -224,6 +224,7 @@ impl ExtensionContainer {
             
             networking_js::declare(ctx.clone())?;
             permission_js::declare(ctx.clone())?;
+            convert_js::declare(ctx.clone())?;
             setting_js::declare(ctx.clone())?;
             let module = wrapcatch(&ctx, Module::declare(
                 ctx.clone(),

@@ -40,3 +40,4 @@ http = "1.1.0"
 ts-rs = { version = "10.0.0", features = ["serde-json-impl"] }
 # openssl = { version = "0.10", features = ["vendored"] }
 # cacache = "13.0.0"
+base64 = "0.22.0"

@@ -61,6 +61,11 @@ declare module "setting" {
   ): Promise<void>;
 }
 
+declare module "convert" {
+  function decode_base64(input: string): string;
+  function encode_base64(input: string): string;
+}
+
 declare var appdata: {
   app: string;
   version: string;

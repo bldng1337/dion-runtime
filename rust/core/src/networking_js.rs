@@ -11,7 +11,6 @@ use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, 
 use rquickjs::{Ctx, Module};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
-use ts_rs::TS;
 
 pub fn declare<'js>(ctx: Ctx<'js>) -> Result<(), Error> {
     Module::declare_def::<crate::networking_js::js_internal_network, _>(

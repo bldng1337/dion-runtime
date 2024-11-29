@@ -7,6 +7,7 @@ pub mod permission;
 mod permission_js;
 mod setting_js;
 pub mod settings;
+mod convert_js;
 mod utils;
 
 #[cfg(test)]
@@ -48,7 +49,7 @@ mod tests {
         }
         for ext in exts.iter_mut() {
             ext.set_enabled(true).await?;
-            println!("Enabled Extension");
+            println!("Enabled Extension {}",ext.get_data().await.name);
             assert!(
                 ext.get_extension()
                     .await

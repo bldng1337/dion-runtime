@@ -549,6 +549,7 @@ name = "dion-runtime"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "base64 0.22.1",
  "governor",
  "http",
  "http-cache-reqwest",
