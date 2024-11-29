@@ -1232,12 +1232,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_i_64(raw);
-  }
-
-  @protected
   LinkSource dco_decode_box_autoadd_link_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_link_source(raw);
@@ -1290,7 +1284,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       author: dco_decode_opt_list_String(arr[6]),
       rating: dco_decode_opt_box_autoadd_f_32(arr[7]),
       views: dco_decode_opt_box_autoadd_f_32(arr[8]),
-      length: dco_decode_opt_box_autoadd_i_64(arr[9]),
+      length: dco_decode_opt_box_autoadd_i_32(arr[9]),
     );
   }
 
@@ -1409,8 +1403,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return ImageListAudio(
       link: dco_decode_String(arr[0]),
-      from: dco_decode_i_64(arr[1]),
-      to: dco_decode_i_64(arr[2]),
+      from: dco_decode_i_32(arr[1]),
+      to: dco_decode_i_32(arr[2]),
     );
   }
 
@@ -1597,12 +1591,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_i_32(raw);
-  }
-
-  @protected
-  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_i_64(raw);
   }
 
   @protected
@@ -2070,12 +2058,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_i_64(deserializer));
-  }
-
-  @protected
   LinkSource sse_decode_box_autoadd_link_source(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_link_source(deserializer));
@@ -2126,7 +2108,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_author = sse_decode_opt_list_String(deserializer);
     var var_rating = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_views = sse_decode_opt_box_autoadd_f_32(deserializer);
-    var var_length = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_length = sse_decode_opt_box_autoadd_i_32(deserializer);
     return Entry(
         id: var_id,
         url: var_url,
@@ -2274,8 +2256,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ImageListAudio sse_decode_image_list_audio(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_link = sse_decode_String(deserializer);
-    var var_from = sse_decode_i_64(deserializer);
-    var var_to = sse_decode_i_64(deserializer);
+    var var_from = sse_decode_i_32(deserializer);
+    var var_to = sse_decode_i_32(deserializer);
     return ImageListAudio(link: var_link, from: var_from, to: var_to);
   }
 
@@ -2568,17 +2550,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_i_32(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_i_64(deserializer));
     } else {
       return null;
     }
@@ -3287,13 +3258,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_i_64(
-      PlatformInt64 self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_64(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_link_source(
       LinkSource self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3345,7 +3309,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_list_String(self.author, serializer);
     sse_encode_opt_box_autoadd_f_32(self.rating, serializer);
     sse_encode_opt_box_autoadd_f_32(self.views, serializer);
-    sse_encode_opt_box_autoadd_i_64(self.length, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.length, serializer);
   }
 
   @protected
@@ -3439,8 +3403,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ImageListAudio self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.link, serializer);
-    sse_encode_i_64(self.from, serializer);
-    sse_encode_i_64(self.to, serializer);
+    sse_encode_i_32(self.from, serializer);
+    sse_encode_i_32(self.to, serializer);
   }
 
   @protected
@@ -3692,17 +3656,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_i_32(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_box_autoadd_i_64(
-      PlatformInt64? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_i_64(self, serializer);
     }
   }
 

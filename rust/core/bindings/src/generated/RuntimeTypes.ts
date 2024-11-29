@@ -13,7 +13,7 @@ export type DropdownItem = { label: string, value: string, };
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type Entry = { id: string, url: string, title: string, media_type: MediaType, cover?: string, cover_header?: { [key in string]?: string }, author?: Array<string>, rating?: number, views?: number, length?: bigint, };
+export type Entry = { id: string, url: string, title: string, media_type: MediaType, cover?: string, cover_header?: { [key in string]?: string }, author?: Array<string>, rating?: number, views?: number, length?: number, };
 
 export type EntryDetailed = { id: string, url: string, title: string, author?: Array<string>, ui?: CustomUI, meta?: Array<MetaData>, media_type: MediaType, status: ReleaseStatus, description: string, language: string, cover?: string, cover_header?: { [key in string]?: string }, episodes: Array<EpisodeList>, genres?: Array<string>, alttitles?: Array<string>, rating?: number, views?: number, length?: number, };
 
@@ -32,7 +32,7 @@ export type ExtensionData = { id: string, repo?: string, name: string, media_typ
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type ImageListAudio = { link: string, from: bigint, to: bigint, };
+export type ImageListAudio = { link: string, from: number, to: number, };
 
 /**
  * flutter_rust_bridge:non_opaque

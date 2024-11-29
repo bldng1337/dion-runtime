@@ -36,7 +36,7 @@ class Entry {
   final List<String>? author;
   final double? rating;
   final double? views;
-  final PlatformInt64? length;
+  final int? length;
 
   const Entry({
     required this.id,
@@ -307,8 +307,8 @@ class ExtensionData {
 /// flutter_rust_bridge:non_opaque
 class ImageListAudio {
   final String link;
-  final PlatformInt64 from;
-  final PlatformInt64 to;
+  final int from;
+  final int to;
 
   const ImageListAudio({
     required this.link,

@@ -1108,7 +1108,7 @@ const _: fn() = || {
         let _: Option<Vec<String>> = Entry.author;
         let _: Option<f32> = Entry.rating;
         let _: Option<f32> = Entry.views;
-        let _: Option<i64> = Entry.length;
+        let _: Option<i32> = Entry.length;
     }
     {
         let EntryDetailed = None::<dion_runtime::datastructs::EntryDetailed>.unwrap();
@@ -1165,8 +1165,8 @@ const _: fn() = || {
     {
         let ImageListAudio = None::<dion_runtime::datastructs::ImageListAudio>.unwrap();
         let _: String = ImageListAudio.link;
-        let _: i64 = ImageListAudio.from;
-        let _: i64 = ImageListAudio.to;
+        let _: i32 = ImageListAudio.from;
+        let _: i32 = ImageListAudio.to;
     }
     match None::<dion_runtime::datastructs::LinkSource>.unwrap() {
         dion_runtime::datastructs::LinkSource::Epub { link } => {
@@ -1574,7 +1574,7 @@ impl SseDecode for dion_runtime::datastructs::Entry {
         let mut var_author = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_rating = <Option<f32>>::sse_decode(deserializer);
         let mut var_views = <Option<f32>>::sse_decode(deserializer);
-        let mut var_length = <Option<i64>>::sse_decode(deserializer);
+        let mut var_length = <Option<i32>>::sse_decode(deserializer);
         return dion_runtime::datastructs::Entry {
             id: var_id,
             url: var_url,
@@ -1738,8 +1738,8 @@ impl SseDecode for dion_runtime::datastructs::ImageListAudio {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_link = <String>::sse_decode(deserializer);
-        let mut var_from = <i64>::sse_decode(deserializer);
-        let mut var_to = <i64>::sse_decode(deserializer);
+        let mut var_from = <i32>::sse_decode(deserializer);
+        let mut var_to = <i32>::sse_decode(deserializer);
         return dion_runtime::datastructs::ImageListAudio {
             link: var_link,
             from: var_from,
@@ -2058,17 +2058,6 @@ impl SseDecode for Option<i32> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<i32>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<i64> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<i64>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -3279,7 +3268,7 @@ impl SseEncode for dion_runtime::datastructs::Entry {
         <Option<Vec<String>>>::sse_encode(self.author, serializer);
         <Option<f32>>::sse_encode(self.rating, serializer);
         <Option<f32>>::sse_encode(self.views, serializer);
-        <Option<i64>>::sse_encode(self.length, serializer);
+        <Option<i32>>::sse_encode(self.length, serializer);
     }
 }
 
@@ -3388,8 +3377,8 @@ impl SseEncode for dion_runtime::datastructs::ImageListAudio {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.link, serializer);
-        <i64>::sse_encode(self.from, serializer);
-        <i64>::sse_encode(self.to, serializer);
+        <i32>::sse_encode(self.from, serializer);
+        <i32>::sse_encode(self.to, serializer);
     }
 }
 
@@ -3654,16 +3643,6 @@ impl SseEncode for Option<i32> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <i32>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<i64> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <i64>::sse_encode(value, serializer);
         }
     }
 }
@@ -4217,12 +4196,6 @@ mod io {
     impl CstDecode<i32> for *mut i32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> i32 {
-            unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
-        }
-    }
-    impl CstDecode<i64> for *mut i64 {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> i64 {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
@@ -5306,11 +5279,6 @@ mod io {
     }
 
     #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_i_64(value: i64) -> *mut i64 {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
-    }
-
-    #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_link_source(
     ) -> *mut wire_cst_link_source {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
@@ -5523,7 +5491,7 @@ mod io {
         author: *mut wire_cst_list_String,
         rating: *mut f32,
         views: *mut f32,
-        length: *mut i64,
+        length: *mut i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5583,8 +5551,8 @@ length: *mut i32 }
     #[derive(Clone, Copy)]
     pub struct wire_cst_image_list_audio {
         link: *mut wire_cst_list_prim_u_8_strict,
-        from: i64,
-        to: i64,
+        from: i32,
+        to: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

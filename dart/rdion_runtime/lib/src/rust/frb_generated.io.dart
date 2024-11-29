@@ -178,9 +178,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_box_autoadd_i_32(dynamic raw);
 
   @protected
-  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
-
-  @protected
   LinkSource dco_decode_box_autoadd_link_source(dynamic raw);
 
   @protected
@@ -303,9 +300,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
-
-  @protected
-  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
 
   @protected
   SettingUI? dco_decode_opt_box_autoadd_setting_ui(dynamic raw);
@@ -503,9 +497,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
-  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
-
-  @protected
   LinkSource sse_decode_box_autoadd_link_source(SseDeserializer deserializer);
 
   @protected
@@ -632,9 +623,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
-
-  @protected
-  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
   SettingUI? sse_decode_opt_box_autoadd_setting_ui(
@@ -789,12 +777,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_i_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_i_32(cst_encode_i_32(raw));
-  }
-
-  @protected
-  ffi.Pointer<ffi.Int64> cst_encode_box_autoadd_i_64(PlatformInt64 raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return wire.cst_new_box_autoadd_i_64(cst_encode_i_64(raw));
   }
 
   @protected
@@ -1057,12 +1039,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<ffi.Int64> cst_encode_opt_box_autoadd_i_64(PlatformInt64? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_i_64(raw);
-  }
-
-  @protected
   ffi.Pointer<wire_cst_setting_ui> cst_encode_opt_box_autoadd_setting_ui(
       SettingUI? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1166,7 +1142,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.author = cst_encode_opt_list_String(apiObj.author);
     wireObj.rating = cst_encode_opt_box_autoadd_f_32(apiObj.rating);
     wireObj.views = cst_encode_opt_box_autoadd_f_32(apiObj.views);
-    wireObj.length = cst_encode_opt_box_autoadd_i_64(apiObj.length);
+    wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
   }
 
   @protected
@@ -1236,8 +1212,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_image_list_audio(
       ImageListAudio apiObj, wire_cst_image_list_audio wireObj) {
     wireObj.link = cst_encode_String(apiObj.link);
-    wireObj.from = cst_encode_i_64(apiObj.from);
-    wireObj.to = cst_encode_i_64(apiObj.to);
+    wireObj.from = cst_encode_i_32(apiObj.from);
+    wireObj.to = cst_encode_i_32(apiObj.to);
   }
 
   @protected
@@ -1650,10 +1626,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_i_64(
-      PlatformInt64 self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_link_source(
       LinkSource self, SseSerializer serializer);
 
@@ -1789,10 +1761,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_i_64(
-      PlatformInt64? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_setting_ui(
@@ -2738,20 +2706,6 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_i_32 = _cst_new_box_autoadd_i_32Ptr
       .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
 
-  ffi.Pointer<ffi.Int64> cst_new_box_autoadd_i_64(
-    int value,
-  ) {
-    return _cst_new_box_autoadd_i_64(
-      value,
-    );
-  }
-
-  late final _cst_new_box_autoadd_i_64Ptr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int64> Function(ffi.Int64)>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_i_64');
-  late final _cst_new_box_autoadd_i_64 = _cst_new_box_autoadd_i_64Ptr
-      .asFunction<ffi.Pointer<ffi.Int64> Function(int)>();
-
   ffi.Pointer<wire_cst_link_source> cst_new_box_autoadd_link_source() {
     return _cst_new_box_autoadd_link_source();
   }
@@ -3158,7 +3112,7 @@ final class wire_cst_entry extends ffi.Struct {
 
   external ffi.Pointer<ffi.Float> views;
 
-  external ffi.Pointer<ffi.Int64> length;
+  external ffi.Pointer<ffi.Int32> length;
 }
 
 final class wire_cst_LinkSource_Epub extends ffi.Struct {
@@ -3172,10 +3126,10 @@ final class wire_cst_LinkSource_Pdf extends ffi.Struct {
 final class wire_cst_image_list_audio extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
 
-  @ffi.Int64()
+  @ffi.Int32()
   external int from;
 
-  @ffi.Int64()
+  @ffi.Int32()
   external int to;
 }
 

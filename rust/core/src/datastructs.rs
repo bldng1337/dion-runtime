@@ -72,7 +72,7 @@ pub struct Entry {
     #[ts(optional)]
     pub views: Option<f32>,
     #[ts(optional)]
-    pub length: Option<i64>,
+    pub length: Option<i32>,
 }
 
 
@@ -257,8 +257,8 @@ pub struct Subtitles {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ImageListAudio {
     pub link: String,
-    pub from: i64,
-    pub to: i64,
+    pub from: i32,
+    pub to: i32,
 }
 
 /// flutter_rust_bridge:non_opaque
