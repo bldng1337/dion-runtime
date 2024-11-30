@@ -28,13 +28,13 @@ impl TExtensionManager<ExtensionContainer> for ExtensionManager {
     async fn get_extensions(&self)->Result<Vec<ExtensionContainer>> {
         let mut dir=read_dir(&self.path).await?;
         let mut ret=Vec::new();
-        let rt = AsyncRuntime::new()?;
         while let Some(file) = dir.next_entry().await? {
+            let rt = AsyncRuntime::new()?;
             if !file.file_name().into_string().or(Err(Error::ExtensionError("Filename conversion failed".to_string())))?.ends_with(".dion.js") {
                 continue;
             }
             println!("Got Extension {}",file.file_name().to_str().unwrap());
-            ret.push(ExtensionContainer::create(file.path(),rt.clone()).await?);
+            ret.push(ExtensionContainer::create(file.path(),rt).await?);
         }
         Ok(ret)
     }
