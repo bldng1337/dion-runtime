@@ -1,6 +1,7 @@
 use deadqueue::limited::Queue;
-use dion_runtime::datastructs::{
-    Entry, EntryDetailed, EpisodeList, ExtensionData, MediaType, ReleaseStatus, Sort, Source
+pub use dion_runtime::datastructs::{
+    CustomUI, Entry, EntryDetailed, EpisodeList, ExtensionData, MediaType, MetaData, ReleaseStatus,
+    Sort, Source,
 };
 use dion_runtime::error::{Error, Result};
 use dion_runtime::jsextension::{ExtensionContainer, ExtensionManager};
@@ -9,7 +10,6 @@ use dion_runtime::permission::{Permission, PermissionRequester, PERMISSION};
 use dion_runtime::extension::{TExtension, TExtensionManager};
 use dion_runtime::settings::{Setting, Settingtype, Settingvalue};
 use flutter_rust_bridge::frb;
-use std::collections::HashMap;
 use std::fmt::Debug;
 use std::sync::{Arc, LazyLock};
 use std::time::Duration;
@@ -18,6 +18,7 @@ use tokio::time::sleep;
 use tokio_util::sync::CancellationToken;
 
 use crate::frb_generated::StreamSink;
+
 
 #[frb(rust2dart(dart_type = "String", dart_code = "{}"))]
 pub fn encode_fancy_type(raw: serde_json::Value) -> String {
@@ -105,10 +106,13 @@ impl ExtensionManagerProxy {
     }
 
     pub async fn get_extensions(&self) -> Result<Vec<ExtensionProxy>> {
-        Ok(self.inner
+        Ok(self
+            .inner
             .get_extensions()
-            .await
-            ?.into_iter().map(|a| ExtensionProxy { inner: a }).collect())
+            .await?
+            .into_iter()
+            .map(|a| ExtensionProxy { inner: a })
+            .collect())
     }
 }
 
@@ -465,7 +469,7 @@ impl CancelToken {
 
     pub fn child(&self) -> CancelToken {
         CancelToken {
-            tok: self.tok.child_token()
+            tok: self.tok.child_token(),
         }
     }
 }

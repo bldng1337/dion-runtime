@@ -1092,6 +1092,32 @@ fn wire__dion_runtime__datastructs__timestamp_type_default_impl(
 
 #[allow(clippy::unnecessary_literal_unwrap)]
 const _: fn() = || {
+    match None::<dion_runtime::datastructs::CustomUI>.unwrap() {
+        dion_runtime::datastructs::CustomUI::Text { text } => {
+            let _: String = text;
+        }
+        dion_runtime::datastructs::CustomUI::Image { image, header } => {
+            let _: String = image;
+            let _: Option<std::collections::HashMap<String, String>> = header;
+        }
+        dion_runtime::datastructs::CustomUI::Link { link, label } => {
+            let _: String = link;
+            let _: Option<String> = label;
+        }
+        dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => {
+            let _: String = timestamp;
+            let _: dion_runtime::datastructs::TimestampType = display;
+        }
+        dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
+            let _: dion_runtime::datastructs::Entry = entry;
+        }
+        dion_runtime::datastructs::CustomUI::Column { children } => {
+            let _: Vec<dion_runtime::datastructs::CustomUI> = children;
+        }
+        dion_runtime::datastructs::CustomUI::Row { children } => {
+            let _: Vec<dion_runtime::datastructs::CustomUI> = children;
+        }
+    }
     match None::<dion_runtime::datastructs::DataSource>.unwrap() {
         dion_runtime::datastructs::DataSource::Paragraphlist { paragraphs } => {
             let _: Vec<String> = paragraphs;
@@ -1116,7 +1142,7 @@ const _: fn() = || {
         let _: String = EntryDetailed.url;
         let _: String = EntryDetailed.title;
         let _: Option<Vec<String>> = EntryDetailed.author;
-        let _: Option<CustomUI> = EntryDetailed.ui;
+        let _: Option<dion_runtime::datastructs::CustomUI> = EntryDetailed.ui;
         let _: Option<Vec<MetaData>> = EntryDetailed.meta;
         let _: dion_runtime::datastructs::MediaType = EntryDetailed.media_type;
         let _: dion_runtime::datastructs::ReleaseStatus = EntryDetailed.status;
@@ -1375,16 +1401,6 @@ impl SseDecode for CancelToken {
     }
 }
 
-impl SseDecode for CustomUI {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>,
-        >>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
-    }
-}
-
 impl SseDecode for DropdownItem {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1445,16 +1461,6 @@ impl SseDecode for std::collections::HashMap<String, String> {
 
 impl SseDecode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <usize>::sse_decode(deserializer);
-        return unsafe { decode_rust_opaque_nom(inner) };
-    }
-}
-
-impl SseDecode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1543,6 +1549,66 @@ impl SseDecode for bool {
     }
 }
 
+impl SseDecode for dion_runtime::datastructs::CustomUI {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_text = <String>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::Text { text: var_text };
+            }
+            1 => {
+                let mut var_image = <String>::sse_decode(deserializer);
+                let mut var_header =
+                    <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::Image {
+                    image: var_image,
+                    header: var_header,
+                };
+            }
+            2 => {
+                let mut var_link = <String>::sse_decode(deserializer);
+                let mut var_label = <Option<String>>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::Link {
+                    link: var_link,
+                    label: var_label,
+                };
+            }
+            3 => {
+                let mut var_timestamp = <String>::sse_decode(deserializer);
+                let mut var_display =
+                    <dion_runtime::datastructs::TimestampType>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::TimeStamp {
+                    timestamp: var_timestamp,
+                    display: var_display,
+                };
+            }
+            4 => {
+                let mut var_entry = <dion_runtime::datastructs::Entry>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::EntryCard { entry: var_entry };
+            }
+            5 => {
+                let mut var_children =
+                    <Vec<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::Column {
+                    children: var_children,
+                };
+            }
+            6 => {
+                let mut var_children =
+                    <Vec<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::datastructs::CustomUI::Row {
+                    children: var_children,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for dion_runtime::datastructs::DataSource {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1597,7 +1663,7 @@ impl SseDecode for dion_runtime::datastructs::EntryDetailed {
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_author = <Option<Vec<String>>>::sse_decode(deserializer);
-        let mut var_ui = <Option<CustomUI>>::sse_decode(deserializer);
+        let mut var_ui = <Option<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
         let mut var_meta = <Option<Vec<MetaData>>>::sse_decode(deserializer);
         let mut var_mediaType = <dion_runtime::datastructs::MediaType>::sse_decode(deserializer);
         let mut var_status = <dion_runtime::datastructs::ReleaseStatus>::sse_decode(deserializer);
@@ -1839,6 +1905,20 @@ impl SseDecode for Vec<String> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::datastructs::CustomUI> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::datastructs::CustomUI>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::datastructs::Entry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2009,22 +2089,24 @@ impl SseDecode for Option<CancelToken> {
     }
 }
 
-impl SseDecode for Option<CustomUI> {
+impl SseDecode for Option<bool> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<CustomUI>::sse_decode(deserializer));
+            return Some(<bool>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for Option<bool> {
+impl SseDecode for Option<dion_runtime::datastructs::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<bool>::sse_decode(deserializer));
+            return Some(<dion_runtime::datastructs::CustomUI>::sse_decode(
+                deserializer,
+            ));
         } else {
             return None;
         }
@@ -2415,21 +2497,6 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CancelToken>> for CancelToken 
 }
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<CustomUI> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<CustomUI> {}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CustomUI>> for CustomUI {
-    fn into_into_dart(self) -> FrbWrapper<CustomUI> {
-        self.into()
-    }
-}
-
-// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<DropdownItem> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
@@ -2509,6 +2576,57 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<QueueStore>> for QueueStore {
     }
 }
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::CustomUI> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::datastructs::CustomUI::Text { text } => {
+                [0.into_dart(), text.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::datastructs::CustomUI::Image { image, header } => [
+                1.into_dart(),
+                image.into_into_dart().into_dart(),
+                header.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::datastructs::CustomUI::Link { link, label } => [
+                2.into_dart(),
+                link.into_into_dart().into_dart(),
+                label.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => [
+                3.into_dart(),
+                timestamp.into_into_dart().into_dart(),
+                display.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
+                [4.into_dart(), entry.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::datastructs::CustomUI::Column { children } => {
+                [5.into_dart(), children.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::datastructs::CustomUI::Row { children } => {
+                [6.into_dart(), children.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::datastructs::CustomUI>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::CustomUI>>
+    for dion_runtime::datastructs::CustomUI
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::CustomUI> {
+        self.into()
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::DataSource> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -3079,13 +3197,6 @@ impl SseEncode for CancelToken {
     }
 }
 
-impl SseEncode for CustomUI {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
-    }
-}
-
 impl SseEncode for DropdownItem {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3135,17 +3246,6 @@ impl SseEncode for std::collections::HashMap<String, String> {
 
 impl SseEncode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        let (ptr, size) = self.sse_encode_raw();
-        <usize>::sse_encode(ptr, serializer);
-        <i32>::sse_encode(size, serializer);
-    }
-}
-
-impl SseEncode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3238,6 +3338,48 @@ impl SseEncode for bool {
     }
 }
 
+impl SseEncode for dion_runtime::datastructs::CustomUI {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::datastructs::CustomUI::Text { text } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(text, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::Image { image, header } => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(image, serializer);
+                <Option<std::collections::HashMap<String, String>>>::sse_encode(header, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::Link { link, label } => {
+                <i32>::sse_encode(2, serializer);
+                <String>::sse_encode(link, serializer);
+                <Option<String>>::sse_encode(label, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => {
+                <i32>::sse_encode(3, serializer);
+                <String>::sse_encode(timestamp, serializer);
+                <dion_runtime::datastructs::TimestampType>::sse_encode(display, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
+                <i32>::sse_encode(4, serializer);
+                <dion_runtime::datastructs::Entry>::sse_encode(entry, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::Column { children } => {
+                <i32>::sse_encode(5, serializer);
+                <Vec<dion_runtime::datastructs::CustomUI>>::sse_encode(children, serializer);
+            }
+            dion_runtime::datastructs::CustomUI::Row { children } => {
+                <i32>::sse_encode(6, serializer);
+                <Vec<dion_runtime::datastructs::CustomUI>>::sse_encode(children, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for dion_runtime::datastructs::DataSource {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3279,7 +3421,7 @@ impl SseEncode for dion_runtime::datastructs::EntryDetailed {
         <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.title, serializer);
         <Option<Vec<String>>>::sse_encode(self.author, serializer);
-        <Option<CustomUI>>::sse_encode(self.ui, serializer);
+        <Option<dion_runtime::datastructs::CustomUI>>::sse_encode(self.ui, serializer);
         <Option<Vec<MetaData>>>::sse_encode(self.meta, serializer);
         <dion_runtime::datastructs::MediaType>::sse_encode(self.media_type, serializer);
         <dion_runtime::datastructs::ReleaseStatus>::sse_encode(self.status, serializer);
@@ -3458,6 +3600,16 @@ impl SseEncode for Vec<String> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::datastructs::CustomUI> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::datastructs::CustomUI>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::datastructs::Entry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3597,22 +3749,22 @@ impl SseEncode for Option<CancelToken> {
     }
 }
 
-impl SseEncode for Option<CustomUI> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <CustomUI>::sse_encode(value, serializer);
-        }
-    }
-}
-
 impl SseEncode for Option<bool> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <bool>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::datastructs::CustomUI> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::datastructs::CustomUI>::sse_encode(value, serializer);
         }
     }
 }
@@ -3962,16 +4114,6 @@ mod io {
             ))
         }
     }
-    impl CstDecode<CustomUI> for usize {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> CustomUI {
-            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
-                RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>,
-            >::cst_decode(
-                self
-            ))
-        }
-    }
     impl CstDecode<DropdownItem> for usize {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> DropdownItem {
@@ -4046,17 +4188,6 @@ mod io {
         fn cst_decode(
             self,
         ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
-        {
-            unsafe { decode_rust_opaque_nom(self as _) }
-        }
-    }
-    impl CstDecode<RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>>
-        for usize
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(
-            self,
-        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>
         {
             unsafe { decode_rust_opaque_nom(self as _) }
         }
@@ -4160,17 +4291,17 @@ mod io {
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<CustomUI> for *mut usize {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> CustomUI {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<CustomUI>::cst_decode(*wrap).into()
-        }
-    }
     impl CstDecode<bool> for *mut bool {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> bool {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+        }
+    }
+    impl CstDecode<dion_runtime::datastructs::CustomUI> for *mut wire_cst_custom_ui {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::datastructs::CustomUI {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::datastructs::CustomUI>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::datastructs::DataSource> for *mut wire_cst_data_source {
@@ -4225,6 +4356,59 @@ mod io {
         fn cst_decode(self) -> dion_runtime::settings::Settingvalue {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::settings::Settingvalue>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::datastructs::CustomUI> for wire_cst_custom_ui {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::datastructs::CustomUI {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.Text };
+                    dion_runtime::datastructs::CustomUI::Text {
+                        text: ans.text.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.Image };
+                    dion_runtime::datastructs::CustomUI::Image {
+                        image: ans.image.cst_decode(),
+                        header: ans.header.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.Link };
+                    dion_runtime::datastructs::CustomUI::Link {
+                        link: ans.link.cst_decode(),
+                        label: ans.label.cst_decode(),
+                    }
+                }
+                3 => {
+                    let ans = unsafe { self.kind.TimeStamp };
+                    dion_runtime::datastructs::CustomUI::TimeStamp {
+                        timestamp: ans.timestamp.cst_decode(),
+                        display: ans.display.cst_decode(),
+                    }
+                }
+                4 => {
+                    let ans = unsafe { self.kind.EntryCard };
+                    dion_runtime::datastructs::CustomUI::EntryCard {
+                        entry: ans.entry.cst_decode(),
+                    }
+                }
+                5 => {
+                    let ans = unsafe { self.kind.Column };
+                    dion_runtime::datastructs::CustomUI::Column {
+                        children: ans.children.cst_decode(),
+                    }
+                }
+                6 => {
+                    let ans = unsafe { self.kind.Row };
+                    dion_runtime::datastructs::CustomUI::Row {
+                        children: ans.children.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
+            }
         }
     }
     impl CstDecode<dion_runtime::datastructs::DataSource> for wire_cst_data_source {
@@ -4404,6 +4588,16 @@ mod io {
     impl CstDecode<Vec<String>> for *mut wire_cst_list_String {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<String> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<dion_runtime::datastructs::CustomUI>> for *mut wire_cst_list_custom_ui {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::datastructs::CustomUI> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -4641,6 +4835,19 @@ mod io {
                 title: self.title.cst_decode(),
                 url: self.url.cst_decode(),
             }
+        }
+    }
+    impl NewWithNullPtr for wire_cst_custom_ui {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: CustomUIKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_custom_ui {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
         }
     }
     impl NewWithNullPtr for wire_cst_data_source {
@@ -5129,24 +5336,6 @@ mod io {
     }
 
     #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>::increment_strong_count(ptr as _);
-        }
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CustomUI>>::decrement_strong_count(ptr as _);
-        }
-    }
-
-    #[no_mangle]
     pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
         ptr: *const std::ffi::c_void,
     ) {
@@ -5244,15 +5433,14 @@ mod io {
     }
 
     #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCustomUI(
-        value: usize,
-    ) -> *mut usize {
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_bool(value: bool) -> *mut bool {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
     #[no_mangle]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_bool(value: bool) -> *mut bool {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui() -> *mut wire_cst_custom_ui
+    {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
     }
 
     #[no_mangle]
@@ -5335,6 +5523,20 @@ mod io {
         let wrap = wire_cst_list_String {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
                 <*mut wire_cst_list_prim_u_8_strict>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_custom_ui(
+        len: i32,
+    ) -> *mut wire_cst_list_custom_ui {
+        let wrap = wire_cst_list_custom_ui {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_custom_ui>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -5464,6 +5666,62 @@ mod io {
 
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_custom_ui {
+        tag: i32,
+        kind: CustomUIKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union CustomUIKind {
+        Text: wire_cst_CustomUI_Text,
+        Image: wire_cst_CustomUI_Image,
+        Link: wire_cst_CustomUI_Link,
+        TimeStamp: wire_cst_CustomUI_TimeStamp,
+        EntryCard: wire_cst_CustomUI_EntryCard,
+        Column: wire_cst_CustomUI_Column,
+        Row: wire_cst_CustomUI_Row,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Text {
+        text: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Image {
+        image: *mut wire_cst_list_prim_u_8_strict,
+        header: *mut wire_cst_list_record_string_string,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Link {
+        link: *mut wire_cst_list_prim_u_8_strict,
+        label: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_TimeStamp {
+        timestamp: *mut wire_cst_list_prim_u_8_strict,
+        display: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_EntryCard {
+        entry: *mut wire_cst_entry,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Column {
+        children: *mut wire_cst_list_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Row {
+        children: *mut wire_cst_list_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_data_source {
         tag: i32,
         kind: DataSourceKind,
@@ -5499,7 +5757,7 @@ mod io {
 url: *mut wire_cst_list_prim_u_8_strict,
 title: *mut wire_cst_list_prim_u_8_strict,
 author: *mut wire_cst_list_String,
-ui: *mut usize,
+ui: *mut wire_cst_custom_ui,
 meta: *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMetaData,
 media_type: i32,
 status: i32,
@@ -5617,6 +5875,12 @@ length: *mut i32 }
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_String {
         ptr: *mut *mut wire_cst_list_prim_u_8_strict,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_custom_ui {
+        ptr: *mut wire_cst_custom_ui,
         len: i32,
     }
     #[repr(C)]

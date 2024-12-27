@@ -111,7 +111,7 @@ pub enum ReleaseStatus {
     #[serde(alias = "unknown")]
     Unknown,
 }
-
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS,Default)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum TimestampType{
@@ -119,7 +119,7 @@ pub enum TimestampType{
     Relative,
     Absolute
 }
-
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
@@ -152,7 +152,6 @@ pub enum CustomUI{
         children:Vec<CustomUI>
     }
 }
-
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct MetaData {
