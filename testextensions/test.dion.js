@@ -6,6 +6,7 @@ import { decode_base64,encode_base64 } from "convert";
 
 function test() {
   print("external test");
+  return true;
 }
 
 function assert(condition, msg = "Extension error") {
@@ -85,21 +86,19 @@ export default class {
     const permission = await requestPermission({id:"storage",path:"some"},"some permission");
     assert(permission==true,"permission not working");
     print("other");
-    print(decode_base64("YXNk")+" should be asd")
-    print(encode_base64("asd")+" should be YXNk")
-    print(decode_base64(encode_base64("test"))+" should be test")
+    assert(decode_base64("YXNk")=="asd","decode_base64 not working");
+    assert(encode_base64("asd")=="YXNk","encode_base64 not working");
+    assert(decode_base64(encode_base64("test"))=="test","decode_base64 or encode_base64 not working");
     print({ some: "test" });
-    test();
+    assert(test()==true,"external function not working");
     const res = await fetch("https://www.example.com");
     assert(res.body.length > 0, "fetch not working");
     await registerSetting("someid", "entry", "somevalue");
-    print("Setting is: "+(await getSetting("someid")));
-    assert((await getSetting("someid")) == "somevalue", "setting not working");
+    assert((await getSetting("someid"))=="somevalue","setting not working");
     await fetch("www.google.com");
     const cookies = await getCookies();
     assert(cookies.length > 0, "cookies not working");
   }
-
   async browse(page, sort) {
     assert((await getSetting("someid")) == "othervalue", "setting not working");
     assert(typeof page == "number", "page must be a number");
@@ -112,6 +111,7 @@ export default class {
     return [getEntry()];
   }
   async detail(entryid) {
+    assert(entryid=="someid","entryid is wrong");
     assert(typeof entryid == "string", "entryid must be a string");
     return getEntryDetailed();
   }
