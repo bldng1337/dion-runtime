@@ -1,41 +1,60 @@
+use std::collections::HashMap;
 use std::{ops::Deref, sync::Arc};
+use std::io::{self, Write};
+use std::{
+    cell::RefCell,
+    collections::VecDeque,
+    future::Future,
+    pin::Pin,
+    rc::Rc,
+    time::{Duration, Instant},
+};
 
-use rquickjs::{convert, qjs::JSValue, runtime::UserData, FromJs, Value};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-use serde::Deserialize;
-use serde_json::{de, from_str, to_string};
+use boa_engine::builtins::promise::PromiseState;
+use boa_engine::object::builtins::JsPromise;
+use boa_engine::{
+    context::ContextBuilder,
+    job::{Job, JobExecutor, NativeAsyncJob, PromiseJob},
+    js_string,
+    native_function::NativeFunction,
+    property::Attribute,
+    Context, JsArgs, JsNativeError, JsResult, JsValue, Script, Source,
+};
+use boa_gc::GcRefCell;
+use boa_runtime::Console;
+use futures_concurrency::future::FutureGroup;
+use futures_lite::{future, StreamExt};
+use tokio::{task, time};
+
+use boa_engine::module::{ModuleLoader, Referrer};
+use boa_engine::Finalize;
+use boa_engine::JsData;
+use boa_engine::{JsError, JsString, Module, Trace};
 use tokio::sync::RwLock;
 
-use crate::error::Error;
-
-pub fn val_to_string<'js>(val: Value<'js>) -> Result<String, Error> {
-    if let Some(symbol) = val.as_symbol() {
-        if let Some(description) = symbol.description()?.into_string() {
-            let description = description.to_string()?;
-            Ok(format!("Symbol({description})"))
-        } else {
-            Ok("Symbol()".into())
+pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResult<JsValue> {
+    loop {
+        match promise.state() {
+            PromiseState::Pending => {
+                context.run_jobs_async().await?
+            },
+            PromiseState::Fulfilled(js_value) => break Ok(js_value),
+            PromiseState::Rejected(js_value) => break Err(JsError::from_opaque(js_value)),
         }
-    } else {
-        let stringified = <convert::Coerced<String>>::from_js(&val.ctx().clone(), val)
-            .map(|string| string.to_string())?;
-        Ok(stringified)
     }
 }
 
-pub fn wrapcatch<T>(ctx: &rquickjs::Ctx, res: Result<T, rquickjs::Error>) -> Result<T, Error> {
-    match res {
-        Ok(val) => Ok(val),
-        Err(err) => match err {
-            rquickjs::Error::Exception => Err(Error::JS(err, val_to_string(ctx.catch())?)),
-            _ => Err(Error::JSEngine(err)),
-        },
-    }
-}
-
+#[derive(Trace, Finalize, JsData)]
 pub struct SharedUserContextContainer<T> {
+    #[unsafe_ignore_trace]
     pub inner: Arc<RwLock<T>>,
+}
+impl<T> Clone for SharedUserContextContainer<T> {
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+        }
+    }
 }
 
 impl<T> SharedUserContextContainer<T> {
@@ -66,11 +85,9 @@ where
     }
 }
 
-unsafe impl<'js, T: 'static> UserData<'js> for SharedUserContextContainer<T> {
-    type Static = SharedUserContextContainer<T>;
-}
-
+#[derive(Trace, Finalize, JsData)]
 pub struct UserContextContainer<T> {
+    #[unsafe_ignore_trace]
     pub inner: RwLock<T>,
 }
 
@@ -99,16 +116,32 @@ where
     }
 }
 
-unsafe impl<'js, T: 'static> UserData<'js> for UserContextContainer<T> {
-    type Static = UserContextContainer<T>;
-}
-
+#[derive(Trace, Finalize, JsData)]
 pub struct ReadOnlyUserContextContainer<T> {
+    #[unsafe_ignore_trace]
     pub inner: T,
 }
 
-unsafe impl<'js, T: 'static> UserData<'js> for ReadOnlyUserContextContainer<T> {
-    type Static = ReadOnlyUserContextContainer<T>;
+impl<T> Default for ReadOnlyUserContextContainer<T>
+where
+    T: Default,
+{
+    fn default() -> Self {
+        Self {
+            inner: Default::default(),
+        }
+    }
+}
+
+impl<T> Clone for ReadOnlyUserContextContainer<T>
+where
+    T: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+        }
+    }
 }
 
 impl<T> Deref for ReadOnlyUserContextContainer<T> {
@@ -125,24 +158,153 @@ impl<T> ReadOnlyUserContextContainer<T> {
     }
 }
 
-pub fn converttojS<'js, T>(val: &T, ctx: &rquickjs::Ctx<'js>) -> Result<rquickjs::Value<'js>, Error>
-where
-    T: Sized + Serialize,
-{
-    let string = to_string(val)?;
-    Ok(ctx.json_parse(string)?)
+#[derive(Debug)]
+pub struct VirtualModuleLoader {
+    module_map: GcRefCell<HashMap<String, Module>>,
 }
 
-pub fn convertfromjs<'js, T>(
-    val: rquickjs::Object<'js>,
-    ctx: &rquickjs::Ctx<'js>,
-) -> Result<T, Error>
-where
-    T: DeserializeOwned,
-{
-    let str: String = ctx
-        .json_stringify(val)?
-        .ok_or(Error::ExtensionError("Failed to get return value".into()))?
-        .get()?;
-    Ok(from_str(&str)?)
+impl VirtualModuleLoader {
+    /// Creates a new `SimpleModuleLoader` from a root module path.
+    pub fn new() -> JsResult<Self> {
+        Ok(Self {
+            module_map: GcRefCell::default(),
+        })
+    }
+
+    /// Inserts a new module onto the module map.
+    #[inline]
+    pub fn insert(&self, path: String, module: Module) {
+        self.module_map.borrow_mut().insert(path, module);
+    }
+
+    /// Gets a module from its original path.
+    #[inline]
+    pub fn get(&self, path: &String) -> Option<Module> {
+        self.module_map.borrow().get(path).cloned()
+    }
+}
+
+impl ModuleLoader for VirtualModuleLoader {
+    fn load_imported_module(
+        &self,
+        referrer: Referrer,
+        specifier: JsString,
+        finish_load: Box<dyn FnOnce(JsResult<Module>, &mut Context)>,
+        context: &mut Context,
+    ) {
+        let result: Result<Module, JsError> = (|| {
+            let short_path = specifier.to_std_string_escaped();
+            if let Some(module) = self.get(&short_path) {
+                return Ok(module);
+            }
+            Err(JsError::from_native(JsNativeError::syntax().with_message(
+                format!("could not parse module `{short_path}`"),
+            )))
+        })();
+        finish_load(result, context);
+    }
+
+    fn register_module(&self, specifier: JsString, module: Module) {
+        self.insert(specifier.to_std_string_escaped(), module);
+    }
+
+    fn get_module(&self, specifier: JsString) -> Option<Module> {
+        self.get(&specifier.to_std_string_escaped())
+    }
+}
+
+pub struct Queue {
+    async_jobs: RefCell<VecDeque<NativeAsyncJob>>,
+    promise_jobs: RefCell<VecDeque<PromiseJob>>,
+}
+
+impl Queue {
+    pub fn new() -> Self {
+        Self {
+            async_jobs: RefCell::default(),
+            promise_jobs: RefCell::default(),
+        }
+    }
+
+    fn drain_jobs(&self, context: &mut Context) {
+        let jobs = std::mem::take(&mut *self.promise_jobs.borrow_mut());
+        for job in jobs {
+            if let Err(e) = job.call(context) {
+                eprintln!("Uncaught {e}");
+            }
+        }
+    }
+}
+
+impl JobExecutor for Queue {
+    fn enqueue_job(&self, job: Job, _context: &mut Context) {
+        match job {
+            Job::PromiseJob(job) => self.promise_jobs.borrow_mut().push_back(job),
+            Job::AsyncJob(job) => self.async_jobs.borrow_mut().push_back(job),
+            _ => panic!("unsupported job type"),
+        }
+    }
+
+    // While the sync flavor of `run_jobs` will block the current thread until all the jobs have finished...
+    fn run_jobs(&self, context: &mut Context) -> JsResult<()> {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .unwrap();
+
+        task::LocalSet::default().block_on(&runtime, self.run_jobs_async(&RefCell::new(context)))
+    }
+
+    // ...the async flavor won't, which allows concurrent execution with external async tasks.
+    fn run_jobs_async<'a, 'b, 'fut>(
+        &'a self,
+        context: &'b RefCell<&mut Context>,
+    ) -> Pin<Box<dyn Future<Output = JsResult<()>> + 'fut>>
+    where
+        'a: 'fut,
+        'b: 'fut,
+    {
+        Box::pin(async move {
+            // Early return in case there were no jobs scheduled.
+            if self.promise_jobs.borrow().is_empty() && self.async_jobs.borrow().is_empty() {
+                return Ok(());
+            }
+            let mut group = FutureGroup::new();
+            loop {
+                for job in std::mem::take(&mut *self.async_jobs.borrow_mut()) {
+                    group.insert(job.call(context));
+                }
+                
+                if self.promise_jobs.borrow().is_empty() {
+                    let Some(result) = group.next().await else {
+                        // Both queues are empty. We can exit.
+                        return Ok(());
+                    };
+
+                    if let Err(err) = result {
+                        eprintln!("Uncaught {err}");
+                    }
+
+                    continue;
+                }
+                // We have some jobs pending on the microtask queue. Try to poll the pending
+                // tasks once to see if any of them finished, and run the pending microtasks
+                // otherwise.
+                let Some(result) = future::poll_once(group.next()).await.flatten() else {
+                    // No completed jobs. Run the microtask queue once.
+                    self.drain_jobs(&mut context.borrow_mut());
+
+                    task::yield_now().await;
+                    continue;
+                };
+
+                if let Err(err) = result {
+                    eprintln!("Uncaught {err}");
+                }
+
+                // Only one macrotask can be executed before the next drain of the microtask queue.
+                self.drain_jobs(&mut context.borrow_mut());
+            }
+        })
+    }
 }

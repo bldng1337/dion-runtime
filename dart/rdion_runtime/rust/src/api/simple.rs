@@ -4,7 +4,8 @@ pub use dion_runtime::datastructs::{
     Sort, Source,
 };
 use dion_runtime::error::{Error, Result};
-use dion_runtime::jsextension::{ExtensionContainer, ExtensionManager};
+use dion_runtime::extension_container::ExtensionContainer;
+use dion_runtime::extension_manager::ExtensionManager;
 use dion_runtime::permission::{Permission, PermissionRequester, PERMISSION};
 
 use dion_runtime::extension::{TExtension, TExtensionManager};
@@ -187,11 +188,11 @@ impl ExtensionProxy {
     }
 
     pub async fn enable(&mut self) -> Result<()> {
-        self.inner.enable().await
+        self.inner.set_enabled(true).await
     }
 
-    pub async fn disable(&mut self) {
-        self.inner.disable()
+    pub async fn disable(&mut self) -> Result<()> {
+        self.inner.set_enabled(false).await
     }
 
     pub async fn is_enabled(&self) -> bool {

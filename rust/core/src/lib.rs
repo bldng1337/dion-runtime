@@ -1,27 +1,27 @@
-mod convert_js;
 pub mod datastructs;
 pub mod error;
 pub mod extension;
-pub mod jsextension;
+pub mod extension_manager;
 mod networking_js;
 pub mod permission;
 mod permission_js;
 mod setting_js;
 pub mod settings;
 mod utils;
+pub mod extension_container;
 
 #[cfg(test)]
 mod tests {
-    use std::time::Instant;
+    use std::{io::{self, Write}, time::Instant};
 
     use datastructs::Sort;
-    use jsextension::ExtensionManager;
+    use extension_manager::ExtensionManager;
 
     use crate::{
         datastructs,
         error::Error,
         extension::{TExtension, TExtensionManager},
-        jsextension,
+        extension_manager,
         permission::{PermissionRequester, PERMISSION},
         settings::Settingvalue,
     };
@@ -44,7 +44,7 @@ mod tests {
     async fn extension_full(path: &str) -> Result<(), Error> {
         let start = Instant::now();
         let extm: ExtensionManager = ExtensionManager::new(path);
-        let mut exts: Vec<jsextension::ExtensionContainer> = extm.get_extensions().await.unwrap();
+        let mut exts = extm.get_extensions().await.unwrap();
         println!("Init for {} took {} ms", path,start.elapsed().as_millis());
         for ext in exts.iter_mut() {
             let start = Instant::now();
@@ -94,6 +94,9 @@ mod tests {
 
     #[tokio::test]
     async fn my_test() -> Result<(), Error> {
+        
+        // console_subscriber::init();
+        println!("Print test");
         {
             let mut a = PERMISSION.write().await;
             a.requester = Some(Box::new(TestPermission));

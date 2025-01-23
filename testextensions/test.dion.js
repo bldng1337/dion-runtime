@@ -2,10 +2,10 @@
 import { fetch, getCookies } from "network";
 import { registerSetting, getSetting } from "setting";
 import { requestPermission } from "permission";
-import { decode_base64,encode_base64 } from "convert";
+// import { decode_base64,encode_base64 } from "convert";
 
 function test() {
-  print("external test");
+  // print("external test");
   return true;
 }
 
@@ -86,16 +86,16 @@ export default class {
     const permission = await requestPermission({id:"storage",path:"some"},"some permission");
     assert(permission==true,"permission not working");
     print("other");
-    assert(decode_base64("YXNk")=="asd","decode_base64 not working");
-    assert(encode_base64("asd")=="YXNk","encode_base64 not working");
-    assert(decode_base64(encode_base64("test"))=="test","decode_base64 or encode_base64 not working");
+    // assert(decode_base64("YXNk")=="asd","decode_base64 not working");
+    // assert(encode_base64("asd")=="YXNk","encode_base64 not working");
+    // assert(decode_base64(encode_base64("test"))=="test","decode_base64 or encode_base64 not working");
     print({ some: "test" });
     assert(test()==true,"external function not working");
     const res = await fetch("https://www.example.com");
     assert(res.body.length > 0, "fetch not working");
     await registerSetting("someid", "entry", "somevalue");
     assert((await getSetting("someid"))=="somevalue","setting not working");
-    await fetch("www.google.com");
+    await fetch("https://www.google.com");
     const cookies = await getCookies();
     assert(cookies.length > 0, "cookies not working");
   }
