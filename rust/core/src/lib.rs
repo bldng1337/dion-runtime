@@ -1,25 +1,27 @@
 pub mod datastructs;
 pub mod error;
 pub mod extension;
-pub mod jsextension;
+pub mod extension_manager;
 mod networking_js;
 pub mod permission;
 mod permission_js;
 mod setting_js;
 pub mod settings;
-mod convert_js;
 mod utils;
+pub mod extension_container;
 
 #[cfg(test)]
 mod tests {
+    use std::{io::{self, Write}, time::Instant};
+
     use datastructs::Sort;
-    use jsextension::ExtensionManager;
+    use extension_manager::ExtensionManager;
 
     use crate::{
         datastructs,
         error::Error,
         extension::{TExtension, TExtensionManager},
-        jsextension,
+        extension_manager,
         permission::{PermissionRequester, PERMISSION},
         settings::Settingvalue,
     };
@@ -39,42 +41,71 @@ mod tests {
         }
     }
 
+    async fn extension_full(path: &str) -> Result<(), Error> {
+        let start = Instant::now();
+        let extm: ExtensionManager = ExtensionManager::new(path);
+        let mut exts = extm.get_extensions().await.unwrap();
+        println!("Init for {} took {} ms", path,start.elapsed().as_millis());
+        for ext in exts.iter_mut() {
+            let start = Instant::now();
+            ext.set_enabled(true).await?;
+            println!("Extension enable took {} ms", start.elapsed().as_millis());
+
+            if ext
+                .get_extension()
+                .await
+                .setting
+                .get_settings_ids()
+                .any(|e| e == "someid")
+            {
+                let start = Instant::now();
+                assert!(
+                    ext.get_extension()
+                        .await
+                        .setting
+                        .get_setting(&"someid".to_string())?
+                        .val
+                        .get_string()?
+                        == "somevalue"
+                );
+                ext.get_extension_mut()
+                    .await
+                    .setting
+                    .get_setting_mut(&"someid".to_string())?
+                    .val
+                    .overwrite(Settingvalue::String {
+                        val: "othervalue".to_string(),
+                        default_val: String::default(),
+                    })?;
+                    println!("Setting mutation took {} ms", start.elapsed().as_millis());
+            }
+            let start = Instant::now();
+            let entries = ext.browse(0, Sort::Latest, None).await?;
+            println!("browse took {} ms", start.elapsed().as_millis());
+            let start = Instant::now();
+            let detail = ext.detail(&entries[0].id, None).await?;
+            println!("detail took {} ms", start.elapsed().as_millis());
+            let start = Instant::now();
+            let _src = ext.source(&detail.episodes[0].episodes[0].id, None).await?;
+            println!("source took {} ms", start.elapsed().as_millis());
+        }
+        Ok(())
+    }
+
     #[tokio::test]
     async fn my_test() -> Result<(), Error> {
-        let extm: ExtensionManager = ExtensionManager::new(r#"./../../testextensions"#);
-        let mut exts: Vec<jsextension::ExtensionContainer> = extm.get_extensions().await.unwrap();
+        
+        // console_subscriber::init();
+        println!("Print test");
         {
             let mut a = PERMISSION.write().await;
             a.requester = Some(Box::new(TestPermission));
         }
-        for ext in exts.iter_mut() {
-            ext.set_enabled(true).await?;
-            println!("Enabled Extension {}",ext.get_data().await.name);
-            assert!(
-                ext.get_extension()
-                    .await
-                    .setting
-                    .get_setting(&"someid".to_string())?
-                    .val
-                    .get_string()?
-                    == "somevalue"
-            );
-            ext.get_extension_mut()
-                .await
-                .setting
-                .get_setting_mut(&"someid".to_string())?
-                .val
-                .overwrite(Settingvalue::String {
-                    val: "othervalue".to_string(),
-                    default_val: String::default(),
-                })?;
-            let entries = ext.browse(0, Sort::Latest, None).await?;
-            dbg!(&entries);
-            let detail = ext.detail(&entries[0].id, None).await?;
-            dbg!(&detail);
-            let src = ext.source(&detail.episodes[0].episodes[0].id, None).await?;
-            dbg!(src);
-        }
+        let start = Instant::now();
+        extension_full(r#"./../../testextensions"#).await?;
+        extension_full(r#"./../../testextensions/otherextensions"#).await?;
+        let elapsed = start.elapsed();
+        println!("Millis: {} ms", elapsed.as_millis());
         Ok(())
     }
 }

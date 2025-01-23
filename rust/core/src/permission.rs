@@ -1,4 +1,3 @@
-use rquickjs::Object;
 use serde::{ Deserialize, Serialize };
 use tokio::sync::RwLock;
 use core::fmt::Debug;
@@ -110,26 +109,5 @@ impl PermissionStore {
                     )
                 ),
         }
-    }
-
-    pub fn get_permission(permission: Object) -> Result<Permission, Error> {
-        if !permission.contains_key("method")? || !permission.contains_key("args")? {
-            return Err(Error::ExtensionError("Malformed Permission".to_string()));
-        }
-        let args = permission.get::<_, Object>("args")?;
-        Ok(match permission.get::<_, String>("method")?.as_str() {
-            "storage" =>
-                Permission::StoragePermission {
-                    path: args.get("path")?,
-                    write: if args.contains_key("write")? {
-                        args.get("write")?
-                    } else {
-                        false
-                    },
-                },
-            _str => {
-                return Err(Error::ExtensionError(format!("Unknown Permission type {}", _str)));
-            }
-        })
     }
 }

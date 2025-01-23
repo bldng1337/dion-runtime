@@ -2,12 +2,12 @@ use tokio_util::sync::CancellationToken;
 
 use crate::{datastructs::{Entry, EntryDetailed, ExtensionData, Sort, Source}, error::Result};
 
-#[async_trait::async_trait]
+#[async_trait::async_trait()]
 pub trait TExtensionManager<T:TExtension> {
     async fn get_extensions(&self)->Result<Vec<T>>;
 }
 
-#[async_trait::async_trait]
+#[async_trait::async_trait()]
 pub trait TExtension {
     fn is_enabled(&self)->bool;
     async fn set_enabled(&mut self,enabled:bool)->Result<()>;

@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use ts_rs::TS;
-use rquickjs::IntoJs;
 use serde::{Deserialize, Serialize};
 
 use crate::error::{Error, Result};
@@ -91,16 +90,6 @@ impl Settingvalue {
     }
 }
 
-/// flutter_rust_bridge:ignore
-impl<'js> IntoJs<'js> for Settingvalue {
-    fn into_js(self, ctx: &rquickjs::Ctx<'js>) -> rquickjs::Result<rquickjs::Value<'js>> {
-        match self {
-            Settingvalue::String { val, .. } => val.into_js(ctx),
-            Settingvalue::Number { val, .. } => val.into_js(ctx),
-            Settingvalue::Boolean { val, .. } => val.into_js(ctx),
-        }
-    }
-}
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone,TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
