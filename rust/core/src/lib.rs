@@ -9,6 +9,7 @@ mod setting_js;
 pub mod settings;
 mod utils;
 pub mod extension_container;
+mod convert_js;
 
 #[cfg(test)]
 mod tests {

@@ -1,3 +1,4 @@
+use std::convert;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
@@ -10,8 +11,8 @@ use boa_runtime::Console;
 use serde_json::Value;
 use tokio::fs;
 use tokio::runtime::Builder;
-use tokio::sync::{oneshot, RwLockReadGuard, RwLockWriteGuard};
 use tokio::sync::{mpsc, oneshot::Sender, RwLock};
+use tokio::sync::{oneshot, RwLockReadGuard, RwLockWriteGuard};
 use tokio::task::LocalSet;
 use tokio_util::sync::CancellationToken;
 
@@ -23,7 +24,7 @@ use crate::utils::{
     await_promise, Queue, ReadOnlyUserContextContainer, SharedUserContextContainer,
     VirtualModuleLoader,
 };
-use crate::{networking_js, permission_js, setting_js};
+use crate::{convert_js, networking_js, permission_js, setting_js};
 
 #[derive(Debug)]
 enum Task {
@@ -64,12 +65,11 @@ pub struct ExtensionContainer {
 }
 
 impl ExtensionContainer {
-
-    pub async fn get_extension(&self)->RwLockReadGuard<'_, JSExtension, >{
+    pub async fn get_extension(&self) -> RwLockReadGuard<'_, JSExtension> {
         self.ext.read().await
     }
 
-    pub async fn get_extension_mut(&self)->RwLockWriteGuard<'_, JSExtension, >{
+    pub async fn get_extension_mut(&self) -> RwLockWriteGuard<'_, JSExtension> {
         self.ext.write().await
     }
 
@@ -199,7 +199,7 @@ impl ExtensionContainer {
         networking_js::declare(context)?;
         permission_js::declare(context)?;
         setting_js::declare(context)?;
-
+        convert_js::declare(context)?;
         let module = Module::parse(boa_engine::Source::from_bytes(code.as_str()), None, context)?;
         context
             .module_loader()
