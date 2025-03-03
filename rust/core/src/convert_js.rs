@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::error::Error;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use boa_engine::{
@@ -38,7 +36,7 @@ pub fn declare(context: &mut Context) -> Result<(), Error> {
     Ok(())
 }
 
-fn decode_base64(this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+fn decode_base64(_this: &JsValue, args: &[JsValue], _context: &mut Context) -> JsResult<JsValue> {
     let arg1 = args
         .get_or_undefined(0)
         .as_string()
@@ -49,7 +47,7 @@ fn decode_base64(this: &JsValue, args: &[JsValue], context: &mut Context) -> JsR
     Ok(JsString::from(ret).into())
 }
 
-fn encode_base64(this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+fn encode_base64(_this: &JsValue, args: &[JsValue], _context: &mut Context) -> JsResult<JsValue> {
     let arg1 = args
         .get_or_undefined(0)
         .as_string()

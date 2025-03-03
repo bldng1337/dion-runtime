@@ -1,43 +1,33 @@
 use crate::{
     error::Error,
-    utils::{ReadOnlyUserContextContainer, UserContextContainer},
+    utils::ReadOnlyUserContextContainer,
 };
 use boa_engine::{
     class::{self, Class},
-    context,
     job::NativeAsyncJob,
     js_string,
     module::SyntheticModuleInitializer,
     object::{
-        builtins::{JsArray, JsFunction, JsMap, JsPromise},
+        builtins::{JsArray, JsMap, JsPromise},
         FunctionObjectBuilder,
     },
     property::Attribute,
     value::Type,
-    Context, JsArgs, JsData, JsError, JsNativeError, JsObject, JsResult, JsString, JsValue,
-    JsVariant, Module, NativeFunction,
+    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue,
+    Module, NativeFunction,
 };
 use boa_gc::{Finalize, Trace};
 use governor::{DefaultKeyedRateLimiter, Quota, RateLimiter};
-use http::{response, Extensions, HeaderMap, StatusCode};
+use http::{Extensions, HeaderMap, StatusCode};
 use nonzero_ext::nonzero;
 use reqwest::{IntoUrl, Method, Request, Url};
 use reqwest_cookie_store::{CookieStore, CookieStoreMutex};
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, RequestBuilder};
 use serde_json::Value;
-use std::{
-    collections::HashMap,
-    future::Future,
-    io::{stdout, Write},
-    ops::DerefMut,
-    str::FromStr,
-    sync::Arc,
-    time::Duration,
-};
-use tokio::time::sleep;
+use std::sync::Arc;
 
 pub fn declare(context: &mut Context) -> Result<(), Error> {
-    context.register_global_class::<Response>();
+    context.register_global_class::<Response>()?;
     context.insert_data(NetworkContainer::default());
     let fetch_fn = FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(fetch))
         .length(1)
@@ -84,6 +74,8 @@ impl Response {
         if let Some(object) = this.as_object() {
             // If it is we downcast the type to type `Person`.
             if let Some(person) = object.downcast_ref::<Self>() {
+                let _=&person.header;//TODO: Fix
+                let _=&person.status;
                 return Ok(JsString::from(person.content.as_str()).into());
             }
         }
@@ -121,9 +113,9 @@ impl Class for Response {
     }
 
     fn data_constructor(
-        new_target: &JsValue,
-        args: &[JsValue],
-        context: &mut Context,
+        _new_target: &JsValue,
+        _args: &[JsValue],
+        _context: &mut Context,
     ) -> JsResult<Self> {
         Err(JsError::from_native(JsNativeError::error()))
     }
@@ -329,7 +321,7 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
     Ok(ret.into())
 }
 
-fn get_cookies(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+fn get_cookies(_this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
     let network: NetworkContainer = context.get_data().cloned().ok_or(JsError::from_native(
         JsNativeError::error().with_message("Expected body to be a String"),
     ))?;

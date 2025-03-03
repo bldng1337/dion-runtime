@@ -1,35 +1,12 @@
-use boa_engine::{
-    builtins::promise::PromiseState,
-    js_string,
-    object::builtins::JsPromise,
-    property::{Attribute, PropertyKey},
-    value::{Convert, TryIntoJs},
-    Context, JsError, JsObject, JsString, JsValue, Module, Source,
-};
-use std::io::{self, Write};
-use std::{path::Path, rc::Rc, sync::Arc};
-
-use boa_runtime::Console;
-use serde_json::Value;
-use tokio::{
-    fs::{self, read_dir},
-    sync::RwLock,
-};
-use tokio_util::sync::CancellationToken;
+use tokio::fs::read_dir;
 
 use crate::extension_container::ExtensionContainer;
 use crate::{
-    datastructs::{self, Entry, EntryDetailed, ExtensionData, Sort},
+    datastructs::ExtensionData,
     error::{Error, Result},
-    extension::{TExtension, TExtensionManager},
-    networking_js,
+    extension::TExtensionManager,
     permission::PermissionStore,
-    permission_js, setting_js,
     settings::SettingStore,
-    utils::{
-        await_promise, Queue, ReadOnlyUserContextContainer, SharedUserContextContainer,
-        VirtualModuleLoader,
-    },
 };
 
 pub struct ExtensionManager {

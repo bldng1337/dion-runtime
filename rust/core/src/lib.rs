@@ -1,6 +1,8 @@
+mod convert_js;
 pub mod datastructs;
 pub mod error;
 pub mod extension;
+pub mod extension_container;
 pub mod extension_manager;
 mod networking_js;
 pub mod permission;
@@ -8,12 +10,10 @@ mod permission_js;
 mod setting_js;
 pub mod settings;
 mod utils;
-pub mod extension_container;
-mod convert_js;
 
 #[cfg(test)]
 mod tests {
-    use std::{io::{self, Write}, time::Instant};
+    use std::time::Instant;
 
     use datastructs::Sort;
     use extension_manager::ExtensionManager;
@@ -46,7 +46,7 @@ mod tests {
         let start = Instant::now();
         let extm: ExtensionManager = ExtensionManager::new(path);
         let mut exts = extm.get_extensions().await.unwrap();
-        println!("Init for {} took {} ms", path,start.elapsed().as_millis());
+        println!("Init for {} took {} ms", path, start.elapsed().as_millis());
         for ext in exts.iter_mut() {
             let start = Instant::now();
             ext.set_enabled(true).await?;
@@ -78,7 +78,7 @@ mod tests {
                         val: "othervalue".to_string(),
                         default_val: String::default(),
                     })?;
-                    println!("Setting mutation took {} ms", start.elapsed().as_millis());
+                println!("Setting mutation took {} ms", start.elapsed().as_millis());
             }
             let start = Instant::now();
             let entries = ext.browse(0, Sort::Latest, None).await?;
@@ -95,7 +95,6 @@ mod tests {
 
     #[tokio::test]
     async fn my_test() -> Result<(), Error> {
-        
         // console_subscriber::init();
         println!("Print test");
         {

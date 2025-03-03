@@ -1,12 +1,10 @@
-use std::{future::Future, time::Instant};
 
 use boa_engine::{
     job::NativeAsyncJob,
     js_string,
     module::SyntheticModuleInitializer,
     object::{builtins::JsPromise, FunctionObjectBuilder},
-    value::Type,
-    Context, JsArgs, JsError, JsNativeError, JsResult, JsStr, JsString, JsValue, JsVariant, Module,
+    Context, JsArgs, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
     NativeFunction,
 };
 use serde_json::{Number, Value};
@@ -85,11 +83,11 @@ fn get_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsRe
                         JsError::from_native(JsNativeError::error().with_message(e.to_string()))
                     })?;
                     let res = match &res.val {
-                        Settingvalue::String { val, default_val } => Value::String(val.clone()),
-                        Settingvalue::Number { val, default_val } => {
+                        Settingvalue::String { val, default_val: _ } => Value::String(val.clone()),
+                        Settingvalue::Number { val, default_val: _ } => {
                             Value::Number(Number::from_f64(val.clone()).unwrap())
                         }
-                        Settingvalue::Boolean { val, default_val } => Value::Bool(val.clone()),
+                        Settingvalue::Boolean { val, default_val: _ } => Value::Bool(val.clone()),
                     };
                     let a = JsValue::from_json(&res, &mut context.borrow_mut());
                     a

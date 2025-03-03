@@ -1,30 +1,22 @@
 use std::collections::HashMap;
 use std::{ops::Deref, sync::Arc};
-use std::io::{self, Write};
 use std::{
     cell::RefCell,
     collections::VecDeque,
     future::Future,
     pin::Pin,
-    rc::Rc,
-    time::{Duration, Instant},
 };
 
 use boa_engine::builtins::promise::PromiseState;
 use boa_engine::object::builtins::JsPromise;
 use boa_engine::{
-    context::ContextBuilder,
     job::{Job, JobExecutor, NativeAsyncJob, PromiseJob},
-    js_string,
-    native_function::NativeFunction,
-    property::Attribute,
-    Context, JsArgs, JsNativeError, JsResult, JsValue, Script, Source,
+    Context, JsNativeError, JsResult, JsValue,
 };
 use boa_gc::GcRefCell;
-use boa_runtime::Console;
 use futures_concurrency::future::FutureGroup;
 use futures_lite::{future, StreamExt};
-use tokio::{task, time};
+use tokio::task;
 
 use boa_engine::module::{ModuleLoader, Referrer};
 use boa_engine::Finalize;
@@ -58,20 +50,20 @@ impl<T> Clone for SharedUserContextContainer<T> {
 }
 
 impl<T> SharedUserContextContainer<T> {
-    pub fn new(inner: T) -> Self {
-        SharedUserContextContainer {
-            inner: Arc::new(RwLock::new(inner)),
-        }
-    }
+    // pub fn new(inner: T) -> Self {
+    //     SharedUserContextContainer {
+    //         inner: Arc::new(RwLock::new(inner)),
+    //     }
+    // }
     pub fn from(arc: Arc<RwLock<T>>) -> Self {
         SharedUserContextContainer { inner: arc }
     }
-    pub async fn get(&self) -> tokio::sync::RwLockReadGuard<'_, T> {
-        self.inner.read().await
-    }
-    pub async fn get_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, T> {
-        self.inner.write().await
-    }
+    // pub async fn get(&self) -> tokio::sync::RwLockReadGuard<'_, T> {
+    //     self.inner.read().await
+    // }
+    // pub async fn get_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, T> {
+    //     self.inner.write().await
+    // }
 }
 
 impl<T> Default for SharedUserContextContainer<T>
@@ -85,36 +77,36 @@ where
     }
 }
 
-#[derive(Trace, Finalize, JsData)]
-pub struct UserContextContainer<T> {
-    #[unsafe_ignore_trace]
-    pub inner: RwLock<T>,
-}
+// #[derive(Trace, Finalize, JsData)]
+// pub struct UserContextContainer<T> {
+//     #[unsafe_ignore_trace]
+//     pub inner: RwLock<T>,
+// }
 
-impl<T> UserContextContainer<T> {
-    pub fn new(inner: T) -> Self {
-        UserContextContainer {
-            inner: RwLock::new(inner),
-        }
-    }
-    pub fn get(&self) -> tokio::sync::RwLockReadGuard<'_, T> {
-        self.inner.blocking_read()
-    }
-    pub fn get_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, T> {
-        self.inner.blocking_write()
-    }
-}
+// impl<T> UserContextContainer<T> {
+//     pub fn new(inner: T) -> Self {
+//         UserContextContainer {
+//             inner: RwLock::new(inner),
+//         }
+//     }
+//     pub fn get(&self) -> tokio::sync::RwLockReadGuard<'_, T> {
+//         self.inner.blocking_read()
+//     }
+//     pub fn get_mut(&self) -> tokio::sync::RwLockWriteGuard<'_, T> {
+//         self.inner.blocking_write()
+//     }
+// }
 
-impl<T> Default for UserContextContainer<T>
-where
-    T: Default,
-{
-    fn default() -> Self {
-        Self {
-            inner: Default::default(),
-        }
-    }
-}
+// impl<T> Default for UserContextContainer<T>
+// where
+//     T: Default,
+// {
+//     fn default() -> Self {
+//         Self {
+//             inner: Default::default(),
+//         }
+//     }
+// }
 
 #[derive(Trace, Finalize, JsData)]
 pub struct ReadOnlyUserContextContainer<T> {
@@ -187,7 +179,7 @@ impl VirtualModuleLoader {
 impl ModuleLoader for VirtualModuleLoader {
     fn load_imported_module(
         &self,
-        referrer: Referrer,
+        _referrer: Referrer,
         specifier: JsString,
         finish_load: Box<dyn FnOnce(JsResult<Module>, &mut Context)>,
         context: &mut Context,

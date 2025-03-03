@@ -1,12 +1,10 @@
-use std::convert;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
 
-use boa_engine::ast::operations::contains;
 use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
-use boa_engine::{context, js_string, Context, JsObject, JsString, JsValue, Module};
+use boa_engine::{js_string, Context, JsObject, JsString, JsValue, Module};
 use boa_runtime::Console;
 use serde_json::Value;
 use tokio::fs;
@@ -372,7 +370,7 @@ impl TExtension for ExtensionContainer {
             sort: sort,
             token: token,
             send: send,
-        });
+        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -391,7 +389,7 @@ impl TExtension for ExtensionContainer {
             filter: filter.to_string(),
             token: token,
             send: send,
-        });
+        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -408,7 +406,7 @@ impl TExtension for ExtensionContainer {
             entryid: entryid.to_string(),
             token: token,
             send: send,
-        });
+        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -425,7 +423,7 @@ impl TExtension for ExtensionContainer {
             epid: epid.clone(),
             token: token,
             send: send,
-        });
+        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -442,7 +440,7 @@ impl TExtension for ExtensionContainer {
             url: url,
             token: token,
             send: send,
-        });
+        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 }

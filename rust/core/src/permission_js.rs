@@ -1,19 +1,13 @@
 use boa_engine::module::SyntheticModuleInitializer;
 use boa_engine::object::FunctionObjectBuilder;
 use boa_engine::{
-    job::NativeAsyncJob, js_string, object::builtins::JsPromise, value::Type, JsArgs, JsError,
-    JsNativeError, JsResult, JsStr, JsString, JsValue, JsVariant,
+    job::NativeAsyncJob, js_string, object::builtins::JsPromise, JsArgs, JsError, JsNativeError,
+    JsResult, JsString, JsValue,
 };
 use boa_engine::{Context, Module, NativeFunction};
-use serde_json::Value;
 
 use crate::permission::Permission;
-use crate::{
-    error::Error,
-    extension_manager::JSExtension,
-    settings::{Setting, SettingUI, Settingtype, Settingvalue},
-    utils::SharedUserContextContainer,
-};
+use crate::{error::Error, extension_manager::JSExtension, utils::SharedUserContextContainer};
 
 pub fn declare(context: &mut Context) -> Result<(), Error> {
     let request_permission_fn = FunctionObjectBuilder::new(
@@ -128,7 +122,8 @@ fn has_permission(_this: &JsValue, args: &[JsValue], context: &mut Context) -> J
 
                     let res = jsext.permission.check_permission(&permission);
                     Ok(res.into())
-                }.await as JsResult<JsValue>
+                }
+                .await as JsResult<JsValue>
                 {
                     Ok(val) => {
                         resolve
