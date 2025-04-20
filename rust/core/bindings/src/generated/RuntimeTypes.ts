@@ -40,7 +40,7 @@ export type ImageListAudio = { link: string, from: number, to: number, };
 /**
  * flutter_rust_bridge:non_opaque
  */
-export type LinkSource = { "type": "Epub", link: string, } | { "type": "Pdf", link: string, } | { "type": "Imagelist", links: Array<string>, header?: { [key in string]?: string }, audio?: Array<ImageListAudio>, } | { "type": "M3u8", link: string, sub: Array<Subtitles>, };
+export type LinkSource = { "type": "Epub", link: string, } | { "type": "Pdf", link: string, } | { "type": "Imagelist", links: Array<string>, header?: { [key in string]?: string }, audio?: Array<ImageListAudio>, } | { "type": "M3u8", link: string, sub: Array<Subtitles>, } | { "type": "Mp3", chapters: Array<UrlChapter>, };
 
 /**
  * flutter_rust_bridge:non_opaque
@@ -93,3 +93,8 @@ export type Subtitles = { title: string, url: string, };
  * flutter_rust_bridge:non_opaque
  */
 export type TimestampType = "Relative" | "Absolute";
+
+/**
+ * flutter_rust_bridge:non_opaque
+ */
+export type UrlChapter = { title: string, url: string, };

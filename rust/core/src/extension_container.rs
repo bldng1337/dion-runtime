@@ -18,6 +18,8 @@ use crate::datastructs::{self, Entry, EntryDetailed, ExtensionData, Sort, Source
 use crate::error::{Error, Result};
 use crate::extension::TExtension;
 use crate::extension_manager::JSExtension;
+use crate::permission::{Permission, PermissionStore};
+use crate::settings::SettingStore;
 use crate::utils::{
     await_promise, Queue, ReadOnlyUserContextContainer, SharedUserContextContainer,
     VirtualModuleLoader,
@@ -72,7 +74,7 @@ impl ExtensionContainer {
     }
 
     pub(crate) async fn create(path: PathBuf) -> Result<Self> {
-        let contents: String = String::from_utf8(fs::read(path).await?)?;
+        let contents: String = String::from_utf8(fs::read(&path).await?)?;
         let data: ExtensionData = serde_json::from_str(
             contents
                 .lines()
@@ -82,10 +84,9 @@ impl ExtensionContainer {
                 .unwrap_or_default(),
         )?;
         let ext = JSExtension {
-            //TODO: Save permission and setting
             data: data,
-            permission: Default::default(),
-            setting: Default::default(),
+            permission: PermissionStore::new(path.with_extension("permission.json")).await?,
+            setting: SettingStore::new(path.with_extension("setting.json")).await?,
         };
         Ok(Self {
             ext: Arc::new(RwLock::new(ext)),
@@ -119,7 +120,7 @@ impl ExtensionContainer {
                     }
                     Err(err) => {
                         let _ = isend.send(Err(err));
-                        panic!();
+                        return;
                     }
                 };
 
@@ -365,12 +366,16 @@ impl TExtension for ExtensionContainer {
             return Err(Error::ExtensionError("()".to_string()));
         }
         let (send, response) = oneshot::channel();
-        self.send.as_ref().unwrap().send(Task::Browse {
-            page: page,
-            sort: sort,
-            token: token,
-            send: send,
-        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
+        self.send
+            .as_ref()
+            .unwrap()
+            .send(Task::Browse {
+                page: page,
+                sort: sort,
+                token: token,
+                send: send,
+            })
+            .map_err(|_| Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -384,12 +389,16 @@ impl TExtension for ExtensionContainer {
             return Err(Error::ExtensionError("()".to_string()));
         }
         let (send, response) = oneshot::channel();
-        self.send.as_ref().unwrap().send(Task::Search {
-            page: page,
-            filter: filter.to_string(),
-            token: token,
-            send: send,
-        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
+        self.send
+            .as_ref()
+            .unwrap()
+            .send(Task::Search {
+                page: page,
+                filter: filter.to_string(),
+                token: token,
+                send: send,
+            })
+            .map_err(|_| Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -402,11 +411,15 @@ impl TExtension for ExtensionContainer {
             return Err(Error::ExtensionError("()".to_string()));
         }
         let (send, response) = oneshot::channel();
-        self.send.as_ref().unwrap().send(Task::Detail {
-            entryid: entryid.to_string(),
-            token: token,
-            send: send,
-        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
+        self.send
+            .as_ref()
+            .unwrap()
+            .send(Task::Detail {
+                entryid: entryid.to_string(),
+                token: token,
+                send: send,
+            })
+            .map_err(|_| Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -419,11 +432,15 @@ impl TExtension for ExtensionContainer {
             return Err(Error::ExtensionError("()".to_string()));
         }
         let (send, response) = oneshot::channel();
-        self.send.as_ref().unwrap().send(Task::Source {
-            epid: epid.clone(),
-            token: token,
-            send: send,
-        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
+        self.send
+            .as_ref()
+            .unwrap()
+            .send(Task::Source {
+                epid: epid.clone(),
+                token: token,
+                send: send,
+            })
+            .map_err(|_| Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 
@@ -436,11 +453,15 @@ impl TExtension for ExtensionContainer {
             return Err(Error::ExtensionError("()".to_string()));
         }
         let (send, response) = oneshot::channel();
-        self.send.as_ref().unwrap().send(Task::FromUrl {
-            url: url,
-            token: token,
-            send: send,
-        }).map_err(|_|Error::ExtensionError("Couldnt send".to_string()))?;
+        self.send
+            .as_ref()
+            .unwrap()
+            .send(Task::FromUrl {
+                url: url,
+                token: token,
+                send: send,
+            })
+            .map_err(|_| Error::ExtensionError("Couldnt send".to_string()))?;
         response.await?
     }
 }

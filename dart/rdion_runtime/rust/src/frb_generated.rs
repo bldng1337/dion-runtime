@@ -1214,6 +1214,9 @@ const _: fn() = || {
             let _: String = link;
             let _: Vec<dion_runtime::datastructs::Subtitles> = sub;
         }
+        dion_runtime::datastructs::LinkSource::Mp3 { chapters } => {
+            let _: Vec<dion_runtime::datastructs::UrlChapter> = chapters;
+        }
     }
     match None::<dion_runtime::permission::Permission>.unwrap() {
         dion_runtime::permission::Permission::StoragePermission { path, write } => {
@@ -1280,6 +1283,11 @@ const _: fn() = || {
         let Subtitles = None::<dion_runtime::datastructs::Subtitles>.unwrap();
         let _: String = Subtitles.title;
         let _: String = Subtitles.url;
+    }
+    {
+        let UrlChapter = None::<dion_runtime::datastructs::UrlChapter>.unwrap();
+        let _: String = UrlChapter.title;
+        let _: String = UrlChapter.url;
     }
 };
 
@@ -1850,6 +1858,13 @@ impl SseDecode for dion_runtime::datastructs::LinkSource {
                     sub: var_sub,
                 };
             }
+            4 => {
+                let mut var_chapters =
+                    <Vec<dion_runtime::datastructs::UrlChapter>>::sse_decode(deserializer);
+                return dion_runtime::datastructs::LinkSource::Mp3 {
+                    chapters: var_chapters,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
@@ -2032,6 +2047,20 @@ impl SseDecode for Vec<dion_runtime::datastructs::Subtitles> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<dion_runtime::datastructs::Subtitles>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::datastructs::UrlChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::datastructs::UrlChapter>::sse_decode(
                 deserializer,
             ));
         }
@@ -2447,6 +2476,18 @@ impl SseDecode for () {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
 }
 
+impl SseDecode for dion_runtime::datastructs::UrlChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        return dion_runtime::datastructs::UrlChapter {
+            title: var_title,
+            url: var_url,
+        };
+    }
+}
+
 impl SseDecode for usize {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2845,6 +2886,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Lin
                 sub.into_into_dart().into_dart(),
             ]
             .into_dart(),
+            dion_runtime::datastructs::LinkSource::Mp3 { chapters } => {
+                [4.into_dart(), chapters.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -3179,6 +3223,27 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Tim
     for dion_runtime::datastructs::TimestampType
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::TimestampType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::UrlChapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.title.into_into_dart().into_dart(),
+            self.0.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::datastructs::UrlChapter>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::UrlChapter>>
+    for dion_runtime::datastructs::UrlChapter
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::UrlChapter> {
         self.into()
     }
 }
@@ -3553,6 +3618,10 @@ impl SseEncode for dion_runtime::datastructs::LinkSource {
                 <String>::sse_encode(link, serializer);
                 <Vec<dion_runtime::datastructs::Subtitles>>::sse_encode(sub, serializer);
             }
+            dion_runtime::datastructs::LinkSource::Mp3 { chapters } => {
+                <i32>::sse_encode(4, serializer);
+                <Vec<dion_runtime::datastructs::UrlChapter>>::sse_encode(chapters, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -3696,6 +3765,16 @@ impl SseEncode for Vec<dion_runtime::datastructs::Subtitles> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <dion_runtime::datastructs::Subtitles>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::datastructs::UrlChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::datastructs::UrlChapter>::sse_encode(item, serializer);
         }
     }
 }
@@ -4061,6 +4140,14 @@ impl SseEncode for u8 {
 impl SseEncode for () {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
+}
+
+impl SseEncode for dion_runtime::datastructs::UrlChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.title, serializer);
+        <String>::sse_encode(self.url, serializer);
+    }
 }
 
 impl SseEncode for usize {
@@ -4551,6 +4638,12 @@ mod io {
                         sub: ans.sub.cst_decode(),
                     }
                 }
+                4 => {
+                    let ans = unsafe { self.kind.Mp3 };
+                    dion_runtime::datastructs::LinkSource::Mp3 {
+                        chapters: ans.chapters.cst_decode(),
+                    }
+                }
                 _ => unreachable!(),
             }
         }
@@ -4696,6 +4789,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::datastructs::UrlChapter>> for *mut wire_cst_list_url_chapter {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::datastructs::UrlChapter> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<dion_runtime::permission::Permission> for wire_cst_permission {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::permission::Permission {
@@ -4832,6 +4935,15 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::datastructs::Subtitles {
             dion_runtime::datastructs::Subtitles {
+                title: self.title.cst_decode(),
+                url: self.url.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::datastructs::UrlChapter> for wire_cst_url_chapter {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::datastructs::UrlChapter {
+            dion_runtime::datastructs::UrlChapter {
                 title: self.title.cst_decode(),
                 url: self.url.cst_decode(),
             }
@@ -5096,6 +5208,19 @@ mod io {
         }
     }
     impl Default for wire_cst_subtitles {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_url_chapter {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                title: core::ptr::null_mut(),
+                url: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_url_chapter {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -5664,6 +5789,20 @@ mod io {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_url_chapter(
+        len: i32,
+    ) -> *mut wire_cst_list_url_chapter {
+        let wrap = wire_cst_list_url_chapter {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_url_chapter>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_custom_ui {
@@ -5825,6 +5964,7 @@ length: *mut i32 }
         Pdf: wire_cst_LinkSource_Pdf,
         Imagelist: wire_cst_LinkSource_Imagelist,
         M3u8: wire_cst_LinkSource_M3u8,
+        Mp3: wire_cst_LinkSource_Mp3,
         nil__: (),
     }
     #[repr(C)]
@@ -5849,6 +5989,11 @@ length: *mut i32 }
     pub struct wire_cst_LinkSource_M3u8 {
         link: *mut wire_cst_list_prim_u_8_strict,
         sub: *mut wire_cst_list_subtitles,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_LinkSource_Mp3 {
+        chapters: *mut wire_cst_list_url_chapter,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5935,6 +6080,12 @@ length: *mut i32 }
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_subtitles {
         ptr: *mut wire_cst_subtitles,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_url_chapter {
+        ptr: *mut wire_cst_url_chapter,
         len: i32,
     }
     #[repr(C)]
@@ -6076,6 +6227,12 @@ options: *mut wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generat
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_subtitles {
+        title: *mut wire_cst_list_prim_u_8_strict,
+        url: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_url_chapter {
         title: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
     }

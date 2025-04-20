@@ -235,6 +235,16 @@ pub enum LinkSource {
     },
     #[serde(alias = "m3u8")]
     M3u8 { link: String, sub: Vec<Subtitles> },
+    #[serde(alias = "mp3")]
+    Mp3 { chapters: Vec<UrlChapter> },
+}
+
+/// flutter_rust_bridge:non_opaque
+#[derive(Serialize, Deserialize, Debug, Clone, TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
+pub struct UrlChapter {
+    pub title: String,
+    pub url: String,
 }
 
 /// flutter_rust_bridge:non_opaque

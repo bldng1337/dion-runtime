@@ -20,7 +20,6 @@ use tokio_util::sync::CancellationToken;
 
 use crate::frb_generated::StreamSink;
 
-
 #[frb(rust2dart(dart_type = "String", dart_code = "{}"))]
 pub fn encode_fancy_type(raw: serde_json::Value) -> String {
     serde_json::to_string(&raw).unwrap()
@@ -134,11 +133,9 @@ impl ExtensionProxy {
     }
 
     pub async fn remove_permissions(&self, permission: &Permission) {
-        self.inner
-            .get_extension_mut()
-            .await
-            .permission
-            .remove_permission(permission)
+        let mut ext = self.inner.get_extension_mut().await;
+        ext.permission.remove_permission(permission);
+        ext.permission.save().await;
     }
 
     //SETTINGS
@@ -173,13 +170,10 @@ impl ExtensionProxy {
     }
 
     pub async fn set_setting(&self, name: &String, setting: Settingvalue) -> Result<()> {
-        self.inner
-            .get_extension_mut()
-            .await
-            .setting
-            .get_setting_mut(name)?
-            .val
-            .overwrite(setting)
+        let mut ext = self.inner.get_extension_mut().await;
+        ext.setting.get_setting_mut(name)?.val.overwrite(setting)?;
+        ext.setting.save().await;
+        Ok(())
     }
 
     //EXTENSION STATE

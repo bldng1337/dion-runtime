@@ -262,6 +262,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Subtitles> dco_decode_list_subtitles(dynamic raw);
 
   @protected
+  List<UrlChapter> dco_decode_list_url_chapter(dynamic raw);
+
+  @protected
   MediaType dco_decode_media_type(dynamic raw);
 
   @protected
@@ -348,6 +351,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void dco_decode_unit(dynamic raw);
+
+  @protected
+  UrlChapter dco_decode_url_chapter(dynamic raw);
 
   @protected
   BigInt dco_decode_usize(dynamic raw);
@@ -576,6 +582,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Subtitles> sse_decode_list_subtitles(SseDeserializer deserializer);
 
   @protected
+  List<UrlChapter> sse_decode_list_url_chapter(SseDeserializer deserializer);
+
+  @protected
   MediaType sse_decode_media_type(SseDeserializer deserializer);
 
   @protected
@@ -666,6 +675,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_decode_unit(SseDeserializer deserializer);
+
+  @protected
+  UrlChapter sse_decode_url_chapter(SseDeserializer deserializer);
 
   @protected
   BigInt sse_decode_usize(SseDeserializer deserializer);
@@ -964,6 +976,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_subtitles(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_subtitles(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_url_chapter> cst_encode_list_url_chapter(
+      List<UrlChapter> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_url_chapter(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_url_chapter(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1292,6 +1315,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.M3u8.sub = pre_sub;
       return;
     }
+    if (apiObj is LinkSource_Mp3) {
+      var pre_chapters = cst_encode_list_url_chapter(apiObj.chapters);
+      wireObj.tag = 4;
+      wireObj.kind.Mp3.chapters = pre_chapters;
+      return;
+    }
   }
 
   @protected
@@ -1425,6 +1454,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void cst_api_fill_to_wire_subtitles(
       Subtitles apiObj, wire_cst_subtitles wireObj) {
+    wireObj.title = cst_encode_String(apiObj.title);
+    wireObj.url = cst_encode_String(apiObj.url);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_url_chapter(
+      UrlChapter apiObj, wire_cst_url_chapter wireObj) {
     wireObj.title = cst_encode_String(apiObj.title);
     wireObj.url = cst_encode_String(apiObj.url);
   }
@@ -1761,6 +1797,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<Subtitles> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_url_chapter(
+      List<UrlChapter> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_media_type(MediaType self, SseSerializer serializer);
 
   @protected
@@ -1854,6 +1894,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_url_chapter(UrlChapter self, SseSerializer serializer);
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);
@@ -2979,6 +3022,21 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_subtitles = _cst_new_list_subtitlesPtr
       .asFunction<ffi.Pointer<wire_cst_list_subtitles> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_url_chapter> cst_new_list_url_chapter(
+    int len,
+  ) {
+    return _cst_new_list_url_chapter(
+      len,
+    );
+  }
+
+  late final _cst_new_list_url_chapterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_url_chapter> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_url_chapter');
+  late final _cst_new_list_url_chapter = _cst_new_list_url_chapterPtr
+      .asFunction<ffi.Pointer<wire_cst_list_url_chapter> Function(int)>();
+
   int dummy_method_to_enforce_bundling() {
     return _dummy_method_to_enforce_bundling();
   }
@@ -3236,6 +3294,23 @@ final class wire_cst_LinkSource_M3u8 extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_subtitles> sub;
 }
 
+final class wire_cst_url_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+}
+
+final class wire_cst_list_url_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_url_chapter> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_LinkSource_Mp3 extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_url_chapter> chapters;
+}
+
 final class LinkSourceKind extends ffi.Union {
   external wire_cst_LinkSource_Epub Epub;
 
@@ -3244,6 +3319,8 @@ final class LinkSourceKind extends ffi.Union {
   external wire_cst_LinkSource_Imagelist Imagelist;
 
   external wire_cst_LinkSource_M3u8 M3u8;
+
+  external wire_cst_LinkSource_Mp3 Mp3;
 }
 
 final class wire_cst_link_source extends ffi.Struct {

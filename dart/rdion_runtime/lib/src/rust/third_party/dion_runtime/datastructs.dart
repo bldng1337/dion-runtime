@@ -8,7 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'datastructs.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `try_into_js`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl_concrete`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `decl`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `ident`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline_flattened`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `inline`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `name`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `output_path`, `try_into_js`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_dependencies`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`, `visit_generics`
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MetaData>>
 abstract class MetaData implements RustOpaqueInterface {}
@@ -375,6 +375,9 @@ sealed class LinkSource with _$LinkSource {
     required String link,
     required List<Subtitles> sub,
   }) = LinkSource_M3u8;
+  const factory LinkSource.mp3({
+    required List<UrlChapter> chapters,
+  }) = LinkSource_Mp3;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -445,4 +448,26 @@ enum TimestampType {
 
   static Future<TimestampType> default_() =>
       RustLib.instance.api.dionRuntimeDatastructsTimestampTypeDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+class UrlChapter {
+  final String title;
+  final String url;
+
+  const UrlChapter({
+    required this.title,
+    required this.url,
+  });
+
+  @override
+  int get hashCode => title.hashCode ^ url.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UrlChapter &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          url == other.url;
 }

@@ -1622,6 +1622,7 @@ mixin _$LinkSource {
             List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1632,6 +1633,7 @@ mixin _$LinkSource {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1642,6 +1644,7 @@ mixin _$LinkSource {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1651,6 +1654,7 @@ mixin _$LinkSource {
     required TResult Function(LinkSource_Pdf value) pdf,
     required TResult Function(LinkSource_Imagelist value) imagelist,
     required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1659,6 +1663,7 @@ mixin _$LinkSource {
     TResult? Function(LinkSource_Pdf value)? pdf,
     TResult? Function(LinkSource_Imagelist value)? imagelist,
     TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1667,6 +1672,7 @@ mixin _$LinkSource {
     TResult Function(LinkSource_Pdf value)? pdf,
     TResult Function(LinkSource_Imagelist value)? imagelist,
     TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1768,6 +1774,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
             List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return epub(link);
   }
@@ -1781,6 +1788,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return epub?.call(link);
   }
@@ -1794,6 +1802,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
     if (epub != null) {
@@ -1809,6 +1818,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     required TResult Function(LinkSource_Pdf value) pdf,
     required TResult Function(LinkSource_Imagelist value) imagelist,
     required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
   }) {
     return epub(this);
   }
@@ -1820,6 +1830,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     TResult? Function(LinkSource_Pdf value)? pdf,
     TResult? Function(LinkSource_Imagelist value)? imagelist,
     TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
   }) {
     return epub?.call(this);
   }
@@ -1831,6 +1842,7 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     TResult Function(LinkSource_Pdf value)? pdf,
     TResult Function(LinkSource_Imagelist value)? imagelist,
     TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
     required TResult orElse(),
   }) {
     if (epub != null) {
@@ -1929,6 +1941,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
             List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return pdf(link);
   }
@@ -1942,6 +1955,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return pdf?.call(link);
   }
@@ -1955,6 +1969,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
     if (pdf != null) {
@@ -1970,6 +1985,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     required TResult Function(LinkSource_Pdf value) pdf,
     required TResult Function(LinkSource_Imagelist value) imagelist,
     required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
   }) {
     return pdf(this);
   }
@@ -1981,6 +1997,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     TResult? Function(LinkSource_Pdf value)? pdf,
     TResult? Function(LinkSource_Imagelist value)? imagelist,
     TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
   }) {
     return pdf?.call(this);
   }
@@ -1992,6 +2009,7 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     TResult Function(LinkSource_Pdf value)? pdf,
     TResult Function(LinkSource_Imagelist value)? imagelist,
     TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
     required TResult orElse(),
   }) {
     if (pdf != null) {
@@ -2142,6 +2160,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
             List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return imagelist(links, header, audio);
   }
@@ -2155,6 +2174,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return imagelist?.call(links, header, audio);
   }
@@ -2168,6 +2188,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
     if (imagelist != null) {
@@ -2183,6 +2204,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     required TResult Function(LinkSource_Pdf value) pdf,
     required TResult Function(LinkSource_Imagelist value) imagelist,
     required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
   }) {
     return imagelist(this);
   }
@@ -2194,6 +2216,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     TResult? Function(LinkSource_Pdf value)? pdf,
     TResult? Function(LinkSource_Imagelist value)? imagelist,
     TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
   }) {
     return imagelist?.call(this);
   }
@@ -2205,6 +2228,7 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     TResult Function(LinkSource_Pdf value)? pdf,
     TResult Function(LinkSource_Imagelist value)? imagelist,
     TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
     required TResult orElse(),
   }) {
     if (imagelist != null) {
@@ -2324,6 +2348,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
             List<ImageListAudio>? audio)
         imagelist,
     required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return m3U8(link, sub);
   }
@@ -2337,6 +2362,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return m3U8?.call(link, sub);
   }
@@ -2350,6 +2376,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
             List<ImageListAudio>? audio)?
         imagelist,
     TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
     if (m3U8 != null) {
@@ -2365,6 +2392,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     required TResult Function(LinkSource_Pdf value) pdf,
     required TResult Function(LinkSource_Imagelist value) imagelist,
     required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
   }) {
     return m3U8(this);
   }
@@ -2376,6 +2404,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     TResult? Function(LinkSource_Pdf value)? pdf,
     TResult? Function(LinkSource_Imagelist value)? imagelist,
     TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
   }) {
     return m3U8?.call(this);
   }
@@ -2387,6 +2416,7 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     TResult Function(LinkSource_Pdf value)? pdf,
     TResult Function(LinkSource_Imagelist value)? imagelist,
     TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
     required TResult orElse(),
   }) {
     if (m3U8 != null) {
@@ -2409,6 +2439,181 @@ abstract class LinkSource_M3u8 extends LinkSource {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LinkSource_M3u8ImplCopyWith<_$LinkSource_M3u8Impl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LinkSource_Mp3ImplCopyWith<$Res> {
+  factory _$$LinkSource_Mp3ImplCopyWith(_$LinkSource_Mp3Impl value,
+          $Res Function(_$LinkSource_Mp3Impl) then) =
+      __$$LinkSource_Mp3ImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<UrlChapter> chapters});
+}
+
+/// @nodoc
+class __$$LinkSource_Mp3ImplCopyWithImpl<$Res>
+    extends _$LinkSourceCopyWithImpl<$Res, _$LinkSource_Mp3Impl>
+    implements _$$LinkSource_Mp3ImplCopyWith<$Res> {
+  __$$LinkSource_Mp3ImplCopyWithImpl(
+      _$LinkSource_Mp3Impl _value, $Res Function(_$LinkSource_Mp3Impl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of LinkSource
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? chapters = null,
+  }) {
+    return _then(_$LinkSource_Mp3Impl(
+      chapters: null == chapters
+          ? _value._chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
+              as List<UrlChapter>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$LinkSource_Mp3Impl extends LinkSource_Mp3 {
+  const _$LinkSource_Mp3Impl({required final List<UrlChapter> chapters})
+      : _chapters = chapters,
+        super._();
+
+  final List<UrlChapter> _chapters;
+  @override
+  List<UrlChapter> get chapters {
+    if (_chapters is EqualUnmodifiableListView) return _chapters;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_chapters);
+  }
+
+  @override
+  String toString() {
+    return 'LinkSource.mp3(chapters: $chapters)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LinkSource_Mp3Impl &&
+            const DeepCollectionEquality().equals(other._chapters, _chapters));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_chapters));
+
+  /// Create a copy of LinkSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LinkSource_Mp3ImplCopyWith<_$LinkSource_Mp3Impl> get copyWith =>
+      __$$LinkSource_Mp3ImplCopyWithImpl<_$LinkSource_Mp3Impl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String link) epub,
+    required TResult Function(String link) pdf,
+    required TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)
+        imagelist,
+    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(List<UrlChapter> chapters) mp3,
+  }) {
+    return mp3(chapters);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String link)? epub,
+    TResult? Function(String link)? pdf,
+    TResult? Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
+        imagelist,
+    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(List<UrlChapter> chapters)? mp3,
+  }) {
+    return mp3?.call(chapters);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String link)? epub,
+    TResult Function(String link)? pdf,
+    TResult Function(List<String> links, Map<String, String>? header,
+            List<ImageListAudio>? audio)?
+        imagelist,
+    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(List<UrlChapter> chapters)? mp3,
+    required TResult orElse(),
+  }) {
+    if (mp3 != null) {
+      return mp3(chapters);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LinkSource_Epub value) epub,
+    required TResult Function(LinkSource_Pdf value) pdf,
+    required TResult Function(LinkSource_Imagelist value) imagelist,
+    required TResult Function(LinkSource_M3u8 value) m3U8,
+    required TResult Function(LinkSource_Mp3 value) mp3,
+  }) {
+    return mp3(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LinkSource_Epub value)? epub,
+    TResult? Function(LinkSource_Pdf value)? pdf,
+    TResult? Function(LinkSource_Imagelist value)? imagelist,
+    TResult? Function(LinkSource_M3u8 value)? m3U8,
+    TResult? Function(LinkSource_Mp3 value)? mp3,
+  }) {
+    return mp3?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LinkSource_Epub value)? epub,
+    TResult Function(LinkSource_Pdf value)? pdf,
+    TResult Function(LinkSource_Imagelist value)? imagelist,
+    TResult Function(LinkSource_M3u8 value)? m3U8,
+    TResult Function(LinkSource_Mp3 value)? mp3,
+    required TResult orElse(),
+  }) {
+    if (mp3 != null) {
+      return mp3(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LinkSource_Mp3 extends LinkSource {
+  const factory LinkSource_Mp3({required final List<UrlChapter> chapters}) =
+      _$LinkSource_Mp3Impl;
+  const LinkSource_Mp3._() : super._();
+
+  List<UrlChapter> get chapters;
+
+  /// Create a copy of LinkSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LinkSource_Mp3ImplCopyWith<_$LinkSource_Mp3Impl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
