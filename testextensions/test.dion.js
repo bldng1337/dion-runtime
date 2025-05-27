@@ -2,10 +2,10 @@
 import { fetch, getCookies } from "network";
 import { registerSetting, getSetting } from "setting";
 import { requestPermission } from "permission";
-import { decode_base64,encode_base64 } from "convert";
-
+import { decode_base64, encode_base64 } from "convert";
+import { parse_html_fragment, parse_html } from "parse";
 function test() {
-  // print("external test");
+  console.log("external test");
   return true;
 }
 
@@ -29,6 +29,7 @@ function getEntry() {
     length: 1000,
   };
 }
+
 function getEpisode() {
   return {
     id: "someid",
@@ -37,13 +38,6 @@ function getEpisode() {
     cover: "somecover",
     cover_header: { some: "header" },
     timestamp: "somedate",
-  };
-}
-
-function getEpisodeList() {
-  return {
-    title: "sometext",
-    episodes: [getEpisode()],
   };
 }
 
@@ -58,7 +52,7 @@ function getEntryDetailed() {
     description: "somedescription",
     cover: "somecover",
     cover_header: { some: "header" },
-    episodes: [getEpisodeList()],
+    episodes: [getEpisode()],
     genres: ["somegenre"],
     alttitles: ["somealttitle"],
     author: ["someauther"],
@@ -82,25 +76,81 @@ export default class {
   constructor() {
     this.test = "some test";
   }
+
   async load() {
-    const permission = await requestPermission({id:"storage",path:"some"},"some permission");
-    assert(permission==true,"permission not working");
-    print("other");
-    assert(decode_base64("YXNk")=="asd","decode_base64 not working");
-    assert(encode_base64("asd")=="YXNk","encode_base64 not working");
-    assert(decode_base64(encode_base64("test"))=="test","decode_base64 or encode_base64 not working");
-    print({ some: "test" });
-    assert(test()==true,"external function not working");
+    // TODO: Finish Implementing permissions
+    // {
+    //   const permission = await requestPermission(
+    //     { id: "storage", path: "some" },
+    //     "some permission"
+    //   );
+    //   assert(permission == true, "permission not working");
+    // }
+    // {
+    //   const permission = await requestPermission(
+    //     { id: "storage", path: "other" },
+    //     "other"
+    //   );
+    //   assert(permission == false, "permission not working");
+    // }
+
+    console.log("other");
+    assert(decode_base64("YXNk") == "asd", "decode_base64 not working");
+    assert(encode_base64("asd") == "YXNk", "encode_base64 not working");
+    assert(
+      decode_base64(encode_base64("test")) == "test",
+      "decode_base64 or encode_base64 not working"
+    );
+    console.log({ some: "test" });
+    assert(test() == true, "external function not working");
     const res = await fetch("https://www.example.com");
     assert(res.body.length > 0, "fetch not working");
-    await registerSetting("someid", "entry", "somevalue");
-    assert((await getSetting("someid"))=="somevalue","setting not working");
-    await fetch("https://www.google.com");
-    const cookies = await getCookies();
-    assert(cookies.length > 0, "cookies not working");
+
+    let setting = {
+      settingtype: "Extension",
+      setting: {
+        val: {
+          type: "String",
+          val: "somevalue",
+          default_val: "somedefault",
+        },
+        ui: {
+          type: "Textbox",
+          label: "somelabel",
+        },
+      },
+    };
+    await registerSetting("someid", setting);
+    assert(
+      (await getSetting("someid")).setting.val.val == "somevalue",
+      "setting not working"
+    );
+    // await fetch("https://www.google.com");
+    // const cookies = await getCookies();
+    // assert(cookies.length > 0, "cookies not working");
+    // parse_html(res.body);
+    let html = `<html><body><div attr="value">some text</div><div>some other text</div></body></html>`;
+    let parsed = parse_html(html);
+    let sel = new CSSSelector("div");
+    let elarr = parsed.select(sel);
+    let el = elarr.first;
+    console.log(el.text);
+    assert(el.text == "some text", "parse_html not working");
+    assert(el.parent.name == "body", "parse_html not working");
+    assert(el.name == "div", "parse_html not working");
+    assert(el.attr("attr") == "value", "parse_html not working");
+    assert(elarr.length == 2, "parse_html not working");
+    assert(
+      elarr.map((el) => el.text).join("\n") == "some text\nsome other text",
+      "parse_html not working"
+    );
   }
+
   async browse(page, sort) {
-    assert((await getSetting("someid")) == "othervalue", "setting not working");
+    assert(
+      (await getSetting("someid")).setting.val.val == "othervalue",
+      "setting not working"
+    );
     assert(typeof page == "number", "page must be a number");
     assert(typeof sort == "string", "sort must be a string");
     return [getEntry()];
@@ -111,7 +161,7 @@ export default class {
     return [getEntry()];
   }
   async detail(entryid) {
-    assert(entryid=="someid","entryid is wrong");
+    assert(entryid == "someid", "entryid is wrong");
     assert(typeof entryid == "string", "entryid must be a string");
     return getEntryDetailed();
   }

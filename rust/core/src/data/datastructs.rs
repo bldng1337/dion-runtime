@@ -1,8 +1,11 @@
+use super::settings::Setting;
 use boa_engine::value::TryIntoJs;
 use serde::{Deserialize, Serialize};
+pub use serde_json::Value;
 use std::collections::HashMap;
 use ts_rs::TS;
 
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Default, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ExtensionData {
@@ -93,14 +96,6 @@ pub struct Episode {
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
-pub struct EpisodeList {
-    pub title: String,
-    pub episodes: Vec<Episode>,
-}
-
-/// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone, TS)]
-#[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum ReleaseStatus {
     #[serde(alias = "releasing")]
     Releasing,
@@ -150,13 +145,14 @@ pub enum CustomUI {
         children: Vec<CustomUI>,
     },
 }
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct MetaData {
-    key: String,
-    value: serde_json::Value,
+    pub key: String,
+    pub value: serde_json::Value,
 }
-
+/// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct EntryDetailed {
@@ -183,7 +179,7 @@ pub struct EntryDetailed {
     #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
 
-    pub episodes: Vec<EpisodeList>,
+    pub episodes: Vec<Episode>,
     #[ts(optional)]
     pub genres: Option<Vec<String>>,
     #[ts(optional)]
@@ -194,6 +190,8 @@ pub struct EntryDetailed {
     pub views: Option<f32>,
     #[ts(optional)]
     pub length: Option<i32>,
+    #[ts(optional)]
+    pub settings: Option<Vec<Setting>>,
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -271,6 +269,7 @@ pub enum DataSource {
     #[serde(alias = "paragraphlist")]
     Paragraphlist { paragraphs: Vec<String> },
 }
+
 impl TryIntoJs for Sort {
     fn try_into_js(
         &self,

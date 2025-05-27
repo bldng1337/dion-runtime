@@ -1,11 +1,6 @@
 use std::collections::HashMap;
+use std::{cell::RefCell, collections::VecDeque, future::Future, pin::Pin};
 use std::{ops::Deref, sync::Arc};
-use std::{
-    cell::RefCell,
-    collections::VecDeque,
-    future::Future,
-    pin::Pin,
-};
 
 use boa_engine::builtins::promise::PromiseState;
 use boa_engine::object::builtins::JsPromise;
@@ -24,12 +19,12 @@ use boa_engine::JsData;
 use boa_engine::{JsError, JsString, Module, Trace};
 use tokio::sync::RwLock;
 
+use anyhow::{anyhow, Context as ErrorContext, Result};
+
 pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResult<JsValue> {
     loop {
         match promise.state() {
-            PromiseState::Pending => {
-                context.run_jobs_async().await?
-            },
+            PromiseState::Pending => context.run_jobs_async().await?,
             PromiseState::Fulfilled(js_value) => break Ok(js_value),
             PromiseState::Rejected(js_value) => break Err(JsError::from_opaque(js_value)),
         }
@@ -266,7 +261,7 @@ impl JobExecutor for Queue {
                 for job in std::mem::take(&mut *self.async_jobs.borrow_mut()) {
                     group.insert(job.call(context));
                 }
-                
+
                 if self.promise_jobs.borrow().is_empty() {
                     let Some(result) = group.next().await else {
                         // Both queues are empty. We can exit.
@@ -298,5 +293,32 @@ impl JobExecutor for Queue {
                 self.drain_jobs(&mut context.borrow_mut());
             }
         })
+    }
+}
+
+pub trait MapJsResult<T> {
+    fn map_anyhow(self) -> Result<T>;
+    fn map_anyhow_ctx(self, context: &mut Context) -> Result<T>;
+}
+
+impl<T> MapJsResult<T> for JsResult<T> {
+    fn map_anyhow_ctx(self, context: &mut Context) -> Result<T> {
+        match self {
+            Ok(val) => Ok(val),
+            Err(err) => match err.try_native(context) {
+                Ok(err) => Err(anyhow!(err.message().to_string())),
+                Err(err) => Err(anyhow!(err.to_string())),
+            },
+        }
+    }
+
+    fn map_anyhow(self) -> Result<T> {
+        match self {
+            Ok(val) => Ok(val),
+            Err(err) => match err.as_native() {
+                Some(err) => Err(anyhow!(err.message().to_string())),
+                None => Err(anyhow!("Unkown Error")),
+            },
+        }
     }
 }

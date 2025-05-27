@@ -1,3 +1,5 @@
+use std::error::Error as StdError;
+
 use boa_engine::module::SyntheticModuleInitializer;
 use boa_engine::object::FunctionObjectBuilder;
 use boa_engine::{
@@ -6,10 +8,13 @@ use boa_engine::{
 };
 use boa_engine::{Context, Module, NativeFunction};
 
-use crate::permission::Permission;
-use crate::{error::Error, extension_manager::JSExtension, utils::SharedUserContextContainer};
+use anyhow::{anyhow, Context as ErrorContext, Result};
 
-pub fn declare(context: &mut Context) -> Result<(), Error> {
+use crate::data::permission::Permission;
+use crate::extension::extension_container::JSSourceExtension;
+use crate::extension::utils::SharedUserContextContainer;
+
+pub fn declare(context: &mut Context) -> Result<()> {
     let request_permission_fn = FunctionObjectBuilder::new(
         context.realm(),
         NativeFunction::from_fn_ptr(request_permission),
@@ -68,7 +73,7 @@ fn request_permission(
                     let msg = msg?.to_std_string_lossy();
                     let permission = permission?;
 
-                    let jsext: Option<SharedUserContextContainer<JSExtension>> =
+                    let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
                         (&mut context.borrow_mut()).get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let mut jsext = jsext.inner.write().await;
@@ -77,8 +82,7 @@ fn request_permission(
                         .permission
                         .request_permission(permission, Some(msg))
                         .await
-                        .map_err(|e| JsError::from_rust(e))?;
-
+                        .map_err(|e| JsError::from_rust(&*e))?;
                     Ok(res.into())
                 }
                 .await as JsResult<JsValue>
@@ -115,7 +119,7 @@ fn has_permission(_this: &JsValue, args: &[JsValue], context: &mut Context) -> J
                 match async {
                     let permission = permission?;
 
-                    let jsext: Option<SharedUserContextContainer<JSExtension>> =
+                    let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
                         (&mut context.borrow_mut()).get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let jsext = jsext.inner.read().await;

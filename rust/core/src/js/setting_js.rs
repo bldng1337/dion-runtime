@@ -1,32 +1,24 @@
-
 use boa_engine::{
     job::NativeAsyncJob,
     js_string,
     module::SyntheticModuleInitializer,
     object::{builtins::JsPromise, FunctionObjectBuilder},
-    Context, JsArgs, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
-    NativeFunction,
+    Context, JsArgs, JsError, JsNativeError, JsResult, JsString, JsValue, Module, NativeFunction,
 };
 use serde_json::{Number, Value};
 
+use anyhow::{anyhow, Context as ErrorContext, Result};
+
 use crate::{
-    error::Error,
-    extension_manager::JSExtension,
-    settings::{Setting, SettingUI, Settingtype, Settingvalue},
-    utils::SharedUserContextContainer,
+    data::settings::{ExtensionSetting, Setting, SettingUI, Settingtype, Settingvalue},
+    extension::{extension_container::JSSourceExtension, utils::SharedUserContextContainer},
 };
 
-pub fn declare(context: &mut Context) -> Result<(), Error> {
+pub fn declare(context: &mut Context) -> Result<()> {
     let get_setting_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(get_setting))
             .length(1)
             .name("getSetting")
-            .build();
-
-    let set_ui_fn =
-        FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(set_ui))
-            .length(1)
-            .name("setUI")
             .build();
 
     let register_setting_fn = FunctionObjectBuilder::new(
@@ -40,22 +32,17 @@ pub fn declare(context: &mut Context) -> Result<(), Error> {
     context.module_loader().register_module(
         js_string!("setting"),
         Module::synthetic(
-            &[
-                js_string!("getSetting"),
-                js_string!("setUI"),
-                js_string!("registerSetting"),
-            ],
+            &[js_string!("getSetting"), js_string!("registerSetting")],
             SyntheticModuleInitializer::from_copy_closure_with_captures(
-                move |m, (get_setting_fn, set_ui_fn, register_setting_fn), _ctx| {
+                move |m, (get_setting_fn, register_setting_fn), _ctx| {
                     m.set_export(&js_string!("getSetting"), get_setting_fn.clone().into())?;
-                    m.set_export(&js_string!("setUI"), set_ui_fn.clone().into())?;
                     m.set_export(
                         &js_string!("registerSetting"),
                         register_setting_fn.clone().into(),
                     )?;
                     Ok(())
                 },
-                (get_setting_fn, set_ui_fn, register_setting_fn),
+                (get_setting_fn, register_setting_fn),
             ),
             None,
             None,
@@ -75,69 +62,18 @@ fn get_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsRe
         move |context| {
             Box::pin(async move {
                 match async {
-                    let jsext: Option<SharedUserContextContainer<JSExtension>> =
+                    let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
                         { (&mut context.borrow_mut()).get_data().cloned() };
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let jsext = jsext.inner.read().await;
                     let res = jsext.setting.get_setting(&setting).map_err(|e| {
                         JsError::from_native(JsNativeError::error().with_message(e.to_string()))
                     })?;
-                    let res = match &res.val {
-                        Settingvalue::String { val, default_val: _ } => Value::String(val.clone()),
-                        Settingvalue::Number { val, default_val: _ } => {
-                            Value::Number(Number::from_f64(val.clone()).unwrap())
-                        }
-                        Settingvalue::Boolean { val, default_val: _ } => Value::Bool(val.clone()),
-                    };
-                    let a = JsValue::from_json(&res, &mut context.borrow_mut());
-                    a
-                }
-                .await as JsResult<JsValue>
-                {
-                    Ok(val) => {
-                        resolve
-                            .resolve
-                            .call(&promise.into(), &[val], &mut context.borrow_mut())?
-                    }
-                    Err(err) => resolve.reject.call(
-                        &promise.into(),
-                        &[JsString::from(err.to_string()).into()],
+                    let a = JsValue::from_json(
+                        &serde_json::to_value(res).map_err(|e| JsError::from_rust(e))?,
                         &mut context.borrow_mut(),
-                    )?,
-                };
-                Ok(JsValue::undefined())
-            })
-        },
-        context.realm().clone(),
-    )));
-    Ok(ret.into())
-}
-
-fn set_ui(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-    let settingid = args.get_or_undefined(0).to_string(context);
-    let settingid = settingid?.to_std_string_lossy();
-    let uidefinition: SettingUI =
-        serde_json::from_value(args.get_or_undefined(1).to_json(context)?).map_err(|e| {
-            JsError::from_native(JsNativeError::error().with_message(e.to_string()))
-        })?;
-
-    let (promise, resolve) = JsPromise::new_pending(context);
-    let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
-                match async {
-                    let jsext: Option<SharedUserContextContainer<JSExtension>> =
-                        (&mut context.borrow_mut()).get_data().cloned();
-                    let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
-                    let mut jsext = jsext.inner.write().await;
-
-                    let setting = jsext.setting.get_setting_mut(&settingid).map_err(|e| {
-                        JsError::from_native(JsNativeError::error().with_message(e.to_string()))
-                    })?;
-
-                    setting.ui = Some(uidefinition);
-                    Ok(JsValue::undefined())
+                    );
+                    a
                 }
                 .await as JsResult<JsValue>
                 {
@@ -162,8 +98,7 @@ fn set_ui(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<
 
 fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
     let settingid = args.get_or_undefined(0).to_string(context);
-    let settingtype = args.get_or_undefined(1).to_string(context);
-    let default_val = args.get_or_undefined(2).to_json(context);
+    let setting = args.get_or_undefined(1).to_json(context);
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
@@ -172,38 +107,12 @@ fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) ->
             Box::pin(async move {
                 match async {
                     let settingid = settingid?.to_std_string_lossy();
-                    let settingtype = settingtype?.to_std_string_lossy();
-                    let default_val = default_val?;
-                    let setting = Setting {
-                        settingtype: match settingtype.to_lowercase().as_str() {
-                            "extension" => Settingtype::Extension,
-                            "entry" => Settingtype::Entry,
-                            "search" => Settingtype::Search,
-                            _ => Settingtype::Extension,
-                        },
-                        val: match default_val {
-                            Value::Bool(val) => Settingvalue::Boolean {
-                                val: val,
-                                default_val: val,
-                            },
-                            Value::String(val) => Settingvalue::String {
-                                val: val.clone(),
-                                default_val: val,
-                            },
-                            Value::Number(val) => Settingvalue::Number {
-                                val: val.as_f64().unwrap(),
-                                default_val: val.as_f64().unwrap(),
-                            },
-                            _ => Err(JsError::from_native(JsNativeError::error()))?,
-                        },
-                        ui: None,
-                    };
-
-                    let jsext: Option<SharedUserContextContainer<JSExtension>> =
+                    let setting: ExtensionSetting =
+                        serde_json::from_value(setting?).map_err(|e| JsError::from_rust(e))?;
+                    let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
                         (&mut context.borrow_mut()).get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let mut jsext = jsext.inner.write().await;
-
                     jsext.setting.add_setting(settingid, setting);
                     Ok(JsValue::undefined())
                 }
@@ -233,7 +142,7 @@ fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) ->
 //     use rquickjs::{ Ctx, FromJs, IntoJs, Object, Value };
 //     use crate::{
 //         error::Error,
-//         jsextension::ExtensionUserData,
+//         JSSourceExtension::ExtensionUserData,
 //         settings::{ Setting, SettingUI, Settingtype, Settingvalue }, utils::convertfromjs,
 //     };
 

@@ -1,12 +1,12 @@
+use anyhow::{anyhow, Context, Result};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf};
 use tokio::fs;
 use ts_rs::TS;
-
-use crate::error::{Error, Result};
 /// flutter_rust_bridge:non_opaque
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
+#[serde(tag = "type")]
 pub enum Settingvalue {
     String { val: String, default_val: String },
     Number { val: f64, default_val: f64 },
@@ -21,7 +21,10 @@ impl Settingvalue {
                 val,
                 default_val: _,
             } => Ok(val.clone()),
-            _ => Err(Error::ExtensionError("Setting not an int".to_string())),
+            val => Err(anyhow!(
+                "Setting {} is not an Boolean ",
+                val.get_type_name()
+            )),
         }
     }
     /// flutter_rust_bridge:ignore
@@ -31,7 +34,7 @@ impl Settingvalue {
                 val,
                 default_val: _,
             } => Ok(val.clone()),
-            _ => Err(Error::ExtensionError("Setting not an int".to_string())),
+            val => Err(anyhow!("Setting {} is not an String ", val.get_type_name())),
         }
     }
     /// flutter_rust_bridge:ignore
@@ -41,11 +44,11 @@ impl Settingvalue {
                 val,
                 default_val: _,
             } => Ok(val.clone()),
-            _ => Err(Error::ExtensionError("Setting not an int".to_string())),
+            val => Err(anyhow!("Setting {} not an Number ", val.get_type_name())),
         }
     }
 
-    pub fn overwrite(&mut self, setting: Settingvalue) -> Result<()> {
+    pub fn overwrite(&mut self, setting: &Settingvalue) -> Result<()> {
         match (self, setting) {
             (
                 Settingvalue::String {
@@ -57,7 +60,7 @@ impl Settingvalue {
                     default_val: _,
                 },
             ) => {
-                *overwritten = overwrite;
+                *overwritten = overwrite.clone();
                 Ok(())
             }
             (
@@ -70,7 +73,7 @@ impl Settingvalue {
                     default_val: _,
                 },
             ) => {
-                *overwritten = overwrite;
+                *overwritten = overwrite.clone();
                 Ok(())
             }
             (
@@ -83,10 +86,22 @@ impl Settingvalue {
                     default_val: _,
                 },
             ) => {
-                *overwritten = overwrite;
+                *overwritten = *overwrite;
                 Ok(())
             }
-            _ => Err(Error::ExtensionError("Wrong Settingtype".to_string())),
+            (val, other) => Err(anyhow!(
+                "Wrong Settingtype {} and {}",
+                val.get_type_name(),
+                other.get_type_name()
+            )),
+        }
+    }
+
+    pub fn get_type_name(&self) -> &str {
+        match self {
+            Settingvalue::String { .. } => "String",
+            Settingvalue::Number { .. } => "Number",
+            Settingvalue::Boolean { .. } => "Boolean",
         }
     }
 }
@@ -131,20 +146,28 @@ pub struct DropdownItem {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum Settingtype {
     Extension,
-    Entry,
     Search,
 }
+
 /// flutter_rust_bridge:non_opaque
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Setting {
     pub val: Settingvalue,
-    pub settingtype: Settingtype,
     pub ui: Option<SettingUI>,
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone, TS)]
+#[ts(export, export_to = "RuntimeTypes.ts")]
+pub struct ExtensionSetting {
+    pub setting: Setting,
+    pub settingtype: Settingtype,
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SettingStore {
     savepath: PathBuf,
-    settings: HashMap<String, Setting>,
+    settings: HashMap<String, ExtensionSetting>,
 }
 
 impl SettingStore {
@@ -153,61 +176,69 @@ impl SettingStore {
             savepath: savepath,
             settings: Default::default(),
         };
-        store.load().await?;
+        //TODO: Log error and delete save file
+        store
+            .load()
+            .await
+            .context("Failed to load saved settings")?;
         Ok(store)
     }
 
-    pub(crate) fn add_setting(&mut self, name: String, mut setting: Setting) {
-        if self.settings.contains_key(&name) {
-            //TODO: Handle this error more sensible
-            let _ = setting
-                .val
-                .overwrite(self.settings.remove(&name).unwrap().val);
+    pub(crate) fn add_setting(&mut self, name: String, mut setting: ExtensionSetting) {
+        if let Some(oldsetting) = self.settings.remove(&name) {
+            let _ = setting.setting.val.overwrite(&oldsetting.setting.val);
         }
         self.settings.insert(name, setting);
     }
 
     pub fn get_settings_ids(
         &self,
-    ) -> std::collections::hash_map::Keys<'_, std::string::String, Setting> {
+    ) -> std::collections::hash_map::Keys<'_, std::string::String, ExtensionSetting> {
         self.settings.keys()
     }
 
     pub async fn save(&self) -> Result<()> {
-        fs::write(&self.savepath, serde_json::to_string(&self.settings)?).await?;
+        fs::write(
+            &self.savepath,
+            serde_json::to_string(&self.settings).context("Failed to serialize Settings")?,
+        )
+        .await
+        .context("Failed to write Settings to file")?;
         Ok(())
     }
 
     pub async fn load(&mut self) -> Result<()> {
-        if !fs::try_exists(&self.savepath).await? {
-            return Ok(())
+        if !fs::try_exists(&self.savepath)
+            .await
+            .context("Failed to check if settings save exists")?
+        {
+            return Ok(());
         }
-        let str = String::from_utf8(fs::read(&self.savepath).await?)?;
-        self.settings = serde_json::from_str(&str)?;
+        let str = String::from_utf8(
+            fs::read(&self.savepath)
+                .await
+                .context("Failed to read settings file")?,
+        )
+        .context("Failed to decode saved settings from file")?;
+        self.settings = serde_json::from_str(&str).context("Failed to decode settings")?;
         Ok(())
     }
 
-    pub fn iter(&self) -> std::collections::hash_map::Iter<'_, std::string::String, Setting> {
-        self.settings.iter()
-    }
+    // pub fn iter(&self) -> std::collections::hash_map::Iter<'_, std::string::String, Setting> {
+    //     self.settings.iter()
+    // }
 
-    pub fn get_setting_mut(&mut self, name: &String) -> Result<&mut Setting> {
+    pub fn get_setting_mut(&mut self, name: &String) -> Result<&mut ExtensionSetting> {
         match self.settings.get_mut(name) {
             Some(setting) => Ok(setting),
-            None => Err(Error::ExtensionError(format!(
-                "Couldnt find id {} in settings ",
-                name
-            ))),
+            None => Err(anyhow!("Couldnt find id {} in settings ", name)),
         }
     }
 
-    pub fn get_setting(&self, name: &String) -> Result<&Setting> {
+    pub fn get_setting(&self, name: &String) -> Result<&ExtensionSetting> {
         match self.settings.get(name) {
             Some(setting) => Ok(setting),
-            None => Err(Error::ExtensionError(format!(
-                "Couldnt find id {} in settings ",
-                name
-            ))),
+            None => Err(anyhow!("Couldnt find id {} in settings ", name)),
         }
     }
 }

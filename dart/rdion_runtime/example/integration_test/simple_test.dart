@@ -1,4 +1,3 @@
-
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rdion_runtime/rdion_runtime.dart';
@@ -8,30 +7,32 @@ void main() {
   setUpAll(() async => await RustLib.init());
 
   test('E2E Extension Manager Test', () async {
-    setPermissionRequest((permission) {
-      final path = (permission.permission as Permission_StoragePermission).path;
-      expect(path, 'some', reason: 'Permission is not correct');
-      return true;
-    });
+    // setPermissionRequest((permission) {
+    //   final path = (permission.permission as Permission_StoragePermission).path;
+    //   expect(path, 'some', reason: 'Permission is not correct');
+    //   return true;
+    // });
     // final em = ExtensionManagerProxy
-    final em = ExtensionManagerProxy(
-        path: "../../../testextensions");
+    final em = SourceExtensionManagerProxy(path: "../../../testextensions");
     final extensions = await em.getExtensions();
 
     for (var extension in extensions) {
-      await extension.enable();
-      final setting = await extension.getSetting(name: "someid");
-      expect(setting.val.val, "somevalue", reason: "Setting is not correct");
+      await extension.setEnabled(enabled: true);
+      final extsetting = await extension.getSetting(name: "someid");
+      expect(extsetting.setting.val.val, "somevalue",
+          reason: "Setting is not correct");
       extension.setSetting(
           name: "someid",
-          setting: const Settingvalue.string(
+          value: const Settingvalue.string(
               val: "othervalue", defaultVal: "defaultVal"));
-      // final data = await extension.data();
-      // expect(data.id, '1432', reason: 'Extension data is not correct');
+      final data = await extension.getData();
+      expect(data.id, '123', reason: 'Extension data is not correct');
       final entries = await extension.browse(page: 1, sort: Sort.popular);
-      final entry = await extension.detail(entryid: entries[0].id);
+      final entry = await extension.detail(entryid: entries[0].id, settings: [
+        const Setting(val: Settingvalue.boolean(val: true, defaultVal: true))
+      ]);
       final source =
-          await extension.source(epid: entry.episodes[0].episodes[0].id);
+          await extension.source(epid: entry.episodes[0].id, settings: []);
       expect(source is Source_Directlink, true,
           reason: 'Source is not a direct link');
       final sourceData = (source as Source_Directlink).sourcedata;

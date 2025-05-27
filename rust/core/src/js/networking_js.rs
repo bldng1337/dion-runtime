@@ -1,7 +1,4 @@
-use crate::{
-    error::Error,
-    utils::ReadOnlyUserContextContainer,
-};
+use anyhow::{anyhow, Context as ErrorContext, Result};
 use boa_engine::{
     class::{self, Class},
     job::NativeAsyncJob,
@@ -13,8 +10,8 @@ use boa_engine::{
     },
     property::Attribute,
     value::Type,
-    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue,
-    Module, NativeFunction,
+    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
+    NativeFunction,
 };
 use boa_gc::{Finalize, Trace};
 use governor::{DefaultKeyedRateLimiter, Quota, RateLimiter};
@@ -26,8 +23,13 @@ use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, 
 use serde_json::Value;
 use std::sync::Arc;
 
-pub fn declare(context: &mut Context) -> Result<(), Error> {
-    context.register_global_class::<Response>()?;
+use crate::extension::utils::{MapJsResult, ReadOnlyUserContextContainer};
+
+pub fn declare(context: &mut Context) -> Result<()> {
+    context
+        .register_global_class::<Response>()
+        .map_anyhow_ctx(context)
+        .context("Failed to Register Response class")?;
     context.insert_data(NetworkContainer::default());
     let fetch_fn = FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(fetch))
         .length(1)
@@ -74,15 +76,15 @@ impl Response {
         if let Some(object) = this.as_object() {
             // If it is we downcast the type to type `Person`.
             if let Some(person) = object.downcast_ref::<Self>() {
-                let _=&person.header;//TODO: Fix
-                let _=&person.status;
+                let _ = &person.header; //TODO: Fix
+                let _ = &person.status;
                 return Ok(JsString::from(person.content.as_str()).into());
             }
         }
         // If `this` was not an object or the type of `this` was not a native object `Person`,
         // we throw a `TypeError`.
         Err(JsNativeError::typ()
-            .with_message("'this' is not a Person object")
+            .with_message("'this' is not a Response object")
             .into())
     }
 }

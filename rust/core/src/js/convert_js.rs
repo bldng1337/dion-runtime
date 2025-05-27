@@ -1,11 +1,11 @@
-use crate::error::Error;
+use anyhow::{anyhow, Context as ErrorContext, Result};
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use boa_engine::{
     js_string, module::SyntheticModuleInitializer, object::FunctionObjectBuilder, Context, JsArgs,
     JsError, JsNativeError, JsResult, JsString, JsValue, Module, NativeFunction,
 };
 
-pub fn declare(context: &mut Context) -> Result<(), Error> {
+pub fn declare(context: &mut Context) -> Result<()> {
     let decode_base64_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(decode_base64))
             .length(1)
