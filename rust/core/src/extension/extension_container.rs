@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
@@ -50,14 +51,14 @@ enum Task {
     },
     Source {
         epid: String,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
 
         token: Option<CancellationToken>,
         send: Sender<Result<Source>>,
     },
     Detail {
         entryid: String,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
 
         token: Option<CancellationToken>,
         send: Sender<Result<EntryDetailed>>,
@@ -359,7 +360,7 @@ impl ExtensionContainer {
     async fn do_detail(
         context: &mut Context,
         entryid: String,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed> {
         let vals = &[
@@ -386,7 +387,7 @@ impl ExtensionContainer {
     async fn do_source(
         context: &mut Context,
         epid: String,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source> {
         let vals = &[
@@ -498,7 +499,7 @@ impl TSourceExtension for ExtensionContainer {
     async fn detail(
         &self,
         entryid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed> {
         if !self.is_enabled() {
@@ -521,7 +522,7 @@ impl TSourceExtension for ExtensionContainer {
     async fn source(
         &self,
         epid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source> {
         if !self.is_enabled() {

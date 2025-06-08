@@ -275,7 +275,7 @@ fn wire__crate__api__simple__SourceExtensionProxy_detail_impl(
         >,
     >,
     entryid: impl CstDecode<String>,
-    settings: impl CstDecode<Vec<dion_runtime::data::settings::Setting>>,
+    settings: impl CstDecode<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>,
     token: impl CstDecode<Option<CancelToken>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
@@ -745,7 +745,7 @@ fn wire__crate__api__simple__SourceExtensionProxy_source_impl(
         >,
     >,
     epid: impl CstDecode<String>,
-    settings: impl CstDecode<Vec<dion_runtime::data::settings::Setting>>,
+    settings: impl CstDecode<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>,
     token: impl CstDecode<Option<CancelToken>>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
@@ -863,7 +863,8 @@ const _: fn() = || {
         let _: Option<f32> = EntryDetailed.rating;
         let _: Option<f32> = EntryDetailed.views;
         let _: Option<i32> = EntryDetailed.length;
-        let _: Option<Vec<dion_runtime::data::settings::Setting>> = EntryDetailed.settings;
+        let _: Option<std::collections::HashMap<String, dion_runtime::data::settings::Setting>> =
+            EntryDetailed.settings;
     }
     {
         let Episode = None::<dion_runtime::data::datastructs::Episode>.unwrap();
@@ -1162,6 +1163,15 @@ impl SseDecode for std::collections::HashMap<String, String> {
     }
 }
 
+impl SseDecode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner =
+            <Vec<(String, dion_runtime::data::settings::Setting)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
 impl SseDecode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
 {
@@ -1363,8 +1373,9 @@ impl SseDecode for dion_runtime::data::datastructs::EntryDetailed {
         let mut var_rating = <Option<f32>>::sse_decode(deserializer);
         let mut var_views = <Option<f32>>::sse_decode(deserializer);
         let mut var_length = <Option<i32>>::sse_decode(deserializer);
-        let mut var_settings =
-            <Option<Vec<dion_runtime::data::settings::Setting>>>::sse_decode(deserializer);
+        let mut var_settings = <Option<
+            std::collections::HashMap<String, dion_runtime::data::settings::Setting>,
+        >>::sse_decode(deserializer);
         return dion_runtime::data::datastructs::EntryDetailed {
             id: var_id,
             url: var_url,
@@ -1682,6 +1693,18 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<(String, dion_runtime::data::settings::Setting)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(String, dion_runtime::data::settings::Setting)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<(String, String)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1689,20 +1712,6 @@ impl SseDecode for Vec<(String, String)> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<(String, String)>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<dion_runtime::data::settings::Setting> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::data::settings::Setting>::sse_decode(
-                deserializer,
-            ));
         }
         return ans_;
     }
@@ -1770,6 +1779,22 @@ impl SseDecode for Option<std::collections::HashMap<String, String>> {
             return Some(<std::collections::HashMap<String, String>>::sse_decode(
                 deserializer,
             ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode
+    for Option<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -1920,16 +1945,12 @@ impl SseDecode for Option<Vec<dion_runtime::data::datastructs::MetaData>> {
     }
 }
 
-impl SseDecode for Option<Vec<dion_runtime::data::settings::Setting>> {
+impl SseDecode for (String, dion_runtime::data::settings::Setting) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<Vec<dion_runtime::data::settings::Setting>>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <dion_runtime::data::settings::Setting>::sse_decode(deserializer);
+        return (var_field0, var_field1);
     }
 }
 
@@ -2933,6 +2954,16 @@ impl SseEncode for std::collections::HashMap<String, String> {
     }
 }
 
+impl SseEncode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, dion_runtime::data::settings::Setting)>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
+    }
+}
+
 impl SseEncode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
 {
@@ -3102,7 +3133,7 @@ impl SseEncode for dion_runtime::data::datastructs::EntryDetailed {
         <Option<f32>>::sse_encode(self.rating, serializer);
         <Option<f32>>::sse_encode(self.views, serializer);
         <Option<i32>>::sse_encode(self.length, serializer);
-        <Option<Vec<dion_runtime::data::settings::Setting>>>::sse_encode(self.settings, serializer);
+        <Option<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>>::sse_encode(self.settings, serializer);
     }
 }
 
@@ -3331,22 +3362,22 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for Vec<(String, dion_runtime::data::settings::Setting)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, dion_runtime::data::settings::Setting)>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<(String, String)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <(String, String)>::sse_encode(item, serializer);
-        }
-    }
-}
-
-impl SseEncode for Vec<dion_runtime::data::settings::Setting> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <dion_runtime::data::settings::Setting>::sse_encode(item, serializer);
         }
     }
 }
@@ -3404,6 +3435,20 @@ impl SseEncode for Option<std::collections::HashMap<String, String>> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <std::collections::HashMap<String, String>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Option<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <std::collections::HashMap<String, dion_runtime::data::settings::Setting>>::sse_encode(
+                value, serializer,
+            );
         }
     }
 }
@@ -3528,13 +3573,11 @@ impl SseEncode for Option<Vec<dion_runtime::data::datastructs::MetaData>> {
     }
 }
 
-impl SseEncode for Option<Vec<dion_runtime::data::settings::Setting>> {
+impl SseEncode for (String, dion_runtime::data::settings::Setting) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <Vec<dion_runtime::data::settings::Setting>>::sse_encode(value, serializer);
-        }
+        <String>::sse_encode(self.0, serializer);
+        <dion_runtime::data::settings::Setting>::sse_encode(self.1, serializer);
     }
 }
 
@@ -3838,6 +3881,17 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> std::collections::HashMap<String, String> {
             let vec: Vec<(String, String)> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
+    impl CstDecode<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>
+        for *mut wire_cst_list_record_string_setting
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
+            let vec: Vec<(String, dion_runtime::data::settings::Setting)> = self.cst_decode();
             vec.into_iter().collect()
         }
     }
@@ -4290,9 +4344,11 @@ mod io {
             }
         }
     }
-    impl CstDecode<Vec<(String, String)>> for *mut wire_cst_list_record_string_string {
+    impl CstDecode<Vec<(String, dion_runtime::data::settings::Setting)>>
+        for *mut wire_cst_list_record_string_setting
+    {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<(String, String)> {
+        fn cst_decode(self) -> Vec<(String, dion_runtime::data::settings::Setting)> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -4300,9 +4356,9 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::data::settings::Setting>> for *mut wire_cst_list_setting {
+    impl CstDecode<Vec<(String, String)>> for *mut wire_cst_list_record_string_string {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::data::settings::Setting> {
+        fn cst_decode(self) -> Vec<(String, String)> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -4339,6 +4395,12 @@ mod io {
                 key: self.key.cst_decode(),
                 value: self.value.cst_decode(),
             }
+        }
+    }
+    impl CstDecode<(String, dion_runtime::data::settings::Setting)> for wire_cst_record_string_setting {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> (String, dion_runtime::data::settings::Setting) {
+            (self.field0.cst_decode(), self.field1.cst_decode())
         }
     }
     impl CstDecode<(String, String)> for wire_cst_record_string_string {
@@ -4638,6 +4700,19 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_record_string_setting {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                field0: core::ptr::null_mut(),
+                field1: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_record_string_setting {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_record_string_string {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -4783,7 +4858,7 @@ mod io {
         port_: i64,
         that: usize,
         entryid: *mut wire_cst_list_prim_u_8_strict,
-        settings: *mut wire_cst_list_setting,
+        settings: *mut wire_cst_list_record_string_setting,
         token: *mut usize,
     ) {
         wire__crate__api__simple__SourceExtensionProxy_detail_impl(
@@ -4869,7 +4944,7 @@ mod io {
         port_: i64,
         that: usize,
         epid: *mut wire_cst_list_prim_u_8_strict,
-        settings: *mut wire_cst_list_setting,
+        settings: *mut wire_cst_list_record_string_setting,
         token: *mut usize,
     ) {
         wire__crate__api__simple__SourceExtensionProxy_source_impl(
@@ -5159,12 +5234,12 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_string(
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_setting(
         len: i32,
-    ) -> *mut wire_cst_list_record_string_string {
-        let wrap = wire_cst_list_record_string_string {
+    ) -> *mut wire_cst_list_record_string_setting {
+        let wrap = wire_cst_list_record_string_setting {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_record_string_string>::new_with_null_ptr(),
+                <wire_cst_record_string_setting>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -5173,12 +5248,12 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_setting(
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_string(
         len: i32,
-    ) -> *mut wire_cst_list_setting {
-        let wrap = wire_cst_list_setting {
+    ) -> *mut wire_cst_list_record_string_string {
+        let wrap = wire_cst_list_record_string_string {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_setting>::new_with_null_ptr(),
+                <wire_cst_record_string_string>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -5322,7 +5397,7 @@ mod io {
         rating: *mut f32,
         views: *mut f32,
         length: *mut i32,
-        settings: *mut wire_cst_list_setting,
+        settings: *mut wire_cst_list_record_string_setting,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5473,14 +5548,14 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_record_string_string {
-        ptr: *mut wire_cst_record_string_string,
+    pub struct wire_cst_list_record_string_setting {
+        ptr: *mut wire_cst_record_string_setting,
         len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_setting {
-        ptr: *mut wire_cst_setting,
+    pub struct wire_cst_list_record_string_string {
+        ptr: *mut wire_cst_record_string_string,
         len: i32,
     }
     #[repr(C)]
@@ -5500,6 +5575,12 @@ mod io {
     pub struct wire_cst_meta_data {
         key: *mut wire_cst_list_prim_u_8_strict,
         value: usize,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_record_string_setting {
+        field0: *mut wire_cst_list_prim_u_8_strict,
+        field1: wire_cst_setting,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

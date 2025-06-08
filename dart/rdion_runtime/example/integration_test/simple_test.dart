@@ -13,6 +13,7 @@ void main() {
     //   return true;
     // });
     // final em = ExtensionManagerProxy
+    print("test");
     final em = SourceExtensionManagerProxy(path: "../../../testextensions");
     final extensions = await em.getExtensions();
 
@@ -28,11 +29,12 @@ void main() {
       final data = await extension.getData();
       expect(data.id, '123', reason: 'Extension data is not correct');
       final entries = await extension.browse(page: 1, sort: Sort.popular);
-      final entry = await extension.detail(entryid: entries[0].id, settings: [
-        const Setting(val: Settingvalue.boolean(val: true, defaultVal: true))
-      ]);
+      final entry = await extension.detail(entryid: entries[0].id, settings: {
+        "someid": const Setting(
+            val: Settingvalue.boolean(val: true, defaultVal: true))
+      });
       final source =
-          await extension.source(epid: entry.episodes[0].id, settings: []);
+          await extension.source(epid: entry.episodes[0].id, settings: {});
       expect(source is Source_Directlink, true,
           reason: 'Source is not a direct link');
       final sourceData = (source as Source_Directlink).sourcedata;

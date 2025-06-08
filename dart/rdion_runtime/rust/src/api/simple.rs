@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use dion_runtime::data::datastructs::*;
 
 pub use dion_runtime::data::datastructs::*;
@@ -173,7 +175,7 @@ impl SourceExtensionProxy {
     pub async fn detail(
         &self,
         entryid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancelToken>,
     ) -> Result<EntryDetailed> {
         self.inner
@@ -184,7 +186,7 @@ impl SourceExtensionProxy {
     pub async fn source(
         &self,
         epid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancelToken>,
     ) -> Result<Source> {
         self.inner

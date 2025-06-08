@@ -35,7 +35,7 @@ abstract class SourceExtensionProxy implements RustOpaqueInterface {
 
   Future<EntryDetailed> detail(
       {required String entryid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token});
 
   Future<Entry?> fromurl({required String url, CancelToken? token});
@@ -59,7 +59,7 @@ abstract class SourceExtensionProxy implements RustOpaqueInterface {
 
   Future<Source> source(
       {required String epid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token});
 }
 

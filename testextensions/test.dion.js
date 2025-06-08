@@ -11,7 +11,7 @@ function test() {
 
 function assert(condition, msg = "Extension error") {
   if (!condition) {
-    throw new Error(msg);
+    throw new Error(`Assert failed: ${msg}`);
   }
 }
 
@@ -121,6 +121,7 @@ export default class {
       },
     };
     await registerSetting("someid", setting);
+    console.log(JSON.stringify(await getSetting("someid")));
     assert(
       (await getSetting("someid")).setting.val.val == "somevalue",
       "setting not working"
@@ -144,6 +145,9 @@ export default class {
       elarr.map((el) => el.text).join("\n") == "some text\nsome other text",
       "parse_html not working"
     );
+    console.log("paragraphs");
+    console.log(elarr.paragraphs.join("\n"));
+    assert(elarr.paragraphs.join("\n") == "some text\nsome other text", "parse_html not working");
   }
 
   async browse(page, sort) {

@@ -137,6 +137,29 @@ impl ElementArray {
             .with_message("'this' is not a ElementArray object")
             .into())
     }
+    fn paragraphs(this: &JsValue, _: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(this) = object.downcast_ref::<Self>() {
+                let str = this
+                    .nodes
+                    .iter()
+                    .flat_map(|e| {
+                        this.doc
+                            .tree
+                            .get(*e)
+                            .map(|e| ElementRef::wrap(e))
+                            .filter(|e| e.is_some())
+                            .map(|e| e.unwrap().text().collect::<Vec<_>>())
+                            .unwrap_or_default()
+                    })
+                    .map(|str| JsString::from(str).into());
+                return Ok(JsArray::from_iter(str, context).into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("'this' is not a ElementArray object")
+            .into())
+    }
     fn attr(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
         if let Some(object) = this.as_object() {
             if let Some(this) = object.downcast_ref::<Self>() {
@@ -303,6 +326,20 @@ impl Class for ElementArray {
             NativeFunction::from_fn_ptr(Self::filter),
         );
 
+        let paragraphs_fn = FunctionObjectBuilder::new(
+            class.context().realm(),
+            NativeFunction::from_fn_ptr(Self::paragraphs),
+        )
+        .length(0)
+        .name("paragraphs")
+        .build();
+        class.accessor(
+            js_string!("paragraphs"),
+            Some(paragraphs_fn),
+            None,
+            Attribute::READONLY,
+        );
+
         let len_fn = FunctionObjectBuilder::new(
             class.context().realm(),
             NativeFunction::from_fn_ptr(Self::len),
@@ -437,6 +474,24 @@ impl Element {
             .with_message("'this' is not a Element object")
             .into())
     }
+    fn paragraphs(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(this) = object.downcast_ref::<Self>() {
+                let node = this
+                    .doc
+                    .tree
+                    .get(this.node)
+                    .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+                let element = ElementRef::wrap(node)
+                    .ok_or(JsNativeError::error().with_message("Invalid element"))?;
+                let ret = element.text().map(|str| JsString::from(str).into());
+                return Ok(JsArray::from_iter(ret, context).into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("'this' is not a Element object")
+            .into())
+    }
     fn name(this: &JsValue, _val: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
         if let Some(object) = this.as_object() {
             if let Some(this) = object.downcast_ref::<Self>() {
@@ -545,6 +600,20 @@ impl Class for Element {
         .build();
         class.accessor(
             js_string!("children"),
+            Some(fn_obj),
+            None,
+            Attribute::READONLY,
+        );
+
+        let fn_obj = FunctionObjectBuilder::new(
+            class.context().realm(),
+            NativeFunction::from_fn_ptr(Self::paragraphs),
+        )
+        .length(0)
+        .name("paragraphs")
+        .build();
+        class.accessor(
+            js_string!("paragraphs"),
             Some(fn_obj),
             None,
             Attribute::READONLY,

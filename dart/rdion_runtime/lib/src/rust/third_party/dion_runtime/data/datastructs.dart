@@ -125,7 +125,7 @@ class EntryDetailed {
   final double? rating;
   final double? views;
   final int? length;
-  final List<Setting>? settings;
+  final Map<String, Setting>? settings;
 
   const EntryDetailed({
     required this.id,

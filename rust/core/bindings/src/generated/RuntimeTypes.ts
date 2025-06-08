@@ -18,13 +18,19 @@ export type DropdownItem = { label: string, value: string, };
  */
 export type Entry = { id: string, url: string, title: string, media_type: MediaType, cover?: string, cover_header?: { [key in string]?: string }, author?: Array<string>, rating?: number, views?: number, length?: number, };
 
-export type EntryDetailed = { id: string, url: string, title: string, author?: Array<string>, ui?: CustomUI, meta?: Array<MetaData>, media_type: MediaType, status: ReleaseStatus, description: string, language: string, cover?: string, cover_header?: { [key in string]?: string }, episodes: Array<Episode>, genres?: Array<string>, alttitles?: Array<string>, rating?: number, views?: number, length?: number, settings?: Array<Setting>, };
+/**
+ * flutter_rust_bridge:non_opaque
+ */
+export type EntryDetailed = { id: string, url: string, title: string, author?: Array<string>, ui?: CustomUI, meta?: Array<MetaData>, media_type: MediaType, status: ReleaseStatus, description: string, language: string, cover?: string, cover_header?: { [key in string]?: string }, episodes: Array<Episode>, genres?: Array<string>, alttitles?: Array<string>, rating?: number, views?: number, length?: number, settings?: { [key in string]?: Setting }, };
 
 /**
  * flutter_rust_bridge:non_opaque
  */
 export type Episode = { id: string, name: string, url: string, cover?: string, cover_header?: { [key in string]?: string }, timestamp?: string, };
 
+/**
+ * flutter_rust_bridge:non_opaque
+ */
 export type ExtensionData = { id: string, repo?: string, name: string, media_type?: Array<MediaType>, giturl?: string, version?: string, desc?: string, author?: string, license?: string, tags?: Array<string>, nsfw?: boolean, lang: Array<string>, url?: string, icon?: string, };
 
 export type ExtensionSetting = { setting: Setting, settingtype: Settingtype, };
@@ -44,6 +50,9 @@ export type LinkSource = { "type": "Epub", link: string, } | { "type": "Pdf", li
  */
 export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
 
+/**
+ * flutter_rust_bridge:non_opaque
+ */
 export type MetaData = { key: string, value: JsonValue, };
 
 export type Permission = { "id": "StoragePermission", path: string, write: boolean, };

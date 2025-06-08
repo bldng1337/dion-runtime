@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::future::Future;
 
 use anyhow::Result;
@@ -36,14 +37,14 @@ pub trait TSourceExtension {
     async fn detail(
         &self,
         entryid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed>;
 
     async fn source(
         &self,
         epid: &str,
-        settings: Vec<Setting>,
+        settings: HashMap<String,Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source>;
 

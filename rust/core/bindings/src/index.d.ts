@@ -21,34 +21,25 @@ type Sort = import("./generated/RuntimeTypes").Sort;
 interface Cookie {
   name: string;
   value: string;
-  // domain: string;
-  // path: string;
-  // expires: number;
-  // httpOnly: boolean;
-  // secure: boolean;
-  // sameSite: string;
 }
+
 interface Requestoptions {
   method?: string;
   headers?: { [key: string]: string };
   body?: string;
 }
+
 interface DionResponse {
-  // status: number;
+  status: number;
   // headers: { [key: string]: string };
   body: string;
-  // json: any;
-  // ok: boolean;
+  json: any;
+  ok: boolean;
 }
 
 type Settingvalues = string | number | boolean;
 
-declare interface console {
-  log(message: any): void;
-  error(message: any): void;
-  warn(message: any): void;
-  info(message: any): void;
-}
+declare var console: Console
 
 declare module "network" {
   function fetch(url: string, option?: Requestoptions): Promise<DionResponse>;
@@ -84,17 +75,20 @@ interface Element {
   parent: Element | undefined;
   children: ElementArray;
   text: string;
+  paragraphs: string[];
   name: string;
 }
+
 interface ElementArray {
   select(selector: CSSSelector): ElementArray;
   attr(name: string): string[];
   get(index: number): Element | undefined;
   map<T>(callback: (element: Element) => T): T[];
   filter(callback: (element: Element) => boolean): ElementArray;
+  first: Element | undefined;
   length: number;
   text: string;
-  first: Element | undefined;
+  paragraphs: string[];
 }
 
 declare class CSSSelector {

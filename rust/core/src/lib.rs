@@ -4,7 +4,7 @@ pub(crate) mod js;
 
 #[cfg(test)]
 mod tests {
-    use std::time::Instant;
+    use std::{collections::HashMap, time::Instant};
 
     use crate::{
         data::{
@@ -75,10 +75,12 @@ mod tests {
             let entries = ext.browse(0, Sort::Latest, None).await?;
             println!("browse took {} ms", start.elapsed().as_millis());
             let start = Instant::now();
-            let detail = ext.detail(&entries[0].id, vec![], None).await?;
+            let detail = ext.detail(&entries[0].id, HashMap::new(), None).await?;
             println!("detail took {} ms", start.elapsed().as_millis());
             let start = Instant::now();
-            let _src = ext.source(&detail.episodes[0].id, vec![], None).await?;
+            let _src = ext
+                .source(&detail.episodes[0].id, HashMap::new(), None)
+                .await?;
             println!("source took {} ms", start.elapsed().as_millis());
         }
         Ok(())

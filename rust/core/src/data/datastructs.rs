@@ -191,7 +191,7 @@ pub struct EntryDetailed {
     #[ts(optional)]
     pub length: Option<i32>,
     #[ts(optional)]
-    pub settings: Option<Vec<Setting>>,
+    pub settings: Option<HashMap<String,Setting>>,
 }
 
 /// flutter_rust_bridge:non_opaque

@@ -1,1 +1,0 @@
-{"someid":{"setting":{"val":{"type":"String","val":"othervalue","default_val":"somedefault"},"ui":{"type":"Textbox","label":"somelabel"}},"settingtype":"Extension"}}

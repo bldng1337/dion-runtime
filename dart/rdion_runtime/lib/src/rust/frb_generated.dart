@@ -102,7 +102,7 @@ abstract class RustLibApi extends BaseApi {
   Future<EntryDetailed> crateApiSimpleSourceExtensionProxyDetail(
       {required SourceExtensionProxy that,
       required String entryid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token});
 
   Future<Entry?> crateApiSimpleSourceExtensionProxyFromurl(
@@ -139,7 +139,7 @@ abstract class RustLibApi extends BaseApi {
   Future<Source> crateApiSimpleSourceExtensionProxySource(
       {required SourceExtensionProxy that,
       required String epid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token});
 
   RustArcIncrementStrongCountFnType
@@ -363,7 +363,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<EntryDetailed> crateApiSimpleSourceExtensionProxyDetail(
       {required SourceExtensionProxy that,
       required String entryid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -371,7 +371,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
                 that);
         var arg1 = cst_encode_String(entryid);
-        var arg2 = cst_encode_list_setting(settings);
+        var arg2 = cst_encode_Map_String_setting_None(settings);
         var arg3 =
             cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 token);
@@ -636,7 +636,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<Source> crateApiSimpleSourceExtensionProxySource(
       {required SourceExtensionProxy that,
       required String epid,
-      required List<Setting> settings,
+      required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -644,7 +644,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
                 that);
         var arg1 = cst_encode_String(epid);
-        var arg2 = cst_encode_list_setting(settings);
+        var arg2 = cst_encode_Map_String_setting_None(settings);
         var arg3 =
             cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 token);
@@ -789,6 +789,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Map<String, String> dco_decode_Map_String_String_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_string(raw)
+        .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(dco_decode_list_record_string_setting(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -1006,7 +1013,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       rating: dco_decode_opt_box_autoadd_f_32(arr[15]),
       views: dco_decode_opt_box_autoadd_f_32(arr[16]),
       length: dco_decode_opt_box_autoadd_i_32(arr[17]),
-      settings: dco_decode_opt_list_setting(arr[18]),
+      settings: dco_decode_opt_Map_String_setting_None(arr[18]),
     );
   }
 
@@ -1202,15 +1209,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
+  List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_setting)
+        .toList();
   }
 
   @protected
-  List<Setting> dco_decode_list_setting(dynamic raw) {
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_setting).toList();
+    return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
   }
 
   @protected
@@ -1249,6 +1258,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Map<String, String>? dco_decode_opt_Map_String_String_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_Map_String_String_None(raw);
+  }
+
+  @protected
+  Map<String, Setting>? dco_decode_opt_Map_String_setting_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_Map_String_setting_None(raw);
   }
 
   @protected
@@ -1329,9 +1344,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<Setting>? dco_decode_opt_list_setting(dynamic raw) {
+  (String, Setting) dco_decode_record_string_setting(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_list_setting(raw);
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_setting(arr[1]),
+    );
   }
 
   @protected
@@ -1599,6 +1621,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, Setting> sse_decode_Map_String_setting_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_setting(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   CancelToken
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer) {
@@ -1817,7 +1847,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_rating = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_views = sse_decode_opt_box_autoadd_f_32(deserializer);
     var var_length = sse_decode_opt_box_autoadd_i_32(deserializer);
-    var var_settings = sse_decode_opt_list_setting(deserializer);
+    var var_settings = sse_decode_opt_Map_String_setting_None(deserializer);
     return EntryDetailed(
         id: var_id,
         url: var_url,
@@ -2088,6 +2118,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, Setting)> sse_decode_list_record_string_setting(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, Setting)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_setting(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<(String, String)> sse_decode_list_record_string_string(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2096,18 +2139,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <(String, String)>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_record_string_string(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<Setting> sse_decode_list_setting(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Setting>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_setting(deserializer));
     }
     return ans_;
   }
@@ -2160,6 +2191,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_Map_String_String_None(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Map<String, Setting>? sse_decode_opt_Map_String_setting_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_Map_String_setting_None(deserializer));
     } else {
       return null;
     }
@@ -2304,14 +2347,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<Setting>? sse_decode_opt_list_setting(SseDeserializer deserializer) {
+  (String, Setting) sse_decode_record_string_setting(
+      SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_list_setting(deserializer));
-    } else {
-      return null;
-    }
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_setting(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -2753,6 +2794,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Map_String_setting_None(
+      Map<String, Setting> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_setting(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken self, SseSerializer serializer) {
@@ -2961,7 +3010,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_box_autoadd_f_32(self.rating, serializer);
     sse_encode_opt_box_autoadd_f_32(self.views, serializer);
     sse_encode_opt_box_autoadd_i_32(self.length, serializer);
-    sse_encode_opt_list_setting(self.settings, serializer);
+    sse_encode_opt_Map_String_setting_None(self.settings, serializer);
   }
 
   @protected
@@ -3164,21 +3213,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_record_string_setting(
+      List<(String, Setting)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_setting(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_record_string_string(
       List<(String, String)> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_record_string_string(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_setting(List<Setting> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_setting(item, serializer);
     }
   }
 
@@ -3224,6 +3274,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_Map_String_String_None(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_Map_String_setting_None(
+      Map<String, Setting>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_Map_String_setting_None(self, serializer);
     }
   }
 
@@ -3357,14 +3418,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_list_setting(
-      List<Setting>? self, SseSerializer serializer) {
+  void sse_encode_record_string_setting(
+      (String, Setting) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_list_setting(self, serializer);
-    }
+    sse_encode_String(self.$1, serializer);
+    sse_encode_setting(self.$2, serializer);
   }
 
   @protected
@@ -3612,7 +3670,7 @@ class SourceExtensionProxyImpl extends RustOpaque
 
   Future<EntryDetailed> detail(
           {required String entryid,
-          required List<Setting> settings,
+          required Map<String, Setting> settings,
           CancelToken? token}) =>
       RustLib.instance.api.crateApiSimpleSourceExtensionProxyDetail(
           that: this, entryid: entryid, settings: settings, token: token);
@@ -3658,7 +3716,7 @@ class SourceExtensionProxyImpl extends RustOpaque
 
   Future<Source> source(
           {required String epid,
-          required List<Setting> settings,
+          required Map<String, Setting> settings,
           CancelToken? token}) =>
       RustLib.instance.api.crateApiSimpleSourceExtensionProxySource(
           that: this, epid: epid, settings: settings, token: token);

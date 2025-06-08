@@ -10,7 +10,7 @@ use boa_engine::{
     },
     property::Attribute,
     value::Type,
-    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
+    Context, JsArgs, JsData, JsError, JsNativeError, JsObject, JsResult, JsString, JsValue, Module,
     NativeFunction,
 };
 use boa_gc::{Finalize, Trace};
@@ -87,18 +87,52 @@ impl Response {
             .with_message("'this' is not a Response object")
             .into())
     }
+    fn get_json(this: &JsValue, _: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(this) = object.downcast_ref::<Self>() {
+                let ret = &this.content;
+                let ret = serde_json::from_str(ret).map_err(|err| {
+                    JsError::from_native(JsNativeError::error().with_message(err.to_string()))
+                })?; //TODO: do a cleaner convert
+                let ret = JsValue::from_json(&ret, context)?;
+                return Ok(ret.into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("'this' is not a Response object")
+            .into())
+    }
+    fn is_ok(this: &JsValue, _: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(this) = object.downcast_ref::<Self>() {
+                let ret = this.status;
+                let ret = ret.is_success();
+                return Ok(ret.into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("'this' is not a Response object")
+            .into())
+    }
+    fn status(this: &JsValue, _: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(this) = object.downcast_ref::<Self>() {
+                let ret = this.status;
+                let ret = ret.as_u16();
+                return Ok(ret.into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("'this' is not a Response object")
+            .into())
+    }
 }
 
 impl Class for Response {
     const NAME: &'static str = "Response";
 
     fn init(class: &mut class::ClassBuilder<'_>) -> JsResult<()> {
-        class.method(
-            js_string!("sayHello"),
-            0,
-            NativeFunction::from_fn_ptr(Self::get_body),
-        );
-        let get_body_fn = FunctionObjectBuilder::new(
+        let getter_fn = FunctionObjectBuilder::new(
             class.context().realm(),
             NativeFunction::from_fn_ptr(Self::get_body),
         )
@@ -107,7 +141,41 @@ impl Class for Response {
         .build();
         class.accessor(
             js_string!("body"),
-            Some(get_body_fn),
+            Some(getter_fn),
+            None,
+            Attribute::READONLY,
+        );
+        let getter_fn = FunctionObjectBuilder::new(
+            class.context().realm(),
+            NativeFunction::from_fn_ptr(Self::get_json),
+        )
+        .length(0)
+        .name("json")
+        .build();
+        class.accessor(
+            js_string!("json"),
+            Some(getter_fn),
+            None,
+            Attribute::READONLY,
+        );
+        let getter_fn = FunctionObjectBuilder::new(
+            class.context().realm(),
+            NativeFunction::from_fn_ptr(Self::is_ok),
+        )
+        .length(0)
+        .name("ok")
+        .build();
+        class.accessor(js_string!("ok"), Some(getter_fn), None, Attribute::READONLY);
+        let getter_fn = FunctionObjectBuilder::new(
+            class.context().realm(),
+            NativeFunction::from_fn_ptr(Self::status),
+        )
+        .length(0)
+        .name("status")
+        .build();
+        class.accessor(
+            js_string!("status"),
+            Some(getter_fn),
             None,
             Attribute::READONLY,
         );
