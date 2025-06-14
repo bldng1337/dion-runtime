@@ -3,7 +3,9 @@ use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf};
 use tokio::fs;
 use ts_rs::TS;
+
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
@@ -107,6 +109,7 @@ impl Settingvalue {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
@@ -135,13 +138,18 @@ pub enum SettingUI {
         options: Vec<DropdownItem>,
     },
 }
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct DropdownItem {
-    label: String,
-    value: String,
+    pub label: String,
+    pub value: String,
 }
+
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum Settingtype {
@@ -150,6 +158,7 @@ pub enum Settingtype {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Setting {
@@ -157,6 +166,8 @@ pub struct Setting {
     pub ui: Option<SettingUI>,
 }
 
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ExtensionSetting {
@@ -164,6 +175,8 @@ pub struct ExtensionSetting {
     pub settingtype: Settingtype,
 }
 
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SettingStore {
     savepath: PathBuf,

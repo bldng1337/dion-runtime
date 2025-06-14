@@ -6,6 +6,7 @@ use std::collections::HashMap;
 use ts_rs::TS;
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ExtensionData {
@@ -38,6 +39,7 @@ pub struct ExtensionData {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum MediaType {
@@ -54,6 +56,7 @@ pub enum MediaType {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Entry {
@@ -78,6 +81,7 @@ pub struct Entry {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Episode {
@@ -94,6 +98,7 @@ pub struct Episode {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum ReleaseStatus {
@@ -105,6 +110,7 @@ pub enum ReleaseStatus {
     Unknown,
 }
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS, Default)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum TimestampType {
@@ -113,6 +119,7 @@ pub enum TimestampType {
     Absolute,
 }
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
@@ -146,13 +153,15 @@ pub enum CustomUI {
     },
 }
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct MetaData {
     pub key: String,
-    pub value: serde_json::Value,
+    // pub value: serde_json::Value,
 }
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct EntryDetailed {
@@ -195,6 +204,7 @@ pub struct EntryDetailed {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum Sort {
@@ -204,6 +214,7 @@ pub enum Sort {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "sourcetype")]
@@ -215,6 +226,7 @@ pub enum Source {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
@@ -238,6 +250,7 @@ pub enum LinkSource {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct UrlChapter {
@@ -246,6 +259,7 @@ pub struct UrlChapter {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct Subtitles {
@@ -253,6 +267,7 @@ pub struct Subtitles {
     pub url: String,
 }
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub struct ImageListAudio {
@@ -262,6 +277,7 @@ pub struct ImageListAudio {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]

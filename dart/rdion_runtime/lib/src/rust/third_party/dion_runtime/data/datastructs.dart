@@ -3,12 +3,12 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../../api/simple.dart';
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'datastructs.freezed.dart';
+part 'datastructs.g.dart';
 
 @freezed
 sealed class CustomUI with _$CustomUI {
@@ -38,6 +38,9 @@ sealed class CustomUI with _$CustomUI {
   const factory CustomUI.row({
     required List<CustomUI> children,
   }) = CustomUI_Row;
+
+  factory CustomUI.fromJson(Map<String, dynamic> json) =>
+      _$CustomUIFromJson(json);
 }
 
 @freezed
@@ -47,291 +50,115 @@ sealed class DataSource with _$DataSource {
   const factory DataSource.paragraphlist({
     required List<String> paragraphs,
   }) = DataSource_Paragraphlist;
+
+  factory DataSource.fromJson(Map<String, dynamic> json) =>
+      _$DataSourceFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class Entry {
-  final String id;
-  final String url;
-  final String title;
-  final MediaType mediaType;
-  final String? cover;
-  final Map<String, String>? coverHeader;
-  final List<String>? author;
-  final double? rating;
-  final double? views;
-  final int? length;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class Entry with _$Entry {
+  const factory Entry({
+    required String id,
+    required String url,
+    required String title,
+    required MediaType mediaType,
+    String? cover,
+    Map<String, String>? coverHeader,
+    List<String>? author,
+    double? rating,
+    double? views,
+    int? length,
+  }) = _Entry;
 
-  const Entry({
-    required this.id,
-    required this.url,
-    required this.title,
-    required this.mediaType,
-    this.cover,
-    this.coverHeader,
-    this.author,
-    this.rating,
-    this.views,
-    this.length,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      url.hashCode ^
-      title.hashCode ^
-      mediaType.hashCode ^
-      cover.hashCode ^
-      coverHeader.hashCode ^
-      author.hashCode ^
-      rating.hashCode ^
-      views.hashCode ^
-      length.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Entry &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          url == other.url &&
-          title == other.title &&
-          mediaType == other.mediaType &&
-          cover == other.cover &&
-          coverHeader == other.coverHeader &&
-          author == other.author &&
-          rating == other.rating &&
-          views == other.views &&
-          length == other.length;
+  factory Entry.fromJson(Map<String, dynamic> json) => _$EntryFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class EntryDetailed {
-  final String id;
-  final String url;
-  final String title;
-  final List<String>? author;
-  final CustomUI? ui;
-  final List<MetaData>? meta;
-  final MediaType mediaType;
-  final ReleaseStatus status;
-  final String description;
-  final String language;
-  final String? cover;
-  final Map<String, String>? coverHeader;
-  final List<Episode> episodes;
-  final List<String>? genres;
-  final List<String>? alttitles;
-  final double? rating;
-  final double? views;
-  final int? length;
-  final Map<String, Setting>? settings;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class EntryDetailed with _$EntryDetailed {
+  const factory EntryDetailed({
+    required String id,
+    required String url,
+    required String title,
+    List<String>? author,
+    CustomUI? ui,
+    List<MetaData>? meta,
+    required MediaType mediaType,
+    required ReleaseStatus status,
+    required String description,
+    required String language,
+    String? cover,
+    Map<String, String>? coverHeader,
+    required List<Episode> episodes,
+    List<String>? genres,
+    List<String>? alttitles,
+    double? rating,
+    double? views,
+    int? length,
+    Map<String, Setting>? settings,
+  }) = _EntryDetailed;
 
-  const EntryDetailed({
-    required this.id,
-    required this.url,
-    required this.title,
-    this.author,
-    this.ui,
-    this.meta,
-    required this.mediaType,
-    required this.status,
-    required this.description,
-    required this.language,
-    this.cover,
-    this.coverHeader,
-    required this.episodes,
-    this.genres,
-    this.alttitles,
-    this.rating,
-    this.views,
-    this.length,
-    this.settings,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      url.hashCode ^
-      title.hashCode ^
-      author.hashCode ^
-      ui.hashCode ^
-      meta.hashCode ^
-      mediaType.hashCode ^
-      status.hashCode ^
-      description.hashCode ^
-      language.hashCode ^
-      cover.hashCode ^
-      coverHeader.hashCode ^
-      episodes.hashCode ^
-      genres.hashCode ^
-      alttitles.hashCode ^
-      rating.hashCode ^
-      views.hashCode ^
-      length.hashCode ^
-      settings.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EntryDetailed &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          url == other.url &&
-          title == other.title &&
-          author == other.author &&
-          ui == other.ui &&
-          meta == other.meta &&
-          mediaType == other.mediaType &&
-          status == other.status &&
-          description == other.description &&
-          language == other.language &&
-          cover == other.cover &&
-          coverHeader == other.coverHeader &&
-          episodes == other.episodes &&
-          genres == other.genres &&
-          alttitles == other.alttitles &&
-          rating == other.rating &&
-          views == other.views &&
-          length == other.length &&
-          settings == other.settings;
+  factory EntryDetailed.fromJson(Map<String, dynamic> json) =>
+      _$EntryDetailedFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class Episode {
-  final String id;
-  final String name;
-  final String url;
-  final String? cover;
-  final Map<String, String>? coverHeader;
-  final String? timestamp;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class Episode with _$Episode {
+  const factory Episode({
+    required String id,
+    required String name,
+    required String url,
+    String? cover,
+    Map<String, String>? coverHeader,
+    String? timestamp,
+  }) = _Episode;
 
-  const Episode({
-    required this.id,
-    required this.name,
-    required this.url,
-    this.cover,
-    this.coverHeader,
-    this.timestamp,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      url.hashCode ^
-      cover.hashCode ^
-      coverHeader.hashCode ^
-      timestamp.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Episode &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          url == other.url &&
-          cover == other.cover &&
-          coverHeader == other.coverHeader &&
-          timestamp == other.timestamp;
+  factory Episode.fromJson(Map<String, dynamic> json) =>
+      _$EpisodeFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class ExtensionData {
-  final String id;
-  final String? repo;
-  final String name;
-  final List<MediaType>? mediaType;
-  final String? giturl;
-  final String? version;
-  final String? desc;
-  final String? author;
-  final String? license;
-  final List<String>? tags;
-  final bool? nsfw;
-  final List<String> lang;
-  final String? url;
-  final String? icon;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class ExtensionData with _$ExtensionData {
+  const factory ExtensionData({
+    required String id,
+    String? repo,
+    required String name,
+    List<MediaType>? mediaType,
+    String? giturl,
+    String? version,
+    String? desc,
+    String? author,
+    String? license,
+    List<String>? tags,
+    bool? nsfw,
+    required List<String> lang,
+    String? url,
+    String? icon,
+  }) = _ExtensionData;
 
-  const ExtensionData({
-    required this.id,
-    this.repo,
-    required this.name,
-    this.mediaType,
-    this.giturl,
-    this.version,
-    this.desc,
-    this.author,
-    this.license,
-    this.tags,
-    this.nsfw,
-    required this.lang,
-    this.url,
-    this.icon,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      repo.hashCode ^
-      name.hashCode ^
-      mediaType.hashCode ^
-      giturl.hashCode ^
-      version.hashCode ^
-      desc.hashCode ^
-      author.hashCode ^
-      license.hashCode ^
-      tags.hashCode ^
-      nsfw.hashCode ^
-      lang.hashCode ^
-      url.hashCode ^
-      icon.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ExtensionData &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          repo == other.repo &&
-          name == other.name &&
-          mediaType == other.mediaType &&
-          giturl == other.giturl &&
-          version == other.version &&
-          desc == other.desc &&
-          author == other.author &&
-          license == other.license &&
-          tags == other.tags &&
-          nsfw == other.nsfw &&
-          lang == other.lang &&
-          url == other.url &&
-          icon == other.icon;
+  factory ExtensionData.fromJson(Map<String, dynamic> json) =>
+      _$ExtensionDataFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class ImageListAudio {
-  final String link;
-  final int from;
-  final int to;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class ImageListAudio with _$ImageListAudio {
+  const factory ImageListAudio({
+    required String link,
+    required int from,
+    required int to,
+  }) = _ImageListAudio;
 
-  const ImageListAudio({
-    required this.link,
-    required this.from,
-    required this.to,
-  });
-
-  @override
-  int get hashCode => link.hashCode ^ from.hashCode ^ to.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ImageListAudio &&
-          runtimeType == other.runtimeType &&
-          link == other.link &&
-          from == other.from &&
-          to == other.to;
+  factory ImageListAudio.fromJson(Map<String, dynamic> json) =>
+      _$ImageListAudioFromJson(json);
 }
 
 @freezed
@@ -356,9 +183,13 @@ sealed class LinkSource with _$LinkSource {
   const factory LinkSource.mp3({
     required List<UrlChapter> chapters,
   }) = LinkSource_Mp3;
+
+  factory LinkSource.fromJson(Map<String, dynamic> json) =>
+      _$LinkSourceFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 enum MediaType {
   video,
   comic,
@@ -369,28 +200,19 @@ enum MediaType {
 }
 
 /// flutter_rust_bridge:non_opaque
-class MetaData {
-  final String key;
-  final Value value;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class MetaData with _$MetaData {
+  const factory MetaData({
+    required String key,
+  }) = _MetaData;
 
-  const MetaData({
-    required this.key,
-    required this.value,
-  });
-
-  @override
-  int get hashCode => key.hashCode ^ value.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MetaData &&
-          runtimeType == other.runtimeType &&
-          key == other.key &&
-          value == other.value;
+  factory MetaData.fromJson(Map<String, dynamic> json) =>
+      _$MetaDataFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 enum ReleaseStatus {
   releasing,
   complete,
@@ -399,6 +221,7 @@ enum ReleaseStatus {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 enum Sort {
   popular,
   latest,
@@ -416,31 +239,25 @@ sealed class Source with _$Source {
   const factory Source.directlink({
     required LinkSource sourcedata,
   }) = Source_Directlink;
+
+  factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class Subtitles {
-  final String title;
-  final String url;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class Subtitles with _$Subtitles {
+  const factory Subtitles({
+    required String title,
+    required String url,
+  }) = _Subtitles;
 
-  const Subtitles({
-    required this.title,
-    required this.url,
-  });
-
-  @override
-  int get hashCode => title.hashCode ^ url.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Subtitles &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          url == other.url;
+  factory Subtitles.fromJson(Map<String, dynamic> json) =>
+      _$SubtitlesFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 enum TimestampType {
   relative,
   absolute,
@@ -448,23 +265,14 @@ enum TimestampType {
 }
 
 /// flutter_rust_bridge:non_opaque
-class UrlChapter {
-  final String title;
-  final String url;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class UrlChapter with _$UrlChapter {
+  const factory UrlChapter({
+    required String title,
+    required String url,
+  }) = _UrlChapter;
 
-  const UrlChapter({
-    required this.title,
-    required this.url,
-  });
-
-  @override
-  int get hashCode => title.hashCode ^ url.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UrlChapter &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          url == other.url;
+  factory UrlChapter.fromJson(Map<String, dynamic> json) =>
+      _$UrlChapterFromJson(json);
 }

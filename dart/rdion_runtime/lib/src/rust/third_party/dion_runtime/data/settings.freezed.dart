@@ -14,6 +14,571 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+DropdownItem _$DropdownItemFromJson(Map<String, dynamic> json) {
+  return _DropdownItem.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DropdownItem {
+  String get label => throw _privateConstructorUsedError;
+  String get value => throw _privateConstructorUsedError;
+
+  /// Serializes this DropdownItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of DropdownItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $DropdownItemCopyWith<DropdownItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DropdownItemCopyWith<$Res> {
+  factory $DropdownItemCopyWith(
+          DropdownItem value, $Res Function(DropdownItem) then) =
+      _$DropdownItemCopyWithImpl<$Res, DropdownItem>;
+  @useResult
+  $Res call({String label, String value});
+}
+
+/// @nodoc
+class _$DropdownItemCopyWithImpl<$Res, $Val extends DropdownItem>
+    implements $DropdownItemCopyWith<$Res> {
+  _$DropdownItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of DropdownItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? label = null,
+    Object? value = null,
+  }) {
+    return _then(_value.copyWith(
+      label: null == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DropdownItemImplCopyWith<$Res>
+    implements $DropdownItemCopyWith<$Res> {
+  factory _$$DropdownItemImplCopyWith(
+          _$DropdownItemImpl value, $Res Function(_$DropdownItemImpl) then) =
+      __$$DropdownItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String label, String value});
+}
+
+/// @nodoc
+class __$$DropdownItemImplCopyWithImpl<$Res>
+    extends _$DropdownItemCopyWithImpl<$Res, _$DropdownItemImpl>
+    implements _$$DropdownItemImplCopyWith<$Res> {
+  __$$DropdownItemImplCopyWithImpl(
+      _$DropdownItemImpl _value, $Res Function(_$DropdownItemImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DropdownItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? label = null,
+    Object? value = null,
+  }) {
+    return _then(_$DropdownItemImpl(
+      label: null == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DropdownItemImpl implements _DropdownItem {
+  const _$DropdownItemImpl({required this.label, required this.value});
+
+  factory _$DropdownItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DropdownItemImplFromJson(json);
+
+  @override
+  final String label;
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'DropdownItem(label: $label, value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DropdownItemImpl &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, label, value);
+
+  /// Create a copy of DropdownItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DropdownItemImplCopyWith<_$DropdownItemImpl> get copyWith =>
+      __$$DropdownItemImplCopyWithImpl<_$DropdownItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DropdownItemImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DropdownItem implements DropdownItem {
+  const factory _DropdownItem(
+      {required final String label,
+      required final String value}) = _$DropdownItemImpl;
+
+  factory _DropdownItem.fromJson(Map<String, dynamic> json) =
+      _$DropdownItemImpl.fromJson;
+
+  @override
+  String get label;
+  @override
+  String get value;
+
+  /// Create a copy of DropdownItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DropdownItemImplCopyWith<_$DropdownItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ExtensionSetting _$ExtensionSettingFromJson(Map<String, dynamic> json) {
+  return _ExtensionSetting.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ExtensionSetting {
+  Setting get setting => throw _privateConstructorUsedError;
+  Settingtype get settingtype => throw _privateConstructorUsedError;
+
+  /// Serializes this ExtensionSetting to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ExtensionSettingCopyWith<ExtensionSetting> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ExtensionSettingCopyWith<$Res> {
+  factory $ExtensionSettingCopyWith(
+          ExtensionSetting value, $Res Function(ExtensionSetting) then) =
+      _$ExtensionSettingCopyWithImpl<$Res, ExtensionSetting>;
+  @useResult
+  $Res call({Setting setting, Settingtype settingtype});
+
+  $SettingCopyWith<$Res> get setting;
+}
+
+/// @nodoc
+class _$ExtensionSettingCopyWithImpl<$Res, $Val extends ExtensionSetting>
+    implements $ExtensionSettingCopyWith<$Res> {
+  _$ExtensionSettingCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? setting = null,
+    Object? settingtype = null,
+  }) {
+    return _then(_value.copyWith(
+      setting: null == setting
+          ? _value.setting
+          : setting // ignore: cast_nullable_to_non_nullable
+              as Setting,
+      settingtype: null == settingtype
+          ? _value.settingtype
+          : settingtype // ignore: cast_nullable_to_non_nullable
+              as Settingtype,
+    ) as $Val);
+  }
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SettingCopyWith<$Res> get setting {
+    return $SettingCopyWith<$Res>(_value.setting, (value) {
+      return _then(_value.copyWith(setting: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ExtensionSettingImplCopyWith<$Res>
+    implements $ExtensionSettingCopyWith<$Res> {
+  factory _$$ExtensionSettingImplCopyWith(_$ExtensionSettingImpl value,
+          $Res Function(_$ExtensionSettingImpl) then) =
+      __$$ExtensionSettingImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Setting setting, Settingtype settingtype});
+
+  @override
+  $SettingCopyWith<$Res> get setting;
+}
+
+/// @nodoc
+class __$$ExtensionSettingImplCopyWithImpl<$Res>
+    extends _$ExtensionSettingCopyWithImpl<$Res, _$ExtensionSettingImpl>
+    implements _$$ExtensionSettingImplCopyWith<$Res> {
+  __$$ExtensionSettingImplCopyWithImpl(_$ExtensionSettingImpl _value,
+      $Res Function(_$ExtensionSettingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? setting = null,
+    Object? settingtype = null,
+  }) {
+    return _then(_$ExtensionSettingImpl(
+      setting: null == setting
+          ? _value.setting
+          : setting // ignore: cast_nullable_to_non_nullable
+              as Setting,
+      settingtype: null == settingtype
+          ? _value.settingtype
+          : settingtype // ignore: cast_nullable_to_non_nullable
+              as Settingtype,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ExtensionSettingImpl implements _ExtensionSetting {
+  const _$ExtensionSettingImpl(
+      {required this.setting, required this.settingtype});
+
+  factory _$ExtensionSettingImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExtensionSettingImplFromJson(json);
+
+  @override
+  final Setting setting;
+  @override
+  final Settingtype settingtype;
+
+  @override
+  String toString() {
+    return 'ExtensionSetting(setting: $setting, settingtype: $settingtype)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExtensionSettingImpl &&
+            (identical(other.setting, setting) || other.setting == setting) &&
+            (identical(other.settingtype, settingtype) ||
+                other.settingtype == settingtype));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, setting, settingtype);
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExtensionSettingImplCopyWith<_$ExtensionSettingImpl> get copyWith =>
+      __$$ExtensionSettingImplCopyWithImpl<_$ExtensionSettingImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ExtensionSettingImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ExtensionSetting implements ExtensionSetting {
+  const factory _ExtensionSetting(
+      {required final Setting setting,
+      required final Settingtype settingtype}) = _$ExtensionSettingImpl;
+
+  factory _ExtensionSetting.fromJson(Map<String, dynamic> json) =
+      _$ExtensionSettingImpl.fromJson;
+
+  @override
+  Setting get setting;
+  @override
+  Settingtype get settingtype;
+
+  /// Create a copy of ExtensionSetting
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ExtensionSettingImplCopyWith<_$ExtensionSettingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Setting _$SettingFromJson(Map<String, dynamic> json) {
+  return _Setting.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Setting {
+  Settingvalue get val => throw _privateConstructorUsedError;
+  SettingUI? get ui => throw _privateConstructorUsedError;
+
+  /// Serializes this Setting to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SettingCopyWith<Setting> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SettingCopyWith<$Res> {
+  factory $SettingCopyWith(Setting value, $Res Function(Setting) then) =
+      _$SettingCopyWithImpl<$Res, Setting>;
+  @useResult
+  $Res call({Settingvalue val, SettingUI? ui});
+
+  $SettingvalueCopyWith<$Res> get val;
+  $SettingUICopyWith<$Res>? get ui;
+}
+
+/// @nodoc
+class _$SettingCopyWithImpl<$Res, $Val extends Setting>
+    implements $SettingCopyWith<$Res> {
+  _$SettingCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? val = null,
+    Object? ui = freezed,
+  }) {
+    return _then(_value.copyWith(
+      val: null == val
+          ? _value.val
+          : val // ignore: cast_nullable_to_non_nullable
+              as Settingvalue,
+      ui: freezed == ui
+          ? _value.ui
+          : ui // ignore: cast_nullable_to_non_nullable
+              as SettingUI?,
+    ) as $Val);
+  }
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SettingvalueCopyWith<$Res> get val {
+    return $SettingvalueCopyWith<$Res>(_value.val, (value) {
+      return _then(_value.copyWith(val: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SettingUICopyWith<$Res>? get ui {
+    if (_value.ui == null) {
+      return null;
+    }
+
+    return $SettingUICopyWith<$Res>(_value.ui!, (value) {
+      return _then(_value.copyWith(ui: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$SettingImplCopyWith<$Res> implements $SettingCopyWith<$Res> {
+  factory _$$SettingImplCopyWith(
+          _$SettingImpl value, $Res Function(_$SettingImpl) then) =
+      __$$SettingImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Settingvalue val, SettingUI? ui});
+
+  @override
+  $SettingvalueCopyWith<$Res> get val;
+  @override
+  $SettingUICopyWith<$Res>? get ui;
+}
+
+/// @nodoc
+class __$$SettingImplCopyWithImpl<$Res>
+    extends _$SettingCopyWithImpl<$Res, _$SettingImpl>
+    implements _$$SettingImplCopyWith<$Res> {
+  __$$SettingImplCopyWithImpl(
+      _$SettingImpl _value, $Res Function(_$SettingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? val = null,
+    Object? ui = freezed,
+  }) {
+    return _then(_$SettingImpl(
+      val: null == val
+          ? _value.val
+          : val // ignore: cast_nullable_to_non_nullable
+              as Settingvalue,
+      ui: freezed == ui
+          ? _value.ui
+          : ui // ignore: cast_nullable_to_non_nullable
+              as SettingUI?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SettingImpl implements _Setting {
+  const _$SettingImpl({required this.val, this.ui});
+
+  factory _$SettingImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingImplFromJson(json);
+
+  @override
+  final Settingvalue val;
+  @override
+  final SettingUI? ui;
+
+  @override
+  String toString() {
+    return 'Setting(val: $val, ui: $ui)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SettingImpl &&
+            (identical(other.val, val) || other.val == val) &&
+            (identical(other.ui, ui) || other.ui == ui));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, val, ui);
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SettingImplCopyWith<_$SettingImpl> get copyWith =>
+      __$$SettingImplCopyWithImpl<_$SettingImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Setting implements Setting {
+  const factory _Setting(
+      {required final Settingvalue val, final SettingUI? ui}) = _$SettingImpl;
+
+  factory _Setting.fromJson(Map<String, dynamic> json) = _$SettingImpl.fromJson;
+
+  @override
+  Settingvalue get val;
+  @override
+  SettingUI? get ui;
+
+  /// Create a copy of Setting
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SettingImplCopyWith<_$SettingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SettingUI _$SettingUIFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType']) {
+    case 'pathSelection':
+      return SettingUI_PathSelection.fromJson(json);
+    case 'slider':
+      return SettingUI_Slider.fromJson(json);
+    case 'checkbox':
+      return SettingUI_Checkbox.fromJson(json);
+    case 'textbox':
+      return SettingUI_Textbox.fromJson(json);
+    case 'dropdown':
+      return SettingUI_Dropdown.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(json, 'runtimeType', 'SettingUI',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
+}
+
 /// @nodoc
 mixin _$SettingUI {
   String get label => throw _privateConstructorUsedError;
@@ -76,6 +641,9 @@ mixin _$SettingUI {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this SettingUI to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of SettingUI
   /// with the given fields replaced by the non-null parameter values.
@@ -161,16 +729,23 @@ class __$$SettingUI_PathSelectionImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
   const _$SettingUI_PathSelectionImpl(
-      {required this.label, required this.pickfolder})
-      : super._();
+      {required this.label, required this.pickfolder, final String? $type})
+      : $type = $type ?? 'pathSelection',
+        super._();
+
+  factory _$SettingUI_PathSelectionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingUI_PathSelectionImplFromJson(json);
 
   @override
   final String label;
   @override
   final bool pickfolder;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -187,6 +762,7 @@ class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
                 other.pickfolder == pickfolder));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, label, pickfolder);
 
@@ -281,6 +857,13 @@ class _$SettingUI_PathSelectionImpl extends SettingUI_PathSelection {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingUI_PathSelectionImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class SettingUI_PathSelection extends SettingUI {
@@ -288,6 +871,9 @@ abstract class SettingUI_PathSelection extends SettingUI {
       {required final String label,
       required final bool pickfolder}) = _$SettingUI_PathSelectionImpl;
   const SettingUI_PathSelection._() : super._();
+
+  factory SettingUI_PathSelection.fromJson(Map<String, dynamic> json) =
+      _$SettingUI_PathSelectionImpl.fromJson;
 
   @override
   String get label;
@@ -352,14 +938,19 @@ class __$$SettingUI_SliderImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingUI_SliderImpl extends SettingUI_Slider {
   const _$SettingUI_SliderImpl(
       {required this.label,
       required this.min,
       required this.max,
-      required this.step})
-      : super._();
+      required this.step,
+      final String? $type})
+      : $type = $type ?? 'slider',
+        super._();
+
+  factory _$SettingUI_SliderImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingUI_SliderImplFromJson(json);
 
   @override
   final String label;
@@ -369,6 +960,9 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
   final double max;
   @override
   final double step;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -386,6 +980,7 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
             (identical(other.step, step) || other.step == step));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, label, min, max, step);
 
@@ -480,6 +1075,13 @@ class _$SettingUI_SliderImpl extends SettingUI_Slider {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingUI_SliderImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class SettingUI_Slider extends SettingUI {
@@ -489,6 +1091,9 @@ abstract class SettingUI_Slider extends SettingUI {
       required final double max,
       required final double step}) = _$SettingUI_SliderImpl;
   const SettingUI_Slider._() : super._();
+
+  factory SettingUI_Slider.fromJson(Map<String, dynamic> json) =
+      _$SettingUI_SliderImpl.fromJson;
 
   @override
   String get label;
@@ -540,12 +1145,20 @@ class __$$SettingUI_CheckboxImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
-  const _$SettingUI_CheckboxImpl({required this.label}) : super._();
+  const _$SettingUI_CheckboxImpl({required this.label, final String? $type})
+      : $type = $type ?? 'checkbox',
+        super._();
+
+  factory _$SettingUI_CheckboxImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingUI_CheckboxImplFromJson(json);
 
   @override
   final String label;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -560,6 +1173,7 @@ class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
             (identical(other.label, label) || other.label == label));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, label);
 
@@ -654,12 +1268,22 @@ class _$SettingUI_CheckboxImpl extends SettingUI_Checkbox {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingUI_CheckboxImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class SettingUI_Checkbox extends SettingUI {
   const factory SettingUI_Checkbox({required final String label}) =
       _$SettingUI_CheckboxImpl;
   const SettingUI_Checkbox._() : super._();
+
+  factory SettingUI_Checkbox.fromJson(Map<String, dynamic> json) =
+      _$SettingUI_CheckboxImpl.fromJson;
 
   @override
   String get label;
@@ -708,12 +1332,20 @@ class __$$SettingUI_TextboxImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
-  const _$SettingUI_TextboxImpl({required this.label}) : super._();
+  const _$SettingUI_TextboxImpl({required this.label, final String? $type})
+      : $type = $type ?? 'textbox',
+        super._();
+
+  factory _$SettingUI_TextboxImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingUI_TextboxImplFromJson(json);
 
   @override
   final String label;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -728,6 +1360,7 @@ class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
             (identical(other.label, label) || other.label == label));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, label);
 
@@ -822,12 +1455,22 @@ class _$SettingUI_TextboxImpl extends SettingUI_Textbox {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingUI_TextboxImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class SettingUI_Textbox extends SettingUI {
   const factory SettingUI_Textbox({required final String label}) =
       _$SettingUI_TextboxImpl;
   const SettingUI_Textbox._() : super._();
+
+  factory SettingUI_Textbox.fromJson(Map<String, dynamic> json) =
+      _$SettingUI_TextboxImpl.fromJson;
 
   @override
   String get label;
@@ -881,12 +1524,18 @@ class __$$SettingUI_DropdownImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
   const _$SettingUI_DropdownImpl(
-      {required this.label, required final List<DropdownItem> options})
+      {required this.label,
+      required final List<DropdownItem> options,
+      final String? $type})
       : _options = options,
+        $type = $type ?? 'dropdown',
         super._();
+
+  factory _$SettingUI_DropdownImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SettingUI_DropdownImplFromJson(json);
 
   @override
   final String label;
@@ -897,6 +1546,9 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_options);
   }
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -912,6 +1564,7 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, label, const DeepCollectionEquality().hash(_options));
@@ -1007,6 +1660,13 @@ class _$SettingUI_DropdownImpl extends SettingUI_Dropdown {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SettingUI_DropdownImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class SettingUI_Dropdown extends SettingUI {
@@ -1014,6 +1674,9 @@ abstract class SettingUI_Dropdown extends SettingUI {
       {required final String label,
       required final List<DropdownItem> options}) = _$SettingUI_DropdownImpl;
   const SettingUI_Dropdown._() : super._();
+
+  factory SettingUI_Dropdown.fromJson(Map<String, dynamic> json) =
+      _$SettingUI_DropdownImpl.fromJson;
 
   @override
   String get label;
@@ -1025,6 +1688,21 @@ abstract class SettingUI_Dropdown extends SettingUI {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingUI_DropdownImplCopyWith<_$SettingUI_DropdownImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+Settingvalue _$SettingvalueFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType']) {
+    case 'string':
+      return Settingvalue_String.fromJson(json);
+    case 'number':
+      return Settingvalue_Number.fromJson(json);
+    case 'boolean':
+      return Settingvalue_Boolean.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(json, 'runtimeType', 'Settingvalue',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
 }
 
 /// @nodoc
@@ -1075,6 +1753,9 @@ mixin _$Settingvalue {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this Settingvalue to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1137,15 +1818,23 @@ class __$$Settingvalue_StringImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Settingvalue_StringImpl extends Settingvalue_String {
-  const _$Settingvalue_StringImpl({required this.val, required this.defaultVal})
-      : super._();
+  const _$Settingvalue_StringImpl(
+      {required this.val, required this.defaultVal, final String? $type})
+      : $type = $type ?? 'string',
+        super._();
+
+  factory _$Settingvalue_StringImpl.fromJson(Map<String, dynamic> json) =>
+      _$$Settingvalue_StringImplFromJson(json);
 
   @override
   final String val;
   @override
   final String defaultVal;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -1162,6 +1851,7 @@ class _$Settingvalue_StringImpl extends Settingvalue_String {
                 other.defaultVal == defaultVal));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, val, defaultVal);
 
@@ -1241,6 +1931,13 @@ class _$Settingvalue_StringImpl extends Settingvalue_String {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$Settingvalue_StringImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class Settingvalue_String extends Settingvalue {
@@ -1248,6 +1945,9 @@ abstract class Settingvalue_String extends Settingvalue {
       {required final String val,
       required final String defaultVal}) = _$Settingvalue_StringImpl;
   const Settingvalue_String._() : super._();
+
+  factory Settingvalue_String.fromJson(Map<String, dynamic> json) =
+      _$Settingvalue_StringImpl.fromJson;
 
   @override
   String get val;
@@ -1300,15 +2000,23 @@ class __$$Settingvalue_NumberImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Settingvalue_NumberImpl extends Settingvalue_Number {
-  const _$Settingvalue_NumberImpl({required this.val, required this.defaultVal})
-      : super._();
+  const _$Settingvalue_NumberImpl(
+      {required this.val, required this.defaultVal, final String? $type})
+      : $type = $type ?? 'number',
+        super._();
+
+  factory _$Settingvalue_NumberImpl.fromJson(Map<String, dynamic> json) =>
+      _$$Settingvalue_NumberImplFromJson(json);
 
   @override
   final double val;
   @override
   final double defaultVal;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -1325,6 +2033,7 @@ class _$Settingvalue_NumberImpl extends Settingvalue_Number {
                 other.defaultVal == defaultVal));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, val, defaultVal);
 
@@ -1404,6 +2113,13 @@ class _$Settingvalue_NumberImpl extends Settingvalue_Number {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$Settingvalue_NumberImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class Settingvalue_Number extends Settingvalue {
@@ -1411,6 +2127,9 @@ abstract class Settingvalue_Number extends Settingvalue {
       {required final double val,
       required final double defaultVal}) = _$Settingvalue_NumberImpl;
   const Settingvalue_Number._() : super._();
+
+  factory Settingvalue_Number.fromJson(Map<String, dynamic> json) =
+      _$Settingvalue_NumberImpl.fromJson;
 
   @override
   double get val;
@@ -1463,16 +2182,23 @@ class __$$Settingvalue_BooleanImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$Settingvalue_BooleanImpl extends Settingvalue_Boolean {
   const _$Settingvalue_BooleanImpl(
-      {required this.val, required this.defaultVal})
-      : super._();
+      {required this.val, required this.defaultVal, final String? $type})
+      : $type = $type ?? 'boolean',
+        super._();
+
+  factory _$Settingvalue_BooleanImpl.fromJson(Map<String, dynamic> json) =>
+      _$$Settingvalue_BooleanImplFromJson(json);
 
   @override
   final bool val;
   @override
   final bool defaultVal;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -1489,6 +2215,7 @@ class _$Settingvalue_BooleanImpl extends Settingvalue_Boolean {
                 other.defaultVal == defaultVal));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, val, defaultVal);
 
@@ -1569,6 +2296,13 @@ class _$Settingvalue_BooleanImpl extends Settingvalue_Boolean {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$Settingvalue_BooleanImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class Settingvalue_Boolean extends Settingvalue {
@@ -1576,6 +2310,9 @@ abstract class Settingvalue_Boolean extends Settingvalue {
       {required final bool val,
       required final bool defaultVal}) = _$Settingvalue_BooleanImpl;
   const Settingvalue_Boolean._() : super._();
+
+  factory Settingvalue_Boolean.fromJson(Map<String, dynamic> json) =
+      _$Settingvalue_BooleanImpl.fromJson;
 
   @override
   bool get val;

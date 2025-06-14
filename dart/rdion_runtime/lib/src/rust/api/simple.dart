@@ -62,6 +62,3 @@ abstract class SourceExtensionProxy implements RustOpaqueInterface {
       required Map<String, Setting> settings,
       CancelToken? token});
 }
-
-// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner< Value>>
-abstract class Value implements RustOpaqueInterface {}

@@ -25,19 +25,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr;
 
   CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_DropdownItemPtr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr;
-
-  CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_SourceExtensionManagerProxyPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxyPtr;
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_SourceExtensionProxyPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr => wire
-      ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw);
@@ -48,11 +41,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  DropdownItem
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          dynamic raw);
-
-  @protected
   SourceExtensionManagerProxy
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           dynamic raw);
@@ -60,11 +48,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SourceExtensionProxy
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
-          dynamic raw);
-
-  @protected
-  Value
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
           dynamic raw);
 
   @protected
@@ -99,11 +82,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  DropdownItem
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          dynamic raw);
-
-  @protected
   SourceExtensionManagerProxy
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           dynamic raw);
@@ -111,11 +89,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SourceExtensionProxy
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
-          dynamic raw);
-
-  @protected
-  Value
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
           dynamic raw);
 
   @protected
@@ -163,6 +136,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DataSource dco_decode_data_source(dynamic raw);
 
   @protected
+  DropdownItem dco_decode_dropdown_item(dynamic raw);
+
+  @protected
   Entry dco_decode_entry(dynamic raw);
 
   @protected
@@ -196,11 +172,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LinkSource dco_decode_link_source(dynamic raw);
 
   @protected
-  List<DropdownItem>
-      dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          dynamic raw);
-
-  @protected
   List<SourceExtensionProxy>
       dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           dynamic raw);
@@ -210,6 +181,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw);
+
+  @protected
+  List<DropdownItem> dco_decode_list_dropdown_item(dynamic raw);
 
   @protected
   List<Entry> dco_decode_list_entry(dynamic raw);
@@ -345,11 +319,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  DropdownItem
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          SseDeserializer deserializer);
-
-  @protected
   SourceExtensionManagerProxy
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           SseDeserializer deserializer);
@@ -357,11 +326,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SourceExtensionProxy
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
-          SseDeserializer deserializer);
-
-  @protected
-  Value
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
           SseDeserializer deserializer);
 
   @protected
@@ -398,11 +362,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  DropdownItem
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          SseDeserializer deserializer);
-
-  @protected
   SourceExtensionManagerProxy
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           SseDeserializer deserializer);
@@ -410,11 +369,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SourceExtensionProxy
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
-          SseDeserializer deserializer);
-
-  @protected
-  Value
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
           SseDeserializer deserializer);
 
   @protected
@@ -463,6 +417,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DataSource sse_decode_data_source(SseDeserializer deserializer);
 
   @protected
+  DropdownItem sse_decode_dropdown_item(SseDeserializer deserializer);
+
+  @protected
   Entry sse_decode_entry(SseDeserializer deserializer);
 
   @protected
@@ -496,11 +453,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LinkSource sse_decode_link_source(SseDeserializer deserializer);
 
   @protected
-  List<DropdownItem>
-      sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          SseDeserializer deserializer);
-
-  @protected
   List<SourceExtensionProxy>
       sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           SseDeserializer deserializer);
@@ -510,6 +462,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<CustomUI> sse_decode_list_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  List<DropdownItem> sse_decode_list_dropdown_item(
+      SseDeserializer deserializer);
 
   @protected
   List<Entry> sse_decode_list_entry(SseDeserializer deserializer);
@@ -764,23 +720,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ffi.Pointer<
-          wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem>
-      cst_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          List<DropdownItem> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire
-        .cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-            raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      ans.ref.ptr[i] =
-          cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-              raw[i]);
-    }
-    return ans;
-  }
-
-  @protected
-  ffi.Pointer<
           wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy>
       cst_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           List<SourceExtensionProxy> raw) {
@@ -813,6 +752,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_custom_ui(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_custom_ui(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_dropdown_item> cst_encode_list_dropdown_item(
+      List<DropdownItem> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_dropdown_item(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_dropdown_item(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1129,6 +1079,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_dropdown_item(
+      DropdownItem apiObj, wire_cst_dropdown_item wireObj) {
+    wireObj.label = cst_encode_String(apiObj.label);
+    wireObj.value = cst_encode_String(apiObj.value);
+  }
+
+  @protected
   void cst_api_fill_to_wire_entry(Entry apiObj, wire_cst_entry wireObj) {
     wireObj.id = cst_encode_String(apiObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
@@ -1258,9 +1215,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_meta_data(
       MetaData apiObj, wire_cst_meta_data wireObj) {
     wireObj.key = cst_encode_String(apiObj.key);
-    wireObj.value =
-        cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-            apiObj.value);
   }
 
   @protected
@@ -1320,9 +1274,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is SettingUI_Dropdown) {
       var pre_label = cst_encode_String(apiObj.label);
-      var pre_options =
-          cst_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-              apiObj.options);
+      var pre_options = cst_encode_list_dropdown_item(apiObj.options);
       wireObj.tag = 4;
       wireObj.kind.Dropdown.label = pre_label;
       wireObj.kind.Dropdown.options = pre_options;
@@ -1396,20 +1348,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       CancelToken raw);
 
   @protected
-  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-      DropdownItem raw);
-
-  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
       SourceExtensionManagerProxy raw);
 
   @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
       SourceExtensionProxy raw);
-
-  @protected
-  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      Value raw);
 
   @protected
   int cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
@@ -1432,20 +1376,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       CancelToken raw);
 
   @protected
-  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-      DropdownItem raw);
-
-  @protected
   int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
       SourceExtensionManagerProxy raw);
 
   @protected
   int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
       SourceExtensionProxy raw);
-
-  @protected
-  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      Value raw);
 
   @protected
   bool cst_encode_bool(bool raw);
@@ -1491,11 +1427,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          DropdownItem self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           SourceExtensionManagerProxy self, SseSerializer serializer);
 
@@ -1503,11 +1434,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           SourceExtensionProxy self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          Value self, SseSerializer serializer);
 
   @protected
   void
@@ -1544,11 +1470,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          DropdownItem self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
           SourceExtensionManagerProxy self, SseSerializer serializer);
 
@@ -1556,11 +1477,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           SourceExtensionProxy self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          Value self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -1612,6 +1528,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_data_source(DataSource self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dropdown_item(DropdownItem self, SseSerializer serializer);
+
+  @protected
   void sse_encode_entry(Entry self, SseSerializer serializer);
 
   @protected
@@ -1648,11 +1567,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-          List<DropdownItem> self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
           List<SourceExtensionProxy> self, SseSerializer serializer);
 
@@ -1661,6 +1575,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_custom_ui(List<CustomUI> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_dropdown_item(
+      List<DropdownItem> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_entry(List<Entry> self, SseSerializer serializer);
@@ -2237,38 +2155,6 @@ class RustLibWire implements BaseWire {
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy(
     ffi.Pointer<ffi.Void> ptr,
   ) {
@@ -2330,38 +2216,6 @@ class RustLibWire implements BaseWire {
           'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   ffi.Pointer<ffi.UintPtr>
@@ -2489,30 +2343,6 @@ class RustLibWire implements BaseWire {
           .asFunction<ffi.Pointer<wire_cst_settingvalue> Function()>();
 
   ffi.Pointer<
-          wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem>
-      cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-    int len,
-  ) {
-    return _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem(
-      len,
-    );
-  }
-
-  late final _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr =
-      _lookup<
-              ffi.NativeFunction<
-                  ffi.Pointer<
-                          wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem>
-                      Function(ffi.Int32)>>(
-          'frbgen_rdion_runtime_cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem');
-  late final _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem =
-      _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItemPtr
-          .asFunction<
-              ffi.Pointer<
-                      wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem>
-                  Function(int)>();
-
-  ffi.Pointer<
           wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy>
       cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy(
     int len,
@@ -2565,6 +2395,21 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_custom_ui');
   late final _cst_new_list_custom_ui = _cst_new_list_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_list_custom_ui> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_dropdown_item> cst_new_list_dropdown_item(
+    int len,
+  ) {
+    return _cst_new_list_dropdown_item(
+      len,
+    );
+  }
+
+  late final _cst_new_list_dropdown_itemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_dropdown_item> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_dropdown_item');
+  late final _cst_new_list_dropdown_item = _cst_new_list_dropdown_itemPtr
+      .asFunction<ffi.Pointer<wire_cst_list_dropdown_item> Function(int)>();
 
   ffi.Pointer<wire_cst_list_entry> cst_new_list_entry(
     int len,
@@ -2814,9 +2659,14 @@ final class wire_cst_SettingUI_Textbox extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 }
 
-final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem
-    extends ffi.Struct {
-  external ffi.Pointer<ffi.UintPtr> ptr;
+final class wire_cst_dropdown_item extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+}
+
+final class wire_cst_list_dropdown_item extends ffi.Struct {
+  external ffi.Pointer<wire_cst_dropdown_item> ptr;
 
   @ffi.Int32()
   external int len;
@@ -2825,9 +2675,7 @@ final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generated
 final class wire_cst_SettingUI_Dropdown extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 
-  external ffi.Pointer<
-          wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDropdownItem>
-      options;
+  external ffi.Pointer<wire_cst_list_dropdown_item> options;
 }
 
 final class SettingUIKind extends ffi.Union {
@@ -3124,9 +2972,6 @@ final class wire_cst_list_media_type extends ffi.Struct {
 
 final class wire_cst_meta_data extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
-
-  @ffi.UintPtr()
-  external int value;
 }
 
 final class wire_cst_list_meta_data extends ffi.Struct {

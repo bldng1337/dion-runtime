@@ -48,6 +48,8 @@ pub trait PermissionRequester: Debug {
 //     }
 // }
 
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "id")]

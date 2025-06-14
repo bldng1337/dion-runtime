@@ -7,51 +7,45 @@ import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'settings.freezed.dart';
+part 'settings.g.dart';
 
-// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DropdownItem>>
-abstract class DropdownItem implements RustOpaqueInterface {}
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class DropdownItem with _$DropdownItem {
+  const factory DropdownItem({
+    required String label,
+    required String value,
+  }) = _DropdownItem;
 
-class ExtensionSetting {
-  final Setting setting;
-  final Settingtype settingtype;
-
-  const ExtensionSetting({
-    required this.setting,
-    required this.settingtype,
-  });
-
-  @override
-  int get hashCode => setting.hashCode ^ settingtype.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ExtensionSetting &&
-          runtimeType == other.runtimeType &&
-          setting == other.setting &&
-          settingtype == other.settingtype;
+  factory DropdownItem.fromJson(Map<String, dynamic> json) =>
+      _$DropdownItemFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
-class Setting {
-  final Settingvalue val;
-  final SettingUI? ui;
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class ExtensionSetting with _$ExtensionSetting {
+  const factory ExtensionSetting({
+    required Setting setting,
+    required Settingtype settingtype,
+  }) = _ExtensionSetting;
 
-  const Setting({
-    required this.val,
-    this.ui,
-  });
+  factory ExtensionSetting.fromJson(Map<String, dynamic> json) =>
+      _$ExtensionSettingFromJson(json);
+}
 
-  @override
-  int get hashCode => val.hashCode ^ ui.hashCode;
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
+@freezed
+sealed class Setting with _$Setting {
+  const factory Setting({
+    required Settingvalue val,
+    SettingUI? ui,
+  }) = _Setting;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Setting &&
-          runtimeType == other.runtimeType &&
-          val == other.val &&
-          ui == other.ui;
+  factory Setting.fromJson(Map<String, dynamic> json) =>
+      _$SettingFromJson(json);
 }
 
 @freezed
@@ -78,9 +72,13 @@ sealed class SettingUI with _$SettingUI {
     required String label,
     required List<DropdownItem> options,
   }) = SettingUI_Dropdown;
+
+  factory SettingUI.fromJson(Map<String, dynamic> json) =>
+      _$SettingUIFromJson(json);
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:json_serializable
 enum Settingtype {
   extension_,
   search,
@@ -103,4 +101,7 @@ sealed class Settingvalue with _$Settingvalue {
     required bool val,
     required bool defaultVal,
   }) = Settingvalue_Boolean;
+
+  factory Settingvalue.fromJson(Map<String, dynamic> json) =>
+      _$SettingvalueFromJson(json);
 }
