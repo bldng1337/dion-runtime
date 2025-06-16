@@ -1,5 +1,3 @@
-use std::error::Error as StdError;
-
 use boa_engine::module::SyntheticModuleInitializer;
 use boa_engine::object::FunctionObjectBuilder;
 use boa_engine::{
@@ -8,7 +6,7 @@ use boa_engine::{
 };
 use boa_engine::{Context, Module, NativeFunction};
 
-use anyhow::{anyhow, Context as ErrorContext, Result};
+use anyhow::Result;
 
 use crate::data::permission::Permission;
 use crate::extension::extension_container::JSSourceExtension;

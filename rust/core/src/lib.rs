@@ -17,7 +17,7 @@ mod tests {
             extension_manager::ExtensionManager,
         },
     };
-    use anyhow::{anyhow, Context as ErrorContext, Result};
+    use anyhow::Result;
 
     #[derive(Debug, Default)]
     struct TestPermission;

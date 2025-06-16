@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context as ErrorContext, Result};
+use anyhow::{Context as ErrorContext, Result};
 use boa_engine::{
     class::{self, Class},
     job::NativeAsyncJob,
@@ -10,7 +10,7 @@ use boa_engine::{
     },
     property::Attribute,
     value::Type,
-    Context, JsArgs, JsData, JsError, JsNativeError, JsObject, JsResult, JsString, JsValue, Module,
+    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
     NativeFunction,
 };
 use boa_gc::{Finalize, Trace};

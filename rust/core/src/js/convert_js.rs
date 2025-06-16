@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context as ErrorContext, Result};
+use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use boa_engine::{
     js_string, module::SyntheticModuleInitializer, object::FunctionObjectBuilder, Context, JsArgs,

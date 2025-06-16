@@ -19,7 +19,7 @@ use boa_engine::JsData;
 use boa_engine::{JsError, JsString, Module, Trace};
 use tokio::sync::RwLock;
 
-use anyhow::{anyhow, Context as ErrorContext, Result};
+use anyhow::{anyhow, Result};
 
 pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResult<JsValue> {
     loop {

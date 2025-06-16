@@ -1,11 +1,9 @@
 use std::collections::HashMap;
-use std::future::Future;
 
 use anyhow::Result;
-use serde_json::Value;
 use tokio_util::sync::CancellationToken;
 
-use crate::data::datastructs::{Entry, EntryDetailed, Episode, ExtensionData, Sort, Source};
+use crate::data::datastructs::{Entry, EntryDetailed, ExtensionData, Sort, Source};
 use crate::data::settings::Setting;
 #[async_trait::async_trait()]
 pub trait TSourceExtensionManager<T: TSourceExtension> {
@@ -37,14 +35,14 @@ pub trait TSourceExtension {
     async fn detail(
         &self,
         entryid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed>;
 
     async fn source(
         &self,
         epid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source>;
 

@@ -5,12 +5,11 @@ use boa_engine::{
     object::{builtins::JsPromise, FunctionObjectBuilder},
     Context, JsArgs, JsError, JsNativeError, JsResult, JsString, JsValue, Module, NativeFunction,
 };
-use serde_json::{Number, Value};
 
-use anyhow::{anyhow, Context as ErrorContext, Result};
+use anyhow::Result;
 
 use crate::{
-    data::settings::{ExtensionSetting, Setting, SettingUI, Settingtype, Settingvalue},
+    data::settings::ExtensionSetting,
     extension::{extension_container::JSSourceExtension, utils::SharedUserContextContainer},
 };
 

@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Context, Result};
 use core::fmt::Debug;
 use serde::{Deserialize, Serialize};
-use std::{future::Future, path::PathBuf, sync::LazyLock};
+use std::{path::PathBuf, sync::LazyLock};
 use tokio::{fs, sync::RwLock};
 use ts_rs::TS;
 

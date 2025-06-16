@@ -1745,54 +1745,40 @@ class RustLibWire implements BaseWire {
 
   /// The symbols are looked up with [lookup].
   RustLibWire.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
-      : _lookup = lookup;
+    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+  ) : _lookup = lookup;
 
-  void store_dart_post_cobject(
-    DartPostCObjectFnType ptr,
-  ) {
-    return _store_dart_post_cobject(
-      ptr,
-    );
+  void store_dart_post_cobject(DartPostCObjectFnType ptr) {
+    return _store_dart_post_cobject(ptr);
   }
 
   late final _store_dart_post_cobjectPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
-          'store_dart_post_cobject');
+    'store_dart_post_cobject',
+  );
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
 
-  void wire__crate__api__simple__CancelToken_cancel(
-    int port_,
-    int that,
-  ) {
-    return _wire__crate__api__simple__CancelToken_cancel(
-      port_,
-      that,
-    );
+  void wire__crate__api__simple__CancelToken_cancel(int port_, int that) {
+    return _wire__crate__api__simple__CancelToken_cancel(port_, that);
   }
 
   late final _wire__crate__api__simple__CancelToken_cancelPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_cancel');
+    'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_cancel',
+  );
   late final _wire__crate__api__simple__CancelToken_cancel =
       _wire__crate__api__simple__CancelToken_cancelPtr
           .asFunction<void Function(int, int)>();
 
-  void wire__crate__api__simple__CancelToken_child(
-    int port_,
-    int that,
-  ) {
-    return _wire__crate__api__simple__CancelToken_child(
-      port_,
-      that,
-    );
+  void wire__crate__api__simple__CancelToken_child(int port_, int that) {
+    return _wire__crate__api__simple__CancelToken_child(port_, that);
   }
 
   late final _wire__crate__api__simple__CancelToken_childPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_child');
+    'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_child',
+  );
   late final _wire__crate__api__simple__CancelToken_child =
       _wire__crate__api__simple__CancelToken_childPtr
           .asFunction<void Function(int, int)>();
@@ -1803,7 +1789,8 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__CancelToken_newPtr =
       _lookup<ffi.NativeFunction<WireSyncRust2DartDco Function()>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_new');
+    'frbgen_rdion_runtime_wire__crate__api__simple__CancelToken_new',
+  );
   late final _wire__crate__api__simple__CancelToken_new =
       _wire__crate__api__simple__CancelToken_newPtr
           .asFunction<WireSyncRust2DartDco Function()>();
@@ -1820,7 +1807,8 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionManagerProxy_get_extensionsPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionManagerProxy_get_extensions');
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionManagerProxy_get_extensions',
+  );
   late final _wire__crate__api__simple__SourceExtensionManagerProxy_get_extensions =
       _wire__crate__api__simple__SourceExtensionManagerProxy_get_extensionsPtr
           .asFunction<void Function(int, int)>();
@@ -1829,21 +1817,22 @@ class RustLibWire implements BaseWire {
       wire__crate__api__simple__SourceExtensionManagerProxy_new(
     ffi.Pointer<wire_cst_list_prim_u_8_strict> path,
   ) {
-    return _wire__crate__api__simple__SourceExtensionManagerProxy_new(
-      path,
-    );
+    return _wire__crate__api__simple__SourceExtensionManagerProxy_new(path);
   }
 
   late final _wire__crate__api__simple__SourceExtensionManagerProxy_newPtr =
       _lookup<
-              ffi.NativeFunction<
-                  WireSyncRust2DartDco Function(
-                      ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionManagerProxy_new');
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionManagerProxy_new',
+  );
   late final _wire__crate__api__simple__SourceExtensionManagerProxy_new =
       _wire__crate__api__simple__SourceExtensionManagerProxy_newPtr.asFunction<
           WireSyncRust2DartDco Function(
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__crate__api__simple__SourceExtensionProxy_browse(
     int port_,
@@ -1861,11 +1850,18 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_browsePtr = _lookup<
+  late final _wire__crate__api__simple__SourceExtensionProxy_browsePtr =
+      _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.Int64, ffi.Int32,
-                  ffi.Pointer<ffi.UintPtr>)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_browse');
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Int64,
+                ffi.Int32,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_browse',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_browse =
       _wire__crate__api__simple__SourceExtensionProxy_browsePtr.asFunction<
           void Function(int, int, int, int, ffi.Pointer<ffi.UintPtr>)>();
@@ -1886,23 +1882,27 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_detailPtr = _lookup<
+  late final _wire__crate__api__simple__SourceExtensionProxy_detailPtr =
+      _lookup<
           ffi.NativeFunction<
               ffi.Void Function(
-                  ffi.Int64,
-                  ffi.UintPtr,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_list_record_string_setting>,
-                  ffi.Pointer<ffi.UintPtr>)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_detail');
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_record_string_setting>,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_detail',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_detail =
       _wire__crate__api__simple__SourceExtensionProxy_detailPtr.asFunction<
           void Function(
-              int,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_record_string_setting>,
-              ffi.Pointer<ffi.UintPtr>)>();
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_record_string_setting>,
+            ffi.Pointer<ffi.UintPtr>,
+          )>();
 
   void wire__crate__api__simple__SourceExtensionProxy_fromurl(
     int port_,
@@ -1918,18 +1918,25 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_fromurlPtr = _lookup<
+  late final _wire__crate__api__simple__SourceExtensionProxy_fromurlPtr =
+      _lookup<
           ffi.NativeFunction<
               ffi.Void Function(
-                  ffi.Int64,
-                  ffi.UintPtr,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<ffi.UintPtr>)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_fromurl');
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_fromurl',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_fromurl =
       _wire__crate__api__simple__SourceExtensionProxy_fromurlPtr.asFunction<
-          void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<ffi.UintPtr>)>();
+          void Function(
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<ffi.UintPtr>,
+          )>();
 
   void wire__crate__api__simple__SourceExtensionProxy_get_data(
     int port_,
@@ -1941,9 +1948,10 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_get_dataPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_data');
+  late final _wire__crate__api__simple__SourceExtensionProxy_get_dataPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_data',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_get_data =
       _wire__crate__api__simple__SourceExtensionProxy_get_dataPtr
           .asFunction<void Function(int, int)>();
@@ -1962,10 +1970,14 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionProxy_get_settingPtr =
       _lookup<
-              ffi.NativeFunction<
-                  ffi.Void Function(ffi.Int64, ffi.UintPtr,
-                      ffi.Pointer<wire_cst_list_prim_u_8_strict>)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_setting');
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_setting',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_get_setting =
       _wire__crate__api__simple__SourceExtensionProxy_get_settingPtr.asFunction<
           void Function(
@@ -1983,7 +1995,8 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionProxy_get_settings_idsPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_settings_ids');
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_get_settings_ids',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_get_settings_ids =
       _wire__crate__api__simple__SourceExtensionProxy_get_settings_idsPtr
           .asFunction<void Function(int, int)>();
@@ -2000,7 +2013,8 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionProxy_is_enabledPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_is_enabled');
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_is_enabled',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_is_enabled =
       _wire__crate__api__simple__SourceExtensionProxy_is_enabledPtr
           .asFunction<void Function(int, int)>();
@@ -2021,23 +2035,27 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_searchPtr = _lookup<
+  late final _wire__crate__api__simple__SourceExtensionProxy_searchPtr =
+      _lookup<
           ffi.NativeFunction<
               ffi.Void Function(
-                  ffi.Int64,
-                  ffi.UintPtr,
-                  ffi.Int64,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<ffi.UintPtr>)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_search');
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Int64,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_search',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_search =
       _wire__crate__api__simple__SourceExtensionProxy_searchPtr.asFunction<
           void Function(
-              int,
-              int,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<ffi.UintPtr>)>();
+            int,
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<ffi.UintPtr>,
+          )>();
 
   void wire__crate__api__simple__SourceExtensionProxy_set_enabled(
     int port_,
@@ -2053,9 +2071,10 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionProxy_set_enabledPtr =
       _lookup<
-              ffi.NativeFunction<
-                  ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.Bool)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_set_enabled');
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.Bool)>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_set_enabled',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_set_enabled =
       _wire__crate__api__simple__SourceExtensionProxy_set_enabledPtr
           .asFunction<void Function(int, int, bool)>();
@@ -2076,17 +2095,23 @@ class RustLibWire implements BaseWire {
 
   late final _wire__crate__api__simple__SourceExtensionProxy_set_settingPtr =
       _lookup<
-              ffi.NativeFunction<
-                  ffi.Void Function(
-                      ffi.Int64,
-                      ffi.UintPtr,
-                      ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                      ffi.Pointer<wire_cst_settingvalue>)>>(
-          'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_set_setting');
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_settingvalue>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_set_setting',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_set_setting =
       _wire__crate__api__simple__SourceExtensionProxy_set_settingPtr.asFunction<
-          void Function(int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_settingvalue>)>();
+          void Function(
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_settingvalue>,
+          )>();
 
   void wire__crate__api__simple__SourceExtensionProxy_source(
     int port_,
@@ -2104,23 +2129,27 @@ class RustLibWire implements BaseWire {
     );
   }
 
-  late final _wire__crate__api__simple__SourceExtensionProxy_sourcePtr = _lookup<
+  late final _wire__crate__api__simple__SourceExtensionProxy_sourcePtr =
+      _lookup<
           ffi.NativeFunction<
               ffi.Void Function(
-                  ffi.Int64,
-                  ffi.UintPtr,
-                  ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-                  ffi.Pointer<wire_cst_list_record_string_setting>,
-                  ffi.Pointer<ffi.UintPtr>)>>(
-      'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_source');
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<wire_cst_list_record_string_setting>,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__simple__SourceExtensionProxy_source',
+  );
   late final _wire__crate__api__simple__SourceExtensionProxy_source =
       _wire__crate__api__simple__SourceExtensionProxy_sourcePtr.asFunction<
           void Function(
-              int,
-              int,
-              ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              ffi.Pointer<wire_cst_list_record_string_setting>,
-              ffi.Pointer<ffi.UintPtr>)>();
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<wire_cst_list_record_string_setting>,
+            ffi.Pointer<ffi.UintPtr>,
+          )>();
 
   void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
@@ -2133,7 +2162,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken');
+    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken =
       _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2149,7 +2179,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken');
+    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2165,7 +2196,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy');
+    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy =
       _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxyPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2181,7 +2213,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy');
+    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxy =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionManagerProxyPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2197,7 +2230,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy');
+    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy',
+  );
   late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy =
       _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2213,7 +2247,8 @@ class RustLibWire implements BaseWire {
 
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy');
+    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy',
+  );
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
@@ -2229,24 +2264,21 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr =
       _lookup<
-              ffi
-              .NativeFunction<ffi.Pointer<ffi.UintPtr> Function(ffi.UintPtr)>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken');
+          ffi.NativeFunction<ffi.Pointer<ffi.UintPtr> Function(ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken',
+  );
   late final _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken =
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
-  ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(
-    bool value,
-  ) {
-    return _cst_new_box_autoadd_bool(
-      value,
-    );
+  ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(bool value) {
+    return _cst_new_box_autoadd_bool(value);
   }
 
   late final _cst_new_box_autoadd_boolPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Bool> Function(ffi.Bool)>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_bool');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_bool',
+  );
   late final _cst_new_box_autoadd_bool = _cst_new_box_autoadd_boolPtr
       .asFunction<ffi.Pointer<ffi.Bool> Function(bool)>();
 
@@ -2256,7 +2288,8 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_custom_uiPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_custom_ui> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui',
+  );
   late final _cst_new_box_autoadd_custom_ui = _cst_new_box_autoadd_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
 
@@ -2266,7 +2299,8 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_data_sourcePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_data_source> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_data_source');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_data_source',
+  );
   late final _cst_new_box_autoadd_data_source =
       _cst_new_box_autoadd_data_sourcePtr
           .asFunction<ffi.Pointer<wire_cst_data_source> Function()>();
@@ -2277,35 +2311,30 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_entryPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_entry> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_entry');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_entry',
+  );
   late final _cst_new_box_autoadd_entry = _cst_new_box_autoadd_entryPtr
       .asFunction<ffi.Pointer<wire_cst_entry> Function()>();
 
-  ffi.Pointer<ffi.Float> cst_new_box_autoadd_f_32(
-    double value,
-  ) {
-    return _cst_new_box_autoadd_f_32(
-      value,
-    );
+  ffi.Pointer<ffi.Float> cst_new_box_autoadd_f_32(double value) {
+    return _cst_new_box_autoadd_f_32(value);
   }
 
   late final _cst_new_box_autoadd_f_32Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Float> Function(ffi.Float)>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_f_32');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_f_32',
+  );
   late final _cst_new_box_autoadd_f_32 = _cst_new_box_autoadd_f_32Ptr
       .asFunction<ffi.Pointer<ffi.Float> Function(double)>();
 
-  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_i_32(
-    int value,
-  ) {
-    return _cst_new_box_autoadd_i_32(
-      value,
-    );
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_i_32(int value) {
+    return _cst_new_box_autoadd_i_32(value);
   }
 
   late final _cst_new_box_autoadd_i_32Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_i_32');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_i_32',
+  );
   late final _cst_new_box_autoadd_i_32 = _cst_new_box_autoadd_i_32Ptr
       .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
 
@@ -2315,7 +2344,8 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_link_sourcePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_link_source> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_link_source');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_link_source',
+  );
   late final _cst_new_box_autoadd_link_source =
       _cst_new_box_autoadd_link_sourcePtr
           .asFunction<ffi.Pointer<wire_cst_link_source> Function()>();
@@ -2326,7 +2356,8 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_box_autoadd_setting_uiPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_setting_ui> Function()>>(
-          'frbgen_rdion_runtime_cst_new_box_autoadd_setting_ui');
+    'frbgen_rdion_runtime_cst_new_box_autoadd_setting_ui',
+  );
   late final _cst_new_box_autoadd_setting_ui =
       _cst_new_box_autoadd_setting_uiPtr
           .asFunction<ffi.Pointer<wire_cst_setting_ui> Function()>();
@@ -2354,11 +2385,12 @@ class RustLibWire implements BaseWire {
 
   late final _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr =
       _lookup<
-              ffi.NativeFunction<
-                  ffi.Pointer<
-                          wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy>
-                      Function(ffi.Int32)>>(
-          'frbgen_rdion_runtime_cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy');
+          ffi.NativeFunction<
+              ffi.Pointer<
+                      wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy>
+                  Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy',
+  );
   late final _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy =
       _cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxyPtr
           .asFunction<
@@ -2366,12 +2398,8 @@ class RustLibWire implements BaseWire {
                       wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSourceExtensionProxy>
                   Function(int)>();
 
-  ffi.Pointer<wire_cst_list_String> cst_new_list_String(
-    int len,
-  ) {
-    return _cst_new_list_String(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_String> cst_new_list_String(int len) {
+    return _cst_new_list_String(len);
   }
 
   late final _cst_new_list_StringPtr = _lookup<
@@ -2381,12 +2409,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_String = _cst_new_list_StringPtr
       .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_custom_ui> cst_new_list_custom_ui(
-    int len,
-  ) {
-    return _cst_new_list_custom_ui(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_custom_ui> cst_new_list_custom_ui(int len) {
+    return _cst_new_list_custom_ui(len);
   }
 
   late final _cst_new_list_custom_uiPtr = _lookup<
@@ -2396,12 +2420,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_custom_ui = _cst_new_list_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_list_custom_ui> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_dropdown_item> cst_new_list_dropdown_item(
-    int len,
-  ) {
-    return _cst_new_list_dropdown_item(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_dropdown_item> cst_new_list_dropdown_item(int len) {
+    return _cst_new_list_dropdown_item(len);
   }
 
   late final _cst_new_list_dropdown_itemPtr = _lookup<
@@ -2411,12 +2431,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_dropdown_item = _cst_new_list_dropdown_itemPtr
       .asFunction<ffi.Pointer<wire_cst_list_dropdown_item> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_entry> cst_new_list_entry(
-    int len,
-  ) {
-    return _cst_new_list_entry(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_entry> cst_new_list_entry(int len) {
+    return _cst_new_list_entry(len);
   }
 
   late final _cst_new_list_entryPtr = _lookup<
@@ -2426,12 +2442,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_entry = _cst_new_list_entryPtr
       .asFunction<ffi.Pointer<wire_cst_list_entry> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_episode> cst_new_list_episode(
-    int len,
-  ) {
-    return _cst_new_list_episode(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_episode> cst_new_list_episode(int len) {
+    return _cst_new_list_episode(len);
   }
 
   late final _cst_new_list_episodePtr = _lookup<
@@ -2444,9 +2456,7 @@ class RustLibWire implements BaseWire {
   ffi.Pointer<wire_cst_list_image_list_audio> cst_new_list_image_list_audio(
     int len,
   ) {
-    return _cst_new_list_image_list_audio(
-      len,
-    );
+    return _cst_new_list_image_list_audio(len);
   }
 
   late final _cst_new_list_image_list_audioPtr = _lookup<
@@ -2456,12 +2466,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_image_list_audio = _cst_new_list_image_list_audioPtr
       .asFunction<ffi.Pointer<wire_cst_list_image_list_audio> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_media_type> cst_new_list_media_type(
-    int len,
-  ) {
-    return _cst_new_list_media_type(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_media_type> cst_new_list_media_type(int len) {
+    return _cst_new_list_media_type(len);
   }
 
   late final _cst_new_list_media_typePtr = _lookup<
@@ -2471,12 +2477,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_media_type = _cst_new_list_media_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_media_type> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_meta_data> cst_new_list_meta_data(
-    int len,
-  ) {
-    return _cst_new_list_meta_data(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_meta_data> cst_new_list_meta_data(int len) {
+    return _cst_new_list_meta_data(len);
   }
 
   late final _cst_new_list_meta_dataPtr = _lookup<
@@ -2489,9 +2491,7 @@ class RustLibWire implements BaseWire {
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_new_list_prim_u_8_strict(
     int len,
   ) {
-    return _cst_new_list_prim_u_8_strict(
-      len,
-    );
+    return _cst_new_list_prim_u_8_strict(len);
   }
 
   late final _cst_new_list_prim_u_8_strictPtr = _lookup<
@@ -2502,12 +2502,8 @@ class RustLibWire implements BaseWire {
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_setting>
-      cst_new_list_record_string_setting(
-    int len,
-  ) {
-    return _cst_new_list_record_string_setting(
-      len,
-    );
+      cst_new_list_record_string_setting(int len) {
+    return _cst_new_list_record_string_setting(len);
   }
 
   late final _cst_new_list_record_string_settingPtr = _lookup<
@@ -2520,12 +2516,8 @@ class RustLibWire implements BaseWire {
           ffi.Pointer<wire_cst_list_record_string_setting> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_string>
-      cst_new_list_record_string_string(
-    int len,
-  ) {
-    return _cst_new_list_record_string_string(
-      len,
-    );
+      cst_new_list_record_string_string(int len) {
+    return _cst_new_list_record_string_string(len);
   }
 
   late final _cst_new_list_record_string_stringPtr = _lookup<
@@ -2537,12 +2529,8 @@ class RustLibWire implements BaseWire {
       _cst_new_list_record_string_stringPtr.asFunction<
           ffi.Pointer<wire_cst_list_record_string_string> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_subtitles> cst_new_list_subtitles(
-    int len,
-  ) {
-    return _cst_new_list_subtitles(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_subtitles> cst_new_list_subtitles(int len) {
+    return _cst_new_list_subtitles(len);
   }
 
   late final _cst_new_list_subtitlesPtr = _lookup<
@@ -2552,12 +2540,8 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_subtitles = _cst_new_list_subtitlesPtr
       .asFunction<ffi.Pointer<wire_cst_list_subtitles> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_url_chapter> cst_new_list_url_chapter(
-    int len,
-  ) {
-    return _cst_new_list_url_chapter(
-      len,
-    );
+  ffi.Pointer<wire_cst_list_url_chapter> cst_new_list_url_chapter(int len) {
+    return _cst_new_list_url_chapter(len);
   }
 
   late final _cst_new_list_url_chapterPtr = _lookup<
@@ -2573,7 +2557,8 @@ class RustLibWire implements BaseWire {
 
   late final _dummy_method_to_enforce_bundlingPtr =
       _lookup<ffi.NativeFunction<ffi.Int64 Function()>>(
-          'dummy_method_to_enforce_bundling');
+    'dummy_method_to_enforce_bundling',
+  );
   late final _dummy_method_to_enforce_bundling =
       _dummy_method_to_enforce_bundlingPtr.asFunction<int Function()>();
 }

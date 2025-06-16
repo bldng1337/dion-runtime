@@ -1,16 +1,14 @@
 use std::collections::HashMap;
 
-use dion_runtime::data::datastructs::*;
-
 pub use dion_runtime::data::datastructs::*;
 
 pub use dion_runtime::data::settings::{ExtensionSetting, Setting, Settingvalue};
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 use dion_runtime::extension::extension::{TSourceExtension, TSourceExtensionManager};
 use dion_runtime::extension::extension_container::ExtensionContainer;
 use dion_runtime::extension::extension_manager::ExtensionManager;
-use flutter_rust_bridge::{frb, DartFnFuture};
+use flutter_rust_bridge::frb;
 use tokio_util::sync::CancellationToken;
 
 #[frb(rust2dart(dart_type = "String", dart_code = "{}"))]
@@ -175,7 +173,7 @@ impl SourceExtensionProxy {
     pub async fn detail(
         &self,
         entryid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
     ) -> Result<EntryDetailed> {
         self.inner
@@ -186,7 +184,7 @@ impl SourceExtensionProxy {
     pub async fn source(
         &self,
         epid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
     ) -> Result<Source> {
         self.inner
