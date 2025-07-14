@@ -2,20 +2,28 @@
   "name": "node_dion_runtime",
   "version": "0.1.0",
   "description": "dion extension runtime for node",
-  "main": "src/lib.js",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "cargo test",
+    "test": "cargo test && node ./test/testscript.js",
+    "prebuild": "rimraf ./dist",
     "cargo-build": "cargo build --message-format=json-render-diagnostics > cargo.log",
     "cross-build": "cross build --message-format=json-render-diagnostics > cross.log",
     "postcargo-build": "neon dist < cargo.log",
     "postcross-build": "neon dist -m /target < cross.log",
     "debug": "npm run cargo-build --",
-    "build": "npm run cargo-build -- --release",
+    "build": "npm run cargo-build -- --release && tsc",
     "cross": "npm run cross-build -- --release"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@neon-rs/cli": "0.1.82"
+    "@neon-rs/cli": "0.1.82",
+    "@types/node": "^24.0.13",
+    "rimraf": "^5.0.10",
+    "typescript": "^5.8.3"
   }
 }

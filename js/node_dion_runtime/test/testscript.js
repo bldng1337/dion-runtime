@@ -1,4 +1,4 @@
-const lib = require("./..");
+const lib = require("../.");
 
 async function main() {
   const ext = new lib.ExtensionManager("./../../testextensions");
