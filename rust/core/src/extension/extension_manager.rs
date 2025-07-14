@@ -2,6 +2,7 @@ use super::{extension::TSourceExtensionManager, extension_container::ExtensionCo
 use anyhow::{Context, Result};
 use tokio::fs::read_dir;
 
+#[derive(Clone)]
 pub struct ExtensionManager {
     path: String,
 }
