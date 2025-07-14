@@ -1,3 +1,6 @@
+/// <reference types="dion-runtime-types" />
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const lib = require("./../index.node");
 
 class ExtensionManager {
@@ -30,8 +33,32 @@ class Extension {
     return lib._is_enabled(this.ext);
   }
 
-  async setSetting(id: string, setting: any): Promise<void> {
-    await lib._set_setting(this.ext, id, setting);
+  async setSetting(id: string, setting: Settingvalues): Promise<void> {
+    let settingvalue;
+    switch (typeof setting) {
+      case "string":
+        settingvalue = {
+          type: "String",
+          val: setting,
+          default_val: "",
+        };
+        break;
+      case "number":
+        settingvalue = {
+          type: "Number",
+          val: setting,
+          default_val: 0,
+        };
+        break;
+      case "boolean":
+        settingvalue = {
+          type: "Boolean",
+          val: setting,
+          default_val: false,
+        };
+        break;
+    }
+    await lib._set_setting(this.ext, id, settingvalue);
   }
 
   async getSetting(id: string): Promise<any> {
@@ -55,6 +82,6 @@ class Extension {
   }
 }
 
-module.exports = {
+export {
   ExtensionManager,
 };

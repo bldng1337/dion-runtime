@@ -1,7 +1,7 @@
-const lib = require("../.");
+import { ExtensionManager } from "../dist/lib.js";
 
 async function main() {
-  const ext = new lib.ExtensionManager("./../../testextensions");
+  const ext = new ExtensionManager("./../../testextensions");
 
   const exts = await ext.getExtensions();
   console.log(exts);

@@ -1,5 +1,5 @@
 {
-  "name": "node_dion_runtime",
+  "name": "dion-node-runtime",
   "version": "0.1.0",
   "description": "dion extension runtime for node",
   "main": "dist/lib.js",
@@ -19,11 +19,13 @@
     "cross": "npm run cross-build -- --release"
   },
   "author": "",
+  "type": "module",
   "license": "ISC",
   "devDependencies": {
     "@neon-rs/cli": "0.1.82",
     "@types/node": "^24.0.13",
     "rimraf": "^5.0.10",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "dion-runtime-types": "file:../../rust/core/bindings"
   }
 }
