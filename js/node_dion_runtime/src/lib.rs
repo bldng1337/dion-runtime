@@ -370,6 +370,5 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("_get_setting", _get_setting)?;
     cx.export_function("_set_setting", _set_setting)?;
 
-    println!("module is loaded!");
     Ok(())
 }

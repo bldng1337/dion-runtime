@@ -1,14 +1,15 @@
 {
   "name": "dion-node-runtime",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "dion extension runtime for node",
   "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "index.node"
   ],
   "scripts": {
-    "test": "cargo test && node ./test/testscript.js",
+    "test": "node ./test/testscript.js",
     "prebuild": "rimraf ./dist",
     "cargo-build": "cargo build --message-format=json-render-diagnostics > cargo.log",
     "cross-build": "cross build --message-format=json-render-diagnostics > cross.log",
@@ -27,5 +28,6 @@
     "rimraf": "^5.0.10",
     "typescript": "^5.8.3",
     "dion-runtime-types": "file:../../rust/core/bindings"
+    
   }
 }

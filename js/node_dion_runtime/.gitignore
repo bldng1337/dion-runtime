@@ -5,4 +5,3 @@ index.node
 npm-debug.log*cargo.log
 cross.log
 dist
-cargo.log

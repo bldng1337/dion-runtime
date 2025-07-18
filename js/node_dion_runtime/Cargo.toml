@@ -1,5 +1,5 @@
 [package]
-name = "node_dion_runtime"
+name = "dion-node-runtime"
 version = "0.1.0"
 description = "dion extension runtime for node"
 license = "ISC"

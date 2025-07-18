@@ -833,6 +833,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dion-node-runtime"
+version = "0.1.0"
+dependencies = [
+ "dion-runtime",
+ "neon",
+ "neon-serde4",
+ "once_cell",
+ "tokio",
+]
+
+[[package]]
 name = "dion-runtime"
 version = "0.1.0"
 dependencies = [
@@ -2040,17 +2051,6 @@ name = "no-std-compat"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b93853da6d84c2e3c7d730d6473e8817692dd89be387eb01b94d7f108ecb5b8c"
-
-[[package]]
-name = "node_dion_runtime"
-version = "0.1.0"
-dependencies = [
- "dion-runtime",
- "neon",
- "neon-serde4",
- "once_cell",
- "tokio",
-]
 
 [[package]]
 name = "nom"

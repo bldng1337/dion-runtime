@@ -1,3 +1,4 @@
+/// <reference types="dion-runtime-types" />
 import { ExtensionManager } from "../dist/lib.js";
 
 async function main() {
@@ -10,11 +11,7 @@ async function main() {
     console.log(ext);
     await ext.setEnabled(true);
     console.log(await ext.getEnabled());
-    await ext.setSetting("someid", {
-      type: "String",
-      val: "othervalue",
-      default_val: "somedefault",
-    });
+    await ext.setSetting("someid", "othervalue");
     console.log("\n\nSetting:");
     console.log(await ext.getSetting("someid"));
 

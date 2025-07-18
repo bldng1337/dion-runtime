@@ -29,7 +29,7 @@ class Extension {
     await lib._set_enabled(this.ext, enabled);
   }
 
-  async getEnabled(): Promise<boolean> {
+  async isEnabled(): Promise<boolean> {
     return lib._is_enabled(this.ext);
   }
 
@@ -57,31 +57,38 @@ class Extension {
           default_val: false,
         };
         break;
+      default:
+        throw new Error("Invalid setting type");
     }
     await lib._set_setting(this.ext, id, settingvalue);
   }
 
-  async getSetting(id: string): Promise<any> {
+  async getSetting(id: string): Promise<ExtensionSetting> {
     return lib._get_setting(this.ext, id);
   }
 
-  async browse(page: number, sort: any): Promise<any> {
+  async browse(page: number, sort: Sort): Promise<Entry[]> {
     return lib._browse(this.ext, page, sort);
   }
 
-  async search(page: number, filter: any): Promise<any> {
+  async fromUrl(url: string): Promise<Entry|undefined> {
+    return lib._from_url(this.ext, url);
+  }
+
+  async search(page: number, filter: string): Promise<Entry[]> {
     return lib._search(this.ext, page, filter);
   }
 
-  async detail(entryid: string, settings: any = {}): Promise<any> {
+  async detail(entryid: string, settings: {[key: string]: Setting} = {}): Promise<EntryDetailed> {
     return lib._detail(this.ext, entryid, settings);
   }
 
-  async source(epid: string, settings: any = {}): Promise<any> {
+  async source(epid: string, settings:{[key: string]: Setting} = {}): Promise<Source> {
     return lib._source(this.ext, epid, settings);
   }
 }
 
 export {
   ExtensionManager,
+  Extension
 };
