@@ -179,6 +179,7 @@ sealed class LinkSource with _$LinkSource {
   const factory LinkSource.m3U8({
     required String link,
     required List<Subtitles> sub,
+    Map<String, String>? headers,
   }) = LinkSource_M3u8;
   const factory LinkSource.mp3({
     required List<UrlChapter> chapters,
@@ -250,6 +251,7 @@ sealed class Subtitles with _$Subtitles {
   const factory Subtitles({
     required String title,
     required String url,
+    Map<String, String>? headers,
   }) = _Subtitles;
 
   factory Subtitles.fromJson(Map<String, dynamic> json) =>

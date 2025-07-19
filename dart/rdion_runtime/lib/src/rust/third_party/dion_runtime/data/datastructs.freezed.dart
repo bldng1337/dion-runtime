@@ -3712,7 +3712,9 @@ mixin _$LinkSource {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) =>
       throw _privateConstructorUsedError;
@@ -3723,7 +3725,9 @@ mixin _$LinkSource {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) =>
       throw _privateConstructorUsedError;
@@ -3734,7 +3738,9 @@ mixin _$LinkSource {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) =>
@@ -3876,7 +3882,9 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return epub(link);
@@ -3890,7 +3898,9 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return epub?.call(link);
@@ -3904,7 +3914,9 @@ class _$LinkSource_EpubImpl extends LinkSource_Epub {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
@@ -4062,7 +4074,9 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return pdf(link);
@@ -4076,7 +4090,9 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return pdf?.call(link);
@@ -4090,7 +4106,9 @@ class _$LinkSource_PdfImpl extends LinkSource_Pdf {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
@@ -4300,7 +4318,9 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return imagelist(links, header, audio);
@@ -4314,7 +4334,9 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return imagelist?.call(links, header, audio);
@@ -4328,7 +4350,9 @@ class _$LinkSource_ImagelistImpl extends LinkSource_Imagelist {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
@@ -4413,7 +4437,7 @@ abstract class _$$LinkSource_M3u8ImplCopyWith<$Res> {
           $Res Function(_$LinkSource_M3u8Impl) then) =
       __$$LinkSource_M3u8ImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String link, List<Subtitles> sub});
+  $Res call({String link, List<Subtitles> sub, Map<String, String>? headers});
 }
 
 /// @nodoc
@@ -4431,6 +4455,7 @@ class __$$LinkSource_M3u8ImplCopyWithImpl<$Res>
   $Res call({
     Object? link = null,
     Object? sub = null,
+    Object? headers = freezed,
   }) {
     return _then(_$LinkSource_M3u8Impl(
       link: null == link
@@ -4441,6 +4466,10 @@ class __$$LinkSource_M3u8ImplCopyWithImpl<$Res>
           ? _value._sub
           : sub // ignore: cast_nullable_to_non_nullable
               as List<Subtitles>,
+      headers: freezed == headers
+          ? _value._headers
+          : headers // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ));
   }
 }
@@ -4451,8 +4480,10 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
   const _$LinkSource_M3u8Impl(
       {required this.link,
       required final List<Subtitles> sub,
+      final Map<String, String>? headers,
       final String? $type})
       : _sub = sub,
+        _headers = headers,
         $type = $type ?? 'm3U8',
         super._();
 
@@ -4469,12 +4500,22 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     return EqualUnmodifiableListView(_sub);
   }
 
+  final Map<String, String>? _headers;
+  @override
+  Map<String, String>? get headers {
+    final value = _headers;
+    if (value == null) return null;
+    if (_headers is EqualUnmodifiableMapView) return _headers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'LinkSource.m3U8(link: $link, sub: $sub)';
+    return 'LinkSource.m3U8(link: $link, sub: $sub, headers: $headers)';
   }
 
   @override
@@ -4483,13 +4524,17 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
         (other.runtimeType == runtimeType &&
             other is _$LinkSource_M3u8Impl &&
             (identical(other.link, link) || other.link == link) &&
-            const DeepCollectionEquality().equals(other._sub, _sub));
+            const DeepCollectionEquality().equals(other._sub, _sub) &&
+            const DeepCollectionEquality().equals(other._headers, _headers));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, link, const DeepCollectionEquality().hash(_sub));
+  int get hashCode => Object.hash(
+      runtimeType,
+      link,
+      const DeepCollectionEquality().hash(_sub),
+      const DeepCollectionEquality().hash(_headers));
 
   /// Create a copy of LinkSource
   /// with the given fields replaced by the non-null parameter values.
@@ -4508,10 +4553,12 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
-    return m3U8(link, sub);
+    return m3U8(link, sub, headers);
   }
 
   @override
@@ -4522,10 +4569,12 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
-    return m3U8?.call(link, sub);
+    return m3U8?.call(link, sub, headers);
   }
 
   @override
@@ -4536,12 +4585,14 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
     if (m3U8 != null) {
-      return m3U8(link, sub);
+      return m3U8(link, sub, headers);
     }
     return orElse();
   }
@@ -4597,7 +4648,8 @@ class _$LinkSource_M3u8Impl extends LinkSource_M3u8 {
 abstract class LinkSource_M3u8 extends LinkSource {
   const factory LinkSource_M3u8(
       {required final String link,
-      required final List<Subtitles> sub}) = _$LinkSource_M3u8Impl;
+      required final List<Subtitles> sub,
+      final Map<String, String>? headers}) = _$LinkSource_M3u8Impl;
   const LinkSource_M3u8._() : super._();
 
   factory LinkSource_M3u8.fromJson(Map<String, dynamic> json) =
@@ -4605,6 +4657,7 @@ abstract class LinkSource_M3u8 extends LinkSource {
 
   String get link;
   List<Subtitles> get sub;
+  Map<String, String>? get headers;
 
   /// Create a copy of LinkSource
   /// with the given fields replaced by the non-null parameter values.
@@ -4704,7 +4757,9 @@ class _$LinkSource_Mp3Impl extends LinkSource_Mp3 {
     required TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(String link, List<Subtitles> sub) m3U8,
+    required TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)
+        m3U8,
     required TResult Function(List<UrlChapter> chapters) mp3,
   }) {
     return mp3(chapters);
@@ -4718,7 +4773,9 @@ class _$LinkSource_Mp3Impl extends LinkSource_Mp3 {
     TResult? Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult? Function(String link, List<Subtitles> sub)? m3U8,
+    TResult? Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult? Function(List<UrlChapter> chapters)? mp3,
   }) {
     return mp3?.call(chapters);
@@ -4732,7 +4789,9 @@ class _$LinkSource_Mp3Impl extends LinkSource_Mp3 {
     TResult Function(List<String> links, Map<String, String>? header,
             List<ImageListAudio>? audio)?
         imagelist,
-    TResult Function(String link, List<Subtitles> sub)? m3U8,
+    TResult Function(
+            String link, List<Subtitles> sub, Map<String, String>? headers)?
+        m3U8,
     TResult Function(List<UrlChapter> chapters)? mp3,
     required TResult orElse(),
   }) {
@@ -5393,6 +5452,7 @@ Subtitles _$SubtitlesFromJson(Map<String, dynamic> json) {
 mixin _$Subtitles {
   String get title => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
+  Map<String, String>? get headers => throw _privateConstructorUsedError;
 
   /// Serializes this Subtitles to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -5409,7 +5469,7 @@ abstract class $SubtitlesCopyWith<$Res> {
   factory $SubtitlesCopyWith(Subtitles value, $Res Function(Subtitles) then) =
       _$SubtitlesCopyWithImpl<$Res, Subtitles>;
   @useResult
-  $Res call({String title, String url});
+  $Res call({String title, String url, Map<String, String>? headers});
 }
 
 /// @nodoc
@@ -5429,6 +5489,7 @@ class _$SubtitlesCopyWithImpl<$Res, $Val extends Subtitles>
   $Res call({
     Object? title = null,
     Object? url = null,
+    Object? headers = freezed,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -5439,6 +5500,10 @@ class _$SubtitlesCopyWithImpl<$Res, $Val extends Subtitles>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      headers: freezed == headers
+          ? _value.headers
+          : headers // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ) as $Val);
   }
 }
@@ -5451,7 +5516,7 @@ abstract class _$$SubtitlesImplCopyWith<$Res>
       __$$SubtitlesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, String url});
+  $Res call({String title, String url, Map<String, String>? headers});
 }
 
 /// @nodoc
@@ -5469,6 +5534,7 @@ class __$$SubtitlesImplCopyWithImpl<$Res>
   $Res call({
     Object? title = null,
     Object? url = null,
+    Object? headers = freezed,
   }) {
     return _then(_$SubtitlesImpl(
       title: null == title
@@ -5479,6 +5545,10 @@ class __$$SubtitlesImplCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      headers: freezed == headers
+          ? _value._headers
+          : headers // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ));
   }
 }
@@ -5486,7 +5556,11 @@ class __$$SubtitlesImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SubtitlesImpl implements _Subtitles {
-  const _$SubtitlesImpl({required this.title, required this.url});
+  const _$SubtitlesImpl(
+      {required this.title,
+      required this.url,
+      final Map<String, String>? headers})
+      : _headers = headers;
 
   factory _$SubtitlesImpl.fromJson(Map<String, dynamic> json) =>
       _$$SubtitlesImplFromJson(json);
@@ -5495,10 +5569,19 @@ class _$SubtitlesImpl implements _Subtitles {
   final String title;
   @override
   final String url;
+  final Map<String, String>? _headers;
+  @override
+  Map<String, String>? get headers {
+    final value = _headers;
+    if (value == null) return null;
+    if (_headers is EqualUnmodifiableMapView) return _headers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'Subtitles(title: $title, url: $url)';
+    return 'Subtitles(title: $title, url: $url, headers: $headers)';
   }
 
   @override
@@ -5507,12 +5590,14 @@ class _$SubtitlesImpl implements _Subtitles {
         (other.runtimeType == runtimeType &&
             other is _$SubtitlesImpl &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.url, url) || other.url == url) &&
+            const DeepCollectionEquality().equals(other._headers, _headers));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, url);
+  int get hashCode => Object.hash(
+      runtimeType, title, url, const DeepCollectionEquality().hash(_headers));
 
   /// Create a copy of Subtitles
   /// with the given fields replaced by the non-null parameter values.
@@ -5533,7 +5618,8 @@ class _$SubtitlesImpl implements _Subtitles {
 abstract class _Subtitles implements Subtitles {
   const factory _Subtitles(
       {required final String title,
-      required final String url}) = _$SubtitlesImpl;
+      required final String url,
+      final Map<String, String>? headers}) = _$SubtitlesImpl;
 
   factory _Subtitles.fromJson(Map<String, dynamic> json) =
       _$SubtitlesImpl.fromJson;
@@ -5542,6 +5628,8 @@ abstract class _Subtitles implements Subtitles {
   String get title;
   @override
   String get url;
+  @override
+  Map<String, String>? get headers;
 
   /// Create a copy of Subtitles
   /// with the given fields replaced by the non-null parameter values.

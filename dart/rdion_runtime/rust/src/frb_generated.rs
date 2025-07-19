@@ -923,9 +923,10 @@ const _: fn() = || {
             let _: Option<std::collections::HashMap<String, String>> = header;
             let _: Option<Vec<dion_runtime::data::datastructs::ImageListAudio>> = audio;
         }
-        dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub } => {
+        dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub, headers } => {
             let _: String = link;
             let _: Vec<dion_runtime::data::datastructs::Subtitles> = sub;
+            let _: Option<std::collections::HashMap<String, String>> = headers;
         }
         dion_runtime::data::datastructs::LinkSource::Mp3 { chapters } => {
             let _: Vec<dion_runtime::data::datastructs::UrlChapter> = chapters;
@@ -993,6 +994,7 @@ const _: fn() = || {
         let Subtitles = None::<dion_runtime::data::datastructs::Subtitles>.unwrap();
         let _: String = Subtitles.title;
         let _: String = Subtitles.url;
+        let _: Option<std::collections::HashMap<String, String>> = Subtitles.headers;
     }
     {
         let UrlChapter = None::<dion_runtime::data::datastructs::UrlChapter>.unwrap();
@@ -1521,9 +1523,12 @@ impl SseDecode for dion_runtime::data::datastructs::LinkSource {
                 let mut var_link = <String>::sse_decode(deserializer);
                 let mut var_sub =
                     <Vec<dion_runtime::data::datastructs::Subtitles>>::sse_decode(deserializer);
+                let mut var_headers =
+                    <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
                 return dion_runtime::data::datastructs::LinkSource::M3u8 {
                     link: var_link,
                     sub: var_sub,
+                    headers: var_headers,
                 };
             }
             4 => {
@@ -2105,9 +2110,12 @@ impl SseDecode for dion_runtime::data::datastructs::Subtitles {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_headers =
+            <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
         return dion_runtime::data::datastructs::Subtitles {
             title: var_title,
             url: var_url,
+            headers: var_headers,
         };
     }
 }
@@ -2520,10 +2528,11 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::datastruct
                 audio.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub } => [
+            dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub, headers } => [
                 3.into_dart(),
                 link.into_into_dart().into_dart(),
                 sub.into_into_dart().into_dart(),
+                headers.into_into_dart().into_dart(),
             ]
             .into_dart(),
             dion_runtime::data::datastructs::LinkSource::Mp3 { chapters } => {
@@ -2797,6 +2806,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::datastruct
         [
             self.0.title.into_into_dart().into_dart(),
             self.0.url.into_into_dart().into_dart(),
+            self.0.headers.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -3178,10 +3188,13 @@ impl SseEncode for dion_runtime::data::datastructs::LinkSource {
                     audio, serializer,
                 );
             }
-            dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub } => {
+            dion_runtime::data::datastructs::LinkSource::M3u8 { link, sub, headers } => {
                 <i32>::sse_encode(3, serializer);
                 <String>::sse_encode(link, serializer);
                 <Vec<dion_runtime::data::datastructs::Subtitles>>::sse_encode(sub, serializer);
+                <Option<std::collections::HashMap<String, String>>>::sse_encode(
+                    headers, serializer,
+                );
             }
             dion_runtime::data::datastructs::LinkSource::Mp3 { chapters } => {
                 <i32>::sse_encode(4, serializer);
@@ -3671,6 +3684,7 @@ impl SseEncode for dion_runtime::data::datastructs::Subtitles {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.title, serializer);
         <String>::sse_encode(self.url, serializer);
+        <Option<std::collections::HashMap<String, String>>>::sse_encode(self.headers, serializer);
     }
 }
 
@@ -4127,6 +4141,7 @@ mod io {
                     dion_runtime::data::datastructs::LinkSource::M3u8 {
                         link: ans.link.cst_decode(),
                         sub: ans.sub.cst_decode(),
+                        headers: ans.headers.cst_decode(),
                     }
                 }
                 4 => {
@@ -4413,6 +4428,7 @@ mod io {
             dion_runtime::data::datastructs::Subtitles {
                 title: self.title.cst_decode(),
                 url: self.url.cst_decode(),
+                headers: self.headers.cst_decode(),
             }
         }
     }
@@ -4692,6 +4708,7 @@ mod io {
             Self {
                 title: core::ptr::null_mut(),
                 url: core::ptr::null_mut(),
+                headers: core::ptr::null_mut(),
             }
         }
     }
@@ -5365,6 +5382,7 @@ mod io {
     pub struct wire_cst_LinkSource_M3u8 {
         link: *mut wire_cst_list_prim_u_8_strict,
         sub: *mut wire_cst_list_subtitles,
+        headers: *mut wire_cst_list_record_string_string,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -5585,6 +5603,7 @@ mod io {
     pub struct wire_cst_subtitles {
         title: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
+        headers: *mut wire_cst_list_record_string_string,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

@@ -10,7 +10,7 @@ async function main() {
   for (const ext of exts) {
     console.log(ext);
     await ext.setEnabled(true);
-    console.log(await ext.getEnabled());
+    console.log(await ext.isEnabled());
     await ext.setSetting("someid", "othervalue");
     console.log("\n\nSetting:");
     console.log(await ext.getSetting("someid"));

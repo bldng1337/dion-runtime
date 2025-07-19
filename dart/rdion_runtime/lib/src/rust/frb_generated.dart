@@ -1080,6 +1080,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return LinkSource_M3u8(
           link: dco_decode_String(raw[1]),
           sub: dco_decode_list_subtitles(raw[2]),
+          headers: dco_decode_opt_Map_String_String_None(raw[3]),
         );
       case 4:
         return LinkSource_Mp3(
@@ -1422,11 +1423,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Subtitles dco_decode_subtitles(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return Subtitles(
       title: dco_decode_String(arr[0]),
       url: dco_decode_String(arr[1]),
+      headers: dco_decode_opt_Map_String_String_None(arr[2]),
     );
   }
 
@@ -1898,7 +1900,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         var var_link = sse_decode_String(deserializer);
         var var_sub = sse_decode_list_subtitles(deserializer);
-        return LinkSource_M3u8(link: var_link, sub: var_sub);
+        var var_headers = sse_decode_opt_Map_String_String_None(deserializer);
+        return LinkSource_M3u8(
+            link: var_link, sub: var_sub, headers: var_headers);
       case 4:
         var var_chapters = sse_decode_list_url_chapter(deserializer);
         return LinkSource_Mp3(chapters: var_chapters);
@@ -2379,7 +2383,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_title = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
-    return Subtitles(title: var_title, url: var_url);
+    var var_headers = sse_decode_opt_Map_String_String_None(deserializer);
+    return Subtitles(title: var_title, url: var_url, headers: var_headers);
   }
 
   @protected
@@ -2946,10 +2951,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(links, serializer);
         sse_encode_opt_Map_String_String_None(header, serializer);
         sse_encode_opt_list_image_list_audio(audio, serializer);
-      case LinkSource_M3u8(link: final link, sub: final sub):
+      case LinkSource_M3u8(
+          link: final link,
+          sub: final sub,
+          headers: final headers
+        ):
         sse_encode_i_32(3, serializer);
         sse_encode_String(link, serializer);
         sse_encode_list_subtitles(sub, serializer);
+        sse_encode_opt_Map_String_String_None(headers, serializer);
       case LinkSource_Mp3(chapters: final chapters):
         sse_encode_i_32(4, serializer);
         sse_encode_list_url_chapter(chapters, serializer);
@@ -3369,6 +3379,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.title, serializer);
     sse_encode_String(self.url, serializer);
+    sse_encode_opt_Map_String_String_None(self.headers, serializer);
   }
 
   @protected

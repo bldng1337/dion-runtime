@@ -1198,9 +1198,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     if (apiObj is LinkSource_M3u8) {
       var pre_link = cst_encode_String(apiObj.link);
       var pre_sub = cst_encode_list_subtitles(apiObj.sub);
+      var pre_headers = cst_encode_opt_Map_String_String_None(apiObj.headers);
       wireObj.tag = 3;
       wireObj.kind.M3u8.link = pre_link;
       wireObj.kind.M3u8.sub = pre_sub;
+      wireObj.kind.M3u8.headers = pre_headers;
       return;
     }
     if (apiObj is LinkSource_Mp3) {
@@ -1334,6 +1336,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Subtitles apiObj, wire_cst_subtitles wireObj) {
     wireObj.title = cst_encode_String(apiObj.title);
     wireObj.url = cst_encode_String(apiObj.url);
+    wireObj.headers = cst_encode_opt_Map_String_String_None(apiObj.headers);
   }
 
   @protected
@@ -2861,6 +2864,8 @@ final class wire_cst_subtitles extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> headers;
 }
 
 final class wire_cst_list_subtitles extends ffi.Struct {
@@ -2874,6 +2879,8 @@ final class wire_cst_LinkSource_M3u8 extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
 
   external ffi.Pointer<wire_cst_list_subtitles> sub;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> headers;
 }
 
 final class wire_cst_url_chapter extends ffi.Struct {

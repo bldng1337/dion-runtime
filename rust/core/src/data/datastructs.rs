@@ -200,7 +200,7 @@ pub struct EntryDetailed {
     #[ts(optional)]
     pub length: Option<i32>,
     #[ts(optional)]
-    pub settings: Option<HashMap<String,Setting>>,
+    pub settings: Option<HashMap<String, Setting>>,
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -244,7 +244,11 @@ pub enum LinkSource {
         audio: Option<Vec<ImageListAudio>>,
     },
     #[serde(alias = "m3u8")]
-    M3u8 { link: String, sub: Vec<Subtitles> },
+    M3u8 {
+        link: String,
+        sub: Vec<Subtitles>,
+        headers: Option<HashMap<String, String>>,
+    },
     #[serde(alias = "mp3")]
     Mp3 { chapters: Vec<UrlChapter> },
 }
@@ -265,6 +269,7 @@ pub struct UrlChapter {
 pub struct Subtitles {
     pub title: String,
     pub url: String,
+    pub headers: Option<HashMap<String, String>>,
 }
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:json_serializable
