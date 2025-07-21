@@ -91,7 +91,10 @@ class FlutterRustProject extends Project {
       if (fs.existsSync(testpath)) {
         for (const file of fs.readdirSync(testpath)) {
           if (file.endsWith(".dart")) {
-            await $`cd ${this.path} && flutter test test/${file}`;
+            await $`cd ${this.path} && flutter test ${paths.join(
+              testbed,
+              file
+            )}`;
           }
         }
       }
@@ -151,7 +154,7 @@ for (const action of positionals.slice(2)) {
     if (values.path !== undefined && project.path != values.path) {
       continue;
     }
-    console.log('\x1b[32m%s\x1b[0m', `[${action}]: ${project.path}`);
+    console.log("\x1b[32m%s\x1b[0m", `[${action}]: ${project.path}`);
     switch (action) {
       case "build":
         try {
