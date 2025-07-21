@@ -1,21 +1,11 @@
 # https://taskfile.dev
 
-version: '3'
-
-includes:
-  platform_dependent: 
-    taskfile: ./Taskfile_{{OS}}.yml
-    optional: true
-    flatten: true
-
+version: "3"
 
 tasks:
   test:
-      cmds:
-        - cd rust/core && cargo test
-        - task: platform_dependent:shexec
-          vars: { CMD: 'cd dart/rdion_runtime/example && flutter test integration_test/simple_test.dart' }
-  generate:
-      cmds:
-        - task: platform_dependent:shexec
-          vars: { CMD: 'cd dart/rdion_runtime && flutter pub run build_runner clean && flutter_rust_bridge_codegen generate' }
+    cmds:
+      - bun run ./script/index.js build test
+  format:
+    cmds:
+      - bun run ./script/index.js format lint

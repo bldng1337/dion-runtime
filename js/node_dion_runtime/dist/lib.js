@@ -1,5 +1,5 @@
 /// <reference types="dion-runtime-types" />
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const lib = require("./../index.node");
 class ExtensionManager {
@@ -73,4 +73,4 @@ class Extension {
         return lib._source(this.ext, epid, settings);
     }
 }
-export { ExtensionManager, Extension };
+export { Extension, ExtensionManager };

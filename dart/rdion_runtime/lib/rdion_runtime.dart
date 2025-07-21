@@ -19,4 +19,3 @@ export 'src/rust/frb_generated.dart' show RustLib;
 //     internalSendPermissionRequestAnswer(answer: answer);
 //   });
 // }
-

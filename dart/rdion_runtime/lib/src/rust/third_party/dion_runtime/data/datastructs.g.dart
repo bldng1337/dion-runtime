@@ -364,6 +364,9 @@ _$LinkSource_M3u8Impl _$$LinkSource_M3u8ImplFromJson(
       sub: (json['sub'] as List<dynamic>)
           .map((e) => Subtitles.fromJson(e as Map<String, dynamic>))
           .toList(),
+      headers: (json['headers'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
       $type: json['runtimeType'] as String?,
     );
 
@@ -372,6 +375,7 @@ Map<String, dynamic> _$$LinkSource_M3u8ImplToJson(
     <String, dynamic>{
       'link': instance.link,
       'sub': instance.sub,
+      'headers': instance.headers,
       'runtimeType': instance.$type,
     };
 
@@ -432,12 +436,16 @@ _$SubtitlesImpl _$$SubtitlesImplFromJson(Map<String, dynamic> json) =>
     _$SubtitlesImpl(
       title: json['title'] as String,
       url: json['url'] as String,
+      headers: (json['headers'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$SubtitlesImplToJson(_$SubtitlesImpl instance) =>
     <String, dynamic>{
       'title': instance.title,
       'url': instance.url,
+      'headers': instance.headers,
     };
 
 _$UrlChapterImpl _$$UrlChapterImplFromJson(Map<String, dynamic> json) =>

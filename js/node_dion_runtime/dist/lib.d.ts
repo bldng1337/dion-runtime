@@ -21,4 +21,4 @@ declare class Extension {
         [key: string]: Setting;
     }): Promise<Source>;
 }
-export { ExtensionManager, Extension };
+export { Extension, ExtensionManager };

@@ -1,3 +1,33 @@
 [workspace]
 
 members = ["rust/core", "dart/rdion_runtime/rust", "js/node_dion_runtime"]
+resolver = "3"
+
+
+[profile.bench]
+opt-level = 3
+
+[profile.bench.package."*"]
+opt-level = 3
+
+
+[profile.test]
+opt-level = 1
+
+[profile.test.package."*"]
+opt-level = 3
+
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+
+[profile.release]
+opt-level = 3
+strip = true
+panic = "abort"
+lto = true
+codegen-units = 1

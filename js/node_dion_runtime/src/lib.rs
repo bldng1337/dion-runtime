@@ -1,14 +1,14 @@
 // Use #[neon::export] to export Rust functions as JavaScript functions.
 // See more at: https://docs.rs/neon/latest/neon/attr.export.html
 
-use std::{collections::HashMap, ops::Deref, sync::Arc};
+use std::{collections::HashMap, sync::Arc};
 
 use dion_runtime::{
     data::datastructs::Sort,
     extension::{
-        extension::{TSourceExtension, TSourceExtensionManager},
         extension_container::ExtensionContainer,
         extension_manager::ExtensionManager,
+        extension_trait::{TSourceExtension, TSourceExtensionManager},
     },
 };
 use neon::{
@@ -16,9 +16,7 @@ use neon::{
     object::Object,
     prelude::{Context, FunctionContext, ModuleContext},
     result::{JsResult, NeonResult},
-    types::{
-        Finalize, JsArray, JsBoolean, JsBox, JsError, JsNumber, JsPromise, JsString, JsValue, Value,
-    },
+    types::{Finalize, JsArray, JsBoolean, JsBox, JsNumber, JsPromise, JsString, JsValue, Value},
 };
 use once_cell::sync::OnceCell;
 use tokio::{runtime::Runtime, sync::RwLock};
@@ -72,7 +70,7 @@ fn _get_extensions(mut cx: FunctionContext) -> JsResult<JsPromise> {
                     .collect(),
                 &mut cx,
             ),
-            Err(err) => cx.throw_error(format!("Error: {}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err}")),
         });
     });
 
@@ -111,7 +109,7 @@ fn _set_enabled(mut cx: FunctionContext) -> JsResult<JsPromise> {
 
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(_) => Ok(cx.undefined()),
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -137,9 +135,9 @@ fn _get_setting(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match setting {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(_) => Ok(cx.undefined()),
-                Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err:#}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -160,7 +158,7 @@ fn _set_setting(mut cx: FunctionContext) -> JsResult<JsPromise> {
         neon_serde4::from_value::<_, dion_runtime::data::settings::Settingvalue>(&mut cx, arg);
     let settings = match settings {
         Ok(val) => val,
-        Err(err) => return cx.throw_error(format!("Error getting argument: {}", err)),
+        Err(err) => return cx.throw_error(format!("Error getting argument: {err}")),
     };
 
     let (deferred, promise) = cx.promise();
@@ -176,9 +174,9 @@ fn _set_setting(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match setting {
             Ok(release) => match release {
                 Ok(_) => Ok(cx.undefined()),
-                Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err:#}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -211,9 +209,9 @@ fn _browse(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(ok) => Ok(ok),
-                Err(err) => cx.throw_error(format!("Error: {}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -241,9 +239,9 @@ fn _search(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(ok) => Ok(ok),
-                Err(err) => cx.throw_error(format!("Error: {}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -268,9 +266,9 @@ fn _fromurl(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(ok) => Ok(ok),
-                Err(err) => cx.throw_error(format!("Error: {}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -293,7 +291,7 @@ fn _detail(mut cx: FunctionContext) -> JsResult<JsPromise> {
     >(&mut cx, arg);
     let settings = match settings {
         Ok(val) => val,
-        Err(err) => return cx.throw_error(format!("Error: {}", err)),
+        Err(err) => return cx.throw_error(format!("Error: {err}")),
     };
 
     let (deferred, promise) = cx.promise();
@@ -305,9 +303,9 @@ fn _detail(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(ok) => Ok(ok),
-                Err(err) => cx.throw_error(format!("Error: {}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)
@@ -330,7 +328,7 @@ fn _source(mut cx: FunctionContext) -> JsResult<JsPromise> {
     >(&mut cx, arg);
     let settings = match settings {
         Ok(val) => val,
-        Err(err) => return cx.throw_error(format!("Error: {}", err)),
+        Err(err) => return cx.throw_error(format!("Error: {err}")),
     };
 
     let (deferred, promise) = cx.promise();
@@ -342,9 +340,9 @@ fn _source(mut cx: FunctionContext) -> JsResult<JsPromise> {
         deferred.settle_with(&channel, move |mut cx| match extensions {
             Ok(release) => match neon_serde4::to_value(&mut cx, &release) {
                 Ok(ok) => Ok(ok),
-                Err(err) => cx.throw_error(format!("Error: {}", err)),
+                Err(err) => cx.throw_error(format!("Error: {err}")),
             },
-            Err(err) => cx.throw_error(format!("Error: {:#}", err)),
+            Err(err) => cx.throw_error(format!("Error: {err:#}")),
         });
     });
     Ok(promise)

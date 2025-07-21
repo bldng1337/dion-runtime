@@ -21,13 +21,5 @@ anyhow = "1.0.98"
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
 
-[profile.release]
-opt-level = 3
-strip = true
-panic = "abort"
-lto = true
-codegen-units = 1
-
-[profile.dev]
-opt-level = 3
-panic = "abort"
+[lints.clippy]
+uninlined_format_args = { level = "allow" } # Needed because the codegen generates this

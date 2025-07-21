@@ -1,7 +1,0 @@
-version: '3'
-
-tasks:
-  shexec:
-    cmds:
-      - cmd /c "{{.CMD}}"
-    internal: true

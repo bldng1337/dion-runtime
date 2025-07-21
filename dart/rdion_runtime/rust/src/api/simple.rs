@@ -5,9 +5,9 @@ pub use dion_runtime::data::datastructs::*;
 pub use dion_runtime::data::settings::{ExtensionSetting, Setting, Settingvalue};
 
 use anyhow::Result;
-use dion_runtime::extension::extension::{TSourceExtension, TSourceExtensionManager};
 use dion_runtime::extension::extension_container::ExtensionContainer;
 use dion_runtime::extension::extension_manager::ExtensionManager;
+use dion_runtime::extension::extension_trait::{TSourceExtension, TSourceExtensionManager};
 use flutter_rust_bridge::frb;
 use tokio_util::sync::CancellationToken;
 
@@ -124,7 +124,7 @@ impl SourceExtensionProxy {
             .await
             .setting
             .get_settings_ids()
-            .map(|e| e.clone())
+            .cloned()
             .collect()
     }
     pub async fn get_setting(&self, name: &String) -> Result<ExtensionSetting> {
@@ -133,7 +133,7 @@ impl SourceExtensionProxy {
             .await
             .setting
             .get_setting(name)
-            .map(|e| e.clone())
+            .cloned()
     }
     pub async fn set_setting(&self, name: &String, value: &Settingvalue) -> Result<()> {
         let mut ext = self.inner.get_extension_mut().await;
@@ -142,7 +142,7 @@ impl SourceExtensionProxy {
             .setting
             .val
             .overwrite(value)?;
-        ext.setting.save().await;
+        ext.setting.save().await?;
         Ok(())
     }
 
@@ -221,8 +221,8 @@ impl Clone for CancelToken {
         }
     }
 }
-impl Into<CancellationToken> for CancelToken {
-    fn into(self) -> CancellationToken {
-        self.tok
+impl From<CancelToken> for CancellationToken {
+    fn from(value: CancelToken) -> Self {
+        value.tok
     }
 }
