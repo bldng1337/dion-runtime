@@ -1,3 +1,5 @@
+use std::{cell::RefCell, rc::Rc};
+
 use boa_engine::{
     job::NativeAsyncJob,
     js_string,
@@ -7,13 +9,17 @@ use boa_engine::{
 };
 
 use anyhow::Result;
+use serde_json::Value;
 
 use crate::{
     data::settings::ExtensionSetting,
-    extension::{extension_container::JSSourceExtension, utils::SharedUserContextContainer},
+    extension::{
+        extension_container::JSSourceExtension,
+        utils::{SharedUserContextContainer, VirtualModuleLoader},
+    },
 };
 
-pub fn declare(context: &mut Context) -> Result<()> {
+pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     let get_setting_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(get_setting))
             .length(1)
@@ -27,27 +33,24 @@ pub fn declare(context: &mut Context) -> Result<()> {
     .length(3)
     .name("registerSetting")
     .build();
-
-    context.module_loader().register_module(
-        js_string!("setting"),
-        Module::synthetic(
-            &[js_string!("getSetting"), js_string!("registerSetting")],
-            SyntheticModuleInitializer::from_copy_closure_with_captures(
-                move |m, (get_setting_fn, register_setting_fn), _ctx| {
-                    m.set_export(&js_string!("getSetting"), get_setting_fn.clone().into())?;
-                    m.set_export(
-                        &js_string!("registerSetting"),
-                        register_setting_fn.clone().into(),
-                    )?;
-                    Ok(())
-                },
-                (get_setting_fn, register_setting_fn),
-            ),
-            None,
-            None,
-            context,
+    let module = Module::synthetic(
+        &[js_string!("getSetting"), js_string!("registerSetting")],
+        SyntheticModuleInitializer::from_copy_closure_with_captures(
+            move |m, (get_setting_fn, register_setting_fn), _ctx| {
+                m.set_export(&js_string!("getSetting"), get_setting_fn.clone().into())?;
+                m.set_export(
+                    &js_string!("registerSetting"),
+                    register_setting_fn.clone().into(),
+                )?;
+                Ok(())
+            },
+            (get_setting_fn, register_setting_fn),
         ),
+        None,
+        None,
+        context,
     );
+    loader.insert("setting".to_string(), module);
     Ok(())
 }
 
@@ -57,19 +60,19 @@ fn get_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsRe
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
+    context.enqueue_job(
+        NativeAsyncJob::with_realm(
+            async move |context: &RefCell<&mut Context>| {
                 match async {
                     let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
-                        { (&mut context.borrow_mut()).get_data().cloned() };
+                        { context.borrow().get_data().cloned() };
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let jsext = jsext.inner.read().await;
                     let res = jsext.setting.get_setting(&setting).map_err(|e| {
                         JsError::from_native(JsNativeError::error().with_message(e.to_string()))
                     })?;
                     let a = JsValue::from_json(
-                        &serde_json::to_value(res).map_err(|e| JsError::from_rust(e))?,
+                        &serde_json::to_value(res).map_err(JsError::from_rust)?,
                         &mut context.borrow_mut(),
                     );
                     a
@@ -88,10 +91,11 @@ fn get_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsRe
                     )?,
                 };
                 Ok(JsValue::undefined())
-            })
-        },
-        context.realm().clone(),
-    )));
+            },
+            context.realm().clone(),
+        )
+        .into(),
+    );
     Ok(ret.into())
 }
 
@@ -101,15 +105,16 @@ fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) ->
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
+    context.enqueue_job(
+        NativeAsyncJob::with_realm(
+            async move |context| {
                 match async {
                     let settingid = settingid?.to_std_string_lossy();
                     let setting: ExtensionSetting =
-                        serde_json::from_value(setting?).map_err(|e| JsError::from_rust(e))?;
+                        serde_json::from_value(setting?.unwrap_or(Value::Null))
+                            .map_err(JsError::from_rust)?;
                     let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
-                        (&mut context.borrow_mut()).get_data().cloned();
+                        context.borrow().get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let mut jsext = jsext.inner.write().await;
                     jsext.setting.add_setting(settingid, setting);
@@ -129,10 +134,11 @@ fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) ->
                     )?,
                 };
                 Ok(JsValue::undefined())
-            })
-        },
-        context.realm().clone(),
-    )));
+            },
+            context.realm().clone(),
+        )
+        .into(),
+    );
     Ok(ret.into())
 }
 

@@ -1,3 +1,6 @@
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use boa_engine::module::SyntheticModuleInitializer;
 use boa_engine::object::FunctionObjectBuilder;
 use boa_engine::{
@@ -7,12 +10,13 @@ use boa_engine::{
 use boa_engine::{Context, Module, NativeFunction};
 
 use anyhow::Result;
+use serde_json::Value;
 
 use crate::data::permission::Permission;
 use crate::extension::extension_container::JSSourceExtension;
-use crate::extension::utils::SharedUserContextContainer;
+use crate::extension::utils::{SharedUserContextContainer, VirtualModuleLoader};
 
-pub fn declare(context: &mut Context) -> Result<()> {
+pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     let request_permission_fn = FunctionObjectBuilder::new(
         context.realm(),
         NativeFunction::from_fn_ptr(request_permission),
@@ -25,29 +29,27 @@ pub fn declare(context: &mut Context) -> Result<()> {
             .length(1)
             .name("hasPermission")
             .build();
-    context.module_loader().register_module(
-        js_string!("permission"),
-        Module::synthetic(
-            &[js_string!("requestPermission"), js_string!("hasPermission")],
-            SyntheticModuleInitializer::from_copy_closure_with_captures(
-                move |m, (request_permission_fn, has_permission_fn), _ctx| {
-                    m.set_export(
-                        &js_string!("requestPermission"),
-                        request_permission_fn.clone().into(),
-                    )?;
-                    m.set_export(
-                        &js_string!("hasPermission"),
-                        has_permission_fn.clone().into(),
-                    )?;
-                    Ok(())
-                },
-                (request_permission_fn, has_permission_fn),
-            ),
-            None,
-            None,
-            context,
+    let module = Module::synthetic(
+        &[js_string!("requestPermission"), js_string!("hasPermission")],
+        SyntheticModuleInitializer::from_copy_closure_with_captures(
+            move |m, (request_permission_fn, has_permission_fn), _ctx| {
+                m.set_export(
+                    &js_string!("requestPermission"),
+                    request_permission_fn.clone().into(),
+                )?;
+                m.set_export(
+                    &js_string!("hasPermission"),
+                    has_permission_fn.clone().into(),
+                )?;
+                Ok(())
+            },
+            (request_permission_fn, has_permission_fn),
         ),
+        None,
+        None,
+        context,
     );
+    loader.insert("permission".to_string(), module);
     Ok(())
 }
 
@@ -58,21 +60,24 @@ fn request_permission(
 ) -> JsResult<JsValue> {
     let msg = args.get_or_undefined(1).to_string(context);
 
-    let permission: JsResult<Permission> =
-        serde_json::from_value(args.get_or_undefined(0).to_json(context)?)
-            .map_err(|e| JsError::from_rust(e));
+    let permission: JsResult<Permission> = serde_json::from_value(
+        args.get_or_undefined(0)
+            .to_json(context)?
+            .unwrap_or(serde_json::Value::Null),
+    )
+    .map_err(JsError::from_rust);
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
+    context.enqueue_job(
+        NativeAsyncJob::with_realm(
+            async move |context: &RefCell<&mut Context>| {
                 match async {
                     let msg = msg?.to_std_string_lossy();
                     let permission = permission?;
 
                     let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
-                        (&mut context.borrow_mut()).get_data().cloned();
+                        context.borrow().get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let mut jsext = jsext.inner.write().await;
 
@@ -97,28 +102,32 @@ fn request_permission(
                     )?,
                 };
                 Ok(JsValue::undefined())
-            })
-        },
-        context.realm().clone(),
-    )));
+            },
+            context.realm().clone(),
+        )
+        .into(),
+    );
     Ok(ret.into())
 }
 
 fn has_permission(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-    let permission: JsResult<Permission> =
-        serde_json::from_value(args.get_or_undefined(0).to_json(context)?)
-            .map_err(|e| JsError::from_rust(e));
+    let permission: JsResult<Permission> = serde_json::from_value(
+        args.get_or_undefined(0)
+            .to_json(context)?
+            .unwrap_or(Value::Null),
+    )
+    .map_err(JsError::from_rust);
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
+    context.enqueue_job(
+        NativeAsyncJob::with_realm(
+            async move |context: &RefCell<&mut Context>| {
                 match async {
                     let permission = permission?;
 
                     let jsext: Option<SharedUserContextContainer<JSSourceExtension>> =
-                        (&mut context.borrow_mut()).get_data().cloned();
+                        context.borrow().get_data().cloned();
                     let jsext = jsext.ok_or(JsError::from_native(JsNativeError::error()))?;
                     let jsext = jsext.inner.read().await;
 
@@ -139,10 +148,11 @@ fn has_permission(_this: &JsValue, args: &[JsValue], context: &mut Context) -> J
                     )?,
                 };
                 Ok(JsValue::undefined())
-            })
-        },
-        context.realm().clone(),
-    )));
+            },
+            context.realm().clone(),
+        )
+        .into(),
+    );
     Ok(ret.into())
 }
 

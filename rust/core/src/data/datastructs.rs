@@ -15,7 +15,6 @@ pub struct ExtensionData {
     pub repo: Option<String>,
     pub name: String,
     #[ts(optional)]
-    #[serde(alias = "type")]
     pub media_type: Option<Vec<MediaType>>,
     #[ts(optional)]
     pub giturl: Option<String>,
@@ -43,15 +42,14 @@ pub struct ExtensionData {
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum MediaType {
-    #[serde(alias = "video")]
     Video,
-    #[serde(alias = "comic")]
+
     Comic,
-    #[serde(alias = "audio")]
+
     Audio,
-    #[serde(alias = "book")]
+
     Book,
-    #[serde(alias = "unknown")]
+
     Unknown,
 }
 
@@ -63,11 +61,11 @@ pub struct Entry {
     pub id: String,
     pub url: String,
     pub title: String,
-    #[serde(alias = "type")]
+
     pub media_type: MediaType,
     #[ts(optional)]
     pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
+
     #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
     #[ts(optional)]
@@ -90,7 +88,7 @@ pub struct Episode {
     pub url: String,
     #[ts(optional)]
     pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
+
     #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
     #[ts(optional)]
@@ -102,11 +100,10 @@ pub struct Episode {
 #[derive(Serialize, Deserialize, Debug, Clone, TS)]
 #[ts(export, export_to = "RuntimeTypes.ts")]
 pub enum ReleaseStatus {
-    #[serde(alias = "releasing")]
     Releasing,
-    #[serde(alias = "complete")]
+
     Complete,
-    #[serde(alias = "unknown")]
+
     Unknown,
 }
 /// flutter_rust_bridge:non_opaque
@@ -176,7 +173,6 @@ pub struct EntryDetailed {
     #[ts(optional)]
     pub meta: Option<Vec<MetaData>>,
 
-    #[serde(alias = "type")]
     pub media_type: MediaType,
     pub status: ReleaseStatus,
     pub description: String,
@@ -184,7 +180,7 @@ pub struct EntryDetailed {
 
     #[ts(optional)]
     pub cover: Option<String>,
-    #[serde(alias = "coverheader")]
+
     #[ts(optional)]
     pub cover_header: Option<HashMap<String, String>>,
 
@@ -219,9 +215,8 @@ pub enum Sort {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "sourcetype")]
 pub enum Source {
-    #[serde(alias = "data")]
     Data { sourcedata: DataSource },
-    #[serde(alias = "directlink")]
+
     Directlink { sourcedata: LinkSource },
 }
 
@@ -231,11 +226,14 @@ pub enum Source {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
 pub enum LinkSource {
-    #[serde(alias = "epub")]
-    Epub { link: String },
-    #[serde(alias = "pdf")]
-    Pdf { link: String },
-    #[serde(alias = "imagelist")]
+    Epub {
+        link: String,
+    },
+
+    Pdf {
+        link: String,
+    },
+
     Imagelist {
         links: Vec<String>,
         #[ts(optional)]
@@ -243,14 +241,16 @@ pub enum LinkSource {
         #[ts(optional)]
         audio: Option<Vec<ImageListAudio>>,
     },
-    #[serde(alias = "m3u8")]
+
     M3u8 {
         link: String,
         sub: Vec<Subtitles>,
         headers: Option<HashMap<String, String>>,
     },
-    #[serde(alias = "mp3")]
-    Mp3 { chapters: Vec<UrlChapter> },
+
+    Mp3 {
+        chapters: Vec<UrlChapter>,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -287,7 +287,6 @@ pub struct ImageListAudio {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "type")]
 pub enum DataSource {
-    #[serde(alias = "paragraphlist")]
     Paragraphlist { paragraphs: Vec<String> },
 }
 

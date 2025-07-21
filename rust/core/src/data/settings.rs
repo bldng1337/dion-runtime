@@ -22,7 +22,7 @@ impl Settingvalue {
             Self::Boolean {
                 val,
                 default_val: _,
-            } => Ok(val.clone()),
+            } => Ok(*val),
             val => Err(anyhow!(
                 "Setting {} is not an Boolean ",
                 val.get_type_name()
@@ -45,7 +45,7 @@ impl Settingvalue {
             Self::Number {
                 val,
                 default_val: _,
-            } => Ok(val.clone()),
+            } => Ok(*val),
             val => Err(anyhow!("Setting {} not an Number ", val.get_type_name())),
         }
     }
@@ -75,7 +75,7 @@ impl Settingvalue {
                     default_val: _,
                 },
             ) => {
-                *overwritten = overwrite.clone();
+                *overwritten = *overwrite;
                 Ok(())
             }
             (
@@ -186,7 +186,7 @@ pub struct SettingStore {
 impl SettingStore {
     pub async fn new(savepath: PathBuf) -> Result<Self> {
         let mut store = SettingStore {
-            savepath: savepath,
+            savepath,
             settings: Default::default(),
         };
         //TODO: Log error and delete save file

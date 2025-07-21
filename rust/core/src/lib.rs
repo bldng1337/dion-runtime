@@ -13,8 +13,8 @@ mod tests {
             settings::Settingvalue,
         },
         extension::{
-            extension::{TSourceExtension, TSourceExtensionManager},
             extension_manager::ExtensionManager,
+            extension_trait::{TSourceExtension, TSourceExtensionManager},
         },
     };
     use anyhow::Result;

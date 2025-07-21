@@ -24,7 +24,7 @@ use tokio::sync::{oneshot, RwLockReadGuard, RwLockWriteGuard};
 use tokio::task::LocalSet;
 use tokio_util::sync::CancellationToken;
 
-use super::extension::TSourceExtension;
+use super::extension_trait::TSourceExtension;
 use super::utils::MapJsResult;
 
 #[derive(Debug)]
@@ -51,14 +51,14 @@ enum Task {
     },
     Source {
         epid: String,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
         send: Sender<Result<Source>>,
     },
     Detail {
         entryid: String,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
         send: Sender<Result<EntryDetailed>>,
@@ -98,7 +98,7 @@ impl ExtensionContainer {
         )
         .context("Failed to read ExtensionData")?;
         let ext = JSSourceExtension {
-            data: data,
+            data,
             permission: PermissionStore::new(path.with_extension("permission.json"))
                 .await
                 .context("Failed to initialise Permission Store")?,
@@ -197,15 +197,17 @@ impl ExtensionContainer {
         Ok(())
     }
 
-    async fn get_context(ext: Arc<RwLock<JSSourceExtension>>, code: &String) -> Result<Context> {
+    async fn get_context(ext: Arc<RwLock<JSSourceExtension>>, code: &str) -> Result<Context> {
         let queue = Queue::new();
+        let loader: Rc<VirtualModuleLoader> = Rc::new(
+            VirtualModuleLoader::new()
+                .map_anyhow()
+                .context("Failed to init VirtualModuleLoader")?,
+        );
+
         let mut ctx = Context::builder()
             .job_executor(Rc::new(queue))
-            .module_loader(Rc::new(
-                VirtualModuleLoader::new()
-                    .map_anyhow()
-                    .context("Failed to init VirtualModuleLoader")?,
-            ))
+            .module_loader(loader.clone())
             .build()
             .map_anyhow()
             .context("Failed to build JsContext")?;
@@ -216,16 +218,11 @@ impl ExtensionContainer {
         ctx.register_global_property(Console::NAME, console, Attribute::all())
             .map_anyhow_ctx(&mut ctx)
             .context("Failed to init console")?;
-        js::declare(&mut ctx)?;
-        let module = Module::parse(
-            boa_engine::Source::from_bytes(code.as_str()),
-            None,
-            &mut ctx,
-        )
-        .map_anyhow_ctx(&mut ctx)
-        .context("Failed parsing Extension Source Code")?;
-        ctx.module_loader()
-            .register_module(js_string!("extension"), module.clone());
+        js::declare(&mut ctx, &loader)?;
+        let module = Module::parse(boa_engine::Source::from_bytes(code), None, &mut ctx)
+            .map_anyhow_ctx(&mut ctx)
+            .context("Failed parsing Extension Source Code")?;
+        loader.insert("extension".to_string(), module.clone());
         let promise = module.load_link_evaluate(&mut ctx);
         await_promise(promise, &mut ctx)
             .await
@@ -300,26 +297,28 @@ impl ExtensionContainer {
         let asd = plugin
             .get(js_string!(func), context)
             .map_anyhow_ctx(context)
-            .context(format!("Failed to get Function {}", func))?
+            .context(format!("Failed to get Function {func}"))?
             .as_callable()
-            .ok_or(anyhow!("Function {} is not callable ", func))?
+            .ok_or(anyhow!("Function {func} is not callable "))?
             .call(&plugin.into(), args, context)
             .map_anyhow_ctx(context)
-            .context(format!("Failed sync call of Function {}", func))?
+            .context(format!("Failed sync call of Function {func}"))?
             .as_promise()
             .ok_or(anyhow!(
-                "Function {} didnt return a Promise or is not async",
-                func
+                "Function {func} didnt return a Promise or is not async"
             ))?;
         let val = await_promise(asd, context)
             .await
             .map_anyhow_ctx(context)
-            .context(format!("Error while evaluating {}", func))?;
-        let json=val
+            .context(format!("Error while evaluating {func}"))?;
+        let json = val
             .to_json(context)
             .map_anyhow_ctx(context)
-            .context(format!("Failed to convert result of {}", func))?;
-        Ok(json)
+            .context(format!("Failed to convert result of {func}"))?;
+        match json {
+            Some(val) => Ok(val),
+            None => Ok(Value::Null),
+        }
     }
 
     async fn do_browse(
@@ -360,7 +359,7 @@ impl ExtensionContainer {
     async fn do_detail(
         context: &mut Context,
         entryid: String,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed> {
         let vals = &[
@@ -376,18 +375,18 @@ impl ExtensionContainer {
             .map_anyhow_ctx(context)
             .context("Failed to convert Settings to js")?,
         ];
-        Ok(serde_json::from_value(
+        serde_json::from_value(
             Self::exec(context, "detail", vals, token)
                 .await
                 .context("Failed to call detail")?,
         )
-        .context("Failed to parse Result of detail")?)
+        .context("Failed to parse Result of detail")
     }
 
     async fn do_source(
         context: &mut Context,
         epid: String,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source> {
         let vals = &[
@@ -402,12 +401,12 @@ impl ExtensionContainer {
             .map_anyhow_ctx(context)
             .context("Failed to convert Settings to js")?,
         ];
-        Ok(serde_json::from_value(
+        serde_json::from_value(
             Self::exec(context, "source", vals, token)
                 .await
                 .context("Failed to call source")?,
         )
-        .context("Failed to parse Result of source")?)
+        .context("Failed to parse Result of source")
     }
 
     async fn do_fromurl(
@@ -419,12 +418,12 @@ impl ExtensionContainer {
             .try_into_js(context)
             .map_anyhow_ctx(context)
             .context("Failed to convert url to js")?];
-        Ok(serde_json::from_value(
+        serde_json::from_value(
             Self::exec(context, "fromurl", vals, token)
                 .await
                 .context("Failed to call fromurl")?,
         )
-        .context("Failed to parse Result of fromurl")?)
+        .context("Failed to parse Result of fromurl")
     }
 }
 
@@ -442,7 +441,10 @@ impl TSourceExtension for ExtensionContainer {
             (true, true) => Ok(()),
             (false, false) => Ok(()),
             (true, false) => self.enable().await,
-            (false, true) => Ok(self.disable()),
+            (false, true) => {
+                self.disable();
+                Ok(())
+            }
         }
     }
 
@@ -464,10 +466,10 @@ impl TSourceExtension for ExtensionContainer {
             .as_ref()
             .unwrap()
             .send(Task::Browse {
-                page: page,
-                sort: sort,
-                token: token,
-                send: send,
+                page,
+                sort,
+                token,
+                send,
             })
             .context("Failed to send message to Extension Thread")?;
         response.await?
@@ -487,10 +489,10 @@ impl TSourceExtension for ExtensionContainer {
             .as_ref()
             .unwrap()
             .send(Task::Search {
-                page: page,
+                page,
                 filter: filter.to_string(),
-                token: token,
-                send: send,
+                token,
+                send,
             })
             .context("Failed to send message to Extension Thread")?;
         response.await?
@@ -499,7 +501,7 @@ impl TSourceExtension for ExtensionContainer {
     async fn detail(
         &self,
         entryid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailed> {
         if !self.is_enabled() {
@@ -511,9 +513,9 @@ impl TSourceExtension for ExtensionContainer {
             .unwrap()
             .send(Task::Detail {
                 entryid: entryid.to_string(),
-                settings: settings,
-                token: token,
-                send: send,
+                settings,
+                token,
+                send,
             })
             .context("Failed to send message to Extension Thread")?;
         response.await?
@@ -522,7 +524,7 @@ impl TSourceExtension for ExtensionContainer {
     async fn source(
         &self,
         epid: &str,
-        settings: HashMap<String,Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<Source> {
         if !self.is_enabled() {
@@ -534,9 +536,9 @@ impl TSourceExtension for ExtensionContainer {
             .unwrap()
             .send(Task::Source {
                 epid: epid.to_string(),
-                settings: settings,
-                token: token,
-                send: send,
+                settings,
+                token,
+                send,
             })
             .context("Failed to send message to Extension Thread")?;
         response.await?
@@ -552,8 +554,8 @@ impl TSourceExtension for ExtensionContainer {
             .unwrap()
             .send(Task::FromUrl {
                 url: url.to_string(),
-                token: token,
-                send: send,
+                token,
+                send,
             })
             .context("Failed to send message to Extension Thread")?;
         response.await?

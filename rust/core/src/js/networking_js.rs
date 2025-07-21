@@ -21,11 +21,11 @@ use reqwest::{IntoUrl, Method, Request, Url};
 use reqwest_cookie_store::{CookieStore, CookieStoreMutex};
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next, RequestBuilder};
 use serde_json::Value;
-use std::sync::Arc;
+use std::{cell::RefCell, rc::Rc, sync::Arc};
 
-use crate::extension::utils::{MapJsResult, ReadOnlyUserContextContainer};
+use crate::extension::utils::{MapJsResult, ReadOnlyUserContextContainer, VirtualModuleLoader};
 
-pub fn declare(context: &mut Context) -> Result<()> {
+pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     context
         .register_global_class::<Response>()
         .map_anyhow_ctx(context)
@@ -40,23 +40,21 @@ pub fn declare(context: &mut Context) -> Result<()> {
             .length(0)
             .name("getCookies")
             .build();
-    context.module_loader().register_module(
-        js_string!("network"),
-        Module::synthetic(
-            &[js_string!("fetch"), js_string!("getCookies")],
-            SyntheticModuleInitializer::from_copy_closure_with_captures(
-                move |m, (fetch_fn, get_cookies_fn), _ctx| {
-                    m.set_export(&js_string!("fetch"), fetch_fn.clone().into())?;
-                    m.set_export(&js_string!("getCookies"), get_cookies_fn.clone().into())?;
-                    Ok(())
-                },
-                (fetch_fn, get_cookies_fn),
-            ),
-            None,
-            None,
-            context,
+    let module = Module::synthetic(
+        &[js_string!("fetch"), js_string!("getCookies")],
+        SyntheticModuleInitializer::from_copy_closure_with_captures(
+            move |m, (fetch_fn, get_cookies_fn), _ctx| {
+                m.set_export(&js_string!("fetch"), fetch_fn.clone().into())?;
+                m.set_export(&js_string!("getCookies"), get_cookies_fn.clone().into())?;
+                Ok(())
+            },
+            (fetch_fn, get_cookies_fn),
         ),
+        None,
+        None,
+        context,
     );
+    loader.insert("network".to_string(), module);
     Ok(())
 }
 
@@ -95,7 +93,7 @@ impl Response {
                     JsError::from_native(JsNativeError::error().with_message(err.to_string()))
                 })?; //TODO: do a cleaner convert
                 let ret = JsValue::from_json(&ret, context)?;
-                return Ok(ret.into());
+                return Ok(ret);
             }
         }
         Err(JsNativeError::typ()
@@ -277,8 +275,8 @@ impl Class for Response {
 //             }
 //         }
 //         println!("Network");
-//         // let response = rbuild.send().await.map_err(|e| JsError::from_rust(e))?;
-//         // let text = response.text().await.map_err(|e| JsError::from_rust(e))?;
+//         // let response = rbuild.send().await.map_err(JsError::from_rust)?;
+//         // let text = response.text().await.map_err(JsError::from_rust)?;
 //         // println!("{}", text);
 //         // let res = Response { 0: response };
 //         // Ok(JsObject::from_proto_and_data(prototype, res).into())
@@ -295,20 +293,19 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
     let options = args.get_or_undefined(1);
     let options = match options.get_type() {
         Type::Object => options.to_json(context),
-        _ => Ok(Value::Null),
+        _ => Ok(Some(Value::Null)),
     };
     let network: Option<&NetworkContainer> = context.get_data();
     let network = network.cloned();
 
     let (promise, resolve) = JsPromise::new_pending(context);
     let ret = promise.clone();
-    context.enqueue_job(boa_engine::job::Job::AsyncJob(NativeAsyncJob::with_realm(
-        move |context| {
-            Box::pin(async move {
+    context.enqueue_job(NativeAsyncJob::with_realm(
+        async move |context: &RefCell<&mut Context>| {
                 match async {
                     let resource = resource?;
                     let networkcontainer = network.ok_or(JsError::from_native(JsNativeError::error()))?;
-                    let options = options?;
+                    let options = options?.unwrap_or(Value::Null);
                     let options = options.as_object().cloned();
                     let method = match &options {
                         Some(options) => {
@@ -362,11 +359,11 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
                             }
                         }
                     }
-                    let response = rbuild.send().await.map_err(|e| JsError::from_rust(e))?;
+                    let response = rbuild.send().await.map_err(JsError::from_rust)?;
                     let res = Response {
                         status: response.status(),
                         header: response.headers().clone(),
-                        content: response.text().await.map_err(|e| JsError::from_rust(e))?,
+                        content: response.text().await.map_err(JsError::from_rust)?,
                     };
                     let res=Class::from_data(res, &mut context.borrow_mut())?;
                     Ok(res.into())
@@ -384,10 +381,9 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
                     )?,
                 };
                 Ok(JsValue::undefined())
-            })
         },
         context.realm().clone(),
-    )));
+    ).into());
     Ok(ret.into())
 }
 

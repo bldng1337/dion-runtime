@@ -54,7 +54,6 @@ pub trait PermissionRequester: Debug {
 #[ts(export, export_to = "RuntimeTypes.ts")]
 #[serde(tag = "id")]
 pub enum Permission {
-    #[serde(alias = "storage")]
     StoragePermission {
         path: String,
         #[serde(default)]
@@ -66,7 +65,7 @@ impl std::fmt::Display for Permission {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Permission::StoragePermission { path, write } => {
-                write!(f, "StoragePermission(path:{}, write:{})", path, write)
+                write!(f, "StoragePermission(path:{path}, write:{write})")
             }
         }
     }
@@ -81,7 +80,7 @@ pub struct PermissionStore {
 impl PermissionStore {
     pub async fn new(savepath: PathBuf) -> Result<Self> {
         let mut store = PermissionStore {
-            savepath: savepath,
+            savepath,
             permissions: Default::default(),
         };
         store

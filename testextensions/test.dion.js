@@ -1,9 +1,9 @@
-//{"id":"123","repo":"repo","icon":"https://9animetv.to/images/favicon.png","name":"9Anime","version":"1.0.0","description":"A Anime Streaming Site","author":"","license":"0BSD","keywords":["anime","series"],"nsfw":false,"lang":["en"],"media_type":["video"],"url":"https://9animetv.to"}
-import { fetch, getCookies } from "network";
-import { registerSetting, getSetting } from "setting";
-import { requestPermission } from "permission";
+//{"id":"123","repo":"repo","icon":"https://9animetv.to/images/favicon.png","name":"9Anime","version":"1.0.0","description":"A Anime Streaming Site","author":"","license":"0BSD","keywords":["anime","series"],"nsfw":false,"lang":["en"],"media_type":["Video"],"url":"https://9animetv.to"}
+/// <reference path="../rust/core/bindings/index.d.ts" />
 import { decode_base64, encode_base64 } from "convert";
-import { parse_html_fragment, parse_html } from "parse";
+import { fetch } from "network";
+import { parse_html } from "parse";
+import { getSetting, registerSetting } from "setting";
 function test() {
   console.log("external test");
   return true;
@@ -14,13 +14,16 @@ function assert(condition, msg = "Extension error") {
     throw new Error(`Assert failed: ${msg}`);
   }
 }
-
+/**
+ *
+ * @returns {Entry}
+ */
 function getEntry() {
   return {
     id: "someid",
     url: "someurl",
     title: "sometext",
-    media_type: "video",
+    media_type: "Video",
     cover: "somecover",
     cover_header: { some: "header" },
     author: ["someauther"],
@@ -30,6 +33,10 @@ function getEntry() {
   };
 }
 
+/**
+ *
+ * @returns {Episode}
+ */
 function getEpisode() {
   return {
     id: "someid",
@@ -41,12 +48,16 @@ function getEpisode() {
   };
 }
 
+/**
+ *
+ * @returns {EntryDetailed}
+ */
 function getEntryDetailed() {
   return {
     id: "someid",
     url: "someurl",
     title: "sometext",
-    media_type: "video",
+    media_type: "Video",
     status: "Complete",
     language: "somelanguage",
     description: "somedescription",
@@ -62,11 +73,15 @@ function getEntryDetailed() {
   };
 }
 
+/**
+ *
+ * @returns {Source}
+ */
 function getSource() {
   return {
-    sourcetype: "directlink",
+    sourcetype: "Directlink",
     sourcedata: {
-      type: "epub",
+      type: "Epub",
       link: "epid",
     },
   };
@@ -147,7 +162,10 @@ export default class {
     );
     console.log("paragraphs");
     console.log(elarr.paragraphs.join("\n"));
-    assert(elarr.paragraphs.join("\n") == "some text\nsome other text", "parse_html not working");
+    assert(
+      elarr.paragraphs.join("\n") == "some text\nsome other text",
+      "parse_html not working"
+    );
   }
 
   async browse(page, sort) {

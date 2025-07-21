@@ -1,8 +1,12 @@
-use std::collections::HashMap;
-use std::{cell::RefCell, collections::VecDeque, future::Future, pin::Pin};
+use std::collections::{BTreeMap, HashMap};
+use std::ops::DerefMut;
+use std::rc::Rc;
+use std::{cell::RefCell, collections::VecDeque};
 use std::{ops::Deref, sync::Arc};
 
 use boa_engine::builtins::promise::PromiseState;
+use boa_engine::context::time::{JsDuration, JsInstant};
+use boa_engine::job::TimeoutJob;
 use boa_engine::object::builtins::JsPromise;
 use boa_engine::{
     job::{Job, JobExecutor, NativeAsyncJob, PromiseJob},
@@ -22,9 +26,13 @@ use tokio::sync::RwLock;
 use anyhow::{anyhow, Result};
 
 pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResult<JsValue> {
+    let queue: Rc<Queue> = context.downcast_job_executor().ok_or(JsError::from_native(
+        JsNativeError::error().with_message("Failed to find Job Executor"),
+    ))?;
+    let context = RefCell::new(context);
     loop {
         match promise.state() {
-            PromiseState::Pending => context.run_jobs_async().await?,
+            PromiseState::Pending => queue.clone().run_jobs_async(&context).await?,
             PromiseState::Fulfilled(js_value) => break Ok(js_value),
             PromiseState::Rejected(js_value) => break Err(JsError::from_opaque(js_value)),
         }
@@ -141,7 +149,7 @@ impl<T> Deref for ReadOnlyUserContextContainer<T> {
 
 impl<T> ReadOnlyUserContextContainer<T> {
     pub fn new(inner: T) -> Self {
-        return ReadOnlyUserContextContainer { inner: inner };
+        ReadOnlyUserContextContainer { inner }
     }
 }
 
@@ -172,37 +180,26 @@ impl VirtualModuleLoader {
 }
 
 impl ModuleLoader for VirtualModuleLoader {
-    fn load_imported_module(
-        &self,
+    async fn load_imported_module(
+        self: Rc<Self>,
         _referrer: Referrer,
         specifier: JsString,
-        finish_load: Box<dyn FnOnce(JsResult<Module>, &mut Context)>,
-        context: &mut Context,
-    ) {
-        let result: Result<Module, JsError> = (|| {
-            let short_path = specifier.to_std_string_escaped();
-            if let Some(module) = self.get(&short_path) {
-                return Ok(module);
-            }
-            Err(JsError::from_native(JsNativeError::syntax().with_message(
-                format!("could not parse module `{short_path}`"),
-            )))
-        })();
-        finish_load(result, context);
-    }
-
-    fn register_module(&self, specifier: JsString, module: Module) {
-        self.insert(specifier.to_std_string_escaped(), module);
-    }
-
-    fn get_module(&self, specifier: JsString) -> Option<Module> {
-        self.get(&specifier.to_std_string_escaped())
+        _context: &RefCell<&mut Context>,
+    ) -> JsResult<Module> {
+        let short_path = specifier.to_std_string_escaped();
+        if let Some(module) = self.get(&short_path) {
+            return Ok(module);
+        }
+        Err(JsError::from_native(
+            JsNativeError::syntax().with_message(format!("no such module `{short_path}`")),
+        ))
     }
 }
 
 pub struct Queue {
     async_jobs: RefCell<VecDeque<NativeAsyncJob>>,
     promise_jobs: RefCell<VecDeque<PromiseJob>>,
+    timeout_jobs: RefCell<BTreeMap<JsInstant, TimeoutJob>>,
 }
 
 impl Queue {
@@ -210,10 +207,32 @@ impl Queue {
         Self {
             async_jobs: RefCell::default(),
             promise_jobs: RefCell::default(),
+            timeout_jobs: RefCell::default(),
+        }
+    }
+
+    fn drain_timeout_jobs(&self, context: &mut Context) {
+        let now = context.clock().now();
+
+        let mut timeouts_borrow = self.timeout_jobs.borrow_mut();
+        // `split_off` returns the jobs after (or equal to) the key. So we need to add 1ms to
+        // the current time to get the jobs that are due, then swap with the inner timeout
+        // tree so that we get the jobs to actually run.
+        let jobs_to_keep = timeouts_borrow.split_off(&(now + JsDuration::from_millis(1)));
+        let jobs_to_run = std::mem::replace(timeouts_borrow.deref_mut(), jobs_to_keep);
+        drop(timeouts_borrow);
+
+        for job in jobs_to_run.into_values() {
+            if let Err(e) = job.call(context) {
+                eprintln!("Uncaught {e}");
+            }
         }
     }
 
     fn drain_jobs(&self, context: &mut Context) {
+        // Run the timeout jobs first.
+        self.drain_timeout_jobs(context);
+
         let jobs = std::mem::take(&mut *self.promise_jobs.borrow_mut());
         for job in jobs {
             if let Err(e) = job.call(context) {
@@ -224,16 +243,20 @@ impl Queue {
 }
 
 impl JobExecutor for Queue {
-    fn enqueue_job(&self, job: Job, _context: &mut Context) {
+    fn enqueue_job(self: Rc<Self>, job: Job, context: &mut Context) {
         match job {
             Job::PromiseJob(job) => self.promise_jobs.borrow_mut().push_back(job),
             Job::AsyncJob(job) => self.async_jobs.borrow_mut().push_back(job),
+            Job::TimeoutJob(t) => {
+                let now = context.clock().now();
+                self.timeout_jobs.borrow_mut().insert(now + t.timeout(), t);
+            }
             _ => panic!("unsupported job type"),
         }
     }
 
     // While the sync flavor of `run_jobs` will block the current thread until all the jobs have finished...
-    fn run_jobs(&self, context: &mut Context) -> JsResult<()> {
+    fn run_jobs(self: Rc<Self>, context: &mut Context) -> JsResult<()> {
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_time()
             .build()
@@ -243,56 +266,33 @@ impl JobExecutor for Queue {
     }
 
     // ...the async flavor won't, which allows concurrent execution with external async tasks.
-    fn run_jobs_async<'a, 'b, 'fut>(
-        &'a self,
-        context: &'b RefCell<&mut Context>,
-    ) -> Pin<Box<dyn Future<Output = JsResult<()>> + 'fut>>
-    where
-        'a: 'fut,
-        'b: 'fut,
-    {
-        Box::pin(async move {
-            // Early return in case there were no jobs scheduled.
-            if self.promise_jobs.borrow().is_empty() && self.async_jobs.borrow().is_empty() {
+    async fn run_jobs_async(self: Rc<Self>, context: &RefCell<&mut Context>) -> JsResult<()> {
+        // Early return in case there were no jobs scheduled.
+        if self.promise_jobs.borrow().is_empty() && self.async_jobs.borrow().is_empty() {
+            return Ok(());
+        }
+        let mut group = FutureGroup::new();
+        loop {
+            for job in std::mem::take(&mut *self.async_jobs.borrow_mut()) {
+                group.insert(job.call(context));
+            }
+
+            if group.is_empty() && self.promise_jobs.borrow().is_empty() {
+                // Both queues are empty. We can exit.
                 return Ok(());
             }
-            let mut group = FutureGroup::new();
-            loop {
-                for job in std::mem::take(&mut *self.async_jobs.borrow_mut()) {
-                    group.insert(job.call(context));
-                }
 
-                if self.promise_jobs.borrow().is_empty() {
-                    let Some(result) = group.next().await else {
-                        // Both queues are empty. We can exit.
-                        return Ok(());
-                    };
+            // We have some jobs pending on the microtask queue. Try to poll the pending
+            // tasks once to see if any of them finished, and run the pending microtasks
+            // otherwise.
+            if let Some(Err(err)) = future::poll_once(group.next()).await.flatten() {
+                eprintln!("Uncaught {err}");
+            };
 
-                    if let Err(err) = result {
-                        eprintln!("Uncaught {err}");
-                    }
-
-                    continue;
-                }
-                // We have some jobs pending on the microtask queue. Try to poll the pending
-                // tasks once to see if any of them finished, and run the pending microtasks
-                // otherwise.
-                let Some(result) = future::poll_once(group.next()).await.flatten() else {
-                    // No completed jobs. Run the microtask queue once.
-                    self.drain_jobs(&mut context.borrow_mut());
-
-                    task::yield_now().await;
-                    continue;
-                };
-
-                if let Err(err) = result {
-                    eprintln!("Uncaught {err}");
-                }
-
-                // Only one macrotask can be executed before the next drain of the microtask queue.
-                self.drain_jobs(&mut context.borrow_mut());
-            }
-        })
+            // Only one macrotask can be executed before the next drain of the microtask queue.
+            self.drain_jobs(&mut context.borrow_mut());
+            task::yield_now().await
+        }
     }
 }
 

@@ -13,9 +13,9 @@ use ego_tree::NodeId;
 use scraper::{ElementRef, Html, Selector};
 use std::rc::Rc;
 
-use crate::extension::utils::MapJsResult;
+use crate::extension::utils::{MapJsResult, VirtualModuleLoader};
 
-pub fn declare(context: &mut Context) -> Result<()> {
+pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     context
         .register_global_class::<Element>()
         .map_anyhow_ctx(context)
@@ -40,26 +40,24 @@ pub fn declare(context: &mut Context) -> Result<()> {
     .length(1)
     .name("parse_html_fragment")
     .build();
-    context.module_loader().register_module(
-        js_string!("parse"),
-        Module::synthetic(
-            &[js_string!("parse_html"), js_string!("parse_html_fragment")],
-            SyntheticModuleInitializer::from_copy_closure_with_captures(
-                move |m, (parse_html, parse_html_fragment), _ctx| {
-                    m.set_export(&js_string!("parse_html"), parse_html.clone().into())?;
-                    m.set_export(
-                        &js_string!("parse_html_fragment"),
-                        parse_html_fragment.clone().into(),
-                    )?;
-                    Ok(())
-                },
-                (parse_html_fn, parse_html_fragment_fn),
-            ),
-            None,
-            None,
-            context,
+    let module = Module::synthetic(
+        &[js_string!("parse_html"), js_string!("parse_html_fragment")],
+        SyntheticModuleInitializer::from_copy_closure_with_captures(
+            move |m, (parse_html, parse_html_fragment), _ctx| {
+                m.set_export(&js_string!("parse_html"), parse_html.clone().into())?;
+                m.set_export(
+                    &js_string!("parse_html_fragment"),
+                    parse_html_fragment.clone().into(),
+                )?;
+                Ok(())
+            },
+            (parse_html_fn, parse_html_fragment_fn),
         ),
+        None,
+        None,
+        context,
     );
+    loader.insert("parse".to_string(), module);
     Ok(())
 }
 
@@ -124,7 +122,7 @@ impl ElementArray {
                         this.doc
                             .tree
                             .get(*e)
-                            .map(|e| ElementRef::wrap(e))
+                            .map(ElementRef::wrap)
                             .filter(|e| e.is_some())
                             .map(|e| e.unwrap().text().collect::<Vec<_>>())
                             .unwrap_or_default()
@@ -147,7 +145,7 @@ impl ElementArray {
                         this.doc
                             .tree
                             .get(*e)
-                            .map(|e| ElementRef::wrap(e))
+                            .map(ElementRef::wrap)
                             .filter(|e| e.is_some())
                             .map(|e| e.unwrap().text().collect::<Vec<_>>())
                             .unwrap_or_default()
@@ -170,18 +168,15 @@ impl ElementArray {
                 let res = this
                     .nodes
                     .iter()
-                    .map(|e| {
+                    .flat_map(|e| {
                         this.doc
                             .tree
                             .get(*e)
-                            .map(|e| ElementRef::wrap(e))
-                            .filter(|e| e.is_some())
-                            .map(|e| e.unwrap().attr(&attr))
-                            .filter(|e| e.is_some())
-                            .map(|e| e.unwrap())
+                            .into_iter()
+                            .flat_map(ElementRef::wrap)
+                            .flat_map(|e| e.attr(&attr))
                     })
-                    .filter(|e| e.is_some())
-                    .map(|e| JsString::from(e.unwrap().to_string()).into());
+                    .map(|e| JsString::from(e.to_string()).into());
                 return Ok(JsArray::from_iter(res, context).into());
             }
         }
@@ -210,7 +205,7 @@ impl ElementArray {
     fn first(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
         if let Some(object) = this.as_object() {
             if let Some(this) = object.downcast_ref::<Self>() {
-                let ret = this.nodes.get(0).map(|e| Element {
+                let ret = this.nodes.first().map(|e| Element {
                     doc: this.doc.clone(),
                     node: *e,
                 });
@@ -234,8 +229,8 @@ impl ElementArray {
                 let res: Vec<_> = this
                     .nodes
                     .iter()
-                    .map(|e| {
-                        return callback.call(
+                    .flat_map(|e| {
+                        callback.call(
                             thisv,
                             &[Class::from_data(
                                 Element {
@@ -246,10 +241,8 @@ impl ElementArray {
                             )?
                             .into()],
                             context,
-                        );
+                        )
                     })
-                    .filter(|e| e.is_ok())
-                    .map(|e| e.unwrap())
                     .collect();
                 return Ok(JsArray::from_iter(res, context).into());
             }
@@ -268,7 +261,7 @@ impl ElementArray {
                 let res: Vec<_> = this
                     .nodes
                     .iter()
-                    .map(|e| e.clone())
+                    .copied()
                     .filter(|e| {
                         let Ok(el) = Class::from_data(
                             Element {
@@ -283,7 +276,7 @@ impl ElementArray {
                             return false;
                         };
 
-                        return res.as_boolean().unwrap_or(false);
+                        res.as_boolean().unwrap_or(false)
                     })
                     .collect();
                 return Ok(Class::from_data(
@@ -408,11 +401,7 @@ impl Element {
                     .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
                 let element = ElementRef::wrap(node)
                     .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-                let ret = element
-                    .parent()
-                    .map(|e| ElementRef::wrap(e))
-                    .filter(|e| e.is_some())
-                    .map(|e| e.unwrap().id());
+                let ret = element.parent().and_then(ElementRef::wrap).map(|e| e.id());
                 return match ret {
                     Some(ret) => Ok(Class::from_data(
                         Element {
@@ -444,9 +433,8 @@ impl Element {
                     doc: this.doc.clone(),
                     nodes: element
                         .children()
-                        .map(|e| ElementRef::wrap(e))
-                        .filter(|e| e.is_some())
-                        .map(|e| e.unwrap().id())
+                        .flat_map(ElementRef::wrap)
+                        .map(|e| e.id())
                         .collect(),
                 };
                 return Ok(Class::from_data(ret, context)?.into());

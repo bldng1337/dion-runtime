@@ -1,4 +1,4 @@
-use super::{extension::TSourceExtensionManager, extension_container::ExtensionContainer};
+use super::{extension_container::ExtensionContainer, extension_trait::TSourceExtensionManager};
 use anyhow::{Context, Result};
 use tokio::fs::read_dir;
 
@@ -31,7 +31,7 @@ impl TSourceExtensionManager<ExtensionContainer> for ExtensionManager {
             if !file
                 .file_name()
                 .into_string()
-                .map_or(false, |str| str.ends_with(".dion.js"))
+                .is_ok_and(|str| str.ends_with(".dion.js"))
             {
                 continue;
             }
