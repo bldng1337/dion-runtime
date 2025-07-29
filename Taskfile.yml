@@ -9,3 +9,6 @@ tasks:
   format:
     cmds:
       - bun run ./script/index.js format lint
+  clean:
+    cmds:
+      - bun run ./script/index.js clean

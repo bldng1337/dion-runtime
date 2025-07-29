@@ -9,6 +9,7 @@
 		"index.node"
 	],
 	"scripts": {
+		"clean": "rimraf ./dist",
 		"lint": "biome check src test",
 		"format": "biome format src test --write",
 		"test": "bun ./test/testscript.js",

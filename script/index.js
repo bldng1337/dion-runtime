@@ -42,6 +42,7 @@ class Project {
   async build(release) {}
   async test() {}
   async format() {}
+  async clean() {}
 }
 
 class RustProject extends Project {
@@ -63,6 +64,10 @@ class RustProject extends Project {
 
   async format() {
     await $`cd ${this.path} && cargo fmt`;
+  }
+
+  async clean() {
+    await $`cd ${this.path} && cargo clean`;
   }
 }
 
@@ -104,6 +109,10 @@ class FlutterRustProject extends Project {
   async format() {
     await $`cd ${this.path} && dart format lib -o write`;
   }
+
+  async clean() {
+    await $`cd ${this.path} && flutter clean`;
+  }
 }
 
 class JSProject extends Project {
@@ -125,6 +134,10 @@ class JSProject extends Project {
 
   async format() {
     await $`cd ${this.path} && bun run format`;
+  }
+
+  async clean() {
+    await $`cd ${this.path} && bun run clean`;
   }
 }
 
@@ -180,6 +193,13 @@ for (const action of positionals.slice(2)) {
       case "lint":
         try {
           await project.lint();
+        } catch (e) {
+          exitPrematurely(`[${action}]: Failed in ${project.path}`);
+        }
+        break;
+      case "clean":
+        try {
+          await project.clean();
         } catch (e) {
           exitPrematurely(`[${action}]: Failed in ${project.path}`);
         }
