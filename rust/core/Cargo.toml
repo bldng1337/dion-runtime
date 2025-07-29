@@ -6,10 +6,13 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.46.0", features = ["full"] }
-boa_engine = { git = "https://github.com/boa-dev/boa", rev = "8e1cfee317b5d8a5839a9e9bd2369d621ff7adf6" }
-boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "8e1cfee317b5d8a5839a9e9bd2369d621ff7adf6" }
-boa_gc = { git = "https://github.com/boa-dev/boa", rev = "8e1cfee317b5d8a5839a9e9bd2369d621ff7adf6" }
+boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde", features = [
+    "jsvalue-enum",
+] }
+boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
+boa_gc = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
 anyhow = "^1.0.0"
+log = "0.4.0"
 scraper = "0.23.0"
 ego-tree = "*"
 serde = { version = "1.0.0", features = ["derive"] }

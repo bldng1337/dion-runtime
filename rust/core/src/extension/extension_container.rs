@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::panic;
 use std::path::PathBuf;
 use std::rc::Rc;
 use std::sync::Arc;
@@ -16,6 +17,7 @@ use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
 use boa_engine::{js_string, Context, JsObject, JsValue, Module};
 use boa_runtime::Console;
+use log::error;
 use serde_json::Value;
 use tokio::fs;
 use tokio::runtime::Builder;
@@ -119,25 +121,40 @@ impl ExtensionContainer {
 
     async fn enable(&mut self) -> Result<()> {
         let (send, mut recv) = mpsc::unbounded_channel();
-        let ext = self.ext.clone();
+        let ext: Arc<RwLock<JSSourceExtension>> = self.ext.clone();
         let code = self.code.clone();
         let (isend, iresponse) = oneshot::channel();
+        let isend = isend;
+        let extname = self.ext.read().await.data.name.clone();
         std::thread::spawn(move || {
+            let orig_hook = panic::take_hook();
+            panic::set_hook(Box::new(move |panic_info| {
+                error!("Extension Thread for {extname} panicked {panic_info}");
+                orig_hook(panic_info);
+            }));
             let rt = Builder::new_current_thread().enable_all().build().unwrap();
             let local = LocalSet::new();
             let ext = ext;
+            let isend = isend;
             let code = code;
-
             local.spawn_local(async move {
                 let ext = ext;
                 let code = code;
+                let isend = isend;
+
                 let mut context = match Self::get_context(ext, &code).await {
                     Ok(context) => {
-                        let _ = isend.send(Ok(()));
+                        let res = isend.send(Ok(()));
+                        if let Some(err) = res.err().and_then(|a| a.err()) {
+                            error!("Failed to send channel back {err}");
+                        }
                         context
                     }
                     Err(err) => {
-                        let _ = isend.send(Err(err));
+                        let res = isend.send(Err(err));
+                        if let Some(err) = res.err().and_then(|a| a.err()) {
+                            error!("Failed to send channel back {err}");
+                        }
                         return;
                     }
                 };
@@ -193,6 +210,7 @@ impl ExtensionContainer {
             .await
             .context("Message channel to extension thread failed")?
             .context("Extension failed to startup")?;
+
         self.send = Some(send);
         Ok(())
     }
@@ -204,7 +222,6 @@ impl ExtensionContainer {
                 .map_anyhow()
                 .context("Failed to init VirtualModuleLoader")?,
         );
-
         let mut ctx = Context::builder()
             .job_executor(Rc::new(queue))
             .module_loader(loader.clone())

@@ -6,6 +6,7 @@ export 'src/rust/api/simple.dart';
 export 'src/rust/third_party/dion_runtime/data/datastructs.dart';
 export 'src/rust/third_party/dion_runtime/data/settings.dart';
 export 'src/rust/frb_generated.dart' show RustLib;
+
 // void setPermissionRequest(Function(PermissionRequest) listener) {
 //   final a=internalSetPermissionRequestListener();
 //   a.listen((request) {

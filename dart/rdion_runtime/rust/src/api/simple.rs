@@ -226,3 +226,8 @@ impl From<CancelToken> for CancellationToken {
         value.tok
     }
 }
+
+#[frb(init)]
+pub fn lets_init_app_here() {
+    flutter_rust_bridge::setup_default_user_utils();
+}
