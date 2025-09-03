@@ -3,45 +3,28 @@ name = "dion-runtime"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+type = ["dep:specta","dep:specta-typescript"]
 
 [dependencies]
-tokio = { version = "1.46.0", features = ["full"] }
-boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde", features = [
-    "jsvalue-enum",
+tokio = { version = "1.46.0", features = [
+    # "full",
+    "fs",
+    "io-util",
+    "macros",
+    "rt",
+    "rt-multi-thread",
 ] }
-boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
-boa_gc = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
-anyhow = "^1.0.0"
+
+anyhow = "1.0.0"
 log = "0.4.0"
-scraper = "0.23.0"
-ego-tree = "*"
+
 serde = { version = "1.0.0", features = ["derive"] }
 serde_json = "1.0.0"
-reqwest = { version = "0.12.0", default-features = false, features = [
-    "charset",
-    "http2",
-    # "http3",
-    "rustls-tls",
-    "rustls-tls-native-roots",
 
-    "json",
-    "cookies",
-
-    "brotli",
-    "gzip",
-] }
-reqwest_cookie_store = "0.8.0"
 tokio-util = "0.7.0"
-governor = "0.6.0"
-nonzero_ext = "0.3.0"
-reqwest-middleware = "0.3.0"
-http-cache-reqwest = "0.14.0"
 async-trait = "0.1.0"
-http = "1.1.0"
-ts-rs = { version = "10.0.0", features = ["serde-json-impl"] }
-# openssl = { version = "0.10", features = ["vendored"] }
-# cacache = "13.0.0"
-base64 = "0.22.0"
-console-subscriber = "0.4.0"
-futures-concurrency = "7.6.0"
-futures-lite = "2.6.0"
+
+specta = { version = "1.0.5", features = ["export"], optional = true  }
+specta-typescript = { version = "0.0.9",optional = true }
+#=2.0.0-rc.22

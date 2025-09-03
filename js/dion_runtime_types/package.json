@@ -1,0 +1,22 @@
+{
+  "name": "@dion/runtime-types",
+  "version": "0.1.0",
+  "files": [
+    "index.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bldng1337/dion-runtime.git"
+  },
+  "types": "src/index.d.ts",
+  "author": "bldng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bldng1337/dion-runtime/issues"
+  },
+  "homepage": "https://github.com/bldng1337/dion-runtime#readme",
+  "description": "",
+  "devDependencies": {
+    "@js-temporal/polyfill": "^0.5.1"
+  }
+}

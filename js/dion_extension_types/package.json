@@ -1,0 +1,9 @@
+{
+  "name": "@dion/extension-types",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@dion/runtime-types": "workspace:*"
+  }
+}

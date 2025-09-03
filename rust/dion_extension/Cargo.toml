@@ -1,0 +1,87 @@
+[package]
+name = "dion-extension"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dion-runtime = { path = "../core" }
+
+boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde", features = [
+    "jsvalue-enum",
+    # "temporal",
+] }
+boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
+boa_gc = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
+#6570619729faae32c49deec59a6d65f01e639bde
+
+#735cd3ece395f3ebe04258284dd561511b22d183
+
+tokio = { version = "1.46.0", features = [
+    # "full",
+    "fs",
+    "io-util",
+    "macros",
+    "rt",
+    "rt-multi-thread",
+] }
+
+anyhow = "^1.0.0"
+log = "0.4.0"
+
+scraper = "0.23.0"
+ego-tree = "*"
+
+serde = { version = "1.0.0", features = ["derive"] }
+serde_json = "1.0.0"
+
+
+reqwest = { version = "0.12.0", default-features = false, features = [
+    "charset",
+    "http2",
+    # "http3",
+    "rustls-tls",
+    "rustls-tls-native-roots",
+
+    "json",
+    "cookies",
+
+    "brotli",
+    "gzip",
+] }
+reqwest-middleware = "0.4.2"
+
+reqwest_cookie_store = "0.9.0"
+cookie_store = "0.22.0"
+cookie = "0.18.1"
+
+http-cache-reqwest = "0.16.0"
+http-cache = { version = "0.21.0", default-features = false, features = [
+    "manager-cacache",
+    "cacache-tokio",
+] }
+
+governor = "0.6.0"
+nonzero_ext = "0.3.0"
+
+tokio-util = "0.7.0"
+async-trait = "0.1.0"
+http = "1.1.0"
+
+# openssl = { version = "0.10", features = ["vendored"] }
+cacache = { version = "13.1.0", default-features = false, features = [
+    "tokio-runtime",
+    "mmap",
+] }
+base64 = "0.22.0"
+futures-concurrency = "7.6.0"
+futures-lite = "2.6.0"
+
+
+# specta = { version = "1.0.5", features = ["export", "functions"] }
+# specta-typescript = "0.0.9"
+chrono = "0.4.41"
+
+
+
+[dev-dependencies]
+httpmock = "0.7.0"

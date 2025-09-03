@@ -1,8 +1,11 @@
-rust_input: crate::api,dion-runtime::datastructs
+rust_input: crate::api,dion-runtime::permission,dion-runtime::settings,dion-runtime::datastructs
 rust_root: rust/
 dart_output: lib/src/rust
 # enable_lifetime: true
 full_dep: true
 stop_on_error: true
-# dump_all: true
+dump_all: true
 web: false
+rust_preamble: "use serde_json::Value;pub use dion_runtime::datastructs::*; use dion_runtime::permission::Permission; use dion_runtime::settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI};"
+dart_preamble: "import 'dart:convert';"
+#crate::api,dion-runtime::permission,dion-runtime::settings,dion-runtime::datastructs

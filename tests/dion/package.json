@@ -1,0 +1,11 @@
+{
+  "name": "tests",
+  "private": true,
+  "scripts": {
+    "build": "bun run build.ts",
+    "clean": "bun run clean.ts",
+    "test": "bun test",
+    "format": "bunx biome format --write",
+    "lint": "bunx biome check"
+  }
+}

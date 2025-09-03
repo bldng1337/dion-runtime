@@ -1,0 +1,6 @@
+{
+  "name": "@dion",
+  "workspaces": [
+    "js/**/*"
+  ]
+}

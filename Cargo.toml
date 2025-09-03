@@ -1,6 +1,11 @@
 [workspace]
 
-members = ["rust/core", "dart/rdion_runtime/rust", "js/node_dion_runtime"]
+members = [
+    "rust/core",
+    "rust/dion_extension",
+    "dart/rdion_runtime/rust",
+    "js/dion_runtime",
+]
 resolver = "3"
 
 [profile.bench]

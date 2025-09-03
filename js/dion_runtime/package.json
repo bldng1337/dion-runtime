@@ -1,0 +1,61 @@
+{
+	"name": "@dion/runtime",
+	"version": "1.0.0",
+	"description": "Bindings for the dion extension api for node",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/bldng1337/dion-runtime"
+	},
+	"browser": "browser.js",
+	"keywords": [
+		"napi-rs",
+		"NAPI",
+		"N-API",
+		"Rust",
+		"node-addon",
+		"node-addon-api"
+	],
+	"files": [
+		"index.d.ts",
+		"index.js",
+		"browser.js"
+	],
+	"napi": {
+		"binaryName": "runtime",
+		"targets": [
+			"x86_64-pc-windows-msvc",
+			"x86_64-apple-darwin",
+			"x86_64-unknown-linux-gnu",
+			"aarch64-apple-darwin"
+		]
+	},
+	"engines": {
+		"node": ">= 10.16.0 < 11 || >= 11.8.0 < 12 || >= 12.0.0"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/",
+		"access": "public"
+	},
+	"scripts": {
+		"artifacts": "napi artifacts",
+		"build:release": "napi build --platform --release",
+		"build": "napi build --platform",
+		"version": "napi version",
+		"postbuild:release": "bun run postbuild.ts",
+		"postbuild": "bun run postbuild.ts",
+		"test": "bun test",
+		"format": "bunx biome format --write && cargo fmt",
+		"lint": "bunx biome check && cargo clippy --all-targets --all-features -- -D warnings",
+		"clean": "cargo clean"
+	},
+	"devDependencies": {
+		"@dion/runtime-types": "workspace:*",
+		"@emnapi/core": "^1.5.0",
+		"@emnapi/runtime": "^1.5.0",
+		"@napi-rs/cli": "^3.2.0",
+		"@oxc-node/core": "^0.0.32",
+		"@tybys/wasm-util": "^0.10.0",
+		"typescript": "^5.9.2"
+	}
+}
