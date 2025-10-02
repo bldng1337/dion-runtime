@@ -1,27 +1,33 @@
 // pub mod auth;
 pub mod client_data;
-pub mod datastructs;
+pub mod data;
 pub mod extension;
-pub mod permission;
-pub mod settings;
-mod specta;
+pub mod store;
 
 #[allow(unused_variables)]
 #[allow(dead_code)]
+#[allow(unreachable_code)]
 #[cfg(test)]
 mod test {
 
     use std::{collections::HashMap, sync::Arc};
 
     use crate::{
-        client_data::{ClientExtensionData, ClientManagerData},
-        datastructs::{
-            Action, EntryActivity, EntryDetailed, EntryDetailedResult, EntryList, ExtensionData,
-            ExtensionRepo, Link, RemoteExtension, Source, SourceResult,
+        client_data::{AdapterClient, ExtensionClient},
+        data::{
+            action::{Action, EventData, EventResult},
+            activity::EntryActivity,
+            extension::ExtensionData,
+            extension_repo::{ExtensionRepo, RemoteExtensionResult},
+            permission::Permission,
+            settings::Setting,
+            source::{
+                EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Link, Source,
+                SourceResult,
+            },
         },
-        extension::{Extension, ExtensionManager, ExtensionStore},
-        permission::PermissionStore,
-        settings::{Setting, SettingStore},
+        extension::{Adapter, Extension},
+        store::{permission::PermissionStore, settings::SettingStore, ExtensionStore},
     };
 
     use anyhow::{bail, Result};
@@ -29,21 +35,21 @@ mod test {
     use tokio_util::sync::CancellationToken;
 
     struct TestExtensionManager {
-        manager: Box<dyn ClientManagerData>,
+        manager: Box<dyn AdapterClient>,
     }
 
     impl TestExtensionManager {
-        fn new(client: Box<dyn ClientManagerData>) -> Self {
+        fn new(client: Box<dyn AdapterClient>) -> Self {
             Self { manager: client }
         }
     }
 
     #[async_trait::async_trait()]
-    impl ExtensionManager for TestExtensionManager {
+    impl Adapter for TestExtensionManager {
         async fn get_extensions(&self) -> Result<Vec<Box<dyn Extension>>> {
             let client = self
                 .manager
-                .get_client(ExtensionData {
+                .get_extension_client(ExtensionData {
                     ..Default::default()
                 })
                 .await?;
@@ -52,29 +58,17 @@ mod test {
             )])
         }
 
-        async fn install(&self, location: &RemoteExtension) -> Result<Box<dyn Extension>> {
+        async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
             let client = self
                 .manager
-                .get_client(ExtensionData {
-                    ..Default::default()
-                })
-                .await?;
-            Ok(Box::new(
-                TestExtension::new(location.extension_url.clone(), client).await,
-            ))
-        }
-
-        async fn install_single(&self, url: &str) -> Result<Box<dyn Extension>> {
-            let client = self
-                .manager
-                .get_client(ExtensionData {
+                .get_extension_client(ExtensionData {
                     ..Default::default()
                 })
                 .await?;
             Ok(Box::new(TestExtension::new(url.to_string(), client).await))
         }
 
-        async fn uninstall(&self, ext: Box<dyn Extension>) -> Result<()> {
+        async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()> {
             Ok(())
         }
 
@@ -83,10 +77,17 @@ mod test {
                 name: "TestRepo".to_string(),
                 description: "Test".to_string(),
                 id: "someid3234".to_string(),
-                extensions: vec![RemoteExtension {
-                    extension_url: url.to_string(),
-                    ..Default::default()
-                }],
+                url: todo!(),
+            })
+        }
+
+        async fn browse_repo(
+            &self,
+            repo: &ExtensionRepo,
+            page: i32,
+        ) -> Result<RemoteExtensionResult> {
+            Ok(RemoteExtensionResult {
+                ..Default::default()
             })
         }
     }
@@ -94,12 +95,12 @@ mod test {
     struct TestExtension {
         enabled: bool,
         name: String,
-        client: Box<dyn ClientExtensionData>,
+        client: Box<dyn ExtensionClient>,
         store: Arc<RwLock<ExtensionStore>>,
     }
 
     impl TestExtension {
-        async fn new(name: String, client: Box<dyn ClientExtensionData>) -> Self {
+        async fn new(name: String, client: Box<dyn ExtensionClient>) -> Self {
             Self {
                 enabled: false,
                 name,
@@ -132,6 +133,14 @@ mod test {
             Ok(())
         }
 
+        async fn event(
+            &self,
+            event: EventResult,
+            token: Option<CancellationToken>,
+        ) -> Result<Option<EventData>> {
+            Ok(None)
+        }
+
         async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
             Ok(EntryList {
                 ..Default::default()
@@ -149,27 +158,22 @@ mod test {
             })
         }
 
-        async fn fromurl(&self, url: String, token: Option<CancellationToken>) -> Result<bool> {
+        async fn handle_url(&self, url: String, token: Option<CancellationToken>) -> Result<bool> {
             Ok(true)
         }
 
         async fn detail(
             &self,
-            entryid: String,
+            entryid: EntryId,
             settings: HashMap<String, Setting>,
             token: Option<CancellationToken>,
         ) -> Result<EntryDetailedResult> {
-            Ok(EntryDetailedResult {
-                entry: EntryDetailed {
-                    ..Default::default()
-                },
-                settings,
-            })
+            todo!()
         }
 
         async fn source(
             &self,
-            epid: String,
+            epid: EpisodeId,
             settings: HashMap<String, Setting>,
             token: Option<CancellationToken>,
         ) -> Result<SourceResult> {
@@ -206,13 +210,14 @@ mod test {
         async fn map_source(
             &self,
             source: Source,
+            epid: EpisodeId,
             settings: HashMap<String, Setting>,
             token: Option<CancellationToken>,
         ) -> Result<SourceResult> {
             Ok(SourceResult { source, settings })
         }
 
-        fn get_client(&self) -> &dyn ClientExtensionData {
+        fn get_client(&self) -> &dyn ExtensionClient {
             self.client.as_ref()
         }
     }
@@ -220,11 +225,11 @@ mod test {
     struct TestClientManagerData {}
 
     #[async_trait::async_trait()]
-    impl ClientManagerData for TestClientManagerData {
-        async fn get_client(
+    impl AdapterClient for TestClientManagerData {
+        async fn get_extension_client(
             &self,
             extension: ExtensionData,
-        ) -> Result<Box<dyn ClientExtensionData>> {
+        ) -> Result<Box<dyn ExtensionClient>> {
             Ok(Box::new(TestClientExtensionData {}))
         }
 
@@ -237,7 +242,7 @@ mod test {
     struct TestClientExtensionData {}
 
     #[async_trait::async_trait()]
-    impl ClientExtensionData for TestClientExtensionData {
+    impl ExtensionClient for TestClientExtensionData {
         async fn load_data(&self, key: &str) -> Result<String> {
             bail!("No loading implemented")
         }
@@ -252,7 +257,7 @@ mod test {
 
         async fn request_permission(
             &self,
-            permission: &crate::permission::Permission,
+            permission: &Permission,
             msg: Option<String>,
         ) -> Result<bool> {
             Ok(true)

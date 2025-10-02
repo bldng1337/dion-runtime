@@ -2,7 +2,7 @@ use core::fmt;
 use std::fmt::Debug;
 
 use anyhow::Result;
-use dion_runtime::client_data::{ClientExtensionData, ClientManagerData};
+use dion_runtime::client_data::{AdapterClient, ExtensionClientExtensionClient};
 use dion_runtime::datastructs::{Action, ExtensionData};
 use dion_runtime::permission::Permission;
 
@@ -22,7 +22,7 @@ impl Clone for ExtensionClient {
 }
 
 #[async_trait::async_trait]
-impl ClientExtensionData for ExtensionClient {
+impl ExtensionClientExtensionClient for ExtensionClient {
     // #[frb(ignore)]
     async fn load_data(&self, key: &str) -> Result<String> {
         let res = (self.cload_data.as_ref())(key.to_string()).await;
@@ -74,9 +74,12 @@ impl Clone for ManagerClient {
 
 #[async_trait::async_trait]
 // #[frb(ignore)]
-impl ClientManagerData for ManagerClient {
+impl AdapterClient for ManagerClient {
     // #[frb(ignore)]
-    async fn get_client(&self, extension: ExtensionData) -> Result<Box<dyn ClientExtensionData>> {
+    async fn get_client(
+        &self,
+        extension: ExtensionData,
+    ) -> Result<Box<dyn ExtensionClientExtensionClient>> {
         let res = self.cget_client.as_ref()(extension).await;
         Ok(Box::new(res))
     }

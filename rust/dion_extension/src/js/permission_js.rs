@@ -10,7 +10,7 @@ use boa_engine::{
 };
 
 use anyhow::Result;
-use dion_runtime::permission::Permission;
+use dion_runtime::data::permission::Permission;
 use serde_json::Value;
 
 use crate::extension::executor::ExtensionRuntimeDataContainer;

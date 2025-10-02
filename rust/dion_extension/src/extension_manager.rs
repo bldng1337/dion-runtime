@@ -2,27 +2,30 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result, anyhow, bail};
 use dion_runtime::{
-    client_data::ClientManagerData,
-    datastructs::{ExtensionData, ExtensionRepo, RemoteExtension},
-    extension::{Extension, ExtensionManager},
+    client_data::AdapterClient,
+    data::{
+        extension::ExtensionData,
+        extension_repo::{ExtensionRepo, RemoteExtensionResult},
+    },
+    extension::{Adapter, Extension},
 };
 use log::error;
 use tokio::fs::{self, copy, read_dir, remove_file, write};
 
 use crate::{extension::container::DionExtension, network::DionNetworkManager};
 
-pub struct DionExtensionManager {
+pub struct DionExtensionAdapter {
     pub(crate) network: DionNetworkManager,
-    pub(crate) client: Box<dyn ClientManagerData>,
+    pub(crate) client: Box<dyn AdapterClient>,
 }
 
-impl DionExtensionManager {
-    pub async fn new(client: Box<dyn ClientManagerData>) -> Result<Self> {
+impl DionExtensionAdapter {
+    pub async fn new(client: Box<dyn AdapterClient>) -> Result<Self> {
         let path = client
             .get_path()
             .await
             .context("Failed to get Extension Path")?;
-        Ok(DionExtensionManager {
+        Ok(DionExtensionAdapter {
             network: DionNetworkManager::new(path.into())?,
             client,
         })
@@ -49,14 +52,14 @@ async fn peek_manifest(path: impl AsRef<Path>) -> Result<ExtensionData> {
 
 async fn create_extension(
     path: PathBuf,
-    manager: &DionExtensionManager,
+    manager: &DionExtensionAdapter,
 ) -> Result<Box<DionExtension>> {
     let res = DionExtension::create(path, manager).await?;
     Ok(Box::new(res))
 }
 
 #[async_trait::async_trait()]
-impl ExtensionManager for DionExtensionManager {
+impl Adapter for DionExtensionAdapter {
     async fn get_extensions(&self) -> Result<Vec<Box<dyn Extension>>> {
         let path = self
             .client
@@ -81,29 +84,20 @@ impl ExtensionManager for DionExtensionManager {
             let res = create_extension(file.path(), self).await;
             match res {
                 Ok(val) => ret.push(val),
-                Err(err) => error!("Failed to load extension at {:?}: {err}", file.path()),
+                Err(err) => error!("Failed to load extension at {:?}: {:?}", file.path(), err),
             }
         }
         Ok(ret)
     }
 
-    async fn install(&self, location: &RemoteExtension) -> Result<Box<dyn Extension>> {
-        if !location.compatible {
-            anyhow::bail!("Extension is not compatible with this runtime");
-        }
-        self.install_single(&location.extension_url)
-            .await
-            .context("Failed to download Extension")
-    }
-
-    async fn install_single(&self, location: &str) -> Result<Box<dyn Extension>> {
+    async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
         let path = self
             .client
             .get_path()
             .await
             .context("Failed to get Extension Path")?;
         let path = PathBuf::from(path);
-        match location {
+        match url {
             location if location.starts_with("http://") || location.starts_with("https://") => {
                 let res = self.network.nclient.get(location).send().await?;
                 let body = res.text().await?;
@@ -146,12 +140,12 @@ impl ExtensionManager for DionExtensionManager {
                 }
             }
             _ => {
-                bail!("Unknown protocol: {location}")
+                bail!("Unknown protocol: {url}")
             }
         }
     }
 
-    async fn uninstall(&self, ext: Box<dyn Extension>) -> Result<()> {
+    async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()> {
         let data = ext.get_data().read().await;
         let id = &data.data.id;
         let path = self
@@ -194,6 +188,11 @@ impl ExtensionManager for DionExtensionManager {
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
         let res = self.network.nclient.get(url).send().await?;
+        Ok(res.json().await?)
+    }
+
+    async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
+        let res = self.network.nclient.get(&repo.url).send().await?;
         Ok(res.json().await?)
     }
 }

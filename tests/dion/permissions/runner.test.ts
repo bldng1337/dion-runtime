@@ -1,26 +1,26 @@
 /// <reference path="../../../js/dion_runtime_types/index.d.ts" />
 
 import { expect, test } from "bun:test";
-import { ExtensionManager } from "../../../js/dion_runtime";
+import { Adapter } from "../../../js/dion_runtime";
 import * as utils from "../utils";
 
 test("test permission", async () => {
-	const mockmanager = new utils.MockManagerClient("./permissions");
+  const mockmanager = new utils.MockManagerClient("./permissions");
 
-	mockmanager.getClient.mockImplementation((_err, extdata) => {
-		const ext = new utils.MockExtensionClient(extdata, "./permissions");
-		ext.requestPermission.mockImplementation((_err, _permission, msg) => {
-			if (msg === "deny") {
-				return false;
-			}
-			return true;
-		});
-		return ext.client;
-	});
+  mockmanager.getClient.mockImplementation((_err, extdata) => {
+    const ext = new utils.MockExtensionClient(extdata, "./permissions");
+    ext.requestPermission.mockImplementation((_err, _permission, msg) => {
+      if (msg === "deny") {
+        return false;
+      }
+      return true;
+    });
+    return ext.client;
+  });
 
-	const manager = await ExtensionManager.init(mockmanager.client);
-	const ext = (await manager.getExtension())[0];
-	expect(ext).toBeDefined();
-	// We only enable here because we only use the load function so we dont need a server supplying demo data
-	await ext.setEnabled(true);
+  const manager = await Adapter.init(mockmanager.client);
+  const ext = (await manager.getExtension())[0];
+  expect(ext).toBeDefined();
+  // We only enable here because we only use the load function so we dont need a server supplying demo data
+  await ext.setEnabled(true);
 });

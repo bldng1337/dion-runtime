@@ -4,9 +4,8 @@ use std::{fmt::Debug, sync::Arc};
 
 use anyhow::Result;
 use dion_runtime::{
-  client_data::{ClientExtensionData, ClientManagerData},
-  datastructs::{Action, ExtensionData},
-  permission::Permission,
+  client_data::{AdapterClient, ExtensionClient},
+  data::{action::Action, extension::ExtensionData, permission::Permission},
 };
 use napi::{
   bindgen_prelude::{FnArgs, Reference},
@@ -69,7 +68,7 @@ impl ClientExtensionHandler {
 }
 
 #[async_trait::async_trait]
-impl ClientExtensionData for ClientExtensionHandler {
+impl ExtensionClient for ClientExtensionHandler {
   async fn load_data(&self, key: &str) -> Result<String> {
     let res = self.inner.load_data.call_async(Ok(key.to_string())).await?;
     Ok(res)
@@ -146,8 +145,11 @@ impl Clone for ClientManagerHandler {
 }
 
 #[async_trait::async_trait]
-impl ClientManagerData for ClientManagerHandler {
-  async fn get_client(&self, extension: ExtensionData) -> Result<Box<dyn ClientExtensionData>> {
+impl AdapterClient for ClientManagerHandler {
+  async fn get_extension_client(
+    &self,
+    extension: ExtensionData,
+  ) -> Result<Box<dyn ExtensionClient>> {
     let (send, resp) = oneshot::channel();
     self.inner.get_client.call_with_return_value(
       Ok(serde_json::to_value(extension)?),

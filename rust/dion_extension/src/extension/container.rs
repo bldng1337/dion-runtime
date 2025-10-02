@@ -3,14 +3,23 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::{Context as ErrorContext, Result, anyhow, bail};
-use dion_runtime::client_data::ClientExtensionData;
-use dion_runtime::datastructs::{
-    EntryActivity, EntryDetailed, EntryDetailedResult, EntryList, ExtensionData, Source,
-    SourceResult,
-};
-use dion_runtime::extension::{Extension, ExtensionStore};
-use dion_runtime::permission::PermissionStore;
-use dion_runtime::settings::{Setting, SettingStore};
+use dion_runtime::client_data::ExtensionClient;
+use dion_runtime::data::action::EventData;
+use dion_runtime::data::action::EventResult;
+use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::extension::ExtensionData;
+use dion_runtime::data::settings::Setting;
+use dion_runtime::data::source::EntryDetailed;
+use dion_runtime::data::source::EntryDetailedResult;
+use dion_runtime::data::source::EntryId;
+use dion_runtime::data::source::EntryList;
+use dion_runtime::data::source::EpisodeId;
+use dion_runtime::data::source::Source;
+use dion_runtime::data::source::SourceResult;
+use dion_runtime::extension::Extension;
+use dion_runtime::store::ExtensionStore;
+use dion_runtime::store::permission::PermissionStore;
+use dion_runtime::store::settings::SettingStore;
 use tokio::fs;
 use tokio::sync::RwLock;
 use tokio::sync::oneshot;
@@ -18,13 +27,13 @@ use tokio_util::sync::CancellationToken;
 
 use crate::extension::executor::{ExtensionExecutor, Task};
 use crate::extension_executor::ThreadedJSContext;
-use crate::extension_manager::DionExtensionManager;
+use crate::extension_manager::DionExtensionAdapter;
 use crate::network::DionNetworkManager;
 
 #[derive(Debug)]
 pub struct ExtensionRuntimeData {
     pub(crate) store: RwLock<ExtensionStore>,
-    pub(crate) client: Box<dyn ClientExtensionData>,
+    pub(crate) client: Box<dyn ExtensionClient>,
     pub(crate) network: DionNetworkManager,
 }
 
@@ -37,11 +46,11 @@ pub struct DionExtension {
 }
 
 impl DionExtension {
-    pub(crate) async fn create(path: PathBuf, manager: &DionExtensionManager) -> Result<Self> {
+    pub(crate) async fn create(path: PathBuf, manager: &DionExtensionAdapter) -> Result<Self> {
         let (extdata, code) = Self::read_extension(&path).await?;
-        let client: Box<dyn ClientExtensionData> = manager
+        let client: Box<dyn ExtensionClient> = manager
             .client
-            .get_client(extdata.clone())
+            .get_extension_client(extdata.clone())
             .await
             .context("Failed to get Extension Client Data")?;
         let ext = ExtensionStore {
@@ -86,7 +95,7 @@ impl Extension for DionExtension {
         &self.data.store
     }
 
-    fn get_client(&self) -> &dyn ClientExtensionData {
+    fn get_client(&self) -> &dyn ExtensionClient {
         self.data.client.as_ref()
     }
 
@@ -130,6 +139,24 @@ impl Extension for DionExtension {
         }
     }
 
+    async fn event(
+        &self,
+        event: EventResult,
+        token: Option<CancellationToken>,
+    ) -> Result<Option<EventData>> {
+        match &self.context {
+            Some(context) => {
+                let (send, response) = oneshot::channel();
+                let task = Task::Event { event, token, send };
+                context
+                    .send(task)
+                    .context("Failed to send message to Extension Thread")?;
+                response.await?
+            }
+            None => bail!("Extension is not enabled"),
+        }
+    }
+
     async fn search(
         &self,
         page: i32,
@@ -154,11 +181,11 @@ impl Extension for DionExtension {
         }
     }
 
-    async fn fromurl(&self, url: String, token: Option<CancellationToken>) -> Result<bool> {
+    async fn handle_url(&self, url: String, token: Option<CancellationToken>) -> Result<bool> {
         match &self.context {
             Some(context) => {
                 let (send, response) = oneshot::channel();
-                let task = Task::FromUrl { url, token, send };
+                let task = Task::HandleUrl { url, token, send };
                 context
                     .send(task)
                     .context("Failed to send message to Extension Thread")?;
@@ -196,8 +223,8 @@ impl Extension for DionExtension {
 
     async fn detail(
         &self,
-        entryid: String,
-        settings: HashMap<String, dion_runtime::settings::Setting>,
+        entryid: EntryId,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
         match &self.context {
@@ -220,8 +247,8 @@ impl Extension for DionExtension {
 
     async fn source(
         &self,
-        epid: String,
-        settings: HashMap<String, dion_runtime::settings::Setting>,
+        epid: EpisodeId,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
         match &self.context {
@@ -245,7 +272,7 @@ impl Extension for DionExtension {
     async fn map_entry(
         &self,
         entry: EntryDetailed,
-        settings: HashMap<String, dion_runtime::settings::Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
         match &self.context {
@@ -269,7 +296,8 @@ impl Extension for DionExtension {
     async fn map_source(
         &self,
         source: Source,
-        settings: HashMap<String, dion_runtime::settings::Setting>,
+        epid: EpisodeId,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
         match &self.context {
@@ -278,6 +306,7 @@ impl Extension for DionExtension {
                 let task = Task::ProcessSource {
                     source,
                     settings,
+                    epid,
                     token,
                     send,
                 };

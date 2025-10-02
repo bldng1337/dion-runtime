@@ -1,11 +1,16 @@
 {
   "name": "tests",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "bun run build.ts",
+    "build": "tsc --noEmit && bun run build.ts",
     "clean": "bun run clean.ts",
     "test": "bun test",
     "format": "bunx biome format --write",
     "lint": "bunx biome check"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/bun": "^1.2.23"
   }
 }

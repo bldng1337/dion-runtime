@@ -557,14 +557,14 @@ if (!nativeBinding) {
 }
 
 module.exports = nativeBinding
+module.exports.Adapter = nativeBinding.Adapter
+module.exports.AdapterProxy = nativeBinding.AdapterProxy
 module.exports.CancelToken = nativeBinding.CancelToken
 module.exports.CancelTokenProxy = nativeBinding.CancelTokenProxy
 module.exports.Extension = nativeBinding.Extension
 module.exports.ExtensionProxy = nativeBinding.ExtensionProxy
 module.exports.ExtensionClient = nativeBinding.ExtensionClient
 module.exports.ClientExtensionHandler = nativeBinding.ClientExtensionHandler
-module.exports.ExtensionManager = nativeBinding.ExtensionManager
-module.exports.ExtensionManagerProxy = nativeBinding.ExtensionManagerProxy
 module.exports.ManagerClient = nativeBinding.ManagerClient
 module.exports.ClientManagerHandler = nativeBinding.ClientManagerHandler
 module.exports.plus100 = nativeBinding.plus100

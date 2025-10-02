@@ -1,23 +1,23 @@
 use anyhow::Result;
-use dion_extension::extension_manager::DionExtensionManager;
-use dion_runtime::extension::ExtensionManager;
+use dion_extension::extension_manager::DionExtensionAdapter;
+use dion_runtime::extension::Adapter;
 use napi_derive::napi;
 
 use crate::{client::ClientManagerHandler, error::ErrorConverter, extension::ExtensionProxy};
 
-#[napi(js_name = "ExtensionManager")]
-pub struct ExtensionManagerProxy {
-  manager: Box<dyn ExtensionManager>,
+#[napi(js_name = "Adapter")]
+pub struct AdapterProxy {
+  manager: Box<dyn Adapter>,
 }
 
 #[napi]
-impl ExtensionManagerProxy {
+impl AdapterProxy {
   #[napi(factory)]
   pub async fn init(handler: &ClientManagerHandler) -> Result<Self, napi::Error> {
     let handler = (*handler).clone();
     Ok(Self {
       manager: Box::new(
-        DionExtensionManager::new(Box::new(handler))
+        DionExtensionAdapter::new(Box::new(handler))
           .await
           .map_to_node()?,
       ),

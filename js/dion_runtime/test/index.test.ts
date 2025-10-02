@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import {
 	ExtensionClient,
-	ExtensionManager,
+	Adapter,
 	ManagerClient,
 	plus100,
 } from "../index";
@@ -12,7 +12,12 @@ const server = Bun.serve({
 	routes: {
 		"/getEntry": () => {
 			const entry: EntryDetailed = {
-				id: "",
+				id: [
+				{
+					uid: "epid",
+					type: "test",
+				}
+				],
 				url: "",
 				titles: [],
 				author: null,
@@ -34,7 +39,12 @@ const server = Bun.serve({
 		"/getEntries": () => {
 			const entries: Entry[] = [
 				{
-					id: "",
+					id: [
+					{
+						uid: "epid",
+						type: "test",
+					}
+					],
 					url: "",
 					title: "",
 					media_type: "Video",
@@ -65,7 +75,7 @@ test("plus100", () => {
 });
 
 test("DionExtensionManager", async () => {
-	const manager = await ExtensionManager.init(
+	const manager = await Adapter.init(
 		new ManagerClient(
 			(_err, _extdata) => {
 				return new ExtensionClient(
@@ -106,7 +116,10 @@ test("DionExtensionManager", async () => {
 
 		await ext.browse(0);
 		await ext.search(0, "");
-		const entry = await ext.detail("", {});
+		const entry = await ext.detail({
+		type: "test",
+		uid: "epid",
+		}, {});
 		await ext.fromurl("");
 		await ext.mapEntry(entry.entry, {});
 		await ext.onEntryActivity(
@@ -117,7 +130,13 @@ test("DionExtensionManager", async () => {
 			entry.entry,
 			{},
 		);
-		const source = await ext.source("epid", {});
-		await ext.mapSource(source.source, {});
+		const source = await ext.source({
+		type: "test",
+		uid: "epid",
+		}, {});
+		await ext.mapSource(source.source, {
+		type: "test",
+		uid: "epid",
+		},{});
 	}
 });

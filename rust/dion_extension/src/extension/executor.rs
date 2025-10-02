@@ -13,10 +13,12 @@ use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
 use boa_engine::{Context, JsObject, JsValue, Module, js_string};
 use boa_runtime::Console;
-use dion_runtime::datastructs::{
-    EntryActivity, EntryDetailed, EntryDetailedResult, EntryList, Source, SourceResult,
+use dion_runtime::data::action::{EventData, EventResult};
+use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::settings::Setting;
+use dion_runtime::data::source::{
+    EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
 };
-use dion_runtime::settings::Setting;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use tokio::sync::oneshot::Sender;
@@ -37,21 +39,27 @@ pub(super) enum Task {
         token: Option<CancellationToken>,
         send: Sender<Result<EntryList>>,
     },
-    FromUrl {
+    Event {
+        event: EventResult,
+
+        token: Option<CancellationToken>,
+        send: Sender<Result<Option<EventData>>>,
+    },
+    HandleUrl {
         url: String,
 
         token: Option<CancellationToken>,
         send: Sender<Result<bool>>,
     },
     Source {
-        epid: String,
+        epid: EpisodeId,
         settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
         send: Sender<Result<SourceResult>>,
     },
     Detail {
-        entryid: String,
+        entryid: EntryId,
         settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
@@ -59,7 +67,7 @@ pub(super) enum Task {
     },
     MapEntry {
         entry: EntryDetailed,
-        settings: HashMap<String, dion_runtime::settings::Setting>,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
         send: Sender<Result<EntryDetailedResult>>,
     },
@@ -72,6 +80,7 @@ pub(super) enum Task {
     },
     ProcessSource {
         source: Source,
+        epid: EpisodeId,
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
         send: Sender<Result<SourceResult>>,
@@ -249,15 +258,31 @@ impl JSExecutor<Task> for ExtensionExecutor {
                 .await;
                 let _ = send.send(res);
             }
-            Task::FromUrl { url, token, send } => {
+            Task::HandleUrl { url, token, send } => {
                 let res = async {
                     let vals = &[url
                         .try_into_js(context)
                         .map_anyhow_ctx(context)
                         .context("Failed to convert url to js")?];
-                    Self::exec(context, "fromUrl", vals, token)
+                    Self::exec(context, "handleUrl", vals, token)
                         .await
-                        .context("Failed to call fromUrl")
+                        .context("Failed to call handleUrl")
+                }
+                .await;
+                let _ = send.send(res);
+            }
+            Task::Event { event, token, send } => {
+                let res = async {
+                    let vals = &[JsValue::from_json(
+                        &serde_json::to_value(event)
+                            .context("Failed to convert Entry to serde Value")?,
+                        context,
+                    )
+                    .map_anyhow_ctx(context)
+                    .context("Failed to convert Entry to js")?];
+                    Self::exec(context, "onEvent", vals, token)
+                        .await
+                        .context("Failed to call handleUrl")
                 }
                 .await;
                 let _ = send.send(res);
@@ -270,10 +295,13 @@ impl JSExecutor<Task> for ExtensionExecutor {
             } => {
                 let res = async {
                     let vals = &[
-                        entryid
-                            .try_into_js(context)
-                            .map_anyhow_ctx(context)
-                            .context("Failed to convert entryid to js")?,
+                        JsValue::from_json(
+                            &serde_json::to_value(entryid)
+                                .context("Failed to convert EntryId to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert EntryId to js")?,
                         JsValue::from_json(
                             &serde_json::to_value(settings)
                                 .context("Failed to convert Settings to serde Value")?,
@@ -297,9 +325,13 @@ impl JSExecutor<Task> for ExtensionExecutor {
             } => {
                 let res = async {
                     let vals = &[
-                        epid.try_into_js(context)
-                            .map_anyhow_ctx(context)
-                            .context("Failed to convert epid to js")?,
+                        JsValue::from_json(
+                            &serde_json::to_value(epid)
+                                .context("Failed to convert EntryId to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert EpisodeId to js")?,
                         JsValue::from_json(
                             &serde_json::to_value(settings)
                                 .context("Failed to convert Settings to serde Value")?,
@@ -385,6 +417,7 @@ impl JSExecutor<Task> for ExtensionExecutor {
             }
             Task::ProcessSource {
                 source,
+                epid,
                 settings,
                 token,
                 send,
@@ -394,6 +427,13 @@ impl JSExecutor<Task> for ExtensionExecutor {
                         JsValue::from_json(
                             &serde_json::to_value(source)
                                 .context("Failed to convert Source to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert EpisodeId to js")?,
+                        JsValue::from_json(
+                            &serde_json::to_value(epid)
+                                .context("Failed to convert EpisodeId to serde Value")?,
                             context,
                         )
                         .map_anyhow_ctx(context)

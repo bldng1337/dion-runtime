@@ -9,7 +9,7 @@ use boa_engine::{
 };
 
 use anyhow::Result;
-use dion_runtime::settings::{Setting, SettingKind};
+use dion_runtime::data::settings::{Setting, SettingKind};
 use serde_json::Value;
 
 use crate::{extension::executor::ExtensionRuntimeDataContainer, utils::VirtualModuleLoader};

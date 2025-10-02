@@ -13,7 +13,7 @@ interface Requestoptions {
 
 interface DionResponse {
   status: number;
-  headers: Map<String,String>;
+  headers: Map<string,string>;
   body: string;
   json: any;
   ok: boolean;
@@ -87,19 +87,23 @@ declare var appdata: {
   platform: string;
 };
 
+interface Extension {
+  onEvent(data: EventData): Promise<EventResult | undefined>;
+}
+
 interface SourceProvider {
   browse(page: number): Promise<EntryList>;
   search(page: number, filter: string): Promise<EntryList>;
-  fromUrl(url: string): Promise<boolean>;
-  detail(entryid: string, settings: Record<string, Setting>): Promise<EntryDetailedResult>;
-  source(epid: string, settings: Record<string, Setting>): Promise<SourceResult>;
+  detail(entryid: EntryId, settings: Record<string, Setting>): Promise<EntryDetailedResult>;
+  source(epid: EpisodeId, settings: Record<string, Setting>): Promise<SourceResult>;
+  handleUrl?(url: string): Promise<boolean>;
 }
 
 interface EntryExtension {
-  mapEntry(entry: EntryDetailed, settings: Record<string, Setting>): Promise<EntryDetailedResult>;
-  onEntryActivity(activity: EntryActivity, entry: EntryDetailed, settings: Record<string, Setting>): Promise<void>;
+  mapEntry?(entry: EntryDetailed, settings: Record<string, Setting>): Promise<EntryDetailedResult>;
+  onEntryActivity?(activity: EntryActivity, entry: EntryDetailed, settings: Record<string, Setting>): Promise<void>;
 }
 
 interface SourceProcessorExtension {
-  mapSource(source: Source, settings: Record<string, Setting>): Promise<SourceResult>;
+  mapSource(source: Source, epid: EpisodeId, settings: Record<string, Setting>): Promise<SourceResult>;
 }

@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 
 use dion_runtime::{
-  datastructs::{EntryActivity, EntryDetailed, Source},
+  data::{
+    activity::EntryActivity,
+    permission::Permission,
+    settings::{Setting, SettingKind, SettingValue},
+    source::{EntryDetailed, Source},
+  },
   extension::Extension,
-  permission::Permission,
-  settings::{Setting, SettingKind, SettingValue},
 };
 use napi_derive::napi;
 
@@ -74,16 +77,16 @@ impl ExtensionProxy {
     token: Option<&CancelTokenProxy>,
   ) -> Result<bool, napi::Error> {
     let token = token.map(|v| v.take_token());
-    self.extension.fromurl(url, token).await.map_to_node()
+    self.extension.handle_url(url, token).await.map_to_node()
   }
 
   #[napi(
-    ts_args_type = "entryid: string, settings: Record<string, Setting>, token?: CancelToken",
+    ts_args_type = "entryid: EntryId, settings: Record<string, Setting>, token?: CancelToken",
     ts_return_type = "Promise<EntryDetailedResult>"
   )]
   pub async fn detail(
     &self,
-    entryid: String,
+    entryid: serde_json::Value,
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
@@ -95,19 +98,23 @@ impl ExtensionProxy {
     }
     let inner = self
       .extension
-      .detail(entryid, mapsettings, token)
+      .detail(
+        serde_json::from_value(entryid).map_to_node()?,
+        mapsettings,
+        token,
+      )
       .await
       .map_to_node()?;
     serde_json::to_value(inner).map_to_node()
   }
 
   #[napi(
-    ts_args_type = "epid: string, settings: Record<string, Setting>, token?: CancelToken",
+    ts_args_type = "epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken",
     ts_return_type = "Promise<SourceResult>"
   )]
   pub async fn source(
     &self,
-    epid: String,
+    epid: serde_json::Value,
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
@@ -119,7 +126,11 @@ impl ExtensionProxy {
     }
     let inner = self
       .extension
-      .source(epid, mapsettings, token)
+      .source(
+        serde_json::from_value(epid).map_to_node()?,
+        mapsettings,
+        token,
+      )
       .await
       .map_to_node()?;
     serde_json::to_value(inner).map_to_node()
@@ -177,12 +188,13 @@ impl ExtensionProxy {
   }
 
   #[napi(
-    ts_args_type = "source: Source, settings: Record<string, Setting>, token?: CancelToken",
+    ts_args_type = "source: Source, epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken",
     ts_return_type = "Promise<Source>"
   )]
   pub async fn map_source(
     &self,
     source: serde_json::Value,
+    epid: serde_json::Value,
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
@@ -195,7 +207,12 @@ impl ExtensionProxy {
     }
     let inner = self
       .extension
-      .map_source(source, mapsettings, token)
+      .map_source(
+        source,
+        serde_json::from_value(epid).map_to_node()?,
+        mapsettings,
+        token,
+      )
       .await
       .map_to_node()?;
     serde_json::to_value(inner).map_to_node()
