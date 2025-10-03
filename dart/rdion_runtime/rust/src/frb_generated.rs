@@ -34,9 +34,16 @@ use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
 
-pub use dion_runtime::datastructs::*;
-use dion_runtime::permission::Permission;
-use dion_runtime::settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI};
+use dion_runtime::data::action::*;
+use dion_runtime::data::activity::*;
+use dion_runtime::data::auth::*;
+use dion_runtime::data::custom_ui::*;
+use dion_runtime::data::extension::*;
+use dion_runtime::data::extension_manager::*;
+use dion_runtime::data::extension_repo::*;
+use dion_runtime::data::permission::*;
+use dion_runtime::data::settings::*;
+use dion_runtime::data::source::*;
 use serde_json::Value;
 
 flutter_rust_bridge::frb_generated_boilerplate!(
@@ -45,7 +52,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -187761305;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1200270034;
 
 // Section: executor
 
@@ -257,17 +264,67 @@ let api_get_client = decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustO
                     })())
                 } })
 }
-fn wire__crate__api__extension__ProxyExtensionManager_get_extensions_impl(
+fn wire__crate__api__extension__ProxyAdapter_browse_repo_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >,
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
+    >,
+    repo: impl CstDecode<dion_runtime::data::extension_repo::ExtensionRepo>,
+    page: impl CstDecode<i32>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyAdapter_browse_repo",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_repo = repo.cst_decode();
+            let api_page = page.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::extension::ProxyAdapter::browse_repo(
+                            &*api_that_guard,
+                            &api_repo,
+                            api_page,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyAdapter_get_extensions_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
     >,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_get_extensions",
+            debug_name: "ProxyAdapter_get_extensions",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -294,10 +351,8 @@ fn wire__crate__api__extension__ProxyExtensionManager_get_extensions_impl(
                         }
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok =
-                            crate::api::extension::ProxyExtensionManager::get_extensions(
-                                &*api_that_guard,
-                            )
-                            .await?;
+                            crate::api::extension::ProxyAdapter::get_extensions(&*api_that_guard)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -306,18 +361,16 @@ fn wire__crate__api__extension__ProxyExtensionManager_get_extensions_impl(
         },
     )
 }
-fn wire__crate__api__extension__ProxyExtensionManager_get_repo_impl(
+fn wire__crate__api__extension__ProxyAdapter_get_repo_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >,
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
     >,
     url: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_get_repo",
+            debug_name: "ProxyAdapter_get_repo",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -344,7 +397,7 @@ fn wire__crate__api__extension__ProxyExtensionManager_get_repo_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::extension::ProxyExtensionManager::get_repo(
+                        let output_ok = crate::api::extension::ProxyAdapter::get_repo(
                             &*api_that_guard,
                             &api_url,
                         )
@@ -357,7 +410,7 @@ fn wire__crate__api__extension__ProxyExtensionManager_get_repo_impl(
         },
     )
 }
-fn wire__crate__api__extension__ProxyExtensionManager_init_dion_impl(
+fn wire__crate__api__extension__ProxyAdapter_init_dion_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     client: impl CstDecode<
         RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ManagerClient>>,
@@ -365,7 +418,7 @@ fn wire__crate__api__extension__ProxyExtensionManager_init_dion_impl(
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_init_dion",
+            debug_name: "ProxyAdapter_init_dion",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -393,10 +446,9 @@ fn wire__crate__api__extension__ProxyExtensionManager_init_dion_impl(
                             }
                         }
                         let api_client_guard = api_client_guard.unwrap();
-                        let output_ok = crate::api::extension::ProxyExtensionManager::init_dion(
-                            &*api_client_guard,
-                        )
-                        .await?;
+                        let output_ok =
+                            crate::api::extension::ProxyAdapter::init_dion(&*api_client_guard)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -405,18 +457,16 @@ fn wire__crate__api__extension__ProxyExtensionManager_init_dion_impl(
         },
     )
 }
-fn wire__crate__api__extension__ProxyExtensionManager_install_impl(
+fn wire__crate__api__extension__ProxyAdapter_install_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >,
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
     >,
-    location: impl CstDecode<dion_runtime::datastructs::RemoteExtension>,
+    location: impl CstDecode<String>,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_install",
+            debug_name: "ProxyAdapter_install",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -443,7 +493,7 @@ fn wire__crate__api__extension__ProxyExtensionManager_install_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::extension::ProxyExtensionManager::install(
+                        let output_ok = crate::api::extension::ProxyAdapter::install(
                             &*api_that_guard,
                             &api_location,
                         )
@@ -456,70 +506,18 @@ fn wire__crate__api__extension__ProxyExtensionManager_install_impl(
         },
     )
 }
-fn wire__crate__api__extension__ProxyExtensionManager_install_single_impl(
+fn wire__crate__api__extension__ProxyAdapter_uninstall_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >,
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
     >,
-    url: impl CstDecode<String>,
+    ext: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_install_single",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_that = that.cst_decode();
-            let api_url = url.cst_decode();
-            move |context| async move {
-                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let mut api_that_guard = None;
-                        let decode_indices_ =
-                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
-                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, false,
-                                )],
-                            );
-                        for i in decode_indices_ {
-                            match i {
-                                0 => {
-                                    api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref().await)
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        let api_that_guard = api_that_guard.unwrap();
-                        let output_ok =
-                            crate::api::extension::ProxyExtensionManager::install_single(
-                                &*api_that_guard,
-                                api_url,
-                            )
-                            .await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
-fn wire__crate__api__extension__ProxyExtensionManager_uninstall_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<
-        RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >,
-    >,
-    ext: impl CstDecode<ProxyExtension>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtensionManager_uninstall",
+            debug_name: "ProxyAdapter_uninstall",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -530,11 +528,17 @@ fn wire__crate__api__extension__ProxyExtensionManager_uninstall_impl(
                 transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
                     (move || async move {
                         let mut api_that_guard = None;
+                        let mut api_ext_guard = None;
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
-                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, false,
-                                )],
+                                vec![
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_that, 0, false,
+                                    ),
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_ext, 1, false,
+                                    ),
+                                ],
                             );
                         for i in decode_indices_ {
                             match i {
@@ -542,13 +546,17 @@ fn wire__crate__api__extension__ProxyExtensionManager_uninstall_impl(
                                     api_that_guard =
                                         Some(api_that.lockable_decode_async_ref().await)
                                 }
+                                1 => {
+                                    api_ext_guard = Some(api_ext.lockable_decode_async_ref().await)
+                                }
                                 _ => unreachable!(),
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::extension::ProxyExtensionManager::uninstall(
+                        let api_ext_guard = api_ext_guard.unwrap();
+                        let output_ok = crate::api::extension::ProxyAdapter::uninstall(
                             &*api_that_guard,
-                            api_ext,
+                            &*api_ext_guard,
                         )
                         .await?;
                         Ok(output_ok)
@@ -646,11 +654,11 @@ fn wire__crate__api__extension__ProxyExtension_detail_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_entryid = <String>::sse_decode(&mut deserializer);
-            let api_settings =
-                <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                    &mut deserializer,
-                );
+            let api_entryid = <dion_runtime::data::source::EntryId>::sse_decode(&mut deserializer);
+            let api_settings = <std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(&mut deserializer);
             let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -677,58 +685,6 @@ fn wire__crate__api__extension__ProxyExtension_detail_impl(
                             &*api_that_guard,
                             api_entryid,
                             api_settings,
-                            api_token,
-                        )
-                        .await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
-fn wire__crate__api__extension__ProxyExtension_fromurl_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    that: impl CstDecode<
-        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
-    >,
-    url: impl CstDecode<String>,
-    token: impl CstDecode<Option<CancelToken>>,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "ProxyExtension_fromurl",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let api_that = that.cst_decode();
-            let api_url = url.cst_decode();
-            let api_token = token.cst_decode();
-            move |context| async move {
-                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let mut api_that_guard = None;
-                        let decode_indices_ =
-                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
-                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, false,
-                                )],
-                            );
-                        for i in decode_indices_ {
-                            match i {
-                                0 => {
-                                    api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref().await)
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::extension::ProxyExtension::fromurl(
-                            &*api_that_guard,
-                            api_url,
                             api_token,
                         )
                         .await?;
@@ -882,7 +838,8 @@ fn wire__crate__api__extension__ProxyExtension_get_setting_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_id = <String>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -943,7 +900,8 @@ fn wire__crate__api__extension__ProxyExtension_get_setting_ids_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, ()>(
@@ -1005,7 +963,8 @@ fn wire__crate__api__extension__ProxyExtension_get_settings_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -1030,6 +989,58 @@ fn wire__crate__api__extension__ProxyExtension_get_settings_impl(
                         let output_ok = crate::api::extension::ProxyExtension::get_settings(
                             &*api_that_guard,
                             api_kind,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_handle_url_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+    url: impl CstDecode<String>,
+    token: impl CstDecode<Option<CancelToken>>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_handle_url",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_url = url.cst_decode();
+            let api_token = token.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::extension::ProxyExtension::handle_url(
+                            &*api_that_guard,
+                            api_url,
+                            api_token,
                         )
                         .await?;
                         Ok(output_ok)
@@ -1066,7 +1077,7 @@ fn wire__crate__api__extension__ProxyExtension_has_permission_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_permission =
-                <dion_runtime::permission::Permission>::sse_decode(&mut deserializer);
+                <dion_runtime::data::permission::Permission>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, ()>(
@@ -1168,11 +1179,11 @@ fn wire__crate__api__extension__ProxyExtension_map_entry_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_entry =
-                <dion_runtime::datastructs::EntryDetailed>::sse_decode(&mut deserializer);
-            let api_settings =
-                <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                    &mut deserializer,
-                );
+                <dion_runtime::data::source::EntryDetailed>::sse_decode(&mut deserializer);
+            let api_settings = <std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(&mut deserializer);
             let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -1235,11 +1246,12 @@ fn wire__crate__api__extension__ProxyExtension_map_source_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_source = <dion_runtime::datastructs::Source>::sse_decode(&mut deserializer);
-            let api_settings =
-                <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                    &mut deserializer,
-                );
+            let api_source = <dion_runtime::data::source::Source>::sse_decode(&mut deserializer);
+            let api_epid = <dion_runtime::data::source::EpisodeId>::sse_decode(&mut deserializer);
+            let api_settings = <std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(&mut deserializer);
             let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -1265,6 +1277,7 @@ fn wire__crate__api__extension__ProxyExtension_map_source_impl(
                         let output_ok = crate::api::extension::ProxyExtension::map_source(
                             &*api_that_guard,
                             api_source,
+                            api_epid,
                             api_settings,
                             api_token,
                         )
@@ -1303,8 +1316,10 @@ fn wire__crate__api__extension__ProxyExtension_merge_setting_definition_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_id = <String>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
-            let api_definition = <dion_runtime::settings::Setting>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_definition =
+                <dion_runtime::data::settings::Setting>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -1368,13 +1383,13 @@ fn wire__crate__api__extension__ProxyExtension_on_entry_activity_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_activity =
-                <dion_runtime::datastructs::EntryActivity>::sse_decode(&mut deserializer);
+                <dion_runtime::data::activity::EntryActivity>::sse_decode(&mut deserializer);
             let api_entry =
-                <dion_runtime::datastructs::EntryDetailed>::sse_decode(&mut deserializer);
-            let api_settings =
-                <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                    &mut deserializer,
-                );
+                <dion_runtime::data::source::EntryDetailed>::sse_decode(&mut deserializer);
+            let api_settings = <std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(&mut deserializer);
             let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -1484,7 +1499,7 @@ fn wire__crate__api__extension__ProxyExtension_remove_permission_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_permission =
-                <dion_runtime::permission::Permission>::sse_decode(&mut deserializer);
+                <dion_runtime::data::permission::Permission>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -1545,7 +1560,8 @@ fn wire__crate__api__extension__ProxyExtension_remove_setting_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_id = <String>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -1720,8 +1736,10 @@ fn wire__crate__api__extension__ProxyExtension_set_setting_impl(
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
             let api_id = <String>::sse_decode(&mut deserializer);
-            let api_kind = <dion_runtime::settings::SettingKind>::sse_decode(&mut deserializer);
-            let api_value = <dion_runtime::settings::SettingValue>::sse_decode(&mut deserializer);
+            let api_kind =
+                <dion_runtime::data::settings::SettingKind>::sse_decode(&mut deserializer);
+            let api_value =
+                <dion_runtime::data::settings::SettingValue>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -1783,11 +1801,11 @@ fn wire__crate__api__extension__ProxyExtension_source_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_epid = <String>::sse_decode(&mut deserializer);
-            let api_settings =
-                <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                    &mut deserializer,
-                );
+            let api_epid = <dion_runtime::data::source::EpisodeId>::sse_decode(&mut deserializer);
+            let api_settings = <std::collections::HashMap<
+                String,
+                dion_runtime::data::settings::Setting,
+            >>::sse_decode(&mut deserializer);
             let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -1825,68 +1843,7 @@ fn wire__crate__api__extension__ProxyExtension_source_impl(
         },
     )
 }
-fn wire__dion_runtime__datastructs__entry_default_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "entry_default",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            move |context| {
-                transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::Entry::default())?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__dion_runtime__datastructs__entry_detailed_default_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "entry_detailed_default",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            move |context| {
-                transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::EntryDetailed::default())?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__dion_runtime__datastructs__entry_detailed_result_default_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "entry_detailed_result_default",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            move |context| {
-                transform_result_dco::<_, _, ()>((move || {
-                    let output_ok = Result::<_, ()>::Ok(
-                        dion_runtime::datastructs::EntryDetailedResult::default(),
-                    )?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__dion_runtime__datastructs__entry_list_default_impl(
+fn wire__dion_runtime__data__source__entry_list_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -1899,34 +1856,14 @@ fn wire__dion_runtime__datastructs__entry_list_default_impl(
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
                     let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::EntryList::default())?;
+                        Result::<_, ()>::Ok(dion_runtime::data::source::EntryList::default())?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__episode_default_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "episode_default",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            move |context| {
-                transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::Episode::default())?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__dion_runtime__datastructs__extension_data_default_impl(
+fn wire__dion_runtime__data__extension__extension_data_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -1938,15 +1875,37 @@ fn wire__dion_runtime__datastructs__extension_data_default_impl(
         move || {
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::ExtensionData::default())?;
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension::ExtensionData::default(),
+                    )?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__extension_repo_default_impl(
+fn wire__dion_runtime__data__extension_manager__extension_manager_data_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "extension_manager_data_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension_manager::ExtensionManagerData::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__extension_repo__extension_repo_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -1958,8 +1917,9 @@ fn wire__dion_runtime__datastructs__extension_repo_default_impl(
         move || {
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::ExtensionRepo::default())?;
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension_repo::ExtensionRepo::default(),
+                    )?;
                     Ok(output_ok)
                 })())
             }
@@ -1987,7 +1947,7 @@ fn wire__crate__api__lets_init_app_here_impl(
         },
     )
 }
-fn wire__dion_runtime__datastructs__link_default_impl(
+fn wire__dion_runtime__data__source__link_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -2000,14 +1960,14 @@ fn wire__dion_runtime__datastructs__link_default_impl(
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
                     let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::Link::default())?;
+                        Result::<_, ()>::Ok(dion_runtime::data::source::Link::default())?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__media_type_default_impl(
+fn wire__dion_runtime__data__source__media_type_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -2020,14 +1980,14 @@ fn wire__dion_runtime__datastructs__media_type_default_impl(
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
                     let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::MediaType::default())?;
+                        Result::<_, ()>::Ok(dion_runtime::data::source::MediaType::default())?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__release_status_default_impl(
+fn wire__dion_runtime__data__source__release_status_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -2040,14 +2000,14 @@ fn wire__dion_runtime__datastructs__release_status_default_impl(
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
                     let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::ReleaseStatus::default())?;
+                        Result::<_, ()>::Ok(dion_runtime::data::source::ReleaseStatus::default())?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__remote_extension_default_impl(
+fn wire__dion_runtime__data__extension_repo__remote_extension_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -2059,15 +2019,58 @@ fn wire__dion_runtime__datastructs__remote_extension_default_impl(
         move || {
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::RemoteExtension::default())?;
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension_repo::RemoteExtension::default(),
+                    )?;
                     Ok(output_ok)
                 })())
             }
         },
     )
 }
-fn wire__dion_runtime__datastructs__timestamp_type_default_impl(
+fn wire__dion_runtime__data__extension_repo__remote_extension_result_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "remote_extension_result_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension_repo::RemoteExtensionResult::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__extension__source_open_type_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "source_open_type_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::extension::SourceOpenType::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__timestamp_type_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
@@ -2079,8 +2082,9 @@ fn wire__dion_runtime__datastructs__timestamp_type_default_impl(
         move || {
             move |context| {
                 transform_result_dco::<_, _, ()>((move || {
-                    let output_ok =
-                        Result::<_, ()>::Ok(dion_runtime::datastructs::TimestampType::default())?;
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::TimestampType::default(),
+                    )?;
                     Ok(output_ok)
                 })())
             }
@@ -2092,284 +2096,363 @@ fn wire__dion_runtime__datastructs__timestamp_type_default_impl(
 
 #[allow(clippy::unnecessary_literal_unwrap)]
 const _: fn() = || {
-    match None::<dion_runtime::datastructs::Action>.unwrap() {
-        dion_runtime::datastructs::Action::OpenBrowser { url } => {
+    match None::<dion_runtime::data::action::Action>.unwrap() {
+        dion_runtime::data::action::Action::OpenBrowser { url } => {
             let _: String = url;
         }
-        dion_runtime::datastructs::Action::Popup {
+        dion_runtime::data::action::Action::Popup {
             title,
             content,
             actions,
         } => {
             let _: String = title;
-            let _: dion_runtime::datastructs::CustomUI = content;
-            let _: Vec<dion_runtime::datastructs::PopupAction> = actions;
+            let _: dion_runtime::data::custom_ui::CustomUI = content;
+            let _: Vec<dion_runtime::data::action::PopupAction> = actions;
         }
-        dion_runtime::datastructs::Action::Nav { title, content } => {
+        dion_runtime::data::action::Action::Nav { title, content } => {
             let _: String = title;
-            let _: dion_runtime::datastructs::CustomUI = content;
+            let _: dion_runtime::data::custom_ui::CustomUI = content;
         }
-        dion_runtime::datastructs::Action::TriggerEvent { event, data } => {
+        dion_runtime::data::action::Action::TriggerEvent { event, data } => {
             let _: String = event;
             let _: String = data;
         }
+        dion_runtime::data::action::Action::NavEntry { entry } => {
+            let _: dion_runtime::data::source::EntryDetailed = entry;
+        }
     }
-    match None::<dion_runtime::datastructs::CustomUI>.unwrap() {
-        dion_runtime::datastructs::CustomUI::Text { text } => {
+    match None::<dion_runtime::data::custom_ui::CustomUI>.unwrap() {
+        dion_runtime::data::custom_ui::CustomUI::Text { text } => {
             let _: String = text;
         }
-        dion_runtime::datastructs::CustomUI::Image {
+        dion_runtime::data::custom_ui::CustomUI::Image {
             image,
             width,
             height,
         } => {
-            let _: dion_runtime::datastructs::Link = image;
+            let _: dion_runtime::data::source::Link = image;
             let _: Option<i32> = width;
             let _: Option<i32> = height;
         }
-        dion_runtime::datastructs::CustomUI::Link { link, label } => {
+        dion_runtime::data::custom_ui::CustomUI::Link { link, label } => {
             let _: String = link;
             let _: Option<String> = label;
         }
-        dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => {
+        dion_runtime::data::custom_ui::CustomUI::TimeStamp { timestamp, display } => {
             let _: String = timestamp;
-            let _: dion_runtime::datastructs::TimestampType = display;
+            let _: dion_runtime::data::custom_ui::TimestampType = display;
         }
-        dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
-            let _: dion_runtime::datastructs::Entry = entry;
+        dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
+            let _: dion_runtime::data::source::Entry = entry;
         }
-        dion_runtime::datastructs::CustomUI::Button { label, on_click } => {
+        dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => {
+            let _: dion_runtime::data::source::Link = image;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = top;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = bottom;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => {
+            let _: String = event;
+            let _: String = data;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
             let _: String = label;
-            let _: Option<Box<dion_runtime::datastructs::UIAction>> = on_click;
+            let _: Option<Box<dion_runtime::data::action::UIAction>> = on_click;
         }
-        dion_runtime::datastructs::CustomUI::InlineSetting {
+        dion_runtime::data::custom_ui::CustomUI::InlineSetting {
             setting_id,
+            setting_kind,
             on_commit,
         } => {
             let _: String = setting_id;
-            let _: Option<Box<dion_runtime::datastructs::UIAction>> = on_commit;
+            let _: dion_runtime::data::settings::SettingKind = setting_kind;
+            let _: Option<Box<dion_runtime::data::action::UIAction>> = on_commit;
         }
-        dion_runtime::datastructs::CustomUI::Slot { id, child } => {
+        dion_runtime::data::custom_ui::CustomUI::Slot { id, child } => {
             let _: String = id;
-            let _: Box<dion_runtime::datastructs::CustomUI> = child;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
         }
-        dion_runtime::datastructs::CustomUI::Column { children } => {
-            let _: Vec<dion_runtime::datastructs::CustomUI> = children;
+        dion_runtime::data::custom_ui::CustomUI::Column { children } => {
+            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
         }
-        dion_runtime::datastructs::CustomUI::Row { children } => {
-            let _: Vec<dion_runtime::datastructs::CustomUI> = children;
+        dion_runtime::data::custom_ui::CustomUI::Row { children } => {
+            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
         }
     }
     {
-        let DropdownOption = None::<dion_runtime::settings::DropdownOption>.unwrap();
+        let DropdownOption = None::<dion_runtime::data::settings::DropdownOption>.unwrap();
         let _: String = DropdownOption.label;
         let _: String = DropdownOption.value;
     }
     {
-        let Entry = None::<dion_runtime::datastructs::Entry>.unwrap();
-        let _: String = Entry.id;
+        let Entry = None::<dion_runtime::data::source::Entry>.unwrap();
+        let _: Vec<dion_runtime::data::source::EntryId> = Entry.id;
         let _: String = Entry.url;
         let _: String = Entry.title;
-        let _: dion_runtime::datastructs::MediaType = Entry.media_type;
-        let _: Option<dion_runtime::datastructs::Link> = Entry.cover;
+        let _: dion_runtime::data::source::MediaType = Entry.media_type;
+        let _: Option<dion_runtime::data::source::Link> = Entry.cover;
         let _: Option<Vec<String>> = Entry.author;
         let _: Option<f32> = Entry.rating;
         let _: Option<f32> = Entry.views;
         let _: Option<i32> = Entry.length;
     }
-    match None::<dion_runtime::datastructs::EntryActivity>.unwrap() {
-        dion_runtime::datastructs::EntryActivity::EpisodeActivity { progress } => {
+    match None::<dion_runtime::data::activity::EntryActivity>.unwrap() {
+        dion_runtime::data::activity::EntryActivity::EpisodeActivity { progress } => {
             let _: i32 = progress;
         }
     }
     {
-        let EntryDetailed = None::<dion_runtime::datastructs::EntryDetailed>.unwrap();
-        let _: String = EntryDetailed.id;
+        let EntryDetailed = None::<dion_runtime::data::source::EntryDetailed>.unwrap();
+        let _: Vec<dion_runtime::data::source::EntryId> = EntryDetailed.id;
         let _: String = EntryDetailed.url;
         let _: Vec<String> = EntryDetailed.titles;
         let _: Option<Vec<String>> = EntryDetailed.author;
-        let _: Option<dion_runtime::datastructs::CustomUI> = EntryDetailed.ui;
+        let _: Option<dion_runtime::data::custom_ui::CustomUI> = EntryDetailed.ui;
         let _: Option<std::collections::HashMap<String, String>> = EntryDetailed.meta;
-        let _: dion_runtime::datastructs::MediaType = EntryDetailed.media_type;
-        let _: dion_runtime::datastructs::ReleaseStatus = EntryDetailed.status;
+        let _: dion_runtime::data::source::MediaType = EntryDetailed.media_type;
+        let _: dion_runtime::data::source::ReleaseStatus = EntryDetailed.status;
         let _: String = EntryDetailed.description;
         let _: String = EntryDetailed.language;
-        let _: Option<dion_runtime::datastructs::Link> = EntryDetailed.cover;
-        let _: Vec<dion_runtime::datastructs::Episode> = EntryDetailed.episodes;
+        let _: Option<dion_runtime::data::source::Link> = EntryDetailed.cover;
+        let _: Vec<dion_runtime::data::source::Episode> = EntryDetailed.episodes;
         let _: Option<Vec<String>> = EntryDetailed.genres;
         let _: Option<f32> = EntryDetailed.rating;
         let _: Option<f32> = EntryDetailed.views;
         let _: Option<i32> = EntryDetailed.length;
     }
     {
-        let EntryDetailedResult = None::<dion_runtime::datastructs::EntryDetailedResult>.unwrap();
-        let _: dion_runtime::datastructs::EntryDetailed = EntryDetailedResult.entry;
-        let _: std::collections::HashMap<String, dion_runtime::settings::Setting> =
+        let EntryDetailedResult = None::<dion_runtime::data::source::EntryDetailedResult>.unwrap();
+        let _: dion_runtime::data::source::EntryDetailed = EntryDetailedResult.entry;
+        let _: std::collections::HashMap<String, dion_runtime::data::settings::Setting> =
             EntryDetailedResult.settings;
     }
     {
-        let EntryList = None::<dion_runtime::datastructs::EntryList>.unwrap();
-        let _: Option<bool> = EntryList.hasnext;
-        let _: Option<i32> = EntryList.length;
-        let _: Vec<dion_runtime::datastructs::Entry> = EntryList.content;
+        let EntryId = None::<dion_runtime::data::source::EntryId>.unwrap();
+        let _: String = EntryId.uid;
+        let _: Option<String> = EntryId.iddata;
+        let _: String = EntryId.id_type;
     }
     {
-        let Episode = None::<dion_runtime::datastructs::Episode>.unwrap();
-        let _: String = Episode.id;
+        let EntryList = None::<dion_runtime::data::source::EntryList>.unwrap();
+        let _: Option<bool> = EntryList.hasnext;
+        let _: Option<i32> = EntryList.length;
+        let _: Vec<dion_runtime::data::source::Entry> = EntryList.content;
+    }
+    {
+        let Episode = None::<dion_runtime::data::source::Episode>.unwrap();
+        let _: Vec<dion_runtime::data::source::EpisodeId> = Episode.id;
         let _: String = Episode.name;
         let _: Option<String> = Episode.description;
         let _: String = Episode.url;
-        let _: Option<dion_runtime::datastructs::Link> = Episode.cover;
+        let _: Option<dion_runtime::data::source::Link> = Episode.cover;
         let _: Option<String> = Episode.timestamp;
     }
     {
-        let ExtensionData = None::<dion_runtime::datastructs::ExtensionData>.unwrap();
+        let EpisodeId = None::<dion_runtime::data::source::EpisodeId>.unwrap();
+        let _: String = EpisodeId.uid;
+        let _: Option<String> = EpisodeId.iddata;
+        let _: String = EpisodeId.id_type;
+    }
+    {
+        let ExtensionData = None::<dion_runtime::data::extension::ExtensionData>.unwrap();
         let _: String = ExtensionData.id;
-        let _: Option<String> = ExtensionData.repo;
         let _: String = ExtensionData.name;
-        let _: Option<Vec<dion_runtime::datastructs::MediaType>> = ExtensionData.media_type;
-        let _: Option<Vec<dion_runtime::datastructs::ExtensionType>> = ExtensionData.extension_type;
-        let _: Option<String> = ExtensionData.version;
+        let _: String = ExtensionData.url;
+        let _: String = ExtensionData.icon;
         let _: Option<String> = ExtensionData.desc;
         let _: Vec<String> = ExtensionData.author;
-        let _: Option<String> = ExtensionData.license;
-        let _: Option<Vec<String>> = ExtensionData.tags;
-        let _: Option<bool> = ExtensionData.nsfw;
+        let _: Vec<String> = ExtensionData.tags;
         let _: Vec<String> = ExtensionData.lang;
-        let _: Option<String> = ExtensionData.url;
-        let _: Option<String> = ExtensionData.icon;
+        let _: bool = ExtensionData.nsfw;
+        let _: std::collections::HashSet<dion_runtime::data::source::MediaType> =
+            ExtensionData.media_type;
+        let _: std::collections::HashSet<dion_runtime::data::extension::ExtensionType> =
+            ExtensionData.extension_type;
+        let _: Option<String> = ExtensionData.repo;
+        let _: String = ExtensionData.version;
+        let _: String = ExtensionData.license;
+        let _: bool = ExtensionData.compatible;
     }
     {
-        let ExtensionRepo = None::<dion_runtime::datastructs::ExtensionRepo>.unwrap();
+        let ExtensionManagerData =
+            None::<dion_runtime::data::extension_manager::ExtensionManagerData>.unwrap();
+        let _: String = ExtensionManagerData.name;
+        let _: Option<String> = ExtensionManagerData.icon;
+        let _: Option<String> = ExtensionManagerData.repo;
+        let _: u32 = ExtensionManagerData.api_version;
+    }
+    {
+        let ExtensionRepo = None::<dion_runtime::data::extension_repo::ExtensionRepo>.unwrap();
         let _: String = ExtensionRepo.name;
         let _: String = ExtensionRepo.description;
+        let _: String = ExtensionRepo.url;
         let _: String = ExtensionRepo.id;
-        let _: Vec<dion_runtime::datastructs::RemoteExtension> = ExtensionRepo.extensions;
+    }
+    match None::<dion_runtime::data::extension::ExtensionType>.unwrap() {
+        dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
+            let _: bool = has_search;
+        }
+        dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
+            let _: Vec<String> = id_types;
+        }
+        dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
+            let _: Vec<String> = id_types;
+        }
+        dion_runtime::data::extension::ExtensionType::SourceProcessor {
+            sourcetypes,
+            opentype,
+        } => {
+            let _: std::collections::HashSet<dion_runtime::data::source::SourceType> = sourcetypes;
+            let _: std::collections::HashSet<dion_runtime::data::extension::SourceOpenType> =
+                opentype;
+        }
+        dion_runtime::data::extension::ExtensionType::EntryProcessor {
+            trigger_map_entry,
+            trigger_on_entry_activity,
+        } => {
+            let _: bool = trigger_map_entry;
+            let _: bool = trigger_on_entry_activity;
+        }
+        dion_runtime::data::extension::ExtensionType::URLHandler { url_patterns } => {
+            let _: Vec<String> = url_patterns;
+        }
     }
     {
-        let ImageListAudio = None::<dion_runtime::datastructs::ImageListAudio>.unwrap();
-        let _: dion_runtime::datastructs::Link = ImageListAudio.link;
+        let ImageListAudio = None::<dion_runtime::data::source::ImageListAudio>.unwrap();
+        let _: dion_runtime::data::source::Link = ImageListAudio.link;
         let _: i32 = ImageListAudio.from;
         let _: i32 = ImageListAudio.to;
     }
     {
-        let Link = None::<dion_runtime::datastructs::Link>.unwrap();
+        let Link = None::<dion_runtime::data::source::Link>.unwrap();
         let _: String = Link.url;
         let _: Option<std::collections::HashMap<String, String>> = Link.header;
     }
     {
-        let Mp3Chapter = None::<dion_runtime::datastructs::Mp3Chapter>.unwrap();
+        let Mp3Chapter = None::<dion_runtime::data::source::Mp3Chapter>.unwrap();
         let _: String = Mp3Chapter.title;
-        let _: dion_runtime::datastructs::Link = Mp3Chapter.url;
+        let _: dion_runtime::data::source::Link = Mp3Chapter.url;
     }
-    match None::<dion_runtime::datastructs::Paragraph>.unwrap() {
-        dion_runtime::datastructs::Paragraph::Text { content } => {
+    match None::<dion_runtime::data::source::Paragraph>.unwrap() {
+        dion_runtime::data::source::Paragraph::Text { content } => {
             let _: String = content;
         }
-        dion_runtime::datastructs::Paragraph::CustomUI { ui } => {
-            let _: Box<dion_runtime::datastructs::CustomUI> = ui;
+        dion_runtime::data::source::Paragraph::CustomUI { ui } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = ui;
         }
     }
-    match None::<dion_runtime::permission::Permission>.unwrap() {
-        dion_runtime::permission::Permission::Storage { path, write } => {
+    match None::<dion_runtime::data::permission::Permission>.unwrap() {
+        dion_runtime::data::permission::Permission::Storage { path, write } => {
             let _: String = path;
             let _: bool = write;
         }
-        dion_runtime::permission::Permission::Network { domain } => {
+        dion_runtime::data::permission::Permission::Network { domain } => {
             let _: String = domain;
         }
-        dion_runtime::permission::Permission::ActionPopup => {}
-        dion_runtime::permission::Permission::ArbitraryNetwork => {}
+        dion_runtime::data::permission::Permission::ActionPopup => {}
+        dion_runtime::data::permission::Permission::ArbitraryNetwork => {}
     }
     {
-        let PopupAction = None::<dion_runtime::datastructs::PopupAction>.unwrap();
+        let PopupAction = None::<dion_runtime::data::action::PopupAction>.unwrap();
         let _: String = PopupAction.label;
-        let _: Box<dion_runtime::datastructs::Action> = PopupAction.onclick;
+        let _: Box<dion_runtime::data::action::Action> = PopupAction.onclick;
     }
     {
-        let RemoteExtension = None::<dion_runtime::datastructs::RemoteExtension>.unwrap();
-        let _: String = RemoteExtension.extension_url;
+        let RemoteExtension = None::<dion_runtime::data::extension_repo::RemoteExtension>.unwrap();
+        let _: String = RemoteExtension.id;
+        let _: String = RemoteExtension.exturl;
+        let _: String = RemoteExtension.name;
+        let _: Option<dion_runtime::data::source::Link> = RemoteExtension.cover;
+        let _: String = RemoteExtension.version;
         let _: bool = RemoteExtension.compatible;
-        let _: dion_runtime::datastructs::ExtensionData = RemoteExtension.data;
     }
     {
-        let Setting = None::<dion_runtime::settings::Setting>.unwrap();
-        let _: String = Setting.label;
-        let _: dion_runtime::settings::SettingValue = Setting.value;
-        let _: dion_runtime::settings::SettingValue = Setting.default;
-        let _: bool = Setting.visible;
-        let _: Option<dion_runtime::settings::SettingsUI> = Setting.ui;
+        let RemoteExtensionResult =
+            None::<dion_runtime::data::extension_repo::RemoteExtensionResult>.unwrap();
+        let _: Vec<dion_runtime::data::extension_repo::RemoteExtension> =
+            RemoteExtensionResult.content;
+        let _: Option<bool> = RemoteExtensionResult.hasnext;
+        let _: Option<i32> = RemoteExtensionResult.length;
     }
-    match None::<dion_runtime::settings::SettingValue>.unwrap() {
-        dion_runtime::settings::SettingValue::String { data } => {
+    {
+        let Setting = None::<dion_runtime::data::settings::Setting>.unwrap();
+        let _: String = Setting.label;
+        let _: dion_runtime::data::settings::SettingValue = Setting.value;
+        let _: dion_runtime::data::settings::SettingValue = Setting.default;
+        let _: bool = Setting.visible;
+        let _: Option<dion_runtime::data::settings::SettingsUI> = Setting.ui;
+    }
+    match None::<dion_runtime::data::settings::SettingValue>.unwrap() {
+        dion_runtime::data::settings::SettingValue::String { data } => {
             let _: String = data;
         }
-        dion_runtime::settings::SettingValue::Number { data } => {
+        dion_runtime::data::settings::SettingValue::Number { data } => {
             let _: f32 = data;
         }
-        dion_runtime::settings::SettingValue::Boolean { data } => {
+        dion_runtime::data::settings::SettingValue::Boolean { data } => {
             let _: bool = data;
         }
-        dion_runtime::settings::SettingValue::StringList { data } => {
+        dion_runtime::data::settings::SettingValue::StringList { data } => {
             let _: Vec<String> = data;
         }
     }
-    match None::<dion_runtime::settings::SettingsUI>.unwrap() {
-        dion_runtime::settings::SettingsUI::CheckBox => {}
-        dion_runtime::settings::SettingsUI::Slider { min, max, step } => {
+    match None::<dion_runtime::data::settings::SettingsUI>.unwrap() {
+        dion_runtime::data::settings::SettingsUI::CheckBox => {}
+        dion_runtime::data::settings::SettingsUI::Slider { min, max, step } => {
             let _: f64 = min;
             let _: f64 = max;
             let _: i32 = step;
         }
-        dion_runtime::settings::SettingsUI::Dropdown { options } => {
-            let _: Vec<dion_runtime::settings::DropdownOption> = options;
+        dion_runtime::data::settings::SettingsUI::Dropdown { options } => {
+            let _: Vec<dion_runtime::data::settings::DropdownOption> = options;
         }
     }
-    match None::<dion_runtime::datastructs::Source>.unwrap() {
-        dion_runtime::datastructs::Source::Epub { link } => {
-            let _: dion_runtime::datastructs::Link = link;
+    match None::<dion_runtime::data::source::Source>.unwrap() {
+        dion_runtime::data::source::Source::Epub { link } => {
+            let _: dion_runtime::data::source::Link = link;
         }
-        dion_runtime::datastructs::Source::Pdf { link } => {
-            let _: dion_runtime::datastructs::Link = link;
+        dion_runtime::data::source::Source::Pdf { link } => {
+            let _: dion_runtime::data::source::Link = link;
         }
-        dion_runtime::datastructs::Source::Imagelist { links, audio } => {
-            let _: Vec<dion_runtime::datastructs::Link> = links;
-            let _: Option<Vec<dion_runtime::datastructs::ImageListAudio>> = audio;
+        dion_runtime::data::source::Source::Imagelist { links, audio } => {
+            let _: Vec<dion_runtime::data::source::Link> = links;
+            let _: Option<Vec<dion_runtime::data::source::ImageListAudio>> = audio;
         }
-        dion_runtime::datastructs::Source::M3u8 { link, sub } => {
-            let _: dion_runtime::datastructs::Link = link;
-            let _: Vec<dion_runtime::datastructs::Subtitles> = sub;
+        dion_runtime::data::source::Source::M3u8 { link, sub } => {
+            let _: dion_runtime::data::source::Link = link;
+            let _: Vec<dion_runtime::data::source::Subtitles> = sub;
         }
-        dion_runtime::datastructs::Source::Mp3 { chapters } => {
-            let _: Vec<dion_runtime::datastructs::Mp3Chapter> = chapters;
+        dion_runtime::data::source::Source::Mp3 { chapters } => {
+            let _: Vec<dion_runtime::data::source::Mp3Chapter> = chapters;
         }
-        dion_runtime::datastructs::Source::Paragraphlist { paragraphs } => {
-            let _: Vec<dion_runtime::datastructs::Paragraph> = paragraphs;
+        dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
+            let _: Vec<dion_runtime::data::source::Paragraph> = paragraphs;
         }
     }
     {
-        let SourceResult = None::<dion_runtime::datastructs::SourceResult>.unwrap();
-        let _: dion_runtime::datastructs::Source = SourceResult.source;
-        let _: std::collections::HashMap<String, dion_runtime::settings::Setting> =
+        let SourceResult = None::<dion_runtime::data::source::SourceResult>.unwrap();
+        let _: dion_runtime::data::source::Source = SourceResult.source;
+        let _: std::collections::HashMap<String, dion_runtime::data::settings::Setting> =
             SourceResult.settings;
     }
     {
-        let Subtitles = None::<dion_runtime::datastructs::Subtitles>.unwrap();
+        let Subtitles = None::<dion_runtime::data::source::Subtitles>.unwrap();
         let _: String = Subtitles.title;
-        let _: dion_runtime::datastructs::Link = Subtitles.url;
+        let _: dion_runtime::data::source::Link = Subtitles.url;
     }
-    match None::<dion_runtime::datastructs::UIAction>.unwrap() {
-        dion_runtime::datastructs::UIAction::Action { action } => {
-            let _: dion_runtime::datastructs::Action = action;
+    match None::<dion_runtime::data::action::UIAction>.unwrap() {
+        dion_runtime::data::action::UIAction::Action { action } => {
+            let _: dion_runtime::data::action::Action = action;
         }
-        dion_runtime::datastructs::UIAction::SwapContent {
+        dion_runtime::data::action::UIAction::SwapContent {
             targetid,
             event,
+            data,
             placeholder,
         } => {
-            let _: Option<String> = targetid;
+            let _: String = targetid;
             let _: String = event;
-            let _: Option<dion_runtime::datastructs::CustomUI> = placeholder;
+            let _: String = data;
+            let _: Option<dion_runtime::data::custom_ui::CustomUI> = placeholder;
         }
     }
 };
@@ -2475,12 +2558,12 @@ fn decode_DartFn_Inputs__Output_String_AnyhowException(
 }
 fn decode_DartFn_Inputs_action_Output_unit_AnyhowException(
     dart_opaque: flutter_rust_bridge::DartOpaque,
-) -> impl Fn(dion_runtime::datastructs::Action) -> flutter_rust_bridge::DartFnFuture<()> {
+) -> impl Fn(dion_runtime::data::action::Action) -> flutter_rust_bridge::DartFnFuture<()> {
     use flutter_rust_bridge::IntoDart;
 
     async fn body(
         dart_opaque: flutter_rust_bridge::DartOpaque,
-        arg0: dion_runtime::datastructs::Action,
+        arg0: dion_runtime::data::action::Action,
     ) -> () {
         let args = vec![arg0.into_into_dart().into_dart()];
         let message = FLUTTER_RUST_BRIDGE_HANDLER
@@ -2501,7 +2584,7 @@ fn decode_DartFn_Inputs_action_Output_unit_AnyhowException(
         ans
     }
 
-    move |arg0: dion_runtime::datastructs::Action| {
+    move |arg0: dion_runtime::data::action::Action| {
         flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
             dart_opaque.clone(),
             arg0,
@@ -2511,13 +2594,13 @@ fn decode_DartFn_Inputs_action_Output_unit_AnyhowException(
 fn decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
     dart_opaque: flutter_rust_bridge::DartOpaque,
 ) -> impl Fn(
-    dion_runtime::datastructs::ExtensionData,
+    dion_runtime::data::extension::ExtensionData,
 ) -> flutter_rust_bridge::DartFnFuture<ExtensionClient> {
     use flutter_rust_bridge::IntoDart;
 
     async fn body(
         dart_opaque: flutter_rust_bridge::DartOpaque,
-        arg0: dion_runtime::datastructs::ExtensionData,
+        arg0: dion_runtime::data::extension::ExtensionData,
     ) -> ExtensionClient {
         let args = vec![arg0.into_into_dart().into_dart()];
         let message = FLUTTER_RUST_BRIDGE_HANDLER
@@ -2538,7 +2621,7 @@ fn decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust
         ans
     }
 
-    move |arg0: dion_runtime::datastructs::ExtensionData| {
+    move |arg0: dion_runtime::data::extension::ExtensionData| {
         flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
             dart_opaque.clone(),
             arg0,
@@ -2548,14 +2631,14 @@ fn decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust
 fn decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
     dart_opaque: flutter_rust_bridge::DartOpaque,
 ) -> impl Fn(
-    dion_runtime::permission::Permission,
+    dion_runtime::data::permission::Permission,
     Option<String>,
 ) -> flutter_rust_bridge::DartFnFuture<bool> {
     use flutter_rust_bridge::IntoDart;
 
     async fn body(
         dart_opaque: flutter_rust_bridge::DartOpaque,
-        arg0: dion_runtime::permission::Permission,
+        arg0: dion_runtime::data::permission::Permission,
         arg1: Option<String>,
     ) -> bool {
         let args = vec![
@@ -2580,7 +2663,7 @@ fn decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
         ans
     }
 
-    move |arg0: dion_runtime::permission::Permission, arg1: Option<String>| {
+    move |arg0: dion_runtime::data::permission::Permission, arg1: Option<String>| {
         flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
             dart_opaque.clone(),
             arg0,
@@ -2597,27 +2680,9 @@ impl CstDecode<bool> for bool {
         self
     }
 }
-impl CstDecode<dion_runtime::datastructs::ExtensionType> for i32 {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> dion_runtime::datastructs::ExtensionType {
-        match self {
-            0 => dion_runtime::datastructs::ExtensionType::SourceProvider,
-            1 => dion_runtime::datastructs::ExtensionType::URLResolve,
-            2 => dion_runtime::datastructs::ExtensionType::SourceProcessor,
-            3 => dion_runtime::datastructs::ExtensionType::EntryExtension,
-            _ => unreachable!("Invalid variant for ExtensionType: {}", self),
-        }
-    }
-}
 impl CstDecode<f32> for f32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> f32 {
-        self
-    }
-}
-impl CstDecode<f64> for f64 {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> f64 {
         self
     }
 }
@@ -2627,38 +2692,68 @@ impl CstDecode<i32> for i32 {
         self
     }
 }
-impl CstDecode<dion_runtime::datastructs::MediaType> for i32 {
+impl CstDecode<dion_runtime::data::source::MediaType> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> dion_runtime::datastructs::MediaType {
+    fn cst_decode(self) -> dion_runtime::data::source::MediaType {
         match self {
-            0 => dion_runtime::datastructs::MediaType::Video,
-            1 => dion_runtime::datastructs::MediaType::Comic,
-            2 => dion_runtime::datastructs::MediaType::Audio,
-            3 => dion_runtime::datastructs::MediaType::Book,
-            4 => dion_runtime::datastructs::MediaType::Unknown,
+            0 => dion_runtime::data::source::MediaType::Video,
+            1 => dion_runtime::data::source::MediaType::Comic,
+            2 => dion_runtime::data::source::MediaType::Audio,
+            3 => dion_runtime::data::source::MediaType::Book,
+            4 => dion_runtime::data::source::MediaType::Unknown,
             _ => unreachable!("Invalid variant for MediaType: {}", self),
         }
     }
 }
-impl CstDecode<dion_runtime::datastructs::ReleaseStatus> for i32 {
+impl CstDecode<dion_runtime::data::source::ReleaseStatus> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> dion_runtime::datastructs::ReleaseStatus {
+    fn cst_decode(self) -> dion_runtime::data::source::ReleaseStatus {
         match self {
-            0 => dion_runtime::datastructs::ReleaseStatus::Releasing,
-            1 => dion_runtime::datastructs::ReleaseStatus::Complete,
-            2 => dion_runtime::datastructs::ReleaseStatus::Unknown,
+            0 => dion_runtime::data::source::ReleaseStatus::Releasing,
+            1 => dion_runtime::data::source::ReleaseStatus::Complete,
+            2 => dion_runtime::data::source::ReleaseStatus::Unknown,
             _ => unreachable!("Invalid variant for ReleaseStatus: {}", self),
         }
     }
 }
-impl CstDecode<dion_runtime::datastructs::TimestampType> for i32 {
+impl CstDecode<dion_runtime::data::extension::SourceOpenType> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    fn cst_decode(self) -> dion_runtime::datastructs::TimestampType {
+    fn cst_decode(self) -> dion_runtime::data::extension::SourceOpenType {
         match self {
-            0 => dion_runtime::datastructs::TimestampType::Relative,
-            1 => dion_runtime::datastructs::TimestampType::Absolute,
+            0 => dion_runtime::data::extension::SourceOpenType::Download,
+            1 => dion_runtime::data::extension::SourceOpenType::Stream,
+            _ => unreachable!("Invalid variant for SourceOpenType: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::source::SourceType> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::source::SourceType {
+        match self {
+            0 => dion_runtime::data::source::SourceType::Epub,
+            1 => dion_runtime::data::source::SourceType::Pdf,
+            2 => dion_runtime::data::source::SourceType::Imagelist,
+            3 => dion_runtime::data::source::SourceType::M3u8,
+            4 => dion_runtime::data::source::SourceType::Mp3,
+            5 => dion_runtime::data::source::SourceType::Paragraphlist,
+            _ => unreachable!("Invalid variant for SourceType: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::TimestampType> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::TimestampType {
+        match self {
+            0 => dion_runtime::data::custom_ui::TimestampType::Relative,
+            1 => dion_runtime::data::custom_ui::TimestampType::Absolute,
             _ => unreachable!("Invalid variant for TimestampType: {}", self),
         }
+    }
+}
+impl CstDecode<u32> for u32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> u32 {
+        self
     }
 }
 impl CstDecode<u8> for u8 {
@@ -2711,21 +2806,21 @@ impl SseDecode for ManagerClient {
     }
 }
 
-impl SseDecode for ProxyExtension {
+impl SseDecode for ProxyAdapter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
 }
 
-impl SseDecode for ProxyExtensionManager {
+impl SseDecode for ProxyExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
@@ -2747,10 +2842,11 @@ impl SseDecode for std::collections::HashMap<String, String> {
     }
 }
 
-impl SseDecode for std::collections::HashMap<String, dion_runtime::settings::Setting> {
+impl SseDecode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <Vec<(String, dion_runtime::settings::Setting)>>::sse_decode(deserializer);
+        let mut inner =
+            <Vec<(String, dion_runtime::data::settings::Setting)>>::sse_decode(deserializer);
         return inner.into_iter().collect();
     }
 }
@@ -2786,7 +2882,7 @@ impl SseDecode
 }
 
 impl SseDecode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2796,14 +2892,46 @@ impl SseDecode
 }
 
 impl SseDecode
-    for RustOpaqueNom<
-        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-    >
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <usize>::sse_decode(deserializer);
         return unsafe { decode_rust_opaque_nom(inner) };
+    }
+}
+
+impl SseDecode for std::collections::HashSet<dion_runtime::data::extension::ExtensionType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner =
+            <Vec<dion_runtime::data::extension::ExtensionType>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode for std::collections::HashSet<dion_runtime::data::source::MediaType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<dion_runtime::data::source::MediaType>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode for std::collections::HashSet<dion_runtime::data::extension::SourceOpenType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner =
+            <Vec<dion_runtime::data::extension::SourceOpenType>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode for std::collections::HashSet<dion_runtime::data::source::SourceType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<dion_runtime::data::source::SourceType>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
     }
 }
 
@@ -2815,22 +2943,22 @@ impl SseDecode for String {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Action {
+impl SseDecode for dion_runtime::data::action::Action {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_url = <String>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Action::OpenBrowser { url: var_url };
+                return dion_runtime::data::action::Action::OpenBrowser { url: var_url };
             }
             1 => {
                 let mut var_title = <String>::sse_decode(deserializer);
                 let mut var_content =
-                    <dion_runtime::datastructs::CustomUI>::sse_decode(deserializer);
+                    <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
                 let mut var_actions =
-                    <Vec<dion_runtime::datastructs::PopupAction>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Action::Popup {
+                    <Vec<dion_runtime::data::action::PopupAction>>::sse_decode(deserializer);
+                return dion_runtime::data::action::Action::Popup {
                     title: var_title,
                     content: var_content,
                     actions: var_actions,
@@ -2839,8 +2967,8 @@ impl SseDecode for dion_runtime::datastructs::Action {
             2 => {
                 let mut var_title = <String>::sse_decode(deserializer);
                 let mut var_content =
-                    <dion_runtime::datastructs::CustomUI>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Action::Nav {
+                    <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
+                return dion_runtime::data::action::Action::Nav {
                     title: var_title,
                     content: var_content,
                 };
@@ -2848,10 +2976,15 @@ impl SseDecode for dion_runtime::datastructs::Action {
             3 => {
                 let mut var_event = <String>::sse_decode(deserializer);
                 let mut var_data = <String>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Action::TriggerEvent {
+                return dion_runtime::data::action::Action::TriggerEvent {
                     event: var_event,
                     data: var_data,
                 };
+            }
+            4 => {
+                let mut var_entry =
+                    <dion_runtime::data::source::EntryDetailed>::sse_decode(deserializer);
+                return dion_runtime::data::action::Action::NavEntry { entry: var_entry };
             }
             _ => {
                 unimplemented!("");
@@ -2867,47 +3000,47 @@ impl SseDecode for bool {
     }
 }
 
-impl SseDecode for Box<dion_runtime::datastructs::Action> {
+impl SseDecode for Box<dion_runtime::data::action::Action> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        return Box::new(<dion_runtime::datastructs::Action>::sse_decode(
+        return Box::new(<dion_runtime::data::action::Action>::sse_decode(
             deserializer,
         ));
     }
 }
 
-impl SseDecode for Box<dion_runtime::datastructs::CustomUI> {
+impl SseDecode for Box<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        return Box::new(<dion_runtime::datastructs::CustomUI>::sse_decode(
+        return Box::new(<dion_runtime::data::custom_ui::CustomUI>::sse_decode(
             deserializer,
         ));
     }
 }
 
-impl SseDecode for Box<dion_runtime::datastructs::UIAction> {
+impl SseDecode for Box<dion_runtime::data::action::UIAction> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        return Box::new(<dion_runtime::datastructs::UIAction>::sse_decode(
+        return Box::new(<dion_runtime::data::action::UIAction>::sse_decode(
             deserializer,
         ));
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::CustomUI {
+impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_text = <String>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Text { text: var_text };
+                return dion_runtime::data::custom_ui::CustomUI::Text { text: var_text };
             }
             1 => {
-                let mut var_image = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
+                let mut var_image = <dion_runtime::data::source::Link>::sse_decode(deserializer);
                 let mut var_width = <Option<i32>>::sse_decode(deserializer);
                 let mut var_height = <Option<i32>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Image {
+                return dion_runtime::data::custom_ui::CustomUI::Image {
                     image: var_image,
                     width: var_width,
                     height: var_height,
@@ -2916,7 +3049,7 @@ impl SseDecode for dion_runtime::datastructs::CustomUI {
             2 => {
                 let mut var_link = <String>::sse_decode(deserializer);
                 let mut var_label = <Option<String>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Link {
+                return dion_runtime::data::custom_ui::CustomUI::Link {
                     link: var_link,
                     label: var_label,
                 };
@@ -2924,54 +3057,77 @@ impl SseDecode for dion_runtime::datastructs::CustomUI {
             3 => {
                 let mut var_timestamp = <String>::sse_decode(deserializer);
                 let mut var_display =
-                    <dion_runtime::datastructs::TimestampType>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::TimeStamp {
+                    <dion_runtime::data::custom_ui::TimestampType>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::TimeStamp {
                     timestamp: var_timestamp,
                     display: var_display,
                 };
             }
             4 => {
-                let mut var_entry = <dion_runtime::datastructs::Entry>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::EntryCard { entry: var_entry };
+                let mut var_entry = <dion_runtime::data::source::Entry>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::EntryCard { entry: var_entry };
             }
             5 => {
+                let mut var_image = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+                let mut var_top =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_bottom =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Card {
+                    image: var_image,
+                    top: var_top,
+                    bottom: var_bottom,
+                };
+            }
+            6 => {
+                let mut var_event = <String>::sse_decode(deserializer);
+                let mut var_data = <String>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Feed {
+                    event: var_event,
+                    data: var_data,
+                };
+            }
+            7 => {
                 let mut var_label = <String>::sse_decode(deserializer);
                 let mut var_onClick =
-                    <Option<Box<dion_runtime::datastructs::UIAction>>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Button {
+                    <Option<Box<dion_runtime::data::action::UIAction>>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Button {
                     label: var_label,
                     on_click: var_onClick,
                 };
             }
-            6 => {
+            8 => {
                 let mut var_settingId = <String>::sse_decode(deserializer);
+                let mut var_settingKind =
+                    <dion_runtime::data::settings::SettingKind>::sse_decode(deserializer);
                 let mut var_onCommit =
-                    <Option<Box<dion_runtime::datastructs::UIAction>>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::InlineSetting {
+                    <Option<Box<dion_runtime::data::action::UIAction>>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::InlineSetting {
                     setting_id: var_settingId,
+                    setting_kind: var_settingKind,
                     on_commit: var_onCommit,
                 };
             }
-            7 => {
+            9 => {
                 let mut var_id = <String>::sse_decode(deserializer);
                 let mut var_child =
-                    <Box<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Slot {
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Slot {
                     id: var_id,
                     child: var_child,
                 };
             }
-            8 => {
+            10 => {
                 let mut var_children =
-                    <Vec<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Column {
+                    <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Column {
                     children: var_children,
                 };
             }
-            9 => {
+            11 => {
                 let mut var_children =
-                    <Vec<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::CustomUI::Row {
+                    <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Row {
                     children: var_children,
                 };
             }
@@ -2982,31 +3138,31 @@ impl SseDecode for dion_runtime::datastructs::CustomUI {
     }
 }
 
-impl SseDecode for dion_runtime::settings::DropdownOption {
+impl SseDecode for dion_runtime::data::settings::DropdownOption {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_label = <String>::sse_decode(deserializer);
         let mut var_value = <String>::sse_decode(deserializer);
-        return dion_runtime::settings::DropdownOption {
+        return dion_runtime::data::settings::DropdownOption {
             label: var_label,
             value: var_value,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Entry {
+impl SseDecode for dion_runtime::data::source::Entry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_id = <Vec<dion_runtime::data::source::EntryId>>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
-        let mut var_mediaType = <dion_runtime::datastructs::MediaType>::sse_decode(deserializer);
-        let mut var_cover = <Option<dion_runtime::datastructs::Link>>::sse_decode(deserializer);
+        let mut var_mediaType = <dion_runtime::data::source::MediaType>::sse_decode(deserializer);
+        let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_author = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_rating = <Option<f32>>::sse_decode(deserializer);
         let mut var_views = <Option<f32>>::sse_decode(deserializer);
         let mut var_length = <Option<i32>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::Entry {
+        return dion_runtime::data::source::Entry {
             id: var_id,
             url: var_url,
             title: var_title,
@@ -3020,14 +3176,14 @@ impl SseDecode for dion_runtime::datastructs::Entry {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::EntryActivity {
+impl SseDecode for dion_runtime::data::activity::EntryActivity {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_progress = <i32>::sse_decode(deserializer);
-                return dion_runtime::datastructs::EntryActivity::EpisodeActivity {
+                return dion_runtime::data::activity::EntryActivity::EpisodeActivity {
                     progress: var_progress,
                 };
             }
@@ -3038,27 +3194,28 @@ impl SseDecode for dion_runtime::datastructs::EntryActivity {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::EntryDetailed {
+impl SseDecode for dion_runtime::data::source::EntryDetailed {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_id = <Vec<dion_runtime::data::source::EntryId>>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_titles = <Vec<String>>::sse_decode(deserializer);
         let mut var_author = <Option<Vec<String>>>::sse_decode(deserializer);
-        let mut var_ui = <Option<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
+        let mut var_ui =
+            <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
         let mut var_meta =
             <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
-        let mut var_mediaType = <dion_runtime::datastructs::MediaType>::sse_decode(deserializer);
-        let mut var_status = <dion_runtime::datastructs::ReleaseStatus>::sse_decode(deserializer);
+        let mut var_mediaType = <dion_runtime::data::source::MediaType>::sse_decode(deserializer);
+        let mut var_status = <dion_runtime::data::source::ReleaseStatus>::sse_decode(deserializer);
         let mut var_description = <String>::sse_decode(deserializer);
         let mut var_language = <String>::sse_decode(deserializer);
-        let mut var_cover = <Option<dion_runtime::datastructs::Link>>::sse_decode(deserializer);
-        let mut var_episodes = <Vec<dion_runtime::datastructs::Episode>>::sse_decode(deserializer);
+        let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
+        let mut var_episodes = <Vec<dion_runtime::data::source::Episode>>::sse_decode(deserializer);
         let mut var_genres = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_rating = <Option<f32>>::sse_decode(deserializer);
         let mut var_views = <Option<f32>>::sse_decode(deserializer);
         let mut var_length = <Option<i32>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::EntryDetailed {
+        return dion_runtime::data::source::EntryDetailed {
             id: var_id,
             url: var_url,
             titles: var_titles,
@@ -3079,28 +3236,42 @@ impl SseDecode for dion_runtime::datastructs::EntryDetailed {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::EntryDetailedResult {
+impl SseDecode for dion_runtime::data::source::EntryDetailedResult {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_entry = <dion_runtime::datastructs::EntryDetailed>::sse_decode(deserializer);
-        let mut var_settings =
-            <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                deserializer,
-            );
-        return dion_runtime::datastructs::EntryDetailedResult {
+        let mut var_entry = <dion_runtime::data::source::EntryDetailed>::sse_decode(deserializer);
+        let mut var_settings = <std::collections::HashMap<
+            String,
+            dion_runtime::data::settings::Setting,
+        >>::sse_decode(deserializer);
+        return dion_runtime::data::source::EntryDetailedResult {
             entry: var_entry,
             settings: var_settings,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::EntryList {
+impl SseDecode for dion_runtime::data::source::EntryId {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_uid = <String>::sse_decode(deserializer);
+        let mut var_iddata = <Option<String>>::sse_decode(deserializer);
+        let mut var_idType = <String>::sse_decode(deserializer);
+        return dion_runtime::data::source::EntryId {
+            uid: var_uid,
+            iddata: var_iddata,
+            id_type: var_idType,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::EntryList {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_hasnext = <Option<bool>>::sse_decode(deserializer);
         let mut var_length = <Option<i32>>::sse_decode(deserializer);
-        let mut var_content = <Vec<dion_runtime::datastructs::Entry>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::EntryList {
+        let mut var_content = <Vec<dion_runtime::data::source::Entry>>::sse_decode(deserializer);
+        return dion_runtime::data::source::EntryList {
             hasnext: var_hasnext,
             length: var_length,
             content: var_content,
@@ -3108,16 +3279,16 @@ impl SseDecode for dion_runtime::datastructs::EntryList {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Episode {
+impl SseDecode for dion_runtime::data::source::Episode {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_id = <Vec<dion_runtime::data::source::EpisodeId>>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <Option<String>>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
-        let mut var_cover = <Option<dion_runtime::datastructs::Link>>::sse_decode(deserializer);
+        let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_timestamp = <Option<String>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::Episode {
+        return dion_runtime::data::source::Episode {
             id: var_id,
             name: var_name,
             description: var_description,
@@ -3128,72 +3299,148 @@ impl SseDecode for dion_runtime::datastructs::Episode {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::ExtensionData {
+impl SseDecode for dion_runtime::data::source::EpisodeId {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <String>::sse_decode(deserializer);
-        let mut var_repo = <Option<String>>::sse_decode(deserializer);
-        let mut var_name = <String>::sse_decode(deserializer);
-        let mut var_mediaType =
-            <Option<Vec<dion_runtime::datastructs::MediaType>>>::sse_decode(deserializer);
-        let mut var_extensionType =
-            <Option<Vec<dion_runtime::datastructs::ExtensionType>>>::sse_decode(deserializer);
-        let mut var_version = <Option<String>>::sse_decode(deserializer);
-        let mut var_desc = <Option<String>>::sse_decode(deserializer);
-        let mut var_author = <Vec<String>>::sse_decode(deserializer);
-        let mut var_license = <Option<String>>::sse_decode(deserializer);
-        let mut var_tags = <Option<Vec<String>>>::sse_decode(deserializer);
-        let mut var_nsfw = <Option<bool>>::sse_decode(deserializer);
-        let mut var_lang = <Vec<String>>::sse_decode(deserializer);
-        let mut var_url = <Option<String>>::sse_decode(deserializer);
-        let mut var_icon = <Option<String>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::ExtensionData {
-            id: var_id,
-            repo: var_repo,
-            name: var_name,
-            media_type: var_mediaType,
-            extension_type: var_extensionType,
-            version: var_version,
-            desc: var_desc,
-            author: var_author,
-            license: var_license,
-            tags: var_tags,
-            nsfw: var_nsfw,
-            lang: var_lang,
-            url: var_url,
-            icon: var_icon,
+        let mut var_uid = <String>::sse_decode(deserializer);
+        let mut var_iddata = <Option<String>>::sse_decode(deserializer);
+        let mut var_idType = <String>::sse_decode(deserializer);
+        return dion_runtime::data::source::EpisodeId {
+            uid: var_uid,
+            iddata: var_iddata,
+            id_type: var_idType,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::ExtensionRepo {
+impl SseDecode for dion_runtime::data::extension::ExtensionData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_icon = <String>::sse_decode(deserializer);
+        let mut var_desc = <Option<String>>::sse_decode(deserializer);
+        let mut var_author = <Vec<String>>::sse_decode(deserializer);
+        let mut var_tags = <Vec<String>>::sse_decode(deserializer);
+        let mut var_lang = <Vec<String>>::sse_decode(deserializer);
+        let mut var_nsfw = <bool>::sse_decode(deserializer);
+        let mut var_mediaType =
+            <std::collections::HashSet<dion_runtime::data::source::MediaType>>::sse_decode(
+                deserializer,
+            );
+        let mut var_extensionType = <std::collections::HashSet<
+            dion_runtime::data::extension::ExtensionType,
+        >>::sse_decode(deserializer);
+        let mut var_repo = <Option<String>>::sse_decode(deserializer);
+        let mut var_version = <String>::sse_decode(deserializer);
+        let mut var_license = <String>::sse_decode(deserializer);
+        let mut var_compatible = <bool>::sse_decode(deserializer);
+        return dion_runtime::data::extension::ExtensionData {
+            id: var_id,
+            name: var_name,
+            url: var_url,
+            icon: var_icon,
+            desc: var_desc,
+            author: var_author,
+            tags: var_tags,
+            lang: var_lang,
+            nsfw: var_nsfw,
+            media_type: var_mediaType,
+            extension_type: var_extensionType,
+            repo: var_repo,
+            version: var_version,
+            license: var_license,
+            compatible: var_compatible,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::extension_manager::ExtensionManagerData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_icon = <Option<String>>::sse_decode(deserializer);
+        let mut var_repo = <Option<String>>::sse_decode(deserializer);
+        let mut var_apiVersion = <u32>::sse_decode(deserializer);
+        return dion_runtime::data::extension_manager::ExtensionManagerData {
+            name: var_name,
+            icon: var_icon,
+            repo: var_repo,
+            api_version: var_apiVersion,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::extension_repo::ExtensionRepo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
-        let mut var_extensions =
-            <Vec<dion_runtime::datastructs::RemoteExtension>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::ExtensionRepo {
+        return dion_runtime::data::extension_repo::ExtensionRepo {
             name: var_name,
             description: var_description,
+            url: var_url,
             id: var_id,
-            extensions: var_extensions,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::ExtensionType {
+impl SseDecode for dion_runtime::data::extension::ExtensionType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <i32>::sse_decode(deserializer);
-        return match inner {
-            0 => dion_runtime::datastructs::ExtensionType::SourceProvider,
-            1 => dion_runtime::datastructs::ExtensionType::URLResolve,
-            2 => dion_runtime::datastructs::ExtensionType::SourceProcessor,
-            3 => dion_runtime::datastructs::ExtensionType::EntryExtension,
-            _ => unreachable!("Invalid variant for ExtensionType: {}", inner),
-        };
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_hasSearch = <bool>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::EntryProvider {
+                    has_search: var_hasSearch,
+                };
+            }
+            1 => {
+                let mut var_idTypes = <Vec<String>>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::EntryDetailedProvider {
+                    id_types: var_idTypes,
+                };
+            }
+            2 => {
+                let mut var_idTypes = <Vec<String>>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::SourceProvider {
+                    id_types: var_idTypes,
+                };
+            }
+            3 => {
+                let mut var_sourcetypes = <std::collections::HashSet<
+                    dion_runtime::data::source::SourceType,
+                >>::sse_decode(deserializer);
+                let mut var_opentype = <std::collections::HashSet<
+                    dion_runtime::data::extension::SourceOpenType,
+                >>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::SourceProcessor {
+                    sourcetypes: var_sourcetypes,
+                    opentype: var_opentype,
+                };
+            }
+            4 => {
+                let mut var_triggerMapEntry = <bool>::sse_decode(deserializer);
+                let mut var_triggerOnEntryActivity = <bool>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::EntryProcessor {
+                    trigger_map_entry: var_triggerMapEntry,
+                    trigger_on_entry_activity: var_triggerOnEntryActivity,
+                };
+            }
+            5 => {
+                let mut var_urlPatterns = <Vec<String>>::sse_decode(deserializer);
+                return dion_runtime::data::extension::ExtensionType::URLHandler {
+                    url_patterns: var_urlPatterns,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -3218,13 +3465,13 @@ impl SseDecode for i32 {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::ImageListAudio {
+impl SseDecode for dion_runtime::data::source::ImageListAudio {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_link = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
+        let mut var_link = <dion_runtime::data::source::Link>::sse_decode(deserializer);
         let mut var_from = <i32>::sse_decode(deserializer);
         let mut var_to = <i32>::sse_decode(deserializer);
-        return dion_runtime::datastructs::ImageListAudio {
+        return dion_runtime::data::source::ImageListAudio {
             link: var_link,
             from: var_from,
             to: var_to,
@@ -3239,13 +3486,13 @@ impl SseDecode for isize {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Link {
+impl SseDecode for dion_runtime::data::source::Link {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_header =
             <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::Link {
+        return dion_runtime::data::source::Link {
             url: var_url,
             header: var_header,
         };
@@ -3276,13 +3523,13 @@ impl SseDecode for Vec<String> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::CustomUI> {
+impl SseDecode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::CustomUI>::sse_decode(
+            ans_.push(<dion_runtime::data::custom_ui::CustomUI>::sse_decode(
                 deserializer,
             ));
         }
@@ -3290,13 +3537,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::CustomUI> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::settings::DropdownOption> {
+impl SseDecode for Vec<dion_runtime::data::settings::DropdownOption> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::settings::DropdownOption>::sse_decode(
+            ans_.push(<dion_runtime::data::settings::DropdownOption>::sse_decode(
                 deserializer,
             ));
         }
@@ -3304,25 +3551,13 @@ impl SseDecode for Vec<dion_runtime::settings::DropdownOption> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::Entry> {
+impl SseDecode for Vec<dion_runtime::data::source::Entry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Entry>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<dion_runtime::datastructs::Episode> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Episode>::sse_decode(
+            ans_.push(<dion_runtime::data::source::Entry>::sse_decode(
                 deserializer,
             ));
         }
@@ -3330,13 +3565,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::Episode> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::ExtensionType> {
+impl SseDecode for Vec<dion_runtime::data::source::EntryId> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::ExtensionType>::sse_decode(
+            ans_.push(<dion_runtime::data::source::EntryId>::sse_decode(
                 deserializer,
             ));
         }
@@ -3344,13 +3579,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::ExtensionType> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::ImageListAudio> {
+impl SseDecode for Vec<dion_runtime::data::source::Episode> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::ImageListAudio>::sse_decode(
+            ans_.push(<dion_runtime::data::source::Episode>::sse_decode(
                 deserializer,
             ));
         }
@@ -3358,25 +3593,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::ImageListAudio> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::Link> {
+impl SseDecode for Vec<dion_runtime::data::source::EpisodeId> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Link>::sse_decode(deserializer));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<dion_runtime::datastructs::MediaType> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::MediaType>::sse_decode(
+            ans_.push(<dion_runtime::data::source::EpisodeId>::sse_decode(
                 deserializer,
             ));
         }
@@ -3384,13 +3607,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::MediaType> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::Mp3Chapter> {
+impl SseDecode for Vec<dion_runtime::data::extension::ExtensionType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Mp3Chapter>::sse_decode(
+            ans_.push(<dion_runtime::data::extension::ExtensionType>::sse_decode(
                 deserializer,
             ));
         }
@@ -3398,13 +3621,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::Mp3Chapter> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::Paragraph> {
+impl SseDecode for Vec<dion_runtime::data::source::ImageListAudio> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Paragraph>::sse_decode(
+            ans_.push(<dion_runtime::data::source::ImageListAudio>::sse_decode(
                 deserializer,
             ));
         }
@@ -3412,13 +3635,25 @@ impl SseDecode for Vec<dion_runtime::datastructs::Paragraph> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::permission::Permission> {
+impl SseDecode for Vec<dion_runtime::data::source::Link> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::permission::Permission>::sse_decode(
+            ans_.push(<dion_runtime::data::source::Link>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::source::MediaType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::MediaType>::sse_decode(
                 deserializer,
             ));
         }
@@ -3426,13 +3661,55 @@ impl SseDecode for Vec<dion_runtime::permission::Permission> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::PopupAction> {
+impl SseDecode for Vec<dion_runtime::data::source::Mp3Chapter> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::PopupAction>::sse_decode(
+            ans_.push(<dion_runtime::data::source::Mp3Chapter>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::source::Paragraph> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::Paragraph>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::permission::Permission> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::permission::Permission>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::action::PopupAction> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::action::PopupAction>::sse_decode(
                 deserializer,
             ));
         }
@@ -3452,15 +3729,13 @@ impl SseDecode for Vec<u8> {
     }
 }
 
-impl SseDecode for Vec<(String, dion_runtime::settings::Setting)> {
+impl SseDecode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<(String, dion_runtime::settings::Setting)>::sse_decode(
-                deserializer,
-            ));
+            ans_.push(<(String, dion_runtime::data::settings::Setting)>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -3478,13 +3753,27 @@ impl SseDecode for Vec<(String, String)> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::RemoteExtension> {
+impl SseDecode for Vec<dion_runtime::data::extension_repo::RemoteExtension> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::RemoteExtension>::sse_decode(
+            ans_.push(
+                <dion_runtime::data::extension_repo::RemoteExtension>::sse_decode(deserializer),
+            );
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::extension::SourceOpenType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::extension::SourceOpenType>::sse_decode(
                 deserializer,
             ));
         }
@@ -3492,13 +3781,13 @@ impl SseDecode for Vec<dion_runtime::datastructs::RemoteExtension> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::datastructs::Subtitles> {
+impl SseDecode for Vec<dion_runtime::data::source::SourceType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::datastructs::Subtitles>::sse_decode(
+            ans_.push(<dion_runtime::data::source::SourceType>::sse_decode(
                 deserializer,
             ));
         }
@@ -3506,27 +3795,41 @@ impl SseDecode for Vec<dion_runtime::datastructs::Subtitles> {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::MediaType {
+impl SseDecode for Vec<dion_runtime::data::source::Subtitles> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::Subtitles>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::MediaType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => dion_runtime::datastructs::MediaType::Video,
-            1 => dion_runtime::datastructs::MediaType::Comic,
-            2 => dion_runtime::datastructs::MediaType::Audio,
-            3 => dion_runtime::datastructs::MediaType::Book,
-            4 => dion_runtime::datastructs::MediaType::Unknown,
+            0 => dion_runtime::data::source::MediaType::Video,
+            1 => dion_runtime::data::source::MediaType::Comic,
+            2 => dion_runtime::data::source::MediaType::Audio,
+            3 => dion_runtime::data::source::MediaType::Book,
+            4 => dion_runtime::data::source::MediaType::Unknown,
             _ => unreachable!("Invalid variant for MediaType: {}", inner),
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Mp3Chapter {
+impl SseDecode for dion_runtime::data::source::Mp3Chapter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_title = <String>::sse_decode(deserializer);
-        let mut var_url = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
-        return dion_runtime::datastructs::Mp3Chapter {
+        let mut var_url = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+        return dion_runtime::data::source::Mp3Chapter {
             title: var_title,
             url: var_url,
         };
@@ -3579,11 +3882,11 @@ impl SseDecode for Option<bool> {
     }
 }
 
-impl SseDecode for Option<dion_runtime::datastructs::CustomUI> {
+impl SseDecode for Option<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<dion_runtime::datastructs::CustomUI>::sse_decode(
+            return Some(<dion_runtime::data::custom_ui::CustomUI>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -3614,22 +3917,22 @@ impl SseDecode for Option<i32> {
     }
 }
 
-impl SseDecode for Option<dion_runtime::datastructs::Link> {
+impl SseDecode for Option<dion_runtime::data::source::Link> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<dion_runtime::datastructs::Link>::sse_decode(deserializer));
+            return Some(<dion_runtime::data::source::Link>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for Option<dion_runtime::settings::SettingsUI> {
+impl SseDecode for Option<dion_runtime::data::settings::SettingsUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<dion_runtime::settings::SettingsUI>::sse_decode(
+            return Some(<dion_runtime::data::settings::SettingsUI>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -3638,11 +3941,11 @@ impl SseDecode for Option<dion_runtime::settings::SettingsUI> {
     }
 }
 
-impl SseDecode for Option<Box<dion_runtime::datastructs::UIAction>> {
+impl SseDecode for Option<Box<dion_runtime::data::action::UIAction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<Box<dion_runtime::datastructs::UIAction>>::sse_decode(
+            return Some(<Box<dion_runtime::data::action::UIAction>>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -3662,25 +3965,12 @@ impl SseDecode for Option<Vec<String>> {
     }
 }
 
-impl SseDecode for Option<Vec<dion_runtime::datastructs::ExtensionType>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<Vec<dion_runtime::datastructs::ExtensionType>>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<Vec<dion_runtime::datastructs::ImageListAudio>> {
+impl SseDecode for Option<Vec<dion_runtime::data::source::ImageListAudio>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(
-                <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_decode(deserializer),
+                <Vec<dion_runtime::data::source::ImageListAudio>>::sse_decode(deserializer),
             );
         } else {
             return None;
@@ -3688,34 +3978,21 @@ impl SseDecode for Option<Vec<dion_runtime::datastructs::ImageListAudio>> {
     }
 }
 
-impl SseDecode for Option<Vec<dion_runtime::datastructs::MediaType>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<Vec<dion_runtime::datastructs::MediaType>>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for dion_runtime::datastructs::Paragraph {
+impl SseDecode for dion_runtime::data::source::Paragraph {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_content = <String>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Paragraph::Text {
+                return dion_runtime::data::source::Paragraph::Text {
                     content: var_content,
                 };
             }
             1 => {
                 let mut var_ui =
-                    <Box<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Paragraph::CustomUI { ui: var_ui };
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Paragraph::CustomUI { ui: var_ui };
             }
             _ => {
                 unimplemented!("");
@@ -3724,7 +4001,7 @@ impl SseDecode for dion_runtime::datastructs::Paragraph {
     }
 }
 
-impl SseDecode for dion_runtime::permission::Permission {
+impl SseDecode for dion_runtime::data::permission::Permission {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
@@ -3732,20 +4009,20 @@ impl SseDecode for dion_runtime::permission::Permission {
             0 => {
                 let mut var_path = <String>::sse_decode(deserializer);
                 let mut var_write = <bool>::sse_decode(deserializer);
-                return dion_runtime::permission::Permission::Storage {
+                return dion_runtime::data::permission::Permission::Storage {
                     path: var_path,
                     write: var_write,
                 };
             }
             1 => {
                 let mut var_domain = <String>::sse_decode(deserializer);
-                return dion_runtime::permission::Permission::Network { domain: var_domain };
+                return dion_runtime::data::permission::Permission::Network { domain: var_domain };
             }
             2 => {
-                return dion_runtime::permission::Permission::ActionPopup;
+                return dion_runtime::data::permission::Permission::ActionPopup;
             }
             3 => {
-                return dion_runtime::permission::Permission::ArbitraryNetwork;
+                return dion_runtime::data::permission::Permission::ArbitraryNetwork;
             }
             _ => {
                 unimplemented!("");
@@ -3754,23 +4031,23 @@ impl SseDecode for dion_runtime::permission::Permission {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::PopupAction {
+impl SseDecode for dion_runtime::data::action::PopupAction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_label = <String>::sse_decode(deserializer);
-        let mut var_onclick = <Box<dion_runtime::datastructs::Action>>::sse_decode(deserializer);
-        return dion_runtime::datastructs::PopupAction {
+        let mut var_onclick = <Box<dion_runtime::data::action::Action>>::sse_decode(deserializer);
+        return dion_runtime::data::action::PopupAction {
             label: var_label,
             onclick: var_onclick,
         };
     }
 }
 
-impl SseDecode for (String, dion_runtime::settings::Setting) {
+impl SseDecode for (String, dion_runtime::data::settings::Setting) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_field0 = <String>::sse_decode(deserializer);
-        let mut var_field1 = <dion_runtime::settings::Setting>::sse_decode(deserializer);
+        let mut var_field1 = <dion_runtime::data::settings::Setting>::sse_decode(deserializer);
         return (var_field0, var_field1);
     }
 }
@@ -3784,42 +4061,65 @@ impl SseDecode for (String, String) {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::ReleaseStatus {
+impl SseDecode for dion_runtime::data::source::ReleaseStatus {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => dion_runtime::datastructs::ReleaseStatus::Releasing,
-            1 => dion_runtime::datastructs::ReleaseStatus::Complete,
-            2 => dion_runtime::datastructs::ReleaseStatus::Unknown,
+            0 => dion_runtime::data::source::ReleaseStatus::Releasing,
+            1 => dion_runtime::data::source::ReleaseStatus::Complete,
+            2 => dion_runtime::data::source::ReleaseStatus::Unknown,
             _ => unreachable!("Invalid variant for ReleaseStatus: {}", inner),
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::RemoteExtension {
+impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_extensionUrl = <String>::sse_decode(deserializer);
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_exturl = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
+        let mut var_version = <String>::sse_decode(deserializer);
         let mut var_compatible = <bool>::sse_decode(deserializer);
-        let mut var_data = <dion_runtime::datastructs::ExtensionData>::sse_decode(deserializer);
-        return dion_runtime::datastructs::RemoteExtension {
-            extension_url: var_extensionUrl,
+        return dion_runtime::data::extension_repo::RemoteExtension {
+            id: var_id,
+            exturl: var_exturl,
+            name: var_name,
+            cover: var_cover,
+            version: var_version,
             compatible: var_compatible,
-            data: var_data,
         };
     }
 }
 
-impl SseDecode for dion_runtime::settings::Setting {
+impl SseDecode for dion_runtime::data::extension_repo::RemoteExtensionResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_content =
+            <Vec<dion_runtime::data::extension_repo::RemoteExtension>>::sse_decode(deserializer);
+        let mut var_hasnext = <Option<bool>>::sse_decode(deserializer);
+        let mut var_length = <Option<i32>>::sse_decode(deserializer);
+        return dion_runtime::data::extension_repo::RemoteExtensionResult {
+            content: var_content,
+            hasnext: var_hasnext,
+            length: var_length,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::settings::Setting {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_label = <String>::sse_decode(deserializer);
-        let mut var_value = <dion_runtime::settings::SettingValue>::sse_decode(deserializer);
-        let mut var_default_ = <dion_runtime::settings::SettingValue>::sse_decode(deserializer);
+        let mut var_value = <dion_runtime::data::settings::SettingValue>::sse_decode(deserializer);
+        let mut var_default_ =
+            <dion_runtime::data::settings::SettingValue>::sse_decode(deserializer);
         let mut var_visible = <bool>::sse_decode(deserializer);
-        let mut var_ui = <Option<dion_runtime::settings::SettingsUI>>::sse_decode(deserializer);
-        return dion_runtime::settings::Setting {
+        let mut var_ui =
+            <Option<dion_runtime::data::settings::SettingsUI>>::sse_decode(deserializer);
+        return dion_runtime::data::settings::Setting {
             label: var_label,
             value: var_value,
             default: var_default_,
@@ -3829,38 +4129,38 @@ impl SseDecode for dion_runtime::settings::Setting {
     }
 }
 
-impl SseDecode for dion_runtime::settings::SettingKind {
+impl SseDecode for dion_runtime::data::settings::SettingKind {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => dion_runtime::settings::SettingKind::Extension,
-            1 => dion_runtime::settings::SettingKind::Search,
+            0 => dion_runtime::data::settings::SettingKind::Extension,
+            1 => dion_runtime::data::settings::SettingKind::Search,
             _ => unreachable!("Invalid variant for SettingKind: {}", inner),
         };
     }
 }
 
-impl SseDecode for dion_runtime::settings::SettingValue {
+impl SseDecode for dion_runtime::data::settings::SettingValue {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
                 let mut var_data = <String>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingValue::String { data: var_data };
+                return dion_runtime::data::settings::SettingValue::String { data: var_data };
             }
             1 => {
                 let mut var_data = <f32>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingValue::Number { data: var_data };
+                return dion_runtime::data::settings::SettingValue::Number { data: var_data };
             }
             2 => {
                 let mut var_data = <bool>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingValue::Boolean { data: var_data };
+                return dion_runtime::data::settings::SettingValue::Boolean { data: var_data };
             }
             3 => {
                 let mut var_data = <Vec<String>>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingValue::StringList { data: var_data };
+                return dion_runtime::data::settings::SettingValue::StringList { data: var_data };
             }
             _ => {
                 unimplemented!("");
@@ -3869,19 +4169,19 @@ impl SseDecode for dion_runtime::settings::SettingValue {
     }
 }
 
-impl SseDecode for dion_runtime::settings::SettingsUI {
+impl SseDecode for dion_runtime::data::settings::SettingsUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                return dion_runtime::settings::SettingsUI::CheckBox;
+                return dion_runtime::data::settings::SettingsUI::CheckBox;
             }
             1 => {
                 let mut var_min = <f64>::sse_decode(deserializer);
                 let mut var_max = <f64>::sse_decode(deserializer);
                 let mut var_step = <i32>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingsUI::Slider {
+                return dion_runtime::data::settings::SettingsUI::Slider {
                     min: var_min,
                     max: var_max,
                     step: var_step,
@@ -3889,8 +4189,8 @@ impl SseDecode for dion_runtime::settings::SettingsUI {
             }
             2 => {
                 let mut var_options =
-                    <Vec<dion_runtime::settings::DropdownOption>>::sse_decode(deserializer);
-                return dion_runtime::settings::SettingsUI::Dropdown {
+                    <Vec<dion_runtime::data::settings::DropdownOption>>::sse_decode(deserializer);
+                return dion_runtime::data::settings::SettingsUI::Dropdown {
                     options: var_options,
                 };
             }
@@ -3901,51 +4201,51 @@ impl SseDecode for dion_runtime::settings::SettingsUI {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Source {
+impl SseDecode for dion_runtime::data::source::Source {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_link = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Source::Epub { link: var_link };
+                let mut var_link = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::Epub { link: var_link };
             }
             1 => {
-                let mut var_link = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Source::Pdf { link: var_link };
+                let mut var_link = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::Pdf { link: var_link };
             }
             2 => {
                 let mut var_links =
-                    <Vec<dion_runtime::datastructs::Link>>::sse_decode(deserializer);
+                    <Vec<dion_runtime::data::source::Link>>::sse_decode(deserializer);
                 let mut var_audio =
-                    <Option<Vec<dion_runtime::datastructs::ImageListAudio>>>::sse_decode(
+                    <Option<Vec<dion_runtime::data::source::ImageListAudio>>>::sse_decode(
                         deserializer,
                     );
-                return dion_runtime::datastructs::Source::Imagelist {
+                return dion_runtime::data::source::Source::Imagelist {
                     links: var_links,
                     audio: var_audio,
                 };
             }
             3 => {
-                let mut var_link = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
+                let mut var_link = <dion_runtime::data::source::Link>::sse_decode(deserializer);
                 let mut var_sub =
-                    <Vec<dion_runtime::datastructs::Subtitles>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Source::M3u8 {
+                    <Vec<dion_runtime::data::source::Subtitles>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::M3u8 {
                     link: var_link,
                     sub: var_sub,
                 };
             }
             4 => {
                 let mut var_chapters =
-                    <Vec<dion_runtime::datastructs::Mp3Chapter>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Source::Mp3 {
+                    <Vec<dion_runtime::data::source::Mp3Chapter>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::Mp3 {
                     chapters: var_chapters,
                 };
             }
             5 => {
                 let mut var_paragraphs =
-                    <Vec<dion_runtime::datastructs::Paragraph>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::Source::Paragraphlist {
+                    <Vec<dion_runtime::data::source::Paragraph>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::Paragraphlist {
                     paragraphs: var_paragraphs,
                 };
             }
@@ -3956,42 +4256,77 @@ impl SseDecode for dion_runtime::datastructs::Source {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::SourceResult {
+impl SseDecode for dion_runtime::data::extension::SourceOpenType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_source = <dion_runtime::datastructs::Source>::sse_decode(deserializer);
-        let mut var_settings =
-            <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_decode(
-                deserializer,
-            );
-        return dion_runtime::datastructs::SourceResult {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::extension::SourceOpenType::Download,
+            1 => dion_runtime::data::extension::SourceOpenType::Stream,
+            _ => unreachable!("Invalid variant for SourceOpenType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::SourceResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_source = <dion_runtime::data::source::Source>::sse_decode(deserializer);
+        let mut var_settings = <std::collections::HashMap<
+            String,
+            dion_runtime::data::settings::Setting,
+        >>::sse_decode(deserializer);
+        return dion_runtime::data::source::SourceResult {
             source: var_source,
             settings: var_settings,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::Subtitles {
+impl SseDecode for dion_runtime::data::source::SourceType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::source::SourceType::Epub,
+            1 => dion_runtime::data::source::SourceType::Pdf,
+            2 => dion_runtime::data::source::SourceType::Imagelist,
+            3 => dion_runtime::data::source::SourceType::M3u8,
+            4 => dion_runtime::data::source::SourceType::Mp3,
+            5 => dion_runtime::data::source::SourceType::Paragraphlist,
+            _ => unreachable!("Invalid variant for SourceType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::Subtitles {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_title = <String>::sse_decode(deserializer);
-        let mut var_url = <dion_runtime::datastructs::Link>::sse_decode(deserializer);
-        return dion_runtime::datastructs::Subtitles {
+        let mut var_url = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+        return dion_runtime::data::source::Subtitles {
             title: var_title,
             url: var_url,
         };
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::TimestampType {
+impl SseDecode for dion_runtime::data::custom_ui::TimestampType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => dion_runtime::datastructs::TimestampType::Relative,
-            1 => dion_runtime::datastructs::TimestampType::Absolute,
+            0 => dion_runtime::data::custom_ui::TimestampType::Relative,
+            1 => dion_runtime::data::custom_ui::TimestampType::Absolute,
             _ => unreachable!("Invalid variant for TimestampType: {}", inner),
         };
+    }
+}
+
+impl SseDecode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u32::<NativeEndian>().unwrap()
     }
 }
 
@@ -4002,23 +4337,25 @@ impl SseDecode for u8 {
     }
 }
 
-impl SseDecode for dion_runtime::datastructs::UIAction {
+impl SseDecode for dion_runtime::data::action::UIAction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_action = <dion_runtime::datastructs::Action>::sse_decode(deserializer);
-                return dion_runtime::datastructs::UIAction::Action { action: var_action };
+                let mut var_action = <dion_runtime::data::action::Action>::sse_decode(deserializer);
+                return dion_runtime::data::action::UIAction::Action { action: var_action };
             }
             1 => {
-                let mut var_targetid = <Option<String>>::sse_decode(deserializer);
+                let mut var_targetid = <String>::sse_decode(deserializer);
                 let mut var_event = <String>::sse_decode(deserializer);
+                let mut var_data = <String>::sse_decode(deserializer);
                 let mut var_placeholder =
-                    <Option<dion_runtime::datastructs::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::datastructs::UIAction::SwapContent {
+                    <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::action::UIAction::SwapContent {
                     targetid: var_targetid,
                     event: var_event,
+                    data: var_data,
                     placeholder: var_placeholder,
                 };
             }
@@ -4114,6 +4451,21 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<ManagerClient>> for ManagerCli
 }
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<ProxyAdapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<ProxyAdapter> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<ProxyAdapter>> for ProxyAdapter {
+    fn into_into_dart(self) -> FrbWrapper<ProxyAdapter> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<ProxyExtension> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
@@ -4129,33 +4481,13 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<ProxyExtension>> for ProxyExte
 }
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<ProxyExtensionManager> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<ProxyExtensionManager>
-{
-}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<ProxyExtensionManager>>
-    for ProxyExtensionManager
-{
-    fn into_into_dart(self) -> FrbWrapper<ProxyExtensionManager> {
-        self.into()
-    }
-}
-
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Action> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::Action> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::Action::OpenBrowser { url } => {
+            dion_runtime::data::action::Action::OpenBrowser { url } => {
                 [0.into_dart(), url.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::Action::Popup {
+            dion_runtime::data::action::Action::Popup {
                 title,
                 content,
                 actions,
@@ -4166,18 +4498,21 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Act
                 actions.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::Action::Nav { title, content } => [
+            dion_runtime::data::action::Action::Nav { title, content } => [
                 2.into_dart(),
                 title.into_into_dart().into_dart(),
                 content.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::Action::TriggerEvent { event, data } => [
+            dion_runtime::data::action::Action::TriggerEvent { event, data } => [
                 3.into_dart(),
                 event.into_into_dart().into_dart(),
                 data.into_into_dart().into_dart(),
             ]
             .into_dart(),
+            dion_runtime::data::action::Action::NavEntry { entry } => {
+                [4.into_dart(), entry.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -4185,24 +4520,24 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Act
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Action>
+    for FrbWrapper<dion_runtime::data::action::Action>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Action>>
-    for dion_runtime::datastructs::Action
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::Action>>
+    for dion_runtime::data::action::Action
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Action> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::Action> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::CustomUI> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::CustomUI> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::CustomUI::Text { text } => {
+            dion_runtime::data::custom_ui::CustomUI::Text { text } => {
                 [0.into_dart(), text.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::CustomUI::Image {
+            dion_runtime::data::custom_ui::CustomUI::Image {
                 image,
                 width,
                 height,
@@ -4213,47 +4548,62 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Cus
                 height.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::Link { link, label } => [
+            dion_runtime::data::custom_ui::CustomUI::Link { link, label } => [
                 2.into_dart(),
                 link.into_into_dart().into_dart(),
                 label.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => [
+            dion_runtime::data::custom_ui::CustomUI::TimeStamp { timestamp, display } => [
                 3.into_dart(),
                 timestamp.into_into_dart().into_dart(),
                 display.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
+            dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
                 [4.into_dart(), entry.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::CustomUI::Button { label, on_click } => [
+            dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => [
                 5.into_dart(),
+                image.into_into_dart().into_dart(),
+                top.into_into_dart().into_dart(),
+                bottom.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => [
+                6.into_dart(),
+                event.into_into_dart().into_dart(),
+                data.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => [
+                7.into_dart(),
                 label.into_into_dart().into_dart(),
                 on_click.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::InlineSetting {
+            dion_runtime::data::custom_ui::CustomUI::InlineSetting {
                 setting_id,
+                setting_kind,
                 on_commit,
             } => [
-                6.into_dart(),
+                8.into_dart(),
                 setting_id.into_into_dart().into_dart(),
+                setting_kind.into_into_dart().into_dart(),
                 on_commit.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::Slot { id, child } => [
-                7.into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Slot { id, child } => [
+                9.into_dart(),
                 id.into_into_dart().into_dart(),
                 child.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::CustomUI::Column { children } => {
-                [8.into_dart(), children.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::custom_ui::CustomUI::Column { children } => {
+                [10.into_dart(), children.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::CustomUI::Row { children } => {
-                [9.into_dart(), children.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::custom_ui::CustomUI::Row { children } => {
+                [11.into_dart(), children.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -4262,18 +4612,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Cus
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::CustomUI>
+    for FrbWrapper<dion_runtime::data::custom_ui::CustomUI>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::CustomUI>>
-    for dion_runtime::datastructs::CustomUI
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::CustomUI>>
+    for dion_runtime::data::custom_ui::CustomUI
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::CustomUI> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::CustomUI> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::DropdownOption> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::DropdownOption> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.label.into_into_dart().into_dart(),
@@ -4283,18 +4633,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Dropdo
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::settings::DropdownOption>
+    for FrbWrapper<dion_runtime::data::settings::DropdownOption>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::DropdownOption>>
-    for dion_runtime::settings::DropdownOption
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::DropdownOption>>
+    for dion_runtime::data::settings::DropdownOption
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::DropdownOption> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::DropdownOption> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Entry> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Entry> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.id.into_into_dart().into_dart(),
@@ -4311,21 +4661,21 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Entry>
+    for FrbWrapper<dion_runtime::data::source::Entry>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Entry>>
-    for dion_runtime::datastructs::Entry
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Entry>>
+    for dion_runtime::data::source::Entry
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Entry> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Entry> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::EntryActivity> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::activity::EntryActivity> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::EntryActivity::EpisodeActivity { progress } => {
+            dion_runtime::data::activity::EntryActivity::EpisodeActivity { progress } => {
                 [0.into_dart(), progress.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -4335,18 +4685,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::EntryActivity>
+    for FrbWrapper<dion_runtime::data::activity::EntryActivity>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::EntryActivity>>
-    for dion_runtime::datastructs::EntryActivity
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::activity::EntryActivity>>
+    for dion_runtime::data::activity::EntryActivity
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::EntryActivity> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::activity::EntryActivity> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::EntryDetailed> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::EntryDetailed> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.id.into_into_dart().into_dart(),
@@ -4370,18 +4720,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::EntryDetailed>
+    for FrbWrapper<dion_runtime::data::source::EntryDetailed>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::EntryDetailed>>
-    for dion_runtime::datastructs::EntryDetailed
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::EntryDetailed>>
+    for dion_runtime::data::source::EntryDetailed
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::EntryDetailed> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::EntryDetailed> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::EntryDetailedResult> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::EntryDetailedResult> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.entry.into_into_dart().into_dart(),
@@ -4391,18 +4741,40 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::EntryDetailedResult>
+    for FrbWrapper<dion_runtime::data::source::EntryDetailedResult>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::EntryDetailedResult>>
-    for dion_runtime::datastructs::EntryDetailedResult
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::EntryDetailedResult>>
+    for dion_runtime::data::source::EntryDetailedResult
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::EntryDetailedResult> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::EntryDetailedResult> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::EntryList> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::EntryId> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.uid.into_into_dart().into_dart(),
+            self.0.iddata.into_into_dart().into_dart(),
+            self.0.id_type.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::EntryId>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::EntryId>>
+    for dion_runtime::data::source::EntryId
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::EntryId> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::EntryList> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.hasnext.into_into_dart().into_dart(),
@@ -4413,18 +4785,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ent
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::EntryList>
+    for FrbWrapper<dion_runtime::data::source::EntryList>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::EntryList>>
-    for dion_runtime::datastructs::EntryList
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::EntryList>>
+    for dion_runtime::data::source::EntryList
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::EntryList> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::EntryList> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Episode> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Episode> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.id.into_into_dart().into_dart(),
@@ -4438,97 +4810,180 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Epi
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Episode>
+    for FrbWrapper<dion_runtime::data::source::Episode>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Episode>>
-    for dion_runtime::datastructs::Episode
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Episode>>
+    for dion_runtime::data::source::Episode
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Episode> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Episode> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ExtensionData> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::EpisodeId> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.0.id.into_into_dart().into_dart(),
-            self.0.repo.into_into_dart().into_dart(),
-            self.0.name.into_into_dart().into_dart(),
-            self.0.media_type.into_into_dart().into_dart(),
-            self.0.extension_type.into_into_dart().into_dart(),
-            self.0.version.into_into_dart().into_dart(),
-            self.0.desc.into_into_dart().into_dart(),
-            self.0.author.into_into_dart().into_dart(),
-            self.0.license.into_into_dart().into_dart(),
-            self.0.tags.into_into_dart().into_dart(),
-            self.0.nsfw.into_into_dart().into_dart(),
-            self.0.lang.into_into_dart().into_dart(),
-            self.0.url.into_into_dart().into_dart(),
-            self.0.icon.into_into_dart().into_dart(),
+            self.0.uid.into_into_dart().into_dart(),
+            self.0.iddata.into_into_dart().into_dart(),
+            self.0.id_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::ExtensionData>
+    for FrbWrapper<dion_runtime::data::source::EpisodeId>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ExtensionData>>
-    for dion_runtime::datastructs::ExtensionData
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::EpisodeId>>
+    for dion_runtime::data::source::EpisodeId
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ExtensionData> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::EpisodeId> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ExtensionRepo> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension::ExtensionData> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.url.into_into_dart().into_dart(),
+            self.0.icon.into_into_dart().into_dart(),
+            self.0.desc.into_into_dart().into_dart(),
+            self.0.author.into_into_dart().into_dart(),
+            self.0.tags.into_into_dart().into_dart(),
+            self.0.lang.into_into_dart().into_dart(),
+            self.0.nsfw.into_into_dart().into_dart(),
+            self.0.media_type.into_into_dart().into_dart(),
+            self.0.extension_type.into_into_dart().into_dart(),
+            self.0.repo.into_into_dart().into_dart(),
+            self.0.version.into_into_dart().into_dart(),
+            self.0.license.into_into_dart().into_dart(),
+            self.0.compatible.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::extension::ExtensionData>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension::ExtensionData>>
+    for dion_runtime::data::extension::ExtensionData
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension::ExtensionData> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::extension_manager::ExtensionManagerData>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.name.into_into_dart().into_dart(),
+            self.0.icon.into_into_dart().into_dart(),
+            self.0.repo.into_into_dart().into_dart(),
+            self.0.api_version.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::extension_manager::ExtensionManagerData>
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<
+        FrbWrapper<dion_runtime::data::extension_manager::ExtensionManagerData>,
+    > for dion_runtime::data::extension_manager::ExtensionManagerData
+{
+    fn into_into_dart(
+        self,
+    ) -> FrbWrapper<dion_runtime::data::extension_manager::ExtensionManagerData> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::extension_repo::ExtensionRepo>
+{
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.name.into_into_dart().into_dart(),
             self.0.description.into_into_dart().into_dart(),
+            self.0.url.into_into_dart().into_dart(),
             self.0.id.into_into_dart().into_dart(),
-            self.0.extensions.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::ExtensionRepo>
+    for FrbWrapper<dion_runtime::data::extension_repo::ExtensionRepo>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ExtensionRepo>>
-    for dion_runtime::datastructs::ExtensionRepo
+impl
+    flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension_repo::ExtensionRepo>>
+    for dion_runtime::data::extension_repo::ExtensionRepo
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ExtensionRepo> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension_repo::ExtensionRepo> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ExtensionType> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension::ExtensionType> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::ExtensionType::SourceProvider => 0.into_dart(),
-            dion_runtime::datastructs::ExtensionType::URLResolve => 1.into_dart(),
-            dion_runtime::datastructs::ExtensionType::SourceProcessor => 2.into_dart(),
-            dion_runtime::datastructs::ExtensionType::EntryExtension => 3.into_dart(),
-            _ => unreachable!(),
+            dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
+                [0.into_dart(), has_search.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
+                [1.into_dart(), id_types.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
+                [2.into_dart(), id_types.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::extension::ExtensionType::SourceProcessor {
+                sourcetypes,
+                opentype,
+            } => [
+                3.into_dart(),
+                sourcetypes.into_into_dart().into_dart(),
+                opentype.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::extension::ExtensionType::EntryProcessor {
+                trigger_map_entry,
+                trigger_on_entry_activity,
+            } => [
+                4.into_dart(),
+                trigger_map_entry.into_into_dart().into_dart(),
+                trigger_on_entry_activity.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::extension::ExtensionType::URLHandler { url_patterns } => {
+                [5.into_dart(), url_patterns.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::ExtensionType>
+    for FrbWrapper<dion_runtime::data::extension::ExtensionType>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ExtensionType>>
-    for dion_runtime::datastructs::ExtensionType
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension::ExtensionType>>
+    for dion_runtime::data::extension::ExtensionType
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ExtensionType> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension::ExtensionType> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ImageListAudio> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::ImageListAudio> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.link.into_into_dart().into_dart(),
@@ -4539,18 +4994,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Ima
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::ImageListAudio>
+    for FrbWrapper<dion_runtime::data::source::ImageListAudio>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ImageListAudio>>
-    for dion_runtime::datastructs::ImageListAudio
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::ImageListAudio>>
+    for dion_runtime::data::source::ImageListAudio
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ImageListAudio> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::ImageListAudio> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Link> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Link> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.url.into_into_dart().into_dart(),
@@ -4560,42 +5015,42 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Lin
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Link>
+    for FrbWrapper<dion_runtime::data::source::Link>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Link>>
-    for dion_runtime::datastructs::Link
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Link>>
+    for dion_runtime::data::source::Link
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Link> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Link> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::MediaType> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::MediaType> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::MediaType::Video => 0.into_dart(),
-            dion_runtime::datastructs::MediaType::Comic => 1.into_dart(),
-            dion_runtime::datastructs::MediaType::Audio => 2.into_dart(),
-            dion_runtime::datastructs::MediaType::Book => 3.into_dart(),
-            dion_runtime::datastructs::MediaType::Unknown => 4.into_dart(),
+            dion_runtime::data::source::MediaType::Video => 0.into_dart(),
+            dion_runtime::data::source::MediaType::Comic => 1.into_dart(),
+            dion_runtime::data::source::MediaType::Audio => 2.into_dart(),
+            dion_runtime::data::source::MediaType::Book => 3.into_dart(),
+            dion_runtime::data::source::MediaType::Unknown => 4.into_dart(),
             _ => unreachable!(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::MediaType>
+    for FrbWrapper<dion_runtime::data::source::MediaType>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::MediaType>>
-    for dion_runtime::datastructs::MediaType
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::MediaType>>
+    for dion_runtime::data::source::MediaType
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::MediaType> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::MediaType> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Mp3Chapter> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Mp3Chapter> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.title.into_into_dart().into_dart(),
@@ -4605,24 +5060,24 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Mp3
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Mp3Chapter>
+    for FrbWrapper<dion_runtime::data::source::Mp3Chapter>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Mp3Chapter>>
-    for dion_runtime::datastructs::Mp3Chapter
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Mp3Chapter>>
+    for dion_runtime::data::source::Mp3Chapter
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Mp3Chapter> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Mp3Chapter> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Paragraph> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Paragraph> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::Paragraph::Text { content } => {
+            dion_runtime::data::source::Paragraph::Text { content } => {
                 [0.into_dart(), content.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::Paragraph::CustomUI { ui } => {
+            dion_runtime::data::source::Paragraph::CustomUI { ui } => {
                 [1.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -4632,31 +5087,33 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Par
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Paragraph>
+    for FrbWrapper<dion_runtime::data::source::Paragraph>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Paragraph>>
-    for dion_runtime::datastructs::Paragraph
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Paragraph>>
+    for dion_runtime::data::source::Paragraph
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Paragraph> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Paragraph> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::permission::Permission> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::permission::Permission> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::permission::Permission::Storage { path, write } => [
+            dion_runtime::data::permission::Permission::Storage { path, write } => [
                 0.into_dart(),
                 path.into_into_dart().into_dart(),
                 write.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::permission::Permission::Network { domain } => {
+            dion_runtime::data::permission::Permission::Network { domain } => {
                 [1.into_dart(), domain.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::permission::Permission::ActionPopup => [2.into_dart()].into_dart(),
-            dion_runtime::permission::Permission::ArbitraryNetwork => [3.into_dart()].into_dart(),
+            dion_runtime::data::permission::Permission::ActionPopup => [2.into_dart()].into_dart(),
+            dion_runtime::data::permission::Permission::ArbitraryNetwork => {
+                [3.into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -4664,18 +5121,18 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::permission::Perm
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::permission::Permission>
+    for FrbWrapper<dion_runtime::data::permission::Permission>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::permission::Permission>>
-    for dion_runtime::permission::Permission
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::permission::Permission>>
+    for dion_runtime::data::permission::Permission
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::permission::Permission> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::permission::Permission> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::PopupAction> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::PopupAction> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.label.into_into_dart().into_dart(),
@@ -4685,62 +5142,97 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Pop
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::PopupAction>
+    for FrbWrapper<dion_runtime::data::action::PopupAction>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::PopupAction>>
-    for dion_runtime::datastructs::PopupAction
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::PopupAction>>
+    for dion_runtime::data::action::PopupAction
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::PopupAction> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::PopupAction> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::ReleaseStatus> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::ReleaseStatus> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::ReleaseStatus::Releasing => 0.into_dart(),
-            dion_runtime::datastructs::ReleaseStatus::Complete => 1.into_dart(),
-            dion_runtime::datastructs::ReleaseStatus::Unknown => 2.into_dart(),
+            dion_runtime::data::source::ReleaseStatus::Releasing => 0.into_dart(),
+            dion_runtime::data::source::ReleaseStatus::Complete => 1.into_dart(),
+            dion_runtime::data::source::ReleaseStatus::Unknown => 2.into_dart(),
             _ => unreachable!(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::ReleaseStatus>
+    for FrbWrapper<dion_runtime::data::source::ReleaseStatus>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::ReleaseStatus>>
-    for dion_runtime::datastructs::ReleaseStatus
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::ReleaseStatus>>
+    for dion_runtime::data::source::ReleaseStatus
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::ReleaseStatus> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::ReleaseStatus> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::RemoteExtension> {
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::extension_repo::RemoteExtension>
+{
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.0.extension_url.into_into_dart().into_dart(),
+            self.0.id.into_into_dart().into_dart(),
+            self.0.exturl.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.cover.into_into_dart().into_dart(),
+            self.0.version.into_into_dart().into_dart(),
             self.0.compatible.into_into_dart().into_dart(),
-            self.0.data.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::RemoteExtension>
+    for FrbWrapper<dion_runtime::data::extension_repo::RemoteExtension>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::RemoteExtension>>
-    for dion_runtime::datastructs::RemoteExtension
+impl
+    flutter_rust_bridge::IntoIntoDart<
+        FrbWrapper<dion_runtime::data::extension_repo::RemoteExtension>,
+    > for dion_runtime::data::extension_repo::RemoteExtension
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::RemoteExtension> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension_repo::RemoteExtension> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Setting> {
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::extension_repo::RemoteExtensionResult>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.content.into_into_dart().into_dart(),
+            self.0.hasnext.into_into_dart().into_dart(),
+            self.0.length.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::extension_repo::RemoteExtensionResult>
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<
+        FrbWrapper<dion_runtime::data::extension_repo::RemoteExtensionResult>,
+    > for dion_runtime::data::extension_repo::RemoteExtensionResult
+{
+    fn into_into_dart(
+        self,
+    ) -> FrbWrapper<dion_runtime::data::extension_repo::RemoteExtensionResult> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::Setting> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.label.into_into_dart().into_dart(),
@@ -4753,51 +5245,51 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Settin
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::settings::Setting>
+    for FrbWrapper<dion_runtime::data::settings::Setting>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::Setting>>
-    for dion_runtime::settings::Setting
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::Setting>>
+    for dion_runtime::data::settings::Setting
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::Setting> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::Setting> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::SettingKind> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::SettingKind> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::settings::SettingKind::Extension => 0.into_dart(),
-            dion_runtime::settings::SettingKind::Search => 1.into_dart(),
+            dion_runtime::data::settings::SettingKind::Extension => 0.into_dart(),
+            dion_runtime::data::settings::SettingKind::Search => 1.into_dart(),
             _ => unreachable!(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::settings::SettingKind>
+    for FrbWrapper<dion_runtime::data::settings::SettingKind>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::SettingKind>>
-    for dion_runtime::settings::SettingKind
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::SettingKind>>
+    for dion_runtime::data::settings::SettingKind
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::SettingKind> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::SettingKind> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::SettingValue> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::SettingValue> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::settings::SettingValue::String { data } => {
+            dion_runtime::data::settings::SettingValue::String { data } => {
                 [0.into_dart(), data.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::settings::SettingValue::Number { data } => {
+            dion_runtime::data::settings::SettingValue::Number { data } => {
                 [1.into_dart(), data.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::settings::SettingValue::Boolean { data } => {
+            dion_runtime::data::settings::SettingValue::Boolean { data } => {
                 [2.into_dart(), data.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::settings::SettingValue::StringList { data } => {
+            dion_runtime::data::settings::SettingValue::StringList { data } => {
                 [3.into_dart(), data.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -4807,29 +5299,29 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Settin
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::settings::SettingValue>
+    for FrbWrapper<dion_runtime::data::settings::SettingValue>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::SettingValue>>
-    for dion_runtime::settings::SettingValue
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::SettingValue>>
+    for dion_runtime::data::settings::SettingValue
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::SettingValue> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::SettingValue> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::SettingsUI> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::SettingsUI> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::settings::SettingsUI::CheckBox => [0.into_dart()].into_dart(),
-            dion_runtime::settings::SettingsUI::Slider { min, max, step } => [
+            dion_runtime::data::settings::SettingsUI::CheckBox => [0.into_dart()].into_dart(),
+            dion_runtime::data::settings::SettingsUI::Slider { min, max, step } => [
                 1.into_dart(),
                 min.into_into_dart().into_dart(),
                 max.into_into_dart().into_dart(),
                 step.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::settings::SettingsUI::Dropdown { options } => {
+            dion_runtime::data::settings::SettingsUI::Dropdown { options } => {
                 [2.into_dart(), options.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -4839,42 +5331,42 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::settings::Settin
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::settings::SettingsUI>
+    for FrbWrapper<dion_runtime::data::settings::SettingsUI>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::settings::SettingsUI>>
-    for dion_runtime::settings::SettingsUI
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::SettingsUI>>
+    for dion_runtime::data::settings::SettingsUI
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::settings::SettingsUI> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::SettingsUI> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Source> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Source> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::Source::Epub { link } => {
+            dion_runtime::data::source::Source::Epub { link } => {
                 [0.into_dart(), link.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::Source::Pdf { link } => {
+            dion_runtime::data::source::Source::Pdf { link } => {
                 [1.into_dart(), link.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::Source::Imagelist { links, audio } => [
+            dion_runtime::data::source::Source::Imagelist { links, audio } => [
                 2.into_dart(),
                 links.into_into_dart().into_dart(),
                 audio.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::Source::M3u8 { link, sub } => [
+            dion_runtime::data::source::Source::M3u8 { link, sub } => [
                 3.into_dart(),
                 link.into_into_dart().into_dart(),
                 sub.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::datastructs::Source::Mp3 { chapters } => {
+            dion_runtime::data::source::Source::Mp3 { chapters } => {
                 [4.into_dart(), chapters.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::Source::Paragraphlist { paragraphs } => {
+            dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 [5.into_dart(), paragraphs.into_into_dart().into_dart()].into_dart()
             }
             _ => {
@@ -4884,18 +5376,39 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Sou
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Source>
+    for FrbWrapper<dion_runtime::data::source::Source>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Source>>
-    for dion_runtime::datastructs::Source
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Source>>
+    for dion_runtime::data::source::Source
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Source> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Source> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::SourceResult> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension::SourceOpenType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::extension::SourceOpenType::Download => 0.into_dart(),
+            dion_runtime::data::extension::SourceOpenType::Stream => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::extension::SourceOpenType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension::SourceOpenType>>
+    for dion_runtime::data::extension::SourceOpenType
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension::SourceOpenType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::SourceResult> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.source.into_into_dart().into_dart(),
@@ -4905,18 +5418,43 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Sou
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::SourceResult>
+    for FrbWrapper<dion_runtime::data::source::SourceResult>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::SourceResult>>
-    for dion_runtime::datastructs::SourceResult
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::SourceResult>>
+    for dion_runtime::data::source::SourceResult
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::SourceResult> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::SourceResult> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Subtitles> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::SourceType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::source::SourceType::Epub => 0.into_dart(),
+            dion_runtime::data::source::SourceType::Pdf => 1.into_dart(),
+            dion_runtime::data::source::SourceType::Imagelist => 2.into_dart(),
+            dion_runtime::data::source::SourceType::M3u8 => 3.into_dart(),
+            dion_runtime::data::source::SourceType::Mp3 => 4.into_dart(),
+            dion_runtime::data::source::SourceType::Paragraphlist => 5.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::SourceType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::SourceType>>
+    for dion_runtime::data::source::SourceType
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::SourceType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Subtitles> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.title.into_into_dart().into_dart(),
@@ -4926,52 +5464,54 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::Sub
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::Subtitles>
+    for FrbWrapper<dion_runtime::data::source::Subtitles>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::Subtitles>>
-    for dion_runtime::datastructs::Subtitles
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Subtitles>>
+    for dion_runtime::data::source::Subtitles
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::Subtitles> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Subtitles> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::TimestampType> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::TimestampType> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::TimestampType::Relative => 0.into_dart(),
-            dion_runtime::datastructs::TimestampType::Absolute => 1.into_dart(),
+            dion_runtime::data::custom_ui::TimestampType::Relative => 0.into_dart(),
+            dion_runtime::data::custom_ui::TimestampType::Absolute => 1.into_dart(),
             _ => unreachable!(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::TimestampType>
+    for FrbWrapper<dion_runtime::data::custom_ui::TimestampType>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::TimestampType>>
-    for dion_runtime::datastructs::TimestampType
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::TimestampType>>
+    for dion_runtime::data::custom_ui::TimestampType
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::TimestampType> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::TimestampType> {
         self.into()
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::UIAction> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::UIAction> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::datastructs::UIAction::Action { action } => {
+            dion_runtime::data::action::UIAction::Action { action } => {
                 [0.into_dart(), action.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::datastructs::UIAction::SwapContent {
+            dion_runtime::data::action::UIAction::SwapContent {
                 targetid,
                 event,
+                data,
                 placeholder,
             } => [
                 1.into_dart(),
                 targetid.into_into_dart().into_dart(),
                 event.into_into_dart().into_dart(),
+                data.into_into_dart().into_dart(),
                 placeholder.into_into_dart().into_dart(),
             ]
             .into_dart(),
@@ -4982,13 +5522,13 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::datastructs::UIA
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::datastructs::UIAction>
+    for FrbWrapper<dion_runtime::data::action::UIAction>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::datastructs::UIAction>>
-    for dion_runtime::datastructs::UIAction
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::UIAction>>
+    for dion_runtime::data::action::UIAction
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::datastructs::UIAction> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::UIAction> {
         self.into()
     }
 }
@@ -5021,22 +5561,17 @@ impl SseEncode for ManagerClient {
     }
 }
 
+impl SseEncode for ProxyAdapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for ProxyExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
-    }
-}
-
-impl SseEncode for ProxyExtensionManager {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        >>::sse_encode(
-            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self),
-            serializer,
-        );
     }
 }
 
@@ -5054,10 +5589,10 @@ impl SseEncode for std::collections::HashMap<String, String> {
     }
 }
 
-impl SseEncode for std::collections::HashMap<String, dion_runtime::settings::Setting> {
+impl SseEncode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<(String, dion_runtime::settings::Setting)>>::sse_encode(
+        <Vec<(String, dion_runtime::data::settings::Setting)>>::sse_encode(
             self.into_iter().collect(),
             serializer,
         );
@@ -5098,7 +5633,7 @@ impl SseEncode
 }
 
 impl SseEncode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5109,15 +5644,53 @@ impl SseEncode
 }
 
 impl SseEncode
-    for RustOpaqueNom<
-        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-    >
+    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         let (ptr, size) = self.sse_encode_raw();
         <usize>::sse_encode(ptr, serializer);
         <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode for std::collections::HashSet<dion_runtime::data::extension::ExtensionType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::extension::ExtensionType>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for std::collections::HashSet<dion_runtime::data::source::MediaType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::source::MediaType>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for std::collections::HashSet<dion_runtime::data::extension::SourceOpenType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::extension::SourceOpenType>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for std::collections::HashSet<dion_runtime::data::source::SourceType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::source::SourceType>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
     }
 }
 
@@ -5128,33 +5701,37 @@ impl SseEncode for String {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Action {
+impl SseEncode for dion_runtime::data::action::Action {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::Action::OpenBrowser { url } => {
+            dion_runtime::data::action::Action::OpenBrowser { url } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(url, serializer);
             }
-            dion_runtime::datastructs::Action::Popup {
+            dion_runtime::data::action::Action::Popup {
                 title,
                 content,
                 actions,
             } => {
                 <i32>::sse_encode(1, serializer);
                 <String>::sse_encode(title, serializer);
-                <dion_runtime::datastructs::CustomUI>::sse_encode(content, serializer);
-                <Vec<dion_runtime::datastructs::PopupAction>>::sse_encode(actions, serializer);
+                <dion_runtime::data::custom_ui::CustomUI>::sse_encode(content, serializer);
+                <Vec<dion_runtime::data::action::PopupAction>>::sse_encode(actions, serializer);
             }
-            dion_runtime::datastructs::Action::Nav { title, content } => {
+            dion_runtime::data::action::Action::Nav { title, content } => {
                 <i32>::sse_encode(2, serializer);
                 <String>::sse_encode(title, serializer);
-                <dion_runtime::datastructs::CustomUI>::sse_encode(content, serializer);
+                <dion_runtime::data::custom_ui::CustomUI>::sse_encode(content, serializer);
             }
-            dion_runtime::datastructs::Action::TriggerEvent { event, data } => {
+            dion_runtime::data::action::Action::TriggerEvent { event, data } => {
                 <i32>::sse_encode(3, serializer);
                 <String>::sse_encode(event, serializer);
                 <String>::sse_encode(data, serializer);
+            }
+            dion_runtime::data::action::Action::NavEntry { entry } => {
+                <i32>::sse_encode(4, serializer);
+                <dion_runtime::data::source::EntryDetailed>::sse_encode(entry, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -5170,88 +5747,101 @@ impl SseEncode for bool {
     }
 }
 
-impl SseEncode for Box<dion_runtime::datastructs::Action> {
+impl SseEncode for Box<dion_runtime::data::action::Action> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::Action>::sse_encode(*self, serializer);
+        <dion_runtime::data::action::Action>::sse_encode(*self, serializer);
     }
 }
 
-impl SseEncode for Box<dion_runtime::datastructs::CustomUI> {
+impl SseEncode for Box<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::CustomUI>::sse_encode(*self, serializer);
+        <dion_runtime::data::custom_ui::CustomUI>::sse_encode(*self, serializer);
     }
 }
 
-impl SseEncode for Box<dion_runtime::datastructs::UIAction> {
+impl SseEncode for Box<dion_runtime::data::action::UIAction> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::UIAction>::sse_encode(*self, serializer);
+        <dion_runtime::data::action::UIAction>::sse_encode(*self, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::CustomUI {
+impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::CustomUI::Text { text } => {
+            dion_runtime::data::custom_ui::CustomUI::Text { text } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(text, serializer);
             }
-            dion_runtime::datastructs::CustomUI::Image {
+            dion_runtime::data::custom_ui::CustomUI::Image {
                 image,
                 width,
                 height,
             } => {
                 <i32>::sse_encode(1, serializer);
-                <dion_runtime::datastructs::Link>::sse_encode(image, serializer);
+                <dion_runtime::data::source::Link>::sse_encode(image, serializer);
                 <Option<i32>>::sse_encode(width, serializer);
                 <Option<i32>>::sse_encode(height, serializer);
             }
-            dion_runtime::datastructs::CustomUI::Link { link, label } => {
+            dion_runtime::data::custom_ui::CustomUI::Link { link, label } => {
                 <i32>::sse_encode(2, serializer);
                 <String>::sse_encode(link, serializer);
                 <Option<String>>::sse_encode(label, serializer);
             }
-            dion_runtime::datastructs::CustomUI::TimeStamp { timestamp, display } => {
+            dion_runtime::data::custom_ui::CustomUI::TimeStamp { timestamp, display } => {
                 <i32>::sse_encode(3, serializer);
                 <String>::sse_encode(timestamp, serializer);
-                <dion_runtime::datastructs::TimestampType>::sse_encode(display, serializer);
+                <dion_runtime::data::custom_ui::TimestampType>::sse_encode(display, serializer);
             }
-            dion_runtime::datastructs::CustomUI::EntryCard { entry } => {
+            dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
                 <i32>::sse_encode(4, serializer);
-                <dion_runtime::datastructs::Entry>::sse_encode(entry, serializer);
+                <dion_runtime::data::source::Entry>::sse_encode(entry, serializer);
             }
-            dion_runtime::datastructs::CustomUI::Button { label, on_click } => {
+            dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => {
                 <i32>::sse_encode(5, serializer);
+                <dion_runtime::data::source::Link>::sse_encode(image, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(top, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(bottom, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => {
+                <i32>::sse_encode(6, serializer);
+                <String>::sse_encode(event, serializer);
+                <String>::sse_encode(data, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
+                <i32>::sse_encode(7, serializer);
                 <String>::sse_encode(label, serializer);
-                <Option<Box<dion_runtime::datastructs::UIAction>>>::sse_encode(
+                <Option<Box<dion_runtime::data::action::UIAction>>>::sse_encode(
                     on_click, serializer,
                 );
             }
-            dion_runtime::datastructs::CustomUI::InlineSetting {
+            dion_runtime::data::custom_ui::CustomUI::InlineSetting {
                 setting_id,
+                setting_kind,
                 on_commit,
             } => {
-                <i32>::sse_encode(6, serializer);
+                <i32>::sse_encode(8, serializer);
                 <String>::sse_encode(setting_id, serializer);
-                <Option<Box<dion_runtime::datastructs::UIAction>>>::sse_encode(
+                <dion_runtime::data::settings::SettingKind>::sse_encode(setting_kind, serializer);
+                <Option<Box<dion_runtime::data::action::UIAction>>>::sse_encode(
                     on_commit, serializer,
                 );
             }
-            dion_runtime::datastructs::CustomUI::Slot { id, child } => {
-                <i32>::sse_encode(7, serializer);
-                <String>::sse_encode(id, serializer);
-                <Box<dion_runtime::datastructs::CustomUI>>::sse_encode(child, serializer);
-            }
-            dion_runtime::datastructs::CustomUI::Column { children } => {
-                <i32>::sse_encode(8, serializer);
-                <Vec<dion_runtime::datastructs::CustomUI>>::sse_encode(children, serializer);
-            }
-            dion_runtime::datastructs::CustomUI::Row { children } => {
+            dion_runtime::data::custom_ui::CustomUI::Slot { id, child } => {
                 <i32>::sse_encode(9, serializer);
-                <Vec<dion_runtime::datastructs::CustomUI>>::sse_encode(children, serializer);
+                <String>::sse_encode(id, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Column { children } => {
+                <i32>::sse_encode(10, serializer);
+                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Row { children } => {
+                <i32>::sse_encode(11, serializer);
+                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -5260,7 +5850,7 @@ impl SseEncode for dion_runtime::datastructs::CustomUI {
     }
 }
 
-impl SseEncode for dion_runtime::settings::DropdownOption {
+impl SseEncode for dion_runtime::data::settings::DropdownOption {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.label, serializer);
@@ -5268,14 +5858,14 @@ impl SseEncode for dion_runtime::settings::DropdownOption {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Entry {
+impl SseEncode for dion_runtime::data::source::Entry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.id, serializer);
+        <Vec<dion_runtime::data::source::EntryId>>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.title, serializer);
-        <dion_runtime::datastructs::MediaType>::sse_encode(self.media_type, serializer);
-        <Option<dion_runtime::datastructs::Link>>::sse_encode(self.cover, serializer);
+        <dion_runtime::data::source::MediaType>::sse_encode(self.media_type, serializer);
+        <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
         <Option<Vec<String>>>::sse_encode(self.author, serializer);
         <Option<f32>>::sse_encode(self.rating, serializer);
         <Option<f32>>::sse_encode(self.views, serializer);
@@ -5283,11 +5873,11 @@ impl SseEncode for dion_runtime::datastructs::Entry {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::EntryActivity {
+impl SseEncode for dion_runtime::data::activity::EntryActivity {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::EntryActivity::EpisodeActivity { progress } => {
+            dion_runtime::data::activity::EntryActivity::EpisodeActivity { progress } => {
                 <i32>::sse_encode(0, serializer);
                 <i32>::sse_encode(progress, serializer);
             }
@@ -5298,21 +5888,21 @@ impl SseEncode for dion_runtime::datastructs::EntryActivity {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::EntryDetailed {
+impl SseEncode for dion_runtime::data::source::EntryDetailed {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.id, serializer);
+        <Vec<dion_runtime::data::source::EntryId>>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.url, serializer);
         <Vec<String>>::sse_encode(self.titles, serializer);
         <Option<Vec<String>>>::sse_encode(self.author, serializer);
-        <Option<dion_runtime::datastructs::CustomUI>>::sse_encode(self.ui, serializer);
+        <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(self.ui, serializer);
         <Option<std::collections::HashMap<String, String>>>::sse_encode(self.meta, serializer);
-        <dion_runtime::datastructs::MediaType>::sse_encode(self.media_type, serializer);
-        <dion_runtime::datastructs::ReleaseStatus>::sse_encode(self.status, serializer);
+        <dion_runtime::data::source::MediaType>::sse_encode(self.media_type, serializer);
+        <dion_runtime::data::source::ReleaseStatus>::sse_encode(self.status, serializer);
         <String>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.language, serializer);
-        <Option<dion_runtime::datastructs::Link>>::sse_encode(self.cover, serializer);
-        <Vec<dion_runtime::datastructs::Episode>>::sse_encode(self.episodes, serializer);
+        <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
+        <Vec<dion_runtime::data::source::Episode>>::sse_encode(self.episodes, serializer);
         <Option<Vec<String>>>::sse_encode(self.genres, serializer);
         <Option<f32>>::sse_encode(self.rating, serializer);
         <Option<f32>>::sse_encode(self.views, serializer);
@@ -5320,89 +5910,146 @@ impl SseEncode for dion_runtime::datastructs::EntryDetailed {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::EntryDetailedResult {
+impl SseEncode for dion_runtime::data::source::EntryDetailedResult {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::EntryDetailed>::sse_encode(self.entry, serializer);
-        <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_encode(
+        <dion_runtime::data::source::EntryDetailed>::sse_encode(self.entry, serializer);
+        <std::collections::HashMap<String, dion_runtime::data::settings::Setting>>::sse_encode(
             self.settings,
             serializer,
         );
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::EntryList {
+impl SseEncode for dion_runtime::data::source::EntryId {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.uid, serializer);
+        <Option<String>>::sse_encode(self.iddata, serializer);
+        <String>::sse_encode(self.id_type, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::EntryList {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<bool>>::sse_encode(self.hasnext, serializer);
         <Option<i32>>::sse_encode(self.length, serializer);
-        <Vec<dion_runtime::datastructs::Entry>>::sse_encode(self.content, serializer);
+        <Vec<dion_runtime::data::source::Entry>>::sse_encode(self.content, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Episode {
+impl SseEncode for dion_runtime::data::source::Episode {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.id, serializer);
+        <Vec<dion_runtime::data::source::EpisodeId>>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.url, serializer);
-        <Option<dion_runtime::datastructs::Link>>::sse_encode(self.cover, serializer);
+        <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
         <Option<String>>::sse_encode(self.timestamp, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::ExtensionData {
+impl SseEncode for dion_runtime::data::source::EpisodeId {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.id, serializer);
-        <Option<String>>::sse_encode(self.repo, serializer);
-        <String>::sse_encode(self.name, serializer);
-        <Option<Vec<dion_runtime::datastructs::MediaType>>>::sse_encode(
-            self.media_type,
-            serializer,
-        );
-        <Option<Vec<dion_runtime::datastructs::ExtensionType>>>::sse_encode(
-            self.extension_type,
-            serializer,
-        );
-        <Option<String>>::sse_encode(self.version, serializer);
-        <Option<String>>::sse_encode(self.desc, serializer);
-        <Vec<String>>::sse_encode(self.author, serializer);
-        <Option<String>>::sse_encode(self.license, serializer);
-        <Option<Vec<String>>>::sse_encode(self.tags, serializer);
-        <Option<bool>>::sse_encode(self.nsfw, serializer);
-        <Vec<String>>::sse_encode(self.lang, serializer);
-        <Option<String>>::sse_encode(self.url, serializer);
-        <Option<String>>::sse_encode(self.icon, serializer);
+        <String>::sse_encode(self.uid, serializer);
+        <Option<String>>::sse_encode(self.iddata, serializer);
+        <String>::sse_encode(self.id_type, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::ExtensionRepo {
+impl SseEncode for dion_runtime::data::extension::ExtensionData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.url, serializer);
+        <String>::sse_encode(self.icon, serializer);
+        <Option<String>>::sse_encode(self.desc, serializer);
+        <Vec<String>>::sse_encode(self.author, serializer);
+        <Vec<String>>::sse_encode(self.tags, serializer);
+        <Vec<String>>::sse_encode(self.lang, serializer);
+        <bool>::sse_encode(self.nsfw, serializer);
+        <std::collections::HashSet<dion_runtime::data::source::MediaType>>::sse_encode(
+            self.media_type,
+            serializer,
+        );
+        <std::collections::HashSet<dion_runtime::data::extension::ExtensionType>>::sse_encode(
+            self.extension_type,
+            serializer,
+        );
+        <Option<String>>::sse_encode(self.repo, serializer);
+        <String>::sse_encode(self.version, serializer);
+        <String>::sse_encode(self.license, serializer);
+        <bool>::sse_encode(self.compatible, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::extension_manager::ExtensionManagerData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.name, serializer);
+        <Option<String>>::sse_encode(self.icon, serializer);
+        <Option<String>>::sse_encode(self.repo, serializer);
+        <u32>::sse_encode(self.api_version, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::extension_repo::ExtensionRepo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.description, serializer);
+        <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.id, serializer);
-        <Vec<dion_runtime::datastructs::RemoteExtension>>::sse_encode(self.extensions, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::ExtensionType {
+impl SseEncode for dion_runtime::data::extension::ExtensionType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(
-            match self {
-                dion_runtime::datastructs::ExtensionType::SourceProvider => 0,
-                dion_runtime::datastructs::ExtensionType::URLResolve => 1,
-                dion_runtime::datastructs::ExtensionType::SourceProcessor => 2,
-                dion_runtime::datastructs::ExtensionType::EntryExtension => 3,
-                _ => {
-                    unimplemented!("");
-                }
-            },
-            serializer,
-        );
+        match self {
+            dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
+                <i32>::sse_encode(0, serializer);
+                <bool>::sse_encode(has_search, serializer);
+            }
+            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
+                <i32>::sse_encode(1, serializer);
+                <Vec<String>>::sse_encode(id_types, serializer);
+            }
+            dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
+                <i32>::sse_encode(2, serializer);
+                <Vec<String>>::sse_encode(id_types, serializer);
+            }
+            dion_runtime::data::extension::ExtensionType::SourceProcessor {
+                sourcetypes,
+                opentype,
+            } => {
+                <i32>::sse_encode(3, serializer);
+                <std::collections::HashSet<dion_runtime::data::source::SourceType>>::sse_encode(
+                    sourcetypes,
+                    serializer,
+                );
+                <std::collections::HashSet<dion_runtime::data::extension::SourceOpenType>>::sse_encode(opentype, serializer);
+            }
+            dion_runtime::data::extension::ExtensionType::EntryProcessor {
+                trigger_map_entry,
+                trigger_on_entry_activity,
+            } => {
+                <i32>::sse_encode(4, serializer);
+                <bool>::sse_encode(trigger_map_entry, serializer);
+                <bool>::sse_encode(trigger_on_entry_activity, serializer);
+            }
+            dion_runtime::data::extension::ExtensionType::URLHandler { url_patterns } => {
+                <i32>::sse_encode(5, serializer);
+                <Vec<String>>::sse_encode(url_patterns, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -5427,10 +6074,10 @@ impl SseEncode for i32 {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::ImageListAudio {
+impl SseEncode for dion_runtime::data::source::ImageListAudio {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::Link>::sse_encode(self.link, serializer);
+        <dion_runtime::data::source::Link>::sse_encode(self.link, serializer);
         <i32>::sse_encode(self.from, serializer);
         <i32>::sse_encode(self.to, serializer);
     }
@@ -5446,7 +6093,7 @@ impl SseEncode for isize {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Link {
+impl SseEncode for dion_runtime::data::source::Link {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.url, serializer);
@@ -5474,122 +6121,142 @@ impl SseEncode for Vec<String> {
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::CustomUI> {
+impl SseEncode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::CustomUI>::sse_encode(item, serializer);
+            <dion_runtime::data::custom_ui::CustomUI>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::settings::DropdownOption> {
+impl SseEncode for Vec<dion_runtime::data::settings::DropdownOption> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::settings::DropdownOption>::sse_encode(item, serializer);
+            <dion_runtime::data::settings::DropdownOption>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Entry> {
+impl SseEncode for Vec<dion_runtime::data::source::Entry> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Entry>::sse_encode(item, serializer);
+            <dion_runtime::data::source::Entry>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Episode> {
+impl SseEncode for Vec<dion_runtime::data::source::EntryId> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Episode>::sse_encode(item, serializer);
+            <dion_runtime::data::source::EntryId>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::ExtensionType> {
+impl SseEncode for Vec<dion_runtime::data::source::Episode> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::ExtensionType>::sse_encode(item, serializer);
+            <dion_runtime::data::source::Episode>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::ImageListAudio> {
+impl SseEncode for Vec<dion_runtime::data::source::EpisodeId> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::ImageListAudio>::sse_encode(item, serializer);
+            <dion_runtime::data::source::EpisodeId>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Link> {
+impl SseEncode for Vec<dion_runtime::data::extension::ExtensionType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Link>::sse_encode(item, serializer);
+            <dion_runtime::data::extension::ExtensionType>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::MediaType> {
+impl SseEncode for Vec<dion_runtime::data::source::ImageListAudio> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::MediaType>::sse_encode(item, serializer);
+            <dion_runtime::data::source::ImageListAudio>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Mp3Chapter> {
+impl SseEncode for Vec<dion_runtime::data::source::Link> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Mp3Chapter>::sse_encode(item, serializer);
+            <dion_runtime::data::source::Link>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Paragraph> {
+impl SseEncode for Vec<dion_runtime::data::source::MediaType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Paragraph>::sse_encode(item, serializer);
+            <dion_runtime::data::source::MediaType>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::permission::Permission> {
+impl SseEncode for Vec<dion_runtime::data::source::Mp3Chapter> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::permission::Permission>::sse_encode(item, serializer);
+            <dion_runtime::data::source::Mp3Chapter>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::PopupAction> {
+impl SseEncode for Vec<dion_runtime::data::source::Paragraph> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::PopupAction>::sse_encode(item, serializer);
+            <dion_runtime::data::source::Paragraph>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::permission::Permission> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::permission::Permission>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::action::PopupAction> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::action::PopupAction>::sse_encode(item, serializer);
         }
     }
 }
@@ -5604,12 +6271,12 @@ impl SseEncode for Vec<u8> {
     }
 }
 
-impl SseEncode for Vec<(String, dion_runtime::settings::Setting)> {
+impl SseEncode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <(String, dion_runtime::settings::Setting)>::sse_encode(item, serializer);
+            <(String, dion_runtime::data::settings::Setting)>::sse_encode(item, serializer);
         }
     }
 }
@@ -5624,36 +6291,56 @@ impl SseEncode for Vec<(String, String)> {
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::RemoteExtension> {
+impl SseEncode for Vec<dion_runtime::data::extension_repo::RemoteExtension> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::RemoteExtension>::sse_encode(item, serializer);
+            <dion_runtime::data::extension_repo::RemoteExtension>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<dion_runtime::datastructs::Subtitles> {
+impl SseEncode for Vec<dion_runtime::data::extension::SourceOpenType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <dion_runtime::datastructs::Subtitles>::sse_encode(item, serializer);
+            <dion_runtime::data::extension::SourceOpenType>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::MediaType {
+impl SseEncode for Vec<dion_runtime::data::source::SourceType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::SourceType>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::source::Subtitles> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::Subtitles>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::MediaType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                dion_runtime::datastructs::MediaType::Video => 0,
-                dion_runtime::datastructs::MediaType::Comic => 1,
-                dion_runtime::datastructs::MediaType::Audio => 2,
-                dion_runtime::datastructs::MediaType::Book => 3,
-                dion_runtime::datastructs::MediaType::Unknown => 4,
+                dion_runtime::data::source::MediaType::Video => 0,
+                dion_runtime::data::source::MediaType::Comic => 1,
+                dion_runtime::data::source::MediaType::Audio => 2,
+                dion_runtime::data::source::MediaType::Book => 3,
+                dion_runtime::data::source::MediaType::Unknown => 4,
                 _ => {
                     unimplemented!("");
                 }
@@ -5663,11 +6350,11 @@ impl SseEncode for dion_runtime::datastructs::MediaType {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Mp3Chapter {
+impl SseEncode for dion_runtime::data::source::Mp3Chapter {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.title, serializer);
-        <dion_runtime::datastructs::Link>::sse_encode(self.url, serializer);
+        <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
     }
 }
 
@@ -5711,12 +6398,12 @@ impl SseEncode for Option<bool> {
     }
 }
 
-impl SseEncode for Option<dion_runtime::datastructs::CustomUI> {
+impl SseEncode for Option<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <dion_runtime::datastructs::CustomUI>::sse_encode(value, serializer);
+            <dion_runtime::data::custom_ui::CustomUI>::sse_encode(value, serializer);
         }
     }
 }
@@ -5741,32 +6428,32 @@ impl SseEncode for Option<i32> {
     }
 }
 
-impl SseEncode for Option<dion_runtime::datastructs::Link> {
+impl SseEncode for Option<dion_runtime::data::source::Link> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <dion_runtime::datastructs::Link>::sse_encode(value, serializer);
+            <dion_runtime::data::source::Link>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<dion_runtime::settings::SettingsUI> {
+impl SseEncode for Option<dion_runtime::data::settings::SettingsUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <dion_runtime::settings::SettingsUI>::sse_encode(value, serializer);
+            <dion_runtime::data::settings::SettingsUI>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<Box<dion_runtime::datastructs::UIAction>> {
+impl SseEncode for Option<Box<dion_runtime::data::action::UIAction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <Box<dion_runtime::datastructs::UIAction>>::sse_encode(value, serializer);
+            <Box<dion_runtime::data::action::UIAction>>::sse_encode(value, serializer);
         }
     }
 }
@@ -5781,47 +6468,27 @@ impl SseEncode for Option<Vec<String>> {
     }
 }
 
-impl SseEncode for Option<Vec<dion_runtime::datastructs::ExtensionType>> {
+impl SseEncode for Option<Vec<dion_runtime::data::source::ImageListAudio>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <Vec<dion_runtime::datastructs::ExtensionType>>::sse_encode(value, serializer);
+            <Vec<dion_runtime::data::source::ImageListAudio>>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<Vec<dion_runtime::datastructs::ImageListAudio>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <Vec<dion_runtime::datastructs::ImageListAudio>>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<Vec<dion_runtime::datastructs::MediaType>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <Vec<dion_runtime::datastructs::MediaType>>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for dion_runtime::datastructs::Paragraph {
+impl SseEncode for dion_runtime::data::source::Paragraph {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::Paragraph::Text { content } => {
+            dion_runtime::data::source::Paragraph::Text { content } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(content, serializer);
             }
-            dion_runtime::datastructs::Paragraph::CustomUI { ui } => {
+            dion_runtime::data::source::Paragraph::CustomUI { ui } => {
                 <i32>::sse_encode(1, serializer);
-                <Box<dion_runtime::datastructs::CustomUI>>::sse_encode(ui, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(ui, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -5830,23 +6497,23 @@ impl SseEncode for dion_runtime::datastructs::Paragraph {
     }
 }
 
-impl SseEncode for dion_runtime::permission::Permission {
+impl SseEncode for dion_runtime::data::permission::Permission {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::permission::Permission::Storage { path, write } => {
+            dion_runtime::data::permission::Permission::Storage { path, write } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(path, serializer);
                 <bool>::sse_encode(write, serializer);
             }
-            dion_runtime::permission::Permission::Network { domain } => {
+            dion_runtime::data::permission::Permission::Network { domain } => {
                 <i32>::sse_encode(1, serializer);
                 <String>::sse_encode(domain, serializer);
             }
-            dion_runtime::permission::Permission::ActionPopup => {
+            dion_runtime::data::permission::Permission::ActionPopup => {
                 <i32>::sse_encode(2, serializer);
             }
-            dion_runtime::permission::Permission::ArbitraryNetwork => {
+            dion_runtime::data::permission::Permission::ArbitraryNetwork => {
                 <i32>::sse_encode(3, serializer);
             }
             _ => {
@@ -5856,19 +6523,19 @@ impl SseEncode for dion_runtime::permission::Permission {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::PopupAction {
+impl SseEncode for dion_runtime::data::action::PopupAction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.label, serializer);
-        <Box<dion_runtime::datastructs::Action>>::sse_encode(self.onclick, serializer);
+        <Box<dion_runtime::data::action::Action>>::sse_encode(self.onclick, serializer);
     }
 }
 
-impl SseEncode for (String, dion_runtime::settings::Setting) {
+impl SseEncode for (String, dion_runtime::data::settings::Setting) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.0, serializer);
-        <dion_runtime::settings::Setting>::sse_encode(self.1, serializer);
+        <dion_runtime::data::settings::Setting>::sse_encode(self.1, serializer);
     }
 }
 
@@ -5880,14 +6547,14 @@ impl SseEncode for (String, String) {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::ReleaseStatus {
+impl SseEncode for dion_runtime::data::source::ReleaseStatus {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                dion_runtime::datastructs::ReleaseStatus::Releasing => 0,
-                dion_runtime::datastructs::ReleaseStatus::Complete => 1,
-                dion_runtime::datastructs::ReleaseStatus::Unknown => 2,
+                dion_runtime::data::source::ReleaseStatus::Releasing => 0,
+                dion_runtime::data::source::ReleaseStatus::Complete => 1,
+                dion_runtime::data::source::ReleaseStatus::Unknown => 2,
                 _ => {
                     unimplemented!("");
                 }
@@ -5897,33 +6564,48 @@ impl SseEncode for dion_runtime::datastructs::ReleaseStatus {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::RemoteExtension {
+impl SseEncode for dion_runtime::data::extension_repo::RemoteExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.extension_url, serializer);
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.exturl, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
+        <String>::sse_encode(self.version, serializer);
         <bool>::sse_encode(self.compatible, serializer);
-        <dion_runtime::datastructs::ExtensionData>::sse_encode(self.data, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::settings::Setting {
+impl SseEncode for dion_runtime::data::extension_repo::RemoteExtensionResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::extension_repo::RemoteExtension>>::sse_encode(
+            self.content,
+            serializer,
+        );
+        <Option<bool>>::sse_encode(self.hasnext, serializer);
+        <Option<i32>>::sse_encode(self.length, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::settings::Setting {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.label, serializer);
-        <dion_runtime::settings::SettingValue>::sse_encode(self.value, serializer);
-        <dion_runtime::settings::SettingValue>::sse_encode(self.default, serializer);
+        <dion_runtime::data::settings::SettingValue>::sse_encode(self.value, serializer);
+        <dion_runtime::data::settings::SettingValue>::sse_encode(self.default, serializer);
         <bool>::sse_encode(self.visible, serializer);
-        <Option<dion_runtime::settings::SettingsUI>>::sse_encode(self.ui, serializer);
+        <Option<dion_runtime::data::settings::SettingsUI>>::sse_encode(self.ui, serializer);
     }
 }
 
-impl SseEncode for dion_runtime::settings::SettingKind {
+impl SseEncode for dion_runtime::data::settings::SettingKind {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                dion_runtime::settings::SettingKind::Extension => 0,
-                dion_runtime::settings::SettingKind::Search => 1,
+                dion_runtime::data::settings::SettingKind::Extension => 0,
+                dion_runtime::data::settings::SettingKind::Search => 1,
                 _ => {
                     unimplemented!("");
                 }
@@ -5933,23 +6615,23 @@ impl SseEncode for dion_runtime::settings::SettingKind {
     }
 }
 
-impl SseEncode for dion_runtime::settings::SettingValue {
+impl SseEncode for dion_runtime::data::settings::SettingValue {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::settings::SettingValue::String { data } => {
+            dion_runtime::data::settings::SettingValue::String { data } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(data, serializer);
             }
-            dion_runtime::settings::SettingValue::Number { data } => {
+            dion_runtime::data::settings::SettingValue::Number { data } => {
                 <i32>::sse_encode(1, serializer);
                 <f32>::sse_encode(data, serializer);
             }
-            dion_runtime::settings::SettingValue::Boolean { data } => {
+            dion_runtime::data::settings::SettingValue::Boolean { data } => {
                 <i32>::sse_encode(2, serializer);
                 <bool>::sse_encode(data, serializer);
             }
-            dion_runtime::settings::SettingValue::StringList { data } => {
+            dion_runtime::data::settings::SettingValue::StringList { data } => {
                 <i32>::sse_encode(3, serializer);
                 <Vec<String>>::sse_encode(data, serializer);
             }
@@ -5960,22 +6642,24 @@ impl SseEncode for dion_runtime::settings::SettingValue {
     }
 }
 
-impl SseEncode for dion_runtime::settings::SettingsUI {
+impl SseEncode for dion_runtime::data::settings::SettingsUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::settings::SettingsUI::CheckBox => {
+            dion_runtime::data::settings::SettingsUI::CheckBox => {
                 <i32>::sse_encode(0, serializer);
             }
-            dion_runtime::settings::SettingsUI::Slider { min, max, step } => {
+            dion_runtime::data::settings::SettingsUI::Slider { min, max, step } => {
                 <i32>::sse_encode(1, serializer);
                 <f64>::sse_encode(min, serializer);
                 <f64>::sse_encode(max, serializer);
                 <i32>::sse_encode(step, serializer);
             }
-            dion_runtime::settings::SettingsUI::Dropdown { options } => {
+            dion_runtime::data::settings::SettingsUI::Dropdown { options } => {
                 <i32>::sse_encode(2, serializer);
-                <Vec<dion_runtime::settings::DropdownOption>>::sse_encode(options, serializer);
+                <Vec<dion_runtime::data::settings::DropdownOption>>::sse_encode(
+                    options, serializer,
+                );
             }
             _ => {
                 unimplemented!("");
@@ -5984,37 +6668,37 @@ impl SseEncode for dion_runtime::settings::SettingsUI {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::Source {
+impl SseEncode for dion_runtime::data::source::Source {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::Source::Epub { link } => {
+            dion_runtime::data::source::Source::Epub { link } => {
                 <i32>::sse_encode(0, serializer);
-                <dion_runtime::datastructs::Link>::sse_encode(link, serializer);
+                <dion_runtime::data::source::Link>::sse_encode(link, serializer);
             }
-            dion_runtime::datastructs::Source::Pdf { link } => {
+            dion_runtime::data::source::Source::Pdf { link } => {
                 <i32>::sse_encode(1, serializer);
-                <dion_runtime::datastructs::Link>::sse_encode(link, serializer);
+                <dion_runtime::data::source::Link>::sse_encode(link, serializer);
             }
-            dion_runtime::datastructs::Source::Imagelist { links, audio } => {
+            dion_runtime::data::source::Source::Imagelist { links, audio } => {
                 <i32>::sse_encode(2, serializer);
-                <Vec<dion_runtime::datastructs::Link>>::sse_encode(links, serializer);
-                <Option<Vec<dion_runtime::datastructs::ImageListAudio>>>::sse_encode(
+                <Vec<dion_runtime::data::source::Link>>::sse_encode(links, serializer);
+                <Option<Vec<dion_runtime::data::source::ImageListAudio>>>::sse_encode(
                     audio, serializer,
                 );
             }
-            dion_runtime::datastructs::Source::M3u8 { link, sub } => {
+            dion_runtime::data::source::Source::M3u8 { link, sub } => {
                 <i32>::sse_encode(3, serializer);
-                <dion_runtime::datastructs::Link>::sse_encode(link, serializer);
-                <Vec<dion_runtime::datastructs::Subtitles>>::sse_encode(sub, serializer);
+                <dion_runtime::data::source::Link>::sse_encode(link, serializer);
+                <Vec<dion_runtime::data::source::Subtitles>>::sse_encode(sub, serializer);
             }
-            dion_runtime::datastructs::Source::Mp3 { chapters } => {
+            dion_runtime::data::source::Source::Mp3 { chapters } => {
                 <i32>::sse_encode(4, serializer);
-                <Vec<dion_runtime::datastructs::Mp3Chapter>>::sse_encode(chapters, serializer);
+                <Vec<dion_runtime::data::source::Mp3Chapter>>::sse_encode(chapters, serializer);
             }
-            dion_runtime::datastructs::Source::Paragraphlist { paragraphs } => {
+            dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 <i32>::sse_encode(5, serializer);
-                <Vec<dion_runtime::datastructs::Paragraph>>::sse_encode(paragraphs, serializer);
+                <Vec<dion_runtime::data::source::Paragraph>>::sse_encode(paragraphs, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -6023,38 +6707,81 @@ impl SseEncode for dion_runtime::datastructs::Source {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::SourceResult {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::datastructs::Source>::sse_encode(self.source, serializer);
-        <std::collections::HashMap<String, dion_runtime::settings::Setting>>::sse_encode(
-            self.settings,
-            serializer,
-        );
-    }
-}
-
-impl SseEncode for dion_runtime::datastructs::Subtitles {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.title, serializer);
-        <dion_runtime::datastructs::Link>::sse_encode(self.url, serializer);
-    }
-}
-
-impl SseEncode for dion_runtime::datastructs::TimestampType {
+impl SseEncode for dion_runtime::data::extension::SourceOpenType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                dion_runtime::datastructs::TimestampType::Relative => 0,
-                dion_runtime::datastructs::TimestampType::Absolute => 1,
+                dion_runtime::data::extension::SourceOpenType::Download => 0,
+                dion_runtime::data::extension::SourceOpenType::Stream => 1,
                 _ => {
                     unimplemented!("");
                 }
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::SourceResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <dion_runtime::data::source::Source>::sse_encode(self.source, serializer);
+        <std::collections::HashMap<String, dion_runtime::data::settings::Setting>>::sse_encode(
+            self.settings,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::SourceType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::source::SourceType::Epub => 0,
+                dion_runtime::data::source::SourceType::Pdf => 1,
+                dion_runtime::data::source::SourceType::Imagelist => 2,
+                dion_runtime::data::source::SourceType::M3u8 => 3,
+                dion_runtime::data::source::SourceType::Mp3 => 4,
+                dion_runtime::data::source::SourceType::Paragraphlist => 5,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::Subtitles {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.title, serializer);
+        <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::TimestampType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::TimestampType::Relative => 0,
+                dion_runtime::data::custom_ui::TimestampType::Absolute => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u32::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -6065,23 +6792,28 @@ impl SseEncode for u8 {
     }
 }
 
-impl SseEncode for dion_runtime::datastructs::UIAction {
+impl SseEncode for dion_runtime::data::action::UIAction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::datastructs::UIAction::Action { action } => {
+            dion_runtime::data::action::UIAction::Action { action } => {
                 <i32>::sse_encode(0, serializer);
-                <dion_runtime::datastructs::Action>::sse_encode(action, serializer);
+                <dion_runtime::data::action::Action>::sse_encode(action, serializer);
             }
-            dion_runtime::datastructs::UIAction::SwapContent {
+            dion_runtime::data::action::UIAction::SwapContent {
                 targetid,
                 event,
+                data,
                 placeholder,
             } => {
                 <i32>::sse_encode(1, serializer);
-                <Option<String>>::sse_encode(targetid, serializer);
+                <String>::sse_encode(targetid, serializer);
                 <String>::sse_encode(event, serializer);
-                <Option<dion_runtime::datastructs::CustomUI>>::sse_encode(placeholder, serializer);
+                <String>::sse_encode(data, serializer);
+                <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(
+                    placeholder,
+                    serializer,
+                );
             }
             _ => {
                 unimplemented!("");
@@ -6124,9 +6856,16 @@ mod io {
 
     // Section: boilerplate
 
-    pub use dion_runtime::datastructs::*;
-    use dion_runtime::permission::Permission;
-    use dion_runtime::settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI};
+    use dion_runtime::data::action::*;
+    use dion_runtime::data::activity::*;
+    use dion_runtime::data::auth::*;
+    use dion_runtime::data::custom_ui::*;
+    use dion_runtime::data::extension::*;
+    use dion_runtime::data::extension_manager::*;
+    use dion_runtime::data::extension_repo::*;
+    use dion_runtime::data::permission::*;
+    use dion_runtime::data::settings::*;
+    use dion_runtime::data::source::*;
     use serde_json::Value;
 
     flutter_rust_bridge::frb_generated_boilerplate_io!();
@@ -6151,6 +6890,18 @@ mod io {
             ))
         }
     }
+    impl CstDecode<ProxyAdapter> for usize {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> ProxyAdapter {
+            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
+                RustOpaqueNom<
+                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>,
+                >,
+            >::cst_decode(
+                self
+            ))
+        }
+    }
     impl CstDecode<ProxyExtension> for usize {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> ProxyExtension {
@@ -6163,33 +6914,12 @@ mod io {
             ))
         }
     }
-    impl CstDecode<ProxyExtensionManager> for usize {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> ProxyExtensionManager {
-            flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(CstDecode::<
-                RustOpaqueNom<
-                    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-                >,
-            >::cst_decode(
-                self
-            ))
-        }
-    }
     impl CstDecode<std::collections::HashMap<String, String>>
         for *mut wire_cst_list_record_string_string
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> std::collections::HashMap<String, String> {
             let vec: Vec<(String, String)> = self.cst_decode();
-            vec.into_iter().collect()
-        }
-    }
-    impl CstDecode<std::collections::HashMap<String, dion_runtime::settings::Setting>>
-        for *mut wire_cst_list_record_string_setting
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> std::collections::HashMap<String, dion_runtime::settings::Setting> {
-            let vec: Vec<(String, dion_runtime::settings::Setting)> = self.cst_decode();
             vec.into_iter().collect()
         }
     }
@@ -6221,6 +6951,19 @@ mod io {
     }
     impl
         CstDecode<
+            RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>,
+        > for usize
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>
+        {
+            unsafe { decode_rust_opaque_nom(self as _) }
+        }
+    }
+    impl
+        CstDecode<
             RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
         > for usize
     {
@@ -6232,20 +6975,44 @@ mod io {
             unsafe { decode_rust_opaque_nom(self as _) }
         }
     }
-    impl
-        CstDecode<
-            RustOpaqueNom<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-            >,
-        > for usize
+    impl CstDecode<std::collections::HashSet<dion_runtime::data::extension::ExtensionType>>
+        for *mut wire_cst_list_extension_type
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(
             self,
-        ) -> RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>,
-        > {
-            unsafe { decode_rust_opaque_nom(self as _) }
+        ) -> std::collections::HashSet<dion_runtime::data::extension::ExtensionType> {
+            let vec: Vec<dion_runtime::data::extension::ExtensionType> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
+    impl CstDecode<std::collections::HashSet<dion_runtime::data::source::MediaType>>
+        for *mut wire_cst_list_media_type
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> std::collections::HashSet<dion_runtime::data::source::MediaType> {
+            let vec: Vec<dion_runtime::data::source::MediaType> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
+    impl CstDecode<std::collections::HashSet<dion_runtime::data::extension::SourceOpenType>>
+        for *mut wire_cst_list_source_open_type
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(
+            self,
+        ) -> std::collections::HashSet<dion_runtime::data::extension::SourceOpenType> {
+            let vec: Vec<dion_runtime::data::extension::SourceOpenType> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
+    impl CstDecode<std::collections::HashSet<dion_runtime::data::source::SourceType>>
+        for *mut wire_cst_list_source_type
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> std::collections::HashSet<dion_runtime::data::source::SourceType> {
+            let vec: Vec<dion_runtime::data::source::SourceType> = self.cst_decode();
+            vec.into_iter().collect()
         }
     }
     impl CstDecode<String> for *mut wire_cst_list_prim_u_8_strict {
@@ -6255,61 +7022,11 @@ mod io {
             String::from_utf8(vec).unwrap()
         }
     }
-    impl CstDecode<dion_runtime::datastructs::Action> for wire_cst_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Action {
-            match self.tag {
-                0 => {
-                    let ans = unsafe { self.kind.OpenBrowser };
-                    dion_runtime::datastructs::Action::OpenBrowser {
-                        url: ans.url.cst_decode(),
-                    }
-                }
-                1 => {
-                    let ans = unsafe { self.kind.Popup };
-                    dion_runtime::datastructs::Action::Popup {
-                        title: ans.title.cst_decode(),
-                        content: ans.content.cst_decode(),
-                        actions: ans.actions.cst_decode(),
-                    }
-                }
-                2 => {
-                    let ans = unsafe { self.kind.Nav };
-                    dion_runtime::datastructs::Action::Nav {
-                        title: ans.title.cst_decode(),
-                        content: ans.content.cst_decode(),
-                    }
-                }
-                3 => {
-                    let ans = unsafe { self.kind.TriggerEvent };
-                    dion_runtime::datastructs::Action::TriggerEvent {
-                        event: ans.event.cst_decode(),
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-    impl CstDecode<Box<dion_runtime::datastructs::Action>> for *mut wire_cst_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Box<dion_runtime::datastructs::Action> {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::Action>::cst_decode(*wrap).into()
-        }
-    }
     impl CstDecode<CancelToken> for *mut usize {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> CancelToken {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::Action> for *mut wire_cst_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Action {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::Action>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<bool> for *mut bool {
@@ -6318,18 +7035,11 @@ mod io {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::CustomUI> for *mut wire_cst_custom_ui {
+    impl CstDecode<dion_runtime::data::extension_repo::ExtensionRepo> for *mut wire_cst_extension_repo {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::CustomUI {
+        fn cst_decode(self) -> dion_runtime::data::extension_repo::ExtensionRepo {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::CustomUI>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::Entry> for *mut wire_cst_entry {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Entry {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::Entry>::cst_decode(*wrap).into()
+            CstDecode::<dion_runtime::data::extension_repo::ExtensionRepo>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<f32> for *mut f32 {
@@ -6344,129 +7054,17 @@ mod io {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::Link> for *mut wire_cst_link {
+    impl CstDecode<dion_runtime::data::source::Link> for *mut wire_cst_link {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Link {
+        fn cst_decode(self) -> dion_runtime::data::source::Link {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::Link>::cst_decode(*wrap).into()
+            CstDecode::<dion_runtime::data::source::Link>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<dion_runtime::datastructs::RemoteExtension> for *mut wire_cst_remote_extension {
+    impl CstDecode<dion_runtime::data::source::Entry> for wire_cst_entry {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::RemoteExtension {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::RemoteExtension>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<dion_runtime::settings::SettingsUI> for *mut wire_cst_settings_ui {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::settings::SettingsUI {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::settings::SettingsUI>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<Box<dion_runtime::datastructs::CustomUI>> for *mut wire_cst_custom_ui {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Box<dion_runtime::datastructs::CustomUI> {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::CustomUI>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<Box<dion_runtime::datastructs::UIAction>> for *mut wire_cst_ui_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Box<dion_runtime::datastructs::UIAction> {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::datastructs::UIAction>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::CustomUI> for wire_cst_custom_ui {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::CustomUI {
-            match self.tag {
-                0 => {
-                    let ans = unsafe { self.kind.Text };
-                    dion_runtime::datastructs::CustomUI::Text {
-                        text: ans.text.cst_decode(),
-                    }
-                }
-                1 => {
-                    let ans = unsafe { self.kind.Image };
-                    dion_runtime::datastructs::CustomUI::Image {
-                        image: ans.image.cst_decode(),
-                        width: ans.width.cst_decode(),
-                        height: ans.height.cst_decode(),
-                    }
-                }
-                2 => {
-                    let ans = unsafe { self.kind.Link };
-                    dion_runtime::datastructs::CustomUI::Link {
-                        link: ans.link.cst_decode(),
-                        label: ans.label.cst_decode(),
-                    }
-                }
-                3 => {
-                    let ans = unsafe { self.kind.TimeStamp };
-                    dion_runtime::datastructs::CustomUI::TimeStamp {
-                        timestamp: ans.timestamp.cst_decode(),
-                        display: ans.display.cst_decode(),
-                    }
-                }
-                4 => {
-                    let ans = unsafe { self.kind.EntryCard };
-                    dion_runtime::datastructs::CustomUI::EntryCard {
-                        entry: ans.entry.cst_decode(),
-                    }
-                }
-                5 => {
-                    let ans = unsafe { self.kind.Button };
-                    dion_runtime::datastructs::CustomUI::Button {
-                        label: ans.label.cst_decode(),
-                        on_click: ans.on_click.cst_decode(),
-                    }
-                }
-                6 => {
-                    let ans = unsafe { self.kind.InlineSetting };
-                    dion_runtime::datastructs::CustomUI::InlineSetting {
-                        setting_id: ans.setting_id.cst_decode(),
-                        on_commit: ans.on_commit.cst_decode(),
-                    }
-                }
-                7 => {
-                    let ans = unsafe { self.kind.Slot };
-                    dion_runtime::datastructs::CustomUI::Slot {
-                        id: ans.id.cst_decode(),
-                        child: ans.child.cst_decode(),
-                    }
-                }
-                8 => {
-                    let ans = unsafe { self.kind.Column };
-                    dion_runtime::datastructs::CustomUI::Column {
-                        children: ans.children.cst_decode(),
-                    }
-                }
-                9 => {
-                    let ans = unsafe { self.kind.Row };
-                    dion_runtime::datastructs::CustomUI::Row {
-                        children: ans.children.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::settings::DropdownOption> for wire_cst_dropdown_option {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::settings::DropdownOption {
-            dion_runtime::settings::DropdownOption {
-                label: self.label.cst_decode(),
-                value: self.value.cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::Entry> for wire_cst_entry {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Entry {
-            dion_runtime::datastructs::Entry {
+        fn cst_decode(self) -> dion_runtime::data::source::Entry {
+            dion_runtime::data::source::Entry {
                 id: self.id.cst_decode(),
                 url: self.url.cst_decode(),
                 title: self.title.cst_decode(),
@@ -6479,97 +7077,122 @@ mod io {
             }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::EntryDetailed> for wire_cst_entry_detailed {
+    impl CstDecode<dion_runtime::data::source::EntryId> for wire_cst_entry_id {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::EntryDetailed {
-            dion_runtime::datastructs::EntryDetailed {
-                id: self.id.cst_decode(),
-                url: self.url.cst_decode(),
-                titles: self.titles.cst_decode(),
-                author: self.author.cst_decode(),
-                ui: self.ui.cst_decode(),
-                meta: self.meta.cst_decode(),
-                media_type: self.media_type.cst_decode(),
-                status: self.status.cst_decode(),
-                description: self.description.cst_decode(),
-                language: self.language.cst_decode(),
-                cover: self.cover.cst_decode(),
-                episodes: self.episodes.cst_decode(),
-                genres: self.genres.cst_decode(),
-                rating: self.rating.cst_decode(),
-                views: self.views.cst_decode(),
-                length: self.length.cst_decode(),
+        fn cst_decode(self) -> dion_runtime::data::source::EntryId {
+            dion_runtime::data::source::EntryId {
+                uid: self.uid.cst_decode(),
+                iddata: self.iddata.cst_decode(),
+                id_type: self.id_type.cst_decode(),
             }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::EntryDetailedResult> for wire_cst_entry_detailed_result {
+    impl CstDecode<dion_runtime::data::source::EntryList> for wire_cst_entry_list {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::EntryDetailedResult {
-            dion_runtime::datastructs::EntryDetailedResult {
-                entry: self.entry.cst_decode(),
-                settings: self.settings.cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::EntryList> for wire_cst_entry_list {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::EntryList {
-            dion_runtime::datastructs::EntryList {
+        fn cst_decode(self) -> dion_runtime::data::source::EntryList {
+            dion_runtime::data::source::EntryList {
                 hasnext: self.hasnext.cst_decode(),
                 length: self.length.cst_decode(),
                 content: self.content.cst_decode(),
             }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::Episode> for wire_cst_episode {
+    impl CstDecode<dion_runtime::data::extension::ExtensionData> for wire_cst_extension_data {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Episode {
-            dion_runtime::datastructs::Episode {
+        fn cst_decode(self) -> dion_runtime::data::extension::ExtensionData {
+            dion_runtime::data::extension::ExtensionData {
                 id: self.id.cst_decode(),
                 name: self.name.cst_decode(),
-                description: self.description.cst_decode(),
-                url: self.url.cst_decode(),
-                cover: self.cover.cst_decode(),
-                timestamp: self.timestamp.cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::ExtensionData> for wire_cst_extension_data {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::ExtensionData {
-            dion_runtime::datastructs::ExtensionData {
-                id: self.id.cst_decode(),
-                repo: self.repo.cst_decode(),
-                name: self.name.cst_decode(),
-                media_type: self.media_type.cst_decode(),
-                extension_type: self.extension_type.cst_decode(),
-                version: self.version.cst_decode(),
-                desc: self.desc.cst_decode(),
-                author: self.author.cst_decode(),
-                license: self.license.cst_decode(),
-                tags: self.tags.cst_decode(),
-                nsfw: self.nsfw.cst_decode(),
-                lang: self.lang.cst_decode(),
                 url: self.url.cst_decode(),
                 icon: self.icon.cst_decode(),
+                desc: self.desc.cst_decode(),
+                author: self.author.cst_decode(),
+                tags: self.tags.cst_decode(),
+                lang: self.lang.cst_decode(),
+                nsfw: self.nsfw.cst_decode(),
+                media_type: self.media_type.cst_decode(),
+                extension_type: self.extension_type.cst_decode(),
+                repo: self.repo.cst_decode(),
+                version: self.version.cst_decode(),
+                license: self.license.cst_decode(),
+                compatible: self.compatible.cst_decode(),
             }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::ExtensionRepo> for wire_cst_extension_repo {
+    impl CstDecode<dion_runtime::data::extension_manager::ExtensionManagerData>
+        for wire_cst_extension_manager_data
+    {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::ExtensionRepo {
-            dion_runtime::datastructs::ExtensionRepo {
+        fn cst_decode(self) -> dion_runtime::data::extension_manager::ExtensionManagerData {
+            dion_runtime::data::extension_manager::ExtensionManagerData {
+                name: self.name.cst_decode(),
+                icon: self.icon.cst_decode(),
+                repo: self.repo.cst_decode(),
+                api_version: self.api_version.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::extension_repo::ExtensionRepo> for wire_cst_extension_repo {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::extension_repo::ExtensionRepo {
+            dion_runtime::data::extension_repo::ExtensionRepo {
                 name: self.name.cst_decode(),
                 description: self.description.cst_decode(),
+                url: self.url.cst_decode(),
                 id: self.id.cst_decode(),
-                extensions: self.extensions.cst_decode(),
             }
         }
     }
-    impl CstDecode<dion_runtime::datastructs::Link> for wire_cst_link {
+    impl CstDecode<dion_runtime::data::extension::ExtensionType> for wire_cst_extension_type {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::Link {
-            dion_runtime::datastructs::Link {
+        fn cst_decode(self) -> dion_runtime::data::extension::ExtensionType {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.EntryProvider };
+                    dion_runtime::data::extension::ExtensionType::EntryProvider {
+                        has_search: ans.has_search.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.EntryDetailedProvider };
+                    dion_runtime::data::extension::ExtensionType::EntryDetailedProvider {
+                        id_types: ans.id_types.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.SourceProvider };
+                    dion_runtime::data::extension::ExtensionType::SourceProvider {
+                        id_types: ans.id_types.cst_decode(),
+                    }
+                }
+                3 => {
+                    let ans = unsafe { self.kind.SourceProcessor };
+                    dion_runtime::data::extension::ExtensionType::SourceProcessor {
+                        sourcetypes: ans.sourcetypes.cst_decode(),
+                        opentype: ans.opentype.cst_decode(),
+                    }
+                }
+                4 => {
+                    let ans = unsafe { self.kind.EntryProcessor };
+                    dion_runtime::data::extension::ExtensionType::EntryProcessor {
+                        trigger_map_entry: ans.trigger_map_entry.cst_decode(),
+                        trigger_on_entry_activity: ans.trigger_on_entry_activity.cst_decode(),
+                    }
+                }
+                5 => {
+                    let ans = unsafe { self.kind.URLHandler };
+                    dion_runtime::data::extension::ExtensionType::URLHandler {
+                        url_patterns: ans.url_patterns.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::source::Link> for wire_cst_link {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::Link {
+            dion_runtime::data::source::Link {
                 url: self.url.cst_decode(),
                 header: self.header.cst_decode(),
             }
@@ -6595,9 +7218,9 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::datastructs::CustomUI>> for *mut wire_cst_list_custom_ui {
+    impl CstDecode<Vec<dion_runtime::data::source::Entry>> for *mut wire_cst_list_entry {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::CustomUI> {
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::Entry> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -6605,9 +7228,9 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::settings::DropdownOption>> for *mut wire_cst_list_dropdown_option {
+    impl CstDecode<Vec<dion_runtime::data::source::EntryId>> for *mut wire_cst_list_entry_id {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::settings::DropdownOption> {
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::EntryId> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -6615,31 +7238,11 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::datastructs::Entry>> for *mut wire_cst_list_entry {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::Entry> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
-    impl CstDecode<Vec<dion_runtime::datastructs::Episode>> for *mut wire_cst_list_episode {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::Episode> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
-    impl CstDecode<Vec<dion_runtime::datastructs::ExtensionType>>
+    impl CstDecode<Vec<dion_runtime::data::extension::ExtensionType>>
         for *mut wire_cst_list_extension_type
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::ExtensionType> {
+        fn cst_decode(self) -> Vec<dion_runtime::data::extension::ExtensionType> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -6647,19 +7250,9 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::datastructs::MediaType>> for *mut wire_cst_list_media_type {
+    impl CstDecode<Vec<dion_runtime::data::source::MediaType>> for *mut wire_cst_list_media_type {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::MediaType> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
-    impl CstDecode<Vec<dion_runtime::datastructs::PopupAction>> for *mut wire_cst_list_popup_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::PopupAction> {
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::MediaType> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -6676,18 +7269,6 @@ mod io {
             }
         }
     }
-    impl CstDecode<Vec<(String, dion_runtime::settings::Setting)>>
-        for *mut wire_cst_list_record_string_setting
-    {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<(String, dion_runtime::settings::Setting)> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
     impl CstDecode<Vec<(String, String)>> for *mut wire_cst_list_record_string_string {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<(String, String)> {
@@ -6698,11 +7279,11 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::datastructs::RemoteExtension>>
+    impl CstDecode<Vec<dion_runtime::data::extension_repo::RemoteExtension>>
         for *mut wire_cst_list_remote_extension
     {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::datastructs::RemoteExtension> {
+        fn cst_decode(self) -> Vec<dion_runtime::data::extension_repo::RemoteExtension> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -6710,19 +7291,26 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<dion_runtime::datastructs::PopupAction> for wire_cst_popup_action {
+    impl CstDecode<Vec<dion_runtime::data::extension::SourceOpenType>>
+        for *mut wire_cst_list_source_open_type
+    {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::PopupAction {
-            dion_runtime::datastructs::PopupAction {
-                label: self.label.cst_decode(),
-                onclick: self.onclick.cst_decode(),
-            }
+        fn cst_decode(self) -> Vec<dion_runtime::data::extension::SourceOpenType> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<(String, dion_runtime::settings::Setting)> for wire_cst_record_string_setting {
+    impl CstDecode<Vec<dion_runtime::data::source::SourceType>> for *mut wire_cst_list_source_type {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> (String, dion_runtime::settings::Setting) {
-            (self.field0.cst_decode(), self.field1.cst_decode())
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::SourceType> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
     impl CstDecode<(String, String)> for wire_cst_record_string_string {
@@ -6731,142 +7319,29 @@ mod io {
             (self.field0.cst_decode(), self.field1.cst_decode())
         }
     }
-    impl CstDecode<dion_runtime::datastructs::RemoteExtension> for wire_cst_remote_extension {
+    impl CstDecode<dion_runtime::data::extension_repo::RemoteExtension> for wire_cst_remote_extension {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::RemoteExtension {
-            dion_runtime::datastructs::RemoteExtension {
-                extension_url: self.extension_url.cst_decode(),
+        fn cst_decode(self) -> dion_runtime::data::extension_repo::RemoteExtension {
+            dion_runtime::data::extension_repo::RemoteExtension {
+                id: self.id.cst_decode(),
+                exturl: self.exturl.cst_decode(),
+                name: self.name.cst_decode(),
+                cover: self.cover.cst_decode(),
+                version: self.version.cst_decode(),
                 compatible: self.compatible.cst_decode(),
-                data: self.data.cst_decode(),
             }
         }
     }
-    impl CstDecode<dion_runtime::settings::Setting> for wire_cst_setting {
+    impl CstDecode<dion_runtime::data::extension_repo::RemoteExtensionResult>
+        for wire_cst_remote_extension_result
+    {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::settings::Setting {
-            dion_runtime::settings::Setting {
-                label: self.label.cst_decode(),
-                value: self.value.cst_decode(),
-                default: self.default.cst_decode(),
-                visible: self.visible.cst_decode(),
-                ui: self.ui.cst_decode(),
+        fn cst_decode(self) -> dion_runtime::data::extension_repo::RemoteExtensionResult {
+            dion_runtime::data::extension_repo::RemoteExtensionResult {
+                content: self.content.cst_decode(),
+                hasnext: self.hasnext.cst_decode(),
+                length: self.length.cst_decode(),
             }
-        }
-    }
-    impl CstDecode<dion_runtime::settings::SettingValue> for wire_cst_setting_value {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::settings::SettingValue {
-            match self.tag {
-                0 => {
-                    let ans = unsafe { self.kind.String };
-                    dion_runtime::settings::SettingValue::String {
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                1 => {
-                    let ans = unsafe { self.kind.Number };
-                    dion_runtime::settings::SettingValue::Number {
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                2 => {
-                    let ans = unsafe { self.kind.Boolean };
-                    dion_runtime::settings::SettingValue::Boolean {
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                3 => {
-                    let ans = unsafe { self.kind.StringList };
-                    dion_runtime::settings::SettingValue::StringList {
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::settings::SettingsUI> for wire_cst_settings_ui {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::settings::SettingsUI {
-            match self.tag {
-                0 => dion_runtime::settings::SettingsUI::CheckBox,
-                1 => {
-                    let ans = unsafe { self.kind.Slider };
-                    dion_runtime::settings::SettingsUI::Slider {
-                        min: ans.min.cst_decode(),
-                        max: ans.max.cst_decode(),
-                        step: ans.step.cst_decode(),
-                    }
-                }
-                2 => {
-                    let ans = unsafe { self.kind.Dropdown };
-                    dion_runtime::settings::SettingsUI::Dropdown {
-                        options: ans.options.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::datastructs::UIAction> for wire_cst_ui_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::datastructs::UIAction {
-            match self.tag {
-                0 => {
-                    let ans = unsafe { self.kind.Action };
-                    dion_runtime::datastructs::UIAction::Action {
-                        action: ans.action.cst_decode(),
-                    }
-                }
-                1 => {
-                    let ans = unsafe { self.kind.SwapContent };
-                    dion_runtime::datastructs::UIAction::SwapContent {
-                        targetid: ans.targetid.cst_decode(),
-                        event: ans.event.cst_decode(),
-                        placeholder: ans.placeholder.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-    impl NewWithNullPtr for wire_cst_action {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: ActionKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_action {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_custom_ui {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: CustomUIKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_custom_ui {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_dropdown_option {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                label: core::ptr::null_mut(),
-                value: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_dropdown_option {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
         }
     }
     impl NewWithNullPtr for wire_cst_entry {
@@ -6889,42 +7364,16 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
-    impl NewWithNullPtr for wire_cst_entry_detailed {
+    impl NewWithNullPtr for wire_cst_entry_id {
         fn new_with_null_ptr() -> Self {
             Self {
-                id: core::ptr::null_mut(),
-                url: core::ptr::null_mut(),
-                titles: core::ptr::null_mut(),
-                author: core::ptr::null_mut(),
-                ui: core::ptr::null_mut(),
-                meta: core::ptr::null_mut(),
-                media_type: Default::default(),
-                status: Default::default(),
-                description: core::ptr::null_mut(),
-                language: core::ptr::null_mut(),
-                cover: core::ptr::null_mut(),
-                episodes: core::ptr::null_mut(),
-                genres: core::ptr::null_mut(),
-                rating: core::ptr::null_mut(),
-                views: core::ptr::null_mut(),
-                length: core::ptr::null_mut(),
+                uid: core::ptr::null_mut(),
+                iddata: core::ptr::null_mut(),
+                id_type: core::ptr::null_mut(),
             }
         }
     }
-    impl Default for wire_cst_entry_detailed {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_entry_detailed_result {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                entry: Default::default(),
-                settings: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_entry_detailed_result {
+    impl Default for wire_cst_entry_id {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -6943,44 +7392,43 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
-    impl NewWithNullPtr for wire_cst_episode {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                id: core::ptr::null_mut(),
-                name: core::ptr::null_mut(),
-                description: core::ptr::null_mut(),
-                url: core::ptr::null_mut(),
-                cover: core::ptr::null_mut(),
-                timestamp: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_episode {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
     impl NewWithNullPtr for wire_cst_extension_data {
         fn new_with_null_ptr() -> Self {
             Self {
                 id: core::ptr::null_mut(),
-                repo: core::ptr::null_mut(),
                 name: core::ptr::null_mut(),
-                media_type: core::ptr::null_mut(),
-                extension_type: core::ptr::null_mut(),
-                version: core::ptr::null_mut(),
-                desc: core::ptr::null_mut(),
-                author: core::ptr::null_mut(),
-                license: core::ptr::null_mut(),
-                tags: core::ptr::null_mut(),
-                nsfw: core::ptr::null_mut(),
-                lang: core::ptr::null_mut(),
                 url: core::ptr::null_mut(),
                 icon: core::ptr::null_mut(),
+                desc: core::ptr::null_mut(),
+                author: core::ptr::null_mut(),
+                tags: core::ptr::null_mut(),
+                lang: core::ptr::null_mut(),
+                nsfw: Default::default(),
+                media_type: core::ptr::null_mut(),
+                extension_type: core::ptr::null_mut(),
+                repo: core::ptr::null_mut(),
+                version: core::ptr::null_mut(),
+                license: core::ptr::null_mut(),
+                compatible: Default::default(),
             }
         }
     }
     impl Default for wire_cst_extension_data {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_extension_manager_data {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                name: core::ptr::null_mut(),
+                icon: core::ptr::null_mut(),
+                repo: core::ptr::null_mut(),
+                api_version: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_extension_manager_data {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -6990,12 +7438,25 @@ mod io {
             Self {
                 name: core::ptr::null_mut(),
                 description: core::ptr::null_mut(),
+                url: core::ptr::null_mut(),
                 id: core::ptr::null_mut(),
-                extensions: core::ptr::null_mut(),
             }
         }
     }
     impl Default for wire_cst_extension_repo {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_extension_type {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: ExtensionTypeKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_extension_type {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -7009,32 +7470,6 @@ mod io {
         }
     }
     impl Default for wire_cst_link {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_popup_action {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                label: core::ptr::null_mut(),
-                onclick: core::ptr::null_mut(),
-            }
-        }
-    }
-    impl Default for wire_cst_popup_action {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_record_string_setting {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                field0: core::ptr::null_mut(),
-                field1: Default::default(),
-            }
-        }
-    }
-    impl Default for wire_cst_record_string_setting {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -7055,9 +7490,12 @@ mod io {
     impl NewWithNullPtr for wire_cst_remote_extension {
         fn new_with_null_ptr() -> Self {
             Self {
-                extension_url: core::ptr::null_mut(),
+                id: core::ptr::null_mut(),
+                exturl: core::ptr::null_mut(),
+                name: core::ptr::null_mut(),
+                cover: core::ptr::null_mut(),
+                version: core::ptr::null_mut(),
                 compatible: Default::default(),
-                data: Default::default(),
             }
         }
     }
@@ -7066,57 +7504,16 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
-    impl NewWithNullPtr for wire_cst_setting {
+    impl NewWithNullPtr for wire_cst_remote_extension_result {
         fn new_with_null_ptr() -> Self {
             Self {
-                label: core::ptr::null_mut(),
-                value: Default::default(),
-                default: Default::default(),
-                visible: Default::default(),
-                ui: core::ptr::null_mut(),
+                content: core::ptr::null_mut(),
+                hasnext: core::ptr::null_mut(),
+                length: core::ptr::null_mut(),
             }
         }
     }
-    impl Default for wire_cst_setting {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_setting_value {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: SettingValueKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_setting_value {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_settings_ui {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: SettingsUIKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_settings_ui {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_ui_action {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: UIActionKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_ui_action {
+    impl Default for wire_cst_remote_extension_result {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -7173,55 +7570,56 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_get_extensions(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_browse_repo(
         port_: i64,
         that: usize,
+        repo: *mut wire_cst_extension_repo,
+        page: i32,
     ) {
-        wire__crate__api__extension__ProxyExtensionManager_get_extensions_impl(port_, that)
+        wire__crate__api__extension__ProxyAdapter_browse_repo_impl(port_, that, repo, page)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_get_repo(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_get_extensions(
+        port_: i64,
+        that: usize,
+    ) {
+        wire__crate__api__extension__ProxyAdapter_get_extensions_impl(port_, that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_get_repo(
         port_: i64,
         that: usize,
         url: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__extension__ProxyExtensionManager_get_repo_impl(port_, that, url)
+        wire__crate__api__extension__ProxyAdapter_get_repo_impl(port_, that, url)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_init_dion(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_dion(
         port_: i64,
         client: usize,
     ) {
-        wire__crate__api__extension__ProxyExtensionManager_init_dion_impl(port_, client)
+        wire__crate__api__extension__ProxyAdapter_init_dion_impl(port_, client)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_install(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_install(
         port_: i64,
         that: usize,
-        location: *mut wire_cst_remote_extension,
+        location: *mut wire_cst_list_prim_u_8_strict,
     ) {
-        wire__crate__api__extension__ProxyExtensionManager_install_impl(port_, that, location)
+        wire__crate__api__extension__ProxyAdapter_install_impl(port_, that, location)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_install_single(
-        port_: i64,
-        that: usize,
-        url: *mut wire_cst_list_prim_u_8_strict,
-    ) {
-        wire__crate__api__extension__ProxyExtensionManager_install_single_impl(port_, that, url)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_uninstall(
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_uninstall(
         port_: i64,
         that: usize,
         ext: usize,
     ) {
-        wire__crate__api__extension__ProxyExtensionManager_uninstall_impl(port_, that, ext)
+        wire__crate__api__extension__ProxyAdapter_uninstall_impl(port_, that, ext)
     }
 
     #[unsafe(no_mangle)]
@@ -7252,16 +7650,6 @@ mod io {
             rust_vec_len_,
             data_len_,
         )
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_fromurl(
-        port_: i64,
-        that: usize,
-        url: *mut wire_cst_list_prim_u_8_strict,
-        token: *mut usize,
-    ) {
-        wire__crate__api__extension__ProxyExtension_fromurl_impl(port_, that, url, token)
     }
 
     #[unsafe(no_mangle)]
@@ -7337,6 +7725,16 @@ mod io {
             rust_vec_len_,
             data_len_,
         )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_handle_url(
+        port_: i64,
+        that: usize,
+        url: *mut wire_cst_list_prim_u_8_strict,
+        token: *mut usize,
+    ) {
+        wire__crate__api__extension__ProxyExtension_handle_url_impl(port_, that, url, token)
     }
 
     #[unsafe(no_mangle)]
@@ -7515,52 +7913,31 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__entry_list_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__entry_default_impl(port_)
+        wire__dion_runtime__data__source__entry_list_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_detailed_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension__extension_data_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__entry_detailed_default_impl(port_)
+        wire__dion_runtime__data__extension__extension_data_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_detailed_result_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension_manager__extension_manager_data_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__entry_detailed_result_default_impl(port_)
+        wire__dion_runtime__data__extension_manager__extension_manager_data_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_list_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__extension_repo_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__entry_list_default_impl(port_)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__episode_default(
-        port_: i64,
-    ) {
-        wire__dion_runtime__datastructs__episode_default_impl(port_)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__extension_data_default(
-        port_: i64,
-    ) {
-        wire__dion_runtime__datastructs__extension_data_default_impl(port_)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__extension_repo_default(
-        port_: i64,
-    ) {
-        wire__dion_runtime__datastructs__extension_repo_default_impl(port_)
+        wire__dion_runtime__data__extension_repo__extension_repo_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
@@ -7569,38 +7946,52 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__link_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__link_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__link_default_impl(port_)
+        wire__dion_runtime__data__source__link_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__media_type_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__media_type_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__media_type_default_impl(port_)
+        wire__dion_runtime__data__source__media_type_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__release_status_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__release_status_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__release_status_default_impl(port_)
+        wire__dion_runtime__data__source__release_status_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__remote_extension_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__remote_extension_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__remote_extension_default_impl(port_)
+        wire__dion_runtime__data__extension_repo__remote_extension_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__datastructs__timestamp_type_default(
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__remote_extension_result_default(
         port_: i64,
     ) {
-        wire__dion_runtime__datastructs__timestamp_type_default_impl(port_)
+        wire__dion_runtime__data__extension_repo__remote_extension_result_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__extension__source_open_type_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__extension__source_open_type_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__timestamp_type_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__timestamp_type_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
@@ -7658,6 +8049,24 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>::increment_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+        ptr: *const std::ffi::c_void,
+    ) {
+        unsafe {
+            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>::decrement_strong_count(ptr as _);
+        }
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
         ptr: *const std::ffi::c_void,
     ) {
@@ -7676,38 +8085,10 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>>::increment_strong_count(ptr as _);
-        }
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>>::decrement_strong_count(ptr as _);
-        }
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_action() -> *mut wire_cst_action {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_action::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
         value: usize,
     ) -> *mut usize {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_action() -> *mut wire_cst_action {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_action::new_with_null_ptr())
     }
 
     #[unsafe(no_mangle)]
@@ -7716,14 +8097,11 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui() -> *mut wire_cst_custom_ui
-    {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_entry() -> *mut wire_cst_entry {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_entry::new_with_null_ptr())
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_extension_repo(
+    ) -> *mut wire_cst_extension_repo {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_extension_repo::new_with_null_ptr(),
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -7739,32 +8117,6 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_link() -> *mut wire_cst_link {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_link::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_remote_extension(
-    ) -> *mut wire_cst_remote_extension {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(
-            wire_cst_remote_extension::new_with_null_ptr(),
-        )
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_settings_ui(
-    ) -> *mut wire_cst_settings_ui {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(
-            wire_cst_settings_ui::new_with_null_ptr(),
-        )
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_custom_ui() -> *mut wire_cst_custom_ui {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_ui_action() -> *mut wire_cst_ui_action {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_ui_action::new_with_null_ptr())
     }
 
     #[unsafe(no_mangle)]
@@ -7788,34 +8140,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_custom_ui(
-        len: i32,
-    ) -> *mut wire_cst_list_custom_ui {
-        let wrap = wire_cst_list_custom_ui {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_custom_ui>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_dropdown_option(
-        len: i32,
-    ) -> *mut wire_cst_list_dropdown_option {
-        let wrap = wire_cst_list_dropdown_option {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_dropdown_option>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_entry(
         len: i32,
     ) -> *mut wire_cst_list_entry {
@@ -7830,12 +8154,12 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_episode(
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_entry_id(
         len: i32,
-    ) -> *mut wire_cst_list_episode {
-        let wrap = wire_cst_list_episode {
+    ) -> *mut wire_cst_list_entry_id {
+        let wrap = wire_cst_list_entry_id {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_episode>::new_with_null_ptr(),
+                <wire_cst_entry_id>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -7848,7 +8172,10 @@ mod io {
         len: i32,
     ) -> *mut wire_cst_list_extension_type {
         let wrap = wire_cst_list_extension_type {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_extension_type>::new_with_null_ptr(),
+                len,
+            ),
             len,
         };
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
@@ -7866,20 +8193,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_popup_action(
-        len: i32,
-    ) -> *mut wire_cst_list_popup_action {
-        let wrap = wire_cst_list_popup_action {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_popup_action>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_prim_u_8_strict(
         len: i32,
     ) -> *mut wire_cst_list_prim_u_8_strict {
@@ -7888,20 +8201,6 @@ mod io {
             len,
         };
         flutter_rust_bridge::for_generated::new_leak_box_ptr(ans)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_setting(
-        len: i32,
-    ) -> *mut wire_cst_list_record_string_setting {
-        let wrap = wire_cst_list_record_string_setting {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_record_string_setting>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
     #[unsafe(no_mangle)]
@@ -7932,133 +8231,32 @@ mod io {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
 
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_action {
-        tag: i32,
-        kind: ActionKind,
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_source_open_type(
+        len: i32,
+    ) -> *mut wire_cst_list_source_open_type {
+        let wrap = wire_cst_list_source_open_type {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union ActionKind {
-        OpenBrowser: wire_cst_Action_OpenBrowser,
-        Popup: wire_cst_Action_Popup,
-        Nav: wire_cst_Action_Nav,
-        TriggerEvent: wire_cst_Action_TriggerEvent,
-        nil__: (),
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_source_type(
+        len: i32,
+    ) -> *mut wire_cst_list_source_type {
+        let wrap = wire_cst_list_source_type {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
     }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_OpenBrowser {
-        url: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_Popup {
-        title: *mut wire_cst_list_prim_u_8_strict,
-        content: *mut wire_cst_custom_ui,
-        actions: *mut wire_cst_list_popup_action,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_Nav {
-        title: *mut wire_cst_list_prim_u_8_strict,
-        content: *mut wire_cst_custom_ui,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_TriggerEvent {
-        event: *mut wire_cst_list_prim_u_8_strict,
-        data: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_custom_ui {
-        tag: i32,
-        kind: CustomUIKind,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union CustomUIKind {
-        Text: wire_cst_CustomUI_Text,
-        Image: wire_cst_CustomUI_Image,
-        Link: wire_cst_CustomUI_Link,
-        TimeStamp: wire_cst_CustomUI_TimeStamp,
-        EntryCard: wire_cst_CustomUI_EntryCard,
-        Button: wire_cst_CustomUI_Button,
-        InlineSetting: wire_cst_CustomUI_InlineSetting,
-        Slot: wire_cst_CustomUI_Slot,
-        Column: wire_cst_CustomUI_Column,
-        Row: wire_cst_CustomUI_Row,
-        nil__: (),
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Text {
-        text: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Image {
-        image: *mut wire_cst_link,
-        width: *mut i32,
-        height: *mut i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Link {
-        link: *mut wire_cst_list_prim_u_8_strict,
-        label: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_TimeStamp {
-        timestamp: *mut wire_cst_list_prim_u_8_strict,
-        display: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_EntryCard {
-        entry: *mut wire_cst_entry,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Button {
-        label: *mut wire_cst_list_prim_u_8_strict,
-        on_click: *mut wire_cst_ui_action,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_InlineSetting {
-        setting_id: *mut wire_cst_list_prim_u_8_strict,
-        on_commit: *mut wire_cst_ui_action,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Slot {
-        id: *mut wire_cst_list_prim_u_8_strict,
-        child: *mut wire_cst_custom_ui,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Column {
-        children: *mut wire_cst_list_custom_ui,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_CustomUI_Row {
-        children: *mut wire_cst_list_custom_ui,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_dropdown_option {
-        label: *mut wire_cst_list_prim_u_8_strict,
-        value: *mut wire_cst_list_prim_u_8_strict,
-    }
+
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_entry {
-        id: *mut wire_cst_list_prim_u_8_strict,
+        id: *mut wire_cst_list_entry_id,
         url: *mut wire_cst_list_prim_u_8_strict,
         title: *mut wire_cst_list_prim_u_8_strict,
         media_type: i32,
@@ -8070,29 +8268,10 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_entry_detailed {
-        id: *mut wire_cst_list_prim_u_8_strict,
-        url: *mut wire_cst_list_prim_u_8_strict,
-        titles: *mut wire_cst_list_String,
-        author: *mut wire_cst_list_String,
-        ui: *mut wire_cst_custom_ui,
-        meta: *mut wire_cst_list_record_string_string,
-        media_type: i32,
-        status: i32,
-        description: *mut wire_cst_list_prim_u_8_strict,
-        language: *mut wire_cst_list_prim_u_8_strict,
-        cover: *mut wire_cst_link,
-        episodes: *mut wire_cst_list_episode,
-        genres: *mut wire_cst_list_String,
-        rating: *mut f32,
-        views: *mut f32,
-        length: *mut i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_entry_detailed_result {
-        entry: wire_cst_entry_detailed,
-        settings: *mut wire_cst_list_record_string_setting,
+    pub struct wire_cst_entry_id {
+        uid: *mut wire_cst_list_prim_u_8_strict,
+        iddata: *mut wire_cst_list_prim_u_8_strict,
+        id_type: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -8103,39 +8282,87 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_episode {
+    pub struct wire_cst_extension_data {
         id: *mut wire_cst_list_prim_u_8_strict,
         name: *mut wire_cst_list_prim_u_8_strict,
-        description: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
-        cover: *mut wire_cst_link,
-        timestamp: *mut wire_cst_list_prim_u_8_strict,
+        icon: *mut wire_cst_list_prim_u_8_strict,
+        desc: *mut wire_cst_list_prim_u_8_strict,
+        author: *mut wire_cst_list_String,
+        tags: *mut wire_cst_list_String,
+        lang: *mut wire_cst_list_String,
+        nsfw: bool,
+        media_type: *mut wire_cst_list_media_type,
+        extension_type: *mut wire_cst_list_extension_type,
+        repo: *mut wire_cst_list_prim_u_8_strict,
+        version: *mut wire_cst_list_prim_u_8_strict,
+        license: *mut wire_cst_list_prim_u_8_strict,
+        compatible: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_extension_data {
-        id: *mut wire_cst_list_prim_u_8_strict,
-        repo: *mut wire_cst_list_prim_u_8_strict,
+    pub struct wire_cst_extension_manager_data {
         name: *mut wire_cst_list_prim_u_8_strict,
-        media_type: *mut wire_cst_list_media_type,
-        extension_type: *mut wire_cst_list_extension_type,
-        version: *mut wire_cst_list_prim_u_8_strict,
-        desc: *mut wire_cst_list_prim_u_8_strict,
-        author: *mut wire_cst_list_String,
-        license: *mut wire_cst_list_prim_u_8_strict,
-        tags: *mut wire_cst_list_String,
-        nsfw: *mut bool,
-        lang: *mut wire_cst_list_String,
-        url: *mut wire_cst_list_prim_u_8_strict,
         icon: *mut wire_cst_list_prim_u_8_strict,
+        repo: *mut wire_cst_list_prim_u_8_strict,
+        api_version: u32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_extension_repo {
         name: *mut wire_cst_list_prim_u_8_strict,
         description: *mut wire_cst_list_prim_u_8_strict,
+        url: *mut wire_cst_list_prim_u_8_strict,
         id: *mut wire_cst_list_prim_u_8_strict,
-        extensions: *mut wire_cst_list_remote_extension,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_extension_type {
+        tag: i32,
+        kind: ExtensionTypeKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union ExtensionTypeKind {
+        EntryProvider: wire_cst_ExtensionType_EntryProvider,
+        EntryDetailedProvider: wire_cst_ExtensionType_EntryDetailedProvider,
+        SourceProvider: wire_cst_ExtensionType_SourceProvider,
+        SourceProcessor: wire_cst_ExtensionType_SourceProcessor,
+        EntryProcessor: wire_cst_ExtensionType_EntryProcessor,
+        URLHandler: wire_cst_ExtensionType_URLHandler,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_EntryProvider {
+        has_search: bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_EntryDetailedProvider {
+        id_types: *mut wire_cst_list_String,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_SourceProvider {
+        id_types: *mut wire_cst_list_String,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_SourceProcessor {
+        sourcetypes: *mut wire_cst_list_source_type,
+        opentype: *mut wire_cst_list_source_open_type,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_EntryProcessor {
+        trigger_map_entry: bool,
+        trigger_on_entry_activity: bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_ExtensionType_URLHandler {
+        url_patterns: *mut wire_cst_list_String,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -8158,32 +8385,20 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_custom_ui {
-        ptr: *mut wire_cst_custom_ui,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_list_dropdown_option {
-        ptr: *mut wire_cst_dropdown_option,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_entry {
         ptr: *mut wire_cst_entry,
         len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_episode {
-        ptr: *mut wire_cst_episode,
+    pub struct wire_cst_list_entry_id {
+        ptr: *mut wire_cst_entry_id,
         len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_extension_type {
-        ptr: *mut i32,
+        ptr: *mut wire_cst_extension_type,
         len: i32,
     }
     #[repr(C)]
@@ -8194,20 +8409,8 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_popup_action {
-        ptr: *mut wire_cst_popup_action,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_prim_u_8_strict {
         ptr: *mut u8,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_list_record_string_setting {
-        ptr: *mut wire_cst_record_string_setting,
         len: i32,
     }
     #[repr(C)]
@@ -8224,15 +8427,15 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_popup_action {
-        label: *mut wire_cst_list_prim_u_8_strict,
-        onclick: *mut wire_cst_action,
+    pub struct wire_cst_list_source_open_type {
+        ptr: *mut i32,
+        len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_record_string_setting {
-        field0: *mut wire_cst_list_prim_u_8_strict,
-        field1: wire_cst_setting,
+    pub struct wire_cst_list_source_type {
+        ptr: *mut i32,
+        len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -8243,103 +8446,19 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_remote_extension {
-        extension_url: *mut wire_cst_list_prim_u_8_strict,
+        id: *mut wire_cst_list_prim_u_8_strict,
+        exturl: *mut wire_cst_list_prim_u_8_strict,
+        name: *mut wire_cst_list_prim_u_8_strict,
+        cover: *mut wire_cst_link,
+        version: *mut wire_cst_list_prim_u_8_strict,
         compatible: bool,
-        data: wire_cst_extension_data,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_setting {
-        label: *mut wire_cst_list_prim_u_8_strict,
-        value: wire_cst_setting_value,
-        default: wire_cst_setting_value,
-        visible: bool,
-        ui: *mut wire_cst_settings_ui,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_setting_value {
-        tag: i32,
-        kind: SettingValueKind,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union SettingValueKind {
-        String: wire_cst_SettingValue_String,
-        Number: wire_cst_SettingValue_Number,
-        Boolean: wire_cst_SettingValue_Boolean,
-        StringList: wire_cst_SettingValue_StringList,
-        nil__: (),
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingValue_String {
-        data: *mut wire_cst_list_prim_u_8_strict,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingValue_Number {
-        data: f32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingValue_Boolean {
-        data: bool,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingValue_StringList {
-        data: *mut wire_cst_list_String,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_settings_ui {
-        tag: i32,
-        kind: SettingsUIKind,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union SettingsUIKind {
-        Slider: wire_cst_SettingsUI_Slider,
-        Dropdown: wire_cst_SettingsUI_Dropdown,
-        nil__: (),
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingsUI_Slider {
-        min: f64,
-        max: f64,
-        step: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_SettingsUI_Dropdown {
-        options: *mut wire_cst_list_dropdown_option,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_ui_action {
-        tag: i32,
-        kind: UIActionKind,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union UIActionKind {
-        Action: wire_cst_UIAction_Action,
-        SwapContent: wire_cst_UIAction_SwapContent,
-        nil__: (),
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_UIAction_Action {
-        action: *mut wire_cst_action,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_UIAction_SwapContent {
-        targetid: *mut wire_cst_list_prim_u_8_strict,
-        event: *mut wire_cst_list_prim_u_8_strict,
-        placeholder: *mut wire_cst_custom_ui,
+    pub struct wire_cst_remote_extension_result {
+        content: *mut wire_cst_list_remote_extension,
+        hasnext: *mut bool,
+        length: *mut i32,
     }
 }
 #[cfg(not(target_family = "wasm"))]

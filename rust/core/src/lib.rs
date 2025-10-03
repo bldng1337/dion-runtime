@@ -277,4 +277,8 @@ mod test {
             assert!(extension.is_enabled());
         }
     }
+    const PATH: &str = "../../tests/jsondata";
+
+    #[tokio::test]
+    async fn build_json_data() {}
 }

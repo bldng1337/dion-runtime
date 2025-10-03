@@ -1,4 +1,4 @@
-rust_input: crate::api,dion-runtime::permission,dion-runtime::settings,dion-runtime::datastructs
+rust_input: crate::api,dion-runtime::data::action,dion-runtime::data::activity,dion-runtime::data::auth,dion-runtime::data::custom_ui,dion-runtime::data::extension,dion-runtime::data::extension_manager,dion-runtime::data::extension_repo,dion-runtime::data::permission,dion-runtime::data::settings,dion-runtime::data::source
 rust_root: rust/
 dart_output: lib/src/rust
 # enable_lifetime: true
@@ -6,6 +6,7 @@ full_dep: true
 stop_on_error: true
 dump_all: true
 web: false
-rust_preamble: "use serde_json::Value;pub use dion_runtime::datastructs::*; use dion_runtime::permission::Permission; use dion_runtime::settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI};"
+rust_preamble: "use serde_json::Value;use dion_runtime::data::action::*;use dion_runtime::data::activity::*;use dion_runtime::data::auth::*;use dion_runtime::data::custom_ui::*;use dion_runtime::data::extension::*;use dion_runtime::data::extension_manager::*;use dion_runtime::data::extension_repo::*;use dion_runtime::data::permission::*;use dion_runtime::data::settings::*;use dion_runtime::data::source::*;"
 dart_preamble: "import 'dart:convert';"
+#use dion_runtime::datastructs::*; use dion_runtime::permission::Permission; use dion_runtime::settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI};
 #crate::api,dion-runtime::permission,dion-runtime::settings,dion-runtime::datastructs

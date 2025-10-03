@@ -205,6 +205,7 @@ export async function buildTestExtension({
       },
       {
         type: "URLHandler",
+        url_patterns: ["*"],
       },
     ],
   };

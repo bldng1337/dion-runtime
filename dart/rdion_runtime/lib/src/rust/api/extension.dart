@@ -6,23 +6,44 @@ import 'dart:convert';
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
-import '../third_party/dion_runtime/datastructs.dart';
-import '../third_party/dion_runtime/permission.dart';
-import '../third_party/dion_runtime/settings.dart';
+import '../third_party/dion_runtime/data/action.dart';
+import '../third_party/dion_runtime/data/activity.dart';
+import '../third_party/dion_runtime/data/custom_ui.dart';
+import '../third_party/dion_runtime/data/extension.dart';
+import '../third_party/dion_runtime/data/extension_repo.dart';
+import '../third_party/dion_runtime/data/permission.dart';
+import '../third_party/dion_runtime/data/settings.dart';
+import '../third_party/dion_runtime/data/source.dart';
 import 'cancel.dart';
 import 'client.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+
+// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>
+abstract class ProxyAdapter implements RustOpaqueInterface {
+  Future<RemoteExtensionResult> browseRepo(
+      {required ExtensionRepo repo, required int page});
+
+  Future<List<ProxyExtension>> getExtensions();
+
+  Future<ExtensionRepo> getRepo({required String url});
+
+  static Future<ProxyAdapter> initDion({required ManagerClient client}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyAdapterInitDion(client: client);
+
+  Future<ProxyExtension> install({required String location});
+
+  Future<void> uninstall({required ProxyExtension ext});
+}
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
 abstract class ProxyExtension implements RustOpaqueInterface {
   Future<EntryList> browse({required int page, CancelToken? token});
 
   Future<EntryDetailedResult> detail(
-      {required String entryid,
+      {required EntryId entryid,
       required Map<String, Setting> settings,
       CancelToken? token});
-
-  Future<bool> fromurl({required String url, CancelToken? token});
 
   Future<ExtensionData> getExtensionData();
 
@@ -33,6 +54,8 @@ abstract class ProxyExtension implements RustOpaqueInterface {
   Future<List<String>> getSettingIds({required SettingKind kind});
 
   Future<Map<String, Setting>> getSettings({required SettingKind kind});
+
+  Future<bool> handleUrl({required String url, CancelToken? token});
 
   Future<bool> hasPermission({required Permission permission});
 
@@ -45,6 +68,7 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<SourceResult> mapSource(
       {required Source source,
+      required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
 
@@ -76,25 +100,7 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       required SettingValue value});
 
   Future<SourceResult> source(
-      {required String epid,
+      {required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
-}
-
-// Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtensionManager>>
-abstract class ProxyExtensionManager implements RustOpaqueInterface {
-  Future<List<ProxyExtension>> getExtensions();
-
-  Future<ExtensionRepo> getRepo({required String url});
-
-  static Future<ProxyExtensionManager> initDion(
-          {required ManagerClient client}) =>
-      RustLib.instance.api
-          .crateApiExtensionProxyExtensionManagerInitDion(client: client);
-
-  Future<ProxyExtension> install({required RemoteExtension location});
-
-  Future<ProxyExtension> installSingle({required String url});
-
-  Future<void> uninstall({required ProxyExtension ext});
 }

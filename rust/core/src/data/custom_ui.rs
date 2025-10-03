@@ -9,7 +9,6 @@ use crate::data::{
 };
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum TimestampType {
@@ -19,7 +18,6 @@ pub enum TimestampType {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]

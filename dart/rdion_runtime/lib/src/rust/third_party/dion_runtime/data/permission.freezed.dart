@@ -14,23 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Permission _$PermissionFromJson(Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
-    case 'storage':
-      return Permission_Storage.fromJson(json);
-    case 'network':
-      return Permission_Network.fromJson(json);
-    case 'actionPopup':
-      return Permission_ActionPopup.fromJson(json);
-    case 'arbitraryNetwork':
-      return Permission_ArbitraryNetwork.fromJson(json);
-
-    default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'Permission',
-          'Invalid union type "${json['runtimeType']}"!');
-  }
-}
-
 /// @nodoc
 mixin _$Permission {
   @optionalTypeArgs
@@ -84,9 +67,6 @@ mixin _$Permission {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Serializes this Permission to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -149,23 +129,15 @@ class __$$Permission_StorageImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$Permission_StorageImpl extends Permission_Storage {
-  const _$Permission_StorageImpl(
-      {required this.path, required this.write, final String? $type})
-      : $type = $type ?? 'storage',
-        super._();
 
-  factory _$Permission_StorageImpl.fromJson(Map<String, dynamic> json) =>
-      _$$Permission_StorageImplFromJson(json);
+class _$Permission_StorageImpl extends Permission_Storage {
+  const _$Permission_StorageImpl({required this.path, required this.write})
+      : super._();
 
   @override
   final String path;
   @override
   final bool write;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
 
   @override
   String toString() {
@@ -181,7 +153,6 @@ class _$Permission_StorageImpl extends Permission_Storage {
             (identical(other.write, write) || other.write == write));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, path, write);
 
@@ -268,13 +239,6 @@ class _$Permission_StorageImpl extends Permission_Storage {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$Permission_StorageImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class Permission_Storage extends Permission {
@@ -282,9 +246,6 @@ abstract class Permission_Storage extends Permission {
       {required final String path,
       required final bool write}) = _$Permission_StorageImpl;
   const Permission_Storage._() : super._();
-
-  factory Permission_Storage.fromJson(Map<String, dynamic> json) =
-      _$Permission_StorageImpl.fromJson;
 
   String get path;
   bool get write;
@@ -330,20 +291,12 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$Permission_NetworkImpl extends Permission_Network {
-  const _$Permission_NetworkImpl({required this.domain, final String? $type})
-      : $type = $type ?? 'network',
-        super._();
 
-  factory _$Permission_NetworkImpl.fromJson(Map<String, dynamic> json) =>
-      _$$Permission_NetworkImplFromJson(json);
+class _$Permission_NetworkImpl extends Permission_Network {
+  const _$Permission_NetworkImpl({required this.domain}) : super._();
 
   @override
   final String domain;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
 
   @override
   String toString() {
@@ -358,7 +311,6 @@ class _$Permission_NetworkImpl extends Permission_Network {
             (identical(other.domain, domain) || other.domain == domain));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, domain);
 
@@ -445,22 +397,12 @@ class _$Permission_NetworkImpl extends Permission_Network {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$Permission_NetworkImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class Permission_Network extends Permission {
   const factory Permission_Network({required final String domain}) =
       _$Permission_NetworkImpl;
   const Permission_Network._() : super._();
-
-  factory Permission_Network.fromJson(Map<String, dynamic> json) =
-      _$Permission_NetworkImpl.fromJson;
 
   String get domain;
 
@@ -493,17 +435,9 @@ class __$$Permission_ActionPopupImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
-  const _$Permission_ActionPopupImpl({final String? $type})
-      : $type = $type ?? 'actionPopup',
-        super._();
-
-  factory _$Permission_ActionPopupImpl.fromJson(Map<String, dynamic> json) =>
-      _$$Permission_ActionPopupImplFromJson(json);
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
+  const _$Permission_ActionPopupImpl() : super._();
 
   @override
   String toString() {
@@ -517,7 +451,6 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
             other is _$Permission_ActionPopupImpl);
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -595,21 +528,11 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$Permission_ActionPopupImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class Permission_ActionPopup extends Permission {
   const factory Permission_ActionPopup() = _$Permission_ActionPopupImpl;
   const Permission_ActionPopup._() : super._();
-
-  factory Permission_ActionPopup.fromJson(Map<String, dynamic> json) =
-      _$Permission_ActionPopupImpl.fromJson;
 }
 
 /// @nodoc
@@ -634,18 +557,9 @@ class __$$Permission_ArbitraryNetworkImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
-  const _$Permission_ArbitraryNetworkImpl({final String? $type})
-      : $type = $type ?? 'arbitraryNetwork',
-        super._();
-
-  factory _$Permission_ArbitraryNetworkImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$Permission_ArbitraryNetworkImplFromJson(json);
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
+  const _$Permission_ArbitraryNetworkImpl() : super._();
 
   @override
   String toString() {
@@ -659,7 +573,6 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
             other is _$Permission_ArbitraryNetworkImpl);
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -737,20 +650,10 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$Permission_ArbitraryNetworkImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class Permission_ArbitraryNetwork extends Permission {
   const factory Permission_ArbitraryNetwork() =
       _$Permission_ArbitraryNetworkImpl;
   const Permission_ArbitraryNetwork._() : super._();
-
-  factory Permission_ArbitraryNetwork.fromJson(Map<String, dynamic> json) =
-      _$Permission_ArbitraryNetworkImpl.fromJson;
 }

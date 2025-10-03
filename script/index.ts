@@ -78,6 +78,7 @@ class FlutterRustProject extends Project {
       await $`cd ${this.path} && flutter clean && cd lib && rm -rf src`;
       await $`cd ${this.path}/example && flutter clean`;
       await $`cd ${this.path} && flutter_rust_bridge_codegen generate`;
+      await $`cd ${this.path}/rust && cargo build`;
     }
   }
 

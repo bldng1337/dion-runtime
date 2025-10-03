@@ -5,7 +5,6 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum SettingKind {
@@ -14,7 +13,6 @@ pub enum SettingKind {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -69,7 +67,6 @@ impl SettingValue {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct DropdownOption {
@@ -78,7 +75,6 @@ pub struct DropdownOption {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -89,7 +85,6 @@ pub enum SettingsUI {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Setting {

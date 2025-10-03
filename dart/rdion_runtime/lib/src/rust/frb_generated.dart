@@ -13,9 +13,15 @@ import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'third_party/dion_runtime/datastructs.dart';
-import 'third_party/dion_runtime/permission.dart';
-import 'third_party/dion_runtime/settings.dart';
+import 'third_party/dion_runtime/data/action.dart';
+import 'third_party/dion_runtime/data/activity.dart';
+import 'third_party/dion_runtime/data/custom_ui.dart';
+import 'third_party/dion_runtime/data/extension.dart';
+import 'third_party/dion_runtime/data/extension_manager.dart';
+import 'third_party/dion_runtime/data/extension_repo.dart';
+import 'third_party/dion_runtime/data/permission.dart';
+import 'third_party/dion_runtime/data/settings.dart';
+import 'third_party/dion_runtime/data/source.dart';
 
 /// Main entrypoint of the Rust API
 class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
@@ -76,7 +82,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -187761305;
+  int get rustContentHash => 1200270034;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -108,36 +114,34 @@ abstract class RustLibApi extends BaseApi {
       {required FutureOr<String> Function() getPath,
       required FutureOr<ExtensionClient> Function(ExtensionData) getClient});
 
-  Future<List<ProxyExtension>>
-      crateApiExtensionProxyExtensionManagerGetExtensions(
-          {required ProxyExtensionManager that});
+  Future<RemoteExtensionResult> crateApiExtensionProxyAdapterBrowseRepo(
+      {required ProxyAdapter that,
+      required ExtensionRepo repo,
+      required int page});
 
-  Future<ExtensionRepo> crateApiExtensionProxyExtensionManagerGetRepo(
-      {required ProxyExtensionManager that, required String url});
+  Future<List<ProxyExtension>> crateApiExtensionProxyAdapterGetExtensions(
+      {required ProxyAdapter that});
 
-  Future<ProxyExtensionManager> crateApiExtensionProxyExtensionManagerInitDion(
+  Future<ExtensionRepo> crateApiExtensionProxyAdapterGetRepo(
+      {required ProxyAdapter that, required String url});
+
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitDion(
       {required ManagerClient client});
 
-  Future<ProxyExtension> crateApiExtensionProxyExtensionManagerInstall(
-      {required ProxyExtensionManager that, required RemoteExtension location});
+  Future<ProxyExtension> crateApiExtensionProxyAdapterInstall(
+      {required ProxyAdapter that, required String location});
 
-  Future<ProxyExtension> crateApiExtensionProxyExtensionManagerInstallSingle(
-      {required ProxyExtensionManager that, required String url});
-
-  Future<void> crateApiExtensionProxyExtensionManagerUninstall(
-      {required ProxyExtensionManager that, required ProxyExtension ext});
+  Future<void> crateApiExtensionProxyAdapterUninstall(
+      {required ProxyAdapter that, required ProxyExtension ext});
 
   Future<EntryList> crateApiExtensionProxyExtensionBrowse(
       {required ProxyExtension that, required int page, CancelToken? token});
 
   Future<EntryDetailedResult> crateApiExtensionProxyExtensionDetail(
       {required ProxyExtension that,
-      required String entryid,
+      required EntryId entryid,
       required Map<String, Setting> settings,
       CancelToken? token});
-
-  Future<bool> crateApiExtensionProxyExtensionFromurl(
-      {required ProxyExtension that, required String url, CancelToken? token});
 
   Future<ExtensionData> crateApiExtensionProxyExtensionGetExtensionData(
       {required ProxyExtension that});
@@ -156,6 +160,9 @@ abstract class RustLibApi extends BaseApi {
   Future<Map<String, Setting>> crateApiExtensionProxyExtensionGetSettings(
       {required ProxyExtension that, required SettingKind kind});
 
+  Future<bool> crateApiExtensionProxyExtensionHandleUrl(
+      {required ProxyExtension that, required String url, CancelToken? token});
+
   Future<bool> crateApiExtensionProxyExtensionHasPermission(
       {required ProxyExtension that, required Permission permission});
 
@@ -171,6 +178,7 @@ abstract class RustLibApi extends BaseApi {
   Future<SourceResult> crateApiExtensionProxyExtensionMapSource(
       {required ProxyExtension that,
       required Source source,
+      required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
 
@@ -215,36 +223,35 @@ abstract class RustLibApi extends BaseApi {
 
   Future<SourceResult> crateApiExtensionProxyExtensionSource(
       {required ProxyExtension that,
-      required String epid,
+      required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
 
-  Future<Entry> dionRuntimeDatastructsEntryDefault();
+  Future<EntryList> dionRuntimeDataSourceEntryListDefault();
 
-  Future<EntryDetailed> dionRuntimeDatastructsEntryDetailedDefault();
+  Future<ExtensionData> dionRuntimeDataExtensionExtensionDataDefault();
 
-  Future<EntryDetailedResult>
-      dionRuntimeDatastructsEntryDetailedResultDefault();
+  Future<ExtensionManagerData>
+      dionRuntimeDataExtensionManagerExtensionManagerDataDefault();
 
-  Future<EntryList> dionRuntimeDatastructsEntryListDefault();
-
-  Future<Episode> dionRuntimeDatastructsEpisodeDefault();
-
-  Future<ExtensionData> dionRuntimeDatastructsExtensionDataDefault();
-
-  Future<ExtensionRepo> dionRuntimeDatastructsExtensionRepoDefault();
+  Future<ExtensionRepo> dionRuntimeDataExtensionRepoExtensionRepoDefault();
 
   Future<void> crateApiLetsInitAppHere();
 
-  Future<Link> dionRuntimeDatastructsLinkDefault();
+  Future<Link> dionRuntimeDataSourceLinkDefault();
 
-  Future<MediaType> dionRuntimeDatastructsMediaTypeDefault();
+  Future<MediaType> dionRuntimeDataSourceMediaTypeDefault();
 
-  Future<ReleaseStatus> dionRuntimeDatastructsReleaseStatusDefault();
+  Future<ReleaseStatus> dionRuntimeDataSourceReleaseStatusDefault();
 
-  Future<RemoteExtension> dionRuntimeDatastructsRemoteExtensionDefault();
+  Future<RemoteExtension> dionRuntimeDataExtensionRepoRemoteExtensionDefault();
 
-  Future<TimestampType> dionRuntimeDatastructsTimestampTypeDefault();
+  Future<RemoteExtensionResult>
+      dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
+
+  Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
+
+  Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault();
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken;
@@ -273,6 +280,14 @@ abstract class RustLibApi extends BaseApi {
       get rust_arc_decrement_strong_count_ManagerClientPtr;
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_ProxyAdapter;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_ProxyAdapter;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ProxyAdapterPtr;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ProxyExtension;
 
   RustArcDecrementStrongCountFnType
@@ -280,15 +295,6 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_ProxyExtensionPtr;
-
-  RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_ProxyExtensionManager;
-
-  RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_ProxyExtensionManager;
-
-  CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_ProxyExtensionManagerPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -482,104 +488,130 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<ProxyExtension>>
-      crateApiExtensionProxyExtensionManagerGetExtensions(
-          {required ProxyExtensionManager that}) {
+  Future<RemoteExtensionResult> crateApiExtensionProxyAdapterBrowseRepo(
+      {required ProxyAdapter that,
+      required ExtensionRepo repo,
+      required int page}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
                 that);
-        return wire
-            .wire__crate__api__extension__ProxyExtensionManager_get_extensions(
-                port_, arg0);
+        var arg1 = cst_encode_box_autoadd_extension_repo(repo);
+        var arg2 = cst_encode_i_32(page);
+        return wire.wire__crate__api__extension__ProxyAdapter_browse_repo(
+            port_, arg0, arg1, arg2);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_remote_extension_result,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyAdapterBrowseRepoConstMeta,
+      argValues: [that, repo, page],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyAdapterBrowseRepoConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyAdapter_browse_repo",
+        argNames: ["that", "repo", "page"],
+      );
+
+  @override
+  Future<List<ProxyExtension>> crateApiExtensionProxyAdapterGetExtensions(
+      {required ProxyAdapter that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+                that);
+        return wire.wire__crate__api__extension__ProxyAdapter_get_extensions(
+            port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData:
             dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension,
         decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerGetExtensionsConstMeta,
+      constMeta: kCrateApiExtensionProxyAdapterGetExtensionsConstMeta,
       argValues: [that],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta
-      get kCrateApiExtensionProxyExtensionManagerGetExtensionsConstMeta =>
-          const TaskConstMeta(
-            debugName: "ProxyExtensionManager_get_extensions",
-            argNames: ["that"],
-          );
+  TaskConstMeta get kCrateApiExtensionProxyAdapterGetExtensionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyAdapter_get_extensions",
+        argNames: ["that"],
+      );
 
   @override
-  Future<ExtensionRepo> crateApiExtensionProxyExtensionManagerGetRepo(
-      {required ProxyExtensionManager that, required String url}) {
+  Future<ExtensionRepo> crateApiExtensionProxyAdapterGetRepo(
+      {required ProxyAdapter that, required String url}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
                 that);
         var arg1 = cst_encode_String(url);
-        return wire.wire__crate__api__extension__ProxyExtensionManager_get_repo(
+        return wire.wire__crate__api__extension__ProxyAdapter_get_repo(
             port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_extension_repo,
         decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerGetRepoConstMeta,
+      constMeta: kCrateApiExtensionProxyAdapterGetRepoConstMeta,
       argValues: [that, url],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiExtensionProxyExtensionManagerGetRepoConstMeta =>
+  TaskConstMeta get kCrateApiExtensionProxyAdapterGetRepoConstMeta =>
       const TaskConstMeta(
-        debugName: "ProxyExtensionManager_get_repo",
+        debugName: "ProxyAdapter_get_repo",
         argNames: ["that", "url"],
       );
 
   @override
-  Future<ProxyExtensionManager> crateApiExtensionProxyExtensionManagerInitDion(
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitDion(
       {required ManagerClient client}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
             cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
                 client);
-        return wire
-            .wire__crate__api__extension__ProxyExtensionManager_init_dion(
-                port_, arg0);
+        return wire.wire__crate__api__extension__ProxyAdapter_init_dion(
+            port_, arg0);
       },
       codec: DcoCodec(
         decodeSuccessData:
-            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager,
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter,
         decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerInitDionConstMeta,
+      constMeta: kCrateApiExtensionProxyAdapterInitDionConstMeta,
       argValues: [client],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiExtensionProxyExtensionManagerInitDionConstMeta =>
+  TaskConstMeta get kCrateApiExtensionProxyAdapterInitDionConstMeta =>
       const TaskConstMeta(
-        debugName: "ProxyExtensionManager_init_dion",
+        debugName: "ProxyAdapter_init_dion",
         argNames: ["client"],
       );
 
   @override
-  Future<ProxyExtension> crateApiExtensionProxyExtensionManagerInstall(
-      {required ProxyExtensionManager that,
-      required RemoteExtension location}) {
+  Future<ProxyExtension> crateApiExtensionProxyAdapterInstall(
+      {required ProxyAdapter that, required String location}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
                 that);
-        var arg1 = cst_encode_box_autoadd_remote_extension(location);
-        return wire.wire__crate__api__extension__ProxyExtensionManager_install(
+        var arg1 = cst_encode_String(location);
+        return wire.wire__crate__api__extension__ProxyAdapter_install(
             port_, arg0, arg1);
       },
       codec: DcoCodec(
@@ -587,77 +619,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension,
         decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerInstallConstMeta,
+      constMeta: kCrateApiExtensionProxyAdapterInstallConstMeta,
       argValues: [that, location],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiExtensionProxyExtensionManagerInstallConstMeta =>
+  TaskConstMeta get kCrateApiExtensionProxyAdapterInstallConstMeta =>
       const TaskConstMeta(
-        debugName: "ProxyExtensionManager_install",
+        debugName: "ProxyAdapter_install",
         argNames: ["that", "location"],
       );
 
   @override
-  Future<ProxyExtension> crateApiExtensionProxyExtensionManagerInstallSingle(
-      {required ProxyExtensionManager that, required String url}) {
+  Future<void> crateApiExtensionProxyAdapterUninstall(
+      {required ProxyAdapter that, required ProxyExtension ext}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-                that);
-        var arg1 = cst_encode_String(url);
-        return wire
-            .wire__crate__api__extension__ProxyExtensionManager_install_single(
-                port_, arg0, arg1);
-      },
-      codec: DcoCodec(
-        decodeSuccessData:
-            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension,
-        decodeErrorData: dco_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerInstallSingleConstMeta,
-      argValues: [that, url],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta
-      get kCrateApiExtensionProxyExtensionManagerInstallSingleConstMeta =>
-          const TaskConstMeta(
-            debugName: "ProxyExtensionManager_install_single",
-            argNames: ["that", "url"],
-          );
-
-  @override
-  Future<void> crateApiExtensionProxyExtensionManagerUninstall(
-      {required ProxyExtensionManager that, required ProxyExtension ext}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
                 that);
         var arg1 =
-            cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
                 ext);
-        return wire
-            .wire__crate__api__extension__ProxyExtensionManager_uninstall(
-                port_, arg0, arg1);
+        return wire.wire__crate__api__extension__ProxyAdapter_uninstall(
+            port_, arg0, arg1);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_unit,
         decodeErrorData: dco_decode_AnyhowException,
       ),
-      constMeta: kCrateApiExtensionProxyExtensionManagerUninstallConstMeta,
+      constMeta: kCrateApiExtensionProxyAdapterUninstallConstMeta,
       argValues: [that, ext],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiExtensionProxyExtensionManagerUninstallConstMeta =>
+  TaskConstMeta get kCrateApiExtensionProxyAdapterUninstallConstMeta =>
       const TaskConstMeta(
-        debugName: "ProxyExtensionManager_uninstall",
+        debugName: "ProxyAdapter_uninstall",
         argNames: ["that", "ext"],
       );
 
@@ -695,7 +695,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<EntryDetailedResult> crateApiExtensionProxyExtensionDetail(
       {required ProxyExtension that,
-      required String entryid,
+      required EntryId entryid,
       required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
@@ -703,7 +703,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
             that, serializer);
-        sse_encode_String(entryid, serializer);
+        sse_encode_box_autoadd_entry_id(entryid, serializer);
         sse_encode_Map_String_setting_None(settings, serializer);
         sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             token, serializer);
@@ -725,37 +725,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_detail",
         argNames: ["that", "entryid", "settings", "token"],
-      );
-
-  @override
-  Future<bool> crateApiExtensionProxyExtensionFromurl(
-      {required ProxyExtension that, required String url, CancelToken? token}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        var arg0 =
-            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that);
-        var arg1 = cst_encode_String(url);
-        var arg2 =
-            cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
-                token);
-        return wire.wire__crate__api__extension__ProxyExtension_fromurl(
-            port_, arg0, arg1, arg2);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_bool,
-        decodeErrorData: dco_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiExtensionProxyExtensionFromurlConstMeta,
-      argValues: [that, url, token],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiExtensionProxyExtensionFromurlConstMeta =>
-      const TaskConstMeta(
-        debugName: "ProxyExtension_fromurl",
-        argNames: ["that", "url", "token"],
       );
 
   @override
@@ -906,6 +875,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<bool> crateApiExtensionProxyExtensionHandleUrl(
+      {required ProxyExtension that, required String url, CancelToken? token}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        var arg1 = cst_encode_String(url);
+        var arg2 =
+            cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+                token);
+        return wire.wire__crate__api__extension__ProxyExtension_handle_url(
+            port_, arg0, arg1, arg2);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_bool,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionHandleUrlConstMeta,
+      argValues: [that, url, token],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionHandleUrlConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_handle_url",
+        argNames: ["that", "url", "token"],
+      );
+
+  @override
   Future<bool> crateApiExtensionProxyExtensionHasPermission(
       {required ProxyExtension that, required Permission permission}) {
     return handler.executeNormal(NormalTask(
@@ -1000,6 +1000,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<SourceResult> crateApiExtensionProxyExtensionMapSource(
       {required ProxyExtension that,
       required Source source,
+      required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
@@ -1008,6 +1009,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
             that, serializer);
         sse_encode_box_autoadd_source(source, serializer);
+        sse_encode_box_autoadd_episode_id(epid, serializer);
         sse_encode_Map_String_setting_None(settings, serializer);
         sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             token, serializer);
@@ -1020,7 +1022,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiExtensionProxyExtensionMapSourceConstMeta,
-      argValues: [that, source, settings, token],
+      argValues: [that, source, epid, settings, token],
       apiImpl: this,
     ));
   }
@@ -1028,7 +1030,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiExtensionProxyExtensionMapSourceConstMeta =>
       const TaskConstMeta(
         debugName: "ProxyExtension_map_source",
-        argNames: ["that", "source", "settings", "token"],
+        argNames: ["that", "source", "epid", "settings", "token"],
       );
 
   @override
@@ -1295,7 +1297,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<SourceResult> crateApiExtensionProxyExtensionSource(
       {required ProxyExtension that,
-      required String epid,
+      required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
@@ -1303,7 +1305,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
             that, serializer);
-        sse_encode_String(epid, serializer);
+        sse_encode_box_autoadd_episode_id(epid, serializer);
         sse_encode_Map_String_setting_None(settings, serializer);
         sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             token, serializer);
@@ -1328,165 +1330,101 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Entry> dionRuntimeDatastructsEntryDefault() {
+  Future<EntryList> dionRuntimeDataSourceEntryListDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        return wire.wire__dion_runtime__datastructs__entry_default(port_);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_entry,
-        decodeErrorData: null,
-      ),
-      constMeta: kDionRuntimeDatastructsEntryDefaultConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kDionRuntimeDatastructsEntryDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "entry_default",
-        argNames: [],
-      );
-
-  @override
-  Future<EntryDetailed> dionRuntimeDatastructsEntryDetailedDefault() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        return wire
-            .wire__dion_runtime__datastructs__entry_detailed_default(port_);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_entry_detailed,
-        decodeErrorData: null,
-      ),
-      constMeta: kDionRuntimeDatastructsEntryDetailedDefaultConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kDionRuntimeDatastructsEntryDetailedDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "entry_detailed_default",
-        argNames: [],
-      );
-
-  @override
-  Future<EntryDetailedResult>
-      dionRuntimeDatastructsEntryDetailedResultDefault() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        return wire
-            .wire__dion_runtime__datastructs__entry_detailed_result_default(
-                port_);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_entry_detailed_result,
-        decodeErrorData: null,
-      ),
-      constMeta: kDionRuntimeDatastructsEntryDetailedResultDefaultConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta
-      get kDionRuntimeDatastructsEntryDetailedResultDefaultConstMeta =>
-          const TaskConstMeta(
-            debugName: "entry_detailed_result_default",
-            argNames: [],
-          );
-
-  @override
-  Future<EntryList> dionRuntimeDatastructsEntryListDefault() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        return wire.wire__dion_runtime__datastructs__entry_list_default(port_);
+        return wire.wire__dion_runtime__data__source__entry_list_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_entry_list,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsEntryListDefaultConstMeta,
+      constMeta: kDionRuntimeDataSourceEntryListDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsEntryListDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataSourceEntryListDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "entry_list_default",
         argNames: [],
       );
 
   @override
-  Future<Episode> dionRuntimeDatastructsEpisodeDefault() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        return wire.wire__dion_runtime__datastructs__episode_default(port_);
-      },
-      codec: DcoCodec(
-        decodeSuccessData: dco_decode_episode,
-        decodeErrorData: null,
-      ),
-      constMeta: kDionRuntimeDatastructsEpisodeDefaultConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kDionRuntimeDatastructsEpisodeDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "episode_default",
-        argNames: [],
-      );
-
-  @override
-  Future<ExtensionData> dionRuntimeDatastructsExtensionDataDefault() {
+  Future<ExtensionData> dionRuntimeDataExtensionExtensionDataDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         return wire
-            .wire__dion_runtime__datastructs__extension_data_default(port_);
+            .wire__dion_runtime__data__extension__extension_data_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_extension_data,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsExtensionDataDefaultConstMeta,
+      constMeta: kDionRuntimeDataExtensionExtensionDataDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsExtensionDataDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataExtensionExtensionDataDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "extension_data_default",
         argNames: [],
       );
 
   @override
-  Future<ExtensionRepo> dionRuntimeDatastructsExtensionRepoDefault() {
+  Future<ExtensionManagerData>
+      dionRuntimeDataExtensionManagerExtensionManagerDataDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         return wire
-            .wire__dion_runtime__datastructs__extension_repo_default(port_);
+            .wire__dion_runtime__data__extension_manager__extension_manager_data_default(
+                port_);
       },
       codec: DcoCodec(
-        decodeSuccessData: dco_decode_extension_repo,
+        decodeSuccessData: dco_decode_extension_manager_data,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsExtensionRepoDefaultConstMeta,
+      constMeta:
+          kDionRuntimeDataExtensionManagerExtensionManagerDataDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsExtensionRepoDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "extension_repo_default",
-        argNames: [],
-      );
+  TaskConstMeta
+      get kDionRuntimeDataExtensionManagerExtensionManagerDataDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "extension_manager_data_default",
+            argNames: [],
+          );
+
+  @override
+  Future<ExtensionRepo> dionRuntimeDataExtensionRepoExtensionRepoDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__extension_repo__extension_repo_default(
+                port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_extension_repo,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataExtensionRepoExtensionRepoDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kDionRuntimeDataExtensionRepoExtensionRepoDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "extension_repo_default",
+            argNames: [],
+          );
 
   @override
   Future<void> crateApiLetsInitAppHere() {
@@ -1510,113 +1448,166 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<Link> dionRuntimeDatastructsLinkDefault() {
+  Future<Link> dionRuntimeDataSourceLinkDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        return wire.wire__dion_runtime__datastructs__link_default(port_);
+        return wire.wire__dion_runtime__data__source__link_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_link,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsLinkDefaultConstMeta,
+      constMeta: kDionRuntimeDataSourceLinkDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsLinkDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataSourceLinkDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "link_default",
         argNames: [],
       );
 
   @override
-  Future<MediaType> dionRuntimeDatastructsMediaTypeDefault() {
+  Future<MediaType> dionRuntimeDataSourceMediaTypeDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
-        return wire.wire__dion_runtime__datastructs__media_type_default(port_);
+        return wire.wire__dion_runtime__data__source__media_type_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_media_type,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsMediaTypeDefaultConstMeta,
+      constMeta: kDionRuntimeDataSourceMediaTypeDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsMediaTypeDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataSourceMediaTypeDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "media_type_default",
         argNames: [],
       );
 
   @override
-  Future<ReleaseStatus> dionRuntimeDatastructsReleaseStatusDefault() {
+  Future<ReleaseStatus> dionRuntimeDataSourceReleaseStatusDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         return wire
-            .wire__dion_runtime__datastructs__release_status_default(port_);
+            .wire__dion_runtime__data__source__release_status_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_release_status,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsReleaseStatusDefaultConstMeta,
+      constMeta: kDionRuntimeDataSourceReleaseStatusDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsReleaseStatusDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataSourceReleaseStatusDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "release_status_default",
         argNames: [],
       );
 
   @override
-  Future<RemoteExtension> dionRuntimeDatastructsRemoteExtensionDefault() {
+  Future<RemoteExtension> dionRuntimeDataExtensionRepoRemoteExtensionDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         return wire
-            .wire__dion_runtime__datastructs__remote_extension_default(port_);
+            .wire__dion_runtime__data__extension_repo__remote_extension_default(
+                port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_remote_extension,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsRemoteExtensionDefaultConstMeta,
+      constMeta: kDionRuntimeDataExtensionRepoRemoteExtensionDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsRemoteExtensionDefaultConstMeta =>
+  TaskConstMeta
+      get kDionRuntimeDataExtensionRepoRemoteExtensionDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "remote_extension_default",
+            argNames: [],
+          );
+
+  @override
+  Future<RemoteExtensionResult>
+      dionRuntimeDataExtensionRepoRemoteExtensionResultDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__extension_repo__remote_extension_result_default(
+                port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_remote_extension_result,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kDionRuntimeDataExtensionRepoRemoteExtensionResultDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kDionRuntimeDataExtensionRepoRemoteExtensionResultDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "remote_extension_result_default",
+            argNames: [],
+          );
+
+  @override
+  Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__extension__source_open_type_default(
+                port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_source_open_type,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataExtensionSourceOpenTypeDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataExtensionSourceOpenTypeDefaultConstMeta =>
       const TaskConstMeta(
-        debugName: "remote_extension_default",
+        debugName: "source_open_type_default",
         argNames: [],
       );
 
   @override
-  Future<TimestampType> dionRuntimeDatastructsTimestampTypeDefault() {
+  Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         return wire
-            .wire__dion_runtime__datastructs__timestamp_type_default(port_);
+            .wire__dion_runtime__data__custom_ui__timestamp_type_default(port_);
       },
       codec: DcoCodec(
         decodeSuccessData: dco_decode_timestamp_type,
         decodeErrorData: null,
       ),
-      constMeta: kDionRuntimeDatastructsTimestampTypeDefaultConstMeta,
+      constMeta: kDionRuntimeDataCustomUiTimestampTypeDefaultConstMeta,
       argValues: [],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kDionRuntimeDatastructsTimestampTypeDefaultConstMeta =>
+  TaskConstMeta get kDionRuntimeDataCustomUiTimestampTypeDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "timestamp_type_default",
         argNames: [],
@@ -1849,20 +1840,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient;
 
   RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_ProxyAdapter => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_ProxyAdapter => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
+
+  RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_ProxyExtension => wire
           .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
 
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_ProxyExtension => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
-
-  RustArcIncrementStrongCountFnType
-      get rust_arc_increment_strong_count_ProxyExtensionManager => wire
-          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager;
-
-  RustArcDecrementStrongCountFnType
-      get rust_arc_decrement_strong_count_ProxyExtensionManager => wire
-          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -1895,19 +1886,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ProxyExtension
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ProxyExtensionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  ProxyExtensionManager
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1935,19 +1926,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ProxyExtension
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ProxyExtensionImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  ProxyExtensionManager
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2041,6 +2032,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ProxyExtension
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw) {
@@ -2049,11 +2048,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ProxyExtensionManager
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          dynamic raw) {
+  Set<ExtensionType> dco_decode_Set_extension_type_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return Set.from(dco_decode_list_extension_type(raw));
+  }
+
+  @protected
+  Set<MediaType> dco_decode_Set_media_type_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Set.from(dco_decode_list_media_type(raw));
+  }
+
+  @protected
+  Set<SourceOpenType> dco_decode_Set_source_open_type_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Set.from(dco_decode_list_source_open_type(raw));
+  }
+
+  @protected
+  Set<SourceType> dco_decode_Set_source_type_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Set.from(dco_decode_list_source_type(raw));
   }
 
   @protected
@@ -2085,6 +2100,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Action_TriggerEvent(
           event: dco_decode_String(raw[1]),
           data: dco_decode_String(raw[2]),
+        );
+      case 4:
+        return Action_NavEntry(
+          entry: dco_decode_box_autoadd_entry_detailed(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -2149,6 +2168,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EntryId dco_decode_box_autoadd_entry_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_entry_id(raw);
+  }
+
+  @protected
+  EpisodeId dco_decode_box_autoadd_episode_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_episode_id(raw);
+  }
+
+  @protected
+  ExtensionRepo dco_decode_box_autoadd_extension_repo(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_extension_repo(raw);
+  }
+
+  @protected
   double dco_decode_box_autoadd_f_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
@@ -2170,12 +2207,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Permission dco_decode_box_autoadd_permission(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_permission(raw);
-  }
-
-  @protected
-  RemoteExtension dco_decode_box_autoadd_remote_extension(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_remote_extension(raw);
   }
 
   @protected
@@ -2243,25 +2274,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           entry: dco_decode_box_autoadd_entry(raw[1]),
         );
       case 5:
+        return CustomUI_Card(
+          image: dco_decode_box_autoadd_link(raw[1]),
+          top: dco_decode_box_custom_ui(raw[2]),
+          bottom: dco_decode_box_custom_ui(raw[3]),
+        );
+      case 6:
+        return CustomUI_Feed(
+          event: dco_decode_String(raw[1]),
+          data: dco_decode_String(raw[2]),
+        );
+      case 7:
         return CustomUI_Button(
           label: dco_decode_String(raw[1]),
           onClick: dco_decode_opt_box_ui_action(raw[2]),
         );
-      case 6:
+      case 8:
         return CustomUI_InlineSetting(
           settingId: dco_decode_String(raw[1]),
-          onCommit: dco_decode_opt_box_ui_action(raw[2]),
+          settingKind: dco_decode_setting_kind(raw[2]),
+          onCommit: dco_decode_opt_box_ui_action(raw[3]),
         );
-      case 7:
+      case 9:
         return CustomUI_Slot(
           id: dco_decode_String(raw[1]),
           child: dco_decode_box_custom_ui(raw[2]),
         );
-      case 8:
+      case 10:
         return CustomUI_Column(
           children: dco_decode_list_custom_ui(raw[1]),
         );
-      case 9:
+      case 11:
         return CustomUI_Row(
           children: dco_decode_list_custom_ui(raw[1]),
         );
@@ -2289,7 +2332,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 9)
       throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return Entry(
-      id: dco_decode_String(arr[0]),
+      id: dco_decode_list_entry_id(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
       mediaType: dco_decode_media_type(arr[3]),
@@ -2321,7 +2364,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 16)
       throw Exception('unexpected arr length: expect 16 but see ${arr.length}');
     return EntryDetailed(
-      id: dco_decode_String(arr[0]),
+      id: dco_decode_list_entry_id(arr[0]),
       url: dco_decode_String(arr[1]),
       titles: dco_decode_list_String(arr[2]),
       author: dco_decode_opt_list_String(arr[3]),
@@ -2353,6 +2396,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EntryId dco_decode_entry_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return EntryId(
+      uid: dco_decode_String(arr[0]),
+      iddata: dco_decode_opt_String(arr[1]),
+      idType: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
   EntryList dco_decode_entry_list(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2372,7 +2428,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 6)
       throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return Episode(
-      id: dco_decode_String(arr[0]),
+      id: dco_decode_list_episode_id(arr[0]),
       name: dco_decode_String(arr[1]),
       description: dco_decode_opt_String(arr[2]),
       url: dco_decode_String(arr[3]),
@@ -2382,26 +2438,54 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EpisodeId dco_decode_episode_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return EpisodeId(
+      uid: dco_decode_String(arr[0]),
+      iddata: dco_decode_opt_String(arr[1]),
+      idType: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
   ExtensionData dco_decode_extension_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 14)
-      throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
     return ExtensionData(
       id: dco_decode_String(arr[0]),
-      repo: dco_decode_opt_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      mediaType: dco_decode_opt_list_media_type(arr[3]),
-      extensionType: dco_decode_opt_list_extension_type(arr[4]),
-      version: dco_decode_opt_String(arr[5]),
-      desc: dco_decode_opt_String(arr[6]),
-      author: dco_decode_list_String(arr[7]),
-      license: dco_decode_opt_String(arr[8]),
-      tags: dco_decode_opt_list_String(arr[9]),
-      nsfw: dco_decode_opt_box_autoadd_bool(arr[10]),
-      lang: dco_decode_list_String(arr[11]),
-      url: dco_decode_opt_String(arr[12]),
-      icon: dco_decode_opt_String(arr[13]),
+      name: dco_decode_String(arr[1]),
+      url: dco_decode_String(arr[2]),
+      icon: dco_decode_String(arr[3]),
+      desc: dco_decode_opt_String(arr[4]),
+      author: dco_decode_list_String(arr[5]),
+      tags: dco_decode_list_String(arr[6]),
+      lang: dco_decode_list_String(arr[7]),
+      nsfw: dco_decode_bool(arr[8]),
+      mediaType: dco_decode_Set_media_type_None(arr[9]),
+      extensionType: dco_decode_Set_extension_type_None(arr[10]),
+      repo: dco_decode_opt_String(arr[11]),
+      version: dco_decode_String(arr[12]),
+      license: dco_decode_String(arr[13]),
+      compatible: dco_decode_bool(arr[14]),
+    );
+  }
+
+  @protected
+  ExtensionManagerData dco_decode_extension_manager_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return ExtensionManagerData(
+      name: dco_decode_String(arr[0]),
+      icon: dco_decode_opt_String(arr[1]),
+      repo: dco_decode_opt_String(arr[2]),
+      apiVersion: dco_decode_u_32(arr[3]),
     );
   }
 
@@ -2414,15 +2498,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return ExtensionRepo(
       name: dco_decode_String(arr[0]),
       description: dco_decode_String(arr[1]),
-      id: dco_decode_String(arr[2]),
-      extensions: dco_decode_list_remote_extension(arr[3]),
+      url: dco_decode_String(arr[2]),
+      id: dco_decode_String(arr[3]),
     );
   }
 
   @protected
   ExtensionType dco_decode_extension_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ExtensionType.values[raw as int];
+    switch (raw[0]) {
+      case 0:
+        return ExtensionType_EntryProvider(
+          hasSearch: dco_decode_bool(raw[1]),
+        );
+      case 1:
+        return ExtensionType_EntryDetailedProvider(
+          idTypes: dco_decode_list_String(raw[1]),
+        );
+      case 2:
+        return ExtensionType_SourceProvider(
+          idTypes: dco_decode_list_String(raw[1]),
+        );
+      case 3:
+        return ExtensionType_SourceProcessor(
+          sourcetypes: dco_decode_Set_source_type_None(raw[1]),
+          opentype: dco_decode_Set_source_open_type_None(raw[2]),
+        );
+      case 4:
+        return ExtensionType_EntryProcessor(
+          triggerMapEntry: dco_decode_bool(raw[1]),
+          triggerOnEntryActivity: dco_decode_bool(raw[2]),
+        );
+      case 5:
+        return ExtensionType_URLHandler(
+          urlPatterns: dco_decode_list_String(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -2510,9 +2623,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<EntryId> dco_decode_list_entry_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_entry_id).toList();
+  }
+
+  @protected
   List<Episode> dco_decode_list_episode(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_episode).toList();
+  }
+
+  @protected
+  List<EpisodeId> dco_decode_list_episode_id(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_episode_id).toList();
   }
 
   @protected
@@ -2587,6 +2712,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<RemoteExtension> dco_decode_list_remote_extension(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_remote_extension).toList();
+  }
+
+  @protected
+  List<SourceOpenType> dco_decode_list_source_open_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_source_open_type).toList();
+  }
+
+  @protected
+  List<SourceType> dco_decode_list_source_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_source_type).toList();
   }
 
   @protected
@@ -2685,21 +2822,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<ExtensionType>? dco_decode_opt_list_extension_type(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_list_extension_type(raw);
-  }
-
-  @protected
   List<ImageListAudio>? dco_decode_opt_list_image_list_audio(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_image_list_audio(raw);
-  }
-
-  @protected
-  List<MediaType>? dco_decode_opt_list_media_type(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_list_media_type(raw);
   }
 
   @protected
@@ -2789,12 +2914,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RemoteExtension dco_decode_remote_extension(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    return RemoteExtension(
+      id: dco_decode_String(arr[0]),
+      exturl: dco_decode_String(arr[1]),
+      name: dco_decode_String(arr[2]),
+      cover: dco_decode_opt_box_autoadd_link(arr[3]),
+      version: dco_decode_String(arr[4]),
+      compatible: dco_decode_bool(arr[5]),
+    );
+  }
+
+  @protected
+  RemoteExtensionResult dco_decode_remote_extension_result(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
     if (arr.length != 3)
       throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
-    return RemoteExtension(
-      extensionUrl: dco_decode_String(arr[0]),
-      compatible: dco_decode_bool(arr[1]),
-      data: dco_decode_extension_data(arr[2]),
+    return RemoteExtensionResult(
+      content: dco_decode_list_remote_extension(arr[0]),
+      hasnext: dco_decode_opt_box_autoadd_bool(arr[1]),
+      length: dco_decode_opt_box_autoadd_i_32(arr[2]),
     );
   }
 
@@ -2901,6 +3042,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SourceOpenType dco_decode_source_open_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SourceOpenType.values[raw as int];
+  }
+
+  @protected
   SourceResult dco_decode_source_result(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2910,6 +3057,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       source: dco_decode_source(arr[0]),
       settings: dco_decode_Map_String_setting_None(arr[1]),
     );
+  }
+
+  @protected
+  SourceType dco_decode_source_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SourceType.values[raw as int];
   }
 
   @protected
@@ -2931,6 +3084,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
   int dco_decode_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -2946,9 +3105,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 1:
         return UIAction_SwapContent(
-          targetid: dco_decode_opt_String(raw[1]),
+          targetid: dco_decode_String(raw[1]),
           event: dco_decode_String(raw[2]),
-          placeholder: dco_decode_opt_box_autoadd_custom_ui(raw[3]),
+          data: dco_decode_String(raw[3]),
+          placeholder: dco_decode_opt_box_autoadd_custom_ui(raw[4]),
         );
       default:
         throw Exception("unreachable");
@@ -3002,20 +3162,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ProxyExtension
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ProxyExtensionImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
-  }
-
-  @protected
-  ProxyExtensionManager
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -3047,20 +3207,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ProxyExtension
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ProxyExtensionImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
-  }
-
-  @protected
-  ProxyExtensionManager
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -3115,6 +3275,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ProxyAdapter
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ProxyAdapterImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   ProxyExtension
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer) {
@@ -3124,12 +3293,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ProxyExtensionManager
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          SseDeserializer deserializer) {
+  Set<ExtensionType> sse_decode_Set_extension_type_None(
+      SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return ProxyExtensionManagerImpl.frbInternalSseDecode(
-        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+    var inner = sse_decode_list_extension_type(deserializer);
+    return Set.from(inner);
+  }
+
+  @protected
+  Set<MediaType> sse_decode_Set_media_type_None(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_media_type(deserializer);
+    return Set.from(inner);
+  }
+
+  @protected
+  Set<SourceOpenType> sse_decode_Set_source_open_type_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_source_open_type(deserializer);
+    return Set.from(inner);
+  }
+
+  @protected
+  Set<SourceType> sse_decode_Set_source_type_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_source_type(deserializer);
+    return Set.from(inner);
   }
 
   @protected
@@ -3162,6 +3353,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_event = sse_decode_String(deserializer);
         var var_data = sse_decode_String(deserializer);
         return Action_TriggerEvent(event: var_event, data: var_data);
+      case 4:
+        var var_entry = sse_decode_box_autoadd_entry_detailed(deserializer);
+        return Action_NavEntry(entry: var_entry);
       default:
         throw UnimplementedError('');
     }
@@ -3227,6 +3421,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EntryId sse_decode_box_autoadd_entry_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_entry_id(deserializer));
+  }
+
+  @protected
+  EpisodeId sse_decode_box_autoadd_episode_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_episode_id(deserializer));
+  }
+
+  @protected
+  ExtensionRepo sse_decode_box_autoadd_extension_repo(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_extension_repo(deserializer));
+  }
+
+  @protected
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_f_32(deserializer));
@@ -3248,13 +3461,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Permission sse_decode_box_autoadd_permission(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_permission(deserializer));
-  }
-
-  @protected
-  RemoteExtension sse_decode_box_autoadd_remote_extension(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_remote_extension(deserializer));
   }
 
   @protected
@@ -3322,22 +3528,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_entry = sse_decode_box_autoadd_entry(deserializer);
         return CustomUI_EntryCard(entry: var_entry);
       case 5:
+        var var_image = sse_decode_box_autoadd_link(deserializer);
+        var var_top = sse_decode_box_custom_ui(deserializer);
+        var var_bottom = sse_decode_box_custom_ui(deserializer);
+        return CustomUI_Card(
+            image: var_image, top: var_top, bottom: var_bottom);
+      case 6:
+        var var_event = sse_decode_String(deserializer);
+        var var_data = sse_decode_String(deserializer);
+        return CustomUI_Feed(event: var_event, data: var_data);
+      case 7:
         var var_label = sse_decode_String(deserializer);
         var var_onClick = sse_decode_opt_box_ui_action(deserializer);
         return CustomUI_Button(label: var_label, onClick: var_onClick);
-      case 6:
+      case 8:
         var var_settingId = sse_decode_String(deserializer);
+        var var_settingKind = sse_decode_setting_kind(deserializer);
         var var_onCommit = sse_decode_opt_box_ui_action(deserializer);
         return CustomUI_InlineSetting(
-            settingId: var_settingId, onCommit: var_onCommit);
-      case 7:
+            settingId: var_settingId,
+            settingKind: var_settingKind,
+            onCommit: var_onCommit);
+      case 9:
         var var_id = sse_decode_String(deserializer);
         var var_child = sse_decode_box_custom_ui(deserializer);
         return CustomUI_Slot(id: var_id, child: var_child);
-      case 8:
+      case 10:
         var var_children = sse_decode_list_custom_ui(deserializer);
         return CustomUI_Column(children: var_children);
-      case 9:
+      case 11:
         var var_children = sse_decode_list_custom_ui(deserializer);
         return CustomUI_Row(children: var_children);
       default:
@@ -3356,7 +3575,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Entry sse_decode_entry(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_String(deserializer);
+    var var_id = sse_decode_list_entry_id(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
     var var_mediaType = sse_decode_media_type(deserializer);
@@ -3394,7 +3613,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   EntryDetailed sse_decode_entry_detailed(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_String(deserializer);
+    var var_id = sse_decode_list_entry_id(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_titles = sse_decode_list_String(deserializer);
     var var_author = sse_decode_opt_list_String(deserializer);
@@ -3439,6 +3658,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EntryId sse_decode_entry_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_uid = sse_decode_String(deserializer);
+    var var_iddata = sse_decode_opt_String(deserializer);
+    var var_idType = sse_decode_String(deserializer);
+    return EntryId(uid: var_uid, iddata: var_iddata, idType: var_idType);
+  }
+
+  @protected
   EntryList sse_decode_entry_list(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_hasnext = sse_decode_opt_box_autoadd_bool(deserializer);
@@ -3451,7 +3679,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Episode sse_decode_episode(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_String(deserializer);
+    var var_id = sse_decode_list_episode_id(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_description = sse_decode_opt_String(deserializer);
     var var_url = sse_decode_String(deserializer);
@@ -3467,37 +3695,63 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  EpisodeId sse_decode_episode_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_uid = sse_decode_String(deserializer);
+    var var_iddata = sse_decode_opt_String(deserializer);
+    var var_idType = sse_decode_String(deserializer);
+    return EpisodeId(uid: var_uid, iddata: var_iddata, idType: var_idType);
+  }
+
+  @protected
   ExtensionData sse_decode_extension_data(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_id = sse_decode_String(deserializer);
-    var var_repo = sse_decode_opt_String(deserializer);
     var var_name = sse_decode_String(deserializer);
-    var var_mediaType = sse_decode_opt_list_media_type(deserializer);
-    var var_extensionType = sse_decode_opt_list_extension_type(deserializer);
-    var var_version = sse_decode_opt_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    var var_icon = sse_decode_String(deserializer);
     var var_desc = sse_decode_opt_String(deserializer);
     var var_author = sse_decode_list_String(deserializer);
-    var var_license = sse_decode_opt_String(deserializer);
-    var var_tags = sse_decode_opt_list_String(deserializer);
-    var var_nsfw = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_tags = sse_decode_list_String(deserializer);
     var var_lang = sse_decode_list_String(deserializer);
-    var var_url = sse_decode_opt_String(deserializer);
-    var var_icon = sse_decode_opt_String(deserializer);
+    var var_nsfw = sse_decode_bool(deserializer);
+    var var_mediaType = sse_decode_Set_media_type_None(deserializer);
+    var var_extensionType = sse_decode_Set_extension_type_None(deserializer);
+    var var_repo = sse_decode_opt_String(deserializer);
+    var var_version = sse_decode_String(deserializer);
+    var var_license = sse_decode_String(deserializer);
+    var var_compatible = sse_decode_bool(deserializer);
     return ExtensionData(
         id: var_id,
-        repo: var_repo,
         name: var_name,
-        mediaType: var_mediaType,
-        extensionType: var_extensionType,
-        version: var_version,
+        url: var_url,
+        icon: var_icon,
         desc: var_desc,
         author: var_author,
-        license: var_license,
         tags: var_tags,
-        nsfw: var_nsfw,
         lang: var_lang,
-        url: var_url,
-        icon: var_icon);
+        nsfw: var_nsfw,
+        mediaType: var_mediaType,
+        extensionType: var_extensionType,
+        repo: var_repo,
+        version: var_version,
+        license: var_license,
+        compatible: var_compatible);
+  }
+
+  @protected
+  ExtensionManagerData sse_decode_extension_manager_data(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_icon = sse_decode_opt_String(deserializer);
+    var var_repo = sse_decode_opt_String(deserializer);
+    var var_apiVersion = sse_decode_u_32(deserializer);
+    return ExtensionManagerData(
+        name: var_name,
+        icon: var_icon,
+        repo: var_repo,
+        apiVersion: var_apiVersion);
   }
 
   @protected
@@ -3505,20 +3759,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
     var var_description = sse_decode_String(deserializer);
+    var var_url = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
-    var var_extensions = sse_decode_list_remote_extension(deserializer);
     return ExtensionRepo(
-        name: var_name,
-        description: var_description,
-        id: var_id,
-        extensions: var_extensions);
+        name: var_name, description: var_description, url: var_url, id: var_id);
   }
 
   @protected
   ExtensionType sse_decode_extension_type(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_i_32(deserializer);
-    return ExtensionType.values[inner];
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_hasSearch = sse_decode_bool(deserializer);
+        return ExtensionType_EntryProvider(hasSearch: var_hasSearch);
+      case 1:
+        var var_idTypes = sse_decode_list_String(deserializer);
+        return ExtensionType_EntryDetailedProvider(idTypes: var_idTypes);
+      case 2:
+        var var_idTypes = sse_decode_list_String(deserializer);
+        return ExtensionType_SourceProvider(idTypes: var_idTypes);
+      case 3:
+        var var_sourcetypes = sse_decode_Set_source_type_None(deserializer);
+        var var_opentype = sse_decode_Set_source_open_type_None(deserializer);
+        return ExtensionType_SourceProcessor(
+            sourcetypes: var_sourcetypes, opentype: var_opentype);
+      case 4:
+        var var_triggerMapEntry = sse_decode_bool(deserializer);
+        var var_triggerOnEntryActivity = sse_decode_bool(deserializer);
+        return ExtensionType_EntryProcessor(
+            triggerMapEntry: var_triggerMapEntry,
+            triggerOnEntryActivity: var_triggerOnEntryActivity);
+      case 5:
+        var var_urlPatterns = sse_decode_list_String(deserializer);
+        return ExtensionType_URLHandler(urlPatterns: var_urlPatterns);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -3628,6 +3906,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<EntryId> sse_decode_list_entry_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <EntryId>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_entry_id(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<Episode> sse_decode_list_episode(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3635,6 +3925,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <Episode>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_episode(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<EpisodeId> sse_decode_list_episode_id(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <EpisodeId>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_episode_id(deserializer));
     }
     return ans_;
   }
@@ -3779,6 +4081,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <RemoteExtension>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_remote_extension(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<SourceOpenType> sse_decode_list_source_open_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SourceOpenType>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_source_open_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<SourceType> sse_decode_list_source_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SourceType>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_source_type(deserializer));
     }
     return ans_;
   }
@@ -3937,36 +4264,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<ExtensionType>? sse_decode_opt_list_extension_type(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_list_extension_type(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
   List<ImageListAudio>? sse_decode_opt_list_image_list_audio(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_list_image_list_audio(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  List<MediaType>? sse_decode_opt_list_media_type(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_list_media_type(deserializer));
     } else {
       return null;
     }
@@ -4047,13 +4350,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   RemoteExtension sse_decode_remote_extension(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_extensionUrl = sse_decode_String(deserializer);
+    var var_id = sse_decode_String(deserializer);
+    var var_exturl = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_cover = sse_decode_opt_box_autoadd_link(deserializer);
+    var var_version = sse_decode_String(deserializer);
     var var_compatible = sse_decode_bool(deserializer);
-    var var_data = sse_decode_extension_data(deserializer);
     return RemoteExtension(
-        extensionUrl: var_extensionUrl,
-        compatible: var_compatible,
-        data: var_data);
+        id: var_id,
+        exturl: var_exturl,
+        name: var_name,
+        cover: var_cover,
+        version: var_version,
+        compatible: var_compatible);
+  }
+
+  @protected
+  RemoteExtensionResult sse_decode_remote_extension_result(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_content = sse_decode_list_remote_extension(deserializer);
+    var var_hasnext = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_length = sse_decode_opt_box_autoadd_i_32(deserializer);
+    return RemoteExtensionResult(
+        content: var_content, hasnext: var_hasnext, length: var_length);
   }
 
   @protected
@@ -4155,11 +4475,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SourceOpenType sse_decode_source_open_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return SourceOpenType.values[inner];
+  }
+
+  @protected
   SourceResult sse_decode_source_result(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_source = sse_decode_source(deserializer);
     var var_settings = sse_decode_Map_String_setting_None(deserializer);
     return SourceResult(source: var_source, settings: var_settings);
+  }
+
+  @protected
+  SourceType sse_decode_source_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return SourceType.values[inner];
   }
 
   @protected
@@ -4178,6 +4512,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
+  }
+
+  @protected
   int sse_decode_u_8(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8();
@@ -4193,13 +4533,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_action = sse_decode_box_autoadd_action(deserializer);
         return UIAction_Action(action: var_action);
       case 1:
-        var var_targetid = sse_decode_opt_String(deserializer);
+        var var_targetid = sse_decode_String(deserializer);
         var var_event = sse_decode_String(deserializer);
+        var var_data = sse_decode_String(deserializer);
         var var_placeholder =
             sse_decode_opt_box_autoadd_custom_ui(deserializer);
         return UIAction_SwapContent(
             targetid: var_targetid,
             event: var_event,
+            data: var_data,
             placeholder: var_placeholder);
       default:
         throw UnimplementedError('');
@@ -4226,19 +4568,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as ProxyAdapterImpl).frbInternalCstEncode(move: true);
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
       ProxyExtension raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as ProxyExtensionImpl).frbInternalCstEncode(move: true);
-  }
-
-  @protected
-  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-// ignore: invalid_use_of_internal_member
-    return (raw as ProxyExtensionManagerImpl).frbInternalCstEncode(move: true);
   }
 
   @protected
@@ -4266,19 +4608,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as ProxyAdapterImpl).frbInternalCstEncode(move: false);
+  }
+
+  @protected
   int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
       ProxyExtension raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as ProxyExtensionImpl).frbInternalCstEncode(move: false);
-  }
-
-  @protected
-  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-// ignore: invalid_use_of_internal_member
-    return (raw as ProxyExtensionManagerImpl).frbInternalCstEncode(move: false);
   }
 
   @protected
@@ -4298,19 +4640,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+// ignore: invalid_use_of_internal_member
+    return (raw as ProxyAdapterImpl).frbInternalCstEncode();
+  }
+
+  @protected
   int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
       ProxyExtension raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
 // ignore: invalid_use_of_internal_member
     return (raw as ProxyExtensionImpl).frbInternalCstEncode();
-  }
-
-  @protected
-  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-// ignore: invalid_use_of_internal_member
-    return (raw as ProxyExtensionManagerImpl).frbInternalCstEncode();
   }
 
   @protected
@@ -4320,19 +4662,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int cst_encode_extension_type(ExtensionType raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return cst_encode_i_32(raw.index);
-  }
-
-  @protected
   double cst_encode_f_32(double raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw;
-  }
-
-  @protected
-  double cst_encode_f_64(double raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
   }
@@ -4356,9 +4686,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_source_open_type(SourceOpenType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_source_type(SourceType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
   int cst_encode_timestamp_type(TimestampType raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_u_32(int raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw;
   }
 
   @protected
@@ -4411,21 +4759,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-          ProxyExtension self, SseSerializer serializer) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as ProxyExtensionImpl).frbInternalSseEncode(move: true),
+        (self as ProxyAdapterImpl).frbInternalSseEncode(move: true),
         serializer);
   }
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+          ProxyExtension self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as ProxyExtensionManagerImpl).frbInternalSseEncode(move: true),
+        (self as ProxyExtensionImpl).frbInternalSseEncode(move: true),
         serializer);
   }
 
@@ -4461,21 +4809,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-          ProxyExtension self, SseSerializer serializer) {
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as ProxyExtensionImpl).frbInternalSseEncode(move: false),
+        (self as ProxyAdapterImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer) {
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+          ProxyExtension self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-        (self as ProxyExtensionManagerImpl).frbInternalSseEncode(move: false),
+        (self as ProxyExtensionImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
@@ -4594,6 +4942,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as ProxyAdapterImpl).frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           ProxyExtension self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4603,13 +4961,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer) {
+  void sse_encode_Set_extension_type_None(
+      Set<ExtensionType> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-        (self as ProxyExtensionManagerImpl).frbInternalSseEncode(move: null),
-        serializer);
+    sse_encode_list_extension_type(self.toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Set_media_type_None(
+      Set<MediaType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_media_type(self.toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Set_source_open_type_None(
+      Set<SourceOpenType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_source_open_type(self.toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Set_source_type_None(
+      Set<SourceType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_source_type(self.toList(), serializer);
   }
 
   @protected
@@ -4642,6 +5018,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(3, serializer);
         sse_encode_String(event, serializer);
         sse_encode_String(data, serializer);
+      case Action_NavEntry(entry: final entry):
+        sse_encode_i_32(4, serializer);
+        sse_encode_box_autoadd_entry_detailed(entry, serializer);
     }
   }
 
@@ -4706,6 +5085,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_entry_id(EntryId self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_entry_id(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_episode_id(
+      EpisodeId self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_episode_id(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_extension_repo(
+      ExtensionRepo self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_extension_repo(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_32(self, serializer);
@@ -4728,13 +5127,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       Permission self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_permission(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_remote_extension(
-      RemoteExtension self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_remote_extension(self, serializer);
   }
 
   @protected
@@ -4805,26 +5197,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case CustomUI_EntryCard(entry: final entry):
         sse_encode_i_32(4, serializer);
         sse_encode_box_autoadd_entry(entry, serializer);
-      case CustomUI_Button(label: final label, onClick: final onClick):
+      case CustomUI_Card(
+          image: final image,
+          top: final top,
+          bottom: final bottom
+        ):
         sse_encode_i_32(5, serializer);
+        sse_encode_box_autoadd_link(image, serializer);
+        sse_encode_box_custom_ui(top, serializer);
+        sse_encode_box_custom_ui(bottom, serializer);
+      case CustomUI_Feed(event: final event, data: final data):
+        sse_encode_i_32(6, serializer);
+        sse_encode_String(event, serializer);
+        sse_encode_String(data, serializer);
+      case CustomUI_Button(label: final label, onClick: final onClick):
+        sse_encode_i_32(7, serializer);
         sse_encode_String(label, serializer);
         sse_encode_opt_box_ui_action(onClick, serializer);
       case CustomUI_InlineSetting(
           settingId: final settingId,
+          settingKind: final settingKind,
           onCommit: final onCommit
         ):
-        sse_encode_i_32(6, serializer);
+        sse_encode_i_32(8, serializer);
         sse_encode_String(settingId, serializer);
+        sse_encode_setting_kind(settingKind, serializer);
         sse_encode_opt_box_ui_action(onCommit, serializer);
       case CustomUI_Slot(id: final id, child: final child):
-        sse_encode_i_32(7, serializer);
+        sse_encode_i_32(9, serializer);
         sse_encode_String(id, serializer);
         sse_encode_box_custom_ui(child, serializer);
       case CustomUI_Column(children: final children):
-        sse_encode_i_32(8, serializer);
+        sse_encode_i_32(10, serializer);
         sse_encode_list_custom_ui(children, serializer);
       case CustomUI_Row(children: final children):
-        sse_encode_i_32(9, serializer);
+        sse_encode_i_32(11, serializer);
         sse_encode_list_custom_ui(children, serializer);
     }
   }
@@ -4840,7 +5247,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_entry(Entry self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.id, serializer);
+    sse_encode_list_entry_id(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
     sse_encode_media_type(self.mediaType, serializer);
@@ -4864,7 +5271,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_entry_detailed(EntryDetailed self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.id, serializer);
+    sse_encode_list_entry_id(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_list_String(self.titles, serializer);
     sse_encode_opt_list_String(self.author, serializer);
@@ -4891,6 +5298,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_entry_id(EntryId self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.uid, serializer);
+    sse_encode_opt_String(self.iddata, serializer);
+    sse_encode_String(self.idType, serializer);
+  }
+
+  @protected
   void sse_encode_entry_list(EntryList self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_opt_box_autoadd_bool(self.hasnext, serializer);
@@ -4901,7 +5316,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_episode(Episode self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.id, serializer);
+    sse_encode_list_episode_id(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_opt_String(self.description, serializer);
     sse_encode_String(self.url, serializer);
@@ -4910,22 +5325,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_episode_id(EpisodeId self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.uid, serializer);
+    sse_encode_opt_String(self.iddata, serializer);
+    sse_encode_String(self.idType, serializer);
+  }
+
+  @protected
   void sse_encode_extension_data(ExtensionData self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.id, serializer);
-    sse_encode_opt_String(self.repo, serializer);
     sse_encode_String(self.name, serializer);
-    sse_encode_opt_list_media_type(self.mediaType, serializer);
-    sse_encode_opt_list_extension_type(self.extensionType, serializer);
-    sse_encode_opt_String(self.version, serializer);
+    sse_encode_String(self.url, serializer);
+    sse_encode_String(self.icon, serializer);
     sse_encode_opt_String(self.desc, serializer);
     sse_encode_list_String(self.author, serializer);
-    sse_encode_opt_String(self.license, serializer);
-    sse_encode_opt_list_String(self.tags, serializer);
-    sse_encode_opt_box_autoadd_bool(self.nsfw, serializer);
+    sse_encode_list_String(self.tags, serializer);
     sse_encode_list_String(self.lang, serializer);
-    sse_encode_opt_String(self.url, serializer);
+    sse_encode_bool(self.nsfw, serializer);
+    sse_encode_Set_media_type_None(self.mediaType, serializer);
+    sse_encode_Set_extension_type_None(self.extensionType, serializer);
+    sse_encode_opt_String(self.repo, serializer);
+    sse_encode_String(self.version, serializer);
+    sse_encode_String(self.license, serializer);
+    sse_encode_bool(self.compatible, serializer);
+  }
+
+  @protected
+  void sse_encode_extension_manager_data(
+      ExtensionManagerData self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
     sse_encode_opt_String(self.icon, serializer);
+    sse_encode_opt_String(self.repo, serializer);
+    sse_encode_u_32(self.apiVersion, serializer);
   }
 
   @protected
@@ -4933,14 +5367,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.description, serializer);
+    sse_encode_String(self.url, serializer);
     sse_encode_String(self.id, serializer);
-    sse_encode_list_remote_extension(self.extensions, serializer);
   }
 
   @protected
   void sse_encode_extension_type(ExtensionType self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.index, serializer);
+    switch (self) {
+      case ExtensionType_EntryProvider(hasSearch: final hasSearch):
+        sse_encode_i_32(0, serializer);
+        sse_encode_bool(hasSearch, serializer);
+      case ExtensionType_EntryDetailedProvider(idTypes: final idTypes):
+        sse_encode_i_32(1, serializer);
+        sse_encode_list_String(idTypes, serializer);
+      case ExtensionType_SourceProvider(idTypes: final idTypes):
+        sse_encode_i_32(2, serializer);
+        sse_encode_list_String(idTypes, serializer);
+      case ExtensionType_SourceProcessor(
+          sourcetypes: final sourcetypes,
+          opentype: final opentype
+        ):
+        sse_encode_i_32(3, serializer);
+        sse_encode_Set_source_type_None(sourcetypes, serializer);
+        sse_encode_Set_source_open_type_None(opentype, serializer);
+      case ExtensionType_EntryProcessor(
+          triggerMapEntry: final triggerMapEntry,
+          triggerOnEntryActivity: final triggerOnEntryActivity
+        ):
+        sse_encode_i_32(4, serializer);
+        sse_encode_bool(triggerMapEntry, serializer);
+        sse_encode_bool(triggerOnEntryActivity, serializer);
+      case ExtensionType_URLHandler(urlPatterns: final urlPatterns):
+        sse_encode_i_32(5, serializer);
+        sse_encode_list_String(urlPatterns, serializer);
+    }
   }
 
   @protected
@@ -5034,11 +5495,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_entry_id(List<EntryId> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_entry_id(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_episode(List<Episode> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_episode(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_episode_id(
+      List<EpisodeId> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_episode_id(item, serializer);
     }
   }
 
@@ -5156,6 +5636,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_remote_extension(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_source_open_type(
+      List<SourceOpenType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_source_open_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_source_type(
+      List<SourceType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_source_type(item, serializer);
     }
   }
 
@@ -5300,17 +5800,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_list_extension_type(
-      List<ExtensionType>? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_list_extension_type(self, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_opt_list_image_list_audio(
       List<ImageListAudio>? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5318,17 +5807,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_list_image_list_audio(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_list_media_type(
-      List<MediaType>? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_list_media_type(self, serializer);
     }
   }
 
@@ -5396,9 +5874,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_remote_extension(
       RemoteExtension self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.extensionUrl, serializer);
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.exturl, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_opt_box_autoadd_link(self.cover, serializer);
+    sse_encode_String(self.version, serializer);
     sse_encode_bool(self.compatible, serializer);
-    sse_encode_extension_data(self.data, serializer);
+  }
+
+  @protected
+  void sse_encode_remote_extension_result(
+      RemoteExtensionResult self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_remote_extension(self.content, serializer);
+    sse_encode_opt_box_autoadd_bool(self.hasnext, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.length, serializer);
   }
 
   @protected
@@ -5481,10 +5971,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_source_open_type(
+      SourceOpenType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_source_result(SourceResult self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_source(self.source, serializer);
     sse_encode_Map_String_setting_None(self.settings, serializer);
+  }
+
+  @protected
+  void sse_encode_source_type(SourceType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -5498,6 +6001,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_timestamp_type(TimestampType self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
   }
 
   @protected
@@ -5516,11 +6025,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case UIAction_SwapContent(
           targetid: final targetid,
           event: final event,
+          data: final data,
           placeholder: final placeholder
         ):
         sse_encode_i_32(1, serializer);
-        sse_encode_opt_String(targetid, serializer);
+        sse_encode_String(targetid, serializer);
         sse_encode_String(event, serializer);
+        sse_encode_String(data, serializer);
         sse_encode_opt_box_autoadd_custom_ui(placeholder, serializer);
     }
   }
@@ -5612,6 +6123,46 @@ class ManagerClientImpl extends RustOpaque implements ManagerClient {
 }
 
 @sealed
+class ProxyAdapterImpl extends RustOpaque implements ProxyAdapter {
+  // Not to be used by end users
+  ProxyAdapterImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ProxyAdapterImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ProxyAdapter,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ProxyAdapter,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ProxyAdapterPtr,
+  );
+
+  Future<RemoteExtensionResult> browseRepo(
+          {required ExtensionRepo repo, required int page}) =>
+      RustLib.instance.api.crateApiExtensionProxyAdapterBrowseRepo(
+          that: this, repo: repo, page: page);
+
+  Future<List<ProxyExtension>> getExtensions() =>
+      RustLib.instance.api.crateApiExtensionProxyAdapterGetExtensions(
+        that: this,
+      );
+
+  Future<ExtensionRepo> getRepo({required String url}) => RustLib.instance.api
+      .crateApiExtensionProxyAdapterGetRepo(that: this, url: url);
+
+  Future<ProxyExtension> install({required String location}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyAdapterInstall(that: this, location: location);
+
+  Future<void> uninstall({required ProxyExtension ext}) => RustLib.instance.api
+      .crateApiExtensionProxyAdapterUninstall(that: this, ext: ext);
+}
+
+@sealed
 class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
   // Not to be used by end users
   ProxyExtensionImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -5635,15 +6186,11 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           that: this, page: page, token: token);
 
   Future<EntryDetailedResult> detail(
-          {required String entryid,
+          {required EntryId entryid,
           required Map<String, Setting> settings,
           CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionDetail(
           that: this, entryid: entryid, settings: settings, token: token);
-
-  Future<bool> fromurl({required String url, CancelToken? token}) =>
-      RustLib.instance.api.crateApiExtensionProxyExtensionFromurl(
-          that: this, url: url, token: token);
 
   Future<ExtensionData> getExtensionData() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionGetExtensionData(
@@ -5667,6 +6214,10 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
       RustLib.instance.api
           .crateApiExtensionProxyExtensionGetSettings(that: this, kind: kind);
 
+  Future<bool> handleUrl({required String url, CancelToken? token}) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionHandleUrl(
+          that: this, url: url, token: token);
+
   Future<bool> hasPermission({required Permission permission}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionHasPermission(
           that: this, permission: permission);
@@ -5685,10 +6236,15 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
 
   Future<SourceResult> mapSource(
           {required Source source,
+          required EpisodeId epid,
           required Map<String, Setting> settings,
           CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionMapSource(
-          that: this, source: source, settings: settings, token: token);
+          that: this,
+          source: source,
+          epid: epid,
+          settings: settings,
+          token: token);
 
   Future<void> mergeSettingDefinition(
           {required String id,
@@ -5739,50 +6295,9 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           that: this, id: id, kind: kind, value: value);
 
   Future<SourceResult> source(
-          {required String epid,
+          {required EpisodeId epid,
           required Map<String, Setting> settings,
           CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionSource(
           that: this, epid: epid, settings: settings, token: token);
-}
-
-@sealed
-class ProxyExtensionManagerImpl extends RustOpaque
-    implements ProxyExtensionManager {
-  // Not to be used by end users
-  ProxyExtensionManagerImpl.frbInternalDcoDecode(List<dynamic> wire)
-      : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  ProxyExtensionManagerImpl.frbInternalSseDecode(
-      BigInt ptr, int externalSizeOnNative)
-      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount: RustLib
-        .instance.api.rust_arc_increment_strong_count_ProxyExtensionManager,
-    rustArcDecrementStrongCount: RustLib
-        .instance.api.rust_arc_decrement_strong_count_ProxyExtensionManager,
-    rustArcDecrementStrongCountPtr: RustLib
-        .instance.api.rust_arc_decrement_strong_count_ProxyExtensionManagerPtr,
-  );
-
-  Future<List<ProxyExtension>> getExtensions() =>
-      RustLib.instance.api.crateApiExtensionProxyExtensionManagerGetExtensions(
-        that: this,
-      );
-
-  Future<ExtensionRepo> getRepo({required String url}) => RustLib.instance.api
-      .crateApiExtensionProxyExtensionManagerGetRepo(that: this, url: url);
-
-  Future<ProxyExtension> install({required RemoteExtension location}) =>
-      RustLib.instance.api.crateApiExtensionProxyExtensionManagerInstall(
-          that: this, location: location);
-
-  Future<ProxyExtension> installSingle({required String url}) =>
-      RustLib.instance.api.crateApiExtensionProxyExtensionManagerInstallSingle(
-          that: this, url: url);
-
-  Future<void> uninstall({required ProxyExtension ext}) => RustLib.instance.api
-      .crateApiExtensionProxyExtensionManagerUninstall(that: this, ext: ext);
 }

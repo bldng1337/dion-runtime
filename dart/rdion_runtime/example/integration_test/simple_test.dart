@@ -50,7 +50,7 @@ void main() {
             });
       },
     );
-    final ext = await ProxyExtensionManager.initDion(client: client);
+    final ext = await ProxyAdapter.initDion(client: client);
     final exts = await ext.getExtensions();
     for (final ext in exts) {
       await ext.mergeSettingDefinition(
@@ -65,15 +65,20 @@ void main() {
       );
       await ext.setEnabled(enabled: true);
       await ext.browse(page: 0);
-      final entry = await ext.detail(entryid: "", settings: {});
-      await ext.fromurl(url: "");
+      final entry = await ext.detail(
+          entryid: const EntryId(idType: "asd", uid: "asd"), settings: {});
+      await ext.handleUrl(url: "");
       await ext.mapEntry(entry: entry.entry, settings: {});
-      final source = await ext.source(epid: "", settings: {});
+      final source = await ext.source(
+          epid: const EpisodeId(idType: "asd", uid: "asd"), settings: {});
       await ext.onEntryActivity(
           activity: const EntryActivity.episodeActivity(progress: 23),
           entry: entry.entry,
           settings: {});
-      await ext.mapSource(source: source.source, settings: {});
+      await ext.mapSource(
+          source: source.source,
+          epid: const EpisodeId(idType: "asd", uid: "asd"),
+          settings: {});
       await ext.search(filter: "", page: 2);
       await ext.reload();
     }

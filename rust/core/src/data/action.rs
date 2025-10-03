@@ -5,7 +5,6 @@ use specta::Type;
 use crate::data::{custom_ui::CustomUI, source::EntryDetailed};
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct PopupAction {
@@ -14,7 +13,6 @@ pub struct PopupAction {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -41,7 +39,6 @@ pub enum Action {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -59,7 +56,6 @@ pub enum UIAction {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -81,7 +77,6 @@ pub enum EventData {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]

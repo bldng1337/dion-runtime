@@ -60,6 +60,7 @@ for (const path of await readdir(".")) {
       },
       {
         type: "URLHandler",
+        url_patterns: ["*"],
       },
     ],
   };

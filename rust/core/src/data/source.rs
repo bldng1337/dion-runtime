@@ -6,7 +6,6 @@ use std::collections::HashMap;
 use crate::data::{custom_ui::CustomUI, settings::Setting};
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum MediaType {
@@ -19,7 +18,6 @@ pub enum MediaType {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Link {
@@ -29,7 +27,6 @@ pub struct Link {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Entry {
@@ -51,7 +48,6 @@ pub struct Entry {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryList {
@@ -63,7 +59,6 @@ pub struct EntryList {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryDetailedResult {
@@ -72,7 +67,6 @@ pub struct EntryDetailedResult {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct SourceResult {
@@ -81,7 +75,6 @@ pub struct SourceResult {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Episode {
@@ -98,7 +91,6 @@ pub struct Episode {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum ReleaseStatus {
@@ -109,7 +101,6 @@ pub enum ReleaseStatus {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryDetailed {
@@ -143,7 +134,6 @@ pub struct EntryDetailed {
     pub length: Option<i32>,
 }
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum SourceType {
@@ -156,7 +146,6 @@ pub enum SourceType {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -185,7 +174,6 @@ pub enum Source {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
@@ -195,7 +183,6 @@ pub enum Paragraph {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Mp3Chapter {
@@ -204,7 +191,6 @@ pub struct Mp3Chapter {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Subtitles {
@@ -213,7 +199,6 @@ pub struct Subtitles {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct ImageListAudio {
@@ -223,7 +208,6 @@ pub struct ImageListAudio {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EpisodeId {
@@ -235,7 +219,6 @@ pub struct EpisodeId {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryId {

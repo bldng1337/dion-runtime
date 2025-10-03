@@ -5,7 +5,6 @@ use specta::Type;
 use crate::data::source::Link;
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct RemoteExtension {
@@ -18,7 +17,6 @@ pub struct RemoteExtension {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct RemoteExtensionResult {
@@ -30,7 +28,6 @@ pub struct RemoteExtensionResult {
 }
 
 /// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:json_serializable
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct ExtensionRepo {

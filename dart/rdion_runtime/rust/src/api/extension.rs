@@ -1,16 +1,27 @@
 use crate::api::cancel::CancelToken;
 use crate::api::client::*;
+use crate::api::ext_wrap::WrapperAdapter;
 use crate::api::ext_wrap::WrapperExtension;
-use crate::api::ext_wrap::WrapperExtensionManager;
 use anyhow::Result;
-use dion_extension::extension_manager::DionExtensionManager;
-use dion_runtime::datastructs::ExtensionRepo;
-use dion_runtime::datastructs::RemoteExtension;
-use dion_runtime::datastructs::*;
+
+use dion_extension::extension_manager::DionExtensionAdapter;
+use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::extension::ExtensionData;
+use dion_runtime::data::extension_repo::ExtensionRepo;
+use dion_runtime::data::extension_repo::RemoteExtensionResult;
+use dion_runtime::data::permission::Permission;
+use dion_runtime::data::settings::Setting;
+use dion_runtime::data::settings::SettingKind;
+use dion_runtime::data::settings::SettingValue;
+use dion_runtime::data::source::EntryDetailed;
+use dion_runtime::data::source::EntryDetailedResult;
+use dion_runtime::data::source::EntryId;
+use dion_runtime::data::source::EntryList;
+use dion_runtime::data::source::EpisodeId;
+use dion_runtime::data::source::Source;
+use dion_runtime::data::source::SourceResult;
 pub use dion_runtime::extension::Extension;
-pub use dion_runtime::extension::ExtensionManager;
-use dion_runtime::permission::Permission;
-use dion_runtime::settings::*;
+
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
 
@@ -138,17 +149,17 @@ impl ProxyExtension {
             .await
     }
 
-    pub async fn fromurl(&self, url: String, token: Option<CancelToken>) -> Result<bool> {
+    pub async fn handle_url(&self, url: String, token: Option<CancelToken>) -> Result<bool> {
         self.inner
             .inner
-            .fromurl(url, token.map(|token| token.into()))
+            .handle_url(url, token.map(|token| token.into()))
             .await
     }
 
     #[frb(serialize)]
     pub async fn detail(
         &self,
-        entryid: String,
+        entryid: EntryId,
         settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
     ) -> Result<EntryDetailedResult> {
@@ -161,7 +172,7 @@ impl ProxyExtension {
     #[frb(serialize)]
     pub async fn source(
         &self,
-        epid: String,
+        epid: EpisodeId,
         settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
     ) -> Result<SourceResult> {
@@ -204,27 +215,28 @@ impl ProxyExtension {
     pub async fn map_source(
         &self,
         source: Source,
+        epid: EpisodeId,
         settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
     ) -> Result<SourceResult> {
         self.inner
             .inner
-            .map_source(source, settings, token.map(|token| token.into()))
+            .map_source(source, epid, settings, token.map(|token| token.into()))
             .await
     }
 }
 
 #[frb(opaque)]
-pub struct ProxyExtensionManager {
+pub struct ProxyAdapter {
     #[frb(ignore)]
-    inner: WrapperExtensionManager,
+    inner: WrapperAdapter,
 }
 
-impl ProxyExtensionManager {
-    pub async fn init_dion(client: &ManagerClient) -> Result<ProxyExtensionManager> {
-        DionExtensionManager::new(Box::new(client.clone()))
+impl ProxyAdapter {
+    pub async fn init_dion(client: &ManagerClient) -> Result<ProxyAdapter> {
+        DionExtensionAdapter::new(Box::new(client.clone()))
             .await
-            .map(|ext| ProxyExtensionManager {
+            .map(|ext| ProxyAdapter {
                 inner: Box::new(ext).into(),
             })
     }
@@ -237,7 +249,7 @@ impl ProxyExtensionManager {
             .map(|vec| vec.into_iter().map(|ext| ext.into()).collect())
     }
 
-    pub async fn install(&self, location: &RemoteExtension) -> Result<ProxyExtension> {
+    pub async fn install(&self, location: &str) -> Result<ProxyExtension> {
         self.inner
             .inner
             .install(location)
@@ -245,19 +257,19 @@ impl ProxyExtensionManager {
             .map(|ext| ext.into())
     }
 
-    pub async fn install_single(&self, url: String) -> Result<ProxyExtension> {
-        self.inner
-            .inner
-            .install_single(url.as_str())
-            .await
-            .map(|ext| ext.into())
-    }
-
-    pub async fn uninstall(&self, ext: ProxyExtension) -> Result<()> {
-        self.inner.inner.uninstall(ext.into()).await
+    pub async fn uninstall(&self, ext: &ProxyExtension) -> Result<()> {
+        self.inner.inner.uninstall(&ext.inner.inner).await
     }
 
     pub async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
         self.inner.inner.get_repo(url).await
+    }
+
+    pub async fn browse_repo(
+        &self,
+        repo: &ExtensionRepo,
+        page: i32,
+    ) -> Result<RemoteExtensionResult> {
+        self.inner.inner.browse_repo(repo, page).await
     }
 }

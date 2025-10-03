@@ -7,6 +7,7 @@ mod ext_wrap;
 pub mod extension;
 pub mod value;
 use flutter_rust_bridge::frb;
+// pub mod data_comp;
 
 #[frb(init)]
 pub fn lets_init_app_here() {

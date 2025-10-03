@@ -1,20 +1,20 @@
-use dion_extension::extension_manager::DionExtensionManager;
-use dion_runtime::extension::{Extension, ExtensionManager};
+use dion_extension::extension_manager::DionExtensionAdapter;
+use dion_runtime::extension::{Adapter, Extension};
 
 use crate::api::extension::ProxyExtension;
 
-pub(crate) struct WrapperExtensionManager {
-    pub(super) inner: Box<dyn ExtensionManager>,
+pub(crate) struct WrapperAdapter {
+    pub(super) inner: Box<dyn Adapter>,
 }
 
-impl From<Box<DionExtensionManager>> for WrapperExtensionManager {
-    fn from(value: Box<DionExtensionManager>) -> Self {
+impl From<Box<DionExtensionAdapter>> for WrapperAdapter {
+    fn from(value: Box<DionExtensionAdapter>) -> Self {
         Self { inner: value }
     }
 }
 
-impl From<Box<dyn ExtensionManager>> for WrapperExtensionManager {
-    fn from(value: Box<dyn ExtensionManager>) -> Self {
+impl From<Box<dyn Adapter>> for WrapperAdapter {
+    fn from(value: Box<dyn Adapter>) -> Self {
         Self { inner: value }
     }
 }

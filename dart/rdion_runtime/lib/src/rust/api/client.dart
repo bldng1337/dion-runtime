@@ -6,8 +6,12 @@ import 'dart:convert';
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
-import '../third_party/dion_runtime/datastructs.dart';
-import '../third_party/dion_runtime/permission.dart';
+import '../third_party/dion_runtime/data/action.dart';
+import '../third_party/dion_runtime/data/custom_ui.dart';
+import '../third_party/dion_runtime/data/extension.dart';
+import '../third_party/dion_runtime/data/permission.dart';
+import '../third_party/dion_runtime/data/settings.dart';
+import '../third_party/dion_runtime/data/source.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ExtensionClient>>

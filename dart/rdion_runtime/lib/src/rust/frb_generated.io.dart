@@ -12,9 +12,15 @@ import 'dart:async';
 import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
-import 'third_party/dion_runtime/datastructs.dart';
-import 'third_party/dion_runtime/permission.dart';
-import 'third_party/dion_runtime/settings.dart';
+import 'third_party/dion_runtime/data/action.dart';
+import 'third_party/dion_runtime/data/activity.dart';
+import 'third_party/dion_runtime/data/custom_ui.dart';
+import 'third_party/dion_runtime/data/extension.dart';
+import 'third_party/dion_runtime/data/extension_manager.dart';
+import 'third_party/dion_runtime/data/extension_repo.dart';
+import 'third_party/dion_runtime/data/permission.dart';
+import 'third_party/dion_runtime/data/settings.dart';
+import 'third_party/dion_runtime/data/source.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RustLibApiImplPlatform({
@@ -37,12 +43,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClientPtr;
 
   CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_ProxyExtensionPtr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionPtr;
+      get rust_arc_decrement_strong_count_ProxyAdapterPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapterPtr;
 
   CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_ProxyExtensionManagerPtr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManagerPtr;
+      get rust_arc_decrement_strong_count_ProxyExtensionPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionPtr;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw);
@@ -63,13 +69,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ProxyExtension
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  ProxyAdapter
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
           dynamic raw);
 
   @protected
-  ProxyExtensionManager
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+  ProxyExtension
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw);
 
   @protected
@@ -88,13 +94,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ProxyExtension
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  ProxyAdapter
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
           dynamic raw);
 
   @protected
-  ProxyExtensionManager
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+  ProxyExtension
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw);
 
   @protected
@@ -150,14 +156,26 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  ProxyAdapter
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          dynamic raw);
+
+  @protected
   ProxyExtension
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw);
 
   @protected
-  ProxyExtensionManager
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          dynamic raw);
+  Set<ExtensionType> dco_decode_Set_extension_type_None(dynamic raw);
+
+  @protected
+  Set<MediaType> dco_decode_Set_media_type_None(dynamic raw);
+
+  @protected
+  Set<SourceOpenType> dco_decode_Set_source_open_type_None(dynamic raw);
+
+  @protected
+  Set<SourceType> dco_decode_Set_source_type_None(dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -195,6 +213,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   EntryDetailed dco_decode_box_autoadd_entry_detailed(dynamic raw);
 
   @protected
+  EntryId dco_decode_box_autoadd_entry_id(dynamic raw);
+
+  @protected
+  EpisodeId dco_decode_box_autoadd_episode_id(dynamic raw);
+
+  @protected
+  ExtensionRepo dco_decode_box_autoadd_extension_repo(dynamic raw);
+
+  @protected
   double dco_decode_box_autoadd_f_32(dynamic raw);
 
   @protected
@@ -205,9 +232,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Permission dco_decode_box_autoadd_permission(dynamic raw);
-
-  @protected
-  RemoteExtension dco_decode_box_autoadd_remote_extension(dynamic raw);
 
   @protected
   Setting dco_decode_box_autoadd_setting(dynamic raw);
@@ -246,13 +270,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   EntryDetailedResult dco_decode_entry_detailed_result(dynamic raw);
 
   @protected
+  EntryId dco_decode_entry_id(dynamic raw);
+
+  @protected
   EntryList dco_decode_entry_list(dynamic raw);
 
   @protected
   Episode dco_decode_episode(dynamic raw);
 
   @protected
+  EpisodeId dco_decode_episode_id(dynamic raw);
+
+  @protected
   ExtensionData dco_decode_extension_data(dynamic raw);
+
+  @protected
+  ExtensionManagerData dco_decode_extension_manager_data(dynamic raw);
 
   @protected
   ExtensionRepo dco_decode_extension_repo(dynamic raw);
@@ -296,7 +329,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Entry> dco_decode_list_entry(dynamic raw);
 
   @protected
+  List<EntryId> dco_decode_list_entry_id(dynamic raw);
+
+  @protected
   List<Episode> dco_decode_list_episode(dynamic raw);
+
+  @protected
+  List<EpisodeId> dco_decode_list_episode_id(dynamic raw);
 
   @protected
   List<ExtensionType> dco_decode_list_extension_type(dynamic raw);
@@ -333,6 +372,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<RemoteExtension> dco_decode_list_remote_extension(dynamic raw);
+
+  @protected
+  List<SourceOpenType> dco_decode_list_source_open_type(dynamic raw);
+
+  @protected
+  List<SourceType> dco_decode_list_source_type(dynamic raw);
 
   @protected
   List<Subtitles> dco_decode_list_subtitles(dynamic raw);
@@ -379,13 +424,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String>? dco_decode_opt_list_String(dynamic raw);
 
   @protected
-  List<ExtensionType>? dco_decode_opt_list_extension_type(dynamic raw);
-
-  @protected
   List<ImageListAudio>? dco_decode_opt_list_image_list_audio(dynamic raw);
-
-  @protected
-  List<MediaType>? dco_decode_opt_list_media_type(dynamic raw);
 
   @protected
   Paragraph dco_decode_paragraph(dynamic raw);
@@ -409,6 +448,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RemoteExtension dco_decode_remote_extension(dynamic raw);
 
   @protected
+  RemoteExtensionResult dco_decode_remote_extension_result(dynamic raw);
+
+  @protected
   Setting dco_decode_setting(dynamic raw);
 
   @protected
@@ -424,13 +466,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source dco_decode_source(dynamic raw);
 
   @protected
+  SourceOpenType dco_decode_source_open_type(dynamic raw);
+
+  @protected
   SourceResult dco_decode_source_result(dynamic raw);
+
+  @protected
+  SourceType dco_decode_source_type(dynamic raw);
 
   @protected
   Subtitles dco_decode_subtitles(dynamic raw);
 
   @protected
   TimestampType dco_decode_timestamp_type(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -463,13 +514,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ProxyExtension
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  ProxyAdapter
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
           SseDeserializer deserializer);
 
   @protected
-  ProxyExtensionManager
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+  ProxyExtension
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer);
 
   @protected
@@ -488,13 +539,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ProxyExtension
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  ProxyAdapter
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
           SseDeserializer deserializer);
 
   @protected
-  ProxyExtensionManager
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
+  ProxyExtension
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer);
 
   @protected
@@ -524,14 +575,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  ProxyAdapter
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          SseDeserializer deserializer);
+
+  @protected
   ProxyExtension
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           SseDeserializer deserializer);
 
   @protected
-  ProxyExtensionManager
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          SseDeserializer deserializer);
+  Set<ExtensionType> sse_decode_Set_extension_type_None(
+      SseDeserializer deserializer);
+
+  @protected
+  Set<MediaType> sse_decode_Set_media_type_None(SseDeserializer deserializer);
+
+  @protected
+  Set<SourceOpenType> sse_decode_Set_source_open_type_None(
+      SseDeserializer deserializer);
+
+  @protected
+  Set<SourceType> sse_decode_Set_source_type_None(SseDeserializer deserializer);
 
   @protected
   String sse_decode_String(SseDeserializer deserializer);
@@ -571,6 +636,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  EntryId sse_decode_box_autoadd_entry_id(SseDeserializer deserializer);
+
+  @protected
+  EpisodeId sse_decode_box_autoadd_episode_id(SseDeserializer deserializer);
+
+  @protected
+  ExtensionRepo sse_decode_box_autoadd_extension_repo(
+      SseDeserializer deserializer);
+
+  @protected
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer);
 
   @protected
@@ -581,10 +656,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Permission sse_decode_box_autoadd_permission(SseDeserializer deserializer);
-
-  @protected
-  RemoteExtension sse_decode_box_autoadd_remote_extension(
-      SseDeserializer deserializer);
 
   @protected
   Setting sse_decode_box_autoadd_setting(SseDeserializer deserializer);
@@ -625,13 +696,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  EntryId sse_decode_entry_id(SseDeserializer deserializer);
+
+  @protected
   EntryList sse_decode_entry_list(SseDeserializer deserializer);
 
   @protected
   Episode sse_decode_episode(SseDeserializer deserializer);
 
   @protected
+  EpisodeId sse_decode_episode_id(SseDeserializer deserializer);
+
+  @protected
   ExtensionData sse_decode_extension_data(SseDeserializer deserializer);
+
+  @protected
+  ExtensionManagerData sse_decode_extension_manager_data(
+      SseDeserializer deserializer);
 
   @protected
   ExtensionRepo sse_decode_extension_repo(SseDeserializer deserializer);
@@ -676,7 +757,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Entry> sse_decode_list_entry(SseDeserializer deserializer);
 
   @protected
+  List<EntryId> sse_decode_list_entry_id(SseDeserializer deserializer);
+
+  @protected
   List<Episode> sse_decode_list_episode(SseDeserializer deserializer);
+
+  @protected
+  List<EpisodeId> sse_decode_list_episode_id(SseDeserializer deserializer);
 
   @protected
   List<ExtensionType> sse_decode_list_extension_type(
@@ -718,6 +805,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   List<RemoteExtension> sse_decode_list_remote_extension(
       SseDeserializer deserializer);
+
+  @protected
+  List<SourceOpenType> sse_decode_list_source_open_type(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SourceType> sse_decode_list_source_type(SseDeserializer deserializer);
 
   @protected
   List<Subtitles> sse_decode_list_subtitles(SseDeserializer deserializer);
@@ -766,15 +860,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
 
   @protected
-  List<ExtensionType>? sse_decode_opt_list_extension_type(
-      SseDeserializer deserializer);
-
-  @protected
   List<ImageListAudio>? sse_decode_opt_list_image_list_audio(
       SseDeserializer deserializer);
-
-  @protected
-  List<MediaType>? sse_decode_opt_list_media_type(SseDeserializer deserializer);
 
   @protected
   Paragraph sse_decode_paragraph(SseDeserializer deserializer);
@@ -800,6 +887,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RemoteExtension sse_decode_remote_extension(SseDeserializer deserializer);
 
   @protected
+  RemoteExtensionResult sse_decode_remote_extension_result(
+      SseDeserializer deserializer);
+
+  @protected
   Setting sse_decode_setting(SseDeserializer deserializer);
 
   @protected
@@ -815,13 +906,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source sse_decode_source(SseDeserializer deserializer);
 
   @protected
+  SourceOpenType sse_decode_source_open_type(SseDeserializer deserializer);
+
+  @protected
   SourceResult sse_decode_source_result(SseDeserializer deserializer);
+
+  @protected
+  SourceType sse_decode_source_type(SseDeserializer deserializer);
 
   @protected
   Subtitles sse_decode_subtitles(SseDeserializer deserializer);
 
   @protected
   TimestampType sse_decode_timestamp_type(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -851,25 +951,37 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_record_string_setting>
-      cst_encode_Map_String_setting_None(Map<String, Setting> raw) {
+  ffi.Pointer<wire_cst_list_extension_type> cst_encode_Set_extension_type_None(
+      Set<ExtensionType> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    return cst_encode_list_record_string_setting(
-        raw.entries.map((e) => (e.key, e.value)).toList());
+    return cst_encode_list_extension_type(raw.toList());
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_media_type> cst_encode_Set_media_type_None(
+      Set<MediaType> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_media_type(raw.toList());
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_source_open_type>
+      cst_encode_Set_source_open_type_None(Set<SourceOpenType> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_source_open_type(raw.toList());
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_source_type> cst_encode_Set_source_type_None(
+      Set<SourceType> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_source_type(raw.toList());
   }
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_String(String raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_list_prim_u_8_strict(utf8.encoder.convert(raw));
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_action> cst_encode_box_action(Action raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_action();
-    cst_api_fill_to_wire_action(raw, ptr.ref);
-    return ptr;
   }
 
   @protected
@@ -884,33 +996,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_action> cst_encode_box_autoadd_action(Action raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_action();
-    cst_api_fill_to_wire_action(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
   ffi.Pointer<ffi.Bool> cst_encode_box_autoadd_bool(bool raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_bool(cst_encode_bool(raw));
   }
 
   @protected
-  ffi.Pointer<wire_cst_custom_ui> cst_encode_box_autoadd_custom_ui(
-      CustomUI raw) {
+  ffi.Pointer<wire_cst_extension_repo> cst_encode_box_autoadd_extension_repo(
+      ExtensionRepo raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_custom_ui();
-    cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_entry> cst_encode_box_autoadd_entry(Entry raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_entry();
-    cst_api_fill_to_wire_entry(raw, ptr.ref);
+    final ptr = wire.cst_new_box_autoadd_extension_repo();
+    cst_api_fill_to_wire_extension_repo(raw, ptr.ref);
     return ptr;
   }
 
@@ -931,40 +1027,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_link();
     cst_api_fill_to_wire_link(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_remote_extension>
-      cst_encode_box_autoadd_remote_extension(RemoteExtension raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_remote_extension();
-    cst_api_fill_to_wire_remote_extension(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_settings_ui> cst_encode_box_autoadd_settings_ui(
-      SettingsUI raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_settings_ui();
-    cst_api_fill_to_wire_settings_ui(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_custom_ui> cst_encode_box_custom_ui(CustomUI raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_custom_ui();
-    cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_ui_action> cst_encode_box_ui_action(UIAction raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_ui_action();
-    cst_api_fill_to_wire_ui_action(raw, ptr.ref);
     return ptr;
   }
 
@@ -996,28 +1058,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_custom_ui> cst_encode_list_custom_ui(
-      List<CustomUI> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_custom_ui(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_custom_ui(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_dropdown_option> cst_encode_list_dropdown_option(
-      List<DropdownOption> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_dropdown_option(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_dropdown_option(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_entry> cst_encode_list_entry(List<Entry> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_entry(raw.length);
@@ -1028,12 +1068,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_episode> cst_encode_list_episode(
-      List<Episode> raw) {
+  ffi.Pointer<wire_cst_list_entry_id> cst_encode_list_entry_id(
+      List<EntryId> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_episode(raw.length);
+    final ans = wire.cst_new_list_entry_id(raw.length);
     for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_episode(raw[i], ans.ref.ptr[i]);
+      cst_api_fill_to_wire_entry_id(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1044,7 +1084,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_extension_type(raw.length);
     for (var i = 0; i < raw.length; ++i) {
-      ans.ref.ptr[i] = cst_encode_extension_type(raw[i]);
+      cst_api_fill_to_wire_extension_type(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1061,33 +1101,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_popup_action> cst_encode_list_popup_action(
-      List<PopupAction> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_popup_action(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_popup_action(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_list_prim_u_8_strict(
       Uint8List raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_prim_u_8_strict(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
-    return ans;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_record_string_setting>
-      cst_encode_list_record_string_setting(List<(String, Setting)> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_record_string_setting(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_record_string_setting(raw[i], ans.ref.ptr[i]);
-    }
     return ans;
   }
 
@@ -1109,6 +1127,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_remote_extension(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_remote_extension(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_source_open_type> cst_encode_list_source_open_type(
+      List<SourceOpenType> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_source_open_type(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      ans.ref.ptr[i] = cst_encode_source_open_type(raw[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_source_type> cst_encode_list_source_type(
+      List<SourceType> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_source_type(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      ans.ref.ptr[i] = cst_encode_source_type(raw[i]);
     }
     return ans;
   }
@@ -1145,13 +1185,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_autoadd_custom_ui(
-      CustomUI? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_custom_ui(raw);
-  }
-
-  @protected
   ffi.Pointer<ffi.Float> cst_encode_opt_box_autoadd_f_32(double? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_f_32(raw);
@@ -1170,37 +1203,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_settings_ui> cst_encode_opt_box_autoadd_settings_ui(
-      SettingsUI? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_settings_ui(raw);
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_ui_action> cst_encode_opt_box_ui_action(UIAction? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_box_ui_action(raw);
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_String> cst_encode_opt_list_String(
       List<String>? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_list_String(raw);
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_extension_type> cst_encode_opt_list_extension_type(
-      List<ExtensionType>? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_list_extension_type(raw);
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_media_type> cst_encode_opt_list_media_type(
-      List<MediaType>? raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return raw == null ? ffi.nullptr : cst_encode_list_media_type(raw);
   }
 
   @protected
@@ -1210,63 +1216,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_action(Action apiObj, wire_cst_action wireObj) {
-    if (apiObj is Action_OpenBrowser) {
-      var pre_url = cst_encode_String(apiObj.url);
-      wireObj.tag = 0;
-      wireObj.kind.OpenBrowser.url = pre_url;
-      return;
-    }
-    if (apiObj is Action_Popup) {
-      var pre_title = cst_encode_String(apiObj.title);
-      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
-      var pre_actions = cst_encode_list_popup_action(apiObj.actions);
-      wireObj.tag = 1;
-      wireObj.kind.Popup.title = pre_title;
-      wireObj.kind.Popup.content = pre_content;
-      wireObj.kind.Popup.actions = pre_actions;
-      return;
-    }
-    if (apiObj is Action_Nav) {
-      var pre_title = cst_encode_String(apiObj.title);
-      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
-      wireObj.tag = 2;
-      wireObj.kind.Nav.title = pre_title;
-      wireObj.kind.Nav.content = pre_content;
-      return;
-    }
-    if (apiObj is Action_TriggerEvent) {
-      var pre_event = cst_encode_String(apiObj.event);
-      var pre_data = cst_encode_String(apiObj.data);
-      wireObj.tag = 3;
-      wireObj.kind.TriggerEvent.event = pre_event;
-      wireObj.kind.TriggerEvent.data = pre_data;
-      return;
-    }
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_action(
-      Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
-    cst_api_fill_to_wire_action(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_action(
-      Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
-    cst_api_fill_to_wire_action(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_custom_ui(
-      CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
-    cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_entry(
-      Entry apiObj, ffi.Pointer<wire_cst_entry> wireObj) {
-    cst_api_fill_to_wire_entry(apiObj, wireObj.ref);
+  void cst_api_fill_to_wire_box_autoadd_extension_repo(
+      ExtensionRepo apiObj, ffi.Pointer<wire_cst_extension_repo> wireObj) {
+    cst_api_fill_to_wire_extension_repo(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1276,118 +1228,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_box_autoadd_remote_extension(
-      RemoteExtension apiObj, ffi.Pointer<wire_cst_remote_extension> wireObj) {
-    cst_api_fill_to_wire_remote_extension(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_settings_ui(
-      SettingsUI apiObj, ffi.Pointer<wire_cst_settings_ui> wireObj) {
-    cst_api_fill_to_wire_settings_ui(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_custom_ui(
-      CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
-    cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_ui_action(
-      UIAction apiObj, ffi.Pointer<wire_cst_ui_action> wireObj) {
-    cst_api_fill_to_wire_ui_action(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_custom_ui(
-      CustomUI apiObj, wire_cst_custom_ui wireObj) {
-    if (apiObj is CustomUI_Text) {
-      var pre_text = cst_encode_String(apiObj.text);
-      wireObj.tag = 0;
-      wireObj.kind.Text.text = pre_text;
-      return;
-    }
-    if (apiObj is CustomUI_Image) {
-      var pre_image = cst_encode_box_autoadd_link(apiObj.image);
-      var pre_width = cst_encode_opt_box_autoadd_i_32(apiObj.width);
-      var pre_height = cst_encode_opt_box_autoadd_i_32(apiObj.height);
-      wireObj.tag = 1;
-      wireObj.kind.Image.image = pre_image;
-      wireObj.kind.Image.width = pre_width;
-      wireObj.kind.Image.height = pre_height;
-      return;
-    }
-    if (apiObj is CustomUI_Link) {
-      var pre_link = cst_encode_String(apiObj.link);
-      var pre_label = cst_encode_opt_String(apiObj.label);
-      wireObj.tag = 2;
-      wireObj.kind.Link.link = pre_link;
-      wireObj.kind.Link.label = pre_label;
-      return;
-    }
-    if (apiObj is CustomUI_TimeStamp) {
-      var pre_timestamp = cst_encode_String(apiObj.timestamp);
-      var pre_display = cst_encode_timestamp_type(apiObj.display);
-      wireObj.tag = 3;
-      wireObj.kind.TimeStamp.timestamp = pre_timestamp;
-      wireObj.kind.TimeStamp.display = pre_display;
-      return;
-    }
-    if (apiObj is CustomUI_EntryCard) {
-      var pre_entry = cst_encode_box_autoadd_entry(apiObj.entry);
-      wireObj.tag = 4;
-      wireObj.kind.EntryCard.entry = pre_entry;
-      return;
-    }
-    if (apiObj is CustomUI_Button) {
-      var pre_label = cst_encode_String(apiObj.label);
-      var pre_on_click = cst_encode_opt_box_ui_action(apiObj.onClick);
-      wireObj.tag = 5;
-      wireObj.kind.Button.label = pre_label;
-      wireObj.kind.Button.on_click = pre_on_click;
-      return;
-    }
-    if (apiObj is CustomUI_InlineSetting) {
-      var pre_setting_id = cst_encode_String(apiObj.settingId);
-      var pre_on_commit = cst_encode_opt_box_ui_action(apiObj.onCommit);
-      wireObj.tag = 6;
-      wireObj.kind.InlineSetting.setting_id = pre_setting_id;
-      wireObj.kind.InlineSetting.on_commit = pre_on_commit;
-      return;
-    }
-    if (apiObj is CustomUI_Slot) {
-      var pre_id = cst_encode_String(apiObj.id);
-      var pre_child = cst_encode_box_custom_ui(apiObj.child);
-      wireObj.tag = 7;
-      wireObj.kind.Slot.id = pre_id;
-      wireObj.kind.Slot.child = pre_child;
-      return;
-    }
-    if (apiObj is CustomUI_Column) {
-      var pre_children = cst_encode_list_custom_ui(apiObj.children);
-      wireObj.tag = 8;
-      wireObj.kind.Column.children = pre_children;
-      return;
-    }
-    if (apiObj is CustomUI_Row) {
-      var pre_children = cst_encode_list_custom_ui(apiObj.children);
-      wireObj.tag = 9;
-      wireObj.kind.Row.children = pre_children;
-      return;
-    }
-  }
-
-  @protected
-  void cst_api_fill_to_wire_dropdown_option(
-      DropdownOption apiObj, wire_cst_dropdown_option wireObj) {
-    wireObj.label = cst_encode_String(apiObj.label);
-    wireObj.value = cst_encode_String(apiObj.value);
-  }
-
-  @protected
   void cst_api_fill_to_wire_entry(Entry apiObj, wire_cst_entry wireObj) {
-    wireObj.id = cst_encode_String(apiObj.id);
+    wireObj.id = cst_encode_list_entry_id(apiObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.title = cst_encode_String(apiObj.title);
     wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
@@ -1399,31 +1241,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_entry_detailed(
-      EntryDetailed apiObj, wire_cst_entry_detailed wireObj) {
-    wireObj.id = cst_encode_String(apiObj.id);
-    wireObj.url = cst_encode_String(apiObj.url);
-    wireObj.titles = cst_encode_list_String(apiObj.titles);
-    wireObj.author = cst_encode_opt_list_String(apiObj.author);
-    wireObj.ui = cst_encode_opt_box_autoadd_custom_ui(apiObj.ui);
-    wireObj.meta = cst_encode_opt_Map_String_String_None(apiObj.meta);
-    wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
-    wireObj.status = cst_encode_release_status(apiObj.status);
-    wireObj.description = cst_encode_String(apiObj.description);
-    wireObj.language = cst_encode_String(apiObj.language);
-    wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
-    wireObj.episodes = cst_encode_list_episode(apiObj.episodes);
-    wireObj.genres = cst_encode_opt_list_String(apiObj.genres);
-    wireObj.rating = cst_encode_opt_box_autoadd_f_32(apiObj.rating);
-    wireObj.views = cst_encode_opt_box_autoadd_f_32(apiObj.views);
-    wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_entry_detailed_result(
-      EntryDetailedResult apiObj, wire_cst_entry_detailed_result wireObj) {
-    cst_api_fill_to_wire_entry_detailed(apiObj.entry, wireObj.entry);
-    wireObj.settings = cst_encode_Map_String_setting_None(apiObj.settings);
+  void cst_api_fill_to_wire_entry_id(
+      EntryId apiObj, wire_cst_entry_id wireObj) {
+    wireObj.uid = cst_encode_String(apiObj.uid);
+    wireObj.iddata = cst_encode_opt_String(apiObj.iddata);
+    wireObj.id_type = cst_encode_String(apiObj.idType);
   }
 
   @protected
@@ -1435,33 +1257,33 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_episode(Episode apiObj, wire_cst_episode wireObj) {
-    wireObj.id = cst_encode_String(apiObj.id);
-    wireObj.name = cst_encode_String(apiObj.name);
-    wireObj.description = cst_encode_opt_String(apiObj.description);
-    wireObj.url = cst_encode_String(apiObj.url);
-    wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
-    wireObj.timestamp = cst_encode_opt_String(apiObj.timestamp);
-  }
-
-  @protected
   void cst_api_fill_to_wire_extension_data(
       ExtensionData apiObj, wire_cst_extension_data wireObj) {
     wireObj.id = cst_encode_String(apiObj.id);
-    wireObj.repo = cst_encode_opt_String(apiObj.repo);
     wireObj.name = cst_encode_String(apiObj.name);
-    wireObj.media_type = cst_encode_opt_list_media_type(apiObj.mediaType);
-    wireObj.extension_type =
-        cst_encode_opt_list_extension_type(apiObj.extensionType);
-    wireObj.version = cst_encode_opt_String(apiObj.version);
+    wireObj.url = cst_encode_String(apiObj.url);
+    wireObj.icon = cst_encode_String(apiObj.icon);
     wireObj.desc = cst_encode_opt_String(apiObj.desc);
     wireObj.author = cst_encode_list_String(apiObj.author);
-    wireObj.license = cst_encode_opt_String(apiObj.license);
-    wireObj.tags = cst_encode_opt_list_String(apiObj.tags);
-    wireObj.nsfw = cst_encode_opt_box_autoadd_bool(apiObj.nsfw);
+    wireObj.tags = cst_encode_list_String(apiObj.tags);
     wireObj.lang = cst_encode_list_String(apiObj.lang);
-    wireObj.url = cst_encode_opt_String(apiObj.url);
+    wireObj.nsfw = cst_encode_bool(apiObj.nsfw);
+    wireObj.media_type = cst_encode_Set_media_type_None(apiObj.mediaType);
+    wireObj.extension_type =
+        cst_encode_Set_extension_type_None(apiObj.extensionType);
+    wireObj.repo = cst_encode_opt_String(apiObj.repo);
+    wireObj.version = cst_encode_String(apiObj.version);
+    wireObj.license = cst_encode_String(apiObj.license);
+    wireObj.compatible = cst_encode_bool(apiObj.compatible);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_extension_manager_data(
+      ExtensionManagerData apiObj, wire_cst_extension_manager_data wireObj) {
+    wireObj.name = cst_encode_String(apiObj.name);
     wireObj.icon = cst_encode_opt_String(apiObj.icon);
+    wireObj.repo = cst_encode_opt_String(apiObj.repo);
+    wireObj.api_version = cst_encode_u_32(apiObj.apiVersion);
   }
 
   @protected
@@ -1469,28 +1291,61 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionRepo apiObj, wire_cst_extension_repo wireObj) {
     wireObj.name = cst_encode_String(apiObj.name);
     wireObj.description = cst_encode_String(apiObj.description);
+    wireObj.url = cst_encode_String(apiObj.url);
     wireObj.id = cst_encode_String(apiObj.id);
-    wireObj.extensions = cst_encode_list_remote_extension(apiObj.extensions);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_extension_type(
+      ExtensionType apiObj, wire_cst_extension_type wireObj) {
+    if (apiObj is ExtensionType_EntryProvider) {
+      var pre_has_search = cst_encode_bool(apiObj.hasSearch);
+      wireObj.tag = 0;
+      wireObj.kind.EntryProvider.has_search = pre_has_search;
+      return;
+    }
+    if (apiObj is ExtensionType_EntryDetailedProvider) {
+      var pre_id_types = cst_encode_list_String(apiObj.idTypes);
+      wireObj.tag = 1;
+      wireObj.kind.EntryDetailedProvider.id_types = pre_id_types;
+      return;
+    }
+    if (apiObj is ExtensionType_SourceProvider) {
+      var pre_id_types = cst_encode_list_String(apiObj.idTypes);
+      wireObj.tag = 2;
+      wireObj.kind.SourceProvider.id_types = pre_id_types;
+      return;
+    }
+    if (apiObj is ExtensionType_SourceProcessor) {
+      var pre_sourcetypes = cst_encode_Set_source_type_None(apiObj.sourcetypes);
+      var pre_opentype = cst_encode_Set_source_open_type_None(apiObj.opentype);
+      wireObj.tag = 3;
+      wireObj.kind.SourceProcessor.sourcetypes = pre_sourcetypes;
+      wireObj.kind.SourceProcessor.opentype = pre_opentype;
+      return;
+    }
+    if (apiObj is ExtensionType_EntryProcessor) {
+      var pre_trigger_map_entry = cst_encode_bool(apiObj.triggerMapEntry);
+      var pre_trigger_on_entry_activity =
+          cst_encode_bool(apiObj.triggerOnEntryActivity);
+      wireObj.tag = 4;
+      wireObj.kind.EntryProcessor.trigger_map_entry = pre_trigger_map_entry;
+      wireObj.kind.EntryProcessor.trigger_on_entry_activity =
+          pre_trigger_on_entry_activity;
+      return;
+    }
+    if (apiObj is ExtensionType_URLHandler) {
+      var pre_url_patterns = cst_encode_list_String(apiObj.urlPatterns);
+      wireObj.tag = 5;
+      wireObj.kind.URLHandler.url_patterns = pre_url_patterns;
+      return;
+    }
   }
 
   @protected
   void cst_api_fill_to_wire_link(Link apiObj, wire_cst_link wireObj) {
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.header = cst_encode_opt_Map_String_String_None(apiObj.header);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_popup_action(
-      PopupAction apiObj, wire_cst_popup_action wireObj) {
-    wireObj.label = cst_encode_String(apiObj.label);
-    wireObj.onclick = cst_encode_box_action(apiObj.onclick);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_record_string_setting(
-      (String, Setting) apiObj, wire_cst_record_string_setting wireObj) {
-    wireObj.field0 = cst_encode_String(apiObj.$1);
-    cst_api_fill_to_wire_setting(apiObj.$2, wireObj.field1);
   }
 
   @protected
@@ -1503,94 +1358,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void cst_api_fill_to_wire_remote_extension(
       RemoteExtension apiObj, wire_cst_remote_extension wireObj) {
-    wireObj.extension_url = cst_encode_String(apiObj.extensionUrl);
+    wireObj.id = cst_encode_String(apiObj.id);
+    wireObj.exturl = cst_encode_String(apiObj.exturl);
+    wireObj.name = cst_encode_String(apiObj.name);
+    wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
+    wireObj.version = cst_encode_String(apiObj.version);
     wireObj.compatible = cst_encode_bool(apiObj.compatible);
-    cst_api_fill_to_wire_extension_data(apiObj.data, wireObj.data);
   }
 
   @protected
-  void cst_api_fill_to_wire_setting(Setting apiObj, wire_cst_setting wireObj) {
-    wireObj.label = cst_encode_String(apiObj.label);
-    cst_api_fill_to_wire_setting_value(apiObj.value, wireObj.value);
-    cst_api_fill_to_wire_setting_value(apiObj.default_, wireObj.default_);
-    wireObj.visible = cst_encode_bool(apiObj.visible);
-    wireObj.ui = cst_encode_opt_box_autoadd_settings_ui(apiObj.ui);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_setting_value(
-      SettingValue apiObj, wire_cst_setting_value wireObj) {
-    if (apiObj is SettingValue_String) {
-      var pre_data = cst_encode_String(apiObj.data);
-      wireObj.tag = 0;
-      wireObj.kind.String.data = pre_data;
-      return;
-    }
-    if (apiObj is SettingValue_Number) {
-      var pre_data = cst_encode_f_32(apiObj.data);
-      wireObj.tag = 1;
-      wireObj.kind.Number.data = pre_data;
-      return;
-    }
-    if (apiObj is SettingValue_Boolean) {
-      var pre_data = cst_encode_bool(apiObj.data);
-      wireObj.tag = 2;
-      wireObj.kind.Boolean.data = pre_data;
-      return;
-    }
-    if (apiObj is SettingValue_StringList) {
-      var pre_data = cst_encode_list_String(apiObj.data);
-      wireObj.tag = 3;
-      wireObj.kind.StringList.data = pre_data;
-      return;
-    }
-  }
-
-  @protected
-  void cst_api_fill_to_wire_settings_ui(
-      SettingsUI apiObj, wire_cst_settings_ui wireObj) {
-    if (apiObj is SettingsUI_CheckBox) {
-      wireObj.tag = 0;
-      return;
-    }
-    if (apiObj is SettingsUI_Slider) {
-      var pre_min = cst_encode_f_64(apiObj.min);
-      var pre_max = cst_encode_f_64(apiObj.max);
-      var pre_step = cst_encode_i_32(apiObj.step);
-      wireObj.tag = 1;
-      wireObj.kind.Slider.min = pre_min;
-      wireObj.kind.Slider.max = pre_max;
-      wireObj.kind.Slider.step = pre_step;
-      return;
-    }
-    if (apiObj is SettingsUI_Dropdown) {
-      var pre_options = cst_encode_list_dropdown_option(apiObj.options);
-      wireObj.tag = 2;
-      wireObj.kind.Dropdown.options = pre_options;
-      return;
-    }
-  }
-
-  @protected
-  void cst_api_fill_to_wire_ui_action(
-      UIAction apiObj, wire_cst_ui_action wireObj) {
-    if (apiObj is UIAction_Action) {
-      var pre_action = cst_encode_box_autoadd_action(apiObj.action);
-      wireObj.tag = 0;
-      wireObj.kind.Action.action = pre_action;
-      return;
-    }
-    if (apiObj is UIAction_SwapContent) {
-      var pre_targetid = cst_encode_opt_String(apiObj.targetid);
-      var pre_event = cst_encode_String(apiObj.event);
-      var pre_placeholder =
-          cst_encode_opt_box_autoadd_custom_ui(apiObj.placeholder);
-      wireObj.tag = 1;
-      wireObj.kind.SwapContent.targetid = pre_targetid;
-      wireObj.kind.SwapContent.event = pre_event;
-      wireObj.kind.SwapContent.placeholder = pre_placeholder;
-      return;
-    }
+  void cst_api_fill_to_wire_remote_extension_result(
+      RemoteExtensionResult apiObj, wire_cst_remote_extension_result wireObj) {
+    wireObj.content = cst_encode_list_remote_extension(apiObj.content);
+    wireObj.hasnext = cst_encode_opt_box_autoadd_bool(apiObj.hasnext);
+    wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
   }
 
   @protected
@@ -1598,12 +1379,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       CancelToken raw);
 
   @protected
-  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-      ProxyExtension raw);
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw);
 
   @protected
-  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw);
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      ProxyExtension raw);
 
   @protected
   int cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
@@ -1618,12 +1399,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ManagerClient raw);
 
   @protected
-  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-      ProxyExtension raw);
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw);
 
   @protected
-  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw);
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      ProxyExtension raw);
 
   @protected
   int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
@@ -1634,24 +1415,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ManagerClient raw);
 
   @protected
-  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-      ProxyExtension raw);
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ProxyAdapter raw);
 
   @protected
-  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ProxyExtensionManager raw);
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      ProxyExtension raw);
 
   @protected
   bool cst_encode_bool(bool raw);
 
   @protected
-  int cst_encode_extension_type(ExtensionType raw);
-
-  @protected
   double cst_encode_f_32(double raw);
-
-  @protected
-  double cst_encode_f_64(double raw);
 
   @protected
   int cst_encode_i_32(int raw);
@@ -1663,7 +1438,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int cst_encode_release_status(ReleaseStatus raw);
 
   @protected
+  int cst_encode_source_open_type(SourceOpenType raw);
+
+  @protected
+  int cst_encode_source_type(SourceType raw);
+
+  @protected
   int cst_encode_timestamp_type(TimestampType raw);
+
+  @protected
+  int cst_encode_u_32(int raw);
 
   @protected
   int cst_encode_u_8(int raw);
@@ -1692,13 +1476,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-          ProxyExtension self, SseSerializer serializer);
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer);
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer);
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+          ProxyExtension self, SseSerializer serializer);
 
   @protected
   void
@@ -1717,13 +1501,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-          ProxyExtension self, SseSerializer serializer);
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer);
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer);
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+          ProxyExtension self, SseSerializer serializer);
 
   @protected
   void sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
@@ -1781,13 +1565,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+          ProxyAdapter self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           ProxyExtension self, SseSerializer serializer);
 
   @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-          ProxyExtensionManager self, SseSerializer serializer);
+  void sse_encode_Set_extension_type_None(
+      Set<ExtensionType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Set_media_type_None(
+      Set<MediaType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Set_source_open_type_None(
+      Set<SourceOpenType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Set_source_type_None(
+      Set<SourceType> self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -1828,6 +1628,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       EntryDetailed self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_entry_id(EntryId self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_episode_id(
+      EpisodeId self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_extension_repo(
+      ExtensionRepo self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer);
 
   @protected
@@ -1839,10 +1650,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_permission(
       Permission self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_remote_extension(
-      RemoteExtension self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_setting(Setting self, SseSerializer serializer);
@@ -1885,13 +1692,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       EntryDetailedResult self, SseSerializer serializer);
 
   @protected
+  void sse_encode_entry_id(EntryId self, SseSerializer serializer);
+
+  @protected
   void sse_encode_entry_list(EntryList self, SseSerializer serializer);
 
   @protected
   void sse_encode_episode(Episode self, SseSerializer serializer);
 
   @protected
+  void sse_encode_episode_id(EpisodeId self, SseSerializer serializer);
+
+  @protected
   void sse_encode_extension_data(ExtensionData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_extension_manager_data(
+      ExtensionManagerData self, SseSerializer serializer);
 
   @protected
   void sse_encode_extension_repo(ExtensionRepo self, SseSerializer serializer);
@@ -1937,7 +1754,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_entry(List<Entry> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_entry_id(List<EntryId> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_episode(List<Episode> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_episode_id(
+      List<EpisodeId> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_extension_type(
@@ -1985,6 +1809,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_remote_extension(
       List<RemoteExtension> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_source_open_type(
+      List<SourceOpenType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_source_type(
+      List<SourceType> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_subtitles(
@@ -2035,16 +1867,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_list_extension_type(
-      List<ExtensionType>? self, SseSerializer serializer);
-
-  @protected
   void sse_encode_opt_list_image_list_audio(
       List<ImageListAudio>? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_list_media_type(
-      List<MediaType>? self, SseSerializer serializer);
 
   @protected
   void sse_encode_paragraph(Paragraph self, SseSerializer serializer);
@@ -2071,6 +1895,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RemoteExtension self, SseSerializer serializer);
 
   @protected
+  void sse_encode_remote_extension_result(
+      RemoteExtensionResult self, SseSerializer serializer);
+
+  @protected
   void sse_encode_setting(Setting self, SseSerializer serializer);
 
   @protected
@@ -2086,13 +1914,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_source(Source self, SseSerializer serializer);
 
   @protected
+  void sse_encode_source_open_type(
+      SourceOpenType self, SseSerializer serializer);
+
+  @protected
   void sse_encode_source_result(SourceResult self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_source_type(SourceType self, SseSerializer serializer);
 
   @protected
   void sse_encode_subtitles(Subtitles self, SseSerializer serializer);
 
   @protected
   void sse_encode_timestamp_type(TimestampType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
@@ -2246,144 +2084,139 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__client__ManagerClient_initPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
-  void wire__crate__api__extension__ProxyExtensionManager_get_extensions(
+  void wire__crate__api__extension__ProxyAdapter_browse_repo(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_extension_repo> repo,
+    int page,
+  ) {
+    return _wire__crate__api__extension__ProxyAdapter_browse_repo(
+      port_,
+      that,
+      repo,
+      page,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyAdapter_browse_repoPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_extension_repo>,
+                ffi.Int32,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_browse_repo',
+  );
+  late final _wire__crate__api__extension__ProxyAdapter_browse_repo =
+      _wire__crate__api__extension__ProxyAdapter_browse_repoPtr.asFunction<
+          void Function(int, int, ffi.Pointer<wire_cst_extension_repo>, int)>();
+
+  void wire__crate__api__extension__ProxyAdapter_get_extensions(
     int port_,
     int that,
   ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_get_extensions(
+    return _wire__crate__api__extension__ProxyAdapter_get_extensions(
       port_,
       that,
     );
   }
 
-  late final _wire__crate__api__extension__ProxyExtensionManager_get_extensionsPtr =
+  late final _wire__crate__api__extension__ProxyAdapter_get_extensionsPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_get_extensions',
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_get_extensions',
   );
-  late final _wire__crate__api__extension__ProxyExtensionManager_get_extensions =
-      _wire__crate__api__extension__ProxyExtensionManager_get_extensionsPtr
+  late final _wire__crate__api__extension__ProxyAdapter_get_extensions =
+      _wire__crate__api__extension__ProxyAdapter_get_extensionsPtr
           .asFunction<void Function(int, int)>();
 
-  void wire__crate__api__extension__ProxyExtensionManager_get_repo(
+  void wire__crate__api__extension__ProxyAdapter_get_repo(
     int port_,
     int that,
     ffi.Pointer<wire_cst_list_prim_u_8_strict> url,
   ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_get_repo(
+    return _wire__crate__api__extension__ProxyAdapter_get_repo(
       port_,
       that,
       url,
     );
   }
 
-  late final _wire__crate__api__extension__ProxyExtensionManager_get_repoPtr =
-      _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                ffi.Int64,
-                ffi.UintPtr,
-                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              )>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_get_repo',
+  late final _wire__crate__api__extension__ProxyAdapter_get_repoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.UintPtr,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_get_repo',
   );
-  late final _wire__crate__api__extension__ProxyExtensionManager_get_repo =
-      _wire__crate__api__extension__ProxyExtensionManager_get_repoPtr
-          .asFunction<
-              void Function(
-                  int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+  late final _wire__crate__api__extension__ProxyAdapter_get_repo =
+      _wire__crate__api__extension__ProxyAdapter_get_repoPtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
-  void wire__crate__api__extension__ProxyExtensionManager_init_dion(
+  void wire__crate__api__extension__ProxyAdapter_init_dion(
     int port_,
     int client,
   ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_init_dion(
-      port_,
-      client,
-    );
+    return _wire__crate__api__extension__ProxyAdapter_init_dion(port_, client);
   }
 
-  late final _wire__crate__api__extension__ProxyExtensionManager_init_dionPtr =
+  late final _wire__crate__api__extension__ProxyAdapter_init_dionPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_init_dion',
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_dion',
   );
-  late final _wire__crate__api__extension__ProxyExtensionManager_init_dion =
-      _wire__crate__api__extension__ProxyExtensionManager_init_dionPtr
+  late final _wire__crate__api__extension__ProxyAdapter_init_dion =
+      _wire__crate__api__extension__ProxyAdapter_init_dionPtr
           .asFunction<void Function(int, int)>();
 
-  void wire__crate__api__extension__ProxyExtensionManager_install(
+  void wire__crate__api__extension__ProxyAdapter_install(
     int port_,
     int that,
-    ffi.Pointer<wire_cst_remote_extension> location,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> location,
   ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_install(
+    return _wire__crate__api__extension__ProxyAdapter_install(
       port_,
       that,
       location,
     );
   }
 
-  late final _wire__crate__api__extension__ProxyExtensionManager_installPtr =
-      _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                ffi.Int64,
-                ffi.UintPtr,
-                ffi.Pointer<wire_cst_remote_extension>,
-              )>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_install',
+  late final _wire__crate__api__extension__ProxyAdapter_installPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.UintPtr,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_install',
   );
-  late final _wire__crate__api__extension__ProxyExtensionManager_install =
-      _wire__crate__api__extension__ProxyExtensionManager_installPtr.asFunction<
-          void Function(int, int, ffi.Pointer<wire_cst_remote_extension>)>();
+  late final _wire__crate__api__extension__ProxyAdapter_install =
+      _wire__crate__api__extension__ProxyAdapter_installPtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
-  void wire__crate__api__extension__ProxyExtensionManager_install_single(
-    int port_,
-    int that,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> url,
-  ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_install_single(
-      port_,
-      that,
-      url,
-    );
-  }
-
-  late final _wire__crate__api__extension__ProxyExtensionManager_install_singlePtr =
-      _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                ffi.Int64,
-                ffi.UintPtr,
-                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-              )>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_install_single',
-  );
-  late final _wire__crate__api__extension__ProxyExtensionManager_install_single =
-      _wire__crate__api__extension__ProxyExtensionManager_install_singlePtr
-          .asFunction<
-              void Function(
-                  int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
-
-  void wire__crate__api__extension__ProxyExtensionManager_uninstall(
+  void wire__crate__api__extension__ProxyAdapter_uninstall(
     int port_,
     int that,
     int ext,
   ) {
-    return _wire__crate__api__extension__ProxyExtensionManager_uninstall(
+    return _wire__crate__api__extension__ProxyAdapter_uninstall(
       port_,
       that,
       ext,
     );
   }
 
-  late final _wire__crate__api__extension__ProxyExtensionManager_uninstallPtr =
-      _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.UintPtr)>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtensionManager_uninstall',
+  late final _wire__crate__api__extension__ProxyAdapter_uninstallPtr = _lookup<
+      ffi
+      .NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_uninstall',
   );
-  late final _wire__crate__api__extension__ProxyExtensionManager_uninstall =
-      _wire__crate__api__extension__ProxyExtensionManager_uninstallPtr
+  late final _wire__crate__api__extension__ProxyAdapter_uninstall =
+      _wire__crate__api__extension__ProxyAdapter_uninstallPtr
           .asFunction<void Function(int, int, int)>();
 
   void wire__crate__api__extension__ProxyExtension_browse(
@@ -2441,39 +2274,6 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_detail =
       _wire__crate__api__extension__ProxyExtension_detailPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
-
-  void wire__crate__api__extension__ProxyExtension_fromurl(
-    int port_,
-    int that,
-    ffi.Pointer<wire_cst_list_prim_u_8_strict> url,
-    ffi.Pointer<ffi.UintPtr> token,
-  ) {
-    return _wire__crate__api__extension__ProxyExtension_fromurl(
-      port_,
-      that,
-      url,
-      token,
-    );
-  }
-
-  late final _wire__crate__api__extension__ProxyExtension_fromurlPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-            ffi.Int64,
-            ffi.UintPtr,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<ffi.UintPtr>,
-          )>>(
-    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_fromurl',
-  );
-  late final _wire__crate__api__extension__ProxyExtension_fromurl =
-      _wire__crate__api__extension__ProxyExtension_fromurlPtr.asFunction<
-          void Function(
-            int,
-            int,
-            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
-            ffi.Pointer<ffi.UintPtr>,
-          )>();
 
   void wire__crate__api__extension__ProxyExtension_get_extension_data(
     int port_,
@@ -2619,6 +2419,40 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_get_settings =
       _wire__crate__api__extension__ProxyExtension_get_settingsPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_handle_url(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> url,
+    ffi.Pointer<ffi.UintPtr> token,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_handle_url(
+      port_,
+      that,
+      url,
+      token,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_handle_urlPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+                ffi.Pointer<ffi.UintPtr>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_handle_url',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_handle_url =
+      _wire__crate__api__extension__ProxyExtension_handle_urlPtr.asFunction<
+          void Function(
+            int,
+            int,
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+            ffi.Pointer<ffi.UintPtr>,
+          )>();
 
   void wire__crate__api__extension__ProxyExtension_has_permission(
     int port_,
@@ -2957,92 +2791,61 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_sourcePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
-  void wire__dion_runtime__datastructs__entry_default(int port_) {
-    return _wire__dion_runtime__datastructs__entry_default(port_);
+  void wire__dion_runtime__data__source__entry_list_default(int port_) {
+    return _wire__dion_runtime__data__source__entry_list_default(port_);
   }
 
-  late final _wire__dion_runtime__datastructs__entry_defaultPtr =
+  late final _wire__dion_runtime__data__source__entry_list_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__entry_list_default',
   );
-  late final _wire__dion_runtime__datastructs__entry_default =
-      _wire__dion_runtime__datastructs__entry_defaultPtr
+  late final _wire__dion_runtime__data__source__entry_list_default =
+      _wire__dion_runtime__data__source__entry_list_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__entry_detailed_default(int port_) {
-    return _wire__dion_runtime__datastructs__entry_detailed_default(port_);
+  void wire__dion_runtime__data__extension__extension_data_default(int port_) {
+    return _wire__dion_runtime__data__extension__extension_data_default(port_);
   }
 
-  late final _wire__dion_runtime__datastructs__entry_detailed_defaultPtr =
+  late final _wire__dion_runtime__data__extension__extension_data_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_detailed_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension__extension_data_default',
   );
-  late final _wire__dion_runtime__datastructs__entry_detailed_default =
-      _wire__dion_runtime__datastructs__entry_detailed_defaultPtr
+  late final _wire__dion_runtime__data__extension__extension_data_default =
+      _wire__dion_runtime__data__extension__extension_data_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__entry_detailed_result_default(
+  void
+      wire__dion_runtime__data__extension_manager__extension_manager_data_default(
     int port_,
   ) {
-    return _wire__dion_runtime__datastructs__entry_detailed_result_default(
+    return _wire__dion_runtime__data__extension_manager__extension_manager_data_default(
       port_,
     );
   }
 
-  late final _wire__dion_runtime__datastructs__entry_detailed_result_defaultPtr =
+  late final _wire__dion_runtime__data__extension_manager__extension_manager_data_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_detailed_result_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension_manager__extension_manager_data_default',
   );
-  late final _wire__dion_runtime__datastructs__entry_detailed_result_default =
-      _wire__dion_runtime__datastructs__entry_detailed_result_defaultPtr
+  late final _wire__dion_runtime__data__extension_manager__extension_manager_data_default =
+      _wire__dion_runtime__data__extension_manager__extension_manager_data_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__entry_list_default(int port_) {
-    return _wire__dion_runtime__datastructs__entry_list_default(port_);
+  void wire__dion_runtime__data__extension_repo__extension_repo_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__extension_repo__extension_repo_default(
+      port_,
+    );
   }
 
-  late final _wire__dion_runtime__datastructs__entry_list_defaultPtr =
+  late final _wire__dion_runtime__data__extension_repo__extension_repo_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__entry_list_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__extension_repo_default',
   );
-  late final _wire__dion_runtime__datastructs__entry_list_default =
-      _wire__dion_runtime__datastructs__entry_list_defaultPtr
-          .asFunction<void Function(int)>();
-
-  void wire__dion_runtime__datastructs__episode_default(int port_) {
-    return _wire__dion_runtime__datastructs__episode_default(port_);
-  }
-
-  late final _wire__dion_runtime__datastructs__episode_defaultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__episode_default',
-  );
-  late final _wire__dion_runtime__datastructs__episode_default =
-      _wire__dion_runtime__datastructs__episode_defaultPtr
-          .asFunction<void Function(int)>();
-
-  void wire__dion_runtime__datastructs__extension_data_default(int port_) {
-    return _wire__dion_runtime__datastructs__extension_data_default(port_);
-  }
-
-  late final _wire__dion_runtime__datastructs__extension_data_defaultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__extension_data_default',
-  );
-  late final _wire__dion_runtime__datastructs__extension_data_default =
-      _wire__dion_runtime__datastructs__extension_data_defaultPtr
-          .asFunction<void Function(int)>();
-
-  void wire__dion_runtime__datastructs__extension_repo_default(int port_) {
-    return _wire__dion_runtime__datastructs__extension_repo_default(port_);
-  }
-
-  late final _wire__dion_runtime__datastructs__extension_repo_defaultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__extension_repo_default',
-  );
-  late final _wire__dion_runtime__datastructs__extension_repo_default =
-      _wire__dion_runtime__datastructs__extension_repo_defaultPtr
+  late final _wire__dion_runtime__data__extension_repo__extension_repo_default =
+      _wire__dion_runtime__data__extension_repo__extension_repo_defaultPtr
           .asFunction<void Function(int)>();
 
   void wire__crate__api__lets_init_app_here(int port_) {
@@ -3056,64 +2859,101 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__lets_init_app_here =
       _wire__crate__api__lets_init_app_herePtr.asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__link_default(int port_) {
-    return _wire__dion_runtime__datastructs__link_default(port_);
+  void wire__dion_runtime__data__source__link_default(int port_) {
+    return _wire__dion_runtime__data__source__link_default(port_);
   }
 
-  late final _wire__dion_runtime__datastructs__link_defaultPtr =
+  late final _wire__dion_runtime__data__source__link_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__link_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__link_default',
   );
-  late final _wire__dion_runtime__datastructs__link_default =
-      _wire__dion_runtime__datastructs__link_defaultPtr
+  late final _wire__dion_runtime__data__source__link_default =
+      _wire__dion_runtime__data__source__link_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__media_type_default(int port_) {
-    return _wire__dion_runtime__datastructs__media_type_default(port_);
+  void wire__dion_runtime__data__source__media_type_default(int port_) {
+    return _wire__dion_runtime__data__source__media_type_default(port_);
   }
 
-  late final _wire__dion_runtime__datastructs__media_type_defaultPtr =
+  late final _wire__dion_runtime__data__source__media_type_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__media_type_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__media_type_default',
   );
-  late final _wire__dion_runtime__datastructs__media_type_default =
-      _wire__dion_runtime__datastructs__media_type_defaultPtr
+  late final _wire__dion_runtime__data__source__media_type_default =
+      _wire__dion_runtime__data__source__media_type_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__release_status_default(int port_) {
-    return _wire__dion_runtime__datastructs__release_status_default(port_);
+  void wire__dion_runtime__data__source__release_status_default(int port_) {
+    return _wire__dion_runtime__data__source__release_status_default(port_);
   }
 
-  late final _wire__dion_runtime__datastructs__release_status_defaultPtr =
+  late final _wire__dion_runtime__data__source__release_status_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__release_status_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__release_status_default',
   );
-  late final _wire__dion_runtime__datastructs__release_status_default =
-      _wire__dion_runtime__datastructs__release_status_defaultPtr
+  late final _wire__dion_runtime__data__source__release_status_default =
+      _wire__dion_runtime__data__source__release_status_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__remote_extension_default(int port_) {
-    return _wire__dion_runtime__datastructs__remote_extension_default(port_);
+  void wire__dion_runtime__data__extension_repo__remote_extension_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__extension_repo__remote_extension_default(
+      port_,
+    );
   }
 
-  late final _wire__dion_runtime__datastructs__remote_extension_defaultPtr =
+  late final _wire__dion_runtime__data__extension_repo__remote_extension_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__remote_extension_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__remote_extension_default',
   );
-  late final _wire__dion_runtime__datastructs__remote_extension_default =
-      _wire__dion_runtime__datastructs__remote_extension_defaultPtr
+  late final _wire__dion_runtime__data__extension_repo__remote_extension_default =
+      _wire__dion_runtime__data__extension_repo__remote_extension_defaultPtr
           .asFunction<void Function(int)>();
 
-  void wire__dion_runtime__datastructs__timestamp_type_default(int port_) {
-    return _wire__dion_runtime__datastructs__timestamp_type_default(port_);
+  void
+      wire__dion_runtime__data__extension_repo__remote_extension_result_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__extension_repo__remote_extension_result_default(
+      port_,
+    );
   }
 
-  late final _wire__dion_runtime__datastructs__timestamp_type_defaultPtr =
+  late final _wire__dion_runtime__data__extension_repo__remote_extension_result_defaultPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-    'frbgen_rdion_runtime_wire__dion_runtime__datastructs__timestamp_type_default',
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension_repo__remote_extension_result_default',
   );
-  late final _wire__dion_runtime__datastructs__timestamp_type_default =
-      _wire__dion_runtime__datastructs__timestamp_type_defaultPtr
+  late final _wire__dion_runtime__data__extension_repo__remote_extension_result_default =
+      _wire__dion_runtime__data__extension_repo__remote_extension_result_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__extension__source_open_type_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__extension__source_open_type_default(
+      port_,
+    );
+  }
+
+  late final _wire__dion_runtime__data__extension__source_open_type_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__extension__source_open_type_default',
+  );
+  late final _wire__dion_runtime__data__extension__source_open_type_default =
+      _wire__dion_runtime__data__extension__source_open_type_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__timestamp_type_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__timestamp_type_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__timestamp_type_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__timestamp_type_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__timestamp_type_default =
+      _wire__dion_runtime__data__custom_ui__timestamp_type_defaultPtr
           .asFunction<void Function(int)>();
 
   void
@@ -3219,6 +3059,40 @@ class RustLibWire implements BaseWire {
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapterPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter',
+  );
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapterPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapterPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter',
+  );
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapterPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ffi.Pointer<ffi.Void> ptr,
   ) {
@@ -3252,51 +3126,6 @@ class RustLibWire implements BaseWire {
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManagerPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager',
-  );
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManagerPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManagerPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager',
-  );
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManager =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionManagerPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<wire_cst_action> cst_new_box_action() {
-    return _cst_new_box_action();
-  }
-
-  late final _cst_new_box_actionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_action> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_action',
-  );
-  late final _cst_new_box_action = _cst_new_box_actionPtr
-      .asFunction<ffi.Pointer<wire_cst_action> Function()>();
-
   ffi.Pointer<ffi.UintPtr>
       cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     int value,
@@ -3315,17 +3144,6 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
-  ffi.Pointer<wire_cst_action> cst_new_box_autoadd_action() {
-    return _cst_new_box_autoadd_action();
-  }
-
-  late final _cst_new_box_autoadd_actionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_action> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_autoadd_action',
-  );
-  late final _cst_new_box_autoadd_action = _cst_new_box_autoadd_actionPtr
-      .asFunction<ffi.Pointer<wire_cst_action> Function()>();
-
   ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(bool value) {
     return _cst_new_box_autoadd_bool(value);
   }
@@ -3337,27 +3155,16 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_bool = _cst_new_box_autoadd_boolPtr
       .asFunction<ffi.Pointer<ffi.Bool> Function(bool)>();
 
-  ffi.Pointer<wire_cst_custom_ui> cst_new_box_autoadd_custom_ui() {
-    return _cst_new_box_autoadd_custom_ui();
+  ffi.Pointer<wire_cst_extension_repo> cst_new_box_autoadd_extension_repo() {
+    return _cst_new_box_autoadd_extension_repo();
   }
 
-  late final _cst_new_box_autoadd_custom_uiPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_custom_ui> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui',
-  );
-  late final _cst_new_box_autoadd_custom_ui = _cst_new_box_autoadd_custom_uiPtr
-      .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
-
-  ffi.Pointer<wire_cst_entry> cst_new_box_autoadd_entry() {
-    return _cst_new_box_autoadd_entry();
-  }
-
-  late final _cst_new_box_autoadd_entryPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_entry> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_autoadd_entry',
-  );
-  late final _cst_new_box_autoadd_entry = _cst_new_box_autoadd_entryPtr
-      .asFunction<ffi.Pointer<wire_cst_entry> Function()>();
+  late final _cst_new_box_autoadd_extension_repoPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<wire_cst_extension_repo> Function()>>(
+      'frbgen_rdion_runtime_cst_new_box_autoadd_extension_repo');
+  late final _cst_new_box_autoadd_extension_repo =
+      _cst_new_box_autoadd_extension_repoPtr
+          .asFunction<ffi.Pointer<wire_cst_extension_repo> Function()>();
 
   ffi.Pointer<ffi.Float> cst_new_box_autoadd_f_32(double value) {
     return _cst_new_box_autoadd_f_32(value);
@@ -3391,53 +3198,6 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_link = _cst_new_box_autoadd_linkPtr
       .asFunction<ffi.Pointer<wire_cst_link> Function()>();
-
-  ffi.Pointer<wire_cst_remote_extension>
-      cst_new_box_autoadd_remote_extension() {
-    return _cst_new_box_autoadd_remote_extension();
-  }
-
-  late final _cst_new_box_autoadd_remote_extensionPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Pointer<wire_cst_remote_extension> Function()>>(
-      'frbgen_rdion_runtime_cst_new_box_autoadd_remote_extension');
-  late final _cst_new_box_autoadd_remote_extension =
-      _cst_new_box_autoadd_remote_extensionPtr
-          .asFunction<ffi.Pointer<wire_cst_remote_extension> Function()>();
-
-  ffi.Pointer<wire_cst_settings_ui> cst_new_box_autoadd_settings_ui() {
-    return _cst_new_box_autoadd_settings_ui();
-  }
-
-  late final _cst_new_box_autoadd_settings_uiPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_settings_ui> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_autoadd_settings_ui',
-  );
-  late final _cst_new_box_autoadd_settings_ui =
-      _cst_new_box_autoadd_settings_uiPtr
-          .asFunction<ffi.Pointer<wire_cst_settings_ui> Function()>();
-
-  ffi.Pointer<wire_cst_custom_ui> cst_new_box_custom_ui() {
-    return _cst_new_box_custom_ui();
-  }
-
-  late final _cst_new_box_custom_uiPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_custom_ui> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_custom_ui',
-  );
-  late final _cst_new_box_custom_ui = _cst_new_box_custom_uiPtr
-      .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
-
-  ffi.Pointer<wire_cst_ui_action> cst_new_box_ui_action() {
-    return _cst_new_box_ui_action();
-  }
-
-  late final _cst_new_box_ui_actionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_ui_action> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_ui_action',
-  );
-  late final _cst_new_box_ui_action = _cst_new_box_ui_actionPtr
-      .asFunction<ffi.Pointer<wire_cst_ui_action> Function()>();
 
   ffi.Pointer<
           wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension>
@@ -3475,30 +3235,6 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_String = _cst_new_list_StringPtr
       .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_custom_ui> cst_new_list_custom_ui(int len) {
-    return _cst_new_list_custom_ui(len);
-  }
-
-  late final _cst_new_list_custom_uiPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_custom_ui> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_custom_ui');
-  late final _cst_new_list_custom_ui = _cst_new_list_custom_uiPtr
-      .asFunction<ffi.Pointer<wire_cst_list_custom_ui> Function(int)>();
-
-  ffi.Pointer<wire_cst_list_dropdown_option> cst_new_list_dropdown_option(
-    int len,
-  ) {
-    return _cst_new_list_dropdown_option(len);
-  }
-
-  late final _cst_new_list_dropdown_optionPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_dropdown_option> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_dropdown_option');
-  late final _cst_new_list_dropdown_option = _cst_new_list_dropdown_optionPtr
-      .asFunction<ffi.Pointer<wire_cst_list_dropdown_option> Function(int)>();
-
   ffi.Pointer<wire_cst_list_entry> cst_new_list_entry(int len) {
     return _cst_new_list_entry(len);
   }
@@ -3510,16 +3246,16 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_entry = _cst_new_list_entryPtr
       .asFunction<ffi.Pointer<wire_cst_list_entry> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_episode> cst_new_list_episode(int len) {
-    return _cst_new_list_episode(len);
+  ffi.Pointer<wire_cst_list_entry_id> cst_new_list_entry_id(int len) {
+    return _cst_new_list_entry_id(len);
   }
 
-  late final _cst_new_list_episodePtr = _lookup<
+  late final _cst_new_list_entry_idPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_episode> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_episode');
-  late final _cst_new_list_episode = _cst_new_list_episodePtr
-      .asFunction<ffi.Pointer<wire_cst_list_episode> Function(int)>();
+          ffi.Pointer<wire_cst_list_entry_id> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_entry_id');
+  late final _cst_new_list_entry_id = _cst_new_list_entry_idPtr
+      .asFunction<ffi.Pointer<wire_cst_list_entry_id> Function(int)>();
 
   ffi.Pointer<wire_cst_list_extension_type> cst_new_list_extension_type(
     int len,
@@ -3545,17 +3281,6 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_media_type = _cst_new_list_media_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_media_type> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_popup_action> cst_new_list_popup_action(int len) {
-    return _cst_new_list_popup_action(len);
-  }
-
-  late final _cst_new_list_popup_actionPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_popup_action> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_popup_action');
-  late final _cst_new_list_popup_action = _cst_new_list_popup_actionPtr
-      .asFunction<ffi.Pointer<wire_cst_list_popup_action> Function(int)>();
-
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_new_list_prim_u_8_strict(
     int len,
   ) {
@@ -3568,20 +3293,6 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_prim_u_8_strict');
   late final _cst_new_list_prim_u_8_strict = _cst_new_list_prim_u_8_strictPtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
-
-  ffi.Pointer<wire_cst_list_record_string_setting>
-      cst_new_list_record_string_setting(int len) {
-    return _cst_new_list_record_string_setting(len);
-  }
-
-  late final _cst_new_list_record_string_settingPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<wire_cst_list_record_string_setting> Function(
-                  ffi.Int32)>>(
-      'frbgen_rdion_runtime_cst_new_list_record_string_setting');
-  late final _cst_new_list_record_string_setting =
-      _cst_new_list_record_string_settingPtr.asFunction<
-          ffi.Pointer<wire_cst_list_record_string_setting> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_string>
       cst_new_list_record_string_string(int len) {
@@ -3609,6 +3320,30 @@ class RustLibWire implements BaseWire {
       'frbgen_rdion_runtime_cst_new_list_remote_extension');
   late final _cst_new_list_remote_extension = _cst_new_list_remote_extensionPtr
       .asFunction<ffi.Pointer<wire_cst_list_remote_extension> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_source_open_type> cst_new_list_source_open_type(
+    int len,
+  ) {
+    return _cst_new_list_source_open_type(len);
+  }
+
+  late final _cst_new_list_source_open_typePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_list_source_open_type> Function(ffi.Int32)>>(
+      'frbgen_rdion_runtime_cst_new_list_source_open_type');
+  late final _cst_new_list_source_open_type = _cst_new_list_source_open_typePtr
+      .asFunction<ffi.Pointer<wire_cst_list_source_open_type> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_source_type> cst_new_list_source_type(int len) {
+    return _cst_new_list_source_type(len);
+  }
+
+  late final _cst_new_list_source_typePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_source_type> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_source_type');
+  late final _cst_new_list_source_type = _cst_new_list_source_typePtr
+      .asFunction<ffi.Pointer<wire_cst_list_source_type> Function(int)>();
 
   int dummy_method_to_enforce_bundling() {
     return _dummy_method_to_enforce_bundling();
@@ -3638,72 +3373,14 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_list_media_type extends ffi.Struct {
-  external ffi.Pointer<ffi.Int32> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_list_extension_type extends ffi.Struct {
-  external ffi.Pointer<ffi.Int32> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_list_String extends ffi.Struct {
-  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_extension_data extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> repo;
-
+final class wire_cst_extension_repo extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
 
-  external ffi.Pointer<wire_cst_list_media_type> media_type;
-
-  external ffi.Pointer<wire_cst_list_extension_type> extension_type;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> version;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> desc;
-
-  external ffi.Pointer<wire_cst_list_String> author;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> license;
-
-  external ffi.Pointer<wire_cst_list_String> tags;
-
-  external ffi.Pointer<ffi.Bool> nsfw;
-
-  external ffi.Pointer<wire_cst_list_String> lang;
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> icon;
-}
-
-final class wire_cst_remote_extension extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> extension_url;
-
-  @ffi.Bool()
-  external bool compatible;
-
-  external wire_cst_extension_data data;
-}
-
-final class wire_cst_Action_OpenBrowser extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-}
-
-final class wire_cst_CustomUI_Text extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> text;
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
 }
 
 final class wire_cst_record_string_string extends ffi.Struct {
@@ -3725,29 +3402,38 @@ final class wire_cst_link extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_record_string_string> header;
 }
 
-final class wire_cst_CustomUI_Image extends ffi.Struct {
-  external ffi.Pointer<wire_cst_link> image;
-
-  external ffi.Pointer<ffi.Int32> width;
-
-  external ffi.Pointer<ffi.Int32> height;
-}
-
-final class wire_cst_CustomUI_Link extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
-}
-
-final class wire_cst_CustomUI_TimeStamp extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension
+    extends ffi.Struct {
+  external ffi.Pointer<ffi.UintPtr> ptr;
 
   @ffi.Int32()
-  external int display;
+  external int len;
+}
+
+final class wire_cst_list_String extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_entry_id extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> uid;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> iddata;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id_type;
+}
+
+final class wire_cst_list_entry_id extends ffi.Struct {
+  external ffi.Pointer<wire_cst_entry_id> ptr;
+
+  @ffi.Int32()
+  external int len;
 }
 
 final class wire_cst_entry extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+  external ffi.Pointer<wire_cst_list_entry_id> id;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 
@@ -3765,196 +3451,6 @@ final class wire_cst_entry extends ffi.Struct {
   external ffi.Pointer<ffi.Float> views;
 
   external ffi.Pointer<ffi.Int32> length;
-}
-
-final class wire_cst_CustomUI_EntryCard extends ffi.Struct {
-  external ffi.Pointer<wire_cst_entry> entry;
-}
-
-final class wire_cst_UIAction_Action extends ffi.Struct {
-  external ffi.Pointer<wire_cst_action> action;
-}
-
-final class wire_cst_action extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external ActionKind kind;
-}
-
-final class ActionKind extends ffi.Union {
-  external wire_cst_Action_OpenBrowser OpenBrowser;
-
-  external wire_cst_Action_Popup Popup;
-
-  external wire_cst_Action_Nav Nav;
-
-  external wire_cst_Action_TriggerEvent TriggerEvent;
-}
-
-final class wire_cst_Action_Popup extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
-
-  external ffi.Pointer<wire_cst_custom_ui> content;
-
-  external ffi.Pointer<wire_cst_list_popup_action> actions;
-}
-
-final class wire_cst_custom_ui extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external CustomUIKind kind;
-}
-
-final class CustomUIKind extends ffi.Union {
-  external wire_cst_CustomUI_Text Text;
-
-  external wire_cst_CustomUI_Image Image;
-
-  external wire_cst_CustomUI_Link Link;
-
-  external wire_cst_CustomUI_TimeStamp TimeStamp;
-
-  external wire_cst_CustomUI_EntryCard EntryCard;
-
-  external wire_cst_CustomUI_Button Button;
-
-  external wire_cst_CustomUI_InlineSetting InlineSetting;
-
-  external wire_cst_CustomUI_Slot Slot;
-
-  external wire_cst_CustomUI_Column Column;
-
-  external wire_cst_CustomUI_Row Row;
-}
-
-final class wire_cst_CustomUI_Button extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
-
-  external ffi.Pointer<wire_cst_ui_action> on_click;
-}
-
-final class wire_cst_ui_action extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external UIActionKind kind;
-}
-
-final class UIActionKind extends ffi.Union {
-  external wire_cst_UIAction_Action Action;
-
-  external wire_cst_UIAction_SwapContent SwapContent;
-}
-
-final class wire_cst_UIAction_SwapContent extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> targetid;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
-
-  external ffi.Pointer<wire_cst_custom_ui> placeholder;
-}
-
-final class wire_cst_CustomUI_InlineSetting extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> setting_id;
-
-  external ffi.Pointer<wire_cst_ui_action> on_commit;
-}
-
-final class wire_cst_CustomUI_Slot extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
-
-  external ffi.Pointer<wire_cst_custom_ui> child;
-}
-
-final class wire_cst_CustomUI_Column extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_custom_ui> children;
-}
-
-final class wire_cst_list_custom_ui extends ffi.Struct {
-  external ffi.Pointer<wire_cst_custom_ui> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_CustomUI_Row extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_custom_ui> children;
-}
-
-final class wire_cst_list_popup_action extends ffi.Struct {
-  external ffi.Pointer<wire_cst_popup_action> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_popup_action extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
-
-  external ffi.Pointer<wire_cst_action> onclick;
-}
-
-final class wire_cst_Action_Nav extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
-
-  external ffi.Pointer<wire_cst_custom_ui> content;
-}
-
-final class wire_cst_Action_TriggerEvent extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
-}
-
-final class wire_cst_SettingsUI_Slider extends ffi.Struct {
-  @ffi.Double()
-  external double min;
-
-  @ffi.Double()
-  external double max;
-
-  @ffi.Int32()
-  external int step;
-}
-
-final class wire_cst_dropdown_option extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
-}
-
-final class wire_cst_list_dropdown_option extends ffi.Struct {
-  external ffi.Pointer<wire_cst_dropdown_option> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_SettingsUI_Dropdown extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_dropdown_option> options;
-}
-
-final class SettingsUIKind extends ffi.Union {
-  external wire_cst_SettingsUI_Slider Slider;
-
-  external wire_cst_SettingsUI_Dropdown Dropdown;
-}
-
-final class wire_cst_settings_ui extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external SettingsUIKind kind;
-}
-
-final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension
-    extends ffi.Struct {
-  external ffi.Pointer<ffi.UintPtr> ptr;
-
-  @ffi.Int32()
-  external int len;
 }
 
 final class wire_cst_list_entry extends ffi.Struct {
@@ -3964,86 +3460,99 @@ final class wire_cst_list_entry extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_episode extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-
-  external ffi.Pointer<wire_cst_link> cover;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+final class wire_cst_ExtensionType_EntryProvider extends ffi.Struct {
+  @ffi.Bool()
+  external bool has_search;
 }
 
-final class wire_cst_list_episode extends ffi.Struct {
-  external ffi.Pointer<wire_cst_episode> ptr;
+final class wire_cst_ExtensionType_EntryDetailedProvider extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> id_types;
+}
+
+final class wire_cst_ExtensionType_SourceProvider extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> id_types;
+}
+
+final class wire_cst_list_source_type extends ffi.Struct {
+  external ffi.Pointer<ffi.Int32> ptr;
 
   @ffi.Int32()
   external int len;
 }
 
-final class wire_cst_SettingValue_String extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+final class wire_cst_list_source_open_type extends ffi.Struct {
+  external ffi.Pointer<ffi.Int32> ptr;
+
+  @ffi.Int32()
+  external int len;
 }
 
-final class wire_cst_SettingValue_Number extends ffi.Struct {
-  @ffi.Float()
-  external double data;
+final class wire_cst_ExtensionType_SourceProcessor extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_source_type> sourcetypes;
+
+  external ffi.Pointer<wire_cst_list_source_open_type> opentype;
 }
 
-final class wire_cst_SettingValue_Boolean extends ffi.Struct {
+final class wire_cst_ExtensionType_EntryProcessor extends ffi.Struct {
   @ffi.Bool()
-  external bool data;
+  external bool trigger_map_entry;
+
+  @ffi.Bool()
+  external bool trigger_on_entry_activity;
 }
 
-final class wire_cst_SettingValue_StringList extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_String> data;
+final class wire_cst_ExtensionType_URLHandler extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> url_patterns;
 }
 
-final class SettingValueKind extends ffi.Union {
-  external wire_cst_SettingValue_String String;
+final class ExtensionTypeKind extends ffi.Union {
+  external wire_cst_ExtensionType_EntryProvider EntryProvider;
 
-  external wire_cst_SettingValue_Number Number;
+  external wire_cst_ExtensionType_EntryDetailedProvider EntryDetailedProvider;
 
-  external wire_cst_SettingValue_Boolean Boolean;
+  external wire_cst_ExtensionType_SourceProvider SourceProvider;
 
-  external wire_cst_SettingValue_StringList StringList;
+  external wire_cst_ExtensionType_SourceProcessor SourceProcessor;
+
+  external wire_cst_ExtensionType_EntryProcessor EntryProcessor;
+
+  external wire_cst_ExtensionType_URLHandler URLHandler;
 }
 
-final class wire_cst_setting_value extends ffi.Struct {
+final class wire_cst_extension_type extends ffi.Struct {
   @ffi.Int32()
   external int tag;
 
-  external SettingValueKind kind;
+  external ExtensionTypeKind kind;
 }
 
-final class wire_cst_setting extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
-
-  external wire_cst_setting_value value;
-
-  external wire_cst_setting_value default_;
-
-  @ffi.Bool()
-  external bool visible;
-
-  external ffi.Pointer<wire_cst_settings_ui> ui;
-}
-
-final class wire_cst_record_string_setting extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
-
-  external wire_cst_setting field1;
-}
-
-final class wire_cst_list_record_string_setting extends ffi.Struct {
-  external ffi.Pointer<wire_cst_record_string_setting> ptr;
+final class wire_cst_list_extension_type extends ffi.Struct {
+  external ffi.Pointer<wire_cst_extension_type> ptr;
 
   @ffi.Int32()
   external int len;
+}
+
+final class wire_cst_list_media_type extends ffi.Struct {
+  external ffi.Pointer<ffi.Int32> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_remote_extension extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> exturl;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_link> cover;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> version;
+
+  @ffi.Bool()
+  external bool compatible;
 }
 
 final class wire_cst_list_remote_extension extends ffi.Struct {
@@ -4051,48 +3560,6 @@ final class wire_cst_list_remote_extension extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
-}
-
-final class wire_cst_entry_detailed extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-
-  external ffi.Pointer<wire_cst_list_String> titles;
-
-  external ffi.Pointer<wire_cst_list_String> author;
-
-  external ffi.Pointer<wire_cst_custom_ui> ui;
-
-  external ffi.Pointer<wire_cst_list_record_string_string> meta;
-
-  @ffi.Int32()
-  external int media_type;
-
-  @ffi.Int32()
-  external int status;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> language;
-
-  external ffi.Pointer<wire_cst_link> cover;
-
-  external ffi.Pointer<wire_cst_list_episode> episodes;
-
-  external ffi.Pointer<wire_cst_list_String> genres;
-
-  external ffi.Pointer<ffi.Float> rating;
-
-  external ffi.Pointer<ffi.Float> views;
-
-  external ffi.Pointer<ffi.Int32> length;
-}
-
-final class wire_cst_entry_detailed_result extends ffi.Struct {
-  external wire_cst_entry_detailed entry;
-
-  external ffi.Pointer<wire_cst_list_record_string_setting> settings;
 }
 
 final class wire_cst_entry_list extends ffi.Struct {
@@ -4103,12 +3570,55 @@ final class wire_cst_entry_list extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_entry> content;
 }
 
-final class wire_cst_extension_repo extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
-
+final class wire_cst_extension_data extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
 
-  external ffi.Pointer<wire_cst_list_remote_extension> extensions;
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> icon;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> desc;
+
+  external ffi.Pointer<wire_cst_list_String> author;
+
+  external ffi.Pointer<wire_cst_list_String> tags;
+
+  external ffi.Pointer<wire_cst_list_String> lang;
+
+  @ffi.Bool()
+  external bool nsfw;
+
+  external ffi.Pointer<wire_cst_list_media_type> media_type;
+
+  external ffi.Pointer<wire_cst_list_extension_type> extension_type;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> repo;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> version;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> license;
+
+  @ffi.Bool()
+  external bool compatible;
+}
+
+final class wire_cst_extension_manager_data extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> icon;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> repo;
+
+  @ffi.Uint32()
+  external int api_version;
+}
+
+final class wire_cst_remote_extension_result extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_remote_extension> content;
+
+  external ffi.Pointer<ffi.Bool> hasnext;
+
+  external ffi.Pointer<ffi.Int32> length;
 }

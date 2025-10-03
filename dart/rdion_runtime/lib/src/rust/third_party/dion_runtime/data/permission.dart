@@ -5,15 +5,13 @@ import 'dart:convert';
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../frb_generated.dart';
+import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'permission.freezed.dart';
-part 'permission.g.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `PermissionStore`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`, `fmt`
-// These functions are ignored (category: IgnoreBecauseOwnerTyShouldIgnore): `get_permissions`, `has_permission`, `new`, `remove_permission`, `request_permission`, `save_data`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `allows`
 
 @freezed
 sealed class Permission with _$Permission {
@@ -28,7 +26,4 @@ sealed class Permission with _$Permission {
   }) = Permission_Network;
   const factory Permission.actionPopup() = Permission_ActionPopup;
   const factory Permission.arbitraryNetwork() = Permission_ArbitraryNetwork;
-
-  factory Permission.fromJson(Map<String, dynamic> json) =>
-      _$PermissionFromJson(json);
 }

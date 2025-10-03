@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
-use dion_runtime::datastructs::{Action, ExtensionData};
-use dion_runtime::permission::Permission;
+use dion_runtime::data::action::Action;
+use dion_runtime::data::extension::ExtensionData;
+use dion_runtime::data::permission::Permission;
 use flutter_rust_bridge::frb;
 use flutter_rust_bridge::DartFnFuture;
 
