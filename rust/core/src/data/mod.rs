@@ -6,6 +6,7 @@ pub mod extension;
 pub mod extension_manager;
 pub mod extension_repo;
 pub mod permission;
+mod serde;
 pub mod settings;
 pub mod source;
 mod specta;

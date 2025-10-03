@@ -3,3 +3,4 @@ target
 testextensions/otherextensions
 node_modules
 .httpcache
+tests/jsondata
