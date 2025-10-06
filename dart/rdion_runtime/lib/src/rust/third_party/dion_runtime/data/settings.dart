@@ -14,6 +14,7 @@ part 'settings.freezed.dart';
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `get_type_name`, `overwrite`
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class DropdownOption {
   final String label;
   final String value;
@@ -36,6 +37,7 @@ class DropdownOption {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Setting {
   final String label;
   final SettingValue value;
@@ -72,6 +74,7 @@ class Setting {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum SettingKind {
   extension_,
   search,

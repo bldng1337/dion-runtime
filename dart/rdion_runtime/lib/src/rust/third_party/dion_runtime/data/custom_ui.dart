@@ -69,6 +69,7 @@ sealed class CustomUI with _$CustomUI {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum TimestampType {
   relative,
   absolute,

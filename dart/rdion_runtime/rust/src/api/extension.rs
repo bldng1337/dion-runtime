@@ -5,6 +5,8 @@ use crate::api::ext_wrap::WrapperExtension;
 use anyhow::Result;
 
 use dion_extension::extension_manager::DionExtensionAdapter;
+use dion_runtime::data::action::EventData;
+use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
 use dion_runtime::data::extension::ExtensionData;
 use dion_runtime::data::extension_repo::ExtensionRepo;
@@ -24,6 +26,7 @@ pub use dion_runtime::extension::Extension;
 
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
+use tokio_util::sync::CancellationToken;
 
 #[frb(opaque)]
 pub struct ProxyExtension {
@@ -125,6 +128,18 @@ impl ProxyExtension {
         let mut store = self.inner.inner.get_data().write().await;
         store.permission.remove_permission(permission);
         Ok(())
+    }
+
+    #[frb(serialize)]
+    pub async fn event(
+        &self,
+        event: EventResult,
+        token: Option<CancellationToken>,
+    ) -> Result<Option<EventData>> {
+        self.inner
+            .inner
+            .event(event, token.map(|token| token.into()))
+            .await
     }
 
     // SourceProvider

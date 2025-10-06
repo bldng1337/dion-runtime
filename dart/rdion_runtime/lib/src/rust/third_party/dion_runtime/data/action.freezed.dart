@@ -1005,6 +1005,1036 @@ abstract class Action_NavEntry extends Action {
 }
 
 /// @nodoc
+mixin _$EventData {
+  String get event => throw _privateConstructorUsedError;
+  String get data => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String event, String targetid, String data)
+        swapContent,
+    required TResult Function(String event, String data, int page) feedUpdate,
+    required TResult Function(String event, String data) action,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String event, String targetid, String data)? swapContent,
+    TResult? Function(String event, String data, int page)? feedUpdate,
+    TResult? Function(String event, String data)? action,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String event, String targetid, String data)? swapContent,
+    TResult Function(String event, String data, int page)? feedUpdate,
+    TResult Function(String event, String data)? action,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventData_SwapContent value) swapContent,
+    required TResult Function(EventData_FeedUpdate value) feedUpdate,
+    required TResult Function(EventData_Action value) action,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventData_SwapContent value)? swapContent,
+    TResult? Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult? Function(EventData_Action value)? action,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventData_SwapContent value)? swapContent,
+    TResult Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult Function(EventData_Action value)? action,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $EventDataCopyWith<EventData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventDataCopyWith<$Res> {
+  factory $EventDataCopyWith(EventData value, $Res Function(EventData) then) =
+      _$EventDataCopyWithImpl<$Res, EventData>;
+  @useResult
+  $Res call({String event, String data});
+}
+
+/// @nodoc
+class _$EventDataCopyWithImpl<$Res, $Val extends EventData>
+    implements $EventDataCopyWith<$Res> {
+  _$EventDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? event = null,
+    Object? data = null,
+  }) {
+    return _then(_value.copyWith(
+      event: null == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as String,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$EventData_SwapContentImplCopyWith<$Res>
+    implements $EventDataCopyWith<$Res> {
+  factory _$$EventData_SwapContentImplCopyWith(
+          _$EventData_SwapContentImpl value,
+          $Res Function(_$EventData_SwapContentImpl) then) =
+      __$$EventData_SwapContentImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String event, String targetid, String data});
+}
+
+/// @nodoc
+class __$$EventData_SwapContentImplCopyWithImpl<$Res>
+    extends _$EventDataCopyWithImpl<$Res, _$EventData_SwapContentImpl>
+    implements _$$EventData_SwapContentImplCopyWith<$Res> {
+  __$$EventData_SwapContentImplCopyWithImpl(_$EventData_SwapContentImpl _value,
+      $Res Function(_$EventData_SwapContentImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? event = null,
+    Object? targetid = null,
+    Object? data = null,
+  }) {
+    return _then(_$EventData_SwapContentImpl(
+      event: null == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as String,
+      targetid: null == targetid
+          ? _value.targetid
+          : targetid // ignore: cast_nullable_to_non_nullable
+              as String,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EventData_SwapContentImpl extends EventData_SwapContent {
+  const _$EventData_SwapContentImpl(
+      {required this.event, required this.targetid, required this.data})
+      : super._();
+
+  @override
+  final String event;
+  @override
+  final String targetid;
+  @override
+  final String data;
+
+  @override
+  String toString() {
+    return 'EventData.swapContent(event: $event, targetid: $targetid, data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventData_SwapContentImpl &&
+            (identical(other.event, event) || other.event == event) &&
+            (identical(other.targetid, targetid) ||
+                other.targetid == targetid) &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, event, targetid, data);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventData_SwapContentImplCopyWith<_$EventData_SwapContentImpl>
+      get copyWith => __$$EventData_SwapContentImplCopyWithImpl<
+          _$EventData_SwapContentImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String event, String targetid, String data)
+        swapContent,
+    required TResult Function(String event, String data, int page) feedUpdate,
+    required TResult Function(String event, String data) action,
+  }) {
+    return swapContent(event, targetid, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String event, String targetid, String data)? swapContent,
+    TResult? Function(String event, String data, int page)? feedUpdate,
+    TResult? Function(String event, String data)? action,
+  }) {
+    return swapContent?.call(event, targetid, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String event, String targetid, String data)? swapContent,
+    TResult Function(String event, String data, int page)? feedUpdate,
+    TResult Function(String event, String data)? action,
+    required TResult orElse(),
+  }) {
+    if (swapContent != null) {
+      return swapContent(event, targetid, data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventData_SwapContent value) swapContent,
+    required TResult Function(EventData_FeedUpdate value) feedUpdate,
+    required TResult Function(EventData_Action value) action,
+  }) {
+    return swapContent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventData_SwapContent value)? swapContent,
+    TResult? Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult? Function(EventData_Action value)? action,
+  }) {
+    return swapContent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventData_SwapContent value)? swapContent,
+    TResult Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult Function(EventData_Action value)? action,
+    required TResult orElse(),
+  }) {
+    if (swapContent != null) {
+      return swapContent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EventData_SwapContent extends EventData {
+  const factory EventData_SwapContent(
+      {required final String event,
+      required final String targetid,
+      required final String data}) = _$EventData_SwapContentImpl;
+  const EventData_SwapContent._() : super._();
+
+  @override
+  String get event;
+  String get targetid;
+  @override
+  String get data;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EventData_SwapContentImplCopyWith<_$EventData_SwapContentImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EventData_FeedUpdateImplCopyWith<$Res>
+    implements $EventDataCopyWith<$Res> {
+  factory _$$EventData_FeedUpdateImplCopyWith(_$EventData_FeedUpdateImpl value,
+          $Res Function(_$EventData_FeedUpdateImpl) then) =
+      __$$EventData_FeedUpdateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String event, String data, int page});
+}
+
+/// @nodoc
+class __$$EventData_FeedUpdateImplCopyWithImpl<$Res>
+    extends _$EventDataCopyWithImpl<$Res, _$EventData_FeedUpdateImpl>
+    implements _$$EventData_FeedUpdateImplCopyWith<$Res> {
+  __$$EventData_FeedUpdateImplCopyWithImpl(_$EventData_FeedUpdateImpl _value,
+      $Res Function(_$EventData_FeedUpdateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? event = null,
+    Object? data = null,
+    Object? page = null,
+  }) {
+    return _then(_$EventData_FeedUpdateImpl(
+      event: null == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as String,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as String,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EventData_FeedUpdateImpl extends EventData_FeedUpdate {
+  const _$EventData_FeedUpdateImpl(
+      {required this.event, required this.data, required this.page})
+      : super._();
+
+  @override
+  final String event;
+  @override
+  final String data;
+  @override
+  final int page;
+
+  @override
+  String toString() {
+    return 'EventData.feedUpdate(event: $event, data: $data, page: $page)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventData_FeedUpdateImpl &&
+            (identical(other.event, event) || other.event == event) &&
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.page, page) || other.page == page));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, event, data, page);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventData_FeedUpdateImplCopyWith<_$EventData_FeedUpdateImpl>
+      get copyWith =>
+          __$$EventData_FeedUpdateImplCopyWithImpl<_$EventData_FeedUpdateImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String event, String targetid, String data)
+        swapContent,
+    required TResult Function(String event, String data, int page) feedUpdate,
+    required TResult Function(String event, String data) action,
+  }) {
+    return feedUpdate(event, data, page);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String event, String targetid, String data)? swapContent,
+    TResult? Function(String event, String data, int page)? feedUpdate,
+    TResult? Function(String event, String data)? action,
+  }) {
+    return feedUpdate?.call(event, data, page);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String event, String targetid, String data)? swapContent,
+    TResult Function(String event, String data, int page)? feedUpdate,
+    TResult Function(String event, String data)? action,
+    required TResult orElse(),
+  }) {
+    if (feedUpdate != null) {
+      return feedUpdate(event, data, page);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventData_SwapContent value) swapContent,
+    required TResult Function(EventData_FeedUpdate value) feedUpdate,
+    required TResult Function(EventData_Action value) action,
+  }) {
+    return feedUpdate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventData_SwapContent value)? swapContent,
+    TResult? Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult? Function(EventData_Action value)? action,
+  }) {
+    return feedUpdate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventData_SwapContent value)? swapContent,
+    TResult Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult Function(EventData_Action value)? action,
+    required TResult orElse(),
+  }) {
+    if (feedUpdate != null) {
+      return feedUpdate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EventData_FeedUpdate extends EventData {
+  const factory EventData_FeedUpdate(
+      {required final String event,
+      required final String data,
+      required final int page}) = _$EventData_FeedUpdateImpl;
+  const EventData_FeedUpdate._() : super._();
+
+  @override
+  String get event;
+  @override
+  String get data;
+  int get page;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EventData_FeedUpdateImplCopyWith<_$EventData_FeedUpdateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EventData_ActionImplCopyWith<$Res>
+    implements $EventDataCopyWith<$Res> {
+  factory _$$EventData_ActionImplCopyWith(_$EventData_ActionImpl value,
+          $Res Function(_$EventData_ActionImpl) then) =
+      __$$EventData_ActionImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String event, String data});
+}
+
+/// @nodoc
+class __$$EventData_ActionImplCopyWithImpl<$Res>
+    extends _$EventDataCopyWithImpl<$Res, _$EventData_ActionImpl>
+    implements _$$EventData_ActionImplCopyWith<$Res> {
+  __$$EventData_ActionImplCopyWithImpl(_$EventData_ActionImpl _value,
+      $Res Function(_$EventData_ActionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? event = null,
+    Object? data = null,
+  }) {
+    return _then(_$EventData_ActionImpl(
+      event: null == event
+          ? _value.event
+          : event // ignore: cast_nullable_to_non_nullable
+              as String,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EventData_ActionImpl extends EventData_Action {
+  const _$EventData_ActionImpl({required this.event, required this.data})
+      : super._();
+
+  @override
+  final String event;
+  @override
+  final String data;
+
+  @override
+  String toString() {
+    return 'EventData.action(event: $event, data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventData_ActionImpl &&
+            (identical(other.event, event) || other.event == event) &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, event, data);
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventData_ActionImplCopyWith<_$EventData_ActionImpl> get copyWith =>
+      __$$EventData_ActionImplCopyWithImpl<_$EventData_ActionImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String event, String targetid, String data)
+        swapContent,
+    required TResult Function(String event, String data, int page) feedUpdate,
+    required TResult Function(String event, String data) action,
+  }) {
+    return action(event, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String event, String targetid, String data)? swapContent,
+    TResult? Function(String event, String data, int page)? feedUpdate,
+    TResult? Function(String event, String data)? action,
+  }) {
+    return action?.call(event, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String event, String targetid, String data)? swapContent,
+    TResult Function(String event, String data, int page)? feedUpdate,
+    TResult Function(String event, String data)? action,
+    required TResult orElse(),
+  }) {
+    if (action != null) {
+      return action(event, data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventData_SwapContent value) swapContent,
+    required TResult Function(EventData_FeedUpdate value) feedUpdate,
+    required TResult Function(EventData_Action value) action,
+  }) {
+    return action(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventData_SwapContent value)? swapContent,
+    TResult? Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult? Function(EventData_Action value)? action,
+  }) {
+    return action?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventData_SwapContent value)? swapContent,
+    TResult Function(EventData_FeedUpdate value)? feedUpdate,
+    TResult Function(EventData_Action value)? action,
+    required TResult orElse(),
+  }) {
+    if (action != null) {
+      return action(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EventData_Action extends EventData {
+  const factory EventData_Action(
+      {required final String event,
+      required final String data}) = _$EventData_ActionImpl;
+  const EventData_Action._() : super._();
+
+  @override
+  String get event;
+  @override
+  String get data;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EventData_ActionImplCopyWith<_$EventData_ActionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$EventResult {
+  Object get customui => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(CustomUI customui) swapContent,
+    required TResult Function(
+            List<CustomUI> customui, bool? hasnext, int? length)
+        feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI customui)? swapContent,
+    TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(CustomUI customui)? swapContent,
+    TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventResult_SwapContent value) swapContent,
+    required TResult Function(EventResult_FeedUpdate value) feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventResult_SwapContent value)? swapContent,
+    TResult? Function(EventResult_FeedUpdate value)? feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventResult_SwapContent value)? swapContent,
+    TResult Function(EventResult_FeedUpdate value)? feedUpdate,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventResultCopyWith<$Res> {
+  factory $EventResultCopyWith(
+          EventResult value, $Res Function(EventResult) then) =
+      _$EventResultCopyWithImpl<$Res, EventResult>;
+}
+
+/// @nodoc
+class _$EventResultCopyWithImpl<$Res, $Val extends EventResult>
+    implements $EventResultCopyWith<$Res> {
+  _$EventResultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$EventResult_SwapContentImplCopyWith<$Res> {
+  factory _$$EventResult_SwapContentImplCopyWith(
+          _$EventResult_SwapContentImpl value,
+          $Res Function(_$EventResult_SwapContentImpl) then) =
+      __$$EventResult_SwapContentImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI customui});
+
+  $CustomUICopyWith<$Res> get customui;
+}
+
+/// @nodoc
+class __$$EventResult_SwapContentImplCopyWithImpl<$Res>
+    extends _$EventResultCopyWithImpl<$Res, _$EventResult_SwapContentImpl>
+    implements _$$EventResult_SwapContentImplCopyWith<$Res> {
+  __$$EventResult_SwapContentImplCopyWithImpl(
+      _$EventResult_SwapContentImpl _value,
+      $Res Function(_$EventResult_SwapContentImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customui = null,
+  }) {
+    return _then(_$EventResult_SwapContentImpl(
+      customui: null == customui
+          ? _value.customui
+          : customui // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get customui {
+    return $CustomUICopyWith<$Res>(_value.customui, (value) {
+      return _then(_value.copyWith(customui: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$EventResult_SwapContentImpl extends EventResult_SwapContent {
+  const _$EventResult_SwapContentImpl({required this.customui}) : super._();
+
+  @override
+  final CustomUI customui;
+
+  @override
+  String toString() {
+    return 'EventResult.swapContent(customui: $customui)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventResult_SwapContentImpl &&
+            (identical(other.customui, customui) ||
+                other.customui == customui));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, customui);
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventResult_SwapContentImplCopyWith<_$EventResult_SwapContentImpl>
+      get copyWith => __$$EventResult_SwapContentImplCopyWithImpl<
+          _$EventResult_SwapContentImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(CustomUI customui) swapContent,
+    required TResult Function(
+            List<CustomUI> customui, bool? hasnext, int? length)
+        feedUpdate,
+  }) {
+    return swapContent(customui);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI customui)? swapContent,
+    TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+  }) {
+    return swapContent?.call(customui);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(CustomUI customui)? swapContent,
+    TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+    required TResult orElse(),
+  }) {
+    if (swapContent != null) {
+      return swapContent(customui);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventResult_SwapContent value) swapContent,
+    required TResult Function(EventResult_FeedUpdate value) feedUpdate,
+  }) {
+    return swapContent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventResult_SwapContent value)? swapContent,
+    TResult? Function(EventResult_FeedUpdate value)? feedUpdate,
+  }) {
+    return swapContent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventResult_SwapContent value)? swapContent,
+    TResult Function(EventResult_FeedUpdate value)? feedUpdate,
+    required TResult orElse(),
+  }) {
+    if (swapContent != null) {
+      return swapContent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EventResult_SwapContent extends EventResult {
+  const factory EventResult_SwapContent({required final CustomUI customui}) =
+      _$EventResult_SwapContentImpl;
+  const EventResult_SwapContent._() : super._();
+
+  @override
+  CustomUI get customui;
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EventResult_SwapContentImplCopyWith<_$EventResult_SwapContentImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EventResult_FeedUpdateImplCopyWith<$Res> {
+  factory _$$EventResult_FeedUpdateImplCopyWith(
+          _$EventResult_FeedUpdateImpl value,
+          $Res Function(_$EventResult_FeedUpdateImpl) then) =
+      __$$EventResult_FeedUpdateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<CustomUI> customui, bool? hasnext, int? length});
+}
+
+/// @nodoc
+class __$$EventResult_FeedUpdateImplCopyWithImpl<$Res>
+    extends _$EventResultCopyWithImpl<$Res, _$EventResult_FeedUpdateImpl>
+    implements _$$EventResult_FeedUpdateImplCopyWith<$Res> {
+  __$$EventResult_FeedUpdateImplCopyWithImpl(
+      _$EventResult_FeedUpdateImpl _value,
+      $Res Function(_$EventResult_FeedUpdateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customui = null,
+    Object? hasnext = freezed,
+    Object? length = freezed,
+  }) {
+    return _then(_$EventResult_FeedUpdateImpl(
+      customui: null == customui
+          ? _value._customui
+          : customui // ignore: cast_nullable_to_non_nullable
+              as List<CustomUI>,
+      hasnext: freezed == hasnext
+          ? _value.hasnext
+          : hasnext // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      length: freezed == length
+          ? _value.length
+          : length // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
+  const _$EventResult_FeedUpdateImpl(
+      {required final List<CustomUI> customui, this.hasnext, this.length})
+      : _customui = customui,
+        super._();
+
+  final List<CustomUI> _customui;
+  @override
+  List<CustomUI> get customui {
+    if (_customui is EqualUnmodifiableListView) return _customui;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_customui);
+  }
+
+  @override
+  final bool? hasnext;
+  @override
+  final int? length;
+
+  @override
+  String toString() {
+    return 'EventResult.feedUpdate(customui: $customui, hasnext: $hasnext, length: $length)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventResult_FeedUpdateImpl &&
+            const DeepCollectionEquality().equals(other._customui, _customui) &&
+            (identical(other.hasnext, hasnext) || other.hasnext == hasnext) &&
+            (identical(other.length, length) || other.length == length));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_customui), hasnext, length);
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventResult_FeedUpdateImplCopyWith<_$EventResult_FeedUpdateImpl>
+      get copyWith => __$$EventResult_FeedUpdateImplCopyWithImpl<
+          _$EventResult_FeedUpdateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(CustomUI customui) swapContent,
+    required TResult Function(
+            List<CustomUI> customui, bool? hasnext, int? length)
+        feedUpdate,
+  }) {
+    return feedUpdate(customui, hasnext, length);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI customui)? swapContent,
+    TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+  }) {
+    return feedUpdate?.call(customui, hasnext, length);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(CustomUI customui)? swapContent,
+    TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
+        feedUpdate,
+    required TResult orElse(),
+  }) {
+    if (feedUpdate != null) {
+      return feedUpdate(customui, hasnext, length);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventResult_SwapContent value) swapContent,
+    required TResult Function(EventResult_FeedUpdate value) feedUpdate,
+  }) {
+    return feedUpdate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventResult_SwapContent value)? swapContent,
+    TResult? Function(EventResult_FeedUpdate value)? feedUpdate,
+  }) {
+    return feedUpdate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventResult_SwapContent value)? swapContent,
+    TResult Function(EventResult_FeedUpdate value)? feedUpdate,
+    required TResult orElse(),
+  }) {
+    if (feedUpdate != null) {
+      return feedUpdate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EventResult_FeedUpdate extends EventResult {
+  const factory EventResult_FeedUpdate(
+      {required final List<CustomUI> customui,
+      final bool? hasnext,
+      final int? length}) = _$EventResult_FeedUpdateImpl;
+  const EventResult_FeedUpdate._() : super._();
+
+  @override
+  List<CustomUI> get customui;
+  bool? get hasnext;
+  int? get length;
+
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EventResult_FeedUpdateImplCopyWith<_$EventResult_FeedUpdateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$UIAction {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({

@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct ExtensionManagerData {

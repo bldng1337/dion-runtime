@@ -14,6 +14,7 @@ part 'extension.freezed.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class ExtensionData {
   final String id;
   final String name;
@@ -119,6 +120,7 @@ sealed class ExtensionType with _$ExtensionType {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum SourceOpenType {
   download,
   stream,

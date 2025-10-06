@@ -12,6 +12,7 @@ import 'source.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class ExtensionRepo {
   final String name;
   final String description;
@@ -44,6 +45,7 @@ class ExtensionRepo {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class RemoteExtension {
   final String id;
   final String exturl;
@@ -87,6 +89,7 @@ class RemoteExtension {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class RemoteExtensionResult {
   final List<RemoteExtension> content;
   final bool? hasnext;

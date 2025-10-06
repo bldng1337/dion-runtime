@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Account {
@@ -16,6 +17,7 @@ pub struct Account {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum AuthData {
@@ -23,6 +25,6 @@ pub enum AuthData {
         loginpage: String,
         logonpage: String,
     },
-    ApiKey {},
-    UserPass {},
+    ApiKey,
+    UserPass,
 }

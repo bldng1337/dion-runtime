@@ -11,9 +11,11 @@ import 'api/extension.dart';
 import 'dart:async';
 import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
+import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
 import 'third_party/dion_runtime/data/action.dart';
 import 'third_party/dion_runtime/data/activity.dart';
+import 'third_party/dion_runtime/data/auth.dart';
 import 'third_party/dion_runtime/data/custom_ui.dart';
 import 'third_party/dion_runtime/data/extension.dart';
 import 'third_party/dion_runtime/data/extension_manager.dart';
@@ -33,6 +35,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_CancelTokenPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_CancellationTokenPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationTokenPtr;
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_ExtensionClientPtr => wire
@@ -56,6 +62,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   CancelToken
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          dynamic raw);
+
+  @protected
+  CancellationToken
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
           dynamic raw);
 
   @protected
@@ -146,6 +157,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  CancellationToken
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          dynamic raw);
+
+  @protected
   ExtensionClient
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
           dynamic raw);
@@ -181,7 +197,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  Account dco_decode_account(dynamic raw);
+
+  @protected
   Action dco_decode_action(dynamic raw);
+
+  @protected
+  AuthData dco_decode_auth_data(dynamic raw);
 
   @protected
   bool dco_decode_bool(dynamic raw);
@@ -192,6 +214,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   CancelToken
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          dynamic raw);
+
+  @protected
+  CancellationToken
+      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
           dynamic raw);
 
   @protected
@@ -217,6 +244,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   EpisodeId dco_decode_box_autoadd_episode_id(dynamic raw);
+
+  @protected
+  EventData dco_decode_box_autoadd_event_data(dynamic raw);
+
+  @protected
+  EventResult dco_decode_box_autoadd_event_result(dynamic raw);
 
   @protected
   ExtensionRepo dco_decode_box_autoadd_extension_repo(dynamic raw);
@@ -280,6 +313,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   EpisodeId dco_decode_episode_id(dynamic raw);
+
+  @protected
+  EventData dco_decode_event_data(dynamic raw);
+
+  @protected
+  EventResult dco_decode_event_result(dynamic raw);
 
   @protected
   ExtensionData dco_decode_extension_data(dynamic raw);
@@ -400,10 +439,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  CancellationToken?
+      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          dynamic raw);
+
+  @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
 
   @protected
   CustomUI? dco_decode_opt_box_autoadd_custom_ui(dynamic raw);
+
+  @protected
+  EventData? dco_decode_opt_box_autoadd_event_data(dynamic raw);
 
   @protected
   double? dco_decode_opt_box_autoadd_f_32(dynamic raw);
@@ -504,6 +551,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  CancellationToken
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          SseDeserializer deserializer);
+
+  @protected
   ExtensionClient
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
           SseDeserializer deserializer);
@@ -565,6 +617,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  CancellationToken
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          SseDeserializer deserializer);
+
+  @protected
   ExtensionClient
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
           SseDeserializer deserializer);
@@ -602,7 +659,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  Account sse_decode_account(SseDeserializer deserializer);
+
+  @protected
   Action sse_decode_action(SseDeserializer deserializer);
+
+  @protected
+  AuthData sse_decode_auth_data(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
@@ -613,6 +676,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   CancelToken
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+          SseDeserializer deserializer);
+
+  @protected
+  CancellationToken
+      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
           SseDeserializer deserializer);
 
   @protected
@@ -640,6 +708,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   EpisodeId sse_decode_box_autoadd_episode_id(SseDeserializer deserializer);
+
+  @protected
+  EventData sse_decode_box_autoadd_event_data(SseDeserializer deserializer);
+
+  @protected
+  EventResult sse_decode_box_autoadd_event_result(SseDeserializer deserializer);
 
   @protected
   ExtensionRepo sse_decode_box_autoadd_extension_repo(
@@ -706,6 +780,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   EpisodeId sse_decode_episode_id(SseDeserializer deserializer);
+
+  @protected
+  EventData sse_decode_event_data(SseDeserializer deserializer);
+
+  @protected
+  EventResult sse_decode_event_result(SseDeserializer deserializer);
 
   @protected
   ExtensionData sse_decode_extension_data(SseDeserializer deserializer);
@@ -835,10 +915,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  CancellationToken?
+      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          SseDeserializer deserializer);
+
+  @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
   CustomUI? sse_decode_opt_box_autoadd_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  EventData? sse_decode_opt_box_autoadd_event_data(
+      SseDeserializer deserializer);
 
   @protected
   double? sse_decode_opt_box_autoadd_f_32(SseDeserializer deserializer);
@@ -951,6 +1040,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_record_string_setting>
+      cst_encode_Map_String_setting_None(Map<String, Setting> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_record_string_setting(
+        raw.entries.map((e) => (e.key, e.value)).toList());
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_extension_type> cst_encode_Set_extension_type_None(
       Set<ExtensionType> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -985,6 +1082,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_action> cst_encode_box_action(Action raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_action();
+    cst_api_fill_to_wire_action(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<ffi.UintPtr>
       cst_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken raw) {
@@ -996,9 +1101,43 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_action> cst_encode_box_autoadd_action(Action raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_action();
+    cst_api_fill_to_wire_action(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<ffi.Bool> cst_encode_box_autoadd_bool(bool raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_bool(cst_encode_bool(raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_custom_ui> cst_encode_box_autoadd_custom_ui(
+      CustomUI raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_custom_ui();
+    cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_entry> cst_encode_box_autoadd_entry(Entry raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_entry();
+    cst_api_fill_to_wire_entry(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_entry_detailed> cst_encode_box_autoadd_entry_detailed(
+      EntryDetailed raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_entry_detailed();
+    cst_api_fill_to_wire_entry_detailed(raw, ptr.ref);
+    return ptr;
   }
 
   @protected
@@ -1031,6 +1170,31 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_settings_ui> cst_encode_box_autoadd_settings_ui(
+      SettingsUI raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_settings_ui();
+    cst_api_fill_to_wire_settings_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_custom_ui> cst_encode_box_custom_ui(CustomUI raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_custom_ui();
+    cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_ui_action> cst_encode_box_ui_action(UIAction raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_ui_action();
+    cst_api_fill_to_wire_ui_action(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<
           wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension>
       cst_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
@@ -1058,6 +1222,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_custom_ui> cst_encode_list_custom_ui(
+      List<CustomUI> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_custom_ui(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_custom_ui(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_dropdown_option> cst_encode_list_dropdown_option(
+      List<DropdownOption> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_dropdown_option(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_dropdown_option(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_entry> cst_encode_list_entry(List<Entry> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_entry(raw.length);
@@ -1079,12 +1265,55 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_episode> cst_encode_list_episode(
+      List<Episode> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_episode(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_episode(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_episode_id> cst_encode_list_episode_id(
+      List<EpisodeId> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_episode_id(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_episode_id(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_extension_type> cst_encode_list_extension_type(
       List<ExtensionType> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_extension_type(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_extension_type(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_image_list_audio> cst_encode_list_image_list_audio(
+      List<ImageListAudio> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_image_list_audio(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_image_list_audio(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_link> cst_encode_list_link(List<Link> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_link(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_link(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1101,11 +1330,55 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_mp_3_chapter> cst_encode_list_mp_3_chapter(
+      List<Mp3Chapter> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_mp_3_chapter(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_mp_3_chapter(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_paragraph> cst_encode_list_paragraph(
+      List<Paragraph> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_paragraph(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_paragraph(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_popup_action> cst_encode_list_popup_action(
+      List<PopupAction> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_popup_action(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_popup_action(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_list_prim_u_8_strict(
       Uint8List raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_prim_u_8_strict(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_record_string_setting>
+      cst_encode_list_record_string_setting(List<(String, Setting)> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_record_string_setting(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_record_string_setting(raw[i], ans.ref.ptr[i]);
+    }
     return ans;
   }
 
@@ -1154,6 +1427,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_subtitles> cst_encode_list_subtitles(
+      List<Subtitles> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_subtitles(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_subtitles(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_record_string_string>
       cst_encode_opt_Map_String_String_None(Map<String, String>? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1185,6 +1469,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_autoadd_custom_ui(
+      CustomUI? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_custom_ui(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Float> cst_encode_opt_box_autoadd_f_32(double? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_f_32(raw);
@@ -1203,6 +1494,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_settings_ui> cst_encode_opt_box_autoadd_settings_ui(
+      SettingsUI? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_settings_ui(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_ui_action> cst_encode_opt_box_ui_action(UIAction? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_ui_action(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_String> cst_encode_opt_list_String(
       List<String>? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1210,9 +1514,118 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_image_list_audio>
+      cst_encode_opt_list_image_list_audio(List<ImageListAudio>? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_list_image_list_audio(raw);
+  }
+
+  @protected
   int cst_encode_usize(BigInt raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw.toSigned(64).toInt();
+  }
+
+  @protected
+  void cst_api_fill_to_wire_account(Account apiObj, wire_cst_account wireObj) {
+    wireObj.domain = cst_encode_String(apiObj.domain);
+    wireObj.user_name = cst_encode_opt_String(apiObj.userName);
+    wireObj.cover = cst_encode_opt_String(apiObj.cover);
+    cst_api_fill_to_wire_auth_data(apiObj.auth, wireObj.auth);
+    wireObj.creds = cst_encode_opt_Map_String_String_None(apiObj.creds);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_action(Action apiObj, wire_cst_action wireObj) {
+    if (apiObj is Action_OpenBrowser) {
+      var pre_url = cst_encode_String(apiObj.url);
+      wireObj.tag = 0;
+      wireObj.kind.OpenBrowser.url = pre_url;
+      return;
+    }
+    if (apiObj is Action_Popup) {
+      var pre_title = cst_encode_String(apiObj.title);
+      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
+      var pre_actions = cst_encode_list_popup_action(apiObj.actions);
+      wireObj.tag = 1;
+      wireObj.kind.Popup.title = pre_title;
+      wireObj.kind.Popup.content = pre_content;
+      wireObj.kind.Popup.actions = pre_actions;
+      return;
+    }
+    if (apiObj is Action_Nav) {
+      var pre_title = cst_encode_String(apiObj.title);
+      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
+      wireObj.tag = 2;
+      wireObj.kind.Nav.title = pre_title;
+      wireObj.kind.Nav.content = pre_content;
+      return;
+    }
+    if (apiObj is Action_TriggerEvent) {
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_data = cst_encode_String(apiObj.data);
+      wireObj.tag = 3;
+      wireObj.kind.TriggerEvent.event = pre_event;
+      wireObj.kind.TriggerEvent.data = pre_data;
+      return;
+    }
+    if (apiObj is Action_NavEntry) {
+      var pre_entry = cst_encode_box_autoadd_entry_detailed(apiObj.entry);
+      wireObj.tag = 4;
+      wireObj.kind.NavEntry.entry = pre_entry;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_auth_data(
+      AuthData apiObj, wire_cst_auth_data wireObj) {
+    if (apiObj is AuthData_Cookie) {
+      var pre_loginpage = cst_encode_String(apiObj.loginpage);
+      var pre_logonpage = cst_encode_String(apiObj.logonpage);
+      wireObj.tag = 0;
+      wireObj.kind.Cookie.loginpage = pre_loginpage;
+      wireObj.kind.Cookie.logonpage = pre_logonpage;
+      return;
+    }
+    if (apiObj is AuthData_ApiKey) {
+      wireObj.tag = 1;
+      return;
+    }
+    if (apiObj is AuthData_UserPass) {
+      wireObj.tag = 2;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_action(
+      Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
+    cst_api_fill_to_wire_action(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_action(
+      Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
+    cst_api_fill_to_wire_action(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_custom_ui(
+      CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
+    cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_entry(
+      Entry apiObj, ffi.Pointer<wire_cst_entry> wireObj) {
+    cst_api_fill_to_wire_entry(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_entry_detailed(
+      EntryDetailed apiObj, ffi.Pointer<wire_cst_entry_detailed> wireObj) {
+    cst_api_fill_to_wire_entry_detailed(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1225,6 +1638,130 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_autoadd_link(
       Link apiObj, ffi.Pointer<wire_cst_link> wireObj) {
     cst_api_fill_to_wire_link(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_settings_ui(
+      SettingsUI apiObj, ffi.Pointer<wire_cst_settings_ui> wireObj) {
+    cst_api_fill_to_wire_settings_ui(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_custom_ui(
+      CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
+    cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_ui_action(
+      UIAction apiObj, ffi.Pointer<wire_cst_ui_action> wireObj) {
+    cst_api_fill_to_wire_ui_action(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_custom_ui(
+      CustomUI apiObj, wire_cst_custom_ui wireObj) {
+    if (apiObj is CustomUI_Text) {
+      var pre_text = cst_encode_String(apiObj.text);
+      wireObj.tag = 0;
+      wireObj.kind.Text.text = pre_text;
+      return;
+    }
+    if (apiObj is CustomUI_Image) {
+      var pre_image = cst_encode_box_autoadd_link(apiObj.image);
+      var pre_width = cst_encode_opt_box_autoadd_i_32(apiObj.width);
+      var pre_height = cst_encode_opt_box_autoadd_i_32(apiObj.height);
+      wireObj.tag = 1;
+      wireObj.kind.Image.image = pre_image;
+      wireObj.kind.Image.width = pre_width;
+      wireObj.kind.Image.height = pre_height;
+      return;
+    }
+    if (apiObj is CustomUI_Link) {
+      var pre_link = cst_encode_String(apiObj.link);
+      var pre_label = cst_encode_opt_String(apiObj.label);
+      wireObj.tag = 2;
+      wireObj.kind.Link.link = pre_link;
+      wireObj.kind.Link.label = pre_label;
+      return;
+    }
+    if (apiObj is CustomUI_TimeStamp) {
+      var pre_timestamp = cst_encode_String(apiObj.timestamp);
+      var pre_display = cst_encode_timestamp_type(apiObj.display);
+      wireObj.tag = 3;
+      wireObj.kind.TimeStamp.timestamp = pre_timestamp;
+      wireObj.kind.TimeStamp.display = pre_display;
+      return;
+    }
+    if (apiObj is CustomUI_EntryCard) {
+      var pre_entry = cst_encode_box_autoadd_entry(apiObj.entry);
+      wireObj.tag = 4;
+      wireObj.kind.EntryCard.entry = pre_entry;
+      return;
+    }
+    if (apiObj is CustomUI_Card) {
+      var pre_image = cst_encode_box_autoadd_link(apiObj.image);
+      var pre_top = cst_encode_box_custom_ui(apiObj.top);
+      var pre_bottom = cst_encode_box_custom_ui(apiObj.bottom);
+      wireObj.tag = 5;
+      wireObj.kind.Card.image = pre_image;
+      wireObj.kind.Card.top = pre_top;
+      wireObj.kind.Card.bottom = pre_bottom;
+      return;
+    }
+    if (apiObj is CustomUI_Feed) {
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_data = cst_encode_String(apiObj.data);
+      wireObj.tag = 6;
+      wireObj.kind.Feed.event = pre_event;
+      wireObj.kind.Feed.data = pre_data;
+      return;
+    }
+    if (apiObj is CustomUI_Button) {
+      var pre_label = cst_encode_String(apiObj.label);
+      var pre_on_click = cst_encode_opt_box_ui_action(apiObj.onClick);
+      wireObj.tag = 7;
+      wireObj.kind.Button.label = pre_label;
+      wireObj.kind.Button.on_click = pre_on_click;
+      return;
+    }
+    if (apiObj is CustomUI_InlineSetting) {
+      var pre_setting_id = cst_encode_String(apiObj.settingId);
+      var pre_setting_kind = cst_encode_setting_kind(apiObj.settingKind);
+      var pre_on_commit = cst_encode_opt_box_ui_action(apiObj.onCommit);
+      wireObj.tag = 8;
+      wireObj.kind.InlineSetting.setting_id = pre_setting_id;
+      wireObj.kind.InlineSetting.setting_kind = pre_setting_kind;
+      wireObj.kind.InlineSetting.on_commit = pre_on_commit;
+      return;
+    }
+    if (apiObj is CustomUI_Slot) {
+      var pre_id = cst_encode_String(apiObj.id);
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      wireObj.tag = 9;
+      wireObj.kind.Slot.id = pre_id;
+      wireObj.kind.Slot.child = pre_child;
+      return;
+    }
+    if (apiObj is CustomUI_Column) {
+      var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      wireObj.tag = 10;
+      wireObj.kind.Column.children = pre_children;
+      return;
+    }
+    if (apiObj is CustomUI_Row) {
+      var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      wireObj.tag = 11;
+      wireObj.kind.Row.children = pre_children;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_dropdown_option(
+      DropdownOption apiObj, wire_cst_dropdown_option wireObj) {
+    wireObj.label = cst_encode_String(apiObj.label);
+    wireObj.value = cst_encode_String(apiObj.value);
   }
 
   @protected
@@ -1241,6 +1778,45 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_entry_activity(
+      EntryActivity apiObj, wire_cst_entry_activity wireObj) {
+    if (apiObj is EntryActivity_EpisodeActivity) {
+      var pre_progress = cst_encode_i_32(apiObj.progress);
+      wireObj.tag = 0;
+      wireObj.kind.EpisodeActivity.progress = pre_progress;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_entry_detailed(
+      EntryDetailed apiObj, wire_cst_entry_detailed wireObj) {
+    wireObj.id = cst_encode_list_entry_id(apiObj.id);
+    wireObj.url = cst_encode_String(apiObj.url);
+    wireObj.titles = cst_encode_list_String(apiObj.titles);
+    wireObj.author = cst_encode_opt_list_String(apiObj.author);
+    wireObj.ui = cst_encode_opt_box_autoadd_custom_ui(apiObj.ui);
+    wireObj.meta = cst_encode_opt_Map_String_String_None(apiObj.meta);
+    wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
+    wireObj.status = cst_encode_release_status(apiObj.status);
+    wireObj.description = cst_encode_String(apiObj.description);
+    wireObj.language = cst_encode_String(apiObj.language);
+    wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
+    wireObj.episodes = cst_encode_list_episode(apiObj.episodes);
+    wireObj.genres = cst_encode_opt_list_String(apiObj.genres);
+    wireObj.rating = cst_encode_opt_box_autoadd_f_32(apiObj.rating);
+    wireObj.views = cst_encode_opt_box_autoadd_f_32(apiObj.views);
+    wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_entry_detailed_result(
+      EntryDetailedResult apiObj, wire_cst_entry_detailed_result wireObj) {
+    cst_api_fill_to_wire_entry_detailed(apiObj.entry, wireObj.entry);
+    wireObj.settings = cst_encode_Map_String_setting_None(apiObj.settings);
+  }
+
+  @protected
   void cst_api_fill_to_wire_entry_id(
       EntryId apiObj, wire_cst_entry_id wireObj) {
     wireObj.uid = cst_encode_String(apiObj.uid);
@@ -1254,6 +1830,78 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.hasnext = cst_encode_opt_box_autoadd_bool(apiObj.hasnext);
     wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
     wireObj.content = cst_encode_list_entry(apiObj.content);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_episode(Episode apiObj, wire_cst_episode wireObj) {
+    wireObj.id = cst_encode_list_episode_id(apiObj.id);
+    wireObj.name = cst_encode_String(apiObj.name);
+    wireObj.description = cst_encode_opt_String(apiObj.description);
+    wireObj.url = cst_encode_String(apiObj.url);
+    wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
+    wireObj.timestamp = cst_encode_opt_String(apiObj.timestamp);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_episode_id(
+      EpisodeId apiObj, wire_cst_episode_id wireObj) {
+    wireObj.uid = cst_encode_String(apiObj.uid);
+    wireObj.iddata = cst_encode_opt_String(apiObj.iddata);
+    wireObj.id_type = cst_encode_String(apiObj.idType);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_event_data(
+      EventData apiObj, wire_cst_event_data wireObj) {
+    if (apiObj is EventData_SwapContent) {
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_targetid = cst_encode_String(apiObj.targetid);
+      var pre_data = cst_encode_String(apiObj.data);
+      wireObj.tag = 0;
+      wireObj.kind.SwapContent.event = pre_event;
+      wireObj.kind.SwapContent.targetid = pre_targetid;
+      wireObj.kind.SwapContent.data = pre_data;
+      return;
+    }
+    if (apiObj is EventData_FeedUpdate) {
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_data = cst_encode_String(apiObj.data);
+      var pre_page = cst_encode_i_32(apiObj.page);
+      wireObj.tag = 1;
+      wireObj.kind.FeedUpdate.event = pre_event;
+      wireObj.kind.FeedUpdate.data = pre_data;
+      wireObj.kind.FeedUpdate.page = pre_page;
+      return;
+    }
+    if (apiObj is EventData_Action) {
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_data = cst_encode_String(apiObj.data);
+      wireObj.tag = 2;
+      wireObj.kind.Action.event = pre_event;
+      wireObj.kind.Action.data = pre_data;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_event_result(
+      EventResult apiObj, wire_cst_event_result wireObj) {
+    if (apiObj is EventResult_SwapContent) {
+      var pre_customui = cst_encode_box_autoadd_custom_ui(apiObj.customui);
+      wireObj.tag = 0;
+      wireObj.kind.SwapContent.customui = pre_customui;
+      return;
+    }
+    if (apiObj is EventResult_FeedUpdate) {
+      var pre_customui = cst_encode_list_custom_ui(apiObj.customui);
+      var pre_hasnext = cst_encode_opt_box_autoadd_bool(apiObj.hasnext);
+      var pre_length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
+      wireObj.tag = 1;
+      wireObj.kind.FeedUpdate.customui = pre_customui;
+      wireObj.kind.FeedUpdate.hasnext = pre_hasnext;
+      wireObj.kind.FeedUpdate.length = pre_length;
+      return;
+    }
   }
 
   @protected
@@ -1343,9 +1991,82 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_image_list_audio(
+      ImageListAudio apiObj, wire_cst_image_list_audio wireObj) {
+    cst_api_fill_to_wire_link(apiObj.link, wireObj.link);
+    wireObj.from = cst_encode_i_32(apiObj.from);
+    wireObj.to = cst_encode_i_32(apiObj.to);
+  }
+
+  @protected
   void cst_api_fill_to_wire_link(Link apiObj, wire_cst_link wireObj) {
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.header = cst_encode_opt_Map_String_String_None(apiObj.header);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_mp_3_chapter(
+      Mp3Chapter apiObj, wire_cst_mp_3_chapter wireObj) {
+    wireObj.title = cst_encode_String(apiObj.title);
+    cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_paragraph(
+      Paragraph apiObj, wire_cst_paragraph wireObj) {
+    if (apiObj is Paragraph_Text) {
+      var pre_content = cst_encode_String(apiObj.content);
+      wireObj.tag = 0;
+      wireObj.kind.Text.content = pre_content;
+      return;
+    }
+    if (apiObj is Paragraph_CustomUI) {
+      var pre_ui = cst_encode_box_custom_ui(apiObj.ui);
+      wireObj.tag = 1;
+      wireObj.kind.CustomUI.ui = pre_ui;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_permission(
+      Permission apiObj, wire_cst_permission wireObj) {
+    if (apiObj is Permission_Storage) {
+      var pre_path = cst_encode_String(apiObj.path);
+      var pre_write = cst_encode_bool(apiObj.write);
+      wireObj.tag = 0;
+      wireObj.kind.Storage.path = pre_path;
+      wireObj.kind.Storage.write = pre_write;
+      return;
+    }
+    if (apiObj is Permission_Network) {
+      var pre_domain = cst_encode_String(apiObj.domain);
+      wireObj.tag = 1;
+      wireObj.kind.Network.domain = pre_domain;
+      return;
+    }
+    if (apiObj is Permission_ActionPopup) {
+      wireObj.tag = 2;
+      return;
+    }
+    if (apiObj is Permission_ArbitraryNetwork) {
+      wireObj.tag = 3;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_popup_action(
+      PopupAction apiObj, wire_cst_popup_action wireObj) {
+    wireObj.label = cst_encode_String(apiObj.label);
+    wireObj.onclick = cst_encode_box_action(apiObj.onclick);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_record_string_setting(
+      (String, Setting) apiObj, wire_cst_record_string_setting wireObj) {
+    wireObj.field0 = cst_encode_String(apiObj.$1);
+    cst_api_fill_to_wire_setting(apiObj.$2, wireObj.field1);
   }
 
   @protected
@@ -1372,6 +2093,151 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.content = cst_encode_list_remote_extension(apiObj.content);
     wireObj.hasnext = cst_encode_opt_box_autoadd_bool(apiObj.hasnext);
     wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_setting(Setting apiObj, wire_cst_setting wireObj) {
+    wireObj.label = cst_encode_String(apiObj.label);
+    cst_api_fill_to_wire_setting_value(apiObj.value, wireObj.value);
+    cst_api_fill_to_wire_setting_value(apiObj.default_, wireObj.default_);
+    wireObj.visible = cst_encode_bool(apiObj.visible);
+    wireObj.ui = cst_encode_opt_box_autoadd_settings_ui(apiObj.ui);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_setting_value(
+      SettingValue apiObj, wire_cst_setting_value wireObj) {
+    if (apiObj is SettingValue_String) {
+      var pre_data = cst_encode_String(apiObj.data);
+      wireObj.tag = 0;
+      wireObj.kind.String.data = pre_data;
+      return;
+    }
+    if (apiObj is SettingValue_Number) {
+      var pre_data = cst_encode_f_32(apiObj.data);
+      wireObj.tag = 1;
+      wireObj.kind.Number.data = pre_data;
+      return;
+    }
+    if (apiObj is SettingValue_Boolean) {
+      var pre_data = cst_encode_bool(apiObj.data);
+      wireObj.tag = 2;
+      wireObj.kind.Boolean.data = pre_data;
+      return;
+    }
+    if (apiObj is SettingValue_StringList) {
+      var pre_data = cst_encode_list_String(apiObj.data);
+      wireObj.tag = 3;
+      wireObj.kind.StringList.data = pre_data;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_settings_ui(
+      SettingsUI apiObj, wire_cst_settings_ui wireObj) {
+    if (apiObj is SettingsUI_CheckBox) {
+      wireObj.tag = 0;
+      return;
+    }
+    if (apiObj is SettingsUI_Slider) {
+      var pre_min = cst_encode_f_64(apiObj.min);
+      var pre_max = cst_encode_f_64(apiObj.max);
+      var pre_step = cst_encode_i_32(apiObj.step);
+      wireObj.tag = 1;
+      wireObj.kind.Slider.min = pre_min;
+      wireObj.kind.Slider.max = pre_max;
+      wireObj.kind.Slider.step = pre_step;
+      return;
+    }
+    if (apiObj is SettingsUI_Dropdown) {
+      var pre_options = cst_encode_list_dropdown_option(apiObj.options);
+      wireObj.tag = 2;
+      wireObj.kind.Dropdown.options = pre_options;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_source(Source apiObj, wire_cst_source wireObj) {
+    if (apiObj is Source_Epub) {
+      var pre_link = cst_encode_box_autoadd_link(apiObj.link);
+      wireObj.tag = 0;
+      wireObj.kind.Epub.link = pre_link;
+      return;
+    }
+    if (apiObj is Source_Pdf) {
+      var pre_link = cst_encode_box_autoadd_link(apiObj.link);
+      wireObj.tag = 1;
+      wireObj.kind.Pdf.link = pre_link;
+      return;
+    }
+    if (apiObj is Source_Imagelist) {
+      var pre_links = cst_encode_list_link(apiObj.links);
+      var pre_audio = cst_encode_opt_list_image_list_audio(apiObj.audio);
+      wireObj.tag = 2;
+      wireObj.kind.Imagelist.links = pre_links;
+      wireObj.kind.Imagelist.audio = pre_audio;
+      return;
+    }
+    if (apiObj is Source_M3u8) {
+      var pre_link = cst_encode_box_autoadd_link(apiObj.link);
+      var pre_sub = cst_encode_list_subtitles(apiObj.sub);
+      wireObj.tag = 3;
+      wireObj.kind.M3u8.link = pre_link;
+      wireObj.kind.M3u8.sub = pre_sub;
+      return;
+    }
+    if (apiObj is Source_Mp3) {
+      var pre_chapters = cst_encode_list_mp_3_chapter(apiObj.chapters);
+      wireObj.tag = 4;
+      wireObj.kind.Mp3.chapters = pre_chapters;
+      return;
+    }
+    if (apiObj is Source_Paragraphlist) {
+      var pre_paragraphs = cst_encode_list_paragraph(apiObj.paragraphs);
+      wireObj.tag = 5;
+      wireObj.kind.Paragraphlist.paragraphs = pre_paragraphs;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_source_result(
+      SourceResult apiObj, wire_cst_source_result wireObj) {
+    cst_api_fill_to_wire_source(apiObj.source, wireObj.source);
+    wireObj.settings = cst_encode_Map_String_setting_None(apiObj.settings);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_subtitles(
+      Subtitles apiObj, wire_cst_subtitles wireObj) {
+    wireObj.title = cst_encode_String(apiObj.title);
+    cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_ui_action(
+      UIAction apiObj, wire_cst_ui_action wireObj) {
+    if (apiObj is UIAction_Action) {
+      var pre_action = cst_encode_box_autoadd_action(apiObj.action);
+      wireObj.tag = 0;
+      wireObj.kind.Action.action = pre_action;
+      return;
+    }
+    if (apiObj is UIAction_SwapContent) {
+      var pre_targetid = cst_encode_String(apiObj.targetid);
+      var pre_event = cst_encode_String(apiObj.event);
+      var pre_data = cst_encode_String(apiObj.data);
+      var pre_placeholder =
+          cst_encode_opt_box_autoadd_custom_ui(apiObj.placeholder);
+      wireObj.tag = 1;
+      wireObj.kind.SwapContent.targetid = pre_targetid;
+      wireObj.kind.SwapContent.event = pre_event;
+      wireObj.kind.SwapContent.data = pre_data;
+      wireObj.kind.SwapContent.placeholder = pre_placeholder;
+      return;
+    }
   }
 
   @protected
@@ -1429,6 +2295,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double cst_encode_f_32(double raw);
 
   @protected
+  double cst_encode_f_64(double raw);
+
+  @protected
   int cst_encode_i_32(int raw);
 
   @protected
@@ -1436,6 +2305,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int cst_encode_release_status(ReleaseStatus raw);
+
+  @protected
+  int cst_encode_setting_kind(SettingKind raw);
 
   @protected
   int cst_encode_source_open_type(SourceOpenType raw);
@@ -1463,6 +2335,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          CancellationToken self, SseSerializer serializer);
 
   @protected
   void
@@ -1555,6 +2432,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          CancellationToken self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
           ExtensionClient self, SseSerializer serializer);
 
@@ -1593,7 +2475,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_account(Account self, SseSerializer serializer);
+
+  @protected
   void sse_encode_action(Action self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_auth_data(AuthData self, SseSerializer serializer);
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
@@ -1605,6 +2493,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          CancellationToken self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_action(Action self, SseSerializer serializer);
@@ -1633,6 +2526,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_episode_id(
       EpisodeId self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_event_data(
+      EventData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_event_result(
+      EventResult self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_extension_repo(
@@ -1702,6 +2603,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_episode_id(EpisodeId self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_event_data(EventData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_event_result(EventResult self, SseSerializer serializer);
 
   @protected
   void sse_encode_extension_data(ExtensionData self, SseSerializer serializer);
@@ -1841,11 +2748,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           CancelToken? self, SseSerializer serializer);
 
   @protected
+  void
+      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+          CancellationToken? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_custom_ui(
       CustomUI? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_event_data(
+      EventData? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_f_32(double? self, SseSerializer serializer);
@@ -2273,6 +3189,34 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__crate__api__extension__ProxyExtension_detail =
       _wire__crate__api__extension__ProxyExtension_detailPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_event(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_event(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_eventPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Int32,
+            ffi.Int32,
+          )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_event',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_event =
+      _wire__crate__api__extension__ProxyExtension_eventPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   void wire__crate__api__extension__ProxyExtension_get_extension_data(
@@ -2991,6 +3935,40 @@ class RustLibWire implements BaseWire {
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationTokenPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken',
+  );
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationTokenPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationTokenPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+    'frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken',
+  );
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationTokenPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     ffi.Pointer<ffi.Void> ptr,
   ) {
@@ -3126,6 +4104,17 @@ class RustLibWire implements BaseWire {
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtensionPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
+  ffi.Pointer<wire_cst_action> cst_new_box_action() {
+    return _cst_new_box_action();
+  }
+
+  late final _cst_new_box_actionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_action> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_action',
+  );
+  late final _cst_new_box_action = _cst_new_box_actionPtr
+      .asFunction<ffi.Pointer<wire_cst_action> Function()>();
+
   ffi.Pointer<ffi.UintPtr>
       cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     int value,
@@ -3144,6 +4133,17 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
+  ffi.Pointer<wire_cst_action> cst_new_box_autoadd_action() {
+    return _cst_new_box_autoadd_action();
+  }
+
+  late final _cst_new_box_autoadd_actionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_action> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_action',
+  );
+  late final _cst_new_box_autoadd_action = _cst_new_box_autoadd_actionPtr
+      .asFunction<ffi.Pointer<wire_cst_action> Function()>();
+
   ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(bool value) {
     return _cst_new_box_autoadd_bool(value);
   }
@@ -3154,6 +4154,39 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_bool = _cst_new_box_autoadd_boolPtr
       .asFunction<ffi.Pointer<ffi.Bool> Function(bool)>();
+
+  ffi.Pointer<wire_cst_custom_ui> cst_new_box_autoadd_custom_ui() {
+    return _cst_new_box_autoadd_custom_ui();
+  }
+
+  late final _cst_new_box_autoadd_custom_uiPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_custom_ui> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui',
+  );
+  late final _cst_new_box_autoadd_custom_ui = _cst_new_box_autoadd_custom_uiPtr
+      .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
+
+  ffi.Pointer<wire_cst_entry> cst_new_box_autoadd_entry() {
+    return _cst_new_box_autoadd_entry();
+  }
+
+  late final _cst_new_box_autoadd_entryPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_entry> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_entry',
+  );
+  late final _cst_new_box_autoadd_entry = _cst_new_box_autoadd_entryPtr
+      .asFunction<ffi.Pointer<wire_cst_entry> Function()>();
+
+  ffi.Pointer<wire_cst_entry_detailed> cst_new_box_autoadd_entry_detailed() {
+    return _cst_new_box_autoadd_entry_detailed();
+  }
+
+  late final _cst_new_box_autoadd_entry_detailedPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>>(
+      'frbgen_rdion_runtime_cst_new_box_autoadd_entry_detailed');
+  late final _cst_new_box_autoadd_entry_detailed =
+      _cst_new_box_autoadd_entry_detailedPtr
+          .asFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>();
 
   ffi.Pointer<wire_cst_extension_repo> cst_new_box_autoadd_extension_repo() {
     return _cst_new_box_autoadd_extension_repo();
@@ -3199,6 +4232,40 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_link = _cst_new_box_autoadd_linkPtr
       .asFunction<ffi.Pointer<wire_cst_link> Function()>();
 
+  ffi.Pointer<wire_cst_settings_ui> cst_new_box_autoadd_settings_ui() {
+    return _cst_new_box_autoadd_settings_ui();
+  }
+
+  late final _cst_new_box_autoadd_settings_uiPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_settings_ui> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_settings_ui',
+  );
+  late final _cst_new_box_autoadd_settings_ui =
+      _cst_new_box_autoadd_settings_uiPtr
+          .asFunction<ffi.Pointer<wire_cst_settings_ui> Function()>();
+
+  ffi.Pointer<wire_cst_custom_ui> cst_new_box_custom_ui() {
+    return _cst_new_box_custom_ui();
+  }
+
+  late final _cst_new_box_custom_uiPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_custom_ui> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_custom_ui',
+  );
+  late final _cst_new_box_custom_ui = _cst_new_box_custom_uiPtr
+      .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
+
+  ffi.Pointer<wire_cst_ui_action> cst_new_box_ui_action() {
+    return _cst_new_box_ui_action();
+  }
+
+  late final _cst_new_box_ui_actionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_ui_action> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_ui_action',
+  );
+  late final _cst_new_box_ui_action = _cst_new_box_ui_actionPtr
+      .asFunction<ffi.Pointer<wire_cst_ui_action> Function()>();
+
   ffi.Pointer<
           wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension>
       cst_new_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
@@ -3235,6 +4302,30 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_String = _cst_new_list_StringPtr
       .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_custom_ui> cst_new_list_custom_ui(int len) {
+    return _cst_new_list_custom_ui(len);
+  }
+
+  late final _cst_new_list_custom_uiPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_custom_ui> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_custom_ui');
+  late final _cst_new_list_custom_ui = _cst_new_list_custom_uiPtr
+      .asFunction<ffi.Pointer<wire_cst_list_custom_ui> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_dropdown_option> cst_new_list_dropdown_option(
+    int len,
+  ) {
+    return _cst_new_list_dropdown_option(len);
+  }
+
+  late final _cst_new_list_dropdown_optionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_dropdown_option> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_dropdown_option');
+  late final _cst_new_list_dropdown_option = _cst_new_list_dropdown_optionPtr
+      .asFunction<ffi.Pointer<wire_cst_list_dropdown_option> Function(int)>();
+
   ffi.Pointer<wire_cst_list_entry> cst_new_list_entry(int len) {
     return _cst_new_list_entry(len);
   }
@@ -3257,6 +4348,28 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_entry_id = _cst_new_list_entry_idPtr
       .asFunction<ffi.Pointer<wire_cst_list_entry_id> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_episode> cst_new_list_episode(int len) {
+    return _cst_new_list_episode(len);
+  }
+
+  late final _cst_new_list_episodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_episode> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_episode');
+  late final _cst_new_list_episode = _cst_new_list_episodePtr
+      .asFunction<ffi.Pointer<wire_cst_list_episode> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_episode_id> cst_new_list_episode_id(int len) {
+    return _cst_new_list_episode_id(len);
+  }
+
+  late final _cst_new_list_episode_idPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_episode_id> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_episode_id');
+  late final _cst_new_list_episode_id = _cst_new_list_episode_idPtr
+      .asFunction<ffi.Pointer<wire_cst_list_episode_id> Function(int)>();
+
   ffi.Pointer<wire_cst_list_extension_type> cst_new_list_extension_type(
     int len,
   ) {
@@ -3270,6 +4383,30 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_extension_type = _cst_new_list_extension_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_extension_type> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_image_list_audio> cst_new_list_image_list_audio(
+    int len,
+  ) {
+    return _cst_new_list_image_list_audio(len);
+  }
+
+  late final _cst_new_list_image_list_audioPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_list_image_list_audio> Function(ffi.Int32)>>(
+      'frbgen_rdion_runtime_cst_new_list_image_list_audio');
+  late final _cst_new_list_image_list_audio = _cst_new_list_image_list_audioPtr
+      .asFunction<ffi.Pointer<wire_cst_list_image_list_audio> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_link> cst_new_list_link(int len) {
+    return _cst_new_list_link(len);
+  }
+
+  late final _cst_new_list_linkPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_cst_list_link> Function(ffi.Int32)>>(
+      'frbgen_rdion_runtime_cst_new_list_link');
+  late final _cst_new_list_link = _cst_new_list_linkPtr
+      .asFunction<ffi.Pointer<wire_cst_list_link> Function(int)>();
+
   ffi.Pointer<wire_cst_list_media_type> cst_new_list_media_type(int len) {
     return _cst_new_list_media_type(len);
   }
@@ -3280,6 +4417,39 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_media_type');
   late final _cst_new_list_media_type = _cst_new_list_media_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_media_type> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_mp_3_chapter> cst_new_list_mp_3_chapter(int len) {
+    return _cst_new_list_mp_3_chapter(len);
+  }
+
+  late final _cst_new_list_mp_3_chapterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_mp_3_chapter> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_mp_3_chapter');
+  late final _cst_new_list_mp_3_chapter = _cst_new_list_mp_3_chapterPtr
+      .asFunction<ffi.Pointer<wire_cst_list_mp_3_chapter> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_paragraph> cst_new_list_paragraph(int len) {
+    return _cst_new_list_paragraph(len);
+  }
+
+  late final _cst_new_list_paragraphPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_paragraph> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_paragraph');
+  late final _cst_new_list_paragraph = _cst_new_list_paragraphPtr
+      .asFunction<ffi.Pointer<wire_cst_list_paragraph> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_popup_action> cst_new_list_popup_action(int len) {
+    return _cst_new_list_popup_action(len);
+  }
+
+  late final _cst_new_list_popup_actionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_popup_action> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_popup_action');
+  late final _cst_new_list_popup_action = _cst_new_list_popup_actionPtr
+      .asFunction<ffi.Pointer<wire_cst_list_popup_action> Function(int)>();
 
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_new_list_prim_u_8_strict(
     int len,
@@ -3293,6 +4463,20 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_prim_u_8_strict');
   late final _cst_new_list_prim_u_8_strict = _cst_new_list_prim_u_8_strictPtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_record_string_setting>
+      cst_new_list_record_string_setting(int len) {
+    return _cst_new_list_record_string_setting(len);
+  }
+
+  late final _cst_new_list_record_string_settingPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<wire_cst_list_record_string_setting> Function(
+                  ffi.Int32)>>(
+      'frbgen_rdion_runtime_cst_new_list_record_string_setting');
+  late final _cst_new_list_record_string_setting =
+      _cst_new_list_record_string_settingPtr.asFunction<
+          ffi.Pointer<wire_cst_list_record_string_setting> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_string>
       cst_new_list_record_string_string(int len) {
@@ -3345,6 +4529,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_source_type = _cst_new_list_source_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_source_type> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_subtitles> cst_new_list_subtitles(int len) {
+    return _cst_new_list_subtitles(len);
+  }
+
+  late final _cst_new_list_subtitlesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_subtitles> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_subtitles');
+  late final _cst_new_list_subtitles = _cst_new_list_subtitlesPtr
+      .asFunction<ffi.Pointer<wire_cst_list_subtitles> Function(int)>();
+
   int dummy_method_to_enforce_bundling() {
     return _dummy_method_to_enforce_bundling();
   }
@@ -3383,6 +4578,14 @@ final class wire_cst_extension_repo extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
 }
 
+final class wire_cst_Action_OpenBrowser extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+}
+
+final class wire_cst_CustomUI_Text extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> text;
+}
+
 final class wire_cst_record_string_string extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
 
@@ -3402,19 +4605,25 @@ final class wire_cst_link extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_record_string_string> header;
 }
 
-final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension
-    extends ffi.Struct {
-  external ffi.Pointer<ffi.UintPtr> ptr;
+final class wire_cst_CustomUI_Image extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> image;
 
-  @ffi.Int32()
-  external int len;
+  external ffi.Pointer<ffi.Int32> width;
+
+  external ffi.Pointer<ffi.Int32> height;
 }
 
-final class wire_cst_list_String extends ffi.Struct {
-  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
+final class wire_cst_CustomUI_Link extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+}
+
+final class wire_cst_CustomUI_TimeStamp extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
 
   @ffi.Int32()
-  external int len;
+  external int display;
 }
 
 final class wire_cst_entry_id extends ffi.Struct {
@@ -3427,6 +4636,13 @@ final class wire_cst_entry_id extends ffi.Struct {
 
 final class wire_cst_list_entry_id extends ffi.Struct {
   external ffi.Pointer<wire_cst_entry_id> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_String extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
 
   @ffi.Int32()
   external int len;
@@ -3451,6 +4667,297 @@ final class wire_cst_entry extends ffi.Struct {
   external ffi.Pointer<ffi.Float> views;
 
   external ffi.Pointer<ffi.Int32> length;
+}
+
+final class wire_cst_CustomUI_EntryCard extends ffi.Struct {
+  external ffi.Pointer<wire_cst_entry> entry;
+}
+
+final class wire_cst_CustomUI_Card extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> image;
+
+  external ffi.Pointer<wire_cst_custom_ui> top;
+
+  external ffi.Pointer<wire_cst_custom_ui> bottom;
+}
+
+final class wire_cst_custom_ui extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external CustomUIKind kind;
+}
+
+final class CustomUIKind extends ffi.Union {
+  external wire_cst_CustomUI_Text Text;
+
+  external wire_cst_CustomUI_Image Image;
+
+  external wire_cst_CustomUI_Link Link;
+
+  external wire_cst_CustomUI_TimeStamp TimeStamp;
+
+  external wire_cst_CustomUI_EntryCard EntryCard;
+
+  external wire_cst_CustomUI_Card Card;
+
+  external wire_cst_CustomUI_Feed Feed;
+
+  external wire_cst_CustomUI_Button Button;
+
+  external wire_cst_CustomUI_InlineSetting InlineSetting;
+
+  external wire_cst_CustomUI_Slot Slot;
+
+  external wire_cst_CustomUI_Column Column;
+
+  external wire_cst_CustomUI_Row Row;
+}
+
+final class wire_cst_CustomUI_Feed extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class wire_cst_CustomUI_Button extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+
+  external ffi.Pointer<wire_cst_ui_action> on_click;
+}
+
+final class wire_cst_ui_action extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external UIActionKind kind;
+}
+
+final class UIActionKind extends ffi.Union {
+  external wire_cst_UIAction_Action Action;
+
+  external wire_cst_UIAction_SwapContent SwapContent;
+}
+
+final class wire_cst_UIAction_Action extends ffi.Struct {
+  external ffi.Pointer<wire_cst_action> action;
+}
+
+final class wire_cst_action extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external ActionKind kind;
+}
+
+final class ActionKind extends ffi.Union {
+  external wire_cst_Action_OpenBrowser OpenBrowser;
+
+  external wire_cst_Action_Popup Popup;
+
+  external wire_cst_Action_Nav Nav;
+
+  external wire_cst_Action_TriggerEvent TriggerEvent;
+
+  external wire_cst_Action_NavEntry NavEntry;
+}
+
+final class wire_cst_Action_Popup extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external ffi.Pointer<wire_cst_custom_ui> content;
+
+  external ffi.Pointer<wire_cst_list_popup_action> actions;
+}
+
+final class wire_cst_list_popup_action extends ffi.Struct {
+  external ffi.Pointer<wire_cst_popup_action> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_popup_action extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+
+  external ffi.Pointer<wire_cst_action> onclick;
+}
+
+final class wire_cst_Action_Nav extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external ffi.Pointer<wire_cst_custom_ui> content;
+}
+
+final class wire_cst_Action_TriggerEvent extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class wire_cst_Action_NavEntry extends ffi.Struct {
+  external ffi.Pointer<wire_cst_entry_detailed> entry;
+}
+
+final class wire_cst_entry_detailed extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_entry_id> id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_list_String> titles;
+
+  external ffi.Pointer<wire_cst_list_String> author;
+
+  external ffi.Pointer<wire_cst_custom_ui> ui;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> meta;
+
+  @ffi.Int32()
+  external int media_type;
+
+  @ffi.Int32()
+  external int status;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> language;
+
+  external ffi.Pointer<wire_cst_link> cover;
+
+  external ffi.Pointer<wire_cst_list_episode> episodes;
+
+  external ffi.Pointer<wire_cst_list_String> genres;
+
+  external ffi.Pointer<ffi.Float> rating;
+
+  external ffi.Pointer<ffi.Float> views;
+
+  external ffi.Pointer<ffi.Int32> length;
+}
+
+final class wire_cst_list_episode extends ffi.Struct {
+  external ffi.Pointer<wire_cst_episode> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_episode extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_episode_id> id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
+
+  external ffi.Pointer<wire_cst_link> cover;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+}
+
+final class wire_cst_list_episode_id extends ffi.Struct {
+  external ffi.Pointer<wire_cst_episode_id> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_episode_id extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> uid;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> iddata;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id_type;
+}
+
+final class wire_cst_UIAction_SwapContent extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> targetid;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+
+  external ffi.Pointer<wire_cst_custom_ui> placeholder;
+}
+
+final class wire_cst_CustomUI_InlineSetting extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> setting_id;
+
+  @ffi.Int32()
+  external int setting_kind;
+
+  external ffi.Pointer<wire_cst_ui_action> on_commit;
+}
+
+final class wire_cst_CustomUI_Slot extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
+
+  external ffi.Pointer<wire_cst_custom_ui> child;
+}
+
+final class wire_cst_CustomUI_Column extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_custom_ui> children;
+}
+
+final class wire_cst_list_custom_ui extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_CustomUI_Row extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_custom_ui> children;
+}
+
+final class wire_cst_SettingsUI_Slider extends ffi.Struct {
+  @ffi.Double()
+  external double min;
+
+  @ffi.Double()
+  external double max;
+
+  @ffi.Int32()
+  external int step;
+}
+
+final class wire_cst_dropdown_option extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+}
+
+final class wire_cst_list_dropdown_option extends ffi.Struct {
+  external ffi.Pointer<wire_cst_dropdown_option> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_SettingsUI_Dropdown extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_dropdown_option> options;
+}
+
+final class SettingsUIKind extends ffi.Union {
+  external wire_cst_SettingsUI_Slider Slider;
+
+  external wire_cst_SettingsUI_Dropdown Dropdown;
+}
+
+final class wire_cst_settings_ui extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external SettingsUIKind kind;
+}
+
+final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension
+    extends ffi.Struct {
+  external ffi.Pointer<ffi.UintPtr> ptr;
+
+  @ffi.Int32()
+  external int len;
 }
 
 final class wire_cst_list_entry extends ffi.Struct {
@@ -3533,8 +5040,134 @@ final class wire_cst_list_extension_type extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_image_list_audio extends ffi.Struct {
+  external wire_cst_link link;
+
+  @ffi.Int32()
+  external int from;
+
+  @ffi.Int32()
+  external int to;
+}
+
+final class wire_cst_list_image_list_audio extends ffi.Struct {
+  external ffi.Pointer<wire_cst_image_list_audio> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_list_link extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_list_media_type extends ffi.Struct {
   external ffi.Pointer<ffi.Int32> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_mp_3_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external wire_cst_link url;
+}
+
+final class wire_cst_list_mp_3_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_mp_3_chapter> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_Paragraph_Text extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
+}
+
+final class wire_cst_Paragraph_CustomUI extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> ui;
+}
+
+final class ParagraphKind extends ffi.Union {
+  external wire_cst_Paragraph_Text Text;
+
+  external wire_cst_Paragraph_CustomUI CustomUI;
+}
+
+final class wire_cst_paragraph extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external ParagraphKind kind;
+}
+
+final class wire_cst_list_paragraph extends ffi.Struct {
+  external ffi.Pointer<wire_cst_paragraph> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_SettingValue_String extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class wire_cst_SettingValue_Number extends ffi.Struct {
+  @ffi.Float()
+  external double data;
+}
+
+final class wire_cst_SettingValue_Boolean extends ffi.Struct {
+  @ffi.Bool()
+  external bool data;
+}
+
+final class wire_cst_SettingValue_StringList extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> data;
+}
+
+final class SettingValueKind extends ffi.Union {
+  external wire_cst_SettingValue_String String;
+
+  external wire_cst_SettingValue_Number Number;
+
+  external wire_cst_SettingValue_Boolean Boolean;
+
+  external wire_cst_SettingValue_StringList StringList;
+}
+
+final class wire_cst_setting_value extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external SettingValueKind kind;
+}
+
+final class wire_cst_setting extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
+
+  external wire_cst_setting_value value;
+
+  external wire_cst_setting_value default_;
+
+  @ffi.Bool()
+  external bool visible;
+
+  external ffi.Pointer<wire_cst_settings_ui> ui;
+}
+
+final class wire_cst_record_string_setting extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+
+  external wire_cst_setting field1;
+}
+
+final class wire_cst_list_record_string_setting extends ffi.Struct {
+  external ffi.Pointer<wire_cst_record_string_setting> ptr;
 
   @ffi.Int32()
   external int len;
@@ -3562,12 +5195,139 @@ final class wire_cst_list_remote_extension extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_subtitles extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external wire_cst_link url;
+}
+
+final class wire_cst_list_subtitles extends ffi.Struct {
+  external ffi.Pointer<wire_cst_subtitles> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_AuthData_Cookie extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> loginpage;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> logonpage;
+}
+
+final class AuthDataKind extends ffi.Union {
+  external wire_cst_AuthData_Cookie Cookie;
+}
+
+final class wire_cst_auth_data extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external AuthDataKind kind;
+}
+
+final class wire_cst_account extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> domain;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> user_name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
+
+  external wire_cst_auth_data auth;
+
+  external ffi.Pointer<wire_cst_list_record_string_string> creds;
+}
+
+final class wire_cst_EntryActivity_EpisodeActivity extends ffi.Struct {
+  @ffi.Int32()
+  external int progress;
+}
+
+final class EntryActivityKind extends ffi.Union {
+  external wire_cst_EntryActivity_EpisodeActivity EpisodeActivity;
+}
+
+final class wire_cst_entry_activity extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external EntryActivityKind kind;
+}
+
+final class wire_cst_entry_detailed_result extends ffi.Struct {
+  external wire_cst_entry_detailed entry;
+
+  external ffi.Pointer<wire_cst_list_record_string_setting> settings;
+}
+
 final class wire_cst_entry_list extends ffi.Struct {
   external ffi.Pointer<ffi.Bool> hasnext;
 
   external ffi.Pointer<ffi.Int32> length;
 
   external ffi.Pointer<wire_cst_list_entry> content;
+}
+
+final class wire_cst_EventData_SwapContent extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> targetid;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class wire_cst_EventData_FeedUpdate extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+
+  @ffi.Int32()
+  external int page;
+}
+
+final class wire_cst_EventData_Action extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> event;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class EventDataKind extends ffi.Union {
+  external wire_cst_EventData_SwapContent SwapContent;
+
+  external wire_cst_EventData_FeedUpdate FeedUpdate;
+
+  external wire_cst_EventData_Action Action;
+}
+
+final class wire_cst_event_data extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external EventDataKind kind;
+}
+
+final class wire_cst_EventResult_SwapContent extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> customui;
+}
+
+final class wire_cst_EventResult_FeedUpdate extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_custom_ui> customui;
+
+  external ffi.Pointer<ffi.Bool> hasnext;
+
+  external ffi.Pointer<ffi.Int32> length;
+}
+
+final class EventResultKind extends ffi.Union {
+  external wire_cst_EventResult_SwapContent SwapContent;
+
+  external wire_cst_EventResult_FeedUpdate FeedUpdate;
+}
+
+final class wire_cst_event_result extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external EventResultKind kind;
 }
 
 final class wire_cst_extension_data extends ffi.Struct {
@@ -3615,10 +5375,89 @@ final class wire_cst_extension_manager_data extends ffi.Struct {
   external int api_version;
 }
 
+final class wire_cst_Permission_Storage extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> path;
+
+  @ffi.Bool()
+  external bool write;
+}
+
+final class wire_cst_Permission_Network extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> domain;
+}
+
+final class PermissionKind extends ffi.Union {
+  external wire_cst_Permission_Storage Storage;
+
+  external wire_cst_Permission_Network Network;
+}
+
+final class wire_cst_permission extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external PermissionKind kind;
+}
+
 final class wire_cst_remote_extension_result extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_remote_extension> content;
 
   external ffi.Pointer<ffi.Bool> hasnext;
 
   external ffi.Pointer<ffi.Int32> length;
+}
+
+final class wire_cst_Source_Epub extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> link;
+}
+
+final class wire_cst_Source_Pdf extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> link;
+}
+
+final class wire_cst_Source_Imagelist extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_link> links;
+
+  external ffi.Pointer<wire_cst_list_image_list_audio> audio;
+}
+
+final class wire_cst_Source_M3u8 extends ffi.Struct {
+  external ffi.Pointer<wire_cst_link> link;
+
+  external ffi.Pointer<wire_cst_list_subtitles> sub;
+}
+
+final class wire_cst_Source_Mp3 extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_mp_3_chapter> chapters;
+}
+
+final class wire_cst_Source_Paragraphlist extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_paragraph> paragraphs;
+}
+
+final class SourceKind extends ffi.Union {
+  external wire_cst_Source_Epub Epub;
+
+  external wire_cst_Source_Pdf Pdf;
+
+  external wire_cst_Source_Imagelist Imagelist;
+
+  external wire_cst_Source_M3u8 M3u8;
+
+  external wire_cst_Source_Mp3 Mp3;
+
+  external wire_cst_Source_Paragraphlist Paragraphlist;
+}
+
+final class wire_cst_source extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external SourceKind kind;
+}
+
+final class wire_cst_source_result extends ffi.Struct {
+  external wire_cst_source source;
+
+  external ffi.Pointer<wire_cst_list_record_string_setting> settings;
 }

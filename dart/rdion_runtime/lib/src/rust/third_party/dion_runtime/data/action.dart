@@ -13,7 +13,6 @@ import 'settings.dart';
 import 'source.dart';
 part 'action.freezed.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `EventData`, `EventResult`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
 @freezed
@@ -41,7 +40,42 @@ sealed class Action with _$Action {
   }) = Action_NavEntry;
 }
 
+@freezed
+sealed class EventData with _$EventData {
+  const EventData._();
+
+  const factory EventData.swapContent({
+    required String event,
+    required String targetid,
+    required String data,
+  }) = EventData_SwapContent;
+  const factory EventData.feedUpdate({
+    required String event,
+    required String data,
+    required int page,
+  }) = EventData_FeedUpdate;
+  const factory EventData.action({
+    required String event,
+    required String data,
+  }) = EventData_Action;
+}
+
+@freezed
+sealed class EventResult with _$EventResult {
+  const EventResult._();
+
+  const factory EventResult.swapContent({
+    required CustomUI customui,
+  }) = EventResult_SwapContent;
+  const factory EventResult.feedUpdate({
+    required List<CustomUI> customui,
+    bool? hasnext,
+    int? length,
+  }) = EventResult_FeedUpdate;
+}
+
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class PopupAction {
   final String label;
   final Action onclick;

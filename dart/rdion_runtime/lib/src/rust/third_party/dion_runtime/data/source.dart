@@ -16,6 +16,7 @@ part 'source.freezed.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Entry {
   final List<EntryId> id;
   final String url;
@@ -68,6 +69,7 @@ class Entry {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class EntryDetailed {
   final List<EntryId> id;
   final String url;
@@ -148,6 +150,7 @@ class EntryDetailed {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class EntryDetailedResult {
   final EntryDetailed entry;
   final Map<String, Setting> settings;
@@ -170,6 +173,7 @@ class EntryDetailedResult {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class EntryId {
   final String uid;
   final String? iddata;
@@ -195,6 +199,7 @@ class EntryId {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class EntryList {
   final bool? hasnext;
   final int? length;
@@ -223,6 +228,7 @@ class EntryList {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Episode {
   final List<EpisodeId> id;
   final String name;
@@ -263,6 +269,7 @@ class Episode {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class EpisodeId {
   final String uid;
   final String? iddata;
@@ -288,6 +295,7 @@ class EpisodeId {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class ImageListAudio {
   final Link link;
   final int from;
@@ -313,6 +321,7 @@ class ImageListAudio {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Link {
   final String url;
   final Map<String, String>? header;
@@ -338,6 +347,7 @@ class Link {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum MediaType {
   video,
   comic,
@@ -351,6 +361,7 @@ enum MediaType {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Mp3Chapter {
   final String title;
   final Link url;
@@ -385,6 +396,7 @@ sealed class Paragraph with _$Paragraph {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum ReleaseStatus {
   releasing,
   complete,
@@ -422,6 +434,7 @@ sealed class Source with _$Source {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class SourceResult {
   final Source source;
   final Map<String, Setting> settings;
@@ -444,6 +457,7 @@ class SourceResult {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 enum SourceType {
   epub,
   pdf,
@@ -455,6 +469,7 @@ enum SourceType {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 class Subtitles {
   final String title;
   final Link url;

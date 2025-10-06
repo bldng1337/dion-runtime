@@ -7,6 +7,7 @@ use specta::Type;
 use crate::data::source::{MediaType, SourceType};
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct ExtensionData {
@@ -37,6 +38,7 @@ pub struct ExtensionData {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Default, Clone, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum SourceOpenType {
@@ -46,6 +48,7 @@ pub enum SourceOpenType {
 }
 
 /// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
