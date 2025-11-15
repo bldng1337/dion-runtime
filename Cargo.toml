@@ -20,6 +20,7 @@ opt-level = 3
 
 [profile.dev]
 opt-level = 1
+debug="line-tables-only"
 panic = "unwind"
 
 [profile.dev.package."*"]
