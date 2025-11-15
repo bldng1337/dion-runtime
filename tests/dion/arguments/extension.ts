@@ -11,9 +11,7 @@ export default class extends DefaultExtension {
     settings: Record<string, Setting>,
   ): Promise<EntryDetailedResult> {
     assert(
-      typeof entryid === "object" &&
-        typeof entryid.uid === "string" &&
-        typeof entryid.type === "string",
+      typeof entryid === "object" && typeof entryid.uid === "string",
       "Argument entryid of detail is not a string",
     );
     assert(
@@ -53,9 +51,7 @@ export default class extends DefaultExtension {
       "Argument source of mapSource is not an object",
     );
     assert(
-      typeof epid === "object" &&
-        typeof epid.uid === "string" &&
-        typeof epid.type === "string",
+      typeof epid === "object" && typeof epid.uid === "string",
       "Argument epid of source is not a strin string",
     );
     assert(
@@ -99,9 +95,7 @@ export default class extends DefaultExtension {
     settings: Record<string, Setting>,
   ): Promise<SourceResult> {
     assert(
-      typeof epid === "object" &&
-        typeof epid.uid === "string" &&
-        typeof epid.type === "string",
+      typeof epid === "object" && typeof epid.uid === "string",
       "Argument epid of source is not a strin string",
     );
     assert(

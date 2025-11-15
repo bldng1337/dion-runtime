@@ -18,7 +18,7 @@ part 'source.freezed.dart';
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class Entry {
-  final List<EntryId> id;
+  final EntryId id;
   final String url;
   final String title;
   final MediaType mediaType;
@@ -71,7 +71,7 @@ class Entry {
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class EntryDetailed {
-  final List<EntryId> id;
+  final EntryId id;
   final String url;
   final List<String> titles;
   final List<String>? author;
@@ -177,16 +177,14 @@ class EntryDetailedResult {
 class EntryId {
   final String uid;
   final String? iddata;
-  final String idType;
 
   const EntryId({
     required this.uid,
     this.iddata,
-    required this.idType,
   });
 
   @override
-  int get hashCode => uid.hashCode ^ iddata.hashCode ^ idType.hashCode;
+  int get hashCode => uid.hashCode ^ iddata.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -194,8 +192,7 @@ class EntryId {
       other is EntryId &&
           runtimeType == other.runtimeType &&
           uid == other.uid &&
-          iddata == other.iddata &&
-          idType == other.idType;
+          iddata == other.iddata;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -230,7 +227,7 @@ class EntryList {
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class Episode {
-  final List<EpisodeId> id;
+  final EpisodeId id;
   final String name;
   final String? description;
   final String url;
@@ -273,16 +270,14 @@ class Episode {
 class EpisodeId {
   final String uid;
   final String? iddata;
-  final String idType;
 
   const EpisodeId({
     required this.uid,
     this.iddata,
-    required this.idType,
   });
 
   @override
-  int get hashCode => uid.hashCode ^ iddata.hashCode ^ idType.hashCode;
+  int get hashCode => uid.hashCode ^ iddata.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -290,8 +285,7 @@ class EpisodeId {
       other is EpisodeId &&
           runtimeType == other.runtimeType &&
           uid == other.uid &&
-          iddata == other.iddata &&
-          idType == other.idType;
+          iddata == other.iddata;
 }
 
 /// flutter_rust_bridge:non_opaque

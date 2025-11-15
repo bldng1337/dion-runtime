@@ -2269,7 +2269,7 @@ const _: fn() = || {
     }
     {
         let Entry = None::<dion_runtime::data::source::Entry>.unwrap();
-        let _: Vec<dion_runtime::data::source::EntryId> = Entry.id;
+        let _: dion_runtime::data::source::EntryId = Entry.id;
         let _: String = Entry.url;
         let _: String = Entry.title;
         let _: dion_runtime::data::source::MediaType = Entry.media_type;
@@ -2286,7 +2286,7 @@ const _: fn() = || {
     }
     {
         let EntryDetailed = None::<dion_runtime::data::source::EntryDetailed>.unwrap();
-        let _: Vec<dion_runtime::data::source::EntryId> = EntryDetailed.id;
+        let _: dion_runtime::data::source::EntryId = EntryDetailed.id;
         let _: String = EntryDetailed.url;
         let _: Vec<String> = EntryDetailed.titles;
         let _: Option<Vec<String>> = EntryDetailed.author;
@@ -2313,7 +2313,6 @@ const _: fn() = || {
         let EntryId = None::<dion_runtime::data::source::EntryId>.unwrap();
         let _: String = EntryId.uid;
         let _: Option<String> = EntryId.iddata;
-        let _: String = EntryId.id_type;
     }
     {
         let EntryList = None::<dion_runtime::data::source::EntryList>.unwrap();
@@ -2323,7 +2322,7 @@ const _: fn() = || {
     }
     {
         let Episode = None::<dion_runtime::data::source::Episode>.unwrap();
-        let _: Vec<dion_runtime::data::source::EpisodeId> = Episode.id;
+        let _: dion_runtime::data::source::EpisodeId = Episode.id;
         let _: String = Episode.name;
         let _: Option<String> = Episode.description;
         let _: String = Episode.url;
@@ -2334,7 +2333,6 @@ const _: fn() = || {
         let EpisodeId = None::<dion_runtime::data::source::EpisodeId>.unwrap();
         let _: String = EpisodeId.uid;
         let _: Option<String> = EpisodeId.iddata;
-        let _: String = EpisodeId.id_type;
     }
     match None::<dion_runtime::data::action::EventData>.unwrap() {
         dion_runtime::data::action::EventData::SwapContent {
@@ -3352,7 +3350,7 @@ impl SseDecode for dion_runtime::data::settings::DropdownOption {
 impl SseDecode for dion_runtime::data::source::Entry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <Vec<dion_runtime::data::source::EntryId>>::sse_decode(deserializer);
+        let mut var_id = <dion_runtime::data::source::EntryId>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_mediaType = <dion_runtime::data::source::MediaType>::sse_decode(deserializer);
@@ -3396,7 +3394,7 @@ impl SseDecode for dion_runtime::data::activity::EntryActivity {
 impl SseDecode for dion_runtime::data::source::EntryDetailed {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <Vec<dion_runtime::data::source::EntryId>>::sse_decode(deserializer);
+        let mut var_id = <dion_runtime::data::source::EntryId>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_titles = <Vec<String>>::sse_decode(deserializer);
         let mut var_author = <Option<Vec<String>>>::sse_decode(deserializer);
@@ -3455,11 +3453,9 @@ impl SseDecode for dion_runtime::data::source::EntryId {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_uid = <String>::sse_decode(deserializer);
         let mut var_iddata = <Option<String>>::sse_decode(deserializer);
-        let mut var_idType = <String>::sse_decode(deserializer);
         return dion_runtime::data::source::EntryId {
             uid: var_uid,
             iddata: var_iddata,
-            id_type: var_idType,
         };
     }
 }
@@ -3481,7 +3477,7 @@ impl SseDecode for dion_runtime::data::source::EntryList {
 impl SseDecode for dion_runtime::data::source::Episode {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_id = <Vec<dion_runtime::data::source::EpisodeId>>::sse_decode(deserializer);
+        let mut var_id = <dion_runtime::data::source::EpisodeId>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <Option<String>>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
@@ -3503,11 +3499,9 @@ impl SseDecode for dion_runtime::data::source::EpisodeId {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_uid = <String>::sse_decode(deserializer);
         let mut var_iddata = <Option<String>>::sse_decode(deserializer);
-        let mut var_idType = <String>::sse_decode(deserializer);
         return dion_runtime::data::source::EpisodeId {
             uid: var_uid,
             iddata: var_iddata,
-            id_type: var_idType,
         };
     }
 }
@@ -3834,20 +3828,6 @@ impl SseDecode for Vec<dion_runtime::data::source::Entry> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::data::source::EntryId> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::data::source::EntryId>::sse_decode(
-                deserializer,
-            ));
-        }
-        return ans_;
-    }
-}
-
 impl SseDecode for Vec<dion_runtime::data::source::Episode> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3855,20 +3835,6 @@ impl SseDecode for Vec<dion_runtime::data::source::Episode> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<dion_runtime::data::source::Episode>::sse_decode(
-                deserializer,
-            ));
-        }
-        return ans_;
-    }
-}
-
-impl SseDecode for Vec<dion_runtime::data::source::EpisodeId> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::data::source::EpisodeId>::sse_decode(
                 deserializer,
             ));
         }
@@ -5121,7 +5087,6 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::En
         [
             self.0.uid.into_into_dart().into_dart(),
             self.0.iddata.into_into_dart().into_dart(),
-            self.0.id_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5190,7 +5155,6 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Ep
         [
             self.0.uid.into_into_dart().into_dart(),
             self.0.iddata.into_into_dart().into_dart(),
-            self.0.id_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -6359,7 +6323,7 @@ impl SseEncode for dion_runtime::data::settings::DropdownOption {
 impl SseEncode for dion_runtime::data::source::Entry {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<dion_runtime::data::source::EntryId>>::sse_encode(self.id, serializer);
+        <dion_runtime::data::source::EntryId>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.url, serializer);
         <String>::sse_encode(self.title, serializer);
         <dion_runtime::data::source::MediaType>::sse_encode(self.media_type, serializer);
@@ -6389,7 +6353,7 @@ impl SseEncode for dion_runtime::data::activity::EntryActivity {
 impl SseEncode for dion_runtime::data::source::EntryDetailed {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<dion_runtime::data::source::EntryId>>::sse_encode(self.id, serializer);
+        <dion_runtime::data::source::EntryId>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.url, serializer);
         <Vec<String>>::sse_encode(self.titles, serializer);
         <Option<Vec<String>>>::sse_encode(self.author, serializer);
@@ -6424,7 +6388,6 @@ impl SseEncode for dion_runtime::data::source::EntryId {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.uid, serializer);
         <Option<String>>::sse_encode(self.iddata, serializer);
-        <String>::sse_encode(self.id_type, serializer);
     }
 }
 
@@ -6440,7 +6403,7 @@ impl SseEncode for dion_runtime::data::source::EntryList {
 impl SseEncode for dion_runtime::data::source::Episode {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<dion_runtime::data::source::EpisodeId>>::sse_encode(self.id, serializer);
+        <dion_runtime::data::source::EpisodeId>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.url, serializer);
@@ -6454,7 +6417,6 @@ impl SseEncode for dion_runtime::data::source::EpisodeId {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.uid, serializer);
         <Option<String>>::sse_encode(self.iddata, serializer);
-        <String>::sse_encode(self.id_type, serializer);
     }
 }
 
@@ -6706,32 +6668,12 @@ impl SseEncode for Vec<dion_runtime::data::source::Entry> {
     }
 }
 
-impl SseEncode for Vec<dion_runtime::data::source::EntryId> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <dion_runtime::data::source::EntryId>::sse_encode(item, serializer);
-        }
-    }
-}
-
 impl SseEncode for Vec<dion_runtime::data::source::Episode> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <dion_runtime::data::source::Episode>::sse_encode(item, serializer);
-        }
-    }
-}
-
-impl SseEncode for Vec<dion_runtime::data::source::EpisodeId> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <dion_runtime::data::source::EpisodeId>::sse_encode(item, serializer);
         }
     }
 }
@@ -7944,7 +7886,6 @@ mod io {
             dion_runtime::data::source::EntryId {
                 uid: self.uid.cst_decode(),
                 iddata: self.iddata.cst_decode(),
-                id_type: self.id_type.cst_decode(),
             }
         }
     }
@@ -7977,7 +7918,6 @@ mod io {
             dion_runtime::data::source::EpisodeId {
                 uid: self.uid.cst_decode(),
                 iddata: self.iddata.cst_decode(),
-                id_type: self.id_type.cst_decode(),
             }
         }
     }
@@ -8197,29 +8137,9 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::data::source::EntryId>> for *mut wire_cst_list_entry_id {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::data::source::EntryId> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
     impl CstDecode<Vec<dion_runtime::data::source::Episode>> for *mut wire_cst_list_episode {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::Episode> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
-    impl CstDecode<Vec<dion_runtime::data::source::EpisodeId>> for *mut wire_cst_list_episode_id {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::data::source::EpisodeId> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -8699,7 +8619,7 @@ mod io {
     impl NewWithNullPtr for wire_cst_entry {
         fn new_with_null_ptr() -> Self {
             Self {
-                id: core::ptr::null_mut(),
+                id: Default::default(),
                 url: core::ptr::null_mut(),
                 title: core::ptr::null_mut(),
                 media_type: Default::default(),
@@ -8732,7 +8652,7 @@ mod io {
     impl NewWithNullPtr for wire_cst_entry_detailed {
         fn new_with_null_ptr() -> Self {
             Self {
-                id: core::ptr::null_mut(),
+                id: Default::default(),
                 url: core::ptr::null_mut(),
                 titles: core::ptr::null_mut(),
                 author: core::ptr::null_mut(),
@@ -8774,7 +8694,6 @@ mod io {
             Self {
                 uid: core::ptr::null_mut(),
                 iddata: core::ptr::null_mut(),
-                id_type: core::ptr::null_mut(),
             }
         }
     }
@@ -8800,7 +8719,7 @@ mod io {
     impl NewWithNullPtr for wire_cst_episode {
         fn new_with_null_ptr() -> Self {
             Self {
-                id: core::ptr::null_mut(),
+                id: Default::default(),
                 name: core::ptr::null_mut(),
                 description: core::ptr::null_mut(),
                 url: core::ptr::null_mut(),
@@ -8819,7 +8738,6 @@ mod io {
             Self {
                 uid: core::ptr::null_mut(),
                 iddata: core::ptr::null_mut(),
-                id_type: core::ptr::null_mut(),
             }
         }
     }
@@ -9897,40 +9815,12 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_entry_id(
-        len: i32,
-    ) -> *mut wire_cst_list_entry_id {
-        let wrap = wire_cst_list_entry_id {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_entry_id>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_episode(
         len: i32,
     ) -> *mut wire_cst_list_episode {
         let wrap = wire_cst_list_episode {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
                 <wire_cst_episode>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_episode_id(
-        len: i32,
-    ) -> *mut wire_cst_list_episode_id {
-        let wrap = wire_cst_list_episode_id {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_episode_id>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -10295,7 +10185,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_entry {
-        id: *mut wire_cst_list_entry_id,
+        id: wire_cst_entry_id,
         url: *mut wire_cst_list_prim_u_8_strict,
         title: *mut wire_cst_list_prim_u_8_strict,
         media_type: i32,
@@ -10325,7 +10215,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_entry_detailed {
-        id: *mut wire_cst_list_entry_id,
+        id: wire_cst_entry_id,
         url: *mut wire_cst_list_prim_u_8_strict,
         titles: *mut wire_cst_list_String,
         author: *mut wire_cst_list_String,
@@ -10353,7 +10243,6 @@ mod io {
     pub struct wire_cst_entry_id {
         uid: *mut wire_cst_list_prim_u_8_strict,
         iddata: *mut wire_cst_list_prim_u_8_strict,
-        id_type: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10365,7 +10254,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_episode {
-        id: *mut wire_cst_list_episode_id,
+        id: wire_cst_episode_id,
         name: *mut wire_cst_list_prim_u_8_strict,
         description: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
@@ -10377,7 +10266,6 @@ mod io {
     pub struct wire_cst_episode_id {
         uid: *mut wire_cst_list_prim_u_8_strict,
         iddata: *mut wire_cst_list_prim_u_8_strict,
-        id_type: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10568,20 +10456,8 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_entry_id {
-        ptr: *mut wire_cst_entry_id,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_episode {
         ptr: *mut wire_cst_episode,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_list_episode_id {
-        ptr: *mut wire_cst_episode_id,
         len: i32,
     }
     #[repr(C)]

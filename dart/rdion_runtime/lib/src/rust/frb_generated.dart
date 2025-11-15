@@ -2459,7 +2459,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 9)
       throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return Entry(
-      id: dco_decode_list_entry_id(arr[0]),
+      id: dco_decode_entry_id(arr[0]),
       url: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
       mediaType: dco_decode_media_type(arr[3]),
@@ -2491,7 +2491,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 16)
       throw Exception('unexpected arr length: expect 16 but see ${arr.length}');
     return EntryDetailed(
-      id: dco_decode_list_entry_id(arr[0]),
+      id: dco_decode_entry_id(arr[0]),
       url: dco_decode_String(arr[1]),
       titles: dco_decode_list_String(arr[2]),
       author: dco_decode_opt_list_String(arr[3]),
@@ -2526,12 +2526,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EntryId dco_decode_entry_id(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return EntryId(
       uid: dco_decode_String(arr[0]),
       iddata: dco_decode_opt_String(arr[1]),
-      idType: dco_decode_String(arr[2]),
     );
   }
 
@@ -2555,7 +2554,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (arr.length != 6)
       throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return Episode(
-      id: dco_decode_list_episode_id(arr[0]),
+      id: dco_decode_episode_id(arr[0]),
       name: dco_decode_String(arr[1]),
       description: dco_decode_opt_String(arr[2]),
       url: dco_decode_String(arr[3]),
@@ -2568,12 +2567,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   EpisodeId dco_decode_episode_id(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return EpisodeId(
       uid: dco_decode_String(arr[0]),
       iddata: dco_decode_opt_String(arr[1]),
-      idType: dco_decode_String(arr[2]),
     );
   }
 
@@ -2795,21 +2793,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<EntryId> dco_decode_list_entry_id(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_entry_id).toList();
-  }
-
-  @protected
   List<Episode> dco_decode_list_episode(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_episode).toList();
-  }
-
-  @protected
-  List<EpisodeId> dco_decode_list_episode_id(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_episode_id).toList();
   }
 
   @protected
@@ -3840,7 +3826,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Entry sse_decode_entry(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_list_entry_id(deserializer);
+    var var_id = sse_decode_entry_id(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
     var var_mediaType = sse_decode_media_type(deserializer);
@@ -3878,7 +3864,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   EntryDetailed sse_decode_entry_detailed(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_list_entry_id(deserializer);
+    var var_id = sse_decode_entry_id(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_titles = sse_decode_list_String(deserializer);
     var var_author = sse_decode_opt_list_String(deserializer);
@@ -3927,8 +3913,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_uid = sse_decode_String(deserializer);
     var var_iddata = sse_decode_opt_String(deserializer);
-    var var_idType = sse_decode_String(deserializer);
-    return EntryId(uid: var_uid, iddata: var_iddata, idType: var_idType);
+    return EntryId(uid: var_uid, iddata: var_iddata);
   }
 
   @protected
@@ -3944,7 +3929,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Episode sse_decode_episode(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_id = sse_decode_list_episode_id(deserializer);
+    var var_id = sse_decode_episode_id(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_description = sse_decode_opt_String(deserializer);
     var var_url = sse_decode_String(deserializer);
@@ -3964,8 +3949,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_uid = sse_decode_String(deserializer);
     var var_iddata = sse_decode_opt_String(deserializer);
-    var var_idType = sse_decode_String(deserializer);
-    return EpisodeId(uid: var_uid, iddata: var_iddata, idType: var_idType);
+    return EpisodeId(uid: var_uid, iddata: var_iddata);
   }
 
   @protected
@@ -4218,18 +4202,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<EntryId> sse_decode_list_entry_id(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <EntryId>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_entry_id(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<Episode> sse_decode_list_episode(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4237,18 +4209,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <Episode>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_episode(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<EpisodeId> sse_decode_list_episode_id(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <EpisodeId>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_episode_id(deserializer));
     }
     return ans_;
   }
@@ -5668,7 +5628,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_entry(Entry self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_entry_id(self.id, serializer);
+    sse_encode_entry_id(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_String(self.title, serializer);
     sse_encode_media_type(self.mediaType, serializer);
@@ -5692,7 +5652,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_entry_detailed(EntryDetailed self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_entry_id(self.id, serializer);
+    sse_encode_entry_id(self.id, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_list_String(self.titles, serializer);
     sse_encode_opt_list_String(self.author, serializer);
@@ -5723,7 +5683,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.uid, serializer);
     sse_encode_opt_String(self.iddata, serializer);
-    sse_encode_String(self.idType, serializer);
   }
 
   @protected
@@ -5737,7 +5696,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_episode(Episode self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_episode_id(self.id, serializer);
+    sse_encode_episode_id(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_opt_String(self.description, serializer);
     sse_encode_String(self.url, serializer);
@@ -5750,7 +5709,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.uid, serializer);
     sse_encode_opt_String(self.iddata, serializer);
-    sse_encode_String(self.idType, serializer);
   }
 
   @protected
@@ -5964,30 +5922,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_entry_id(List<EntryId> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_entry_id(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_episode(List<Episode> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_episode(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_episode_id(
-      List<EpisodeId> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_episode_id(item, serializer);
     }
   }
 

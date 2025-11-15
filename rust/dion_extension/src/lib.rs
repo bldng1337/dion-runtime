@@ -126,11 +126,10 @@ mod tests {
                 .header("content-type", "application/json")
                 .body(
                     serde_json::to_string(&EntryDetailed {
-                        id: vec![EntryId {
+                        id: EntryId {
                             uid: "Some".to_string(),
-                            id_type: "test".to_string(),
                             iddata: Default::default(),
-                        }],
+                        },
                         url: Default::default(),
                         titles: Default::default(),
                         author: Default::default(),
@@ -158,11 +157,10 @@ mod tests {
                     serde_json::to_string(&vec![Entry {
                         author: Default::default(),
                         cover: Default::default(),
-                        id: vec![EntryId {
+                        id: EntryId {
                             uid: "Some".to_string(),
-                            id_type: "test".to_string(),
                             iddata: Default::default(),
-                        }],
+                        },
                         length: Default::default(),
                         media_type: Default::default(),
                         rating: Default::default(),
@@ -222,7 +220,6 @@ mod tests {
             .detail(
                 EntryId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),
@@ -241,7 +238,6 @@ mod tests {
             .source(
                 EpisodeId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),
@@ -259,11 +255,10 @@ mod tests {
         let entry = extension
             .map_entry(
                 EntryDetailed {
-                    id: vec![EntryId {
+                    id: EntryId {
                         uid: "Some".to_string(),
-                        id_type: "test".to_string(),
                         iddata: Default::default(),
-                    }],
+                    },
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),
@@ -296,11 +291,10 @@ mod tests {
             .on_entry_activity(
                 EntryActivity::EpisodeActivity { progress: 43 },
                 EntryDetailed {
-                    id: vec![EntryId {
+                    id: EntryId {
                         uid: "Some".to_string(),
-                        id_type: "test".to_string(),
                         iddata: Default::default(),
-                    }],
+                    },
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),
@@ -334,7 +328,6 @@ mod tests {
                 Source::Paragraphlist { paragraphs: vec![] },
                 EpisodeId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),
@@ -374,7 +367,6 @@ mod tests {
             .detail(
                 EntryId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),
@@ -388,11 +380,10 @@ mod tests {
             .on_entry_activity(
                 EntryActivity::EpisodeActivity { progress: 43 },
                 EntryDetailed {
-                    id: vec![EntryId {
+                    id: EntryId {
                         uid: "Some".to_string(),
-                        id_type: "test".to_string(),
                         iddata: Default::default(),
-                    }],
+                    },
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),
@@ -417,7 +408,6 @@ mod tests {
             .source(
                 EpisodeId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),
@@ -429,7 +419,6 @@ mod tests {
                 source.source,
                 EpisodeId {
                     uid: "Some".to_string(),
-                    id_type: "test".to_string(),
                     iddata: Default::default(),
                 },
                 Default::default(),

@@ -24,7 +24,6 @@ test("test arguments", async () => {
   await ext.search(0, "");
   const entry = await ext.detail(
     {
-      type: "test",
       uid: "epid",
     },
     {},
@@ -41,7 +40,6 @@ test("test arguments", async () => {
   );
   const source = await ext.source(
     {
-      type: "test",
       uid: "epid",
     },
     {},
@@ -49,7 +47,6 @@ test("test arguments", async () => {
   await ext.mapSource(
     source.source,
     {
-      type: "test",
       uid: "epid",
     },
     {},

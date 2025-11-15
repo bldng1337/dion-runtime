@@ -17,7 +17,7 @@ void main() {
       ..get(
           "/getEntry",
           (Request request) => Response.ok(jsonEncode(const EntryDetailed(
-              id: [],
+              id: EntryId(uid: '', iddata: ''),
               url: '',
               titles: [],
               mediaType: MediaType.audio,
@@ -29,7 +29,10 @@ void main() {
           "/getEntries",
           (Request request) => Response.ok(jsonEncode([
                 const Entry(
-                        id: [], url: '', title: '', mediaType: MediaType.audio)
+                        id: EntryId(uid: '', iddata: ''),
+                        url: '',
+                        title: '',
+                        mediaType: MediaType.audio)
                     .toJson(),
               ])))
       ..get(
@@ -75,19 +78,19 @@ void main() {
       );
       await ext.setEnabled(enabled: true);
       await ext.browse(page: 0);
-      final entry = await ext.detail(
-          entryid: const EntryId(idType: "asd", uid: "asd"), settings: {});
+      final entry =
+          await ext.detail(entryid: const EntryId(uid: "asd"), settings: {});
       await ext.handleUrl(url: "");
       await ext.mapEntry(entry: entry.entry, settings: {});
-      final source = await ext.source(
-          epid: const EpisodeId(idType: "asd", uid: "asd"), settings: {});
+      final source =
+          await ext.source(epid: const EpisodeId(uid: "asd"), settings: {});
       await ext.onEntryActivity(
           activity: const EntryActivity.episodeActivity(progress: 23),
           entry: entry.entry,
           settings: {});
       await ext.mapSource(
           source: source.source,
-          epid: const EpisodeId(idType: "asd", uid: "asd"),
+          epid: const EpisodeId(iddata: "asd", uid: "asd"),
           settings: {});
       await ext.search(filter: "", page: 2);
       await ext.reload();

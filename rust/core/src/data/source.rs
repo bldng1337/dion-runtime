@@ -33,7 +33,7 @@ pub struct Link {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Entry {
-    pub id: Vec<EntryId>,
+    pub id: EntryId,
     pub url: String,
     pub title: String,
     pub media_type: MediaType,
@@ -85,7 +85,7 @@ pub struct SourceResult {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Episode {
-    pub id: Vec<EpisodeId>,
+    pub id: EpisodeId,
     pub name: String,
     #[cfg_attr(feature = "type", specta(optional))]
     pub description: Option<String>,
@@ -113,7 +113,7 @@ pub enum ReleaseStatus {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryDetailed {
-    pub id: Vec<EntryId>,
+    pub id: EntryId,
     pub url: String,
     pub titles: Vec<String>,
     #[cfg_attr(feature = "type", specta(optional))]
@@ -230,8 +230,6 @@ pub struct EpisodeId {
     pub uid: String,
     #[cfg_attr(feature = "type", specta(optional))]
     pub iddata: Option<String>,
-    #[serde(rename = "type")]
-    pub id_type: String,
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -242,6 +240,4 @@ pub struct EntryId {
     pub uid: String,
     #[cfg_attr(feature = "type", specta(optional))]
     pub iddata: Option<String>,
-    #[serde(rename = "type")]
-    pub id_type: String,
 }

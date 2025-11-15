@@ -54,12 +54,9 @@ test("test fetch", async () => {
       } else if (path === "/getEntries") {
         const entries: Entry[] = [
           {
-            id: [
-              {
-                uid: "test",
-                type: "uid",
-              },
-            ],
+            id: {
+              uid: "test",
+            },
             url: "",
             title: "",
             media_type: "Video",
@@ -73,12 +70,9 @@ test("test fetch", async () => {
         return Response.json(entries);
       } else if (path === "/getEntry") {
         const entry: EntryDetailed = {
-          id: [
-            {
-              uid: "test",
-              type: "uid",
-            },
-          ],
+          id: {
+            uid: "test",
+          },
           url: "",
           titles: [],
           author: null,

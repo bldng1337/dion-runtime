@@ -368,13 +368,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Entry> dco_decode_list_entry(dynamic raw);
 
   @protected
-  List<EntryId> dco_decode_list_entry_id(dynamic raw);
-
-  @protected
   List<Episode> dco_decode_list_episode(dynamic raw);
-
-  @protected
-  List<EpisodeId> dco_decode_list_episode_id(dynamic raw);
 
   @protected
   List<ExtensionType> dco_decode_list_extension_type(dynamic raw);
@@ -837,13 +831,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Entry> sse_decode_list_entry(SseDeserializer deserializer);
 
   @protected
-  List<EntryId> sse_decode_list_entry_id(SseDeserializer deserializer);
-
-  @protected
   List<Episode> sse_decode_list_episode(SseDeserializer deserializer);
-
-  @protected
-  List<EpisodeId> sse_decode_list_episode_id(SseDeserializer deserializer);
 
   @protected
   List<ExtensionType> sse_decode_list_extension_type(
@@ -1254,34 +1242,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_entry_id> cst_encode_list_entry_id(
-      List<EntryId> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_entry_id(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_entry_id(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_episode> cst_encode_list_episode(
       List<Episode> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_episode(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_episode(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_list_episode_id> cst_encode_list_episode_id(
-      List<EpisodeId> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_episode_id(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_episode_id(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1766,7 +1732,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void cst_api_fill_to_wire_entry(Entry apiObj, wire_cst_entry wireObj) {
-    wireObj.id = cst_encode_list_entry_id(apiObj.id);
+    cst_api_fill_to_wire_entry_id(apiObj.id, wireObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.title = cst_encode_String(apiObj.title);
     wireObj.media_type = cst_encode_media_type(apiObj.mediaType);
@@ -1791,7 +1757,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void cst_api_fill_to_wire_entry_detailed(
       EntryDetailed apiObj, wire_cst_entry_detailed wireObj) {
-    wireObj.id = cst_encode_list_entry_id(apiObj.id);
+    cst_api_fill_to_wire_entry_id(apiObj.id, wireObj.id);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.titles = cst_encode_list_String(apiObj.titles);
     wireObj.author = cst_encode_opt_list_String(apiObj.author);
@@ -1821,7 +1787,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       EntryId apiObj, wire_cst_entry_id wireObj) {
     wireObj.uid = cst_encode_String(apiObj.uid);
     wireObj.iddata = cst_encode_opt_String(apiObj.iddata);
-    wireObj.id_type = cst_encode_String(apiObj.idType);
   }
 
   @protected
@@ -1834,7 +1799,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void cst_api_fill_to_wire_episode(Episode apiObj, wire_cst_episode wireObj) {
-    wireObj.id = cst_encode_list_episode_id(apiObj.id);
+    cst_api_fill_to_wire_episode_id(apiObj.id, wireObj.id);
     wireObj.name = cst_encode_String(apiObj.name);
     wireObj.description = cst_encode_opt_String(apiObj.description);
     wireObj.url = cst_encode_String(apiObj.url);
@@ -1847,7 +1812,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       EpisodeId apiObj, wire_cst_episode_id wireObj) {
     wireObj.uid = cst_encode_String(apiObj.uid);
     wireObj.iddata = cst_encode_opt_String(apiObj.iddata);
-    wireObj.id_type = cst_encode_String(apiObj.idType);
   }
 
   @protected
@@ -2661,14 +2625,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_entry(List<Entry> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_entry_id(List<EntryId> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_episode(List<Episode> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_episode_id(
-      List<EpisodeId> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_extension_type(
@@ -4337,17 +4294,6 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_entry = _cst_new_list_entryPtr
       .asFunction<ffi.Pointer<wire_cst_list_entry> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_entry_id> cst_new_list_entry_id(int len) {
-    return _cst_new_list_entry_id(len);
-  }
-
-  late final _cst_new_list_entry_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_entry_id> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_entry_id');
-  late final _cst_new_list_entry_id = _cst_new_list_entry_idPtr
-      .asFunction<ffi.Pointer<wire_cst_list_entry_id> Function(int)>();
-
   ffi.Pointer<wire_cst_list_episode> cst_new_list_episode(int len) {
     return _cst_new_list_episode(len);
   }
@@ -4358,17 +4304,6 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_episode');
   late final _cst_new_list_episode = _cst_new_list_episodePtr
       .asFunction<ffi.Pointer<wire_cst_list_episode> Function(int)>();
-
-  ffi.Pointer<wire_cst_list_episode_id> cst_new_list_episode_id(int len) {
-    return _cst_new_list_episode_id(len);
-  }
-
-  late final _cst_new_list_episode_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_episode_id> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_episode_id');
-  late final _cst_new_list_episode_id = _cst_new_list_episode_idPtr
-      .asFunction<ffi.Pointer<wire_cst_list_episode_id> Function(int)>();
 
   ffi.Pointer<wire_cst_list_extension_type> cst_new_list_extension_type(
     int len,
@@ -4630,15 +4565,6 @@ final class wire_cst_entry_id extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> uid;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> iddata;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id_type;
-}
-
-final class wire_cst_list_entry_id extends ffi.Struct {
-  external ffi.Pointer<wire_cst_entry_id> ptr;
-
-  @ffi.Int32()
-  external int len;
 }
 
 final class wire_cst_list_String extends ffi.Struct {
@@ -4649,7 +4575,7 @@ final class wire_cst_list_String extends ffi.Struct {
 }
 
 final class wire_cst_entry extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_entry_id> id;
+  external wire_cst_entry_id id;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 
@@ -4800,7 +4726,7 @@ final class wire_cst_Action_NavEntry extends ffi.Struct {
 }
 
 final class wire_cst_entry_detailed extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_entry_id> id;
+  external wire_cst_entry_id id;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 
@@ -4843,7 +4769,7 @@ final class wire_cst_list_episode extends ffi.Struct {
 }
 
 final class wire_cst_episode extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_episode_id> id;
+  external wire_cst_episode_id id;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
 
@@ -4856,19 +4782,10 @@ final class wire_cst_episode extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
 }
 
-final class wire_cst_list_episode_id extends ffi.Struct {
-  external ffi.Pointer<wire_cst_episode_id> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
 final class wire_cst_episode_id extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> uid;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> iddata;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id_type;
 }
 
 final class wire_cst_UIAction_SwapContent extends ffi.Struct {

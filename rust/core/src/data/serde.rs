@@ -280,10 +280,9 @@ mod test {
         let entry_id = EntryId {
             uid: "entry_uid".to_string(),
             iddata: None,
-            id_type: "test_type".to_string(),
         };
         let entry = Entry {
-            id: vec![entry_id.clone()],
+            id: entry_id.clone(),
             url: "https://entry".to_string(),
             title: "Test Entry".to_string(),
             media_type: MediaType::Video,
@@ -311,10 +310,9 @@ mod test {
         let episode_id = EpisodeId {
             uid: "epi_uid".to_string(),
             iddata: None,
-            id_type: "test_type".to_string(),
         };
         let episode = Episode {
-            id: vec![episode_id.clone()],
+            id: episode_id.clone(),
             name: "Test Episode".to_string(),
             description: None,
             url: "https://episode".to_string(),
@@ -322,7 +320,7 @@ mod test {
             timestamp: None,
         };
         let entry_detailed = EntryDetailed {
-            id: vec![entry_id.clone()],
+            id: entry_id.clone(),
             url: "https://detailed".to_string(),
             titles: vec!["Title".to_string()],
             author: None,

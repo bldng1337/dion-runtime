@@ -84,12 +84,9 @@ export function getDefaultRoutes() {
   return {
     "/getEntry": () => {
       const entry: EntryDetailed = {
-        id: [
-          {
-            uid: "",
-            type: "testext",
-          },
-        ],
+        id: {
+          uid: "",
+        },
         url: "",
         titles: [],
         author: null,
@@ -111,12 +108,9 @@ export function getDefaultRoutes() {
     "/getEntries": () => {
       const entries: Entry[] = [
         {
-          id: [
-            {
-              uid: "",
-              type: "testext",
-            },
-          ],
+          id: {
+            uid: "",
+          },
           url: "",
           title: "",
           media_type: "Video",

@@ -12,12 +12,9 @@ const server = Bun.serve({
 	routes: {
 		"/getEntry": () => {
 			const entry: EntryDetailed = {
-				id: [
-				{
+				id: {
 					uid: "epid",
-					type: "test",
-				}
-				],
+				},
 				url: "",
 				titles: [],
 				author: null,
@@ -39,12 +36,9 @@ const server = Bun.serve({
 		"/getEntries": () => {
 			const entries: Entry[] = [
 				{
-					id: [
-					{
+					id: {
 						uid: "epid",
-						type: "test",
-					}
-					],
+					},
 					url: "",
 					title: "",
 					media_type: "Video",
@@ -117,7 +111,6 @@ test("DionExtensionManager", async () => {
 		await ext.browse(0);
 		await ext.search(0, "");
 		const entry = await ext.detail({
-		type: "test",
 		uid: "epid",
 		}, {});
 		await ext.fromurl("");
@@ -131,11 +124,9 @@ test("DionExtensionManager", async () => {
 			{},
 		);
 		const source = await ext.source({
-		type: "test",
 		uid: "epid",
 		}, {});
 		await ext.mapSource(source.source, {
-		type: "test",
 		uid: "epid",
 		},{});
 	}

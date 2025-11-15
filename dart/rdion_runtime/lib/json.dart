@@ -784,7 +784,7 @@ extension JsonSetting on Setting {
 
 extension JsonEntry on Entry {
   dynamic toJson() => {
-        "id": id.map((e) => e.toJson()).toList(),
+        "id": id.toJson(),
         "url": url,
         "title": title,
         "media_type": mediaType.toJson(),
@@ -796,7 +796,7 @@ extension JsonEntry on Entry {
       };
 
   static Entry fromJson(dynamic value) => Entry(
-        id: (value["id"] as List).map((e) => JsonEntryId.fromJson(e)).toList(),
+        id: JsonEntryId.fromJson(value["id"]),
         url: value["url"],
         title: value["title"],
         mediaType: JsonMediaType.fromJson(value["media_type"]),
@@ -811,7 +811,7 @@ extension JsonEntry on Entry {
 
 extension JsonEntryDetailed on EntryDetailed {
   dynamic toJson() => {
-        "id": id.map((e) => e.toJson()).toList(),
+        "id": id.toJson(),
         "url": url,
         "titles": titles,
         if (author != null) "author": author,
@@ -830,7 +830,7 @@ extension JsonEntryDetailed on EntryDetailed {
       };
 
   static EntryDetailed fromJson(dynamic value) => EntryDetailed(
-        id: (value["id"] as List).map((e) => JsonEntryId.fromJson(e)).toList(),
+        id: JsonEntryId.fromJson(value["id"]),
         url: value["url"],
         titles: List<String>.from(value["titles"]),
         author: value["author"],
@@ -869,13 +869,11 @@ extension JsonEntryId on EntryId {
   dynamic toJson() => {
         "uid": uid,
         if (iddata != null) "iddata": iddata,
-        "type": idType,
       };
 
   static EntryId fromJson(dynamic value) => EntryId(
         uid: value["uid"],
         iddata: value["iddata"],
-        idType: value["type"],
       );
 }
 
@@ -897,7 +895,7 @@ extension JsonEntryList on EntryList {
 
 extension JsonEpisode on Episode {
   dynamic toJson() => {
-        "id": id.map((e) => e.toJson()).toList(),
+        "id": id.toJson(),
         "name": name,
         if (description != null) "description": description,
         "url": url,
@@ -906,9 +904,7 @@ extension JsonEpisode on Episode {
       };
 
   static Episode fromJson(dynamic value) => Episode(
-        id: (value["id"] as List)
-            .map((e) => JsonEpisodeId.fromJson(e))
-            .toList(),
+        id: JsonEpisodeId.fromJson(value["id"]),
         name: value["name"],
         description: value["description"],
         url: value["url"],
@@ -922,13 +918,11 @@ extension JsonEpisodeId on EpisodeId {
   dynamic toJson() => {
         "uid": uid,
         if (iddata != null) "iddata": iddata,
-        "type": idType,
       };
 
   static EpisodeId fromJson(dynamic value) => EpisodeId(
         uid: value["uid"],
         iddata: value["iddata"],
-        idType: value["type"],
       );
 }
 
