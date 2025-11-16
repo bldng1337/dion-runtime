@@ -1,4 +1,4 @@
-/// <reference types="dion-runtime-types" />
+/// <reference types="@dion-js/runtime-types" />
 
 interface Cookie {
   name: string;

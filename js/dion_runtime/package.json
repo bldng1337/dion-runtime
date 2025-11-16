@@ -1,11 +1,13 @@
 {
-	"name": "@dion/runtime",
+	"name": "@dion-js/runtime",
 	"version": "1.0.0",
+	"license": "MIT",
 	"description": "Bindings for the dion extension api for node",
 	"main": "index.js",
+	"types": "index.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@github.com/bldng1337/dion-runtime"
+		"url": "git+ssh://git@github.com:bldng1337/dion-runtime.git"
 	},
 	"browser": "browser.js",
 	"keywords": [
@@ -19,7 +21,8 @@
 	"files": [
 		"index.d.ts",
 		"index.js",
-		"browser.js"
+		"browser.js",
+		"*.node"
 	],
 	"napi": {
 		"binaryName": "runtime",
@@ -31,7 +34,7 @@
 		]
 	},
 	"engines": {
-		"node": ">= 10.16.0 < 11 || >= 11.8.0 < 12 || >= 12.0.0"
+		"node": ">=12"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org/",
@@ -49,8 +52,10 @@
 		"lint": "bunx biome check && cargo clippy --all-targets --all-features -- -D warnings",
 		"clean": "cargo clean"
 	},
+	"dependencies": {
+		"@dion-js/runtime-types": "0.1.0"
+	},
 	"devDependencies": {
-		"@dion/runtime-types": "workspace:*",
 		"@emnapi/core": "^1.5.0",
 		"@emnapi/runtime": "^1.5.0",
 		"@napi-rs/cli": "^3.2.0",

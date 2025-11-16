@@ -1,5 +1,6 @@
 {
-  "name": "@dion",
+  "name": "@dion-js/workspace",
+  "private": true,
   "workspaces": [
     "js/**/*"
   ]
