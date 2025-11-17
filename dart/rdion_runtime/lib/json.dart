@@ -802,7 +802,7 @@ extension JsonEntry on Entry {
         mediaType: JsonMediaType.fromJson(value["media_type"]),
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-        author: value["author"],
+        author: (value["author"] as List<dynamic>?)?.cast<String>(),
         rating: value["rating"],
         views: value["views"],
         length: value["length"],
@@ -833,9 +833,9 @@ extension JsonEntryDetailed on EntryDetailed {
         id: JsonEntryId.fromJson(value["id"]),
         url: value["url"],
         titles: List<String>.from(value["titles"]),
-        author: value["author"],
+        author: (value["author"] as List<dynamic>?)?.cast<String>(),
         ui: value["ui"] != null ? JsonCustomUI.fromJson(value["ui"]) : null,
-        meta: value["meta"],
+        meta: (value["meta"] as Map<String, dynamic>?)?.cast<String, String>(),
         mediaType: JsonMediaType.fromJson(value["media_type"]),
         status: JsonReleaseStatus.fromJson(value["status"]),
         description: value["description"],
@@ -845,7 +845,7 @@ extension JsonEntryDetailed on EntryDetailed {
         episodes: (value["episodes"] as List)
             .map((e) => JsonEpisode.fromJson(e))
             .toList(),
-        genres: value["genres"],
+        genres: (value["genres"] as List<dynamic>?)?.cast<String>(),
         rating: value["rating"],
         views: value["views"],
         length: value["length"],
