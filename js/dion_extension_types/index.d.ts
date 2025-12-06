@@ -1,3 +1,4 @@
+/// <reference types="./generated.d.ts" />
 /// <reference types="@dion-js/runtime-types" />
 
 interface Cookie {

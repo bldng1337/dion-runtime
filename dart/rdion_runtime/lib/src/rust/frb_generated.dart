@@ -84,7 +84,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 918794586;
+  int get rustContentHash => 1585622927;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -212,6 +212,12 @@ abstract class RustLibApi extends BaseApi {
       {required ProxyExtension that,
       required String id,
       required SettingKind kind});
+
+  Future<void> crateApiExtensionProxyExtensionSavePermissions(
+      {required ProxyExtension that});
+
+  Future<void> crateApiExtensionProxyExtensionSaveSettings(
+      {required ProxyExtension that});
 
   Future<EntryList> crateApiExtensionProxyExtensionSearch(
       {required ProxyExtension that,
@@ -1244,6 +1250,61 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_remove_setting",
         argNames: ["that", "id", "kind"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionSavePermissions(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        return wire
+            .wire__crate__api__extension__ProxyExtension_save_permissions(
+                port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionSavePermissionsConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionSavePermissionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_save_permissions",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionSaveSettings(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        return wire.wire__crate__api__extension__ProxyExtension_save_settings(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionSaveSettingsConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionSaveSettingsConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_save_settings",
+        argNames: ["that"],
       );
 
   @override
@@ -6736,6 +6797,16 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
   Future<void> removeSetting({required String id, required SettingKind kind}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionRemoveSetting(
           that: this, id: id, kind: kind);
+
+  Future<void> savePermissions() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSavePermissions(
+        that: this,
+      );
+
+  Future<void> saveSettings() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSaveSettings(
+        that: this,
+      );
 
   Future<EntryList> search(
           {required int page, required String filter, CancelToken? token}) =>

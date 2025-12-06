@@ -21,7 +21,7 @@ impl PermissionStore {
         Ok(())
     }
 
-    pub async fn save_data(&self, client: &dyn ExtensionClient) -> Result<()> {
+    pub async fn save_state(&self, client: &dyn ExtensionClient) -> Result<()> {
         client
             .store_data("permission", serde_json::to_string(&self.permissions)?)
             .await

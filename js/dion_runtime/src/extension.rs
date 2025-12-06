@@ -229,7 +229,7 @@ impl ExtensionProxy {
     let client = self.extension.get_client();
     let extdata = self.extension.get_data().read().await;
     extdata.settings.save_state(client).await.map_to_node()?;
-    extdata.permission.save_data(client).await.map_to_node()?;
+    extdata.permission.save_state(client).await.map_to_node()?;
     Ok(())
   }
 

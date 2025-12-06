@@ -93,6 +93,10 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<void> removeSetting({required String id, required SettingKind kind});
 
+  Future<void> savePermissions();
+
+  Future<void> saveSettings();
+
   Future<EntryList> search(
       {required int page, required String filter, CancelToken? token});
 

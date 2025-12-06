@@ -3585,6 +3585,42 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_remove_settingPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__crate__api__extension__ProxyExtension_save_permissions(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_save_permissions(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_save_permissionsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_save_permissions',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_save_permissions =
+      _wire__crate__api__extension__ProxyExtension_save_permissionsPtr
+          .asFunction<void Function(int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_save_settings(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_save_settings(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_save_settingsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_save_settings',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_save_settings =
+      _wire__crate__api__extension__ProxyExtension_save_settingsPtr
+          .asFunction<void Function(int, int)>();
+
   void wire__crate__api__extension__ProxyExtension_search(
     int port_,
     ffi.Pointer<ffi.Uint8> ptr_,

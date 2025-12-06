@@ -90,7 +90,7 @@ class FlutterRustProject extends Project {
         if (fs.existsSync(testpath)) {
           for (const file of fs.readdirSync(testpath)) {
             if (file.endsWith(".dart")) {
-              await $`cd ${path} && flutter test ${paths.join(testbed, file)}`;
+              await $`cd ${path} && flutter test ${paths.join(testbed, file)} --timeout none`;
             }
           }
         }

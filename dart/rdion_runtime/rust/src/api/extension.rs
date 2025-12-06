@@ -59,6 +59,20 @@ impl ProxyExtension {
             .cloned()
     }
 
+    pub async fn save_settings(&self) -> Result<()> {
+        let store = self.inner.inner.get_data().read().await;
+        let client = self.inner.inner.get_client();
+        store.settings.save_state(client).await?;
+        Ok(())
+    }
+
+    pub async fn save_permissions(&self) -> Result<()> {
+        let store = self.inner.inner.get_data().read().await;
+        let client = self.inner.inner.get_client();
+        store.permission.save_state(client).await?;
+        Ok(())
+    }
+
     #[frb(serialize)]
     pub async fn set_setting(
         &self,
