@@ -1,6 +1,6 @@
 {
 	"name": "@dion-js/runtime",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"license": "MIT",
 	"description": "Bindings for the dion extension api for node",
 	"main": "index.js",

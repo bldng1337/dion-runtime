@@ -1,9 +1,10 @@
 {
   "name": "@dion-js/extension-types",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Type declarations for the Dion extension API (TypeScript .d.ts package)",
   "files": [
-    "index.d.ts"
+    "index.d.ts",
+    "generated.d.ts"
   ],
   "types": "index.d.ts",
   "repository": {
