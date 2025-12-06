@@ -3,6 +3,9 @@ name = "dion-extension"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+type = ["dep:specta","dep:specta-typescript","dion-runtime/type"]
+
 [dependencies]
 dion-runtime = { path = "../core" }
 
@@ -10,6 +13,7 @@ boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c4
     "jsvalue-enum",
     # "temporal",
 ] }
+semver = "1.0.27"
 boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
 boa_gc = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
 #6570619729faae32c49deec59a6d65f01e639bde
@@ -81,7 +85,8 @@ futures-lite = "2.6.0"
 # specta-typescript = "0.0.9"
 chrono = "0.4.41"
 
-
+specta = { version = "1.0.5", features = ["export"], optional = true  }
+specta-typescript = { version = "0.0.9",optional = true }
 
 [dev-dependencies]
 httpmock = "0.7.0"

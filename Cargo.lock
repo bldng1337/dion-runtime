@@ -1068,9 +1068,12 @@ dependencies = [
  "reqwest-middleware",
  "reqwest_cookie_store",
  "scraper",
+ "semver",
  "serde",
  "serde_json",
  "simple_logger",
+ "specta 1.0.5",
+ "specta-typescript",
  "tokio",
  "tokio-util",
 ]

@@ -1,18 +1,83 @@
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashSet,
+    path::{Path, PathBuf},
+};
 
 use anyhow::{Context, Result, anyhow, bail};
 use dion_runtime::{
     client_data::AdapterClient,
     data::{
-        extension::ExtensionData,
+        extension::{ExtensionData, ExtensionType},
         extension_repo::{ExtensionRepo, RemoteExtensionResult},
+        source::MediaType,
     },
     extension::{Adapter, Extension},
 };
 use log::error;
+use semver::{Version, VersionReq};
 use tokio::fs::{self, copy, read_dir, remove_file, write};
 
 use crate::{extension::container::DionExtension, network::DionNetworkManager};
+
+#[cfg(feature = "type")]
+use specta::Type;
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct ExtensionMetadata {
+    pub id: String,
+    pub name: String,
+    pub url: String,
+    pub icon: String,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub desc: Option<String>,
+    #[serde(default)]
+    pub author: Vec<String>,
+    #[serde(default)]
+    pub tags: Vec<String>,
+    #[serde(default)]
+    pub lang: Vec<String>,
+    pub nsfw: bool,
+
+    pub media_type: HashSet<MediaType>,
+    pub extension_type: HashSet<ExtensionType>,
+
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub repo: Option<String>,
+    pub version: String,
+    pub license: String,
+
+    pub api_version: String,
+}
+
+impl ExtensionMetadata {
+    pub fn into_extension_data(self) -> ExtensionData {
+        let compatible: bool = match Version::parse(env!("CARGO_PKG_VERSION")) {
+            Ok(version) => match VersionReq::parse(&self.api_version) {
+                Ok(req) => req.matches(&version),
+                Err(_) => false,
+            },
+            Err(_) => false,
+        };
+        ExtensionData {
+            id: self.id,
+            name: self.name,
+            url: self.url,
+            icon: self.icon,
+            desc: self.desc,
+            author: self.author,
+            tags: self.tags,
+            lang: self.lang,
+            nsfw: self.nsfw,
+            media_type: self.media_type,
+            extension_type: self.extension_type,
+            repo: self.repo,
+            version: self.version,
+            license: self.license,
+            compatible,
+        }
+    }
+}
 
 pub struct DionExtensionAdapter {
     pub(crate) network: DionNetworkManager,
@@ -40,9 +105,10 @@ fn peek_manifest_string(contents: &str) -> Result<ExtensionData> {
     let metadata_str = first_line
         .strip_prefix("//")
         .ok_or_else(|| anyhow!("Single File Extensions must start with '//' on the first line"))?;
-    let data: ExtensionData = serde_json::from_str(metadata_str)
+    let data: ExtensionMetadata = serde_json::from_str(metadata_str)
         .context("Failed to parse ExtensionData from metadata comment")?;
-    Ok(data)
+
+    Ok(data.into_extension_data())
 }
 
 async fn peek_manifest(path: impl AsRef<Path>) -> Result<ExtensionData> {

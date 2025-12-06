@@ -3,6 +3,7 @@ mod extension_executor;
 pub mod extension_manager;
 mod js;
 mod network;
+mod specta;
 mod utils;
 
 #[cfg(test)]

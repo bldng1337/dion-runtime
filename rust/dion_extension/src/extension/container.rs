@@ -27,7 +27,7 @@ use tokio_util::sync::CancellationToken;
 
 use crate::extension::executor::{ExtensionExecutor, Task};
 use crate::extension_executor::ThreadedJSContext;
-use crate::extension_manager::DionExtensionAdapter;
+use crate::extension_manager::{DionExtensionAdapter, ExtensionMetadata};
 use crate::network::DionNetworkManager;
 
 #[derive(Debug)]
@@ -79,9 +79,10 @@ impl DionExtension {
         let metadata_str = first_line.strip_prefix("//").ok_or_else(|| {
             anyhow!("Single File Extensions must start with '//' on the first line")
         })?;
-        let data: ExtensionData = serde_json::from_str(metadata_str)
+        let data: ExtensionMetadata = serde_json::from_str(metadata_str)
             .context("Failed to parse ExtensionData from metadata comment")?;
-        Ok((data, contents))
+        
+        Ok((data.into_extension_data(), contents))
     }
 }
 

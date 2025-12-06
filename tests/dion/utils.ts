@@ -1,4 +1,5 @@
 /// <reference path="../../js/dion_runtime_types/index.d.ts" />
+/// <reference path="../../js/dion_extension_types/index.d.ts" />
 
 import { type Mock, mock } from "bun:test";
 import type { Server } from "bun";
@@ -136,16 +137,21 @@ export function getDefaultRoutes() {
   };
 }
 
-export async function buildTestExtension({
-  exttype,
-  extpath,
-}: {
-  exttype?: ExtensionType[];
-  extpath?: string;
-} = {}) {
-  console.log(`Building ${extpath ?? "extension"}.ts`);
+type PartialExtensionMetadata = {
+  [K in keyof ExtensionMetadata]?: ExtensionMetadata[K];
+};
+
+export async function buildTestExtension(
+  extpath?: string,
+  data?: PartialExtensionMetadata,
+) {
+  let sourcepath = extpath ?? "extension";
+  if (!extpath?.endsWith(".ts")) {
+    sourcepath = `${sourcepath ?? "extension"}.ts`;
+  }
+  console.log(`Building ${extpath}`);
   const res = await Bun.build({
-    entrypoints: [`${extpath ?? "extension"}.ts`],
+    entrypoints: [sourcepath],
     target: "browser",
     // tsconfig: "./tsconfig.json",
     external: ["network", "permission", "setting", "parse", "convert"],
@@ -159,22 +165,24 @@ export async function buildTestExtension({
   if (code === undefined) {
     throw new Error("No output found");
   }
-  const extdata: ExtensionData = {
-    id: "123",
-    compatible: true,
-    repo: "repo",
-    icon: "asd",
-    name: "Minimal",
-    version: "1.0.0",
-    desc: "Minimal extension impl",
-    author: [""],
-    license: "0BSD",
-    nsfw: false,
-    lang: ["en"],
-    media_type: ["Video"],
-    url: "https://www.example.com",
-    tags: [],
-    extension_type: exttype ?? [
+  console.log(data?.api_version ?? "*");
+  console.log(data?.api_version);
+  const extdata: ExtensionMetadata = {
+    id: data?.id ?? "123",
+    api_version: data?.api_version ?? "*",
+    repo: data?.repo ?? "repo",
+    icon: data?.icon ?? "asd",
+    name: data?.name ?? "Minimal",
+    version: data?.version ?? "0.1.0",
+    desc: data?.desc ?? "Minimal extension impl",
+    author: data?.author ?? [""],
+    license: data?.license ?? "0BSD",
+    nsfw: data?.nsfw ?? false,
+    lang: data?.lang ?? ["en"],
+    media_type: data?.media_type ?? ["Video"],
+    url: data?.url ?? "https://www.example.com",
+    tags: data?.tags ?? [],
+    extension_type: data?.extension_type ?? [
       {
         type: "EntryProcessor",
         trigger_map_entry: true,
@@ -203,7 +211,8 @@ export async function buildTestExtension({
       },
     ],
   };
-  Bun.file(`${extpath ?? "extension"}.dion.js`).write(
+  console.log(extdata);
+  await Bun.file(`${extpath ?? "extension"}.dion.js`).write(
     `//${JSON.stringify(extdata)}\n${code}`,
   );
 }
