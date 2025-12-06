@@ -191,10 +191,16 @@ impl Adapter for DionExtensionAdapter {
                     )
                 }
                 let manifest = peek_manifest(&path).await?;
-                let extpath = path.join(format!("{}.dion.js", manifest.id));
+                let extpath = PathBuf::from(
+                    self.client
+                        .get_path()
+                        .await
+                        .context("Failed to get Extension Path")?,
+                );
+                let extpath = extpath.join(format!("{}.dion.js", manifest.id));
                 copy(path, &extpath)
                     .await
-                    .context("Failed to Copy Extension")?;
+                    .context("Failed to Copy Extension from {path} to {extpath}")?;
                 let ext = create_extension(extpath.clone(), self).await;
                 match ext {
                     Ok(val) => Ok(val),
