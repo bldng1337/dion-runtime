@@ -9,6 +9,7 @@ use boa_engine::{
     property::Attribute,
 };
 use boa_gc::{Finalize, Trace};
+use dion_runtime::data::source::Paragraph;
 use ego_tree::NodeId;
 use scraper::{ElementRef, Html, Selector};
 use std::rc::Rc;
@@ -145,7 +146,7 @@ impl ElementArray {
         if let Some(object) = this.as_object()
             && let Some(this) = object.downcast_ref::<Self>()
         {
-            let str = this
+            let str: Vec<_> = this
                 .nodes
                 .iter()
                 .flat_map(|e| {
@@ -156,8 +157,16 @@ impl ElementArray {
                         .map(|e| e.text().collect::<Vec<_>>())
                         .unwrap_or_default()
                 })
-                .map(|str| JsString::from(str).into());
-            return Ok(JsArray::from_iter(str, context).into());
+                .map(|str| Paragraph::Text {
+                    content: str.to_string(),
+                })
+                .collect();
+            return Ok(JsValue::from_json(
+                &serde_json::to_value(str)
+                    .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
+                context,
+            )?
+            .into());
         }
         Err(JsNativeError::typ()
             .with_message("'this' is not a ElementArray object")
