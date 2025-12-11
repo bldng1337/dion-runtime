@@ -28,7 +28,6 @@
 use crate::api::cancel::*;
 use crate::api::client::*;
 use crate::api::extension::*;
-use crate::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -256,7 +255,7 @@ fn wire__crate__api__client__ManagerClient_init_impl(
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || {
             let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_get_path = decode_DartFn_Inputs__Output_String_AnyhowException(<flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer));
@@ -723,9 +722,8 @@ fn wire__crate__api__extension__ProxyExtension_event_impl(
             let api_that = <RustOpaqueNom<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
             >>::sse_decode(&mut deserializer);
-            let api_event =
-                <dion_runtime::data::action::EventResult>::sse_decode(&mut deserializer);
-            let api_token = <Option<CancellationToken>>::sse_decode(&mut deserializer);
+            let api_event = <dion_runtime::data::action::EventData>::sse_decode(&mut deserializer);
+            let api_token = <Option<CancelToken>>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -3009,16 +3007,6 @@ impl SseDecode for CancelToken {
     }
 }
 
-impl SseDecode for CancellationToken {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <RustOpaqueNom<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>,
-        >>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
-    }
-}
-
 impl SseDecode for ExtensionClient {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3086,16 +3074,6 @@ impl SseDecode for std::collections::HashMap<String, dion_runtime::data::setting
 
 impl SseDecode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <usize>::sse_decode(deserializer);
-        return unsafe { decode_rust_opaque_nom(inner) };
-    }
-}
-
-impl SseDecode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4197,17 +4175,6 @@ impl SseDecode for Option<CancelToken> {
     }
 }
 
-impl SseDecode for Option<CancellationToken> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<CancellationToken>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
 impl SseDecode for Option<bool> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4232,11 +4199,11 @@ impl SseDecode for Option<dion_runtime::data::custom_ui::CustomUI> {
     }
 }
 
-impl SseDecode for Option<dion_runtime::data::action::EventData> {
+impl SseDecode for Option<dion_runtime::data::action::EventResult> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<dion_runtime::data::action::EventData>::sse_decode(
+            return Some(<dion_runtime::data::action::EventResult>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -4766,21 +4733,6 @@ impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<
 
 impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CancelToken>> for CancelToken {
     fn into_into_dart(self) -> FrbWrapper<CancelToken> {
-        self.into()
-    }
-}
-
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<CancellationToken> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<CancellationToken> {}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CancellationToken>> for CancellationToken {
-    fn into_into_dart(self) -> FrbWrapper<CancellationToken> {
         self.into()
     }
 }
@@ -6046,13 +5998,6 @@ impl SseEncode for CancelToken {
     }
 }
 
-impl SseEncode for CancellationToken {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
-    }
-}
-
 impl SseEncode for ExtensionClient {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6107,17 +6052,6 @@ impl SseEncode for std::collections::HashMap<String, dion_runtime::data::setting
 
 impl SseEncode
     for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        let (ptr, size) = self.sse_encode_raw();
-        <usize>::sse_encode(ptr, serializer);
-        <i32>::sse_encode(size, serializer);
-    }
-}
-
-impl SseEncode
-    for RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6976,16 +6910,6 @@ impl SseEncode for Option<CancelToken> {
     }
 }
 
-impl SseEncode for Option<CancellationToken> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <CancellationToken>::sse_encode(value, serializer);
-        }
-    }
-}
-
 impl SseEncode for Option<bool> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7006,12 +6930,12 @@ impl SseEncode for Option<dion_runtime::data::custom_ui::CustomUI> {
     }
 }
 
-impl SseEncode for Option<dion_runtime::data::action::EventData> {
+impl SseEncode for Option<dion_runtime::data::action::EventResult> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <dion_runtime::data::action::EventData>::sse_encode(value, serializer);
+            <dion_runtime::data::action::EventResult>::sse_encode(value, serializer);
         }
     }
 }
@@ -7456,7 +7380,6 @@ mod io {
     use crate::api::cancel::*;
     use crate::api::client::*;
     use crate::api::extension::*;
-    use crate::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -9684,24 +9607,6 @@ mod io {
     ) {
         unsafe {
             StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancelToken>>::decrement_strong_count(ptr as _);
-        }
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>>::increment_strong_count(ptr as _);
-        }
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancellationToken(
-        ptr: *const std::ffi::c_void,
-    ) {
-        unsafe {
-            StdArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CancellationToken>>::decrement_strong_count(ptr as _);
         }
     }
 

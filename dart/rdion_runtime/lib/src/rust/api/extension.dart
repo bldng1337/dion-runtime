@@ -6,7 +6,6 @@ import 'dart:convert';
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
-import '../lib.dart';
 import '../third_party/dion_runtime/data/action.dart';
 import '../third_party/dion_runtime/data/activity.dart';
 import '../third_party/dion_runtime/data/custom_ui.dart';
@@ -46,8 +45,7 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       required Map<String, Setting> settings,
       CancelToken? token});
 
-  Future<EventData?> event(
-      {required EventResult event, CancellationToken? token});
+  Future<EventResult?> event({required EventData event, CancelToken? token});
 
   Future<ExtensionData> getExtensionData();
 

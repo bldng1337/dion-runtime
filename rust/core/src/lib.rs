@@ -135,9 +135,9 @@ mod test {
 
         async fn event(
             &self,
-            event: EventResult,
+            event: EventData,
             token: Option<CancellationToken>,
-        ) -> Result<Option<EventData>> {
+        ) -> Result<Option<EventResult>> {
             Ok(None)
         }
 

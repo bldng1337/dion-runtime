@@ -81,7 +81,7 @@ impl DionExtension {
         })?;
         let data: ExtensionMetadata = serde_json::from_str(metadata_str)
             .context("Failed to parse ExtensionData from metadata comment")?;
-        
+
         Ok((data.into_extension_data(), contents))
     }
 }
@@ -142,9 +142,9 @@ impl Extension for DionExtension {
 
     async fn event(
         &self,
-        event: EventResult,
+        event: EventData,
         token: Option<CancellationToken>,
-    ) -> Result<Option<EventData>> {
+    ) -> Result<Option<EventResult>> {
         match &self.context {
             Some(context) => {
                 let (send, response) = oneshot::channel();

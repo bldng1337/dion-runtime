@@ -26,7 +26,6 @@ pub use dion_runtime::extension::Extension;
 
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
-use tokio_util::sync::CancellationToken;
 
 #[frb(opaque)]
 pub struct ProxyExtension {
@@ -147,9 +146,9 @@ impl ProxyExtension {
     #[frb(serialize)]
     pub async fn event(
         &self,
-        event: EventResult,
-        token: Option<CancellationToken>,
-    ) -> Result<Option<EventData>> {
+        event: EventData,
+        token: Option<CancelToken>,
+    ) -> Result<Option<EventResult>> {
         self.inner
             .inner
             .event(event, token.map(|token| token.into()))

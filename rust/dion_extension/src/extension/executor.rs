@@ -40,10 +40,10 @@ pub(super) enum Task {
         send: Sender<Result<EntryList>>,
     },
     Event {
-        event: EventResult,
+        event: EventData,
 
         token: Option<CancellationToken>,
-        send: Sender<Result<Option<EventData>>>,
+        send: Sender<Result<Option<EventResult>>>,
     },
     HandleUrl {
         url: String,

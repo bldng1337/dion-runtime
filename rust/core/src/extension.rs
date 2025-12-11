@@ -38,9 +38,9 @@ pub trait Extension: Send + Sync {
 
     async fn event(
         &self,
-        event: EventResult,
+        event: EventData,
         token: Option<CancellationToken>,
-    ) -> Result<Option<EventData>>;
+    ) -> Result<Option<EventResult>>;
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList>;
 
