@@ -3,6 +3,7 @@ mod extension_executor;
 pub mod extension_manager;
 mod js;
 mod network;
+mod proxy;
 mod specta;
 mod utils;
 
@@ -131,6 +132,7 @@ mod tests {
                             uid: "Some".to_string(),
                             iddata: Default::default(),
                         },
+                        poster: Default::default(),
                         url: Default::default(),
                         titles: Default::default(),
                         author: Default::default(),
@@ -260,6 +262,7 @@ mod tests {
                         uid: "Some".to_string(),
                         iddata: Default::default(),
                     },
+                    poster: Default::default(),
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),
@@ -296,6 +299,7 @@ mod tests {
                         uid: "Some".to_string(),
                         iddata: Default::default(),
                     },
+                    poster: Default::default(),
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),
@@ -385,6 +389,7 @@ mod tests {
                         uid: "Some".to_string(),
                         iddata: Default::default(),
                     },
+                    poster: Default::default(),
                     url: Default::default(),
                     titles: Default::default(),
                     author: Default::default(),

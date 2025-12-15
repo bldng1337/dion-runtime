@@ -131,6 +131,8 @@ pub struct EntryDetailed {
 
     #[cfg_attr(feature = "type", specta(optional))]
     pub cover: Option<Link>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub poster: Option<Link>,
 
     pub episodes: Vec<Episode>,
     #[cfg_attr(feature = "type", specta(optional))]
