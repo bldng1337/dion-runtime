@@ -43,6 +43,7 @@ pub struct DionExtension {
     context: Option<ThreadedJSContext<Task>>,
     pub(crate) code: String,
     pub(crate) path: PathBuf,
+    pub(crate) meta: ExtensionMetadata,
 }
 
 impl DionExtension {
@@ -50,11 +51,11 @@ impl DionExtension {
         let (extdata, code) = Self::read_extension(&path).await?;
         let client: Box<dyn ExtensionClient> = manager
             .client
-            .get_extension_client(extdata.clone())
+            .get_extension_client(extdata.clone().into_extension_data())
             .await
             .context("Failed to get Extension Client Data")?;
         let ext = ExtensionStore {
-            data: extdata,
+            data: extdata.clone().into_extension_data(),
             permission: PermissionStore::new(client.as_ref()).await,
             settings: SettingStore::new(client.as_ref()).await,
         };
@@ -67,10 +68,11 @@ impl DionExtension {
             context: None,
             path,
             code,
+            meta: extdata,
         })
     }
 
-    async fn read_extension(extpath: &PathBuf) -> Result<(ExtensionData, String)> {
+    async fn read_extension(extpath: &PathBuf) -> Result<(ExtensionMetadata, String)> {
         let contents: String = String::from_utf8(fs::read(extpath).await?)?;
         let first_line = contents
             .lines()
@@ -82,7 +84,7 @@ impl DionExtension {
         let data: ExtensionMetadata = serde_json::from_str(metadata_str)
             .context("Failed to parse ExtensionData from metadata comment")?;
 
-        Ok((data.into_extension_data(), contents))
+        Ok((data, contents))
     }
 }
 
@@ -119,8 +121,9 @@ impl Extension for DionExtension {
         let (ext, code) = Self::read_extension(&self.path).await?;
         {
             let mut store = self.data.store.write().await;
-            store.data = ext;
+            store.data = ext.clone().into_extension_data();
         }
+        self.meta = ext;
         self.code = code;
         self.set_enabled(enabled).await?;
         Ok(())
