@@ -1,7 +1,7 @@
 {
   "name": "@dion-js/extension-types",
-  "version": "0.2.1",
-  "description": "Type declarations for the Dion extension API (TypeScript .d.ts package)",
+  "version": "0.3.0",
+  "description": "Type declarations for the Dion extension API",
   "files": [
     "index.d.ts",
     "generated.d.ts"
@@ -28,6 +28,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@dion-js/runtime-types": "0.1.0"
+    "@dion-js/runtime-types": "0.3.0"
   }
 }

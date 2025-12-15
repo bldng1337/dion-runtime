@@ -9,6 +9,14 @@ type = ["dep:specta","dep:specta-typescript","dion-runtime/type"]
 [dependencies]
 dion-runtime = { path = "../core" }
 
+hyper = { version = "1.8.1", features = ["full"] }
+hyper-util = { version = "0.1", features = ["client", "client-legacy", "http1", "http2","server"] }
+http-body-util = "0.1"
+
+arc-swap = "1.7.1"
+
+lazy_static = { version = "1.5.0" }
+
 boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde", features = [
     "jsvalue-enum",
     # "temporal",

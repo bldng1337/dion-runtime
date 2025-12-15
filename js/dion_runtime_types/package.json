@@ -1,7 +1,7 @@
 {
   "name": "@dion-js/runtime-types",
-  "version": "0.2.0",
-  "description": "Type declarations for the Dion runtime API (TypeScript .d.ts package)",
+  "version": "0.3.0",
+  "description": "Type declarations for the Dion runtime API",
   "files": [
     "index.d.ts"
   ],

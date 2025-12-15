@@ -1,10 +1,11 @@
 use std::collections::HashMap;
 use std::rc::Rc;
-use std::sync::Arc;
+use std::sync::{Arc, Weak};
 
-use crate::extension::container::{DionExtension, ExtensionRuntimeData};
+use crate::extension::container::{DionExtension, InnerExtension};
 use crate::extension_executor::JSExecutor;
 use crate::js;
+use crate::proxy::{ProxyResult, request_to_value};
 use crate::utils::{
     MapJsResult, Queue, ReadOnlyUserContextContainer, VirtualModuleLoader, await_promise,
 };
@@ -19,13 +20,18 @@ use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::{
     EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
 };
+use hyper::Request;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use tokio::sync::oneshot::Sender;
 use tokio_util::sync::CancellationToken;
-
 #[derive(Debug)]
-pub(super) enum Task {
+pub(crate) enum Task {
+    HandleProxy {
+        req: Request<String>,
+
+        send: Sender<Result<ProxyResult>>,
+    },
     Browse {
         page: i32,
 
@@ -89,14 +95,14 @@ pub(super) enum Task {
 
 pub(super) struct ExtensionExecutor {
     code: String,
-    data: Arc<ExtensionRuntimeData>,
+    data: Weak<InnerExtension>,
 }
 
 impl ExtensionExecutor {
     pub(super) fn create(ext: &DionExtension) -> Self {
         Self {
             code: ext.code.clone(),
-            data: ext.data.clone(),
+            data: Arc::downgrade(&ext.data),
         }
     }
 
@@ -113,12 +119,12 @@ impl ExtensionExecutor {
             .clone())
     }
 
-    async fn exec<T: DeserializeOwned>(
+    async fn exec_raw(
         context: &mut Context,
         func: &str,
         args: &[JsValue],
         token: Option<CancellationToken>,
-    ) -> Result<T> {
+    ) -> Result<Value> {
         match token {
             Some(tok) => context
                 .insert_data::<CancellationTokenContainer>(ReadOnlyUserContextContainer::new(tok)),
@@ -146,16 +152,26 @@ impl ExtensionExecutor {
             .to_json(context)
             .map_anyhow_ctx(context)
             .context(format!("Failed to convert result of {func}"))?;
-        let ret = serde_json::from_value(match json {
+        Ok(match json {
             Some(val) => val,
             None => Value::Null,
-        })?;
+        })
+    }
+
+    async fn exec<T: DeserializeOwned>(
+        context: &mut Context,
+        func: &str,
+        args: &[JsValue],
+        token: Option<CancellationToken>,
+    ) -> Result<T> {
+        let val = Self::exec_raw(context, func, args, token).await?;
+        let ret = serde_json::from_value(val)?;
         Ok(ret)
     }
 }
 
 pub(crate) type CancellationTokenContainer = ReadOnlyUserContextContainer<CancellationToken>;
-pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Arc<ExtensionRuntimeData>>;
+pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Weak<InnerExtension>>;
 
 #[async_trait::async_trait(?Send)]
 impl JSExecutor<Task> for ExtensionExecutor {
@@ -234,6 +250,35 @@ impl JSExecutor<Task> for ExtensionExecutor {
 
     async fn handle(&self, value: Task, context: &mut Context) {
         match value {
+            Task::HandleProxy { req, send } => {
+                let res = async {
+                    let vals = &[
+                        // JsValue::from_json(
+                        //     &serde_json::to_value(client_ip)
+                        //         .context("Failed to convert IpAddr to serde Value")?,
+                        //     context,
+                        // )
+                        // .map_anyhow_ctx(context)
+                        // .context("Failed to convert IpAddr to js")?,
+                        JsValue::from_json(
+                            &request_to_value(&req)
+                                .context("Failed to convert Request to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert Request to js")?,
+                    ];
+                    let val = Self::exec_raw(context, "handleProxy", vals, None)
+                        .await
+                        .context("Failed to call handleProxy")?;
+                    let val: ProxyResult = val
+                        .try_into()
+                        .context("Failed to convert serde Value to ProxyResult")?;
+                    Ok(val)
+                }
+                .await;
+                let _ = send.send(res);
+            }
             Task::Browse { page, token, send } => {
                 let vals = &[page.into()];
                 let browse_res = Self::exec(context, "browse", vals, token).await;

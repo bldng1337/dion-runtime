@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'source.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -82,6 +82,7 @@ class EntryDetailed {
   final String description;
   final String language;
   final Link? cover;
+  final Link? poster;
   final List<Episode> episodes;
   final List<String>? genres;
   final double? rating;
@@ -100,6 +101,7 @@ class EntryDetailed {
     required this.description,
     required this.language,
     this.cover,
+    this.poster,
     required this.episodes,
     this.genres,
     this.rating,
@@ -120,6 +122,7 @@ class EntryDetailed {
       description.hashCode ^
       language.hashCode ^
       cover.hashCode ^
+      poster.hashCode ^
       episodes.hashCode ^
       genres.hashCode ^
       rating.hashCode ^
@@ -142,6 +145,7 @@ class EntryDetailed {
           description == other.description &&
           language == other.language &&
           cover == other.cover &&
+          poster == other.poster &&
           episodes == other.episodes &&
           genres == other.genres &&
           rating == other.rating &&
@@ -354,29 +358,6 @@ enum MediaType {
       RustLib.instance.api.dionRuntimeDataSourceMediaTypeDefault();
 }
 
-/// flutter_rust_bridge:non_opaque
-/// flutter_rust_bridge:unignore
-class Mp3Chapter {
-  final String title;
-  final Link url;
-
-  const Mp3Chapter({
-    required this.title,
-    required this.url,
-  });
-
-  @override
-  int get hashCode => title.hashCode ^ url.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Mp3Chapter &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          url == other.url;
-}
-
 @freezed
 sealed class Paragraph with _$Paragraph {
   const Paragraph._();
@@ -387,6 +368,9 @@ sealed class Paragraph with _$Paragraph {
   const factory Paragraph.customUi({
     required CustomUI ui,
   }) = Paragraph_CustomUI;
+  const factory Paragraph.table({
+    required List<Row> columns,
+  }) = Paragraph_Table;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -399,6 +383,24 @@ enum ReleaseStatus {
 
   static Future<ReleaseStatus> default_() =>
       RustLib.instance.api.dionRuntimeDataSourceReleaseStatusDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class Row {
+  final List<Paragraph> cells;
+
+  const Row({
+    required this.cells,
+  });
+
+  @override
+  int get hashCode => cells.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Row && runtimeType == other.runtimeType && cells == other.cells;
 }
 
 @freezed
@@ -415,13 +417,13 @@ sealed class Source with _$Source {
     required List<Link> links,
     List<ImageListAudio>? audio,
   }) = Source_Imagelist;
-  const factory Source.m3U8({
-    required Link link,
+  const factory Source.video({
+    required List<StreamSource> sources,
     required List<Subtitles> sub,
-  }) = Source_M3u8;
-  const factory Source.mp3({
-    required List<Mp3Chapter> chapters,
-  }) = Source_Mp3;
+  }) = Source_Video;
+  const factory Source.audio({
+    required List<StreamSource> sources,
+  }) = Source_Audio;
   const factory Source.paragraphlist({
     required List<Paragraph> paragraphs,
   }) = Source_Paragraphlist;
@@ -456,25 +458,53 @@ enum SourceType {
   epub,
   pdf,
   imagelist,
-  m3U8,
-  mp3,
+  video,
+  audio,
   paragraphlist,
   ;
 }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-class Subtitles {
-  final String title;
+class StreamSource {
+  final String name;
+  final String lang;
   final Link url;
 
-  const Subtitles({
-    required this.title,
+  const StreamSource({
+    required this.name,
+    required this.lang,
     required this.url,
   });
 
   @override
-  int get hashCode => title.hashCode ^ url.hashCode;
+  int get hashCode => name.hashCode ^ lang.hashCode ^ url.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StreamSource &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          lang == other.lang &&
+          url == other.url;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class Subtitles {
+  final String title;
+  final String lang;
+  final Link url;
+
+  const Subtitles({
+    required this.title,
+    required this.lang,
+    required this.url,
+  });
+
+  @override
+  int get hashCode => title.hashCode ^ lang.hashCode ^ url.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -482,5 +512,6 @@ class Subtitles {
       other is Subtitles &&
           runtimeType == other.runtimeType &&
           title == other.title &&
+          lang == other.lang &&
           url == other.url;
 }

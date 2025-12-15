@@ -3,11 +3,11 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::{Context as ErrorContext, Result, anyhow, bail};
+use arc_swap::ArcSwapOption;
 use dion_runtime::client_data::ExtensionClient;
 use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
-use dion_runtime::data::extension::ExtensionData;
 use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::EntryDetailed;
 use dion_runtime::data::source::EntryDetailedResult;
@@ -29,21 +29,24 @@ use crate::extension::executor::{ExtensionExecutor, Task};
 use crate::extension_executor::ThreadedJSContext;
 use crate::extension_manager::{DionExtensionAdapter, ExtensionMetadata};
 use crate::network::DionNetworkManager;
+use crate::proxy::Proxy;
+use crate::proxy::ProxyExtensionRef;
 
 #[derive(Debug)]
-pub struct ExtensionRuntimeData {
+pub struct InnerExtension {
     pub(crate) store: RwLock<ExtensionStore>,
     pub(crate) client: Box<dyn ExtensionClient>,
     pub(crate) network: DionNetworkManager,
+    pub(crate) context: ArcSwapOption<ThreadedJSContext<Task>>,
+    pub(crate) proxy: Arc<RwLock<Proxy>>,
 }
 
 #[derive(Debug)]
 pub struct DionExtension {
-    pub(crate) data: Arc<ExtensionRuntimeData>,
-    context: Option<ThreadedJSContext<Task>>,
+    pub(crate) data: Arc<InnerExtension>,
     pub(crate) code: String,
     pub(crate) path: PathBuf,
-    pub(crate) meta: ExtensionMetadata,
+    pub(crate) _proxy_ref: Arc<ProxyExtensionRef>,
 }
 
 impl DionExtension {
@@ -59,16 +62,20 @@ impl DionExtension {
             permission: PermissionStore::new(client.as_ref()).await,
             settings: SettingStore::new(client.as_ref()).await,
         };
+        let data = Arc::new(InnerExtension {
+            client,
+            proxy: manager.proxy.clone(),
+            network: manager.network.clone(),
+            store: RwLock::new(ext),
+            context: ArcSwapOption::from(None),
+        });
+        let proxy = manager.proxy.clone();
+        let proxy_ref = ProxyExtensionRef::new(&proxy, Arc::downgrade(&data)).await;
         Ok(Self {
-            data: Arc::new(ExtensionRuntimeData {
-                client,
-                network: manager.network.clone(),
-                store: RwLock::new(ext),
-            }),
-            context: None,
+            _proxy_ref: proxy_ref,
+            data,
             path,
             code,
-            meta: extdata,
         })
     }
 
@@ -91,7 +98,7 @@ impl DionExtension {
 #[async_trait::async_trait()]
 impl Extension for DionExtension {
     fn is_enabled(&self) -> bool {
-        self.context.is_some()
+        self.data.context.load().is_some()
     }
 
     fn get_data(&self) -> &RwLock<ExtensionStore> {
@@ -107,9 +114,9 @@ impl Extension for DionExtension {
             (true, false) => {
                 let executor = ExtensionExecutor::create(self);
                 let context = ThreadedJSContext::create(executor).await?;
-                self.context = Some(context);
+                self.data.context.store(Some(Arc::new(context)));
             }
-            (false, true) => self.context = None,
+            (false, true) => self.data.context.store(None),
             (false, false) | (true, true) => (),
         }
         Ok(())
@@ -123,14 +130,13 @@ impl Extension for DionExtension {
             let mut store = self.data.store.write().await;
             store.data = ext.clone().into_extension_data();
         }
-        self.meta = ext;
         self.code = code;
         self.set_enabled(enabled).await?;
         Ok(())
     }
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Browse { page, token, send };
@@ -148,7 +154,7 @@ impl Extension for DionExtension {
         event: EventData,
         token: Option<CancellationToken>,
     ) -> Result<Option<EventResult>> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Event { event, token, send };
@@ -167,7 +173,7 @@ impl Extension for DionExtension {
         filter: String,
         token: Option<CancellationToken>,
     ) -> Result<EntryList> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Search {
@@ -186,7 +192,7 @@ impl Extension for DionExtension {
     }
 
     async fn handle_url(&self, url: String, token: Option<CancellationToken>) -> Result<bool> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::HandleUrl { url, token, send };
@@ -206,7 +212,7 @@ impl Extension for DionExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<()> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::OnEntryActivity {
@@ -231,7 +237,7 @@ impl Extension for DionExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Detail {
@@ -255,7 +261,7 @@ impl Extension for DionExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Source {
@@ -279,7 +285,7 @@ impl Extension for DionExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::MapEntry {
@@ -304,7 +310,7 @@ impl Extension for DionExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
-        match &self.context {
+        match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::ProcessSource {

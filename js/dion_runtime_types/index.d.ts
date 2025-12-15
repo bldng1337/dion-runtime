@@ -1,7 +1,7 @@
 // This file has been generated. DO NOT EDIT.
 // dion runtime types
 
-type ImageListAudio = { link: Link; from: number; to: number }
+type Subtitles = { title: string; lang: string; url: Link }
 
 type UIAction = { type: "Action"; action: Action } | { type: "SwapContent"; targetid: string; event: string; data: string; placeholder: CustomUI | null }
 
@@ -11,8 +11,6 @@ type ExtensionType = { type: "EntryProvider"; has_search: boolean } | { type: "E
 
 type ReleaseStatus = "Releasing" | "Complete" | "Unknown"
 
-type Paragraph = { type: "Text"; content: string } | { type: "CustomUI"; ui: CustomUI }
-
 type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown"
 
 type TimestampType = "Relative" | "Absolute"
@@ -21,25 +19,33 @@ type Link = { url: string; header?: { [key: string]: string } | null }
 
 type Action = { type: "OpenBrowser"; url: string } | { type: "Popup"; title: string; content: CustomUI; actions: PopupAction[] } | { type: "Nav"; title: string; content: CustomUI } | { type: "TriggerEvent"; event: string; data: string } | { type: "NavEntry"; entry: EntryDetailed }
 
+type Paragraph = { type: "Text"; content: string } | { type: "CustomUI"; ui: CustomUI } | { type: "Table"; columns: Row[] }
+
+type SourceType = "Epub" | "Pdf" | "Imagelist" | "Video" | "Audio" | "Paragraphlist"
+
 type Setting = { label: string; value: SettingValue; default: SettingValue; visible: boolean; ui?: SettingsUI | null }
 
 type RemoteExtension = { id: string; exturl: string; name: string; cover: Link | null; version: string; compatible: boolean }
 
 type EntryActivity = { type: "EpisodeActivity"; progress: number }
 
-type EventData = { type: "SwapContent"; event: string; targetid: string; data: string } | { type: "FeedUpdate"; event: string; data: string; page: number } | { type: "Action"; event: string; data: string }
+type StreamSource = { name: string; lang: string; url: Link }
 
-type EntryId = { uid: string; iddata?: string | null }
+type EventData = { type: "SwapContent"; event: string; targetid: string; data: string } | { type: "FeedUpdate"; event: string; data: string; page: number } | { type: "Action"; event: string; data: string }
 
 type AuthData = { Cookie: { loginpage: string; logonpage: string } } | "ApiKey" | "UserPass"
 
-type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null }
+type EntryId = { uid: string; iddata?: string | null }
 
-type Mp3Chapter = { title: string; url: Link }
+type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null }
 
 type ExtensionData = { id: string; name: string; url: string; icon: string; desc?: string | null; author?: string[]; tags?: string[]; lang?: string[]; nsfw: boolean; media_type: MediaType[]; extension_type: ExtensionType[]; repo?: string | null; version: string; license: string; compatible: boolean }
 
-type SourceType = "Epub" | "Pdf" | "Imagelist" | "M3u8" | "Mp3" | "Paragraphlist"
+type ImageListAudio = { link: Link; from: number; to: number }
+
+type Row = { cells: Paragraph[] }
+
+type Source = { type: "Epub"; link: Link } | { type: "Pdf"; link: Link } | { type: "Imagelist"; links: Link[]; audio: ImageListAudio[] | null } | { type: "Video"; sources: StreamSource[]; sub: Subtitles[] } | { type: "Audio"; sources: StreamSource[] } | { type: "Paragraphlist"; paragraphs: Paragraph[] }
 
 type ExtensionManagerData = { name: string; icon: string | null; repo: string | null; api_version: number }
 
@@ -47,15 +53,11 @@ type SettingsUI = { type: "CheckBox" } | { type: "Slider"; min: number; max: num
 
 type EntryDetailedResult = { entry: EntryDetailed; settings: { [key: string]: Setting } }
 
-type EntryDetailed = { id: EntryId; url: string; titles: string[]; author?: string[] | null; ui?: CustomUI | null; meta?: { [key: string]: string } | null; media_type: MediaType; status: ReleaseStatus; description: string; language: string; cover?: Link | null; episodes: Episode[]; genres?: string[] | null; rating?: number | null; views?: number | null; length?: number | null }
+type EntryDetailed = { id: EntryId; url: string; titles: string[]; author?: string[] | null; ui?: CustomUI | null; meta?: { [key: string]: string } | null; media_type: MediaType; status: ReleaseStatus; description: string; language: string; cover?: Link | null; poster?: Link | null; episodes: Episode[]; genres?: string[] | null; rating?: number | null; views?: number | null; length?: number | null }
 
 type SourceResult = { source: Source; settings: { [key: string]: Setting } }
 
-type Source = { type: "Epub"; link: Link } | { type: "Pdf"; link: Link } | { type: "Imagelist"; links: Link[]; audio: ImageListAudio[] | null } | { type: "M3u8"; link: Link; sub: Subtitles[] } | { type: "Mp3"; chapters: Mp3Chapter[] } | { type: "Paragraphlist"; paragraphs: Paragraph[] }
-
 type DropdownOption = { label: string; value: string }
-
-type Subtitles = { title: string; url: Link }
 
 type Episode = { id: EpisodeId; name: string; description?: string | null; url: string; cover?: Link | null; timestamp?: string | null }
 
@@ -77,7 +79,7 @@ type SettingValue = { type: "String"; data: string } | { type: "Number"; data: n
 
 type EntryList = { hasnext?: boolean | null; length?: number | null; content: Entry[] }
 
-type EpisodeId = { uid: string; iddata?: string | null }
-
 type SourceOpenType = "Download" | "Stream"
+
+type EpisodeId = { uid: string; iddata?: string | null }
 

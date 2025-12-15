@@ -14,7 +14,7 @@ interface Requestoptions {
 
 interface DionResponse {
   status: number;
-  headers: Map<string,string>;
+  headers: { [key: string]: string };
   body: string;
   json: any;
   ok: boolean;
@@ -27,6 +27,7 @@ declare var console: Console
 declare module "network" {
   function fetch(url: string, option?: Requestoptions): Promise<DionResponse>;
   function getCookies(): Cookie[];
+  function getProxyAddress(): Promise<string|undefined>;
 }
 
 declare module "permission" {
@@ -88,8 +89,29 @@ declare var appdata: {
   platform: string;
 };
 
+interface ProxyRequest {
+  method: "GET"|"HEAD"|"POST"|"PUT"|"DELETE"|"CONNECT"|"TRACE"|"PATCH";
+  uri: string;
+  version: 10|11|2|3;
+  headers: { [key: string]: string[] };
+  body?: string;
+}
+
+type ProxyResponse =
+  | {
+      type: "redirect";
+      request: ProxyRequest;
+    }
+  | {
+      type: "response";
+      status: number;
+      headers: { [key: string]: string[] };
+      body?: string;
+    };
+
 interface Extension {
   onEvent(data: EventData): Promise<EventResult | undefined>;
+  handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;
 }
 
 interface SourceProvider {

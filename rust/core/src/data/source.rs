@@ -144,6 +144,7 @@ pub struct EntryDetailed {
     #[cfg_attr(feature = "type", specta(optional))]
     pub length: Option<i32>,
 }
+
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone, Hash, PartialEq, Eq)]
@@ -152,8 +153,8 @@ pub enum SourceType {
     Epub,
     Pdf,
     Imagelist,
-    M3u8,
-    Mp3,
+    Video,
+    Audio,
     Paragraphlist,
 }
 
@@ -174,12 +175,12 @@ pub enum Source {
         #[cfg_attr(feature = "type", specta(optional))]
         audio: Option<Vec<ImageListAudio>>,
     },
-    M3u8 {
-        link: Link,
+    Video {
+        sources: Vec<StreamSource>,
         sub: Vec<Subtitles>,
     },
-    Mp3 {
-        chapters: Vec<Mp3Chapter>,
+    Audio {
+        sources: Vec<StreamSource>,
     },
     Paragraphlist {
         paragraphs: Vec<Paragraph>,
@@ -194,14 +195,24 @@ pub enum Source {
 pub enum Paragraph {
     Text { content: String },
     CustomUI { ui: Box<CustomUI> },
+    Table { columns: Vec<Row> },
 }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
-pub struct Mp3Chapter {
-    pub title: String,
+pub struct Row {
+    pub cells: Vec<Paragraph>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct StreamSource {
+    pub name: String,
+    pub lang: String,
     pub url: Link,
 }
 
@@ -211,6 +222,7 @@ pub struct Mp3Chapter {
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Subtitles {
     pub title: String,
+    pub lang: String,
     pub url: Link,
 }
 

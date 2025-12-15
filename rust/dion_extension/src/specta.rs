@@ -30,13 +30,13 @@ mod ts {
         }
 
         // We sort by name to detect duplicate types BUT also to ensure the output is deterministic. The SID can change between builds so is not suitable for this.
-        let ALLOWLIST = ["ExtensionMetadata"];
+        let allowlist = ["ExtensionMetadata"];
         let types = types
             .0
             .clone()
             .into_iter()
             .filter(|(_, dt)| match dt {
-                Some(dt) => ALLOWLIST.contains(&dt.name),
+                Some(dt) => allowlist.contains(&dt.name),
                 None => unreachable!(),
             })
             .collect::<BTreeMap<_, _>>();

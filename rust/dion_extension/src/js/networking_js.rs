@@ -37,15 +37,30 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
             .length(0)
             .name("getCookies")
             .build();
+    let get_proxy_address_fn = FunctionObjectBuilder::new(
+        context.realm(),
+        NativeFunction::from_fn_ptr(get_proxy_address),
+    )
+    .length(0)
+    .name("getProxyAddress")
+    .build();
     let module = Module::synthetic(
-        &[js_string!("fetch"), js_string!("getCookies")],
+        &[
+            js_string!("fetch"),
+            js_string!("getCookies"),
+            js_string!("getProxyAddress"),
+        ],
         SyntheticModuleInitializer::from_copy_closure_with_captures(
-            move |m, (fetch_fn, get_cookies_fn), _ctx| {
+            move |m, (fetch_fn, get_cookies_fn, get_proxy_address_fn), _ctx| {
                 m.set_export(&js_string!("fetch"), fetch_fn.clone().into())?;
                 m.set_export(&js_string!("getCookies"), get_cookies_fn.clone().into())?;
+                m.set_export(
+                    &js_string!("getProxyAddress"),
+                    get_proxy_address_fn.clone().into(),
+                )?;
                 Ok(())
             },
-            (fetch_fn, get_cookies_fn),
+            (fetch_fn, get_cookies_fn, get_proxy_address_fn),
         ),
         None,
         None,
@@ -242,6 +257,11 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
                 match async {
                     let resource = resource?;
                     let networkcontainer = network.ok_or(JsError::from_native(JsNativeError::error()))?;
+                    let Some(networkcontainer) = networkcontainer.inner.upgrade() else {
+                        return Err(JsError::from_native(
+                            JsNativeError::error().with_message("Network container has been dropped"),
+                        ));
+                    };
                     let options = options?.unwrap_or(Value::Null);
                     let options = options.as_object().cloned();
                     let method = match &options {
@@ -264,7 +284,6 @@ fn fetch(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<J
                         }
                         None => Method::GET,
                     };
-
                     let mut rbuild = networkcontainer.network.nclient.request(method, resource);
                     if let Some(options) = &options && options.contains_key("body") {
                         rbuild = rbuild.body(
@@ -326,6 +345,11 @@ fn get_cookies(_this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsR
     let network: ExtensionRuntimeDataContainer = context.get_data().cloned().ok_or(
         JsError::from_native(JsNativeError::error().with_message("Failed to get runtime data")),
     )?;
+    let Some(network) = network.inner.upgrade() else {
+        return Err(JsError::from_native(
+            JsNativeError::error().with_message("Network container has been dropped"),
+        ));
+    };
     let cookies = network
         .network
         .cookies
@@ -438,4 +462,52 @@ fn get_cookies(_this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsR
         array.push(obj, context)?;
     }
     Ok(array.into())
+}
+
+fn get_proxy_address(
+    _this: &JsValue,
+    _args: &[JsValue],
+    context: &mut Context,
+) -> JsResult<JsValue> {
+    let network: ExtensionRuntimeDataContainer = context.get_data().cloned().ok_or(
+        JsError::from_native(JsNativeError::error().with_message("Failed to get runtime data")),
+    )?;
+    let Some(network) = network.inner.upgrade() else {
+        return Err(JsError::from_native(
+            JsNativeError::error().with_message("Network container has been dropped"),
+        ));
+    };
+    let (promise, resolve) = JsPromise::new_pending(context);
+    let ret = promise.clone();
+    context.enqueue_job(<boa_engine::job::Job>::from(NativeAsyncJob::with_realm(
+        async move |context: &RefCell<&mut Context>| {
+            match async {
+                let proxy = network.proxy.read().await;
+                let uri = proxy.get_extension_uri(&network.store.read().await.data);
+                let Some(uri) = uri else {
+                    return Ok(JsValue::undefined());
+                };
+                Ok(JsString::from(uri).into())
+            }
+            .await as JsResult<JsValue>
+            {
+                Ok(val) => {
+                    resolve
+                        .resolve
+                        .call(&promise.into(), &[val], &mut context.borrow_mut())?
+                }
+                Err(err) => {
+                    let mut context = context.borrow_mut();
+                    resolve.reject.call(
+                        &promise.into(),
+                        &[err.to_opaque(&mut context)],
+                        &mut context,
+                    )?
+                }
+            };
+            Ok(JsValue::undefined())
+        },
+        context.realm().clone(),
+    )));
+    Ok(ret.into())
 }

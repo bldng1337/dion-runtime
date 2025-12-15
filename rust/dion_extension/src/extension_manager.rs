@@ -1,6 +1,7 @@
 use std::{
     collections::HashSet,
     path::{Path, PathBuf},
+    sync::Arc,
 };
 
 use anyhow::{Context, Result, anyhow, bail};
@@ -15,9 +16,12 @@ use dion_runtime::{
 };
 use log::error;
 use semver::{Version, VersionReq};
-use tokio::fs::{self, copy, read_dir, remove_file, write};
+use tokio::{
+    fs::{self, copy, read_dir, remove_file, write},
+    sync::RwLock,
+};
 
-use crate::{extension::container::DionExtension, network::DionNetworkManager};
+use crate::{extension::container::DionExtension, network::DionNetworkManager, proxy::Proxy};
 
 #[cfg(feature = "type")]
 use specta::Type;
@@ -82,6 +86,7 @@ impl ExtensionMetadata {
 pub struct DionExtensionAdapter {
     pub(crate) network: DionNetworkManager,
     pub(crate) client: Box<dyn AdapterClient>,
+    pub(crate) proxy: Arc<RwLock<Proxy>>,
 }
 
 impl DionExtensionAdapter {
@@ -92,6 +97,7 @@ impl DionExtensionAdapter {
             .context("Failed to get Extension Path")?;
         Ok(DionExtensionAdapter {
             network: DionNetworkManager::new(path.into())?,
+            proxy: Proxy::new().await,
             client,
         })
     }

@@ -191,7 +191,7 @@ export async function buildTestExtension(
       {
         type: "SourceProcessor",
         opentype: ["Download", "Stream"],
-        sourcetypes: ["Epub", "Imagelist", "M3u8", "Paragraphlist", "Pdf"],
+        sourcetypes: ["Epub", "Imagelist", "Video", "Paragraphlist", "Pdf"],
       },
       {
         type: "SourceProvider",

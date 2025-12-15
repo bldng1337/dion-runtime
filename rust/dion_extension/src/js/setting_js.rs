@@ -75,6 +75,12 @@ fn get_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsRe
                         context.borrow().get_data().cloned();
                     let runtime_data =
                         runtime_data.ok_or(JsError::from_native(JsNativeError::error()))?;
+                    let Some(runtime_data) = runtime_data.inner.upgrade() else {
+                        return Err(JsError::from_native(
+                            JsNativeError::error()
+                                .with_message("Network container has been dropped"),
+                        ));
+                    };
                     let ext_store = runtime_data.store.read().await;
 
                     let Some(setting) = ext_store
@@ -144,6 +150,12 @@ fn register_setting(_this: &JsValue, args: &[JsValue], context: &mut Context) ->
                         context.borrow().get_data().cloned();
                     let runtime_data =
                         runtime_data.ok_or(JsError::from_native(JsNativeError::error()))?;
+                    let Some(runtime_data) = runtime_data.inner.upgrade() else {
+                        return Err(JsError::from_native(
+                            JsNativeError::error()
+                                .with_message("Network container has been dropped"),
+                        ));
+                    };
                     let mut ext_store = runtime_data.store.write().await;
 
                     ext_store

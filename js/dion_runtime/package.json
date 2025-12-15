@@ -1,6 +1,6 @@
 {
 	"name": "@dion-js/runtime",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"license": "MIT",
 	"description": "Bindings for the dion extension api for node",
 	"main": "index.js",
@@ -53,7 +53,7 @@
 		"clean": "cargo clean"
 	},
 	"dependencies": {
-		"@dion-js/runtime-types": "0.1.0"
+		"@dion-js/runtime-types": "0.3.0"
 	},
 	"devDependencies": {
 		"@emnapi/core": "^1.5.0",

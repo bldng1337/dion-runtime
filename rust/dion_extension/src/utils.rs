@@ -15,7 +15,7 @@ use boa_engine::{
 use boa_gc::GcRefCell;
 use futures_concurrency::future::FutureGroup;
 use futures_lite::{StreamExt, future};
-use tokio::task;
+use tokio::task::{self, JoinHandle};
 
 use boa_engine::Finalize;
 use boa_engine::JsData;
@@ -23,6 +23,33 @@ use boa_engine::module::{ModuleLoader, Referrer};
 use boa_engine::{JsError, JsString, Module, Trace};
 
 use anyhow::{Result, anyhow};
+
+pub(crate) trait Abortable {
+    fn abort(&self);
+}
+
+impl<T> Abortable for JoinHandle<T> {
+    fn abort(&self) {
+        JoinHandle::abort(self);
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct AbortOnDrop<T: Abortable> {
+    handle: T,
+}
+
+impl<T: Abortable> AbortOnDrop<T> {
+    pub fn new(handle: T) -> Self {
+        Self { handle }
+    }
+}
+
+impl<T: Abortable> Drop for AbortOnDrop<T> {
+    fn drop(&mut self) {
+        self.handle.abort();
+    }
+}
 
 pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResult<JsValue> {
     let queue: Rc<Queue> = context.downcast_job_executor().ok_or(JsError::from_native(

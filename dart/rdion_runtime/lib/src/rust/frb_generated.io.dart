@@ -363,9 +363,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<MediaType> dco_decode_list_media_type(dynamic raw);
 
   @protected
-  List<Mp3Chapter> dco_decode_list_mp_3_chapter(dynamic raw);
-
-  @protected
   List<Paragraph> dco_decode_list_paragraph(dynamic raw);
 
   @protected
@@ -387,19 +384,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<RemoteExtension> dco_decode_list_remote_extension(dynamic raw);
 
   @protected
+  List<Row> dco_decode_list_row(dynamic raw);
+
+  @protected
   List<SourceOpenType> dco_decode_list_source_open_type(dynamic raw);
 
   @protected
   List<SourceType> dco_decode_list_source_type(dynamic raw);
 
   @protected
+  List<StreamSource> dco_decode_list_stream_source(dynamic raw);
+
+  @protected
   List<Subtitles> dco_decode_list_subtitles(dynamic raw);
 
   @protected
   MediaType dco_decode_media_type(dynamic raw);
-
-  @protected
-  Mp3Chapter dco_decode_mp_3_chapter(dynamic raw);
 
   @protected
   Map<String, String>? dco_decode_opt_Map_String_String_None(dynamic raw);
@@ -467,6 +467,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RemoteExtensionResult dco_decode_remote_extension_result(dynamic raw);
 
   @protected
+  Row dco_decode_row(dynamic raw);
+
+  @protected
   Setting dco_decode_setting(dynamic raw);
 
   @protected
@@ -489,6 +492,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SourceType dco_decode_source_type(dynamic raw);
+
+  @protected
+  StreamSource dco_decode_stream_source(dynamic raw);
 
   @protected
   Subtitles dco_decode_subtitles(dynamic raw);
@@ -808,9 +814,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<MediaType> sse_decode_list_media_type(SseDeserializer deserializer);
 
   @protected
-  List<Mp3Chapter> sse_decode_list_mp_3_chapter(SseDeserializer deserializer);
-
-  @protected
   List<Paragraph> sse_decode_list_paragraph(SseDeserializer deserializer);
 
   @protected
@@ -835,6 +838,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<Row> sse_decode_list_row(SseDeserializer deserializer);
+
+  @protected
   List<SourceOpenType> sse_decode_list_source_open_type(
       SseDeserializer deserializer);
 
@@ -842,13 +848,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<SourceType> sse_decode_list_source_type(SseDeserializer deserializer);
 
   @protected
+  List<StreamSource> sse_decode_list_stream_source(
+      SseDeserializer deserializer);
+
+  @protected
   List<Subtitles> sse_decode_list_subtitles(SseDeserializer deserializer);
 
   @protected
   MediaType sse_decode_media_type(SseDeserializer deserializer);
-
-  @protected
-  Mp3Chapter sse_decode_mp_3_chapter(SseDeserializer deserializer);
 
   @protected
   Map<String, String>? sse_decode_opt_Map_String_String_None(
@@ -923,6 +930,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  Row sse_decode_row(SseDeserializer deserializer);
+
+  @protected
   Setting sse_decode_setting(SseDeserializer deserializer);
 
   @protected
@@ -945,6 +955,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SourceType sse_decode_source_type(SseDeserializer deserializer);
+
+  @protected
+  StreamSource sse_decode_stream_source(SseDeserializer deserializer);
 
   @protected
   Subtitles sse_decode_subtitles(SseDeserializer deserializer);
@@ -1251,17 +1264,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_mp_3_chapter> cst_encode_list_mp_3_chapter(
-      List<Mp3Chapter> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_mp_3_chapter(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_mp_3_chapter(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_paragraph> cst_encode_list_paragraph(
       List<Paragraph> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1326,6 +1328,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_row> cst_encode_list_row(List<Row> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_row(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_row(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_source_open_type> cst_encode_list_source_open_type(
       List<SourceOpenType> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1343,6 +1355,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_source_type(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       ans.ref.ptr[i] = cst_encode_source_type(raw[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_stream_source> cst_encode_list_stream_source(
+      List<StreamSource> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_stream_source(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_stream_source(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1723,6 +1746,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.description = cst_encode_String(apiObj.description);
     wireObj.language = cst_encode_String(apiObj.language);
     wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
+    wireObj.poster = cst_encode_opt_box_autoadd_link(apiObj.poster);
     wireObj.episodes = cst_encode_list_episode(apiObj.episodes);
     wireObj.genres = cst_encode_opt_list_String(apiObj.genres);
     wireObj.rating = cst_encode_opt_box_autoadd_f_32(apiObj.rating);
@@ -1924,13 +1948,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_mp_3_chapter(
-      Mp3Chapter apiObj, wire_cst_mp_3_chapter wireObj) {
-    wireObj.title = cst_encode_String(apiObj.title);
-    cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
-  }
-
-  @protected
   void cst_api_fill_to_wire_paragraph(
       Paragraph apiObj, wire_cst_paragraph wireObj) {
     if (apiObj is Paragraph_Text) {
@@ -1943,6 +1960,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       var pre_ui = cst_encode_box_custom_ui(apiObj.ui);
       wireObj.tag = 1;
       wireObj.kind.CustomUI.ui = pre_ui;
+      return;
+    }
+    if (apiObj is Paragraph_Table) {
+      var pre_columns = cst_encode_list_row(apiObj.columns);
+      wireObj.tag = 2;
+      wireObj.kind.Table.columns = pre_columns;
       return;
     }
   }
@@ -2012,6 +2035,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.content = cst_encode_list_remote_extension(apiObj.content);
     wireObj.hasnext = cst_encode_opt_box_autoadd_bool(apiObj.hasnext);
     wireObj.length = cst_encode_opt_box_autoadd_i_32(apiObj.length);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_row(Row apiObj, wire_cst_row wireObj) {
+    wireObj.cells = cst_encode_list_paragraph(apiObj.cells);
   }
 
   @protected
@@ -2099,18 +2127,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.Imagelist.audio = pre_audio;
       return;
     }
-    if (apiObj is Source_M3u8) {
-      var pre_link = cst_encode_box_autoadd_link(apiObj.link);
+    if (apiObj is Source_Video) {
+      var pre_sources = cst_encode_list_stream_source(apiObj.sources);
       var pre_sub = cst_encode_list_subtitles(apiObj.sub);
       wireObj.tag = 3;
-      wireObj.kind.M3u8.link = pre_link;
-      wireObj.kind.M3u8.sub = pre_sub;
+      wireObj.kind.Video.sources = pre_sources;
+      wireObj.kind.Video.sub = pre_sub;
       return;
     }
-    if (apiObj is Source_Mp3) {
-      var pre_chapters = cst_encode_list_mp_3_chapter(apiObj.chapters);
+    if (apiObj is Source_Audio) {
+      var pre_sources = cst_encode_list_stream_source(apiObj.sources);
       wireObj.tag = 4;
-      wireObj.kind.Mp3.chapters = pre_chapters;
+      wireObj.kind.Audio.sources = pre_sources;
       return;
     }
     if (apiObj is Source_Paragraphlist) {
@@ -2129,9 +2157,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_stream_source(
+      StreamSource apiObj, wire_cst_stream_source wireObj) {
+    wireObj.name = cst_encode_String(apiObj.name);
+    wireObj.lang = cst_encode_String(apiObj.lang);
+    cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
+  }
+
+  @protected
   void cst_api_fill_to_wire_subtitles(
       Subtitles apiObj, wire_cst_subtitles wireObj) {
     wireObj.title = cst_encode_String(apiObj.title);
+    wireObj.lang = cst_encode_String(apiObj.lang);
     cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
   }
 
@@ -2583,10 +2620,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<MediaType> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_mp_3_chapter(
-      List<Mp3Chapter> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_paragraph(
       List<Paragraph> self, SseSerializer serializer);
 
@@ -2615,6 +2648,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<RemoteExtension> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_row(List<Row> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_source_open_type(
       List<SourceOpenType> self, SseSerializer serializer);
 
@@ -2623,14 +2659,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<SourceType> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_stream_source(
+      List<StreamSource> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_subtitles(
       List<Subtitles> self, SseSerializer serializer);
 
   @protected
   void sse_encode_media_type(MediaType self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_mp_3_chapter(Mp3Chapter self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_Map_String_String_None(
@@ -2707,6 +2744,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RemoteExtensionResult self, SseSerializer serializer);
 
   @protected
+  void sse_encode_row(Row self, SseSerializer serializer);
+
+  @protected
   void sse_encode_setting(Setting self, SseSerializer serializer);
 
   @protected
@@ -2730,6 +2770,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_source_type(SourceType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_stream_source(StreamSource self, SseSerializer serializer);
 
   @protected
   void sse_encode_subtitles(Subtitles self, SseSerializer serializer);
@@ -4290,17 +4333,6 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_media_type = _cst_new_list_media_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_media_type> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_mp_3_chapter> cst_new_list_mp_3_chapter(int len) {
-    return _cst_new_list_mp_3_chapter(len);
-  }
-
-  late final _cst_new_list_mp_3_chapterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_mp_3_chapter> Function(
-              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_mp_3_chapter');
-  late final _cst_new_list_mp_3_chapter = _cst_new_list_mp_3_chapterPtr
-      .asFunction<ffi.Pointer<wire_cst_list_mp_3_chapter> Function(int)>();
-
   ffi.Pointer<wire_cst_list_paragraph> cst_new_list_paragraph(int len) {
     return _cst_new_list_paragraph(len);
   }
@@ -4377,6 +4409,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_remote_extension = _cst_new_list_remote_extensionPtr
       .asFunction<ffi.Pointer<wire_cst_list_remote_extension> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_row> cst_new_list_row(int len) {
+    return _cst_new_list_row(len);
+  }
+
+  late final _cst_new_list_rowPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_cst_list_row> Function(ffi.Int32)>>(
+      'frbgen_rdion_runtime_cst_new_list_row');
+  late final _cst_new_list_row = _cst_new_list_rowPtr
+      .asFunction<ffi.Pointer<wire_cst_list_row> Function(int)>();
+
   ffi.Pointer<wire_cst_list_source_open_type> cst_new_list_source_open_type(
     int len,
   ) {
@@ -4400,6 +4443,17 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_source_type');
   late final _cst_new_list_source_type = _cst_new_list_source_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_source_type> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_stream_source> cst_new_list_stream_source(int len) {
+    return _cst_new_list_stream_source(len);
+  }
+
+  late final _cst_new_list_stream_sourcePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_stream_source> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_stream_source');
+  late final _cst_new_list_stream_source = _cst_new_list_stream_sourcePtr
+      .asFunction<ffi.Pointer<wire_cst_list_stream_source> Function(int)>();
 
   ffi.Pointer<wire_cst_list_subtitles> cst_new_list_subtitles(int len) {
     return _cst_new_list_subtitles(len);
@@ -4687,6 +4741,8 @@ final class wire_cst_entry_detailed extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_link> cover;
 
+  external ffi.Pointer<wire_cst_link> poster;
+
   external ffi.Pointer<wire_cst_list_episode> episodes;
 
   external ffi.Pointer<wire_cst_list_String> genres;
@@ -4925,19 +4981,6 @@ final class wire_cst_list_media_type extends ffi.Struct {
   external int len;
 }
 
-final class wire_cst_mp_3_chapter extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
-
-  external wire_cst_link url;
-}
-
-final class wire_cst_list_mp_3_chapter extends ffi.Struct {
-  external ffi.Pointer<wire_cst_mp_3_chapter> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
 final class wire_cst_Paragraph_Text extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
 }
@@ -4946,10 +4989,15 @@ final class wire_cst_Paragraph_CustomUI extends ffi.Struct {
   external ffi.Pointer<wire_cst_custom_ui> ui;
 }
 
-final class ParagraphKind extends ffi.Union {
-  external wire_cst_Paragraph_Text Text;
+final class wire_cst_row extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_paragraph> cells;
+}
 
-  external wire_cst_Paragraph_CustomUI CustomUI;
+final class wire_cst_list_paragraph extends ffi.Struct {
+  external ffi.Pointer<wire_cst_paragraph> ptr;
+
+  @ffi.Int32()
+  external int len;
 }
 
 final class wire_cst_paragraph extends ffi.Struct {
@@ -4959,8 +5007,20 @@ final class wire_cst_paragraph extends ffi.Struct {
   external ParagraphKind kind;
 }
 
-final class wire_cst_list_paragraph extends ffi.Struct {
-  external ffi.Pointer<wire_cst_paragraph> ptr;
+final class ParagraphKind extends ffi.Union {
+  external wire_cst_Paragraph_Text Text;
+
+  external wire_cst_Paragraph_CustomUI CustomUI;
+
+  external wire_cst_Paragraph_Table Table;
+}
+
+final class wire_cst_Paragraph_Table extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_row> columns;
+}
+
+final class wire_cst_list_row extends ffi.Struct {
+  external ffi.Pointer<wire_cst_row> ptr;
 
   @ffi.Int32()
   external int len;
@@ -5049,8 +5109,25 @@ final class wire_cst_list_remote_extension extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_stream_source extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> lang;
+
+  external wire_cst_link url;
+}
+
+final class wire_cst_list_stream_source extends ffi.Struct {
+  external ffi.Pointer<wire_cst_stream_source> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_subtitles extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> lang;
 
   external wire_cst_link url;
 }
@@ -5275,14 +5352,14 @@ final class wire_cst_Source_Imagelist extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_image_list_audio> audio;
 }
 
-final class wire_cst_Source_M3u8 extends ffi.Struct {
-  external ffi.Pointer<wire_cst_link> link;
+final class wire_cst_Source_Video extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_stream_source> sources;
 
   external ffi.Pointer<wire_cst_list_subtitles> sub;
 }
 
-final class wire_cst_Source_Mp3 extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_mp_3_chapter> chapters;
+final class wire_cst_Source_Audio extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_stream_source> sources;
 }
 
 final class wire_cst_Source_Paragraphlist extends ffi.Struct {
@@ -5296,9 +5373,9 @@ final class SourceKind extends ffi.Union {
 
   external wire_cst_Source_Imagelist Imagelist;
 
-  external wire_cst_Source_M3u8 M3u8;
+  external wire_cst_Source_Video Video;
 
-  external wire_cst_Source_Mp3 Mp3;
+  external wire_cst_Source_Audio Audio;
 
   external wire_cst_Source_Paragraphlist Paragraphlist;
 }

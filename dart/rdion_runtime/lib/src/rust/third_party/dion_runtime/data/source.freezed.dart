@@ -20,18 +20,21 @@ mixin _$Paragraph {
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
     required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
     TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
     TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +42,21 @@ mixin _$Paragraph {
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
     required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
     TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
     TResult Function(Paragraph_CustomUI value)? customUi,
+    TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -147,6 +153,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
     required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
   }) {
     return text(content);
   }
@@ -156,6 +163,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
     TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
   }) {
     return text?.call(content);
   }
@@ -165,6 +173,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
     TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -178,6 +187,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
     required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
   }) {
     return text(this);
   }
@@ -187,6 +197,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
     TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
   }) {
     return text?.call(this);
   }
@@ -196,6 +207,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
     TResult Function(Paragraph_CustomUI value)? customUi,
+    TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -302,6 +314,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
     required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
   }) {
     return customUi(ui);
   }
@@ -311,6 +324,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
     TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
   }) {
     return customUi?.call(ui);
   }
@@ -320,6 +334,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
     TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
     required TResult orElse(),
   }) {
     if (customUi != null) {
@@ -333,6 +348,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
     required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
   }) {
     return customUi(this);
   }
@@ -342,6 +358,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
     TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
   }) {
     return customUi?.call(this);
   }
@@ -351,6 +368,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
     TResult Function(Paragraph_CustomUI value)? customUi,
+    TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
   }) {
     if (customUi != null) {
@@ -375,6 +393,163 @@ abstract class Paragraph_CustomUI extends Paragraph {
 }
 
 /// @nodoc
+abstract class _$$Paragraph_TableImplCopyWith<$Res> {
+  factory _$$Paragraph_TableImplCopyWith(_$Paragraph_TableImpl value,
+          $Res Function(_$Paragraph_TableImpl) then) =
+      __$$Paragraph_TableImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Row> columns});
+}
+
+/// @nodoc
+class __$$Paragraph_TableImplCopyWithImpl<$Res>
+    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_TableImpl>
+    implements _$$Paragraph_TableImplCopyWith<$Res> {
+  __$$Paragraph_TableImplCopyWithImpl(
+      _$Paragraph_TableImpl _value, $Res Function(_$Paragraph_TableImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? columns = null,
+  }) {
+    return _then(_$Paragraph_TableImpl(
+      columns: null == columns
+          ? _value._columns
+          : columns // ignore: cast_nullable_to_non_nullable
+              as List<Row>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Paragraph_TableImpl extends Paragraph_Table {
+  const _$Paragraph_TableImpl({required final List<Row> columns})
+      : _columns = columns,
+        super._();
+
+  final List<Row> _columns;
+  @override
+  List<Row> get columns {
+    if (_columns is EqualUnmodifiableListView) return _columns;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_columns);
+  }
+
+  @override
+  String toString() {
+    return 'Paragraph.table(columns: $columns)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Paragraph_TableImpl &&
+            const DeepCollectionEquality().equals(other._columns, _columns));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_columns));
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Paragraph_TableImplCopyWith<_$Paragraph_TableImpl> get copyWith =>
+      __$$Paragraph_TableImplCopyWithImpl<_$Paragraph_TableImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String content) text,
+    required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
+  }) {
+    return table(columns);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String content)? text,
+    TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
+  }) {
+    return table?.call(columns);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String content)? text,
+    TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
+    required TResult orElse(),
+  }) {
+    if (table != null) {
+      return table(columns);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
+  }) {
+    return table(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
+  }) {
+    return table?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_CustomUI value)? customUi,
+    TResult Function(Paragraph_Table value)? table,
+    required TResult orElse(),
+  }) {
+    if (table != null) {
+      return table(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Paragraph_Table extends Paragraph {
+  const factory Paragraph_Table({required final List<Row> columns}) =
+      _$Paragraph_TableImpl;
+  const Paragraph_Table._() : super._();
+
+  List<Row> get columns;
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Paragraph_TableImplCopyWith<_$Paragraph_TableImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$Source {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -382,8 +557,9 @@ mixin _$Source {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -392,8 +568,8 @@ mixin _$Source {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -402,8 +578,8 @@ mixin _$Source {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) =>
@@ -413,8 +589,8 @@ mixin _$Source {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -423,8 +599,8 @@ mixin _$Source {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -433,8 +609,8 @@ mixin _$Source {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) =>
@@ -533,8 +709,9 @@ class _$Source_EpubImpl extends Source_Epub {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return epub(link);
@@ -546,8 +723,8 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return epub?.call(link);
@@ -559,8 +736,8 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -576,8 +753,8 @@ class _$Source_EpubImpl extends Source_Epub {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
     return epub(this);
@@ -589,8 +766,8 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
     return epub?.call(this);
@@ -602,8 +779,8 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -699,8 +876,9 @@ class _$Source_PdfImpl extends Source_Pdf {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return pdf(link);
@@ -712,8 +890,8 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return pdf?.call(link);
@@ -725,8 +903,8 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -742,8 +920,8 @@ class _$Source_PdfImpl extends Source_Pdf {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
     return pdf(this);
@@ -755,8 +933,8 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
     return pdf?.call(this);
@@ -768,8 +946,8 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -894,11 +1072,12 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
-    return imagelist(links, audio);
+    return imagelist(links, this.audio);
   }
 
   @override
@@ -907,11 +1086,11 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
-    return imagelist?.call(links, audio);
+    return imagelist?.call(links, this.audio);
   }
 
   @override
@@ -920,13 +1099,13 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
     if (imagelist != null) {
-      return imagelist(links, audio);
+      return imagelist(links, this.audio);
     }
     return orElse();
   }
@@ -937,8 +1116,8 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
     return imagelist(this);
@@ -950,8 +1129,8 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
     return imagelist?.call(this);
@@ -963,8 +1142,8 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -992,20 +1171,20 @@ abstract class Source_Imagelist extends Source {
 }
 
 /// @nodoc
-abstract class _$$Source_M3u8ImplCopyWith<$Res> {
-  factory _$$Source_M3u8ImplCopyWith(
-          _$Source_M3u8Impl value, $Res Function(_$Source_M3u8Impl) then) =
-      __$$Source_M3u8ImplCopyWithImpl<$Res>;
+abstract class _$$Source_VideoImplCopyWith<$Res> {
+  factory _$$Source_VideoImplCopyWith(
+          _$Source_VideoImpl value, $Res Function(_$Source_VideoImpl) then) =
+      __$$Source_VideoImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Link link, List<Subtitles> sub});
+  $Res call({List<StreamSource> sources, List<Subtitles> sub});
 }
 
 /// @nodoc
-class __$$Source_M3u8ImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_M3u8Impl>
-    implements _$$Source_M3u8ImplCopyWith<$Res> {
-  __$$Source_M3u8ImplCopyWithImpl(
-      _$Source_M3u8Impl _value, $Res Function(_$Source_M3u8Impl) _then)
+class __$$Source_VideoImplCopyWithImpl<$Res>
+    extends _$SourceCopyWithImpl<$Res, _$Source_VideoImpl>
+    implements _$$Source_VideoImplCopyWith<$Res> {
+  __$$Source_VideoImplCopyWithImpl(
+      _$Source_VideoImpl _value, $Res Function(_$Source_VideoImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of Source
@@ -1013,14 +1192,14 @@ class __$$Source_M3u8ImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? link = null,
+    Object? sources = null,
     Object? sub = null,
   }) {
-    return _then(_$Source_M3u8Impl(
-      link: null == link
-          ? _value.link
-          : link // ignore: cast_nullable_to_non_nullable
-              as Link,
+    return _then(_$Source_VideoImpl(
+      sources: null == sources
+          ? _value._sources
+          : sources // ignore: cast_nullable_to_non_nullable
+              as List<StreamSource>,
       sub: null == sub
           ? _value._sub
           : sub // ignore: cast_nullable_to_non_nullable
@@ -1031,14 +1210,22 @@ class __$$Source_M3u8ImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Source_M3u8Impl extends Source_M3u8 {
-  const _$Source_M3u8Impl(
-      {required this.link, required final List<Subtitles> sub})
-      : _sub = sub,
+class _$Source_VideoImpl extends Source_Video {
+  const _$Source_VideoImpl(
+      {required final List<StreamSource> sources,
+      required final List<Subtitles> sub})
+      : _sources = sources,
+        _sub = sub,
         super._();
 
+  final List<StreamSource> _sources;
   @override
-  final Link link;
+  List<StreamSource> get sources {
+    if (_sources is EqualUnmodifiableListView) return _sources;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sources);
+  }
+
   final List<Subtitles> _sub;
   @override
   List<Subtitles> get sub {
@@ -1049,29 +1236,31 @@ class _$Source_M3u8Impl extends Source_M3u8 {
 
   @override
   String toString() {
-    return 'Source.m3U8(link: $link, sub: $sub)';
+    return 'Source.video(sources: $sources, sub: $sub)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_M3u8Impl &&
-            (identical(other.link, link) || other.link == link) &&
+            other is _$Source_VideoImpl &&
+            const DeepCollectionEquality().equals(other._sources, _sources) &&
             const DeepCollectionEquality().equals(other._sub, _sub));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, link, const DeepCollectionEquality().hash(_sub));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_sources),
+      const DeepCollectionEquality().hash(_sub));
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$Source_M3u8ImplCopyWith<_$Source_M3u8Impl> get copyWith =>
-      __$$Source_M3u8ImplCopyWithImpl<_$Source_M3u8Impl>(this, _$identity);
+  _$$Source_VideoImplCopyWith<_$Source_VideoImpl> get copyWith =>
+      __$$Source_VideoImplCopyWithImpl<_$Source_VideoImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1080,11 +1269,12 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
-    return m3U8(link, sub);
+    return video(sources, sub);
   }
 
   @override
@@ -1093,11 +1283,11 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
-    return m3U8?.call(link, sub);
+    return video?.call(sources, sub);
   }
 
   @override
@@ -1106,13 +1296,13 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
-    if (m3U8 != null) {
-      return m3U8(link, sub);
+    if (video != null) {
+      return video(sources, sub);
     }
     return orElse();
   }
@@ -1123,11 +1313,11 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
-    return m3U8(this);
+    return video(this);
   }
 
   @override
@@ -1136,11 +1326,11 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
-    return m3U8?.call(this);
+    return video?.call(this);
   }
 
   @override
@@ -1149,49 +1339,49 @@ class _$Source_M3u8Impl extends Source_M3u8 {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {
-    if (m3U8 != null) {
-      return m3U8(this);
+    if (video != null) {
+      return video(this);
     }
     return orElse();
   }
 }
 
-abstract class Source_M3u8 extends Source {
-  const factory Source_M3u8(
-      {required final Link link,
-      required final List<Subtitles> sub}) = _$Source_M3u8Impl;
-  const Source_M3u8._() : super._();
+abstract class Source_Video extends Source {
+  const factory Source_Video(
+      {required final List<StreamSource> sources,
+      required final List<Subtitles> sub}) = _$Source_VideoImpl;
+  const Source_Video._() : super._();
 
-  Link get link;
+  List<StreamSource> get sources;
   List<Subtitles> get sub;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_M3u8ImplCopyWith<_$Source_M3u8Impl> get copyWith =>
+  _$$Source_VideoImplCopyWith<_$Source_VideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_Mp3ImplCopyWith<$Res> {
-  factory _$$Source_Mp3ImplCopyWith(
-          _$Source_Mp3Impl value, $Res Function(_$Source_Mp3Impl) then) =
-      __$$Source_Mp3ImplCopyWithImpl<$Res>;
+abstract class _$$Source_AudioImplCopyWith<$Res> {
+  factory _$$Source_AudioImplCopyWith(
+          _$Source_AudioImpl value, $Res Function(_$Source_AudioImpl) then) =
+      __$$Source_AudioImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Mp3Chapter> chapters});
+  $Res call({List<StreamSource> sources});
 }
 
 /// @nodoc
-class __$$Source_Mp3ImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_Mp3Impl>
-    implements _$$Source_Mp3ImplCopyWith<$Res> {
-  __$$Source_Mp3ImplCopyWithImpl(
-      _$Source_Mp3Impl _value, $Res Function(_$Source_Mp3Impl) _then)
+class __$$Source_AudioImplCopyWithImpl<$Res>
+    extends _$SourceCopyWithImpl<$Res, _$Source_AudioImpl>
+    implements _$$Source_AudioImplCopyWith<$Res> {
+  __$$Source_AudioImplCopyWithImpl(
+      _$Source_AudioImpl _value, $Res Function(_$Source_AudioImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of Source
@@ -1199,56 +1389,56 @@ class __$$Source_Mp3ImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? chapters = null,
+    Object? sources = null,
   }) {
-    return _then(_$Source_Mp3Impl(
-      chapters: null == chapters
-          ? _value._chapters
-          : chapters // ignore: cast_nullable_to_non_nullable
-              as List<Mp3Chapter>,
+    return _then(_$Source_AudioImpl(
+      sources: null == sources
+          ? _value._sources
+          : sources // ignore: cast_nullable_to_non_nullable
+              as List<StreamSource>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$Source_Mp3Impl extends Source_Mp3 {
-  const _$Source_Mp3Impl({required final List<Mp3Chapter> chapters})
-      : _chapters = chapters,
+class _$Source_AudioImpl extends Source_Audio {
+  const _$Source_AudioImpl({required final List<StreamSource> sources})
+      : _sources = sources,
         super._();
 
-  final List<Mp3Chapter> _chapters;
+  final List<StreamSource> _sources;
   @override
-  List<Mp3Chapter> get chapters {
-    if (_chapters is EqualUnmodifiableListView) return _chapters;
+  List<StreamSource> get sources {
+    if (_sources is EqualUnmodifiableListView) return _sources;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_chapters);
+    return EqualUnmodifiableListView(_sources);
   }
 
   @override
   String toString() {
-    return 'Source.mp3(chapters: $chapters)';
+    return 'Source.audio(sources: $sources)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_Mp3Impl &&
-            const DeepCollectionEquality().equals(other._chapters, _chapters));
+            other is _$Source_AudioImpl &&
+            const DeepCollectionEquality().equals(other._sources, _sources));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_chapters));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_sources));
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$Source_Mp3ImplCopyWith<_$Source_Mp3Impl> get copyWith =>
-      __$$Source_Mp3ImplCopyWithImpl<_$Source_Mp3Impl>(this, _$identity);
+  _$$Source_AudioImplCopyWith<_$Source_AudioImpl> get copyWith =>
+      __$$Source_AudioImplCopyWithImpl<_$Source_AudioImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1257,11 +1447,12 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
-    return mp3(chapters);
+    return audio(sources);
   }
 
   @override
@@ -1270,11 +1461,11 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
-    return mp3?.call(chapters);
+    return audio?.call(sources);
   }
 
   @override
@@ -1283,13 +1474,13 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
-    if (mp3 != null) {
-      return mp3(chapters);
+    if (audio != null) {
+      return audio(sources);
     }
     return orElse();
   }
@@ -1300,11 +1491,11 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
-    return mp3(this);
+    return audio(this);
   }
 
   @override
@@ -1313,11 +1504,11 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
-    return mp3?.call(this);
+    return audio?.call(this);
   }
 
   @override
@@ -1326,29 +1517,29 @@ class _$Source_Mp3Impl extends Source_Mp3 {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {
-    if (mp3 != null) {
-      return mp3(this);
+    if (audio != null) {
+      return audio(this);
     }
     return orElse();
   }
 }
 
-abstract class Source_Mp3 extends Source {
-  const factory Source_Mp3({required final List<Mp3Chapter> chapters}) =
-      _$Source_Mp3Impl;
-  const Source_Mp3._() : super._();
+abstract class Source_Audio extends Source {
+  const factory Source_Audio({required final List<StreamSource> sources}) =
+      _$Source_AudioImpl;
+  const Source_Audio._() : super._();
 
-  List<Mp3Chapter> get chapters;
+  List<StreamSource> get sources;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_Mp3ImplCopyWith<_$Source_Mp3Impl> get copyWith =>
+  _$$Source_AudioImplCopyWith<_$Source_AudioImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1435,8 +1626,9 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(Link link, List<Subtitles> sub) m3U8,
-    required TResult Function(List<Mp3Chapter> chapters) mp3,
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+        video,
+    required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return paragraphlist(paragraphs);
@@ -1448,8 +1640,8 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult? Function(List<Mp3Chapter> chapters)? mp3,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return paragraphlist?.call(paragraphs);
@@ -1461,8 +1653,8 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(Link link, List<Subtitles> sub)? m3U8,
-    TResult Function(List<Mp3Chapter> chapters)? mp3,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
+    TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -1478,8 +1670,8 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     required TResult Function(Source_Epub value) epub,
     required TResult Function(Source_Pdf value) pdf,
     required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_M3u8 value) m3U8,
-    required TResult Function(Source_Mp3 value) mp3,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
   }) {
     return paragraphlist(this);
@@ -1491,8 +1683,8 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult? Function(Source_Epub value)? epub,
     TResult? Function(Source_Pdf value)? pdf,
     TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_M3u8 value)? m3U8,
-    TResult? Function(Source_Mp3 value)? mp3,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
   }) {
     return paragraphlist?.call(this);
@@ -1504,8 +1696,8 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult Function(Source_Epub value)? epub,
     TResult Function(Source_Pdf value)? pdf,
     TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_M3u8 value)? m3U8,
-    TResult Function(Source_Mp3 value)? mp3,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
   }) {

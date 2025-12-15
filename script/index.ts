@@ -20,6 +20,7 @@ const { values, positionals } = parseArgs({
       type: "string",
       default: undefined,
       short: "p",
+      multiple: true,
     },
   },
   strict: true,
@@ -154,7 +155,11 @@ function exitPrematurely(message: string) {
 
 for (const action of positionals.slice(2)) {
   for (const project of projects) {
-    if (values.path !== undefined && !project.path.startsWith(values.path)) {
+    if (
+      Array.isArray(values.path) &&
+      values.path.length > 0 &&
+      !values.path.some((p) => project.path.startsWith(p))
+    ) {
       continue;
     }
     console.log("\x1b[32m%s\x1b[0m", `[${action}]: ${project.path}`);

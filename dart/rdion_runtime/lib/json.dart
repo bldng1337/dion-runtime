@@ -19,13 +19,15 @@ extension JsonMediaType on MediaType {
       };
 }
 
-extension JsonMp3Chapter on Mp3Chapter {
+extension JsonStreamSource on StreamSource {
   dynamic toJson() => {
-        "title": title,
+        "name": name,
+        "lang": lang,
         "url": url.toJson(),
       };
-  static Mp3Chapter fromJson(dynamic value) => Mp3Chapter(
-        title: value["title"],
+  static StreamSource fromJson(dynamic value) => StreamSource(
+        name: value["name"],
+        lang: value["lang"],
         url: JsonLink.fromJson(value["url"]),
       );
 }
@@ -37,7 +39,8 @@ extension JsonLink on Link {
       };
   static Link fromJson(dynamic value) => Link(
         url: value["url"],
-        header: value["header"],
+        header:
+            (value["header"] as Map<String, dynamic>?)?.cast<String, String>(),
       );
 }
 
@@ -970,14 +973,14 @@ extension JsonSource on Source {
             "links": links.map((e) => e.toJson()).toList(),
             if (audio != null) "audio": audio.map((e) => e.toJson()).toList(),
           },
-        Source_M3u8(:final link, :final sub) => {
-            "type": "M3u8",
-            "link": link.toJson(),
+        Source_Video(:final sources, :final sub) => {
+            "type": "Video",
+            "sources": sources.map((e) => e.toJson()).toList(),
             "sub": sub.map((e) => e.toJson()).toList(),
           },
-        Source_Mp3(:final chapters) => {
-            "type": "Mp3",
-            "chapters": chapters.map((e) => e.toJson()).toList(),
+        Source_Audio(:final sources) => {
+            "type": "Audio",
+            "chapters": sources.map((e) => e.toJson()).toList(),
           },
         Source_Paragraphlist(:final paragraphs) => {
             "type": "Paragraphlist",
@@ -1007,17 +1010,19 @@ extension JsonSource on Source {
                   .toList()
               : null,
         );
-      case "M3u8":
-        return Source.m3U8(
-          link: JsonLink.fromJson(value["link"]),
+      case "Video":
+        return Source.video(
+          sources: (value["sources"] as List)
+              .map((e) => JsonStreamSource.fromJson(e))
+              .toList(),
           sub: (value["sub"] as List)
               .map((e) => JsonSubtitles.fromJson(e))
               .toList(),
         );
-      case "Mp3":
-        return Source.mp3(
-          chapters: (value["chapters"] as List)
-              .map((e) => JsonMp3Chapter.fromJson(e))
+      case "Audio":
+        return Source.audio(
+          sources: (value["chapters"] as List)
+              .map((e) => JsonStreamSource.fromJson(e))
               .toList(),
         );
       case "Paragraphlist":
@@ -1050,8 +1055,8 @@ extension JsonSourceType on SourceType {
         SourceType.epub => "Epub",
         SourceType.pdf => "Pdf",
         SourceType.imagelist => "Imagelist",
-        SourceType.m3U8 => "M3u8",
-        SourceType.mp3 => "Mp3",
+        SourceType.video => "Video",
+        SourceType.audio => "Audio",
         SourceType.paragraphlist => "Paragraphlist",
       };
 
@@ -1059,8 +1064,8 @@ extension JsonSourceType on SourceType {
         "Epub" => SourceType.epub,
         "Pdf" => SourceType.pdf,
         "Imagelist" => SourceType.imagelist,
-        "M3u8" => SourceType.m3U8,
-        "Mp3" => SourceType.mp3,
+        "Video" => SourceType.video,
+        "Audio" => SourceType.audio,
         "Paragraphlist" => SourceType.paragraphlist,
         _ => throw FormatException("Unknown SourceType: $value"),
       };
@@ -1069,12 +1074,26 @@ extension JsonSourceType on SourceType {
 extension JsonSubtitles on Subtitles {
   dynamic toJson() => {
         "title": title,
+        "lang": lang,
         "url": url.toJson(),
       };
 
   static Subtitles fromJson(dynamic value) => Subtitles(
         title: value["title"],
+        lang: value["lang"],
         url: JsonLink.fromJson(value["url"]),
+      );
+}
+
+extension JsonRow on Row {
+  dynamic toJson() => {
+        "cells": cells.map((e) => e.toJson()).toList(),
+      };
+
+  static Row fromJson(dynamic value) => Row(
+        cells: (value["cells"] as List)
+            .map((e) => JsonParagraph.fromJson(e))
+            .toList(),
       );
 }
 
@@ -1088,6 +1107,10 @@ extension JsonParagraph on Paragraph {
             "type": "CustomUI",
             "ui": ui.toJson(),
           },
+        Paragraph_Table(:final columns) => {
+            "type": "Table",
+            "columns": columns.map((row) => row.toJson()).toList(),
+          },
       };
 
   static Paragraph fromJson(dynamic value) {
@@ -1100,6 +1123,12 @@ extension JsonParagraph on Paragraph {
       case "CustomUI":
         return Paragraph.customUi(
           ui: JsonCustomUI.fromJson(value["ui"]),
+        );
+      case "Table":
+        return Paragraph.table(
+          columns: (value["columns"] as List)
+              .map((row) => JsonRow.fromJson(row))
+              .toList(),
         );
       default:
         throw FormatException("Unknown Paragraph type: $type");

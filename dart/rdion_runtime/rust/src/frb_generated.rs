@@ -255,7 +255,7 @@ fn wire__crate__api__client__ManagerClient_init_impl(
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
             let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_get_path = decode_DartFn_Inputs__Output_String_AnyhowException(<flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer));
@@ -2386,6 +2386,7 @@ const _: fn() = || {
         let _: String = EntryDetailed.description;
         let _: String = EntryDetailed.language;
         let _: Option<dion_runtime::data::source::Link> = EntryDetailed.cover;
+        let _: Option<dion_runtime::data::source::Link> = EntryDetailed.poster;
         let _: Vec<dion_runtime::data::source::Episode> = EntryDetailed.episodes;
         let _: Option<Vec<String>> = EntryDetailed.genres;
         let _: Option<f32> = EntryDetailed.rating;
@@ -2532,17 +2533,15 @@ const _: fn() = || {
         let _: String = Link.url;
         let _: Option<std::collections::HashMap<String, String>> = Link.header;
     }
-    {
-        let Mp3Chapter = None::<dion_runtime::data::source::Mp3Chapter>.unwrap();
-        let _: String = Mp3Chapter.title;
-        let _: dion_runtime::data::source::Link = Mp3Chapter.url;
-    }
     match None::<dion_runtime::data::source::Paragraph>.unwrap() {
         dion_runtime::data::source::Paragraph::Text { content } => {
             let _: String = content;
         }
         dion_runtime::data::source::Paragraph::CustomUI { ui } => {
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = ui;
+        }
+        dion_runtime::data::source::Paragraph::Table { columns } => {
+            let _: Vec<dion_runtime::data::source::Row> = columns;
         }
     }
     match None::<dion_runtime::data::permission::Permission>.unwrap() {
@@ -2577,6 +2576,10 @@ const _: fn() = || {
             RemoteExtensionResult.content;
         let _: Option<bool> = RemoteExtensionResult.hasnext;
         let _: Option<i32> = RemoteExtensionResult.length;
+    }
+    {
+        let Row = None::<dion_runtime::data::source::Row>.unwrap();
+        let _: Vec<dion_runtime::data::source::Paragraph> = Row.cells;
     }
     {
         let Setting = None::<dion_runtime::data::settings::Setting>.unwrap();
@@ -2622,12 +2625,12 @@ const _: fn() = || {
             let _: Vec<dion_runtime::data::source::Link> = links;
             let _: Option<Vec<dion_runtime::data::source::ImageListAudio>> = audio;
         }
-        dion_runtime::data::source::Source::M3u8 { link, sub } => {
-            let _: dion_runtime::data::source::Link = link;
+        dion_runtime::data::source::Source::Video { sources, sub } => {
+            let _: Vec<dion_runtime::data::source::StreamSource> = sources;
             let _: Vec<dion_runtime::data::source::Subtitles> = sub;
         }
-        dion_runtime::data::source::Source::Mp3 { chapters } => {
-            let _: Vec<dion_runtime::data::source::Mp3Chapter> = chapters;
+        dion_runtime::data::source::Source::Audio { sources } => {
+            let _: Vec<dion_runtime::data::source::StreamSource> = sources;
         }
         dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
             let _: Vec<dion_runtime::data::source::Paragraph> = paragraphs;
@@ -2640,8 +2643,15 @@ const _: fn() = || {
             SourceResult.settings;
     }
     {
+        let StreamSource = None::<dion_runtime::data::source::StreamSource>.unwrap();
+        let _: String = StreamSource.name;
+        let _: String = StreamSource.lang;
+        let _: dion_runtime::data::source::Link = StreamSource.url;
+    }
+    {
         let Subtitles = None::<dion_runtime::data::source::Subtitles>.unwrap();
         let _: String = Subtitles.title;
+        let _: String = Subtitles.lang;
         let _: dion_runtime::data::source::Link = Subtitles.url;
     }
     match None::<dion_runtime::data::action::UIAction>.unwrap() {
@@ -2954,8 +2964,8 @@ impl CstDecode<dion_runtime::data::source::SourceType> for i32 {
             0 => dion_runtime::data::source::SourceType::Epub,
             1 => dion_runtime::data::source::SourceType::Pdf,
             2 => dion_runtime::data::source::SourceType::Imagelist,
-            3 => dion_runtime::data::source::SourceType::M3u8,
-            4 => dion_runtime::data::source::SourceType::Mp3,
+            3 => dion_runtime::data::source::SourceType::Video,
+            4 => dion_runtime::data::source::SourceType::Audio,
             5 => dion_runtime::data::source::SourceType::Paragraphlist,
             _ => unreachable!("Invalid variant for SourceType: {}", self),
         }
@@ -3476,6 +3486,7 @@ impl SseDecode for dion_runtime::data::source::EntryDetailed {
         let mut var_description = <String>::sse_decode(deserializer);
         let mut var_language = <String>::sse_decode(deserializer);
         let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
+        let mut var_poster = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_episodes = <Vec<dion_runtime::data::source::Episode>>::sse_decode(deserializer);
         let mut var_genres = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_rating = <Option<f32>>::sse_decode(deserializer);
@@ -3493,6 +3504,7 @@ impl SseDecode for dion_runtime::data::source::EntryDetailed {
             description: var_description,
             language: var_language,
             cover: var_cover,
+            poster: var_poster,
             episodes: var_episodes,
             genres: var_genres,
             rating: var_rating,
@@ -3965,20 +3977,6 @@ impl SseDecode for Vec<dion_runtime::data::source::MediaType> {
     }
 }
 
-impl SseDecode for Vec<dion_runtime::data::source::Mp3Chapter> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut len_ = <i32>::sse_decode(deserializer);
-        let mut ans_ = vec![];
-        for idx_ in 0..len_ {
-            ans_.push(<dion_runtime::data::source::Mp3Chapter>::sse_decode(
-                deserializer,
-            ));
-        }
-        return ans_;
-    }
-}
-
 impl SseDecode for Vec<dion_runtime::data::source::Paragraph> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4071,6 +4069,18 @@ impl SseDecode for Vec<dion_runtime::data::extension_repo::RemoteExtension> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::data::source::Row> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::Row>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::data::extension::SourceOpenType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4092,6 +4102,20 @@ impl SseDecode for Vec<dion_runtime::data::source::SourceType> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<dion_runtime::data::source::SourceType>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::source::StreamSource> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::StreamSource>::sse_decode(
                 deserializer,
             ));
         }
@@ -4124,18 +4148,6 @@ impl SseDecode for dion_runtime::data::source::MediaType {
             3 => dion_runtime::data::source::MediaType::Book,
             4 => dion_runtime::data::source::MediaType::Unknown,
             _ => unreachable!("Invalid variant for MediaType: {}", inner),
-        };
-    }
-}
-
-impl SseDecode for dion_runtime::data::source::Mp3Chapter {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_title = <String>::sse_decode(deserializer);
-        let mut var_url = <dion_runtime::data::source::Link>::sse_decode(deserializer);
-        return dion_runtime::data::source::Mp3Chapter {
-            title: var_title,
-            url: var_url,
         };
     }
 }
@@ -4311,6 +4323,13 @@ impl SseDecode for dion_runtime::data::source::Paragraph {
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Paragraph::CustomUI { ui: var_ui };
             }
+            2 => {
+                let mut var_columns =
+                    <Vec<dion_runtime::data::source::Row>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Paragraph::Table {
+                    columns: var_columns,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
@@ -4423,6 +4442,14 @@ impl SseDecode for dion_runtime::data::extension_repo::RemoteExtensionResult {
             hasnext: var_hasnext,
             length: var_length,
         };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::Row {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_cells = <Vec<dion_runtime::data::source::Paragraph>>::sse_decode(deserializer);
+        return dion_runtime::data::source::Row { cells: var_cells };
     }
 }
 
@@ -4544,19 +4571,20 @@ impl SseDecode for dion_runtime::data::source::Source {
                 };
             }
             3 => {
-                let mut var_link = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+                let mut var_sources =
+                    <Vec<dion_runtime::data::source::StreamSource>>::sse_decode(deserializer);
                 let mut var_sub =
                     <Vec<dion_runtime::data::source::Subtitles>>::sse_decode(deserializer);
-                return dion_runtime::data::source::Source::M3u8 {
-                    link: var_link,
+                return dion_runtime::data::source::Source::Video {
+                    sources: var_sources,
                     sub: var_sub,
                 };
             }
             4 => {
-                let mut var_chapters =
-                    <Vec<dion_runtime::data::source::Mp3Chapter>>::sse_decode(deserializer);
-                return dion_runtime::data::source::Source::Mp3 {
-                    chapters: var_chapters,
+                let mut var_sources =
+                    <Vec<dion_runtime::data::source::StreamSource>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Source::Audio {
+                    sources: var_sources,
                 };
             }
             5 => {
@@ -4608,10 +4636,24 @@ impl SseDecode for dion_runtime::data::source::SourceType {
             0 => dion_runtime::data::source::SourceType::Epub,
             1 => dion_runtime::data::source::SourceType::Pdf,
             2 => dion_runtime::data::source::SourceType::Imagelist,
-            3 => dion_runtime::data::source::SourceType::M3u8,
-            4 => dion_runtime::data::source::SourceType::Mp3,
+            3 => dion_runtime::data::source::SourceType::Video,
+            4 => dion_runtime::data::source::SourceType::Audio,
             5 => dion_runtime::data::source::SourceType::Paragraphlist,
             _ => unreachable!("Invalid variant for SourceType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::StreamSource {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_lang = <String>::sse_decode(deserializer);
+        let mut var_url = <dion_runtime::data::source::Link>::sse_decode(deserializer);
+        return dion_runtime::data::source::StreamSource {
+            name: var_name,
+            lang: var_lang,
+            url: var_url,
         };
     }
 }
@@ -4620,9 +4662,11 @@ impl SseDecode for dion_runtime::data::source::Subtitles {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_lang = <String>::sse_decode(deserializer);
         let mut var_url = <dion_runtime::data::source::Link>::sse_decode(deserializer);
         return dion_runtime::data::source::Subtitles {
             title: var_title,
+            lang: var_lang,
             url: var_url,
         };
     }
@@ -5083,6 +5127,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::En
             self.0.description.into_into_dart().into_dart(),
             self.0.language.into_into_dart().into_dart(),
             self.0.cover.into_into_dart().into_dart(),
+            self.0.poster.into_into_dart().into_dart(),
             self.0.episodes.into_into_dart().into_dart(),
             self.0.genres.into_into_dart().into_dart(),
             self.0.rating.into_into_dart().into_dart(),
@@ -5501,27 +5546,6 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Me
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Mp3Chapter> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [
-            self.0.title.into_into_dart().into_dart(),
-            self.0.url.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::data::source::Mp3Chapter>
-{
-}
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Mp3Chapter>>
-    for dion_runtime::data::source::Mp3Chapter
-{
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Mp3Chapter> {
-        self.into()
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Paragraph> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
@@ -5530,6 +5554,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Pa
             }
             dion_runtime::data::source::Paragraph::CustomUI { ui } => {
                 [1.into_dart(), ui.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::source::Paragraph::Table { columns } => {
+                [2.into_dart(), columns.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -5683,6 +5710,23 @@ impl
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Row> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [self.0.cells.into_into_dart().into_dart()].into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::Row>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Row>>
+    for dion_runtime::data::source::Row
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Row> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::Setting> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5808,14 +5852,14 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::So
                 audio.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::source::Source::M3u8 { link, sub } => [
+            dion_runtime::data::source::Source::Video { sources, sub } => [
                 3.into_dart(),
-                link.into_into_dart().into_dart(),
+                sources.into_into_dart().into_dart(),
                 sub.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::source::Source::Mp3 { chapters } => {
-                [4.into_dart(), chapters.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::source::Source::Audio { sources } => {
+                [4.into_dart(), sources.into_into_dart().into_dart()].into_dart()
             }
             dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 [5.into_dart(), paragraphs.into_into_dart().into_dart()].into_dart()
@@ -5886,8 +5930,8 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::So
             dion_runtime::data::source::SourceType::Epub => 0.into_dart(),
             dion_runtime::data::source::SourceType::Pdf => 1.into_dart(),
             dion_runtime::data::source::SourceType::Imagelist => 2.into_dart(),
-            dion_runtime::data::source::SourceType::M3u8 => 3.into_dart(),
-            dion_runtime::data::source::SourceType::Mp3 => 4.into_dart(),
+            dion_runtime::data::source::SourceType::Video => 3.into_dart(),
+            dion_runtime::data::source::SourceType::Audio => 4.into_dart(),
             dion_runtime::data::source::SourceType::Paragraphlist => 5.into_dart(),
             _ => unreachable!(),
         }
@@ -5905,10 +5949,33 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::So
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::StreamSource> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.name.into_into_dart().into_dart(),
+            self.0.lang.into_into_dart().into_dart(),
+            self.0.url.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::StreamSource>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::StreamSource>>
+    for dion_runtime::data::source::StreamSource
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::StreamSource> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Subtitles> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.0.title.into_into_dart().into_dart(),
+            self.0.lang.into_into_dart().into_dart(),
             self.0.url.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -6389,6 +6456,7 @@ impl SseEncode for dion_runtime::data::source::EntryDetailed {
         <String>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.language, serializer);
         <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
+        <Option<dion_runtime::data::source::Link>>::sse_encode(self.poster, serializer);
         <Vec<dion_runtime::data::source::Episode>>::sse_encode(self.episodes, serializer);
         <Option<Vec<String>>>::sse_encode(self.genres, serializer);
         <Option<f32>>::sse_encode(self.rating, serializer);
@@ -6743,16 +6811,6 @@ impl SseEncode for Vec<dion_runtime::data::source::MediaType> {
     }
 }
 
-impl SseEncode for Vec<dion_runtime::data::source::Mp3Chapter> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(self.len() as _, serializer);
-        for item in self {
-            <dion_runtime::data::source::Mp3Chapter>::sse_encode(item, serializer);
-        }
-    }
-}
-
 impl SseEncode for Vec<dion_runtime::data::source::Paragraph> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6823,6 +6881,16 @@ impl SseEncode for Vec<dion_runtime::data::extension_repo::RemoteExtension> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::data::source::Row> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::Row>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::data::extension::SourceOpenType> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6839,6 +6907,16 @@ impl SseEncode for Vec<dion_runtime::data::source::SourceType> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <dion_runtime::data::source::SourceType>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::source::StreamSource> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::StreamSource>::sse_encode(item, serializer);
         }
     }
 }
@@ -6869,14 +6947,6 @@ impl SseEncode for dion_runtime::data::source::MediaType {
             },
             serializer,
         );
-    }
-}
-
-impl SseEncode for dion_runtime::data::source::Mp3Chapter {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.title, serializer);
-        <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
     }
 }
 
@@ -7022,6 +7092,10 @@ impl SseEncode for dion_runtime::data::source::Paragraph {
                 <i32>::sse_encode(1, serializer);
                 <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(ui, serializer);
             }
+            dion_runtime::data::source::Paragraph::Table { columns } => {
+                <i32>::sse_encode(2, serializer);
+                <Vec<dion_runtime::data::source::Row>>::sse_encode(columns, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -7117,6 +7191,13 @@ impl SseEncode for dion_runtime::data::extension_repo::RemoteExtensionResult {
         );
         <Option<bool>>::sse_encode(self.hasnext, serializer);
         <Option<i32>>::sse_encode(self.length, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::Row {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<dion_runtime::data::source::Paragraph>>::sse_encode(self.cells, serializer);
     }
 }
 
@@ -7219,14 +7300,14 @@ impl SseEncode for dion_runtime::data::source::Source {
                     audio, serializer,
                 );
             }
-            dion_runtime::data::source::Source::M3u8 { link, sub } => {
+            dion_runtime::data::source::Source::Video { sources, sub } => {
                 <i32>::sse_encode(3, serializer);
-                <dion_runtime::data::source::Link>::sse_encode(link, serializer);
+                <Vec<dion_runtime::data::source::StreamSource>>::sse_encode(sources, serializer);
                 <Vec<dion_runtime::data::source::Subtitles>>::sse_encode(sub, serializer);
             }
-            dion_runtime::data::source::Source::Mp3 { chapters } => {
+            dion_runtime::data::source::Source::Audio { sources } => {
                 <i32>::sse_encode(4, serializer);
-                <Vec<dion_runtime::data::source::Mp3Chapter>>::sse_encode(chapters, serializer);
+                <Vec<dion_runtime::data::source::StreamSource>>::sse_encode(sources, serializer);
             }
             dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 <i32>::sse_encode(5, serializer);
@@ -7274,8 +7355,8 @@ impl SseEncode for dion_runtime::data::source::SourceType {
                 dion_runtime::data::source::SourceType::Epub => 0,
                 dion_runtime::data::source::SourceType::Pdf => 1,
                 dion_runtime::data::source::SourceType::Imagelist => 2,
-                dion_runtime::data::source::SourceType::M3u8 => 3,
-                dion_runtime::data::source::SourceType::Mp3 => 4,
+                dion_runtime::data::source::SourceType::Video => 3,
+                dion_runtime::data::source::SourceType::Audio => 4,
                 dion_runtime::data::source::SourceType::Paragraphlist => 5,
                 _ => {
                     unimplemented!("");
@@ -7286,10 +7367,20 @@ impl SseEncode for dion_runtime::data::source::SourceType {
     }
 }
 
+impl SseEncode for dion_runtime::data::source::StreamSource {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.lang, serializer);
+        <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
+    }
+}
+
 impl SseEncode for dion_runtime::data::source::Subtitles {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.title, serializer);
+        <String>::sse_encode(self.lang, serializer);
         <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
     }
 }
@@ -7877,6 +7968,7 @@ mod io {
                 description: self.description.cst_decode(),
                 language: self.language.cst_decode(),
                 cover: self.cover.cst_decode(),
+                poster: self.poster.cst_decode(),
                 episodes: self.episodes.cst_decode(),
                 genres: self.genres.cst_decode(),
                 rating: self.rating.cst_decode(),
@@ -8205,16 +8297,6 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
-    impl CstDecode<Vec<dion_runtime::data::source::Mp3Chapter>> for *mut wire_cst_list_mp_3_chapter {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Vec<dion_runtime::data::source::Mp3Chapter> {
-            let vec = unsafe {
-                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
-                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
-            };
-            vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
     impl CstDecode<Vec<dion_runtime::data::source::Paragraph>> for *mut wire_cst_list_paragraph {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::Paragraph> {
@@ -8278,6 +8360,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::data::source::Row>> for *mut wire_cst_list_row {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::Row> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<dion_runtime::data::extension::SourceOpenType>>
         for *mut wire_cst_list_source_open_type
     {
@@ -8300,6 +8392,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::data::source::StreamSource>> for *mut wire_cst_list_stream_source {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::StreamSource> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<dion_runtime::data::source::Subtitles>> for *mut wire_cst_list_subtitles {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::Subtitles> {
@@ -8308,15 +8410,6 @@ mod io {
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
             };
             vec.into_iter().map(CstDecode::cst_decode).collect()
-        }
-    }
-    impl CstDecode<dion_runtime::data::source::Mp3Chapter> for wire_cst_mp_3_chapter {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::data::source::Mp3Chapter {
-            dion_runtime::data::source::Mp3Chapter {
-                title: self.title.cst_decode(),
-                url: self.url.cst_decode(),
-            }
         }
     }
     impl CstDecode<dion_runtime::data::source::Paragraph> for wire_cst_paragraph {
@@ -8333,6 +8426,12 @@ mod io {
                     let ans = unsafe { self.kind.CustomUI };
                     dion_runtime::data::source::Paragraph::CustomUI {
                         ui: ans.ui.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.Table };
+                    dion_runtime::data::source::Paragraph::Table {
+                        columns: ans.columns.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -8405,6 +8504,14 @@ mod io {
                 content: self.content.cst_decode(),
                 hasnext: self.hasnext.cst_decode(),
                 length: self.length.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::source::Row> for wire_cst_row {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::Row {
+            dion_runtime::data::source::Row {
+                cells: self.cells.cst_decode(),
             }
         }
     }
@@ -8499,16 +8606,16 @@ mod io {
                     }
                 }
                 3 => {
-                    let ans = unsafe { self.kind.M3u8 };
-                    dion_runtime::data::source::Source::M3u8 {
-                        link: ans.link.cst_decode(),
+                    let ans = unsafe { self.kind.Video };
+                    dion_runtime::data::source::Source::Video {
+                        sources: ans.sources.cst_decode(),
                         sub: ans.sub.cst_decode(),
                     }
                 }
                 4 => {
-                    let ans = unsafe { self.kind.Mp3 };
-                    dion_runtime::data::source::Source::Mp3 {
-                        chapters: ans.chapters.cst_decode(),
+                    let ans = unsafe { self.kind.Audio };
+                    dion_runtime::data::source::Source::Audio {
+                        sources: ans.sources.cst_decode(),
                     }
                 }
                 5 => {
@@ -8530,11 +8637,22 @@ mod io {
             }
         }
     }
+    impl CstDecode<dion_runtime::data::source::StreamSource> for wire_cst_stream_source {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::StreamSource {
+            dion_runtime::data::source::StreamSource {
+                name: self.name.cst_decode(),
+                lang: self.lang.cst_decode(),
+                url: self.url.cst_decode(),
+            }
+        }
+    }
     impl CstDecode<dion_runtime::data::source::Subtitles> for wire_cst_subtitles {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::source::Subtitles {
             dion_runtime::data::source::Subtitles {
                 title: self.title.cst_decode(),
+                lang: self.lang.cst_decode(),
                 url: self.url.cst_decode(),
             }
         }
@@ -8677,6 +8795,7 @@ mod io {
                 description: core::ptr::null_mut(),
                 language: core::ptr::null_mut(),
                 cover: core::ptr::null_mut(),
+                poster: core::ptr::null_mut(),
                 episodes: core::ptr::null_mut(),
                 genres: core::ptr::null_mut(),
                 rating: core::ptr::null_mut(),
@@ -8882,19 +9001,6 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
-    impl NewWithNullPtr for wire_cst_mp_3_chapter {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                title: core::ptr::null_mut(),
-                url: Default::default(),
-            }
-        }
-    }
-    impl Default for wire_cst_mp_3_chapter {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
     impl NewWithNullPtr for wire_cst_paragraph {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -8991,6 +9097,18 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_row {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                cells: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_row {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_setting {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -9059,10 +9177,25 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_stream_source {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                name: core::ptr::null_mut(),
+                lang: core::ptr::null_mut(),
+                url: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_stream_source {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_subtitles {
         fn new_with_null_ptr() -> Self {
             Self {
                 title: core::ptr::null_mut(),
+                lang: core::ptr::null_mut(),
                 url: Default::default(),
             }
         }
@@ -9892,20 +10025,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_mp_3_chapter(
-        len: i32,
-    ) -> *mut wire_cst_list_mp_3_chapter {
-        let wrap = wire_cst_list_mp_3_chapter {
-            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
-                <wire_cst_mp_3_chapter>::new_with_null_ptr(),
-                len,
-            ),
-            len,
-        };
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_paragraph(
         len: i32,
     ) -> *mut wire_cst_list_paragraph {
@@ -9987,6 +10106,18 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_row(len: i32) -> *mut wire_cst_list_row {
+        let wrap = wire_cst_list_row {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_row>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_source_open_type(
         len: i32,
     ) -> *mut wire_cst_list_source_open_type {
@@ -10003,6 +10134,20 @@ mod io {
     ) -> *mut wire_cst_list_source_type {
         let wrap = wire_cst_list_source_type {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_stream_source(
+        len: i32,
+    ) -> *mut wire_cst_list_stream_source {
+        let wrap = wire_cst_list_stream_source {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_stream_source>::new_with_null_ptr(),
+                len,
+            ),
             len,
         };
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
@@ -10238,6 +10383,7 @@ mod io {
         description: *mut wire_cst_list_prim_u_8_strict,
         language: *mut wire_cst_list_prim_u_8_strict,
         cover: *mut wire_cst_link,
+        poster: *mut wire_cst_link,
         episodes: *mut wire_cst_list_episode,
         genres: *mut wire_cst_list_String,
         rating: *mut f32,
@@ -10498,12 +10644,6 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_mp_3_chapter {
-        ptr: *mut wire_cst_mp_3_chapter,
-        len: i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
     pub struct wire_cst_list_paragraph {
         ptr: *mut wire_cst_paragraph,
         len: i32,
@@ -10540,6 +10680,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_row {
+        ptr: *mut wire_cst_row,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_source_open_type {
         ptr: *mut i32,
         len: i32,
@@ -10552,15 +10698,15 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_list_subtitles {
-        ptr: *mut wire_cst_subtitles,
+    pub struct wire_cst_list_stream_source {
+        ptr: *mut wire_cst_stream_source,
         len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_mp_3_chapter {
-        title: *mut wire_cst_list_prim_u_8_strict,
-        url: wire_cst_link,
+    pub struct wire_cst_list_subtitles {
+        ptr: *mut wire_cst_subtitles,
+        len: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10573,6 +10719,7 @@ mod io {
     pub union ParagraphKind {
         Text: wire_cst_Paragraph_Text,
         CustomUI: wire_cst_Paragraph_CustomUI,
+        Table: wire_cst_Paragraph_Table,
         nil__: (),
     }
     #[repr(C)]
@@ -10584,6 +10731,11 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_Paragraph_CustomUI {
         ui: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Paragraph_Table {
+        columns: *mut wire_cst_list_row,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10643,6 +10795,11 @@ mod io {
         content: *mut wire_cst_list_remote_extension,
         hasnext: *mut bool,
         length: *mut i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_row {
+        cells: *mut wire_cst_list_paragraph,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10725,8 +10882,8 @@ mod io {
         Epub: wire_cst_Source_Epub,
         Pdf: wire_cst_Source_Pdf,
         Imagelist: wire_cst_Source_Imagelist,
-        M3u8: wire_cst_Source_M3u8,
-        Mp3: wire_cst_Source_Mp3,
+        Video: wire_cst_Source_Video,
+        Audio: wire_cst_Source_Audio,
         Paragraphlist: wire_cst_Source_Paragraphlist,
         nil__: (),
     }
@@ -10748,14 +10905,14 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_Source_M3u8 {
-        link: *mut wire_cst_link,
+    pub struct wire_cst_Source_Video {
+        sources: *mut wire_cst_list_stream_source,
         sub: *mut wire_cst_list_subtitles,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_Source_Mp3 {
-        chapters: *mut wire_cst_list_mp_3_chapter,
+    pub struct wire_cst_Source_Audio {
+        sources: *mut wire_cst_list_stream_source,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10770,8 +10927,16 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_stream_source {
+        name: *mut wire_cst_list_prim_u_8_strict,
+        lang: *mut wire_cst_list_prim_u_8_strict,
+        url: wire_cst_link,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_subtitles {
         title: *mut wire_cst_list_prim_u_8_strict,
+        lang: *mut wire_cst_list_prim_u_8_strict,
         url: wire_cst_link,
     }
     #[repr(C)]

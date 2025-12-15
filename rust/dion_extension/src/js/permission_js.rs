@@ -83,6 +83,11 @@ fn request_permission(
                     context.borrow().get_data().cloned();
                 let runtime_data =
                     runtime_data.ok_or(JsError::from_native(JsNativeError::error()))?;
+                let Some(runtime_data) = runtime_data.inner.upgrade() else {
+                    return Err(JsError::from_native(
+                        JsNativeError::error().with_message("Network container has been dropped"),
+                    ));
+                };
                 let mut ext_store = runtime_data.store.write().await;
 
                 let res = ext_store
@@ -139,6 +144,12 @@ fn has_permission(_this: &JsValue, args: &[JsValue], context: &mut Context) -> J
                         context.borrow().get_data().cloned();
                     let runtime_data =
                         runtime_data.ok_or(JsError::from_native(JsNativeError::error()))?;
+                    let Some(runtime_data) = runtime_data.inner.upgrade() else {
+                        return Err(JsError::from_native(
+                            JsNativeError::error()
+                                .with_message("Network container has been dropped"),
+                        ));
+                    };
                     let ext_store = runtime_data.store.read().await;
 
                     let res = ext_store.permission.has_permission(&permission);

@@ -14,12 +14,12 @@ void main() {
     final json2 = mediaType.toJson();
     JsonMediaType.fromJson(json2);
   });
-  test("JsonMp3Chapter", () {
-    final data = File("$path/Mp3Chapter.json").readAsStringSync();
+  test("StreamSource", () {
+    final data = File("$path/StreamSource.json").readAsStringSync();
     final json = jsonDecode(data);
-    final mp3Chapter = JsonMp3Chapter.fromJson(json);
+    final mp3Chapter = JsonStreamSource.fromJson(json);
     final json2 = mp3Chapter.toJson();
-    JsonMp3Chapter.fromJson(json2);
+    JsonStreamSource.fromJson(json2);
   });
   test("JsonLink", () {
     final data = File("$path/Link.json").readAsStringSync();
