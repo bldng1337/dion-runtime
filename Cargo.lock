@@ -1071,6 +1071,7 @@ dependencies = [
  "http-cache-reqwest",
  "httpmock",
  "hyper 1.8.1",
+ "hyper-rustls",
  "hyper-util",
  "lazy_static",
  "log",

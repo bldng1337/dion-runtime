@@ -216,6 +216,16 @@ test("test handleProxy", async () => {
   expect(headerTestJson.receivedHeader).toBe("test-value");
   expect(headerTestJson.uri).toContain("/header-test");
 
+  // Test 7: Https proxy
+  console.log("Test 7: Testing Https proxy...");
+  const httpsRes = await fetch(`${proxyAddr}/test-https`, {
+    headers: {},
+  });
+  if (!httpsRes.ok) {
+    console.error(`Failed with body:\n ${await headerTestRes.text()}`);
+  }
+  expect(httpsRes.status).toBe(200);
+
   console.log("All proxy tests passed!");
 
   // Clean up

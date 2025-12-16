@@ -10,6 +10,7 @@ type = ["dep:specta","dep:specta-typescript","dion-runtime/type"]
 dion-runtime = { path = "../core" }
 
 hyper = { version = "1.8.1", features = ["full"] }
+hyper-rustls = { version = "0.27.7", default-features = false, features = ["ring", "http1", "http2", "tls12"] }
 hyper-util = { version = "0.1", features = ["client", "client-legacy", "http1", "http2","server"] }
 http-body-util = "0.1"
 

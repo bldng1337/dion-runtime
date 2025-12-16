@@ -130,6 +130,18 @@ export default class extends DefaultExtension {
       };
     }
 
+    if (request.uri.includes("/test-https")) {
+      return {
+        type: "redirect",
+        request: {
+          method: "GET",
+          uri: "https://www.example.com",
+          version: 11,
+          headers: {},
+        },
+      };
+    }
+
     // Default: pass through with redirect
     console.log(`[Proxy Test] Default redirect to ${server}`);
     return {

@@ -9,6 +9,7 @@ use hyper::body::Bytes;
 use hyper::body::Incoming;
 use hyper::service::service_fn;
 use hyper::{Request, Response, StatusCode};
+use hyper_rustls::{HttpsConnector, HttpsConnectorBuilder};
 use hyper_util::client::legacy::Client;
 use hyper_util::client::legacy::connect::HttpConnector;
 use hyper_util::rt::{TokioExecutor, TokioIo};
@@ -276,16 +277,25 @@ pub(crate) struct Proxy {
     registered_extensions: Vec<Weak<ProxyExtensionRef>>,
     abort_handle: Option<AbortOnDrop<JoinHandle<()>>>,
     addr: Option<SocketAddr>,
-    client: Client<HttpConnector, BoxBody<Bytes, hyper::Error>>,
+    client: Client<HttpsConnector<HttpConnector>, BoxBody<Bytes, hyper::Error>>,
 }
 
 impl Proxy {
     pub async fn new() -> Arc<RwLock<Self>> {
+        let mut http = HttpConnector::new();
+        http.enforce_http(false);
+
+        let https = HttpsConnectorBuilder::new()
+            .with_webpki_roots()
+            .https_or_http()
+            .enable_http1()
+            .enable_http2()
+            .wrap_connector(http);
         let proxy = Arc::new(RwLock::new(Proxy {
             registered_extensions: Vec::new(),
             abort_handle: None,
             addr: None,
-            client: Client::builder(TokioExecutor::new()).build_http(),
+            client: Client::builder(TokioExecutor::new()).build(https),
         }));
         async fn handle(
             proxy_copy: Weak<RwLock<Proxy>>,
