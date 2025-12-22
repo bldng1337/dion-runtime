@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["ES2024"],
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["@dion-js/extension-types"],
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
+    "noEmit": true
+  }
+}

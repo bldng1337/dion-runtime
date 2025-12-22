@@ -1,0 +1,33 @@
+{
+	"name": "@dion-js/extension-scripts",
+	"type": "module",
+	"version": "0.1.1",
+	"bin": {
+		"dion-bundle": "./.dist/bundle.js",
+		"dion-build-index": "./.dist/index.js",
+		"dion-create": "./.dist/create.js"
+	},
+	"exports": {
+		"./*": "./.dist/*"
+	},
+	"files": [
+		".dist"
+	],
+	"scripts": {
+		"check-types": "bunx tsc -p tsconfig.json",
+		"build": "bun run ./build.ts",
+		"lint": "bunx biome check",
+		"format": "bunx biome format --write"
+	},
+	"dependencies": {
+		"valibot": "catalog:",
+		"@dion-js/runtime-types": "workspace:*",
+		"handlebars": "4.7.8"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@types/bun": "catalog:",
+		"@dion-js/config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

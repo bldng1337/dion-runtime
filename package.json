@@ -1,7 +1,21 @@
 {
   "name": "@dion-js/workspace",
   "private": true,
+  "engines": {
+    "bun": "^1.2.19"
+  },
   "workspaces": [
-    "js/**/*"
-  ]
+    "js/**/*",
+    "tests/**/*"
+  ],
+  "packageManager": "bun@1.2.19",
+  "catalog": {
+    "@dion-js/extension-types": "^0.3.0",
+    "@dion-js/runtime-types": "^0.3.0",
+    "@dion-js/runtime": "^1.2.1",
+    "@types/bun": "^1.2.19",
+    "@biomejs/biome": "2.1.1",
+    "typescript": "5.9.3",
+    "valibot": "1.2.0"
+  }
 }

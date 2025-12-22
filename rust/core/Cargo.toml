@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-type = ["dep:specta","dep:specta-typescript"]
+type = ["dep:specta","dep:specta-typescript", "dep:specta-valibot"]
 
 [dependencies]
 tokio = { version = "1.46.0", features = [
@@ -28,3 +28,4 @@ async-trait = "0.1.0"
 specta = { version = "1.0.5", features = ["export"], optional = true  }
 specta-typescript = { version = "0.0.9",optional = true }
 #=2.0.0-rc.22
+specta-valibot= { path = "../specta_valibot", optional = true }

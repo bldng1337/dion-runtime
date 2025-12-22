@@ -1,0 +1,15 @@
+{
+	"include": ["src/**/*"],
+	"compilerOptions": {
+		"target": "ESNext",
+		"strict": true,
+		"moduleResolution": "nodenext",
+		"module": "nodenext",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"allowImportingTsExtensions": true,
+		"noEmit": true
+	}
+}

@@ -24,19 +24,19 @@ pub enum Action {
     },
     Popup {
         title: String,
-        content: CustomUI,
+        content: Box<CustomUI>,
         actions: Vec<PopupAction>,
     },
     Nav {
         title: String,
-        content: CustomUI,
+        content: Box<CustomUI>,
     },
     TriggerEvent {
         event: String,
         data: String,
     },
     NavEntry {
-        entry: EntryDetailed,
+        entry: Box<EntryDetailed>,
     },
 }
 
@@ -47,14 +47,14 @@ pub enum Action {
 #[serde(tag = "type")]
 pub enum UIAction {
     Action {
-        action: Action,
+        action: Box<Action>,
     },
     SwapContent {
         targetid: String,
         event: String,
         data: String,
         #[cfg_attr(feature = "type", specta(optional))]
-        placeholder: Option<CustomUI>,
+        placeholder: Option<Box<CustomUI>>,
     },
 }
 

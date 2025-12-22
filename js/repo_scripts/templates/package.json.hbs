@@ -1,0 +1,42 @@
+{
+    "name": "{{name}}",
+    "version": "1.0.0",
+    "description": "{{description}}",
+    "icon": "{{icon}}",
+    "keywords": {{keywords}},
+    "api_version": "*",
+    "lang": [],
+    "nsfw": false,
+    "url": "{{url}}",
+    "extension_type": [],
+    "media_type": {{media_type}},
+    "authors": ["{{author}}"],
+    "license": "ISC",
+    "id": "{{id}}",
+    "private": true,
+    "type": "module",
+    "scripts": {
+       	"test": "bun test",
+       	"lint": "bunx biome check",
+       	"format": "bunx biome format --write",
+       	"build": "bunx dion-bundle",
+       	"check-types": "bunx tsc --noEmit"
+    },
+    "dependencies": {
+       	"@dion-js/runtime-lib": "catalog:",
+       	"valibot": "catalog:",
+       	"@dion-js/unit-test-utils": "catalog:"
+    },
+    "devDependencies": {
+       	"@types/bun": "catalog:",
+       	"@biomejs/biome": "catalog:",
+       	"@dion-js/runtime": "catalog:",
+       	"@dion-js/runtime-types": "catalog:",
+       	"@dion-js/extension-types": "catalog:",
+       	"@dion-js/config": "catalog:",
+       	"dion-bundle-extension": "catalog:",
+       	"dion-push-extension": "catalog:",
+       	"dion-test-asserts": "catalog:",
+       	"typescript": "catalog:"
+    }
+}

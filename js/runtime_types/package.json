@@ -1,0 +1,43 @@
+{
+	"name": "@dion-js/runtime-types",
+	"version": "0.4.0",
+	"description": "Type declarations for the Dion runtime API",
+	"files": [
+		"gen",
+		"index.ts"
+	],
+	"exports": {
+		"./extension": {
+			"default": "./gen/dion_extension/index.ts"
+		},
+		"./runtime": {
+			"default": "./gen/dion_runtime/index.ts"
+		},
+		".": {
+			"default": "./index.ts"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bldng1337/dion-runtime.git"
+	},
+	"author": "bldng",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bldng1337/dion-runtime/issues"
+	},
+	"homepage": "https://github.com/bldng1337/dion-runtime#readme",
+	"keywords": [
+		"dion",
+		"runtime",
+		"types",
+		"typescript",
+		"declaration"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"@js-temporal/polyfill": "^0.5.1"
+	}
+}

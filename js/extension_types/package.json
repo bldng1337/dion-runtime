@@ -1,0 +1,33 @@
+{
+	"name": "@dion-js/extension-types",
+	"version": "0.4.0",
+	"description": "Type declarations for the Dion extension API",
+	"files": [
+		"index.d.ts"
+	],
+	"types": "./index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bldng1337/dion-runtime.git"
+	},
+	"author": "bldng",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bldng1337/dion-runtime/issues"
+	},
+	"homepage": "https://github.com/bldng1337/dion-runtime#readme",
+	"keywords": [
+		"dion",
+		"extension",
+		"types",
+		"typescript",
+		"declaration"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@dion-js/runtime-types": "workspace:*",
+		"valibot": "catalog:"
+	}
+}

@@ -1,0 +1,48 @@
+{
+	"name": "fetch",
+	"version": "1.0.0",
+	"description": "some desc",
+	"icon": "www.example.com/icon.png",
+	"keywords": [
+		"some",
+		"keywords"
+	],
+	"api_version": "*",
+	"lang": [],
+	"nsfw": false,
+	"url": "www.example.com",
+	"extension_type": [],
+	"media_type": [
+		"Book"
+	],
+	"author": [
+		"Author"
+	],
+	"license": "ISC",
+	"id": "fetch",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test": "bun test",
+		"lint": "bunx biome check",
+		"format": "bunx biome format --write",
+		"build": "bunx dion-bundle",
+		"check-types": "bunx tsc --noEmit"
+	},
+	"dependencies": {
+		"@dion-js/runtime-lib": "workspace:*",
+		"valibot": "catalog:",
+		"@dion-js/unit-test-utils": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@biomejs/biome": "catalog:",
+		"@dion-js/runtime": "catalog:",
+		"@dion-js/runtime-types": "catalog:",
+		"@dion-js/extension-types": "catalog:",
+		"@dion-js/config": "workspace:*",
+		"@dion-js/extension-scripts": "workspace:*",
+		"@dion-js/extension-test-utils": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

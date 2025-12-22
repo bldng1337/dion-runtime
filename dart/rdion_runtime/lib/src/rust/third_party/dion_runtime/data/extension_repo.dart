@@ -14,16 +14,16 @@ import 'source.dart';
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class ExtensionRepo {
+  final String remoteId;
   final String name;
   final String description;
   final String url;
-  final String id;
 
   const ExtensionRepo({
+    required this.remoteId,
     required this.name,
     required this.description,
     required this.url,
-    required this.id,
   });
 
   static Future<ExtensionRepo> default_() =>
@@ -31,33 +31,35 @@ class ExtensionRepo {
 
   @override
   int get hashCode =>
-      name.hashCode ^ description.hashCode ^ url.hashCode ^ id.hashCode;
+      remoteId.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ExtensionRepo &&
           runtimeType == other.runtimeType &&
+          remoteId == other.remoteId &&
           name == other.name &&
           description == other.description &&
-          url == other.url &&
-          id == other.id;
+          url == other.url;
 }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class RemoteExtension {
+  final String remoteId;
   final String id;
-  final String exturl;
   final String name;
+  final String url;
   final Link? cover;
   final String version;
   final bool compatible;
 
   const RemoteExtension({
+    required this.remoteId,
     required this.id,
-    required this.exturl,
     required this.name,
+    required this.url,
     this.cover,
     required this.version,
     required this.compatible,
@@ -68,9 +70,10 @@ class RemoteExtension {
 
   @override
   int get hashCode =>
+      remoteId.hashCode ^
       id.hashCode ^
-      exturl.hashCode ^
       name.hashCode ^
+      url.hashCode ^
       cover.hashCode ^
       version.hashCode ^
       compatible.hashCode;
@@ -80,9 +83,10 @@ class RemoteExtension {
       identical(this, other) ||
       other is RemoteExtension &&
           runtimeType == other.runtimeType &&
+          remoteId == other.remoteId &&
           id == other.id &&
-          exturl == other.exturl &&
           name == other.name &&
+          url == other.url &&
           cover == other.cover &&
           version == other.version &&
           compatible == other.compatible;

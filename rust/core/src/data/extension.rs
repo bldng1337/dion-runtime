@@ -56,12 +56,8 @@ pub enum ExtensionType {
     EntryProvider {
         has_search: bool,
     },
-    EntryDetailedProvider {
-        id_types: Vec<String>,
-    },
-    SourceProvider {
-        id_types: Vec<String>,
-    },
+    EntryDetailedProvider,
+    SourceProvider,
     SourceProcessor {
         sourcetypes: HashSet<SourceType>,
         opentype: HashSet<SourceOpenType>,

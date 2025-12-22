@@ -161,12 +161,11 @@ impl ElementArray {
                     content: str.to_string(),
                 })
                 .collect();
-            return Ok(JsValue::from_json(
+            return JsValue::from_json(
                 &serde_json::to_value(str)
                     .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
                 context,
-            )?
-            .into());
+            );
         }
         Err(JsNativeError::typ()
             .with_message("'this' is not a ElementArray object")

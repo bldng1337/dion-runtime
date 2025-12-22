@@ -19,7 +19,7 @@ mixin _$Permission {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String path, bool write) storage,
-    required TResult Function(String domain) network,
+    required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
   }) =>
@@ -27,7 +27,7 @@ mixin _$Permission {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
-    TResult? Function(String domain)? network,
+    TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
   }) =>
@@ -35,7 +35,7 @@ mixin _$Permission {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
-    TResult Function(String domain)? network,
+    TResult Function(List<String> domains)? network,
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
@@ -169,7 +169,7 @@ class _$Permission_StorageImpl extends Permission_Storage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String path, bool write) storage,
-    required TResult Function(String domain) network,
+    required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
   }) {
@@ -180,7 +180,7 @@ class _$Permission_StorageImpl extends Permission_Storage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
-    TResult? Function(String domain)? network,
+    TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
   }) {
@@ -191,7 +191,7 @@ class _$Permission_StorageImpl extends Permission_Storage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
-    TResult Function(String domain)? network,
+    TResult Function(List<String> domains)? network,
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
@@ -263,7 +263,7 @@ abstract class _$$Permission_NetworkImplCopyWith<$Res> {
           $Res Function(_$Permission_NetworkImpl) then) =
       __$$Permission_NetworkImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String domain});
+  $Res call({List<String> domains});
 }
 
 /// @nodoc
@@ -279,13 +279,13 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? domain = null,
+    Object? domains = null,
   }) {
     return _then(_$Permission_NetworkImpl(
-      domain: null == domain
-          ? _value.domain
-          : domain // ignore: cast_nullable_to_non_nullable
-              as String,
+      domains: null == domains
+          ? _value._domains
+          : domains // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -293,14 +293,21 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$Permission_NetworkImpl extends Permission_Network {
-  const _$Permission_NetworkImpl({required this.domain}) : super._();
+  const _$Permission_NetworkImpl({required final List<String> domains})
+      : _domains = domains,
+        super._();
 
+  final List<String> _domains;
   @override
-  final String domain;
+  List<String> get domains {
+    if (_domains is EqualUnmodifiableListView) return _domains;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_domains);
+  }
 
   @override
   String toString() {
-    return 'Permission.network(domain: $domain)';
+    return 'Permission.network(domains: $domains)';
   }
 
   @override
@@ -308,11 +315,12 @@ class _$Permission_NetworkImpl extends Permission_Network {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Permission_NetworkImpl &&
-            (identical(other.domain, domain) || other.domain == domain));
+            const DeepCollectionEquality().equals(other._domains, _domains));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, domain);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_domains));
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
@@ -327,35 +335,35 @@ class _$Permission_NetworkImpl extends Permission_Network {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String path, bool write) storage,
-    required TResult Function(String domain) network,
+    required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
   }) {
-    return network(domain);
+    return network(domains);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
-    TResult? Function(String domain)? network,
+    TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
   }) {
-    return network?.call(domain);
+    return network?.call(domains);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
-    TResult Function(String domain)? network,
+    TResult Function(List<String> domains)? network,
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
   }) {
     if (network != null) {
-      return network(domain);
+      return network(domains);
     }
     return orElse();
   }
@@ -400,11 +408,11 @@ class _$Permission_NetworkImpl extends Permission_Network {
 }
 
 abstract class Permission_Network extends Permission {
-  const factory Permission_Network({required final String domain}) =
+  const factory Permission_Network({required final List<String> domains}) =
       _$Permission_NetworkImpl;
   const Permission_Network._() : super._();
 
-  String get domain;
+  List<String> get domains;
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
@@ -458,7 +466,7 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String path, bool write) storage,
-    required TResult Function(String domain) network,
+    required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
   }) {
@@ -469,7 +477,7 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
-    TResult? Function(String domain)? network,
+    TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
   }) {
@@ -480,7 +488,7 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
-    TResult Function(String domain)? network,
+    TResult Function(List<String> domains)? network,
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
@@ -580,7 +588,7 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String path, bool write) storage,
-    required TResult Function(String domain) network,
+    required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
   }) {
@@ -591,7 +599,7 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
-    TResult? Function(String domain)? network,
+    TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
   }) {
@@ -602,7 +610,7 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
-    TResult Function(String domain)? network,
+    TResult Function(List<String> domains)? network,
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),

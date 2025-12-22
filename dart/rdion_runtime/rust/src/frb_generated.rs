@@ -2268,19 +2268,19 @@ const _: fn() = || {
             actions,
         } => {
             let _: String = title;
-            let _: dion_runtime::data::custom_ui::CustomUI = content;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = content;
             let _: Vec<dion_runtime::data::action::PopupAction> = actions;
         }
         dion_runtime::data::action::Action::Nav { title, content } => {
             let _: String = title;
-            let _: dion_runtime::data::custom_ui::CustomUI = content;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = content;
         }
         dion_runtime::data::action::Action::TriggerEvent { event, data } => {
             let _: String = event;
             let _: String = data;
         }
         dion_runtime::data::action::Action::NavEntry { entry } => {
-            let _: dion_runtime::data::source::EntryDetailed = entry;
+            let _: Box<dion_runtime::data::source::EntryDetailed> = entry;
         }
     }
     match None::<dion_runtime::data::auth::AuthData>.unwrap() {
@@ -2488,21 +2488,17 @@ const _: fn() = || {
     }
     {
         let ExtensionRepo = None::<dion_runtime::data::extension_repo::ExtensionRepo>.unwrap();
+        let _: String = ExtensionRepo.remote_id;
         let _: String = ExtensionRepo.name;
         let _: String = ExtensionRepo.description;
         let _: String = ExtensionRepo.url;
-        let _: String = ExtensionRepo.id;
     }
     match None::<dion_runtime::data::extension::ExtensionType>.unwrap() {
         dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
             let _: bool = has_search;
         }
-        dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
-            let _: Vec<String> = id_types;
-        }
-        dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
-            let _: Vec<String> = id_types;
-        }
+        dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {}
+        dion_runtime::data::extension::ExtensionType::SourceProvider => {}
         dion_runtime::data::extension::ExtensionType::SourceProcessor {
             sourcetypes,
             opentype,
@@ -2549,8 +2545,8 @@ const _: fn() = || {
             let _: String = path;
             let _: bool = write;
         }
-        dion_runtime::data::permission::Permission::Network { domain } => {
-            let _: String = domain;
+        dion_runtime::data::permission::Permission::Network { domains } => {
+            let _: Vec<String> = domains;
         }
         dion_runtime::data::permission::Permission::ActionPopup => {}
         dion_runtime::data::permission::Permission::ArbitraryNetwork => {}
@@ -2562,9 +2558,10 @@ const _: fn() = || {
     }
     {
         let RemoteExtension = None::<dion_runtime::data::extension_repo::RemoteExtension>.unwrap();
+        let _: String = RemoteExtension.remote_id;
         let _: String = RemoteExtension.id;
-        let _: String = RemoteExtension.exturl;
         let _: String = RemoteExtension.name;
+        let _: String = RemoteExtension.url;
         let _: Option<dion_runtime::data::source::Link> = RemoteExtension.cover;
         let _: String = RemoteExtension.version;
         let _: bool = RemoteExtension.compatible;
@@ -2656,7 +2653,7 @@ const _: fn() = || {
     }
     match None::<dion_runtime::data::action::UIAction>.unwrap() {
         dion_runtime::data::action::UIAction::Action { action } => {
-            let _: dion_runtime::data::action::Action = action;
+            let _: Box<dion_runtime::data::action::Action> = action;
         }
         dion_runtime::data::action::UIAction::SwapContent {
             targetid,
@@ -2667,7 +2664,7 @@ const _: fn() = || {
             let _: String = targetid;
             let _: String = event;
             let _: String = data;
-            let _: Option<dion_runtime::data::custom_ui::CustomUI> = placeholder;
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = placeholder;
         }
     }
 };
@@ -3205,7 +3202,7 @@ impl SseDecode for dion_runtime::data::action::Action {
             1 => {
                 let mut var_title = <String>::sse_decode(deserializer);
                 let mut var_content =
-                    <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 let mut var_actions =
                     <Vec<dion_runtime::data::action::PopupAction>>::sse_decode(deserializer);
                 return dion_runtime::data::action::Action::Popup {
@@ -3217,7 +3214,7 @@ impl SseDecode for dion_runtime::data::action::Action {
             2 => {
                 let mut var_title = <String>::sse_decode(deserializer);
                 let mut var_content =
-                    <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 return dion_runtime::data::action::Action::Nav {
                     title: var_title,
                     content: var_content,
@@ -3233,7 +3230,7 @@ impl SseDecode for dion_runtime::data::action::Action {
             }
             4 => {
                 let mut var_entry =
-                    <dion_runtime::data::source::EntryDetailed>::sse_decode(deserializer);
+                    <Box<dion_runtime::data::source::EntryDetailed>>::sse_decode(deserializer);
                 return dion_runtime::data::action::Action::NavEntry { entry: var_entry };
             }
             _ => {
@@ -3289,6 +3286,15 @@ impl SseDecode for Box<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         return Box::new(<dion_runtime::data::custom_ui::CustomUI>::sse_decode(
+            deserializer,
+        ));
+    }
+}
+
+impl SseDecode for Box<dion_runtime::data::source::EntryDetailed> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        return Box::new(<dion_runtime::data::source::EntryDetailed>::sse_decode(
             deserializer,
         ));
     }
@@ -3719,15 +3725,15 @@ impl SseDecode for dion_runtime::data::extension_manager::ExtensionManagerData {
 impl SseDecode for dion_runtime::data::extension_repo::ExtensionRepo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_remoteId = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <String>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
-        let mut var_id = <String>::sse_decode(deserializer);
         return dion_runtime::data::extension_repo::ExtensionRepo {
+            remote_id: var_remoteId,
             name: var_name,
             description: var_description,
             url: var_url,
-            id: var_id,
         };
     }
 }
@@ -3744,16 +3750,10 @@ impl SseDecode for dion_runtime::data::extension::ExtensionType {
                 };
             }
             1 => {
-                let mut var_idTypes = <Vec<String>>::sse_decode(deserializer);
-                return dion_runtime::data::extension::ExtensionType::EntryDetailedProvider {
-                    id_types: var_idTypes,
-                };
+                return dion_runtime::data::extension::ExtensionType::EntryDetailedProvider;
             }
             2 => {
-                let mut var_idTypes = <Vec<String>>::sse_decode(deserializer);
-                return dion_runtime::data::extension::ExtensionType::SourceProvider {
-                    id_types: var_idTypes,
-                };
+                return dion_runtime::data::extension::ExtensionType::SourceProvider;
             }
             3 => {
                 let mut var_sourcetypes = <std::collections::HashSet<
@@ -4270,6 +4270,19 @@ impl SseDecode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseDecode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<Box<dion_runtime::data::action::UIAction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4351,8 +4364,10 @@ impl SseDecode for dion_runtime::data::permission::Permission {
                 };
             }
             1 => {
-                let mut var_domain = <String>::sse_decode(deserializer);
-                return dion_runtime::data::permission::Permission::Network { domain: var_domain };
+                let mut var_domains = <Vec<String>>::sse_decode(deserializer);
+                return dion_runtime::data::permission::Permission::Network {
+                    domains: var_domains,
+                };
             }
             2 => {
                 return dion_runtime::data::permission::Permission::ActionPopup;
@@ -4413,16 +4428,18 @@ impl SseDecode for dion_runtime::data::source::ReleaseStatus {
 impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_remoteId = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
-        let mut var_exturl = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
         let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_version = <String>::sse_decode(deserializer);
         let mut var_compatible = <bool>::sse_decode(deserializer);
         return dion_runtime::data::extension_repo::RemoteExtension {
+            remote_id: var_remoteId,
             id: var_id,
-            exturl: var_exturl,
             name: var_name,
+            url: var_url,
             cover: var_cover,
             version: var_version,
             compatible: var_compatible,
@@ -4704,7 +4721,8 @@ impl SseDecode for dion_runtime::data::action::UIAction {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_action = <dion_runtime::data::action::Action>::sse_decode(deserializer);
+                let mut var_action =
+                    <Box<dion_runtime::data::action::Action>>::sse_decode(deserializer);
                 return dion_runtime::data::action::UIAction::Action { action: var_action };
             }
             1 => {
@@ -4712,7 +4730,9 @@ impl SseDecode for dion_runtime::data::action::UIAction {
                 let mut var_event = <String>::sse_decode(deserializer);
                 let mut var_data = <String>::sse_decode(deserializer);
                 let mut var_placeholder =
-                    <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::data::action::UIAction::SwapContent {
                     targetid: var_targetid,
                     event: var_event,
@@ -5407,10 +5427,10 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
+            self.0.remote_id.into_into_dart().into_dart(),
             self.0.name.into_into_dart().into_dart(),
             self.0.description.into_into_dart().into_dart(),
             self.0.url.into_into_dart().into_dart(),
-            self.0.id.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5434,11 +5454,11 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension:
             dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
                 [0.into_dart(), has_search.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
-                [1.into_dart(), id_types.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {
+                [1.into_dart()].into_dart()
             }
-            dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
-                [2.into_dart(), id_types.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::extension::ExtensionType::SourceProvider => {
+                [2.into_dart()].into_dart()
             }
             dion_runtime::data::extension::ExtensionType::SourceProcessor {
                 sourcetypes,
@@ -5585,8 +5605,8 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::permission
                 write.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::permission::Permission::Network { domain } => {
-                [1.into_dart(), domain.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::permission::Permission::Network { domains } => {
+                [1.into_dart(), domains.into_into_dart().into_dart()].into_dart()
             }
             dion_runtime::data::permission::Permission::ActionPopup => [2.into_dart()].into_dart(),
             dion_runtime::data::permission::Permission::ArbitraryNetwork => {
@@ -5658,9 +5678,10 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
+            self.0.remote_id.into_into_dart().into_dart(),
             self.0.id.into_into_dart().into_dart(),
-            self.0.exturl.into_into_dart().into_dart(),
             self.0.name.into_into_dart().into_dart(),
+            self.0.url.into_into_dart().into_dart(),
             self.0.cover.into_into_dart().into_dart(),
             self.0.version.into_into_dart().into_dart(),
             self.0.compatible.into_into_dart().into_dart(),
@@ -6245,13 +6266,13 @@ impl SseEncode for dion_runtime::data::action::Action {
             } => {
                 <i32>::sse_encode(1, serializer);
                 <String>::sse_encode(title, serializer);
-                <dion_runtime::data::custom_ui::CustomUI>::sse_encode(content, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(content, serializer);
                 <Vec<dion_runtime::data::action::PopupAction>>::sse_encode(actions, serializer);
             }
             dion_runtime::data::action::Action::Nav { title, content } => {
                 <i32>::sse_encode(2, serializer);
                 <String>::sse_encode(title, serializer);
-                <dion_runtime::data::custom_ui::CustomUI>::sse_encode(content, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(content, serializer);
             }
             dion_runtime::data::action::Action::TriggerEvent { event, data } => {
                 <i32>::sse_encode(3, serializer);
@@ -6260,7 +6281,7 @@ impl SseEncode for dion_runtime::data::action::Action {
             }
             dion_runtime::data::action::Action::NavEntry { entry } => {
                 <i32>::sse_encode(4, serializer);
-                <dion_runtime::data::source::EntryDetailed>::sse_encode(entry, serializer);
+                <Box<dion_runtime::data::source::EntryDetailed>>::sse_encode(entry, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -6312,6 +6333,13 @@ impl SseEncode for Box<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <dion_runtime::data::custom_ui::CustomUI>::sse_encode(*self, serializer);
+    }
+}
+
+impl SseEncode for Box<dion_runtime::data::source::EntryDetailed> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <dion_runtime::data::source::EntryDetailed>::sse_encode(*self, serializer);
     }
 }
 
@@ -6610,10 +6638,10 @@ impl SseEncode for dion_runtime::data::extension_manager::ExtensionManagerData {
 impl SseEncode for dion_runtime::data::extension_repo::ExtensionRepo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.remote_id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.url, serializer);
-        <String>::sse_encode(self.id, serializer);
     }
 }
 
@@ -6625,13 +6653,11 @@ impl SseEncode for dion_runtime::data::extension::ExtensionType {
                 <i32>::sse_encode(0, serializer);
                 <bool>::sse_encode(has_search, serializer);
             }
-            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider { id_types } => {
+            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {
                 <i32>::sse_encode(1, serializer);
-                <Vec<String>>::sse_encode(id_types, serializer);
             }
-            dion_runtime::data::extension::ExtensionType::SourceProvider { id_types } => {
+            dion_runtime::data::extension::ExtensionType::SourceProvider => {
                 <i32>::sse_encode(2, serializer);
-                <Vec<String>>::sse_encode(id_types, serializer);
             }
             dion_runtime::data::extension::ExtensionType::SourceProcessor {
                 sourcetypes,
@@ -7050,6 +7076,16 @@ impl SseEncode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseEncode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<Box<dion_runtime::data::action::UIAction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7112,9 +7148,9 @@ impl SseEncode for dion_runtime::data::permission::Permission {
                 <String>::sse_encode(path, serializer);
                 <bool>::sse_encode(write, serializer);
             }
-            dion_runtime::data::permission::Permission::Network { domain } => {
+            dion_runtime::data::permission::Permission::Network { domains } => {
                 <i32>::sse_encode(1, serializer);
-                <String>::sse_encode(domain, serializer);
+                <Vec<String>>::sse_encode(domains, serializer);
             }
             dion_runtime::data::permission::Permission::ActionPopup => {
                 <i32>::sse_encode(2, serializer);
@@ -7173,9 +7209,10 @@ impl SseEncode for dion_runtime::data::source::ReleaseStatus {
 impl SseEncode for dion_runtime::data::extension_repo::RemoteExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.remote_id, serializer);
         <String>::sse_encode(self.id, serializer);
-        <String>::sse_encode(self.exturl, serializer);
         <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.url, serializer);
         <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
         <String>::sse_encode(self.version, serializer);
         <bool>::sse_encode(self.compatible, serializer);
@@ -7421,7 +7458,7 @@ impl SseEncode for dion_runtime::data::action::UIAction {
         match self {
             dion_runtime::data::action::UIAction::Action { action } => {
                 <i32>::sse_encode(0, serializer);
-                <dion_runtime::data::action::Action>::sse_encode(action, serializer);
+                <Box<dion_runtime::data::action::Action>>::sse_encode(action, serializer);
             }
             dion_runtime::data::action::UIAction::SwapContent {
                 targetid,
@@ -7433,7 +7470,7 @@ impl SseEncode for dion_runtime::data::action::UIAction {
                 <String>::sse_encode(targetid, serializer);
                 <String>::sse_encode(event, serializer);
                 <String>::sse_encode(data, serializer);
-                <Option<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
                     placeholder,
                     serializer,
                 );
@@ -7742,13 +7779,6 @@ mod io {
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<dion_runtime::data::action::Action> for *mut wire_cst_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::data::action::Action {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::data::action::Action>::cst_decode(*wrap).into()
-        }
-    }
     impl CstDecode<bool> for *mut bool {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> bool {
@@ -7767,13 +7797,6 @@ mod io {
         fn cst_decode(self) -> dion_runtime::data::source::Entry {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::source::Entry>::cst_decode(*wrap).into()
-        }
-    }
-    impl CstDecode<dion_runtime::data::source::EntryDetailed> for *mut wire_cst_entry_detailed {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::data::source::EntryDetailed {
-            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::data::source::EntryDetailed>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::data::extension_repo::ExtensionRepo> for *mut wire_cst_extension_repo {
@@ -7814,6 +7837,13 @@ mod io {
         fn cst_decode(self) -> Box<dion_runtime::data::custom_ui::CustomUI> {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::custom_ui::CustomUI>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<Box<dion_runtime::data::source::EntryDetailed>> for *mut wire_cst_entry_detailed {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Box<dion_runtime::data::source::EntryDetailed> {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::source::EntryDetailed>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<Box<dion_runtime::data::action::UIAction>> for *mut wire_cst_ui_action {
@@ -8119,10 +8149,10 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::extension_repo::ExtensionRepo {
             dion_runtime::data::extension_repo::ExtensionRepo {
+                remote_id: self.remote_id.cst_decode(),
                 name: self.name.cst_decode(),
                 description: self.description.cst_decode(),
                 url: self.url.cst_decode(),
-                id: self.id.cst_decode(),
             }
         }
     }
@@ -8136,18 +8166,8 @@ mod io {
                         has_search: ans.has_search.cst_decode(),
                     }
                 }
-                1 => {
-                    let ans = unsafe { self.kind.EntryDetailedProvider };
-                    dion_runtime::data::extension::ExtensionType::EntryDetailedProvider {
-                        id_types: ans.id_types.cst_decode(),
-                    }
-                }
-                2 => {
-                    let ans = unsafe { self.kind.SourceProvider };
-                    dion_runtime::data::extension::ExtensionType::SourceProvider {
-                        id_types: ans.id_types.cst_decode(),
-                    }
-                }
+                1 => dion_runtime::data::extension::ExtensionType::EntryDetailedProvider,
+                2 => dion_runtime::data::extension::ExtensionType::SourceProvider,
                 3 => {
                     let ans = unsafe { self.kind.SourceProcessor };
                     dion_runtime::data::extension::ExtensionType::SourceProcessor {
@@ -8452,7 +8472,7 @@ mod io {
                 1 => {
                     let ans = unsafe { self.kind.Network };
                     dion_runtime::data::permission::Permission::Network {
-                        domain: ans.domain.cst_decode(),
+                        domains: ans.domains.cst_decode(),
                     }
                 }
                 2 => dion_runtime::data::permission::Permission::ActionPopup,
@@ -8486,9 +8506,10 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::extension_repo::RemoteExtension {
             dion_runtime::data::extension_repo::RemoteExtension {
+                remote_id: self.remote_id.cst_decode(),
                 id: self.id.cst_decode(),
-                exturl: self.exturl.cst_decode(),
                 name: self.name.cst_decode(),
+                url: self.url.cst_decode(),
                 cover: self.cover.cst_decode(),
                 version: self.version.cst_decode(),
                 compatible: self.compatible.cst_decode(),
@@ -8949,10 +8970,10 @@ mod io {
     impl NewWithNullPtr for wire_cst_extension_repo {
         fn new_with_null_ptr() -> Self {
             Self {
+                remote_id: core::ptr::null_mut(),
                 name: core::ptr::null_mut(),
                 description: core::ptr::null_mut(),
                 url: core::ptr::null_mut(),
-                id: core::ptr::null_mut(),
             }
         }
     }
@@ -9069,9 +9090,10 @@ mod io {
     impl NewWithNullPtr for wire_cst_remote_extension {
         fn new_with_null_ptr() -> Self {
             Self {
+                remote_id: core::ptr::null_mut(),
                 id: core::ptr::null_mut(),
-                exturl: core::ptr::null_mut(),
                 name: core::ptr::null_mut(),
+                url: core::ptr::null_mut(),
                 cover: core::ptr::null_mut(),
                 version: core::ptr::null_mut(),
                 compatible: Default::default(),
@@ -9828,11 +9850,6 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_action() -> *mut wire_cst_action {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_action::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_bool(value: bool) -> *mut bool {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
@@ -9846,14 +9863,6 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_entry() -> *mut wire_cst_entry {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_entry::new_with_null_ptr())
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_entry_detailed(
-    ) -> *mut wire_cst_entry_detailed {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(
-            wire_cst_entry_detailed::new_with_null_ptr(),
-        )
     }
 
     #[unsafe(no_mangle)]
@@ -9890,6 +9899,14 @@ mod io {
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_custom_ui() -> *mut wire_cst_custom_ui {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_entry_detailed(
+    ) -> *mut wire_cst_entry_detailed {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_entry_detailed::new_with_null_ptr(),
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -10514,10 +10531,10 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_extension_repo {
+        remote_id: *mut wire_cst_list_prim_u_8_strict,
         name: *mut wire_cst_list_prim_u_8_strict,
         description: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
-        id: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10529,8 +10546,6 @@ mod io {
     #[derive(Clone, Copy)]
     pub union ExtensionTypeKind {
         EntryProvider: wire_cst_ExtensionType_EntryProvider,
-        EntryDetailedProvider: wire_cst_ExtensionType_EntryDetailedProvider,
-        SourceProvider: wire_cst_ExtensionType_SourceProvider,
         SourceProcessor: wire_cst_ExtensionType_SourceProcessor,
         EntryProcessor: wire_cst_ExtensionType_EntryProcessor,
         URLHandler: wire_cst_ExtensionType_URLHandler,
@@ -10540,16 +10555,6 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_ExtensionType_EntryProvider {
         has_search: bool,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_ExtensionType_EntryDetailedProvider {
-        id_types: *mut wire_cst_list_String,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_ExtensionType_SourceProvider {
-        id_types: *mut wire_cst_list_String,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10759,7 +10764,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_Permission_Network {
-        domain: *mut wire_cst_list_prim_u_8_strict,
+        domains: *mut wire_cst_list_String,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10782,9 +10787,10 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_remote_extension {
+        remote_id: *mut wire_cst_list_prim_u_8_strict,
         id: *mut wire_cst_list_prim_u_8_strict,
-        exturl: *mut wire_cst_list_prim_u_8_strict,
         name: *mut wire_cst_list_prim_u_8_strict,
+        url: *mut wire_cst_list_prim_u_8_strict,
         cover: *mut wire_cst_link,
         version: *mut wire_cst_list_prim_u_8_strict,
         compatible: bool,

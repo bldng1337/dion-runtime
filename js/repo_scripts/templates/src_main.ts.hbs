@@ -1,0 +1,95 @@
+import { DionExtension } from "@dion-js/runtime-lib";
+import { SourceProvider } from "@dion-js/runtime-types/extension";
+import type {
+	EntryDetailedResult,
+	EntryId,
+	EntryList,
+	EpisodeId,
+	EventData,
+	EventResult,
+	Setting,
+	SourceResult,
+} from "@dion-js/runtime-types/runtime";
+
+export default class extends DionExtension implements SourceProvider {
+	settings = {};
+	async onEvent(_data: EventData): Promise<EventResult | undefined> {
+		return undefined;
+	}
+	async browse(page: number): Promise<EntryList> {
+		return {
+			content: [
+				{
+					id: { uid: "test-entry" },
+					title: "Test Entry",
+					url: "https://example.com",
+					media_type: "Video",
+				},
+			],
+			hasnext: false,
+			length: 0,
+		};
+	}
+	async search(page: number, filter: string): Promise<EntryList> {
+		return {
+			content: [
+				{
+					id: { uid: "test-entry" },
+					title: "Test Entry",
+					url: "https://example.com",
+					media_type: "Video",
+				},
+			],
+			hasnext: false,
+			length: 0,
+		};
+	}
+	async detail(
+		entryid: EntryId,
+		settings: Record<string, Setting>,
+	): Promise<EntryDetailedResult> {
+		return {
+			entry: {
+				id: {
+					uid: "ads",
+				},
+				url: "https://example.com",
+				titles: [],
+				media_type: "Video",
+				status: "Unknown",
+				description: "",
+				language: "",
+				episodes: [
+					{
+						id: {
+							uid: "episode-1",
+						},
+						name: "Episode 1",
+						url: "https://example.com",
+					},
+				],
+			},
+			settings: settings,
+		};
+	}
+	async source(
+		epid: EpisodeId,
+		settings: Record<string, Setting>,
+	): Promise<SourceResult> {
+		return {
+			settings: settings,
+			source: {
+				type: "Paragraphlist",
+				paragraphs: [
+					{
+						type: "Text",
+						content: "Some Content.",
+					},
+				],
+			},
+		};
+	}
+	async handleUrl?(url: string): Promise<boolean> {
+		return false;
+	}
+}

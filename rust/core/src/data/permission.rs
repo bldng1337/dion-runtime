@@ -16,7 +16,7 @@ pub enum Permission {
         write: bool,
     },
     Network {
-        domain: String,
+        domains: Vec<String>,
     },
     ActionPopup,
     ArbitraryNetwork,
@@ -39,10 +39,10 @@ impl Permission {
             }
             (
                 Permission::Network {
-                    domain: self_domain,
+                    domains: self_domain,
                 },
-                Permission::Network { domain },
-            ) => self_domain == domain,
+                Permission::Network { domains },
+            ) => self_domain == domains,
             (Permission::ActionPopup, Permission::ActionPopup) => true,
             (Permission::ArbitraryNetwork, Permission::ArbitraryNetwork) => true,
             _ => false,

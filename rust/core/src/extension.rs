@@ -22,6 +22,7 @@ pub trait Adapter: Send + Sync {
     async fn get_extensions(&self) -> Result<Vec<Box<dyn Extension>>>;
 
     async fn install(&self, url: &str) -> Result<Box<dyn Extension>>;
+    #[allow(clippy::borrowed_box)]
     async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()>;
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo>;

@@ -1086,6 +1086,7 @@ dependencies = [
  "simple_logger",
  "specta 1.0.5",
  "specta-typescript",
+ "specta-valibot",
  "tokio",
  "tokio-util",
 ]
@@ -1101,6 +1102,7 @@ dependencies = [
  "serde_json",
  "specta 1.0.5",
  "specta-typescript",
+ "specta-valibot",
  "tokio",
  "tokio-util",
 ]
@@ -3686,6 +3688,14 @@ dependencies = [
  "specta 2.0.0-rc.22",
  "specta-serde",
  "thiserror 1.0.69",
+]
+
+[[package]]
+name = "specta-valibot"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "specta 1.0.5",
 ]
 
 [[package]]

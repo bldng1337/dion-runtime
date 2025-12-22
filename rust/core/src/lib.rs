@@ -76,7 +76,7 @@ mod test {
             Ok(ExtensionRepo {
                 name: "TestRepo".to_string(),
                 description: "Test".to_string(),
-                id: "someid3234".to_string(),
+                remote_id: "testrepo".to_string(),
                 url: todo!(),
             })
         }

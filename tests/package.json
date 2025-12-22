@@ -1,0 +1,11 @@
+{
+	"id": "string",
+	"icon": "string",
+	"url": "string",
+	"description": "string",
+	"name": "test-repo",
+	"packageManager": "bun@1.2.19",
+	"dependencies": {
+		"@dion-js/extension-scripts": "workspace:*"
+	}
+}

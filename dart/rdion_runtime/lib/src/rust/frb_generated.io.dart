@@ -202,9 +202,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  Action dco_decode_box_autoadd_action(dynamic raw);
-
-  @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
@@ -260,6 +257,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CustomUI dco_decode_box_custom_ui(dynamic raw);
+
+  @protected
+  EntryDetailed dco_decode_box_entry_detailed(dynamic raw);
 
   @protected
   UIAction dco_decode_box_ui_action(dynamic raw);
@@ -432,6 +432,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SettingsUI? dco_decode_opt_box_autoadd_settings_ui(dynamic raw);
+
+  @protected
+  CustomUI? dco_decode_opt_box_custom_ui(dynamic raw);
 
   @protected
   UIAction? dco_decode_opt_box_ui_action(dynamic raw);
@@ -644,9 +647,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  Action sse_decode_box_autoadd_action(SseDeserializer deserializer);
-
-  @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
@@ -706,6 +706,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CustomUI sse_decode_box_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  EntryDetailed sse_decode_box_entry_detailed(SseDeserializer deserializer);
 
   @protected
   UIAction sse_decode_box_ui_action(SseDeserializer deserializer);
@@ -893,6 +896,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  CustomUI? sse_decode_opt_box_custom_ui(SseDeserializer deserializer);
+
+  @protected
   UIAction? sse_decode_opt_box_ui_action(SseDeserializer deserializer);
 
   @protected
@@ -1057,14 +1063,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_action> cst_encode_box_autoadd_action(Action raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_action();
-    cst_api_fill_to_wire_action(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
   ffi.Pointer<ffi.Bool> cst_encode_box_autoadd_bool(bool raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_bool(cst_encode_bool(raw));
@@ -1084,15 +1082,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_entry();
     cst_api_fill_to_wire_entry(raw, ptr.ref);
-    return ptr;
-  }
-
-  @protected
-  ffi.Pointer<wire_cst_entry_detailed> cst_encode_box_autoadd_entry_detailed(
-      EntryDetailed raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ptr = wire.cst_new_box_autoadd_entry_detailed();
-    cst_api_fill_to_wire_entry_detailed(raw, ptr.ref);
     return ptr;
   }
 
@@ -1139,6 +1128,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_custom_ui();
     cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_entry_detailed> cst_encode_box_entry_detailed(
+      EntryDetailed raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_entry_detailed();
+    cst_api_fill_to_wire_entry_detailed(raw, ptr.ref);
     return ptr;
   }
 
@@ -1445,6 +1443,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_custom_ui(CustomUI? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_custom_ui(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_ui_action> cst_encode_opt_box_ui_action(UIAction? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_ui_action(raw);
@@ -1489,7 +1493,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is Action_Popup) {
       var pre_title = cst_encode_String(apiObj.title);
-      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
+      var pre_content = cst_encode_box_custom_ui(apiObj.content);
       var pre_actions = cst_encode_list_popup_action(apiObj.actions);
       wireObj.tag = 1;
       wireObj.kind.Popup.title = pre_title;
@@ -1499,7 +1503,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is Action_Nav) {
       var pre_title = cst_encode_String(apiObj.title);
-      var pre_content = cst_encode_box_autoadd_custom_ui(apiObj.content);
+      var pre_content = cst_encode_box_custom_ui(apiObj.content);
       wireObj.tag = 2;
       wireObj.kind.Nav.title = pre_title;
       wireObj.kind.Nav.content = pre_content;
@@ -1514,7 +1518,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       return;
     }
     if (apiObj is Action_NavEntry) {
-      var pre_entry = cst_encode_box_autoadd_entry_detailed(apiObj.entry);
+      var pre_entry = cst_encode_box_entry_detailed(apiObj.entry);
       wireObj.tag = 4;
       wireObj.kind.NavEntry.entry = pre_entry;
       return;
@@ -1549,12 +1553,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_box_autoadd_action(
-      Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
-    cst_api_fill_to_wire_action(apiObj, wireObj.ref);
-  }
-
-  @protected
   void cst_api_fill_to_wire_box_autoadd_custom_ui(
       CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
     cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
@@ -1564,12 +1562,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_autoadd_entry(
       Entry apiObj, ffi.Pointer<wire_cst_entry> wireObj) {
     cst_api_fill_to_wire_entry(apiObj, wireObj.ref);
-  }
-
-  @protected
-  void cst_api_fill_to_wire_box_autoadd_entry_detailed(
-      EntryDetailed apiObj, ffi.Pointer<wire_cst_entry_detailed> wireObj) {
-    cst_api_fill_to_wire_entry_detailed(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1594,6 +1586,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_custom_ui(
       CustomUI apiObj, ffi.Pointer<wire_cst_custom_ui> wireObj) {
     cst_api_fill_to_wire_custom_ui(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_entry_detailed(
+      EntryDetailed apiObj, ffi.Pointer<wire_cst_entry_detailed> wireObj) {
+    cst_api_fill_to_wire_entry_detailed(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1880,10 +1878,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void cst_api_fill_to_wire_extension_repo(
       ExtensionRepo apiObj, wire_cst_extension_repo wireObj) {
+    wireObj.remote_id = cst_encode_String(apiObj.remoteId);
     wireObj.name = cst_encode_String(apiObj.name);
     wireObj.description = cst_encode_String(apiObj.description);
     wireObj.url = cst_encode_String(apiObj.url);
-    wireObj.id = cst_encode_String(apiObj.id);
   }
 
   @protected
@@ -1896,15 +1894,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       return;
     }
     if (apiObj is ExtensionType_EntryDetailedProvider) {
-      var pre_id_types = cst_encode_list_String(apiObj.idTypes);
       wireObj.tag = 1;
-      wireObj.kind.EntryDetailedProvider.id_types = pre_id_types;
       return;
     }
     if (apiObj is ExtensionType_SourceProvider) {
-      var pre_id_types = cst_encode_list_String(apiObj.idTypes);
       wireObj.tag = 2;
-      wireObj.kind.SourceProvider.id_types = pre_id_types;
       return;
     }
     if (apiObj is ExtensionType_SourceProcessor) {
@@ -1982,9 +1976,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       return;
     }
     if (apiObj is Permission_Network) {
-      var pre_domain = cst_encode_String(apiObj.domain);
+      var pre_domains = cst_encode_list_String(apiObj.domains);
       wireObj.tag = 1;
-      wireObj.kind.Network.domain = pre_domain;
+      wireObj.kind.Network.domains = pre_domains;
       return;
     }
     if (apiObj is Permission_ActionPopup) {
@@ -2021,9 +2015,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void cst_api_fill_to_wire_remote_extension(
       RemoteExtension apiObj, wire_cst_remote_extension wireObj) {
+    wireObj.remote_id = cst_encode_String(apiObj.remoteId);
     wireObj.id = cst_encode_String(apiObj.id);
-    wireObj.exturl = cst_encode_String(apiObj.exturl);
     wireObj.name = cst_encode_String(apiObj.name);
+    wireObj.url = cst_encode_String(apiObj.url);
     wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
     wireObj.version = cst_encode_String(apiObj.version);
     wireObj.compatible = cst_encode_bool(apiObj.compatible);
@@ -2176,7 +2171,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_ui_action(
       UIAction apiObj, wire_cst_ui_action wireObj) {
     if (apiObj is UIAction_Action) {
-      var pre_action = cst_encode_box_autoadd_action(apiObj.action);
+      var pre_action = cst_encode_box_action(apiObj.action);
       wireObj.tag = 0;
       wireObj.kind.Action.action = pre_action;
       return;
@@ -2185,8 +2180,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       var pre_targetid = cst_encode_String(apiObj.targetid);
       var pre_event = cst_encode_String(apiObj.event);
       var pre_data = cst_encode_String(apiObj.data);
-      var pre_placeholder =
-          cst_encode_opt_box_autoadd_custom_ui(apiObj.placeholder);
+      var pre_placeholder = cst_encode_opt_box_custom_ui(apiObj.placeholder);
       wireObj.tag = 1;
       wireObj.kind.SwapContent.targetid = pre_targetid;
       wireObj.kind.SwapContent.event = pre_event;
@@ -2441,9 +2435,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           CancelToken self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_action(Action self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
@@ -2509,6 +2500,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_custom_ui(CustomUI self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_entry_detailed(
+      EntryDetailed self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_ui_action(UIAction self, SseSerializer serializer);
@@ -2704,6 +2699,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_settings_ui(
       SettingsUI? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_custom_ui(CustomUI? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_ui_action(UIAction? self, SseSerializer serializer);
@@ -4070,17 +4068,6 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
-  ffi.Pointer<wire_cst_action> cst_new_box_autoadd_action() {
-    return _cst_new_box_autoadd_action();
-  }
-
-  late final _cst_new_box_autoadd_actionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_action> Function()>>(
-    'frbgen_rdion_runtime_cst_new_box_autoadd_action',
-  );
-  late final _cst_new_box_autoadd_action = _cst_new_box_autoadd_actionPtr
-      .asFunction<ffi.Pointer<wire_cst_action> Function()>();
-
   ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(bool value) {
     return _cst_new_box_autoadd_bool(value);
   }
@@ -4113,17 +4100,6 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_entry = _cst_new_box_autoadd_entryPtr
       .asFunction<ffi.Pointer<wire_cst_entry> Function()>();
-
-  ffi.Pointer<wire_cst_entry_detailed> cst_new_box_autoadd_entry_detailed() {
-    return _cst_new_box_autoadd_entry_detailed();
-  }
-
-  late final _cst_new_box_autoadd_entry_detailedPtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>>(
-      'frbgen_rdion_runtime_cst_new_box_autoadd_entry_detailed');
-  late final _cst_new_box_autoadd_entry_detailed =
-      _cst_new_box_autoadd_entry_detailedPtr
-          .asFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>();
 
   ffi.Pointer<wire_cst_extension_repo> cst_new_box_autoadd_extension_repo() {
     return _cst_new_box_autoadd_extension_repo();
@@ -4191,6 +4167,16 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_custom_ui = _cst_new_box_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
+
+  ffi.Pointer<wire_cst_entry_detailed> cst_new_box_entry_detailed() {
+    return _cst_new_box_entry_detailed();
+  }
+
+  late final _cst_new_box_entry_detailedPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>>(
+      'frbgen_rdion_runtime_cst_new_box_entry_detailed');
+  late final _cst_new_box_entry_detailed = _cst_new_box_entry_detailedPtr
+      .asFunction<ffi.Pointer<wire_cst_entry_detailed> Function()>();
 
   ffi.Pointer<wire_cst_ui_action> cst_new_box_ui_action() {
     return _cst_new_box_ui_action();
@@ -4495,13 +4481,13 @@ final class wire_cst_list_prim_u_8_strict extends ffi.Struct {
 }
 
 final class wire_cst_extension_repo extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> remote_id;
+
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> description;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
 }
 
 final class wire_cst_Action_OpenBrowser extends ffi.Struct {
@@ -4882,14 +4868,6 @@ final class wire_cst_ExtensionType_EntryProvider extends ffi.Struct {
   external bool has_search;
 }
 
-final class wire_cst_ExtensionType_EntryDetailedProvider extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_String> id_types;
-}
-
-final class wire_cst_ExtensionType_SourceProvider extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_String> id_types;
-}
-
 final class wire_cst_list_source_type extends ffi.Struct {
   external ffi.Pointer<ffi.Int32> ptr;
 
@@ -4924,10 +4902,6 @@ final class wire_cst_ExtensionType_URLHandler extends ffi.Struct {
 
 final class ExtensionTypeKind extends ffi.Union {
   external wire_cst_ExtensionType_EntryProvider EntryProvider;
-
-  external wire_cst_ExtensionType_EntryDetailedProvider EntryDetailedProvider;
-
-  external wire_cst_ExtensionType_SourceProvider SourceProvider;
 
   external wire_cst_ExtensionType_SourceProcessor SourceProcessor;
 
@@ -5088,11 +5062,13 @@ final class wire_cst_list_record_string_setting extends ffi.Struct {
 }
 
 final class wire_cst_remote_extension extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> remote_id;
+
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> id;
 
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> exturl;
-
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 
   external ffi.Pointer<wire_cst_link> cover;
 
@@ -5314,7 +5290,7 @@ final class wire_cst_Permission_Storage extends ffi.Struct {
 }
 
 final class wire_cst_Permission_Network extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> domain;
+  external ffi.Pointer<wire_cst_list_String> domains;
 }
 
 final class PermissionKind extends ffi.Union {

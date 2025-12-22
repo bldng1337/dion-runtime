@@ -1,0 +1,16 @@
+{
+	"name": "@dion-js/config",
+	"version": "0.1.0",
+	"type": "module",
+	"files": [
+		"typescript.json",
+		"biome.json"
+	],
+	"exports": {
+		"./typescript.json": "./typescript.json",
+		"./biome.json": "./biome.json"
+	},
+	"devDependencies": {
+		"typescript": "catalog:"
+	}
+}

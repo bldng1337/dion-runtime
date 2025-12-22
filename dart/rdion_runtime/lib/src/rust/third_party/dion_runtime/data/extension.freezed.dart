@@ -19,8 +19,8 @@ mixin _$ExtensionType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -32,8 +32,8 @@ mixin _$ExtensionType {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -45,8 +45,8 @@ mixin _$ExtensionType {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -189,8 +189,8 @@ class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -205,8 +205,8 @@ class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -221,8 +221,8 @@ class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -306,8 +306,6 @@ abstract class _$$ExtensionType_EntryDetailedProviderImplCopyWith<$Res> {
           _$ExtensionType_EntryDetailedProviderImpl value,
           $Res Function(_$ExtensionType_EntryDetailedProviderImpl) then) =
       __$$ExtensionType_EntryDetailedProviderImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<String> idTypes});
 }
 
 /// @nodoc
@@ -322,70 +320,35 @@ class __$$ExtensionType_EntryDetailedProviderImplCopyWithImpl<$Res>
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? idTypes = null,
-  }) {
-    return _then(_$ExtensionType_EntryDetailedProviderImpl(
-      idTypes: null == idTypes
-          ? _value._idTypes
-          : idTypes // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$ExtensionType_EntryDetailedProviderImpl
     extends ExtensionType_EntryDetailedProvider {
-  const _$ExtensionType_EntryDetailedProviderImpl(
-      {required final List<String> idTypes})
-      : _idTypes = idTypes,
-        super._();
-
-  final List<String> _idTypes;
-  @override
-  List<String> get idTypes {
-    if (_idTypes is EqualUnmodifiableListView) return _idTypes;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_idTypes);
-  }
+  const _$ExtensionType_EntryDetailedProviderImpl() : super._();
 
   @override
   String toString() {
-    return 'ExtensionType.entryDetailedProvider(idTypes: $idTypes)';
+    return 'ExtensionType.entryDetailedProvider()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_EntryDetailedProviderImpl &&
-            const DeepCollectionEquality().equals(other._idTypes, _idTypes));
+            other is _$ExtensionType_EntryDetailedProviderImpl);
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_idTypes));
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ExtensionType_EntryDetailedProviderImplCopyWith<
-          _$ExtensionType_EntryDetailedProviderImpl>
-      get copyWith => __$$ExtensionType_EntryDetailedProviderImplCopyWithImpl<
-          _$ExtensionType_EntryDetailedProviderImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -393,15 +356,15 @@ class _$ExtensionType_EntryDetailedProviderImpl
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
   }) {
-    return entryDetailedProvider(idTypes);
+    return entryDetailedProvider();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -409,15 +372,15 @@ class _$ExtensionType_EntryDetailedProviderImpl
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
   }) {
-    return entryDetailedProvider?.call(idTypes);
+    return entryDetailedProvider?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -426,7 +389,7 @@ class _$ExtensionType_EntryDetailedProviderImpl
     required TResult orElse(),
   }) {
     if (entryDetailedProvider != null) {
-      return entryDetailedProvider(idTypes);
+      return entryDetailedProvider();
     }
     return orElse();
   }
@@ -482,19 +445,9 @@ class _$ExtensionType_EntryDetailedProviderImpl
 }
 
 abstract class ExtensionType_EntryDetailedProvider extends ExtensionType {
-  const factory ExtensionType_EntryDetailedProvider(
-          {required final List<String> idTypes}) =
+  const factory ExtensionType_EntryDetailedProvider() =
       _$ExtensionType_EntryDetailedProviderImpl;
   const ExtensionType_EntryDetailedProvider._() : super._();
-
-  List<String> get idTypes;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_EntryDetailedProviderImplCopyWith<
-          _$ExtensionType_EntryDetailedProviderImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -503,8 +456,6 @@ abstract class _$$ExtensionType_SourceProviderImplCopyWith<$Res> {
           _$ExtensionType_SourceProviderImpl value,
           $Res Function(_$ExtensionType_SourceProviderImpl) then) =
       __$$ExtensionType_SourceProviderImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<String> idTypes});
 }
 
 /// @nodoc
@@ -519,69 +470,34 @@ class __$$ExtensionType_SourceProviderImplCopyWithImpl<$Res>
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? idTypes = null,
-  }) {
-    return _then(_$ExtensionType_SourceProviderImpl(
-      idTypes: null == idTypes
-          ? _value._idTypes
-          : idTypes // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$ExtensionType_SourceProviderImpl extends ExtensionType_SourceProvider {
-  const _$ExtensionType_SourceProviderImpl(
-      {required final List<String> idTypes})
-      : _idTypes = idTypes,
-        super._();
-
-  final List<String> _idTypes;
-  @override
-  List<String> get idTypes {
-    if (_idTypes is EqualUnmodifiableListView) return _idTypes;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_idTypes);
-  }
+  const _$ExtensionType_SourceProviderImpl() : super._();
 
   @override
   String toString() {
-    return 'ExtensionType.sourceProvider(idTypes: $idTypes)';
+    return 'ExtensionType.sourceProvider()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_SourceProviderImpl &&
-            const DeepCollectionEquality().equals(other._idTypes, _idTypes));
+            other is _$ExtensionType_SourceProviderImpl);
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_idTypes));
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ExtensionType_SourceProviderImplCopyWith<
-          _$ExtensionType_SourceProviderImpl>
-      get copyWith => __$$ExtensionType_SourceProviderImplCopyWithImpl<
-          _$ExtensionType_SourceProviderImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -589,15 +505,15 @@ class _$ExtensionType_SourceProviderImpl extends ExtensionType_SourceProvider {
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
   }) {
-    return sourceProvider(idTypes);
+    return sourceProvider();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -605,15 +521,15 @@ class _$ExtensionType_SourceProviderImpl extends ExtensionType_SourceProvider {
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
   }) {
-    return sourceProvider?.call(idTypes);
+    return sourceProvider?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -622,7 +538,7 @@ class _$ExtensionType_SourceProviderImpl extends ExtensionType_SourceProvider {
     required TResult orElse(),
   }) {
     if (sourceProvider != null) {
-      return sourceProvider(idTypes);
+      return sourceProvider();
     }
     return orElse();
   }
@@ -678,19 +594,9 @@ class _$ExtensionType_SourceProviderImpl extends ExtensionType_SourceProvider {
 }
 
 abstract class ExtensionType_SourceProvider extends ExtensionType {
-  const factory ExtensionType_SourceProvider(
-          {required final List<String> idTypes}) =
+  const factory ExtensionType_SourceProvider() =
       _$ExtensionType_SourceProviderImpl;
   const ExtensionType_SourceProvider._() : super._();
-
-  List<String> get idTypes;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_SourceProviderImplCopyWith<
-          _$ExtensionType_SourceProviderImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -796,8 +702,8 @@ class _$ExtensionType_SourceProcessorImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -812,8 +718,8 @@ class _$ExtensionType_SourceProcessorImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -828,8 +734,8 @@ class _$ExtensionType_SourceProcessorImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -998,8 +904,8 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -1014,8 +920,8 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -1030,8 +936,8 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
@@ -1195,8 +1101,8 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(List<String> idTypes) entryDetailedProvider,
-    required TResult Function(List<String> idTypes) sourceProvider,
+    required TResult Function() entryDetailedProvider,
+    required TResult Function() sourceProvider,
     required TResult Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
@@ -1211,8 +1117,8 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(List<String> idTypes)? entryDetailedProvider,
-    TResult? Function(List<String> idTypes)? sourceProvider,
+    TResult? Function()? entryDetailedProvider,
+    TResult? Function()? sourceProvider,
     TResult? Function(
             Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
@@ -1227,8 +1133,8 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(List<String> idTypes)? entryDetailedProvider,
-    TResult Function(List<String> idTypes)? sourceProvider,
+    TResult Function()? entryDetailedProvider,
+    TResult Function()? sourceProvider,
     TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
         sourceProcessor,
     TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?

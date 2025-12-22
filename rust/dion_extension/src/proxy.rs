@@ -62,10 +62,7 @@ pub(crate) fn request_to_value(req: &Request<String>) -> Result<serde_json::Valu
             .to_str()
             .context("Header value is not valid UTF-8")?
             .to_string();
-        headers_map
-            .entry(name_str)
-            .or_insert_with(Vec::new)
-            .push(value_str);
+        headers_map.entry(name_str).or_default().push(value_str);
     }
 
     let mut headers_obj = serde_json::Map::new();
@@ -371,9 +368,7 @@ impl Proxy {
     }
 
     pub fn get_extension_uri(&self, data: &ExtensionData) -> Option<String> {
-        let Some(addr) = self.addr else {
-            return None;
-        };
+        let addr = self.addr?;
         Some(format!(
             "http://{}:{}{}",
             addr.ip(),

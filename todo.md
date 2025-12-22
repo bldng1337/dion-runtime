@@ -4,5 +4,4 @@
 - Document Public APIs
 - Code Signing
 - Logging
-- Sane Versioning
 - https://crates.io/crates/cglue

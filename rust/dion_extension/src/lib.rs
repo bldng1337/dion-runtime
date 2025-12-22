@@ -185,7 +185,7 @@ mod tests {
         server
     }
 
-    const EXTENSION_PATH: &str = r#"../../tests/dion/native"#;
+    const EXTENSION_PATH: &str = r#"../../tests/extensions/native/.dist"#;
 
     #[tokio::test]
     async fn browse() -> Result<()> {

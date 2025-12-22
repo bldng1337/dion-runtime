@@ -4,3 +4,5 @@ testextensions/otherextensions
 node_modules
 .httpcache
 tests/jsondata
+.turbo
+.index

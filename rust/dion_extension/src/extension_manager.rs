@@ -10,7 +10,7 @@ use dion_runtime::{
     data::{
         extension::{ExtensionData, ExtensionType},
         extension_repo::{ExtensionRepo, RemoteExtensionResult},
-        source::MediaType,
+        source::{Link, MediaType},
     },
     extension::{Adapter, Extension},
 };
@@ -36,7 +36,7 @@ pub struct ExtensionMetadata {
     #[cfg_attr(feature = "type", specta(optional))]
     pub desc: Option<String>,
     #[serde(default)]
-    pub author: Vec<String>,
+    pub authors: Vec<String>,
     #[serde(default)]
     pub tags: Vec<String>,
     #[serde(default)]
@@ -55,21 +55,25 @@ pub struct ExtensionMetadata {
 }
 
 impl ExtensionMetadata {
-    pub fn into_extension_data(self) -> ExtensionData {
-        let compatible: bool = match Version::parse(env!("CARGO_PKG_VERSION")) {
+    pub fn is_compatible(&self) -> bool {
+        match Version::parse(env!("CARGO_PKG_VERSION")) {
             Ok(version) => match VersionReq::parse(&self.api_version) {
                 Ok(req) => req.matches(&version),
                 Err(_) => false,
             },
             Err(_) => false,
-        };
+        }
+    }
+
+    pub fn into_extension_data(self) -> ExtensionData {
+        let compatible: bool = self.is_compatible();
         ExtensionData {
             id: self.id,
             name: self.name,
             url: self.url,
             icon: self.icon,
             desc: self.desc,
-            author: self.author,
+            author: self.authors,
             tags: self.tags,
             lang: self.lang,
             nsfw: self.nsfw,
@@ -79,6 +83,64 @@ impl ExtensionMetadata {
             version: self.version,
             license: self.license,
             compatible,
+        }
+    }
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+struct RemoteExtensionMeta {
+    path: String,
+    extdata: ExtensionMetadata,
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+struct DionRepoIndex {
+    repo_index_version: u32,
+    name: String,
+    url: String,
+    description: String,
+    icon: String,
+    #[cfg_attr(feature = "type", specta(optional))]
+    content: Option<Vec<RemoteExtensionMeta>>,
+}
+
+impl DionRepoIndex {
+    fn into_repo(self, url: String) -> ExtensionRepo {
+        ExtensionRepo {
+            remote_id: url,
+            name: self.name,
+            description: self.description,
+            url: self.url,
+        }
+    }
+    fn into_result(self, url: String) -> RemoteExtensionResult {
+        let mut content: Vec<dion_runtime::data::extension_repo::RemoteExtension> = Vec::new();
+        if let Some(exts) = self.content {
+            for ext in exts {
+                content.push(dion_runtime::data::extension_repo::RemoteExtension {
+                    id: ext.extdata.id.clone(),
+                    remote_id: format!(
+                        "{}/{}",
+                        url.rsplit_once("/").unwrap_or((&url, "")).0,
+                        ext.path
+                    ),
+                    url: self.url.clone(),
+                    name: ext.extdata.name.clone(),
+                    cover: Some(Link {
+                        url: ext.extdata.icon.clone(),
+                        ..Default::default()
+                    }),
+                    version: ext.extdata.version.clone(),
+                    compatible: ext.extdata.is_compatible(),
+                });
+            }
+        }
+        RemoteExtensionResult {
+            content,
+            hasnext: Some(false),
+            length: None,
         }
     }
 }
@@ -266,11 +328,13 @@ impl Adapter for DionExtensionAdapter {
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
         let res = self.network.nclient.get(url).send().await?;
-        Ok(res.json().await?)
+        let res: DionRepoIndex = res.json().await?;
+        Ok(res.into_repo(url.to_string()))
     }
 
     async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
-        let res = self.network.nclient.get(&repo.url).send().await?;
-        Ok(res.json().await?)
+        let res = self.network.nclient.get(&repo.remote_id).send().await?;
+        let res: DionRepoIndex = res.json().await?;
+        Ok(res.into_result(repo.remote_id.clone()))
     }
 }

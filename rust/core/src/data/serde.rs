@@ -60,9 +60,9 @@ mod test {
         fs::write(format!("{}/Action.json", PATH), json).unwrap();
 
         let ui_action = UIAction::Action {
-            action: Action::OpenBrowser {
+            action: Box::new(Action::OpenBrowser {
                 url: "https://example.com".to_string(),
-            },
+            }),
         };
         let json = to_string_pretty(&ui_action).unwrap();
         fs::write(format!("{}/UIAction.json", PATH), json).unwrap();
@@ -82,9 +82,9 @@ mod test {
                 CustomUI::Button {
                     label: "Test Button".to_string(),
                     on_click: Some(Box::new(UIAction::Action {
-                        action: Action::OpenBrowser {
+                        action: Box::new(Action::OpenBrowser {
                             url: "https://example.com".to_string(),
-                        },
+                        }),
                     })),
                 },
             ],
@@ -173,7 +173,8 @@ mod test {
         // extension_repo.rs types
         let remote_extension = RemoteExtension {
             id: "test_id".to_string(),
-            exturl: "https://ext".to_string(),
+            url: "https://ext".to_string(),
+            remote_id: "https://ext".to_string(),
             name: "Test Ext".to_string(),
             cover: Some(Link {
                 url: "https://cover".to_string(),
@@ -200,7 +201,7 @@ mod test {
             name: "Test Repo".to_string(),
             description: "Test description".to_string(),
             url: "https://repo".to_string(),
-            id: "repo_id".to_string(),
+            remote_id: "repo_id".to_string(),
         };
         let json = to_string_pretty(&extension_repo).unwrap();
         fs::write(format!("{}/ExtensionRepo.json", PATH), json).unwrap();

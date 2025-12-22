@@ -1,0 +1,23 @@
+{
+	"name": "@dion-js/runtime-lib",
+	"version": "0.1.0",
+	"type": "module",
+	"files": [
+		"src/"
+	],
+	"exports": {
+		".": "./src/main.ts",
+		"./*": "./src/*",
+		"./asserts": "./src/asserts.ts",
+		"./settings": "./src/settings.ts",
+		"./ui": "./src/ui.ts",
+		"./util": "./src/util.ts"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@dion-js/extension-types": "workspace:*",
+		"@dion-js/runtime-types": "workspace:*",
+		"@dion-js/config": "workspace:*"
+	}
+}

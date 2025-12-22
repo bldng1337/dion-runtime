@@ -47,7 +47,7 @@ void main() {
 
     final adress = 'http://${server.address.address}:${server.port}';
     final client = await ManagerClient.init(
-      getPath: () => "./../../../tests/dion/native",
+      getPath: () => "./../../../tests/extensions/native/.dist",
       getClient: (data) async {
         return await ExtensionClient.init(
             loadData: (key) {

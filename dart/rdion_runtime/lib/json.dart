@@ -486,13 +486,11 @@ extension JsonExtensionType on ExtensionType {
             "type": "EntryProvider",
             "has_search": hasSearch,
           },
-        ExtensionType_EntryDetailedProvider(:final idTypes) => {
+        ExtensionType_EntryDetailedProvider() => {
             "type": "EntryDetailedProvider",
-            "id_types": idTypes,
           },
-        ExtensionType_SourceProvider(:final idTypes) => {
+        ExtensionType_SourceProvider() => {
             "type": "SourceProvider",
-            "id_types": idTypes,
           },
         ExtensionType_SourceProcessor(:final sourcetypes, :final opentype) => {
             "type": "SourceProcessor",
@@ -522,13 +520,9 @@ extension JsonExtensionType on ExtensionType {
           hasSearch: value["has_search"],
         );
       case "EntryDetailedProvider":
-        return ExtensionType.entryDetailedProvider(
-          idTypes: List<String>.from(value["id_types"]),
-        );
+        return const ExtensionType.entryDetailedProvider();
       case "SourceProvider":
-        return ExtensionType.sourceProvider(
-          idTypes: List<String>.from(value["id_types"]),
-        );
+        return const ExtensionType.sourceProvider();
       case "SourceProcessor":
         return ExtensionType.sourceProcessor(
           sourcetypes: (value["sourcetypes"] as List)
@@ -574,22 +568,23 @@ extension JsonExtensionRepo on ExtensionRepo {
         "name": name,
         "description": description,
         "url": url,
-        "id": id,
+        "remote_id": remoteId,
       };
 
   static ExtensionRepo fromJson(dynamic value) => ExtensionRepo(
         name: value["name"],
         description: value["description"],
         url: value["url"],
-        id: value["id"],
+        remoteId: value["remote_id"],
       );
 }
 
 extension JsonRemoteExtension on RemoteExtension {
   dynamic toJson() => {
         "id": id,
-        "exturl": exturl,
+        "remote_id": remoteId,
         "name": name,
+        "url": url,
         if (cover != null) "cover": cover!.toJson(),
         "version": version,
         "compatible": compatible,
@@ -597,7 +592,8 @@ extension JsonRemoteExtension on RemoteExtension {
 
   static RemoteExtension fromJson(dynamic value) => RemoteExtension(
         id: value["id"],
-        exturl: value["exturl"],
+        url: value["url"],
+        remoteId: value["remote_id"],
         name: value["name"],
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
@@ -629,9 +625,9 @@ extension JsonPermission on Permission {
             "path": path,
             "write": write,
           },
-        Permission_Network(:final domain) => {
+        Permission_Network(:final domains) => {
             "type": "Network",
-            "domain": domain,
+            "domains": domains,
           },
         Permission_ActionPopup() => {"type": "ActionPopup"},
         Permission_ArbitraryNetwork() => {"type": "ArbitraryNetwork"},
@@ -647,7 +643,9 @@ extension JsonPermission on Permission {
         );
       case "Network":
         return Permission.network(
-          domain: value["domain"],
+          domains: value["domains"] != null
+              ? List<String>.from(value["domains"])
+              : <String>[],
         );
       case "ActionPopup":
         return const Permission.actionPopup();

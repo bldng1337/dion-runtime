@@ -1,0 +1,21 @@
+{
+  "name": "@dion-js/extension-test-utils",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/main.ts"
+  },
+  "dependencies": {
+    "image-url-validator": "^1.0.4",
+    "m3u8-parser": "^7.2.0",
+    "node-fetch": "^3.3.2",
+    "@dion-js/extension-types": "workspace:*",
+    "@dion-js/runtime-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/m3u8-parser": "^7.2.2",
+    "@dion-js/config": "workspace:*",
+    "@dion-js/extension-types": "workspace:*",
+    "@types/bun": "catalog:"
+  }
+}

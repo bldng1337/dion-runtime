@@ -9,9 +9,10 @@ use crate::data::source::Link;
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct RemoteExtension {
+    pub remote_id: String,
     pub id: String,
-    pub exturl: String,
     pub name: String,
+    pub url: String,
     pub cover: Option<Link>,
     pub version: String,
     pub compatible: bool,
@@ -34,8 +35,8 @@ pub struct RemoteExtensionResult {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct ExtensionRepo {
+    pub remote_id: String,
     pub name: String,
     pub description: String,
     pub url: String,
-    pub id: String,
 }
