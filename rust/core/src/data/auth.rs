@@ -20,6 +20,7 @@ pub struct Account {
 /// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "type", derive(Type))]
+#[serde(tag = "type")]
 pub enum AuthData {
     Cookie {
         loginpage: String,

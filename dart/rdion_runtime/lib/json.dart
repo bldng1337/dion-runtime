@@ -823,6 +823,7 @@ extension JsonEntryDetailed on EntryDetailed {
         "description": description,
         "language": language,
         if (cover != null) "cover": cover!.toJson(),
+        if (poster != null) "poster": poster!.toJson(),
         "episodes": episodes.map((e) => e.toJson()).toList(),
         if (genres != null) "genres": genres,
         if (rating != null) "rating": rating,
@@ -843,6 +844,8 @@ extension JsonEntryDetailed on EntryDetailed {
         language: value["language"],
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
+        poster:
+            value["poster"] != null ? JsonLink.fromJson(value["poster"]) : null,
         episodes: (value["episodes"] as List)
             .map((e) => JsonEpisode.fromJson(e))
             .toList(),
@@ -978,7 +981,7 @@ extension JsonSource on Source {
           },
         Source_Audio(:final sources) => {
             "type": "Audio",
-            "chapters": sources.map((e) => e.toJson()).toList(),
+            "sources": sources.map((e) => e.toJson()).toList(),
           },
         Source_Paragraphlist(:final paragraphs) => {
             "type": "Paragraphlist",
@@ -1013,13 +1016,15 @@ extension JsonSource on Source {
           sources: (value["sources"] as List)
               .map((e) => JsonStreamSource.fromJson(e))
               .toList(),
-          sub: (value["sub"] as List)
-              .map((e) => JsonSubtitles.fromJson(e))
-              .toList(),
+          sub: value["sub"] != null
+              ? (value["sub"] as List)
+                  .map((e) => JsonSubtitles.fromJson(e))
+                  .toList()
+              : [],
         );
       case "Audio":
         return Source.audio(
-          sources: (value["chapters"] as List)
+          sources: (value["sources"] as List)
               .map((e) => JsonStreamSource.fromJson(e))
               .toList(),
         );
@@ -1132,4 +1137,57 @@ extension JsonParagraph on Paragraph {
         throw FormatException("Unknown Paragraph type: $type");
     }
   }
+}
+
+extension JsonAuthData on AuthData {
+  dynamic toJson() => switch (this) {
+        AuthData_Cookie(:final loginpage, :final logonpage) => {
+            "type": "Cookie",
+            "loginpage": loginpage,
+            "logonpage": logonpage,
+          },
+        AuthData_ApiKey() => {
+            "type": "ApiKey",
+          },
+        AuthData_UserPass() => {
+            "type": "UserPass",
+          },
+      };
+
+  static AuthData fromJson(dynamic value) {
+    final type = value["type"] as String;
+    switch (type) {
+      case "Cookie":
+        return AuthData.cookie(
+          loginpage: value["loginpage"],
+          logonpage: value["logonpage"],
+        );
+      case "ApiKey":
+        return const AuthData.apiKey();
+      case "UserPass":
+        return const AuthData.userPass();
+      default:
+        throw FormatException("Unknown AuthData type: $type");
+    }
+  }
+}
+
+extension JsonAccount on Account {
+  dynamic toJson() => {
+        "domain": domain,
+        if (userName != null) "user_name": userName,
+        if (cover != null) "cover": cover,
+        "auth": auth.toJson(),
+        if (creds != null) "creds": creds,
+      };
+
+  static Account fromJson(dynamic value) => Account(
+        domain: value["domain"],
+        userName: value["user_name"],
+        cover: value["cover"],
+        auth: JsonAuthData.fromJson(value["auth"]),
+        creds: value["creds"] != null
+            ? (value["creds"] as Map).cast<String, String>()
+            : null,
+      );
 }
