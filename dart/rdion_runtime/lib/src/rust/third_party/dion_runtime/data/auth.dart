@@ -10,7 +10,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'auth.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `eq`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -19,7 +19,7 @@ class Account {
   final String? userName;
   final String? cover;
   final AuthData auth;
-  final Map<String, String>? creds;
+  final AuthCreds? creds;
 
   const Account({
     required this.domain,
@@ -47,6 +47,22 @@ class Account {
           cover == other.cover &&
           auth == other.auth &&
           creds == other.creds;
+}
+
+@freezed
+sealed class AuthCreds with _$AuthCreds {
+  const AuthCreds._();
+
+  const factory AuthCreds.cookies({
+    required Map<String, List<String>> cookies,
+  }) = AuthCreds_Cookies;
+  const factory AuthCreds.apiKey({
+    required String key,
+  }) = AuthCreds_ApiKey;
+  const factory AuthCreds.userPass({
+    required String username,
+    required String password,
+  }) = AuthCreds_UserPass;
 }
 
 @freezed

@@ -8,6 +8,7 @@ use dion_runtime::client_data::ExtensionClient;
 use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::auth::Account;
 use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::EntryDetailed;
 use dion_runtime::data::source::EntryDetailedResult;
@@ -18,6 +19,7 @@ use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
 use dion_runtime::extension::Extension;
 use dion_runtime::store::ExtensionStore;
+use dion_runtime::store::auth::AuthStore;
 use dion_runtime::store::permission::PermissionStore;
 use dion_runtime::store::settings::SettingStore;
 use tokio::fs;
@@ -61,6 +63,7 @@ impl DionExtension {
             data: extdata.clone().into_extension_data(),
             permission: PermissionStore::new(client.as_ref()).await,
             settings: SettingStore::new(client.as_ref()).await,
+            auth: AuthStore::new(client.as_ref()).await,
         };
         let data = Arc::new(InnerExtension {
             client,
@@ -133,6 +136,28 @@ impl Extension for DionExtension {
         self.code = code;
         self.set_enabled(enabled).await?;
         Ok(())
+    }
+
+    async fn validate(
+        &self,
+        account: Account,
+        token: Option<CancellationToken>,
+    ) -> Result<Option<Account>> {
+        match &*self.data.context.load() {
+            Some(context) => {
+                let (send, response) = oneshot::channel();
+                let task = Task::Validate {
+                    account,
+                    token,
+                    send,
+                };
+                context
+                    .send(task)
+                    .context("Failed to send message to Extension Thread")?;
+                response.await?
+            }
+            None => bail!("Extension is not enabled"),
+        }
     }
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {

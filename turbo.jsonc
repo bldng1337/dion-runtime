@@ -1,7 +1,6 @@
 {
 	"$schema": "https://turborepo.com/schema.json",
 	"ui": "stream",
-	"concurrency": "1",
 	"tasks": {
 		"build": {
 			"inputs": ["src/**/*.ts", "package.json"],

@@ -8,7 +8,8 @@ use crate::{
     data::{
         action::{EventData, EventResult},
         activity::EntryActivity,
-        extension_repo::{ExtensionRepo, RemoteExtensionResult},
+        auth::Account,
+        extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         settings::Setting,
         source::{
             EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
@@ -26,6 +27,11 @@ pub trait Adapter: Send + Sync {
     async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()>;
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo>;
+    async fn get_remote_extension(
+        &self,
+        url: &ExtensionRepo,
+        extension_id: String,
+    ) -> Result<Option<RemoteExtension>>;
     async fn browse_repo(&self, repo: &ExtensionRepo, page: i32) -> Result<RemoteExtensionResult>;
 }
 
@@ -42,6 +48,12 @@ pub trait Extension: Send + Sync {
         event: EventData,
         token: Option<CancellationToken>,
     ) -> Result<Option<EventResult>>;
+
+    async fn validate(
+        &self,
+        account: Account,
+        token: Option<CancellationToken>,
+    ) -> Result<Option<Account>>;
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList>;
 

@@ -9,7 +9,7 @@ use dion_runtime::{
     client_data::AdapterClient,
     data::{
         extension::{ExtensionData, ExtensionType},
-        extension_repo::{ExtensionRepo, RemoteExtensionResult},
+        extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         source::{Link, MediaType},
     },
     extension::{Adapter, Extension},
@@ -324,6 +324,24 @@ impl Adapter for DionExtensionAdapter {
             }
         }
         Err(anyhow!("Couldnt find Extension with id {id}"))
+    }
+
+    async fn get_remote_extension(
+        &self,
+        repo: &ExtensionRepo,
+        extension_id: String,
+    ) -> Result<Option<RemoteExtension>> {
+        let res = self
+            .network
+            .nclient
+            .get(format!("{}/extensiondefs/{}", repo.remote_id, extension_id))
+            .send()
+            .await?;
+        if res.status() == 404 {
+            return Ok(None);
+        }
+        let res: RemoteExtension = res.json().await?;
+        Ok(Some(res))
     }
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {

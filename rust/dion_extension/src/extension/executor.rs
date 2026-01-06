@@ -16,6 +16,7 @@ use boa_engine::{Context, JsObject, JsValue, Module, js_string};
 use boa_runtime::Console;
 use dion_runtime::data::action::{EventData, EventResult};
 use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::auth::Account;
 use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::{
     EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
@@ -27,6 +28,12 @@ use tokio::sync::oneshot::Sender;
 use tokio_util::sync::CancellationToken;
 #[derive(Debug)]
 pub(crate) enum Task {
+    Validate {
+        account: Account,
+
+        token: Option<CancellationToken>,
+        send: Sender<Result<Option<Account>>>,
+    },
     HandleProxy {
         req: Request<String>,
 
@@ -250,24 +257,35 @@ impl JSExecutor<Task> for ExtensionExecutor {
 
     async fn handle(&self, value: Task, context: &mut Context) {
         match value {
+            Task::Validate {
+                account,
+                token,
+                send,
+            } => {
+                let res = async {
+                    let vals = &[JsValue::from_json(
+                        &serde_json::to_value(account)
+                            .context("Failed to convert Account to serde Value")?,
+                        context,
+                    )
+                    .map_anyhow_ctx(context)
+                    .context("Failed to convert Account to js")?];
+                    Self::exec(context, "validate", vals, token)
+                        .await
+                        .context("Failed to call validate")
+                }
+                .await;
+                let _ = send.send(res);
+            }
             Task::HandleProxy { req, send } => {
                 let res = async {
-                    let vals = &[
-                        // JsValue::from_json(
-                        //     &serde_json::to_value(client_ip)
-                        //         .context("Failed to convert IpAddr to serde Value")?,
-                        //     context,
-                        // )
-                        // .map_anyhow_ctx(context)
-                        // .context("Failed to convert IpAddr to js")?,
-                        JsValue::from_json(
-                            &request_to_value(&req)
-                                .context("Failed to convert Request to serde Value")?,
-                            context,
-                        )
-                        .map_anyhow_ctx(context)
-                        .context("Failed to convert Request to js")?,
-                    ];
+                    let vals = &[JsValue::from_json(
+                        &request_to_value(&req)
+                            .context("Failed to convert Request to serde Value")?,
+                        context,
+                    )
+                    .map_anyhow_ctx(context)
+                    .context("Failed to convert Request to js")?];
                     let val = Self::exec_raw(context, "handleProxy", vals, None)
                         .await
                         .context("Failed to call handleProxy")?;

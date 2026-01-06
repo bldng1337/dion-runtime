@@ -56,8 +56,6 @@ pub enum ExtensionType {
     EntryProvider {
         has_search: bool,
     },
-    EntryDetailedProvider,
-    SourceProvider,
     SourceProcessor {
         sourcetypes: HashSet<SourceType>,
         opentype: HashSet<SourceOpenType>,

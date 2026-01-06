@@ -9,13 +9,14 @@ import type {
 } from "@dion-js/runtime-types/runtime";
 import * as utils from "@dion-js/unit-test-utils/test";
 import type { Server } from "bun";
+import { join } from "node:path";
 
 test("test handleProxy", async () => {
 	let redirectCount = 0;
 	let modifyHeadersCount = 0;
 
 	const server: Server<unknown> = Bun.serve({
-		port: 3002,
+		port: 30015,
 		async fetch(req) {
 			const url = new URL(req.url);
 			const path = url.pathname;
@@ -128,7 +129,9 @@ test("test handleProxy", async () => {
 		},
 	});
 
-	const mockmanager = new MockManagerClient("./.dist");
+	const mockmanager = new MockManagerClient(
+		join(import.meta.path, "../../.dist"),
+	);
 	const manager = await Adapter.init(mockmanager.client);
 	const ext = (await manager.getExtensions())[0];
 	expect(ext).toBeDefined();

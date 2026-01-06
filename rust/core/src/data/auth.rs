@@ -10,10 +10,31 @@ use specta::Type;
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct Account {
     pub domain: String,
+    #[cfg_attr(feature = "type", specta(optional))]
     pub user_name: Option<String>,
+    #[cfg_attr(feature = "type", specta(optional))]
     pub cover: Option<String>,
     pub auth: AuthData,
-    pub creds: Option<HashMap<String, String>>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub creds: Option<AuthCreds>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "type", derive(Type))]
+#[serde(tag = "type")]
+pub enum AuthCreds {
+    Cookies {
+        cookies: HashMap<String, Vec<String>>,
+    },
+    ApiKey {
+        key: String,
+    },
+    UserPass {
+        username: String,
+        password: String,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque

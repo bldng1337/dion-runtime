@@ -15,6 +15,7 @@ import type {
 	EntryDetailedResult,
 	Setting,
 } from "@dion-js/runtime-types/runtime";
+import { join } from "node:path";
 
 let extension: Extension;
 let client: MockManagerClient;
@@ -23,7 +24,7 @@ let browseResult: Entry[];
 let detailResult: EntryDetailedResult;
 
 beforeAll(async () => {
-	client = new MockManagerClient("./.dist");
+	client = new MockManagerClient(join(import.meta.path, "../../.dist"));
 	extension = await getTestExtension(client.client);
 	browseResult = [];
 });

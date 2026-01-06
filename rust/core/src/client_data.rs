@@ -19,6 +19,9 @@ pub trait ExtensionClient: Send + Sync + Debug {
     async fn load_data(&self, key: &str) -> Result<String>;
     async fn store_data(&self, key: &str, data: String) -> Result<()>;
 
+    async fn load_data_secure(&self, key: &str) -> Result<String>;
+    async fn store_data_secure(&self, key: &str, data: String) -> Result<()>;
+
     async fn do_action(&self, action: &Action) -> Result<()>;
 
     async fn request_permission(

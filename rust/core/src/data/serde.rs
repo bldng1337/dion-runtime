@@ -5,7 +5,7 @@ mod test {
     use crate::data::{
         action::{Action, EventData, EventResult, PopupAction, UIAction},
         activity::EntryActivity,
-        auth::{Account, AuthData},
+        auth::{Account, AuthCreds, AuthData},
         custom_ui::{CustomUI, TimestampType},
         extension::{ExtensionData, ExtensionType, SourceOpenType},
         extension_manager::ExtensionManagerData,
@@ -250,10 +250,31 @@ mod test {
                 user_name: Some("demo_user".to_string()),
                 cover: Some("https://cover.jpg".to_string()),
                 auth: AuthData::UserPass,
-                creds: Some(HashMap::from([
-                    ("username".to_string(), "user123".to_string()),
-                    ("password".to_string(), "pass123".to_string()),
-                ])),
+                creds: Some(AuthCreds::ApiKey {
+                    key: "SomeKey".to_string(),
+                }),
+            },
+            Account {
+                domain: "demo.com".to_string(),
+                user_name: Some("demo_user".to_string()),
+                cover: Some("https://cover.jpg".to_string()),
+                auth: AuthData::UserPass,
+                creds: Some(AuthCreds::UserPass {
+                    password: "password123".to_string(),
+                    username: "demo_user".to_string(),
+                }),
+            },
+            Account {
+                domain: "demo.com".to_string(),
+                user_name: Some("demo_user".to_string()),
+                cover: Some("https://cover.jpg".to_string()),
+                auth: AuthData::UserPass,
+                creds: Some(AuthCreds::Cookies {
+                    cookies: HashMap::from([(
+                        "session".to_string(),
+                        vec!["cookie_value".to_string()],
+                    )]),
+                }),
             },
         ]
     }
@@ -411,8 +432,6 @@ mod test {
         vec![
             ExtensionType::EntryProvider { has_search: true },
             ExtensionType::EntryProvider { has_search: false },
-            ExtensionType::EntryDetailedProvider,
-            ExtensionType::SourceProvider,
             ExtensionType::SourceProcessor {
                 sourcetypes: HashSet::from([SourceType::Pdf]),
                 opentype: HashSet::from([SourceOpenType::Download]),
@@ -495,10 +514,7 @@ mod test {
                 lang: vec!["en".to_string()],
                 nsfw: true,
                 media_type: HashSet::from([MediaType::Video, MediaType::Audio]),
-                extension_type: HashSet::from([
-                    ExtensionType::EntryProvider { has_search: false },
-                    ExtensionType::EntryDetailedProvider,
-                ]),
+                extension_type: HashSet::from([ExtensionType::EntryProvider { has_search: false }]),
                 repo: None,
                 version: "1.5".to_string(),
                 license: "GPL-3.0".to_string(),

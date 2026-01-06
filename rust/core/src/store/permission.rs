@@ -17,13 +17,13 @@ impl PermissionStore {
     }
 
     async fn load_data(&mut self, client: &dyn ExtensionClient) -> Result<()> {
-        self.permissions = serde_json::from_str(&client.load_data("permission").await?)?;
+        self.permissions = serde_json::from_str(&client.load_data_secure("permission").await?)?;
         Ok(())
     }
 
     pub async fn save_state(&self, client: &dyn ExtensionClient) -> Result<()> {
         client
-            .store_data("permission", serde_json::to_string(&self.permissions)?)
+            .store_data_secure("permission", serde_json::to_string(&self.permissions)?)
             .await
     }
 

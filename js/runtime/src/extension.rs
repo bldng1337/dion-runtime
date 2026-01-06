@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use dion_runtime::{
   data::{
     activity::EntryActivity,
+    auth::Account,
     permission::Permission,
     settings::{Setting, SettingKind, SettingValue},
     source::{EntryDetailed, Source},
@@ -378,5 +379,54 @@ impl ExtensionProxy {
       .merge_setting_definition(id, &kind_parsed, setting_def)
       .map_to_node()?;
     Ok(())
+  }
+
+  #[napi(ts_return_type = "Promise<Account[]>")]
+  pub async fn get_accounts(&self) -> Result<serde_json::Value, napi::Error> {
+    let extdata = self.extension.get_data().read().await;
+    let accounts = extdata.auth.get_accounts().clone();
+    serde_json::to_value(accounts).map_to_node()
+  }
+
+  #[napi(ts_args_type = "account: Account")]
+  pub async fn merge_auth(&self, account: serde_json::Value) -> Result<(), napi::Error> {
+    let account: Account = serde_json::from_value(account).map_to_node()?;
+    let client = self.extension.get_client();
+    let mut extdata = self.extension.get_data().write().await;
+    extdata.auth.merge_auth(&account);
+    extdata.auth.save_state(client).await.map_to_node()
+  }
+
+  #[napi(ts_args_type = "domain: string")]
+  pub async fn is_logged_in(&self, domain: String) -> Result<bool, napi::Error> {
+    let extdata = self.extension.get_data().read().await;
+    Ok(extdata.auth.is_logged_in(&domain))
+  }
+
+  #[napi(ts_args_type = "domain: string")]
+  pub async fn invalidate(&self, domain: String) -> Result<(), napi::Error> {
+    let client = self.extension.get_client();
+    let mut extdata = self.extension.get_data().write().await;
+    extdata.auth.invalidate(&domain);
+    extdata.auth.save_state(client).await.map_to_node()
+  }
+
+  #[napi(ts_return_type = "Promise<AuthCreds>", ts_args_type = "domain: string")]
+  pub async fn get_auth_secret(&self, domain: String) -> Result<serde_json::Value, napi::Error> {
+    let extdata = self.extension.get_data().read().await;
+    let account = extdata
+      .auth
+      .get_accounts()
+      .iter()
+      .find(|acc| acc.domain == domain)
+      .ok_or_else(|| {
+        napi::Error::from_reason(format!("Account for domain {} not found", domain))
+      })?;
+
+    let creds = account.creds.as_ref().ok_or_else(|| {
+      napi::Error::from_reason(format!("Account for domain {} is not logged in", domain))
+    })?;
+
+    serde_json::to_value(creds.clone()).map_to_node()
   }
 }

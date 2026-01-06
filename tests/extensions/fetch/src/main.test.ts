@@ -9,10 +9,11 @@ import type {
 } from "@dion-js/runtime-types/runtime";
 import * as utils from "@dion-js/unit-test-utils/test";
 import type { Server } from "bun";
+import { join } from "node:path";
 
 test("test fetch", async () => {
 	const server: Server<unknown> = Bun.serve({
-		port: 3001,
+		port: 3002,
 		async fetch(req) {
 			const url = new URL(req.url);
 			const path = url.pathname;
@@ -112,7 +113,9 @@ test("test fetch", async () => {
 		},
 	});
 
-	const mockmanager = new MockManagerClient("./.dist");
+	const mockmanager = new MockManagerClient(
+		join(import.meta.path, "../../.dist"),
+	);
 	const manager = await Adapter.init(mockmanager.client);
 	const ext = (await manager.getExtensions())[0];
 	expect(ext).toBeDefined();

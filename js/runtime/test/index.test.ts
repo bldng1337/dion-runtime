@@ -4,11 +4,16 @@ import type {
 	EntryDetailed,
 	Source,
 } from "@dion-js/runtime-types/runtime";
-import { Adapter, ExtensionClient, ManagerClient } from "../index";
+import { Adapter, ExtensionClient, ManagerClient } from "../index.js";
+import { join } from "node:path";
 
-const managerpath = "./../../tests/extensions/native/.dist";
-
+const managerpath = join(
+	import.meta.path,
+	"../../../../tests/extensions/native/.dist",
+);
+console.log(managerpath);
 const server = Bun.serve({
+	port: 3001,
 	routes: {
 		"/getEntry": () => {
 			const entry: EntryDetailed = {

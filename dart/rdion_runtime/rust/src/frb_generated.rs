@@ -222,6 +222,13 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
             let api_store_data = decode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
                 <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
             );
+            let api_load_data_secure = decode_DartFn_Inputs_String_Output_String_AnyhowException(
+                <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
+            );
+            let api_store_data_secure =
+                decode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
+                    <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
+                );
             let api_do_action = decode_DartFn_Inputs_action_Output_unit_AnyhowException(
                 <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
             );
@@ -239,6 +246,8 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
                         Result::<_, ()>::Ok(crate::api::client::ExtensionClient::init(
                             api_load_data,
                             api_store_data,
+                            api_load_data_secure,
+                            api_store_data_secure,
                             api_do_action,
                             api_request_permission,
                             api_get_path,
@@ -2256,7 +2265,7 @@ const _: fn() = || {
         let _: Option<String> = Account.user_name;
         let _: Option<String> = Account.cover;
         let _: dion_runtime::data::auth::AuthData = Account.auth;
-        let _: Option<std::collections::HashMap<String, String>> = Account.creds;
+        let _: Option<dion_runtime::data::auth::AuthCreds> = Account.creds;
     }
     match None::<dion_runtime::data::action::Action>.unwrap() {
         dion_runtime::data::action::Action::OpenBrowser { url } => {
@@ -2281,6 +2290,18 @@ const _: fn() = || {
         }
         dion_runtime::data::action::Action::NavEntry { entry } => {
             let _: Box<dion_runtime::data::source::EntryDetailed> = entry;
+        }
+    }
+    match None::<dion_runtime::data::auth::AuthCreds>.unwrap() {
+        dion_runtime::data::auth::AuthCreds::Cookies { cookies } => {
+            let _: std::collections::HashMap<String, Vec<String>> = cookies;
+        }
+        dion_runtime::data::auth::AuthCreds::ApiKey { key } => {
+            let _: String = key;
+        }
+        dion_runtime::data::auth::AuthCreds::UserPass { username, password } => {
+            let _: String = username;
+            let _: String = password;
         }
     }
     match None::<dion_runtime::data::auth::AuthData>.unwrap() {
@@ -2497,8 +2518,6 @@ const _: fn() = || {
         dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
             let _: bool = has_search;
         }
-        dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {}
-        dion_runtime::data::extension::ExtensionType::SourceProvider => {}
         dion_runtime::data::extension::ExtensionType::SourceProcessor {
             sourcetypes,
             opentype,
@@ -3070,6 +3089,14 @@ impl SseDecode for std::collections::HashMap<String, String> {
     }
 }
 
+impl SseDecode for std::collections::HashMap<String, Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(String, Vec<String>)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
 impl SseDecode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3178,8 +3205,7 @@ impl SseDecode for dion_runtime::data::auth::Account {
         let mut var_userName = <Option<String>>::sse_decode(deserializer);
         let mut var_cover = <Option<String>>::sse_decode(deserializer);
         let mut var_auth = <dion_runtime::data::auth::AuthData>::sse_decode(deserializer);
-        let mut var_creds =
-            <Option<std::collections::HashMap<String, String>>>::sse_decode(deserializer);
+        let mut var_creds = <Option<dion_runtime::data::auth::AuthCreds>>::sse_decode(deserializer);
         return dion_runtime::data::auth::Account {
             domain: var_domain,
             user_name: var_userName,
@@ -3232,6 +3258,37 @@ impl SseDecode for dion_runtime::data::action::Action {
                 let mut var_entry =
                     <Box<dion_runtime::data::source::EntryDetailed>>::sse_decode(deserializer);
                 return dion_runtime::data::action::Action::NavEntry { entry: var_entry };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseDecode for dion_runtime::data::auth::AuthCreds {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_cookies =
+                    <std::collections::HashMap<String, Vec<String>>>::sse_decode(deserializer);
+                return dion_runtime::data::auth::AuthCreds::Cookies {
+                    cookies: var_cookies,
+                };
+            }
+            1 => {
+                let mut var_key = <String>::sse_decode(deserializer);
+                return dion_runtime::data::auth::AuthCreds::ApiKey { key: var_key };
+            }
+            2 => {
+                let mut var_username = <String>::sse_decode(deserializer);
+                let mut var_password = <String>::sse_decode(deserializer);
+                return dion_runtime::data::auth::AuthCreds::UserPass {
+                    username: var_username,
+                    password: var_password,
+                };
             }
             _ => {
                 unimplemented!("");
@@ -3750,12 +3807,6 @@ impl SseDecode for dion_runtime::data::extension::ExtensionType {
                 };
             }
             1 => {
-                return dion_runtime::data::extension::ExtensionType::EntryDetailedProvider;
-            }
-            2 => {
-                return dion_runtime::data::extension::ExtensionType::SourceProvider;
-            }
-            3 => {
                 let mut var_sourcetypes = <std::collections::HashSet<
                     dion_runtime::data::source::SourceType,
                 >>::sse_decode(deserializer);
@@ -3767,7 +3818,7 @@ impl SseDecode for dion_runtime::data::extension::ExtensionType {
                     opentype: var_opentype,
                 };
             }
-            4 => {
+            2 => {
                 let mut var_triggerMapEntry = <bool>::sse_decode(deserializer);
                 let mut var_triggerOnEntryActivity = <bool>::sse_decode(deserializer);
                 return dion_runtime::data::extension::ExtensionType::EntryProcessor {
@@ -3775,7 +3826,7 @@ impl SseDecode for dion_runtime::data::extension::ExtensionType {
                     trigger_on_entry_activity: var_triggerOnEntryActivity,
                 };
             }
-            5 => {
+            3 => {
                 let mut var_urlPatterns = <Vec<String>>::sse_decode(deserializer);
                 return dion_runtime::data::extension::ExtensionType::URLHandler {
                     url_patterns: var_urlPatterns,
@@ -4031,6 +4082,18 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<(String, Vec<String>)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(String, Vec<String>)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4181,6 +4244,19 @@ impl SseDecode for Option<CancelToken> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<CancelToken>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::auth::AuthCreds> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::auth::AuthCreds>::sse_decode(
+                deserializer,
+            ));
         } else {
             return None;
         }
@@ -4391,6 +4467,15 @@ impl SseDecode for dion_runtime::data::action::PopupAction {
             label: var_label,
             onclick: var_onclick,
         };
+    }
+}
+
+impl SseDecode for (String, Vec<String>) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <Vec<String>>::sse_decode(deserializer);
+        return (var_field0, var_field1);
     }
 }
 
@@ -4936,6 +5021,39 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::Ac
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::auth::AuthCreds> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::auth::AuthCreds::Cookies { cookies } => {
+                [0.into_dart(), cookies.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::auth::AuthCreds::ApiKey { key } => {
+                [1.into_dart(), key.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::auth::AuthCreds::UserPass { username, password } => [
+                2.into_dart(),
+                username.into_into_dart().into_dart(),
+                password.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::auth::AuthCreds>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::auth::AuthCreds>>
+    for dion_runtime::data::auth::AuthCreds
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::auth::AuthCreds> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::auth::AuthData> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
@@ -5454,17 +5572,11 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension:
             dion_runtime::data::extension::ExtensionType::EntryProvider { has_search } => {
                 [0.into_dart(), has_search.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {
-                [1.into_dart()].into_dart()
-            }
-            dion_runtime::data::extension::ExtensionType::SourceProvider => {
-                [2.into_dart()].into_dart()
-            }
             dion_runtime::data::extension::ExtensionType::SourceProcessor {
                 sourcetypes,
                 opentype,
             } => [
-                3.into_dart(),
+                1.into_dart(),
                 sourcetypes.into_into_dart().into_dart(),
                 opentype.into_into_dart().into_dart(),
             ]
@@ -5473,13 +5585,13 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension:
                 trigger_map_entry,
                 trigger_on_entry_activity,
             } => [
-                4.into_dart(),
+                2.into_dart(),
                 trigger_map_entry.into_into_dart().into_dart(),
                 trigger_on_entry_activity.into_into_dart().into_dart(),
             ]
             .into_dart(),
             dion_runtime::data::extension::ExtensionType::URLHandler { url_patterns } => {
-                [5.into_dart(), url_patterns.into_into_dart().into_dart()].into_dart()
+                [3.into_dart(), url_patterns.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -6128,6 +6240,13 @@ impl SseEncode for std::collections::HashMap<String, String> {
     }
 }
 
+impl SseEncode for std::collections::HashMap<String, Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, Vec<String>)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
 impl SseEncode for std::collections::HashMap<String, dion_runtime::data::settings::Setting> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6247,7 +6366,7 @@ impl SseEncode for dion_runtime::data::auth::Account {
         <Option<String>>::sse_encode(self.user_name, serializer);
         <Option<String>>::sse_encode(self.cover, serializer);
         <dion_runtime::data::auth::AuthData>::sse_encode(self.auth, serializer);
-        <Option<std::collections::HashMap<String, String>>>::sse_encode(self.creds, serializer);
+        <Option<dion_runtime::data::auth::AuthCreds>>::sse_encode(self.creds, serializer);
     }
 }
 
@@ -6282,6 +6401,30 @@ impl SseEncode for dion_runtime::data::action::Action {
             dion_runtime::data::action::Action::NavEntry { entry } => {
                 <i32>::sse_encode(4, serializer);
                 <Box<dion_runtime::data::source::EntryDetailed>>::sse_encode(entry, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseEncode for dion_runtime::data::auth::AuthCreds {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::data::auth::AuthCreds::Cookies { cookies } => {
+                <i32>::sse_encode(0, serializer);
+                <std::collections::HashMap<String, Vec<String>>>::sse_encode(cookies, serializer);
+            }
+            dion_runtime::data::auth::AuthCreds::ApiKey { key } => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(key, serializer);
+            }
+            dion_runtime::data::auth::AuthCreds::UserPass { username, password } => {
+                <i32>::sse_encode(2, serializer);
+                <String>::sse_encode(username, serializer);
+                <String>::sse_encode(password, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -6653,17 +6796,11 @@ impl SseEncode for dion_runtime::data::extension::ExtensionType {
                 <i32>::sse_encode(0, serializer);
                 <bool>::sse_encode(has_search, serializer);
             }
-            dion_runtime::data::extension::ExtensionType::EntryDetailedProvider => {
-                <i32>::sse_encode(1, serializer);
-            }
-            dion_runtime::data::extension::ExtensionType::SourceProvider => {
-                <i32>::sse_encode(2, serializer);
-            }
             dion_runtime::data::extension::ExtensionType::SourceProcessor {
                 sourcetypes,
                 opentype,
             } => {
-                <i32>::sse_encode(3, serializer);
+                <i32>::sse_encode(1, serializer);
                 <std::collections::HashSet<dion_runtime::data::source::SourceType>>::sse_encode(
                     sourcetypes,
                     serializer,
@@ -6674,12 +6811,12 @@ impl SseEncode for dion_runtime::data::extension::ExtensionType {
                 trigger_map_entry,
                 trigger_on_entry_activity,
             } => {
-                <i32>::sse_encode(4, serializer);
+                <i32>::sse_encode(2, serializer);
                 <bool>::sse_encode(trigger_map_entry, serializer);
                 <bool>::sse_encode(trigger_on_entry_activity, serializer);
             }
             dion_runtime::data::extension::ExtensionType::URLHandler { url_patterns } => {
-                <i32>::sse_encode(5, serializer);
+                <i32>::sse_encode(3, serializer);
                 <Vec<String>>::sse_encode(url_patterns, serializer);
             }
             _ => {
@@ -6877,6 +7014,16 @@ impl SseEncode for Vec<u8> {
     }
 }
 
+impl SseEncode for Vec<(String, Vec<String>)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, Vec<String>)>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7002,6 +7149,16 @@ impl SseEncode for Option<CancelToken> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <CancelToken>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::auth::AuthCreds> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::auth::AuthCreds>::sse_encode(value, serializer);
         }
     }
 }
@@ -7170,6 +7327,14 @@ impl SseEncode for dion_runtime::data::action::PopupAction {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.label, serializer);
         <Box<dion_runtime::data::action::Action>>::sse_encode(self.onclick, serializer);
+    }
+}
+
+impl SseEncode for (String, Vec<String>) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.0, serializer);
+        <Vec<String>>::sse_encode(self.1, serializer);
     }
 }
 
@@ -7584,6 +7749,15 @@ mod io {
             vec.into_iter().collect()
         }
     }
+    impl CstDecode<std::collections::HashMap<String, Vec<String>>>
+        for *mut wire_cst_list_record_string_list_string
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> std::collections::HashMap<String, Vec<String>> {
+            let vec: Vec<(String, Vec<String>)> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
     impl CstDecode<std::collections::HashMap<String, dion_runtime::data::settings::Setting>>
         for *mut wire_cst_list_record_string_setting
     {
@@ -7748,6 +7922,33 @@ mod io {
             }
         }
     }
+    impl CstDecode<dion_runtime::data::auth::AuthCreds> for wire_cst_auth_creds {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::auth::AuthCreds {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.Cookies };
+                    dion_runtime::data::auth::AuthCreds::Cookies {
+                        cookies: ans.cookies.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.ApiKey };
+                    dion_runtime::data::auth::AuthCreds::ApiKey {
+                        key: ans.key.cst_decode(),
+                    }
+                }
+                2 => {
+                    let ans = unsafe { self.kind.UserPass };
+                    dion_runtime::data::auth::AuthCreds::UserPass {
+                        username: ans.username.cst_decode(),
+                        password: ans.password.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
+            }
+        }
+    }
     impl CstDecode<dion_runtime::data::auth::AuthData> for wire_cst_auth_data {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::auth::AuthData {
@@ -7777,6 +7978,13 @@ mod io {
         fn cst_decode(self) -> CancelToken {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::auth::AuthCreds> for *mut wire_cst_auth_creds {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::auth::AuthCreds {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::auth::AuthCreds>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<bool> for *mut bool {
@@ -8166,23 +8374,21 @@ mod io {
                         has_search: ans.has_search.cst_decode(),
                     }
                 }
-                1 => dion_runtime::data::extension::ExtensionType::EntryDetailedProvider,
-                2 => dion_runtime::data::extension::ExtensionType::SourceProvider,
-                3 => {
+                1 => {
                     let ans = unsafe { self.kind.SourceProcessor };
                     dion_runtime::data::extension::ExtensionType::SourceProcessor {
                         sourcetypes: ans.sourcetypes.cst_decode(),
                         opentype: ans.opentype.cst_decode(),
                     }
                 }
-                4 => {
+                2 => {
                     let ans = unsafe { self.kind.EntryProcessor };
                     dion_runtime::data::extension::ExtensionType::EntryProcessor {
                         trigger_map_entry: ans.trigger_map_entry.cst_decode(),
                         trigger_on_entry_activity: ans.trigger_on_entry_activity.cst_decode(),
                     }
                 }
-                5 => {
+                3 => {
                     let ans = unsafe { self.kind.URLHandler };
                     dion_runtime::data::extension::ExtensionType::URLHandler {
                         url_patterns: ans.url_patterns.cst_decode(),
@@ -8346,6 +8552,16 @@ mod io {
             }
         }
     }
+    impl CstDecode<Vec<(String, Vec<String>)>> for *mut wire_cst_list_record_string_list_string {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<(String, Vec<String>)> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<(String, dion_runtime::data::settings::Setting)>>
         for *mut wire_cst_list_record_string_setting
     {
@@ -8488,6 +8704,12 @@ mod io {
                 label: self.label.cst_decode(),
                 onclick: self.onclick.cst_decode(),
             }
+        }
+    }
+    impl CstDecode<(String, Vec<String>)> for wire_cst_record_string_list_string {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> (String, Vec<String>) {
+            (self.field0.cst_decode(), self.field1.cst_decode())
         }
     }
     impl CstDecode<(String, dion_runtime::data::settings::Setting)> for wire_cst_record_string_setting {
@@ -8726,6 +8948,19 @@ mod io {
         }
     }
     impl Default for wire_cst_action {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_auth_creds {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: AuthCredsKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_auth_creds {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -9057,6 +9292,19 @@ mod io {
         }
     }
     impl Default for wire_cst_popup_action {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_record_string_list_string {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                field0: core::ptr::null_mut(),
+                field1: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_record_string_list_string {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -9850,6 +10098,14 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_auth_creds(
+    ) -> *mut wire_cst_auth_creds {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_auth_creds::new_with_null_ptr(),
+        )
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_bool(value: bool) -> *mut bool {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
@@ -10081,6 +10337,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_list_string(
+        len: i32,
+    ) -> *mut wire_cst_list_record_string_list_string {
+        let wrap = wire_cst_list_record_string_list_string {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_record_string_list_string>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_setting(
         len: i32,
     ) -> *mut wire_cst_list_record_string_setting {
@@ -10191,7 +10461,7 @@ mod io {
         user_name: *mut wire_cst_list_prim_u_8_strict,
         cover: *mut wire_cst_list_prim_u_8_strict,
         auth: wire_cst_auth_data,
-        creds: *mut wire_cst_list_record_string_string,
+        creds: *mut wire_cst_auth_creds,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10237,6 +10507,36 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_Action_NavEntry {
         entry: *mut wire_cst_entry_detailed,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_auth_creds {
+        tag: i32,
+        kind: AuthCredsKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union AuthCredsKind {
+        Cookies: wire_cst_AuthCreds_Cookies,
+        ApiKey: wire_cst_AuthCreds_ApiKey,
+        UserPass: wire_cst_AuthCreds_UserPass,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_AuthCreds_Cookies {
+        cookies: *mut wire_cst_list_record_string_list_string,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_AuthCreds_ApiKey {
+        key: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_AuthCreds_UserPass {
+        username: *mut wire_cst_list_prim_u_8_strict,
+        password: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -10667,6 +10967,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_record_string_list_string {
+        ptr: *mut wire_cst_record_string_list_string,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_record_string_setting {
         ptr: *mut wire_cst_record_string_setting,
         len: i32,
@@ -10771,6 +11077,12 @@ mod io {
     pub struct wire_cst_popup_action {
         label: *mut wire_cst_list_prim_u_8_strict,
         onclick: *mut wire_cst_action,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_record_string_list_string {
+        field0: *mut wire_cst_list_prim_u_8_strict,
+        field1: *mut wire_cst_list_String,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

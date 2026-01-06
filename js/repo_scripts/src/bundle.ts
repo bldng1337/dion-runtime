@@ -14,7 +14,7 @@ async function build(): Promise<string> {
 		target: "browser",
 		tsconfig: "./tsconfig.json",
 
-		external: ["network", "permission", "setting", "parse", "convert"],
+		external: ["network", "permission", "setting", "parse", "convert", "auth"],
 		format: "esm",
 	});
 	if (!res.success) throw new AggregateError(res.logs);

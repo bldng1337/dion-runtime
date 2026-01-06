@@ -1,11 +1,37 @@
-use crate::data::auth::Account;
+use anyhow::Result;
 
+use crate::{client_data::ExtensionClient, data::auth::Account};
+
+#[derive(Debug)]
 pub struct AuthStore {
     accounts: Vec<Account>,
 }
 
 impl AuthStore {
+    pub async fn new(client: &dyn ExtensionClient) -> Self {
+        let mut ret = Self {
+            accounts: Default::default(),
+        };
+        let _ = ret.load_data(client).await;
+        ret
+    }
+
+    async fn load_data(&mut self, client: &dyn ExtensionClient) -> Result<()> {
+        self.accounts = serde_json::from_str(&client.load_data_secure("auth").await?)?;
+        Ok(())
+    }
+
+    pub async fn save_state(&self, client: &dyn ExtensionClient) -> Result<()> {
+        client
+            .store_data_secure("auth", serde_json::to_string(&self.accounts)?)
+            .await
+    }
+
     pub fn merge_auth(&mut self, account: &Account) {
+        if !self.accounts.iter().any(|acc| acc.domain == account.domain) {
+            self.accounts.push(account.clone());
+            return;
+        }
         self.accounts
             .iter_mut()
             .filter(|acc| acc.domain == account.domain)

@@ -1,7 +1,6 @@
 #![deny(clippy::all)]
 
-use std::{fmt::Debug, sync::Arc};
-
+use anyhow::bail;
 use anyhow::Result;
 use dion_runtime::{
   client_data::{AdapterClient, ExtensionClient},
@@ -13,6 +12,7 @@ use napi::{
   tokio::sync::oneshot,
 };
 use napi_derive::napi;
+use std::{fmt::Debug, sync::Arc};
 
 struct ClientExtensionHandlerInner {
   load_data: ThreadsafeFunction<String, String>,
@@ -72,6 +72,14 @@ impl ExtensionClient for ClientExtensionHandler {
   async fn load_data(&self, key: &str) -> Result<String> {
     let res = self.inner.load_data.call_async(Ok(key.to_string())).await?;
     Ok(res)
+  }
+
+  async fn load_data_secure(&self, _key: &str) -> Result<String> {
+    bail!("No loading implemented")
+  }
+
+  async fn store_data_secure(&self, _key: &str, _data: String) -> Result<()> {
+    Ok(())
   }
 
   async fn store_data(&self, key: &str, data: String) -> Result<()> {

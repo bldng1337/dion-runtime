@@ -17,8 +17,9 @@ mod test {
         data::{
             action::{Action, EventData, EventResult},
             activity::EntryActivity,
+            auth::Account,
             extension::ExtensionData,
-            extension_repo::{ExtensionRepo, RemoteExtensionResult},
+            extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
             permission::Permission,
             settings::Setting,
             source::{
@@ -27,7 +28,9 @@ mod test {
             },
         },
         extension::{Adapter, Extension},
-        store::{permission::PermissionStore, settings::SettingStore, ExtensionStore},
+        store::{
+            auth::AuthStore, permission::PermissionStore, settings::SettingStore, ExtensionStore,
+        },
     };
 
     use anyhow::{bail, Result};
@@ -56,6 +59,14 @@ mod test {
             Ok(vec![Box::new(
                 TestExtension::new("Some Extension".to_string(), client).await,
             )])
+        }
+
+        async fn get_remote_extension(
+            &self,
+            url: &ExtensionRepo,
+            extension_id: String,
+        ) -> Result<Option<RemoteExtension>> {
+            Ok(None)
         }
 
         async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
@@ -108,6 +119,7 @@ mod test {
                     data: ExtensionData::default(),
                     permission: PermissionStore::new(client.as_ref()).await,
                     settings: SettingStore::new(client.as_ref()).await,
+                    auth: AuthStore::new(client.as_ref()).await,
                 })),
                 client,
             }
@@ -116,12 +128,24 @@ mod test {
 
     #[async_trait::async_trait()]
     impl Extension for TestExtension {
+        async fn validate(
+            &self,
+            account: Account,
+            token: Option<CancellationToken>,
+        ) -> Result<Option<Account>> {
+            Ok(Some(account))
+        }
+
         fn is_enabled(&self) -> bool {
             self.enabled
         }
 
         fn get_data(&self) -> &RwLock<ExtensionStore> {
             &self.store
+        }
+
+        fn get_client(&self) -> &dyn ExtensionClient {
+            self.client.as_ref()
         }
 
         async fn set_enabled(&mut self, enabled: bool) -> Result<()> {
@@ -216,10 +240,6 @@ mod test {
         ) -> Result<SourceResult> {
             Ok(SourceResult { source, settings })
         }
-
-        fn get_client(&self) -> &dyn ExtensionClient {
-            self.client.as_ref()
-        }
     }
 
     struct TestClientManagerData {}
@@ -248,6 +268,14 @@ mod test {
         }
 
         async fn store_data(&self, key: &str, data: String) -> Result<()> {
+            Ok(())
+        }
+
+        async fn load_data_secure(&self, key: &str) -> Result<String> {
+            bail!("No loading implemented")
+        }
+
+        async fn store_data_secure(&self, key: &str, data: String) -> Result<()> {
             Ok(())
         }
 

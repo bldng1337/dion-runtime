@@ -7,12 +7,18 @@ import {
 import { Adapter } from "@dion-js/runtime";
 import * as utils from "@dion-js/unit-test-utils/test";
 import type { Server } from "bun";
+import { join } from "node:path";
 
 test("test permission", async () => {
-	const mockmanager = new MockManagerClient("./.dist");
+	const mockmanager = new MockManagerClient(
+		join(import.meta.path, "../../.dist"),
+	);
 
 	mockmanager.getClient.mockImplementation((_err, extdata) => {
-		const ext = new MockExtensionClient(extdata, "./.dist");
+		const ext = new MockExtensionClient(
+			extdata,
+			join(import.meta.path, "../../.dist"),
+		);
 		ext.requestPermission.mockImplementation((_err, _permission, msg) => {
 			if (msg === "deny") {
 				return false;

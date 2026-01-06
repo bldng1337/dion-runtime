@@ -13,19 +13,19 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
     let decode_base64_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(decode_base64))
             .length(1)
-            .name("decode_base64")
+            .name("decodeBase64")
             .build();
     let encode_base64_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(encode_base64))
             .length(1)
-            .name("encode_base64")
+            .name("encodeBase64")
             .build();
     let module = Module::synthetic(
-        &[js_string!("decode_base64"), js_string!("encode_base64")],
+        &[js_string!("decodeBase64"), js_string!("encodeBase64")],
         SyntheticModuleInitializer::from_copy_closure_with_captures(
             move |m, (decode_base64, encode_base64), _ctx| {
-                m.set_export(&js_string!("decode_base64"), decode_base64.clone().into())?;
-                m.set_export(&js_string!("encode_base64"), encode_base64.clone().into())?;
+                m.set_export(&js_string!("decodeBase64"), decode_base64.clone().into())?;
+                m.set_export(&js_string!("encodeBase64"), encode_base64.clone().into())?;
                 Ok(())
             },
             (decode_base64_fn, encode_base64_fn),

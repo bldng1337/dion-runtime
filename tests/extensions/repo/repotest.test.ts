@@ -4,8 +4,9 @@ import * as paths from "node:path";
 import { test, expect } from "bun:test";
 import { MockManagerClient } from "@dion-js/extension-test-utils";
 import { Adapter } from "@dion-js/runtime";
-
-await $`cd ../.. && bunx dion-build-index`;
+import { join } from "node:path";
+const path = join(import.meta.path, "../../..");
+await $`cd ${path} && bunx dion-build-index`;
 
 test("repo extension test", async () => {
 	const server = Bun.serve({
@@ -31,7 +32,9 @@ test("repo extension test", async () => {
 	// Optionally, wait for the server to be ready before running tests
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const mockmanager = new MockManagerClient("./.dist");
+	const mockmanager = new MockManagerClient(
+		join(import.meta.path, "../../.dist"),
+	);
 	const manager = await Adapter.init(mockmanager.client);
 
 	const repo = await manager.getRepo(

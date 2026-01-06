@@ -5,6 +5,7 @@
 	"description": "Bindings for the dion extension api for node",
 	"main": "index.js",
 	"types": "index.d.ts",
+	"type": "module",
 	"repository": {
 		"type": "git",
 		"url": "git+ssh://git@github.com:bldng1337/dion-runtime.git"

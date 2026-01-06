@@ -8,6 +8,7 @@ use dion_extension::extension_manager::DionExtensionAdapter;
 use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
+use dion_runtime::data::auth::Account;
 use dion_runtime::data::extension::ExtensionData;
 use dion_runtime::data::extension_repo::ExtensionRepo;
 use dion_runtime::data::extension_repo::RemoteExtensionResult;
@@ -251,6 +252,35 @@ impl ProxyExtension {
             .inner
             .map_source(source, epid, settings, token.map(|token| token.into()))
             .await
+    }
+
+    // Auth
+    #[frb(serialize)]
+    pub async fn get_accounts(&self) -> Vec<Account> {
+        let store = self.inner.inner.get_data().read().await;
+        store.auth.get_accounts().clone()
+    }
+
+    pub async fn is_logged_in(&self, domain: String) -> bool {
+        let store = self.inner.inner.get_data().read().await;
+        store.auth.is_logged_in(&domain)
+    }
+
+    pub async fn invalidate(&mut self, domain: String) {
+        let mut store = self.inner.inner.get_data().write().await;
+        store.auth.invalidate(&domain);
+    }
+
+    pub async fn merge_auth(&mut self, account: Account) {
+        let mut store = self.inner.inner.get_data().write().await;
+        store.auth.merge_auth(&account);
+    }
+
+    pub async fn save_auth_state(&self) -> Result<()> {
+        let store = self.inner.inner.get_data().read().await;
+        let client = self.inner.inner.get_client();
+        store.auth.save_state(client).await?;
+        Ok(())
     }
 }
 

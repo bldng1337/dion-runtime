@@ -3,11 +3,11 @@ import {
 	assertDeepEqual,
 	DefaultExtension,
 } from "@dion-js/unit-test-utils/extension";
-import { parse_html, parse_html_fragment } from "parse";
+import { parseHtml, parseHtmlFragment } from "parse";
 
 function basic() {
 	const html = `<html><body><div attr="value">some text</div><div>some other text</div></body></html>`;
-	const parsed = parse_html(html);
+	const parsed = parseHtml(html);
 	const sel = new CSSSelector("div");
 	const elarr = parsed.select(sel);
 	const el = elarr.first;
@@ -26,7 +26,7 @@ function basic() {
 
 function element() {
 	const html = `<div attr="value"> some text <span>some other text</span></div>`;
-	const parsed = parse_html_fragment(html).children.get(0);
+	const parsed = parseHtmlFragment(html).children.get(0);
 	assert(parsed !== undefined, "div select not working");
 	assertDeepEqual("div", parsed.name, "Element.name not working");
 	assertDeepEqual(
@@ -53,7 +53,7 @@ function elementArray() {
     <li attr="2" class="test">two</li>
     <li attr="3">three</li>
     </ul>`;
-	const parsed = parse_html_fragment(html);
+	const parsed = parseHtmlFragment(html);
 	const elarray = parsed.select(new CSSSelector("ul")).first?.children;
 	assert(elarray !== undefined, "Couldnt find ul");
 	assertDeepEqual(3, elarray.length, "Wrong Number of children");

@@ -32,22 +32,22 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
     let parse_html_fn =
         FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(parse_html))
             .length(1)
-            .name("parse_html")
+            .name("parseHtml")
             .build();
     let parse_html_fragment_fn = FunctionObjectBuilder::new(
         context.realm(),
         NativeFunction::from_fn_ptr(parse_html_fragment),
     )
     .length(1)
-    .name("parse_html_fragment")
+    .name("parseHtmlFragment")
     .build();
     let module = Module::synthetic(
-        &[js_string!("parse_html"), js_string!("parse_html_fragment")],
+        &[js_string!("parseHtml"), js_string!("parseHtmlFragment")],
         SyntheticModuleInitializer::from_copy_closure_with_captures(
             move |m, (parse_html, parse_html_fragment), _ctx| {
-                m.set_export(&js_string!("parse_html"), parse_html.clone().into())?;
+                m.set_export(&js_string!("parseHtml"), parse_html.clone().into())?;
                 m.set_export(
-                    &js_string!("parse_html_fragment"),
+                    &js_string!("parseHtmlFragment"),
                     parse_html_fragment.clone().into(),
                 )?;
                 Ok(())

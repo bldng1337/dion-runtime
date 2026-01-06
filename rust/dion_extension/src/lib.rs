@@ -60,6 +60,14 @@ mod tests {
             Ok(())
         }
 
+        async fn load_data_secure(&self, _key: &str) -> Result<String> {
+            bail!("No loading implemented")
+        }
+
+        async fn store_data_secure(&self, _key: &str, _data: String) -> Result<()> {
+            Ok(())
+        }
+
         async fn do_action(&self, _action: &Action) -> Result<()> {
             Ok(())
         }

@@ -486,12 +486,6 @@ extension JsonExtensionType on ExtensionType {
             "type": "EntryProvider",
             "has_search": hasSearch,
           },
-        ExtensionType_EntryDetailedProvider() => {
-            "type": "EntryDetailedProvider",
-          },
-        ExtensionType_SourceProvider() => {
-            "type": "SourceProvider",
-          },
         ExtensionType_SourceProcessor(:final sourcetypes, :final opentype) => {
             "type": "SourceProcessor",
             "sourcetypes": sourcetypes.map((e) => e.toJson()).toList(),
@@ -519,10 +513,6 @@ extension JsonExtensionType on ExtensionType {
         return ExtensionType.entryProvider(
           hasSearch: value["has_search"],
         );
-      case "EntryDetailedProvider":
-        return const ExtensionType.entryDetailedProvider();
-      case "SourceProvider":
-        return const ExtensionType.sourceProvider();
       case "SourceProcessor":
         return ExtensionType.sourceProcessor(
           sourcetypes: (value["sourcetypes"] as List)
@@ -1187,7 +1177,51 @@ extension JsonAccount on Account {
         cover: value["cover"],
         auth: JsonAuthData.fromJson(value["auth"]),
         creds: value["creds"] != null
-            ? (value["creds"] as Map).cast<String, String>()
+            ? JsonAuthCreds.fromJson(value["creds"])
             : null,
       );
+}
+
+extension JsonAuthCreds on AuthCreds {
+  dynamic toJson() => switch (this) {
+        AuthCreds_Cookies(:final cookies) => {
+            "type": "Cookies",
+            "cookies": cookies,
+          },
+        AuthCreds_ApiKey(:final key) => {
+            "type": "ApiKey",
+            "key": key,
+          },
+        AuthCreds_UserPass(:final username, :final password) => {
+            "type": "UserPass",
+            "username": username,
+            "password": password,
+          },
+      };
+
+  static AuthCreds fromJson(dynamic value) {
+    final type = value["type"] as String;
+    switch (type) {
+      case "Cookies":
+        return AuthCreds.cookies(
+          cookies: (value["cookies"] as Map).map(
+            (k, v) => MapEntry(
+              k as String,
+              (v as List).map((e) => e as String).toList(),
+            ),
+          ),
+        );
+      case "ApiKey":
+        return AuthCreds.apiKey(
+          key: value["key"],
+        );
+      case "UserPass":
+        return AuthCreds.userPass(
+          username: value["username"],
+          password: value["password"],
+        );
+      default:
+        throw FormatException("Unknown AuthCreds type: $type");
+    }
+  }
 }

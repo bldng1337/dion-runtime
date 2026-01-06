@@ -26,7 +26,7 @@ declare module "network" {
 		status: number;
 		headers: { [key: string]: string };
 		body: string;
-		json: any;
+		json: unknown;
 		ok: boolean;
 	}
 }
@@ -54,15 +54,46 @@ declare module "setting" {
 	export type Settingvalues = string | number | boolean;
 }
 
+declare module "auth" {
+	type Link = string;
+	import type { Account } from "@dion-js/runtime-types/runtime";
+
+	/**
+	 * Initializes/Updates authentication for a given provider.
+	 */
+	export function mergeAuth(account: Account): Promise<void>;
+
+	/**
+	 * Checks if this account is currently authenticated
+	 */
+	export function isLoggedIn(domain: string): Promise<boolean>;
+
+	/**
+	 * Invalidates the logged in state of an account
+	 */
+	export function invalidate(domain: string): Promise<void>;
+
+	/**
+	 * Returns the authentication secrets for the given domain.
+	 */
+	export function getAuthSecret(
+		domain: string,
+	): Promise<
+		| { user: string; pass: string; type: "userpass" }
+		| { type: "apikey"; key: string }
+		| { type: "cookie"; cookies: { [name: string]: string | string[] } }
+	>;
+}
+
 declare module "convert" {
-	function decode_base64(input: string): string;
-	function encode_base64(input: string): string;
+	function decodeBase64(input: string): string;
+	function encodeBase64(input: string): string;
 }
 
 declare module "parse" {
 	import type { Paragraph } from "@dion-js/runtime-types/runtime";
-	export function parse_html(input: string): DionElement;
-	export function parse_html_fragment(input: string): DionElement;
+	export function parseHtml(input: string): DionElement;
+	export function parseHtmlFragment(input: string): DionElement;
 	export interface DionElement {
 		attr(name: string): string;
 		select(selector: CSSSelector): DionElementArray;
@@ -87,10 +118,15 @@ declare module "parse" {
 }
 
 declare var console: {
+	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	log(message?: any, ...optionalParams: any[]): void;
+	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	error(message?: any, ...optionalParams: any[]): void;
+	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	warn(message?: any, ...optionalParams: any[]): void;
+	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	info(message?: any, ...optionalParams: any[]): void;
+	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	debug(message?: any, ...optionalParams: any[]): void;
 };
 

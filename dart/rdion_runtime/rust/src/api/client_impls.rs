@@ -14,6 +14,8 @@ impl Clone for ProxyExtensionClient {
     fn clone(&self) -> Self {
         Self {
             cload_data: self.cload_data.clone(),
+            cstore_data_secure: self.cstore_data_secure.clone(),
+            cload_data_secure: self.cload_data_secure.clone(),
             cstore_data: self.cstore_data.clone(),
             cdo_action: self.cdo_action.clone(),
             crequest_permission: self.crequest_permission.clone(),
@@ -33,6 +35,18 @@ impl ExtensionClient for ProxyExtensionClient {
     // #[frb(ignore)]
     async fn store_data(&self, key: &str, data: String) -> Result<()> {
         (self.cstore_data.as_ref())(key.to_string(), data).await;
+        Ok(())
+    }
+
+    // #[frb(ignore)]
+    async fn load_data_secure(&self, key: &str) -> Result<String> {
+        let res = (self.cload_data_secure.as_ref())(key.to_string()).await;
+        Ok(res)
+    }
+
+    // #[frb(ignore)]
+    async fn store_data_secure(&self, key: &str, data: String) -> Result<()> {
+        (self.cstore_data_secure.as_ref())(key.to_string(), data).await;
         Ok(())
     }
     // #[frb(ignore)]

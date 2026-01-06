@@ -139,6 +139,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
 
   @protected
+  Map<String, List<String>> dco_decode_Map_String_list_String_None(dynamic raw);
+
+  @protected
   Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw);
 
   @protected
@@ -188,6 +191,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Action dco_decode_action(dynamic raw);
 
   @protected
+  AuthCreds dco_decode_auth_creds(dynamic raw);
+
+  @protected
   AuthData dco_decode_auth_data(dynamic raw);
 
   @protected
@@ -200,6 +206,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           dynamic raw);
+
+  @protected
+  AuthCreds dco_decode_box_autoadd_auth_creds(dynamic raw);
 
   @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
@@ -375,6 +384,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<(String, List<String>)> dco_decode_list_record_string_list_string(
+      dynamic raw);
+
+  @protected
   List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw);
 
   @protected
@@ -411,6 +424,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken?
       dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           dynamic raw);
+
+  @protected
+  AuthCreds? dco_decode_opt_box_autoadd_auth_creds(dynamic raw);
 
   @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
@@ -453,6 +469,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PopupAction dco_decode_popup_action(dynamic raw);
+
+  @protected
+  (String, List<String>) dco_decode_record_string_list_string(dynamic raw);
 
   @protected
   (String, Setting) dco_decode_record_string_setting(dynamic raw);
@@ -581,6 +600,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  Map<String, List<String>> sse_decode_Map_String_list_String_None(
+      SseDeserializer deserializer);
+
+  @protected
   Map<String, Setting> sse_decode_Map_String_setting_None(
       SseDeserializer deserializer);
 
@@ -633,6 +656,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Action sse_decode_action(SseDeserializer deserializer);
 
   @protected
+  AuthCreds sse_decode_auth_creds(SseDeserializer deserializer);
+
+  @protected
   AuthData sse_decode_auth_data(SseDeserializer deserializer);
 
   @protected
@@ -645,6 +671,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
+
+  @protected
+  AuthCreds sse_decode_box_autoadd_auth_creds(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
@@ -829,6 +858,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<(String, List<String>)> sse_decode_list_record_string_list_string(
+      SseDeserializer deserializer);
+
+  @protected
   List<(String, Setting)> sse_decode_list_record_string_setting(
       SseDeserializer deserializer);
 
@@ -871,6 +904,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken?
       sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
+
+  @protected
+  AuthCreds? sse_decode_opt_box_autoadd_auth_creds(
+      SseDeserializer deserializer);
 
   @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
@@ -916,6 +953,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PopupAction sse_decode_popup_action(SseDeserializer deserializer);
+
+  @protected
+  (String, List<String>) sse_decode_record_string_list_string(
+      SseDeserializer deserializer);
 
   @protected
   (String, Setting) sse_decode_record_string_setting(
@@ -1002,6 +1043,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_record_string_list_string>
+      cst_encode_Map_String_list_String_None(Map<String, List<String>> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_record_string_list_string(
+        raw.entries.map((e) => (e.key, e.value)).toList());
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_encode_Map_String_setting_None(Map<String, Setting> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1060,6 +1109,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
         .cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_auth_creds> cst_encode_box_autoadd_auth_creds(
+      AuthCreds raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_auth_creds();
+    cst_api_fill_to_wire_auth_creds(raw, ptr.ref);
+    return ptr;
   }
 
   @protected
@@ -1293,6 +1351,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_record_string_list_string>
+      cst_encode_list_record_string_list_string(
+          List<(String, List<String>)> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_record_string_list_string(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_record_string_list_string(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_encode_list_record_string_setting(List<(String, Setting)> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1405,6 +1475,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_auth_creds> cst_encode_opt_box_autoadd_auth_creds(
+      AuthCreds? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_auth_creds(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Bool> cst_encode_opt_box_autoadd_bool(bool? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_bool(raw);
@@ -1480,7 +1557,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.user_name = cst_encode_opt_String(apiObj.userName);
     wireObj.cover = cst_encode_opt_String(apiObj.cover);
     cst_api_fill_to_wire_auth_data(apiObj.auth, wireObj.auth);
-    wireObj.creds = cst_encode_opt_Map_String_String_None(apiObj.creds);
+    wireObj.creds = cst_encode_opt_box_autoadd_auth_creds(apiObj.creds);
   }
 
   @protected
@@ -1526,6 +1603,31 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_auth_creds(
+      AuthCreds apiObj, wire_cst_auth_creds wireObj) {
+    if (apiObj is AuthCreds_Cookies) {
+      var pre_cookies = cst_encode_Map_String_list_String_None(apiObj.cookies);
+      wireObj.tag = 0;
+      wireObj.kind.Cookies.cookies = pre_cookies;
+      return;
+    }
+    if (apiObj is AuthCreds_ApiKey) {
+      var pre_key = cst_encode_String(apiObj.key);
+      wireObj.tag = 1;
+      wireObj.kind.ApiKey.key = pre_key;
+      return;
+    }
+    if (apiObj is AuthCreds_UserPass) {
+      var pre_username = cst_encode_String(apiObj.username);
+      var pre_password = cst_encode_String(apiObj.password);
+      wireObj.tag = 2;
+      wireObj.kind.UserPass.username = pre_username;
+      wireObj.kind.UserPass.password = pre_password;
+      return;
+    }
+  }
+
+  @protected
   void cst_api_fill_to_wire_auth_data(
       AuthData apiObj, wire_cst_auth_data wireObj) {
     if (apiObj is AuthData_Cookie) {
@@ -1550,6 +1652,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_action(
       Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
     cst_api_fill_to_wire_action(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_auth_creds(
+      AuthCreds apiObj, ffi.Pointer<wire_cst_auth_creds> wireObj) {
+    cst_api_fill_to_wire_auth_creds(apiObj, wireObj.ref);
   }
 
   @protected
@@ -1893,18 +2001,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.EntryProvider.has_search = pre_has_search;
       return;
     }
-    if (apiObj is ExtensionType_EntryDetailedProvider) {
-      wireObj.tag = 1;
-      return;
-    }
-    if (apiObj is ExtensionType_SourceProvider) {
-      wireObj.tag = 2;
-      return;
-    }
     if (apiObj is ExtensionType_SourceProcessor) {
       var pre_sourcetypes = cst_encode_Set_source_type_None(apiObj.sourcetypes);
       var pre_opentype = cst_encode_Set_source_open_type_None(apiObj.opentype);
-      wireObj.tag = 3;
+      wireObj.tag = 1;
       wireObj.kind.SourceProcessor.sourcetypes = pre_sourcetypes;
       wireObj.kind.SourceProcessor.opentype = pre_opentype;
       return;
@@ -1913,7 +2013,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       var pre_trigger_map_entry = cst_encode_bool(apiObj.triggerMapEntry);
       var pre_trigger_on_entry_activity =
           cst_encode_bool(apiObj.triggerOnEntryActivity);
-      wireObj.tag = 4;
+      wireObj.tag = 2;
       wireObj.kind.EntryProcessor.trigger_map_entry = pre_trigger_map_entry;
       wireObj.kind.EntryProcessor.trigger_on_entry_activity =
           pre_trigger_on_entry_activity;
@@ -1921,7 +2021,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is ExtensionType_URLHandler) {
       var pre_url_patterns = cst_encode_list_String(apiObj.urlPatterns);
-      wireObj.tag = 5;
+      wireObj.tag = 3;
       wireObj.kind.URLHandler.url_patterns = pre_url_patterns;
       return;
     }
@@ -1996,6 +2096,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PopupAction apiObj, wire_cst_popup_action wireObj) {
     wireObj.label = cst_encode_String(apiObj.label);
     wireObj.onclick = cst_encode_box_action(apiObj.onclick);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_record_string_list_string(
+      (String, List<String>) apiObj,
+      wire_cst_record_string_list_string wireObj) {
+    wireObj.field0 = cst_encode_String(apiObj.$1);
+    wireObj.field1 = cst_encode_list_String(apiObj.$2);
   }
 
   @protected
@@ -2367,6 +2475,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Map<String, String> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Map_String_list_String_None(
+      Map<String, List<String>> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_Map_String_setting_None(
       Map<String, Setting> self, SseSerializer serializer);
 
@@ -2421,6 +2533,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_action(Action self, SseSerializer serializer);
 
   @protected
+  void sse_encode_auth_creds(AuthCreds self, SseSerializer serializer);
+
+  @protected
   void sse_encode_auth_data(AuthData self, SseSerializer serializer);
 
   @protected
@@ -2433,6 +2548,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_auth_creds(
+      AuthCreds self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
@@ -2631,6 +2750,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_record_string_list_string(
+      List<(String, List<String>)> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_record_string_setting(
       List<(String, Setting)> self, SseSerializer serializer);
 
@@ -2677,6 +2800,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           CancelToken? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_auth_creds(
+      AuthCreds? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
 
   @protected
@@ -2721,6 +2848,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_popup_action(PopupAction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_list_string(
+      (String, List<String>) self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_setting(
@@ -4068,6 +4199,18 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
+  ffi.Pointer<wire_cst_auth_creds> cst_new_box_autoadd_auth_creds() {
+    return _cst_new_box_autoadd_auth_creds();
+  }
+
+  late final _cst_new_box_autoadd_auth_credsPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_auth_creds> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_auth_creds',
+  );
+  late final _cst_new_box_autoadd_auth_creds =
+      _cst_new_box_autoadd_auth_credsPtr
+          .asFunction<ffi.Pointer<wire_cst_auth_creds> Function()>();
+
   ffi.Pointer<ffi.Bool> cst_new_box_autoadd_bool(bool value) {
     return _cst_new_box_autoadd_bool(value);
   }
@@ -4353,6 +4496,20 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_prim_u_8_strict');
   late final _cst_new_list_prim_u_8_strict = _cst_new_list_prim_u_8_strictPtr
       .asFunction<ffi.Pointer<wire_cst_list_prim_u_8_strict> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_record_string_list_string>
+      cst_new_list_record_string_list_string(int len) {
+    return _cst_new_list_record_string_list_string(len);
+  }
+
+  late final _cst_new_list_record_string_list_stringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_record_string_list_string> Function(
+            ffi.Int32,
+          )>>('frbgen_rdion_runtime_cst_new_list_record_string_list_string');
+  late final _cst_new_list_record_string_list_string =
+      _cst_new_list_record_string_list_stringPtr.asFunction<
+          ffi.Pointer<wire_cst_list_record_string_list_string> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_new_list_record_string_setting(int len) {
@@ -4807,6 +4964,48 @@ final class wire_cst_CustomUI_Row extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_custom_ui> children;
 }
 
+final class wire_cst_record_string_list_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+
+  external ffi.Pointer<wire_cst_list_String> field1;
+}
+
+final class wire_cst_list_record_string_list_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_record_string_list_string> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_AuthCreds_Cookies extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_record_string_list_string> cookies;
+}
+
+final class wire_cst_AuthCreds_ApiKey extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
+}
+
+final class wire_cst_AuthCreds_UserPass extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> username;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> password;
+}
+
+final class AuthCredsKind extends ffi.Union {
+  external wire_cst_AuthCreds_Cookies Cookies;
+
+  external wire_cst_AuthCreds_ApiKey ApiKey;
+
+  external wire_cst_AuthCreds_UserPass UserPass;
+}
+
+final class wire_cst_auth_creds extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external AuthCredsKind kind;
+}
+
 final class wire_cst_SettingsUI_Slider extends ffi.Struct {
   @ffi.Double()
   external double min;
@@ -5141,7 +5340,7 @@ final class wire_cst_account extends ffi.Struct {
 
   external wire_cst_auth_data auth;
 
-  external ffi.Pointer<wire_cst_list_record_string_string> creds;
+  external ffi.Pointer<wire_cst_auth_creds> creds;
 }
 
 final class wire_cst_EntryActivity_EpisodeActivity extends ffi.Struct {

@@ -100,9 +100,6 @@ sealed class ExtensionType with _$ExtensionType {
   const factory ExtensionType.entryProvider({
     required bool hasSearch,
   }) = ExtensionType_EntryProvider;
-  const factory ExtensionType.entryDetailedProvider() =
-      ExtensionType_EntryDetailedProvider;
-  const factory ExtensionType.sourceProvider() = ExtensionType_SourceProvider;
   const factory ExtensionType.sourceProcessor({
     required Set<SourceType> sourcetypes,
     required Set<SourceOpenType> opentype,
