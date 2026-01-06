@@ -86,6 +86,7 @@ pub enum SettingsUI {
     CheckBox,
     Slider { min: f64, max: f64, step: i32 },
     Dropdown { options: Vec<DropdownOption> },
+    MultiDropdown { options: Vec<DropdownOption> },
 }
 
 /// flutter_rust_bridge:non_opaque

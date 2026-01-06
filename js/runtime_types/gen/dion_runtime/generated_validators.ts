@@ -9,15 +9,17 @@ export const AuthData = v.variant("type", [v.object({ type: v.literal("Cookie"),
 
 export const Account = v.object({ domain: v.string(), user_name: v.optional(v.nullable(v.string())), cover: v.optional(v.nullable(v.string())), auth: AuthData, creds: v.optional(v.nullable(AuthCreds)) });
 
-export const Link = v.object({ url: v.string(), header: v.optional(v.nullable(v.record(v.string(), v.string()))) });
-
-export const EpisodeId = v.object({ uid: v.string(), iddata: v.optional(v.nullable(v.string())) });
-
-export const Episode = v.object({ id: EpisodeId, name: v.string(), description: v.optional(v.nullable(v.string())), url: v.string(), cover: v.optional(v.nullable(Link)), timestamp: v.optional(v.nullable(v.string())) });
+export const PopupAction = v.object({ label: v.string(), onclick: v.lazy(() => Action) });
 
 export const MediaType = v.picklist(["Video", "Comic", "Audio", "Book", "Unknown"]);
 
 export const EntryId = v.object({ uid: v.string(), iddata: v.optional(v.nullable(v.string())) });
+
+export const EpisodeId = v.object({ uid: v.string(), iddata: v.optional(v.nullable(v.string())) });
+
+export const Link = v.object({ url: v.string(), header: v.optional(v.nullable(v.record(v.string(), v.string()))) });
+
+export const Episode = v.object({ id: EpisodeId, name: v.string(), description: v.optional(v.nullable(v.string())), url: v.string(), cover: v.optional(v.nullable(Link)), timestamp: v.optional(v.nullable(v.string())) });
 
 export const SettingKind = v.picklist(["Extension", "Search"]);
 
@@ -33,17 +35,15 @@ export const ReleaseStatus = v.picklist(["Releasing", "Complete", "Unknown"]);
 
 export const EntryDetailed = v.object({ id: EntryId, url: v.string(), titles: v.array(v.string()), author: v.optional(v.nullable(v.array(v.string()))), ui: v.optional(v.nullable(v.lazy(() => CustomUI))), meta: v.optional(v.nullable(v.record(v.string(), v.string()))), media_type: MediaType, status: ReleaseStatus, description: v.string(), language: v.string(), cover: v.optional(v.nullable(Link)), poster: v.optional(v.nullable(Link)), episodes: v.array(Episode), genres: v.optional(v.nullable(v.array(v.string()))), rating: v.optional(v.nullable(v.number())), views: v.optional(v.nullable(v.number())), length: v.optional(v.nullable(v.number())) });
 
-export const PopupAction = v.object({ label: v.string(), onclick: v.lazy(() => Action) });
-
 export const Action: v.GenericSchema = v.variant("type", [v.object({ type: v.literal("OpenBrowser"), url: v.string() }), v.object({ type: v.literal("Popup"), title: v.string(), content: v.lazy(() => CustomUI), actions: v.array(PopupAction) }), v.object({ type: v.literal("Nav"), title: v.string(), content: v.lazy(() => CustomUI) }), v.object({ type: v.literal("TriggerEvent"), event: v.string(), data: v.string() }), v.object({ type: v.literal("NavEntry"), entry: EntryDetailed })]);
 
 export const DropdownOption = v.object({ label: v.string(), value: v.string() });
 
 export const EntryActivity = v.object({ type: v.literal("EpisodeActivity"), progress: v.number() });
 
-export const SettingsUI = v.variant("type", [v.object({ type: v.literal("CheckBox") }), v.object({ type: v.literal("Slider"), min: v.number(), max: v.number(), step: v.number() }), v.object({ type: v.literal("Dropdown"), options: v.array(DropdownOption) })]);
-
 export const SettingValue = v.variant("type", [v.object({ type: v.literal("String"), data: v.string() }), v.object({ type: v.literal("Number"), data: v.number() }), v.object({ type: v.literal("Boolean"), data: v.boolean() }), v.object({ type: v.literal("StringList"), data: v.array(v.string()) })]);
+
+export const SettingsUI = v.variant("type", [v.object({ type: v.literal("CheckBox") }), v.object({ type: v.literal("Slider"), min: v.number(), max: v.number(), step: v.number() }), v.object({ type: v.literal("Dropdown"), options: v.array(DropdownOption) }), v.object({ type: v.literal("MultiDropdown"), options: v.array(DropdownOption) })]);
 
 export const Setting = v.object({ label: v.string(), value: SettingValue, default: SettingValue, visible: v.boolean(), ui: v.optional(v.nullable(SettingsUI)) });
 
@@ -79,9 +79,9 @@ export const RemoteExtension = v.object({ remote_id: v.string(), id: v.string(),
 
 export const RemoteExtensionResult = v.object({ content: v.array(RemoteExtension), hasnext: v.optional(v.nullable(v.boolean())), length: v.optional(v.nullable(v.number())) });
 
-export const Subtitles = v.object({ title: v.string(), lang: v.string(), url: Link });
-
 export const StreamSource = v.object({ name: v.string(), lang: v.string(), url: Link });
+
+export const Subtitles = v.object({ title: v.string(), lang: v.string(), url: Link });
 
 export const Source = v.variant("type", [v.object({ type: v.literal("Epub"), link: Link }), v.object({ type: v.literal("Pdf"), link: Link }), v.object({ type: v.literal("Imagelist"), links: v.array(Link), audio: v.nullable(v.array(ImageListAudio)) }), v.object({ type: v.literal("Video"), sources: v.array(StreamSource), sub: v.array(Subtitles) }), v.object({ type: v.literal("Audio"), sources: v.array(StreamSource) }), v.object({ type: v.literal("Paragraphlist"), paragraphs: v.array(v.lazy(() => Paragraph)) })]);
 

@@ -112,4 +112,7 @@ sealed class SettingsUI with _$SettingsUI {
   const factory SettingsUI.dropdown({
     required List<DropdownOption> options,
   }) = SettingsUI_Dropdown;
+  const factory SettingsUI.multiDropdown({
+    required List<DropdownOption> options,
+  }) = SettingsUI_MultiDropdown;
 }

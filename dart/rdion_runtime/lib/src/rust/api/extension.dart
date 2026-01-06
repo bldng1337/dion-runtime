@@ -8,6 +8,7 @@ import 'dart:convert';
 import '../frb_generated.dart';
 import '../third_party/dion_runtime/data/action.dart';
 import '../third_party/dion_runtime/data/activity.dart';
+import '../third_party/dion_runtime/data/auth.dart';
 import '../third_party/dion_runtime/data/custom_ui.dart';
 import '../third_party/dion_runtime/data/extension.dart';
 import '../third_party/dion_runtime/data/extension_repo.dart';
@@ -47,6 +48,8 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<EventResult?> event({required EventData event, CancelToken? token});
 
+  Future<List<Account>> getAccounts();
+
   Future<ExtensionData> getExtensionData();
 
   Future<List<Permission>> getPermissions();
@@ -61,7 +64,11 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<bool> hasPermission({required Permission permission});
 
+  Future<void> invalidate({required String domain});
+
   Future<bool> isEnabled();
+
+  Future<bool> isLoggedIn({required String domain});
 
   Future<EntryDetailedResult> mapEntry(
       {required EntryDetailed entry,
@@ -73,6 +80,8 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
+
+  Future<void> mergeAuth({required Account account});
 
   Future<void> mergeSettingDefinition(
       {required String id,
@@ -90,6 +99,8 @@ abstract class ProxyExtension implements RustOpaqueInterface {
   Future<void> removePermission({required Permission permission});
 
   Future<void> removeSetting({required String id, required SettingKind kind});
+
+  Future<void> saveAuthState();
 
   Future<void> savePermissions();
 

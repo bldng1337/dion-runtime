@@ -53,7 +53,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1585622927;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1123242254;
 
 // Section: executor
 
@@ -768,6 +768,64 @@ fn wire__crate__api__extension__ProxyExtension_event_impl(
         },
     )
 }
+fn wire__crate__api__extension__ProxyExtension_get_accounts_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_get_accounts",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::extension::ProxyExtension::get_accounts(&*api_that_guard)
+                                .await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__extension__ProxyExtension_get_extension_data_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1186,6 +1244,57 @@ fn wire__crate__api__extension__ProxyExtension_has_permission_impl(
         },
     )
 }
+fn wire__crate__api__extension__ProxyExtension_invalidate_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+    domain: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_invalidate",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_domain = domain.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok({
+                            crate::api::extension::ProxyExtension::invalidate(
+                                &mut *api_that_guard,
+                                api_domain,
+                            )
+                            .await;
+                        })?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__extension__ProxyExtension_is_enabled_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     that: impl CstDecode<
@@ -1221,6 +1330,57 @@ fn wire__crate__api__extension__ProxyExtension_is_enabled_impl(
                     )?;
                     Ok(output_ok)
                 })())
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_is_logged_in_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+    domain: impl CstDecode<String>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_is_logged_in",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_domain = domain.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::extension::ProxyExtension::is_logged_in(
+                                &*api_that_guard,
+                                api_domain,
+                            )
+                            .await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
             }
         },
     )
@@ -1354,6 +1514,57 @@ fn wire__crate__api__extension__ProxyExtension_map_source_impl(
                             api_token,
                         )
                         .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_merge_auth_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+    account: impl CstDecode<dion_runtime::data::auth::Account>,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_merge_auth",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            let api_account = account.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, ()>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_that_guard = api_that_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok({
+                            crate::api::extension::ProxyExtension::merge_auth(
+                                &mut *api_that_guard,
+                                api_account,
+                            )
+                            .await;
+                        })?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -1659,6 +1870,52 @@ fn wire__crate__api__extension__ProxyExtension_remove_setting_impl(
                             &*api_that_guard,
                             api_id,
                             api_kind,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_save_auth_state_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_save_auth_state",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::extension::ProxyExtension::save_auth_state(
+                            &*api_that_guard,
                         )
                         .await?;
                         Ok(output_ok)
@@ -2627,6 +2884,9 @@ const _: fn() = || {
             let _: i32 = step;
         }
         dion_runtime::data::settings::SettingsUI::Dropdown { options } => {
+            let _: Vec<dion_runtime::data::settings::DropdownOption> = options;
+        }
+        dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
             let _: Vec<dion_runtime::data::settings::DropdownOption> = options;
         }
     }
@@ -3918,6 +4178,20 @@ impl SseDecode for Vec<String> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::data::auth::Account> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::auth::Account>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4637,6 +4911,13 @@ impl SseDecode for dion_runtime::data::settings::SettingsUI {
                 let mut var_options =
                     <Vec<dion_runtime::data::settings::DropdownOption>>::sse_decode(deserializer);
                 return dion_runtime::data::settings::SettingsUI::Dropdown {
+                    options: var_options,
+                };
+            }
+            3 => {
+                let mut var_options =
+                    <Vec<dion_runtime::data::settings::DropdownOption>>::sse_decode(deserializer);
+                return dion_runtime::data::settings::SettingsUI::MultiDropdown {
                     options: var_options,
                 };
             }
@@ -5952,6 +6233,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::
             dion_runtime::data::settings::SettingsUI::Dropdown { options } => {
                 [2.into_dart(), options.into_into_dart().into_dart()].into_dart()
             }
+            dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
+                [3.into_dart(), options.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -6894,6 +7178,16 @@ impl SseEncode for Vec<String> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::data::auth::Account> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::auth::Account>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7476,6 +7770,12 @@ impl SseEncode for dion_runtime::data::settings::SettingsUI {
                     options, serializer,
                 );
             }
+            dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
+                <i32>::sse_encode(3, serializer);
+                <Vec<dion_runtime::data::settings::DropdownOption>>::sse_encode(
+                    options, serializer,
+                );
+            }
             _ => {
                 unimplemented!("");
             }
@@ -7978,6 +8278,13 @@ mod io {
         fn cst_decode(self) -> CancelToken {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::auth::Account> for *mut wire_cst_account {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::auth::Account {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::auth::Account>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::data::auth::AuthCreds> for *mut wire_cst_auth_creds {
@@ -8821,6 +9128,12 @@ mod io {
                         options: ans.options.cst_decode(),
                     }
                 }
+                3 => {
+                    let ans = unsafe { self.kind.MultiDropdown };
+                    dion_runtime::data::settings::SettingsUI::MultiDropdown {
+                        options: ans.options.cst_decode(),
+                    }
+                }
                 _ => unreachable!(),
             }
         }
@@ -9638,6 +9951,21 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_get_accounts(
+        port_: i64,
+        ptr_: *mut u8,
+        rust_vec_len_: i32,
+        data_len_: i32,
+    ) {
+        wire__crate__api__extension__ProxyExtension_get_accounts_impl(
+            port_,
+            ptr_,
+            rust_vec_len_,
+            data_len_,
+        )
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_get_extension_data(
         port_: i64,
         ptr_: *mut u8,
@@ -9738,11 +10066,29 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_invalidate(
+        port_: i64,
+        that: usize,
+        domain: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__extension__ProxyExtension_invalidate_impl(port_, that, domain)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_is_enabled(
         port_: i64,
         that: usize,
     ) {
         wire__crate__api__extension__ProxyExtension_is_enabled_impl(port_, that)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_is_logged_in(
+        port_: i64,
+        that: usize,
+        domain: *mut wire_cst_list_prim_u_8_strict,
+    ) {
+        wire__crate__api__extension__ProxyExtension_is_logged_in_impl(port_, that, domain)
     }
 
     #[unsafe(no_mangle)]
@@ -9773,6 +10119,15 @@ mod io {
             rust_vec_len_,
             data_len_,
         )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_merge_auth(
+        port_: i64,
+        that: usize,
+        account: *mut wire_cst_account,
+    ) {
+        wire__crate__api__extension__ProxyExtension_merge_auth_impl(port_, that, account)
     }
 
     #[unsafe(no_mangle)]
@@ -9841,6 +10196,14 @@ mod io {
             rust_vec_len_,
             data_len_,
         )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_save_auth_state(
+        port_: i64,
+        that: usize,
+    ) {
+        wire__crate__api__extension__ProxyExtension_save_auth_state_impl(port_, that)
     }
 
     #[unsafe(no_mangle)]
@@ -10095,6 +10458,11 @@ mod io {
         value: usize,
     ) -> *mut usize {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_account() -> *mut wire_cst_account {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_account::new_with_null_ptr())
     }
 
     #[unsafe(no_mangle)]
@@ -11174,6 +11542,7 @@ mod io {
     pub union SettingsUIKind {
         Slider: wire_cst_SettingsUI_Slider,
         Dropdown: wire_cst_SettingsUI_Dropdown,
+        MultiDropdown: wire_cst_SettingsUI_MultiDropdown,
         nil__: (),
     }
     #[repr(C)]
@@ -11186,6 +11555,11 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_SettingsUI_Dropdown {
+        options: *mut wire_cst_list_dropdown_option,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingsUI_MultiDropdown {
         options: *mut wire_cst_list_dropdown_option,
     }
     #[repr(C)]

@@ -208,6 +208,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Account dco_decode_box_autoadd_account(dynamic raw);
+
+  @protected
   AuthCreds dco_decode_box_autoadd_auth_creds(dynamic raw);
 
   @protected
@@ -346,6 +349,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<Account> dco_decode_list_account(dynamic raw);
 
   @protected
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw);
@@ -673,6 +679,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
+
+  @protected
   AuthCreds sse_decode_box_autoadd_auth_creds(SseDeserializer deserializer);
 
   @protected
@@ -817,6 +826,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<Account> sse_decode_list_account(SseDeserializer deserializer);
 
   @protected
   List<CustomUI> sse_decode_list_custom_ui(SseDeserializer deserializer);
@@ -1109,6 +1121,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
         .cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_account> cst_encode_box_autoadd_account(Account raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_account();
+    cst_api_fill_to_wire_account(raw, ptr.ref);
+    return ptr;
   }
 
   @protected
@@ -1652,6 +1672,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_action(
       Action apiObj, ffi.Pointer<wire_cst_action> wireObj) {
     cst_api_fill_to_wire_action(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_account(
+      Account apiObj, ffi.Pointer<wire_cst_account> wireObj) {
+    cst_api_fill_to_wire_account(apiObj, wireObj.ref);
   }
 
   @protected
@@ -2206,6 +2232,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.Dropdown.options = pre_options;
       return;
     }
+    if (apiObj is SettingsUI_MultiDropdown) {
+      var pre_options = cst_encode_list_dropdown_option(apiObj.options);
+      wireObj.tag = 3;
+      wireObj.kind.MultiDropdown.options = pre_options;
+      return;
+    }
   }
 
   @protected
@@ -2550,6 +2582,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           CancelToken self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_auth_creds(
       AuthCreds self, SseSerializer serializer);
 
@@ -2704,6 +2739,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_account(List<Account> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_custom_ui(List<CustomUI> self, SseSerializer serializer);
@@ -3283,6 +3321,35 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_eventPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__crate__api__extension__ProxyExtension_get_accounts(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_get_accounts(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_get_accountsPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<ffi.Uint8>,
+                ffi.Int32,
+                ffi.Int32,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_get_accounts',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_get_accounts =
+      _wire__crate__api__extension__ProxyExtension_get_accountsPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
   void wire__crate__api__extension__ProxyExtension_get_extension_data(
     int port_,
     ffi.Pointer<ffi.Uint8> ptr_,
@@ -3491,6 +3558,33 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_has_permissionPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__crate__api__extension__ProxyExtension_invalidate(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> domain,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_invalidate(
+      port_,
+      that,
+      domain,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_invalidatePtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_invalidate',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_invalidate =
+      _wire__crate__api__extension__ProxyExtension_invalidatePtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
+
   void wire__crate__api__extension__ProxyExtension_is_enabled(
     int port_,
     int that,
@@ -3505,6 +3599,33 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_is_enabled =
       _wire__crate__api__extension__ProxyExtension_is_enabledPtr
           .asFunction<void Function(int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_is_logged_in(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> domain,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_is_logged_in(
+      port_,
+      that,
+      domain,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_is_logged_inPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_is_logged_in',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_is_logged_in =
+      _wire__crate__api__extension__ProxyExtension_is_logged_inPtr.asFunction<
+          void Function(
+              int, int, ffi.Pointer<wire_cst_list_prim_u_8_strict>)>();
 
   void wire__crate__api__extension__ProxyExtension_map_entry(
     int port_,
@@ -3563,6 +3684,32 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_map_source =
       _wire__crate__api__extension__ProxyExtension_map_sourcePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_merge_auth(
+    int port_,
+    int that,
+    ffi.Pointer<wire_cst_account> account,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_merge_auth(
+      port_,
+      that,
+      account,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_merge_authPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.UintPtr,
+                ffi.Pointer<wire_cst_account>,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_merge_auth',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_merge_auth =
+      _wire__crate__api__extension__ProxyExtension_merge_authPtr
+          .asFunction<void Function(int, int, ffi.Pointer<wire_cst_account>)>();
 
   void wire__crate__api__extension__ProxyExtension_merge_setting_definition(
     int port_,
@@ -3691,6 +3838,24 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_remove_setting =
       _wire__crate__api__extension__ProxyExtension_remove_settingPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_save_auth_state(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_save_auth_state(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_save_auth_statePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_save_auth_state',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_save_auth_state =
+      _wire__crate__api__extension__ProxyExtension_save_auth_statePtr
+          .asFunction<void Function(int, int)>();
 
   void wire__crate__api__extension__ProxyExtension_save_permissions(
     int port_,
@@ -4199,6 +4364,17 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
 
+  ffi.Pointer<wire_cst_account> cst_new_box_autoadd_account() {
+    return _cst_new_box_autoadd_account();
+  }
+
+  late final _cst_new_box_autoadd_accountPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_account> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_account',
+  );
+  late final _cst_new_box_autoadd_account = _cst_new_box_autoadd_accountPtr
+      .asFunction<ffi.Pointer<wire_cst_account> Function()>();
+
   ffi.Pointer<wire_cst_auth_creds> cst_new_box_autoadd_auth_creds() {
     return _cst_new_box_autoadd_auth_creds();
   }
@@ -4647,6 +4823,84 @@ final class wire_cst_extension_repo extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 }
 
+final class wire_cst_AuthData_Cookie extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> loginpage;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> logonpage;
+}
+
+final class AuthDataKind extends ffi.Union {
+  external wire_cst_AuthData_Cookie Cookie;
+}
+
+final class wire_cst_auth_data extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external AuthDataKind kind;
+}
+
+final class wire_cst_list_String extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_record_string_list_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+
+  external ffi.Pointer<wire_cst_list_String> field1;
+}
+
+final class wire_cst_list_record_string_list_string extends ffi.Struct {
+  external ffi.Pointer<wire_cst_record_string_list_string> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_AuthCreds_Cookies extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_record_string_list_string> cookies;
+}
+
+final class wire_cst_AuthCreds_ApiKey extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
+}
+
+final class wire_cst_AuthCreds_UserPass extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> username;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> password;
+}
+
+final class AuthCredsKind extends ffi.Union {
+  external wire_cst_AuthCreds_Cookies Cookies;
+
+  external wire_cst_AuthCreds_ApiKey ApiKey;
+
+  external wire_cst_AuthCreds_UserPass UserPass;
+}
+
+final class wire_cst_auth_creds extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external AuthCredsKind kind;
+}
+
+final class wire_cst_account extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> domain;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> user_name;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
+
+  external wire_cst_auth_data auth;
+
+  external ffi.Pointer<wire_cst_auth_creds> creds;
+}
+
 final class wire_cst_Action_OpenBrowser extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 }
@@ -4699,13 +4953,6 @@ final class wire_cst_entry_id extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> uid;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> iddata;
-}
-
-final class wire_cst_list_String extends ffi.Struct {
-  external ffi.Pointer<ffi.Pointer<wire_cst_list_prim_u_8_strict>> ptr;
-
-  @ffi.Int32()
-  external int len;
 }
 
 final class wire_cst_entry extends ffi.Struct {
@@ -4964,48 +5211,6 @@ final class wire_cst_CustomUI_Row extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_custom_ui> children;
 }
 
-final class wire_cst_record_string_list_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
-
-  external ffi.Pointer<wire_cst_list_String> field1;
-}
-
-final class wire_cst_list_record_string_list_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_record_string_list_string> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_AuthCreds_Cookies extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_record_string_list_string> cookies;
-}
-
-final class wire_cst_AuthCreds_ApiKey extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
-}
-
-final class wire_cst_AuthCreds_UserPass extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> username;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> password;
-}
-
-final class AuthCredsKind extends ffi.Union {
-  external wire_cst_AuthCreds_Cookies Cookies;
-
-  external wire_cst_AuthCreds_ApiKey ApiKey;
-
-  external wire_cst_AuthCreds_UserPass UserPass;
-}
-
-final class wire_cst_auth_creds extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external AuthCredsKind kind;
-}
-
 final class wire_cst_SettingsUI_Slider extends ffi.Struct {
   @ffi.Double()
   external double min;
@@ -5034,10 +5239,16 @@ final class wire_cst_SettingsUI_Dropdown extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_dropdown_option> options;
 }
 
+final class wire_cst_SettingsUI_MultiDropdown extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_dropdown_option> options;
+}
+
 final class SettingsUIKind extends ffi.Union {
   external wire_cst_SettingsUI_Slider Slider;
 
   external wire_cst_SettingsUI_Dropdown Dropdown;
+
+  external wire_cst_SettingsUI_MultiDropdown MultiDropdown;
 }
 
 final class wire_cst_settings_ui extends ffi.Struct {
@@ -5312,35 +5523,6 @@ final class wire_cst_list_subtitles extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
-}
-
-final class wire_cst_AuthData_Cookie extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> loginpage;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> logonpage;
-}
-
-final class AuthDataKind extends ffi.Union {
-  external wire_cst_AuthData_Cookie Cookie;
-}
-
-final class wire_cst_auth_data extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external AuthDataKind kind;
-}
-
-final class wire_cst_account extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> domain;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> user_name;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> cover;
-
-  external wire_cst_auth_data auth;
-
-  external ffi.Pointer<wire_cst_auth_creds> creds;
 }
 
 final class wire_cst_EntryActivity_EpisodeActivity extends ffi.Struct {

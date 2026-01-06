@@ -8,15 +8,17 @@ export type AuthData = { type: "Cookie"; loginpage: string; logonpage: string } 
 
 export type Account = { domain: string; user_name?: string | null; cover?: string | null; auth: AuthData; creds?: AuthCreds | null };
 
-export type Link = { url: string; header?: { [key: string]: string } | null };
-
-export type EpisodeId = { uid: string; iddata?: string | null };
-
-export type Episode = { id: EpisodeId; name: string; description?: string | null; url: string; cover?: Link | null; timestamp?: string | null };
+export type PopupAction = { label: string; onclick: Action };
 
 export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
 
 export type EntryId = { uid: string; iddata?: string | null };
+
+export type EpisodeId = { uid: string; iddata?: string | null };
+
+export type Link = { url: string; header?: { [key: string]: string } | null };
+
+export type Episode = { id: EpisodeId; name: string; description?: string | null; url: string; cover?: Link | null; timestamp?: string | null };
 
 export type SettingKind = "Extension" | "Search";
 
@@ -32,17 +34,15 @@ export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
 
 export type EntryDetailed = { id: EntryId; url: string; titles: string[]; author?: string[] | null; ui?: CustomUI | null; meta?: { [key: string]: string } | null; media_type: MediaType; status: ReleaseStatus; description: string; language: string; cover?: Link | null; poster?: Link | null; episodes: Episode[]; genres?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
 
-export type PopupAction = { label: string; onclick: Action };
-
 export type Action = { type: "OpenBrowser"; url: string } | { type: "Popup"; title: string; content: CustomUI; actions: PopupAction[] } | { type: "Nav"; title: string; content: CustomUI } | { type: "TriggerEvent"; event: string; data: string } | { type: "NavEntry"; entry: EntryDetailed };
 
 export type DropdownOption = { label: string; value: string };
 
 export type EntryActivity = { type: "EpisodeActivity"; progress: number };
 
-export type SettingsUI = { type: "CheckBox" } | { type: "Slider"; min: number; max: number; step: number } | { type: "Dropdown"; options: DropdownOption[] };
-
 export type SettingValue = { type: "String"; data: string } | { type: "Number"; data: number } | { type: "Boolean"; data: boolean } | { type: "StringList"; data: string[] };
+
+export type SettingsUI = { type: "CheckBox" } | { type: "Slider"; min: number; max: number; step: number } | { type: "Dropdown"; options: DropdownOption[] } | { type: "MultiDropdown"; options: DropdownOption[] };
 
 export type Setting = { label: string; value: SettingValue; default: SettingValue; visible: boolean; ui?: SettingsUI | null };
 
@@ -78,9 +78,9 @@ export type RemoteExtension = { remote_id: string; id: string; name: string; url
 
 export type RemoteExtensionResult = { content: RemoteExtension[]; hasnext?: boolean | null; length?: number | null };
 
-export type Subtitles = { title: string; lang: string; url: Link };
-
 export type StreamSource = { name: string; lang: string; url: Link };
+
+export type Subtitles = { title: string; lang: string; url: Link };
 
 export type Source = { type: "Epub"; link: Link } | { type: "Pdf"; link: Link } | { type: "Imagelist"; links: Link[]; audio: ImageListAudio[] | null } | { type: "Video"; sources: StreamSource[]; sub: Subtitles[] } | { type: "Audio"; sources: StreamSource[] } | { type: "Paragraphlist"; paragraphs: Paragraph[] };
 

@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1585622927;
+  int get rustContentHash => 1123242254;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -151,6 +151,9 @@ abstract class RustLibApi extends BaseApi {
       required EventData event,
       CancelToken? token});
 
+  Future<List<Account>> crateApiExtensionProxyExtensionGetAccounts(
+      {required ProxyExtension that});
+
   Future<ExtensionData> crateApiExtensionProxyExtensionGetExtensionData(
       {required ProxyExtension that});
 
@@ -174,8 +177,14 @@ abstract class RustLibApi extends BaseApi {
   Future<bool> crateApiExtensionProxyExtensionHasPermission(
       {required ProxyExtension that, required Permission permission});
 
+  Future<void> crateApiExtensionProxyExtensionInvalidate(
+      {required ProxyExtension that, required String domain});
+
   Future<bool> crateApiExtensionProxyExtensionIsEnabled(
       {required ProxyExtension that});
+
+  Future<bool> crateApiExtensionProxyExtensionIsLoggedIn(
+      {required ProxyExtension that, required String domain});
 
   Future<EntryDetailedResult> crateApiExtensionProxyExtensionMapEntry(
       {required ProxyExtension that,
@@ -189,6 +198,9 @@ abstract class RustLibApi extends BaseApi {
       required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
+
+  Future<void> crateApiExtensionProxyExtensionMergeAuth(
+      {required ProxyExtension that, required Account account});
 
   Future<void> crateApiExtensionProxyExtensionMergeSettingDefinition(
       {required ProxyExtension that,
@@ -213,6 +225,9 @@ abstract class RustLibApi extends BaseApi {
       {required ProxyExtension that,
       required String id,
       required SettingKind kind});
+
+  Future<void> crateApiExtensionProxyExtensionSaveAuthState(
+      {required ProxyExtension that});
 
   Future<void> crateApiExtensionProxyExtensionSavePermissions(
       {required ProxyExtension that});
@@ -791,6 +806,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<List<Account>> crateApiExtensionProxyExtensionGetAccounts(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            that, serializer);
+        final raw_ = serializer.intoRaw();
+        return wire.wire__crate__api__extension__ProxyExtension_get_accounts(
+            port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_account,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionGetAccountsConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionGetAccountsConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_get_accounts",
+        argNames: ["that"],
+      );
+
+  @override
   Future<ExtensionData> crateApiExtensionProxyExtensionGetExtensionData(
       {required ProxyExtension that}) {
     return handler.executeNormal(NormalTask(
@@ -998,6 +1041,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> crateApiExtensionProxyExtensionInvalidate(
+      {required ProxyExtension that, required String domain}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        var arg1 = cst_encode_String(domain);
+        return wire.wire__crate__api__extension__ProxyExtension_invalidate(
+            port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionInvalidateConstMeta,
+      argValues: [that, domain],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionInvalidateConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_invalidate",
+        argNames: ["that", "domain"],
+      );
+
+  @override
   Future<bool> crateApiExtensionProxyExtensionIsEnabled(
       {required ProxyExtension that}) {
     return handler.executeNormal(NormalTask(
@@ -1022,6 +1093,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_is_enabled",
         argNames: ["that"],
+      );
+
+  @override
+  Future<bool> crateApiExtensionProxyExtensionIsLoggedIn(
+      {required ProxyExtension that, required String domain}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        var arg1 = cst_encode_String(domain);
+        return wire.wire__crate__api__extension__ProxyExtension_is_logged_in(
+            port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_bool,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionIsLoggedInConstMeta,
+      argValues: [that, domain],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionIsLoggedInConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_is_logged_in",
+        argNames: ["that", "domain"],
       );
 
   @override
@@ -1094,6 +1193,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_map_source",
         argNames: ["that", "source", "epid", "settings", "token"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionMergeAuth(
+      {required ProxyExtension that, required Account account}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        var arg1 = cst_encode_box_autoadd_account(account);
+        return wire.wire__crate__api__extension__ProxyExtension_merge_auth(
+            port_, arg0, arg1);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionMergeAuthConstMeta,
+      argValues: [that, account],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionMergeAuthConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_merge_auth",
+        argNames: ["that", "account"],
       );
 
   @override
@@ -1258,6 +1385,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_remove_setting",
         argNames: ["that", "id", "kind"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionSaveAuthState(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        return wire.wire__crate__api__extension__ProxyExtension_save_auth_state(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionSaveAuthStateConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionSaveAuthStateConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_save_auth_state",
+        argNames: ["that"],
       );
 
   @override
@@ -2313,6 +2467,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Account dco_decode_box_autoadd_account(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_account(raw);
+  }
+
+  @protected
   AuthCreds dco_decode_box_autoadd_auth_creds(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_auth_creds(raw);
@@ -2840,6 +3000,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Account> dco_decode_list_account(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_account).toList();
+  }
+
+  @protected
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_custom_ui).toList();
@@ -3272,6 +3438,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 2:
         return SettingsUI_Dropdown(
+          options: dco_decode_list_dropdown_option(raw[1]),
+        );
+      case 3:
+        return SettingsUI_MultiDropdown(
           options: dco_decode_list_dropdown_option(raw[1]),
         );
       default:
@@ -3733,6 +3903,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
         deserializer));
+  }
+
+  @protected
+  Account sse_decode_box_autoadd_account(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_account(deserializer));
   }
 
   @protected
@@ -4280,6 +4456,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <String>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Account> sse_decode_list_account(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Account>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_account(deserializer));
     }
     return ans_;
   }
@@ -4904,6 +5092,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 2:
         var var_options = sse_decode_list_dropdown_option(deserializer);
         return SettingsUI_Dropdown(options: var_options);
+      case 3:
+        var var_options = sse_decode_list_dropdown_option(deserializer);
+        return SettingsUI_MultiDropdown(options: var_options);
       default:
         throw UnimplementedError('');
     }
@@ -5589,6 +5780,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_account(Account self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_account(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_auth_creds(
       AuthCreds self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6068,6 +6265,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_account(List<Account> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_account(item, serializer);
     }
   }
 
@@ -6589,6 +6795,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case SettingsUI_Dropdown(options: final options):
         sse_encode_i_32(2, serializer);
         sse_encode_list_dropdown_option(options, serializer);
+      case SettingsUI_MultiDropdown(options: final options):
+        sse_encode_i_32(3, serializer);
+        sse_encode_list_dropdown_option(options, serializer);
     }
   }
 
@@ -6854,6 +7063,11 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
       RustLib.instance.api.crateApiExtensionProxyExtensionEvent(
           that: this, event: event, token: token);
 
+  Future<List<Account>> getAccounts() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionGetAccounts(
+        that: this,
+      );
+
   Future<ExtensionData> getExtensionData() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionGetExtensionData(
         that: this,
@@ -6884,10 +7098,16 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
       RustLib.instance.api.crateApiExtensionProxyExtensionHasPermission(
           that: this, permission: permission);
 
+  Future<void> invalidate({required String domain}) => RustLib.instance.api
+      .crateApiExtensionProxyExtensionInvalidate(that: this, domain: domain);
+
   Future<bool> isEnabled() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionIsEnabled(
         that: this,
       );
+
+  Future<bool> isLoggedIn({required String domain}) => RustLib.instance.api
+      .crateApiExtensionProxyExtensionIsLoggedIn(that: this, domain: domain);
 
   Future<EntryDetailedResult> mapEntry(
           {required EntryDetailed entry,
@@ -6907,6 +7127,9 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           epid: epid,
           settings: settings,
           token: token);
+
+  Future<void> mergeAuth({required Account account}) => RustLib.instance.api
+      .crateApiExtensionProxyExtensionMergeAuth(that: this, account: account);
 
   Future<void> mergeSettingDefinition(
           {required String id,
@@ -6940,6 +7163,11 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
   Future<void> removeSetting({required String id, required SettingKind kind}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionRemoveSetting(
           that: this, id: id, kind: kind);
+
+  Future<void> saveAuthState() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSaveAuthState(
+        that: this,
+      );
 
   Future<void> savePermissions() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionSavePermissions(
