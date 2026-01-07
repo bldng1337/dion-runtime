@@ -1,4 +1,3 @@
-
 export function assert(
 	condition: boolean,
 	msg: string = "Extension error",

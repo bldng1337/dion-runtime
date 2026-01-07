@@ -32,7 +32,7 @@ async function testHeaders(httpbin: string) {
 		},
 	});
 	assert(res.status === 200, "Headers request failed");
-	const json = res.json;
+	const json = res.json as { headers: Record<string, string> };
 	assert(
 		json.headers["x-test-header"] === "test-value",
 		`Headers not sent correctly \n\n\n${res.body}`,

@@ -12,7 +12,6 @@ import type {
 } from "@dion-js/runtime-types/runtime";
 import { Parser } from "m3u8-parser";
 import fetch from "node-fetch";
-import { join, dirname } from "node:path";
 
 export class MockExtensionClient {
 	name: string;
@@ -30,10 +29,16 @@ export class MockExtensionClient {
 	getPath: Mock<(err: Error | null) => string>;
 	constructor(extdata: ExtensionData, basepath: string) {
 		this.name = extdata.name;
-		this.loadData = mock((_err: any, _arg: any) => "");
-		this.storeData = mock((_err: any, _key: any, _arg: any) => {});
-		this.doAction = mock((_err: any, _action: any) => {});
-		this.requestPermission = mock((_err: any, _asd: any) => {
+		this.loadData = mock((_err: Error | null, _arg: unknown) => "");
+		this.storeData = mock(
+			(_err: Error | null, _key: unknown, _arg: unknown): void => {
+				// Empty mock implementation
+			},
+		);
+		this.doAction = mock((_err: Error | null, _action: unknown): void => {
+			// Empty mock implementation
+		});
+		this.requestPermission = mock((_err: Error | null, _asd: Permission) => {
 			return false;
 		});
 		this.getPath = mock(() => {
@@ -59,12 +64,12 @@ export class MockManagerClient {
 	constructor(managerpath: string = ".") {
 		this.managerpath = managerpath;
 		this.extensions = [];
-		this.getClient = mock((_err: any, extdata: any) => {
+		this.getClient = mock((_err: Error | null, extdata: ExtensionData) => {
 			const ext = new MockExtensionClient(extdata, managerpath);
 			this.extensions.push(ext);
 			return ext.client;
 		});
-		this.getPath = mock((_err: any) => {
+		this.getPath = mock((_err: Error | null) => {
 			return managerpath;
 		});
 		this.client = new ManagerClient(this.getClient, this.getPath);
@@ -85,7 +90,7 @@ export async function wait(ms: number): Promise<void> {
 	});
 }
 
-var lock: Promise<void> | undefined;
+let lock: Promise<void> | undefined;
 export async function ratelimit(ms: number) {
 	if (lock !== undefined) await lock;
 	lock = wait(ms);

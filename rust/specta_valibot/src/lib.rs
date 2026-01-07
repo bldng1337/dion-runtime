@@ -360,10 +360,12 @@ fn enum_datatype(
             if variant_schemas.len() == 1 {
                 Ok(variant_schemas.into_iter().next().unwrap())
             } else {
-                let all_objects = variants.iter().all(|(_, v)| match (repr, v) {
-                    (EnumRepr::Internal { .. }, EnumVariant::Unnamed(_)) => false,
-                    (EnumRepr::External, EnumVariant::Unit) => false,
-                    _ => true,
+                let all_objects = variants.iter().all(|(_, v)| {
+                    !matches!(
+                        (repr, v),
+                        (EnumRepr::Internal { .. }, EnumVariant::Unnamed(_))
+                            | (EnumRepr::External, EnumVariant::Unit)
+                    )
                 });
 
                 match repr {

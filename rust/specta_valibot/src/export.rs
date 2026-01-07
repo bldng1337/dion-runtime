@@ -136,15 +136,14 @@ impl Exporter {
         for (name, (sid, dt)) in &filtered_types {
             if let Some((existing_sid, existing_loc)) =
                 name_map.insert(*name, (**sid, dt.impl_location))
+                && existing_sid != **sid
             {
-                if existing_sid != **sid {
-                    return Err(specta::ts::TsExportError::DuplicateTypeName(
-                        name,
-                        dt.impl_location,
-                        existing_loc,
-                    )
-                    .into());
-                }
+                return Err(specta::ts::TsExportError::DuplicateTypeName(
+                    name,
+                    dt.impl_location,
+                    existing_loc,
+                )
+                .into());
             }
         }
 
@@ -175,14 +174,14 @@ impl Exporter {
 
         // Handle imports for TS
         let mut ts_imports: HashMap<String, Vec<String>> = HashMap::new();
-        for (_, (_, dt)) in &filtered_types {
+        for (_, dt) in filtered_types.values() {
             self.collect_imports(&dt.item, type_map, &self.rust_to_ts_libs, &mut ts_imports);
         }
         self.write_imports(&mut ts_out, &ts_imports, &filtered_types);
 
         // Handle imports for Valibot
         let mut vali_imports: HashMap<String, Vec<String>> = HashMap::new();
-        for (_, (_, dt)) in &filtered_types {
+        for (_, dt) in filtered_types.values() {
             self.collect_imports(
                 &dt.item,
                 type_map,
@@ -298,12 +297,12 @@ impl Exporter {
         match item {
             NamedDataTypeItem::Object(obj) => {
                 for field in &obj.fields {
-                    self.collect_type_deps(&field.ty, deps);
+                    Exporter::collect_type_deps(&field.ty, deps);
                 }
             }
             NamedDataTypeItem::Tuple(tuple) => {
                 for field in &tuple.fields {
-                    self.collect_type_deps(field, deps);
+                    Exporter::collect_type_deps(field, deps);
                 }
             }
             NamedDataTypeItem::Enum(e) => match e {
@@ -326,18 +325,18 @@ impl Exporter {
             EnumVariant::Unit => {}
             EnumVariant::Unnamed(tuple) => {
                 for field in &tuple.fields {
-                    self.collect_type_deps(field, deps);
+                    Exporter::collect_type_deps(field, deps);
                 }
             }
             EnumVariant::Named(obj) => {
                 for field in &obj.fields {
-                    self.collect_type_deps(&field.ty, deps);
+                    Exporter::collect_type_deps(&field.ty, deps);
                 }
             }
         }
     }
 
-    fn collect_type_deps(&self, ty: &DataType, deps: &mut HashSet<&'static str>) {
+    fn collect_type_deps(ty: &DataType, deps: &mut HashSet<&'static str>) {
         match ty {
             DataType::Named(named) => {
                 deps.insert(named.name);
@@ -345,23 +344,23 @@ impl Exporter {
             DataType::Reference(r) => {
                 deps.insert(r.name);
                 for g in &r.generics {
-                    self.collect_type_deps(g, deps);
+                    Exporter::collect_type_deps(g, deps);
                 }
             }
-            DataType::Nullable(inner) => self.collect_type_deps(inner, deps),
-            DataType::List(inner) => self.collect_type_deps(inner, deps),
+            DataType::Nullable(inner) => Exporter::collect_type_deps(inner, deps),
+            DataType::List(inner) => Exporter::collect_type_deps(inner, deps),
             DataType::Record(inner) => {
-                self.collect_type_deps(&inner.0, deps);
-                self.collect_type_deps(&inner.1, deps);
+                Exporter::collect_type_deps(&inner.0, deps);
+                Exporter::collect_type_deps(&inner.1, deps);
             }
             DataType::Tuple(tuple) => {
                 for field in &tuple.fields {
-                    self.collect_type_deps(field, deps);
+                    Exporter::collect_type_deps(field, deps);
                 }
             }
             DataType::Object(obj) => {
                 for field in &obj.fields {
-                    self.collect_type_deps(&field.ty, deps);
+                    Exporter::collect_type_deps(&field.ty, deps);
                 }
             }
             _ => {}

@@ -60,5 +60,7 @@ export abstract class DionExtension implements Extension {
 	abstract onEvent(data: EventData): Promise<EventResult | undefined>;
 	async handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;
 
-	async onload() {}
+	async onload(): Promise<void> {
+		// Empty implementation - can be overridden by subclasses
+	}
 }

@@ -36,11 +36,21 @@ class Project {
 		return this._path;
 	}
 
-	async lint() {}
-	async build(release: boolean) {}
-	async test() {}
-	async format() {}
-	async clean() {}
+	async lint() {
+		// Base implementation - should be overridden by subclasses
+	}
+	async build(release: boolean) {
+		// Base implementation - should be overridden by subclasses
+	}
+	async test() {
+		// Base implementation - should be overridden by subclasses
+	}
+	async format() {
+		// Base implementation - should be overridden by subclasses
+	}
+	async clean() {
+		// Base implementation - should be overridden by subclasses
+	}
 }
 
 class RustProject extends Project {
@@ -167,35 +177,35 @@ for (const action of positionals.slice(2)) {
 			case "build":
 				try {
 					await project.build(values.release);
-				} catch (e) {
+				} catch (_e) {
 					exitPrematurely(`[${action}]: Failed in ${project.path}`);
 				}
 				break;
 			case "test":
 				try {
 					await project.test();
-				} catch (e) {
+				} catch (_e) {
 					exitPrematurely(`[${action}]: Failed in ${project.path}`);
 				}
 				break;
 			case "format":
 				try {
 					await project.format();
-				} catch (e) {
+				} catch (_e) {
 					exitPrematurely(`[${action}]: Failed in ${project.path}`);
 				}
 				break;
 			case "lint":
 				try {
 					await project.lint();
-				} catch (e) {
+				} catch (_e) {
 					exitPrematurely(`[${action}]: Failed in ${project.path}`);
 				}
 				break;
 			case "clean":
 				try {
 					await project.clean();
-				} catch (e) {
+				} catch (_e) {
 					exitPrematurely(`[${action}]: Failed in ${project.path}`);
 				}
 				break;

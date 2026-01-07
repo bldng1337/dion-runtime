@@ -1,9 +1,20 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
-	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+	"$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
+	"root": false,
+	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!**/dist", "!**/.dist", "!**/build"]
+		"includes": [
+			"**",
+			"!**/target/**",
+			"!**/node_modules/**",
+			"!**/dist/**",
+			"!**/.dist/**",
+			"!**/build/**",
+			"!**/.turbo/**",
+			"!**/.httpcache/**",
+			"!**/.index/**"
+		]
 	},
 	"formatter": { "enabled": true, "indentStyle": "tab" },
 	"linter": {

@@ -1,8 +1,8 @@
 {
-  "include": ["src/**/*"],
-  "compilerOptions": {
-    "types": ["bun"],
-    "target": "ESNext",
+	"include": ["src/**/*"],
+	"compilerOptions": {
+		"types": ["bun"],
+		"target": "ESNext",
 		"strict": true,
 		"moduleResolution": "nodenext",
 		"module": "nodenext",
@@ -10,5 +10,5 @@
 		"noUnusedParameters": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true
-  }
+	}
 }

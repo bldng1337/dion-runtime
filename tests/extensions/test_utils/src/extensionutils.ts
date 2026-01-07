@@ -7,6 +7,7 @@ import type {
 	SourceProvider,
 } from "@dion-js/runtime-types/extension";
 import type {
+	Entry,
 	EntryActivity,
 	EntryDetailed,
 	EntryDetailedResult,
@@ -22,9 +23,14 @@ import type {
 import { fetch } from "network";
 import { getSetting } from "setting";
 
+import type { Account } from "@dion-js/runtime-types/runtime";
+
 export class DefaultExtension
 	implements Extension, SourceProvider, EntryExtension, SourceProcessorExtension
 {
+	async validate(acc: Account): Promise<Account | undefined> {
+		return acc;
+	}
 	async onEvent(data: EventData): Promise<EventResult | undefined> {
 		switch (data.type) {
 			case "Action":
@@ -70,20 +76,22 @@ export class DefaultExtension
 		_activity: EntryActivity,
 		_entry: EntryDetailed,
 		_settings: Record<string, Setting>,
-	): Promise<void> {}
+	): Promise<void> {
+		// Empty implementation
+	}
 
 	async browse(_page: number): Promise<EntryList> {
 		const server = await getServer();
 		const data = await fetch(`${server}/getEntries`);
 		return {
-			content: data.json,
+			content: data.json as Entry[],
 		};
 	}
 	async search(_page: number, _filter: string): Promise<EntryList> {
 		const server = await getServer();
 		const data = await fetch(`${server}/getEntries`);
 		return {
-			content: data.json,
+			content: data.json as Entry[],
 		};
 	}
 	async handleUrl(_url: string): Promise<boolean> {
@@ -96,7 +104,7 @@ export class DefaultExtension
 		const server = await getServer();
 		const data = await fetch(`${server}/getEntry`);
 		return {
-			entry: data.json,
+			entry: data.json as EntryDetailed,
 			settings: settings,
 		};
 	}
@@ -107,7 +115,7 @@ export class DefaultExtension
 		const server = await getServer();
 		const data = await fetch(`${server}/getSource`);
 		return {
-			source: data.json,
+			source: data.json as Source,
 			settings: settings,
 		};
 	}
