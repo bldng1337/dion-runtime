@@ -1,5 +1,7 @@
 #[cfg(feature = "type")]
 mod ts {
+    use specta::ts::ExportConfiguration;
+    use specta_valibot::{export::Exporter, BigIntExportBehavior, Config};
 
     #[test]
     fn gen_types() {
