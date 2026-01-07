@@ -89,9 +89,10 @@ jobs:
         working-directory: dart/rdion_runtime
         run: flutter analyze lib
 
-      - name: Run integration tests
-        working-directory: dart/rdion_runtime/example
-        run: flutter test integration_test
+      # - name: Run integration tests
+      #   working-directory: dart/rdion_runtime/example
+      #   run: flutter test integration_test
+      # Ignore flutter tests for now until https://github.com/fzyzcjy/flutter_rust_bridge/issues/2768
 
       - name: Run cargo test
         run: cargo test --verbose
