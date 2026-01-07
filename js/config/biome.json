@@ -13,7 +13,9 @@
 			"!**/build/**",
 			"!**/.turbo/**",
 			"!**/.httpcache/**",
-			"!**/.index/**"
+			"!**/.index/**",
+			"!**/generated_*",
+			"!**/*.dion.js"
 		]
 	},
 	"formatter": { "enabled": true, "indentStyle": "tab" },
