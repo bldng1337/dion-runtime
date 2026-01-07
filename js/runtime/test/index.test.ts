@@ -1,11 +1,11 @@
 import { expect, test } from "bun:test";
+import { join } from "node:path";
 import type {
 	Entry,
 	EntryDetailed,
 	Source,
 } from "@dion-js/runtime-types/runtime";
 import { Adapter, ExtensionClient, ManagerClient } from "../index.js";
-import { join } from "node:path";
 
 const managerpath = join(
 	import.meta.path,

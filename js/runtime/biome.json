@@ -2,6 +2,9 @@
 	"$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
 	"root": false,
 	"files": {
-		"includes": ["test/**/*.js"]
+  	"includes": [
+  	  "!index.js",
+      "test/index.test.ts"
+  	]
 	}
 }
