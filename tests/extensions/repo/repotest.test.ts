@@ -6,6 +6,7 @@ import { MockManagerClient } from "@dion-js/extension-test-utils";
 import { Adapter } from "@dion-js/runtime";
 import { join } from "node:path";
 const path = join(import.meta.path, "../../..");
+console.log(path);
 await $`cd ${path} && bunx dion-build-index`;
 
 test("repo extension test", async () => {
