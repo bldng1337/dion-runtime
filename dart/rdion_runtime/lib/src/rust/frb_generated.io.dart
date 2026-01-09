@@ -378,6 +378,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<MediaType> dco_decode_list_media_type(dynamic raw);
 
   @protected
+  List<MixedContent> dco_decode_list_mixed_content(dynamic raw);
+
+  @protected
   List<Paragraph> dco_decode_list_paragraph(dynamic raw);
 
   @protected
@@ -419,6 +422,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MediaType dco_decode_media_type(dynamic raw);
+
+  @protected
+  MixedContent dco_decode_mixed_content(dynamic raw);
 
   @protected
   Map<String, String>? dco_decode_opt_Map_String_String_None(dynamic raw);
@@ -858,6 +864,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<MediaType> sse_decode_list_media_type(SseDeserializer deserializer);
 
   @protected
+  List<MixedContent> sse_decode_list_mixed_content(
+      SseDeserializer deserializer);
+
+  @protected
   List<Paragraph> sse_decode_list_paragraph(SseDeserializer deserializer);
 
   @protected
@@ -904,6 +914,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MediaType sse_decode_media_type(SseDeserializer deserializer);
+
+  @protected
+  MixedContent sse_decode_mixed_content(SseDeserializer deserializer);
 
   @protected
   Map<String, String>? sse_decode_opt_Map_String_String_None(
@@ -1335,6 +1348,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_media_type(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       ans.ref.ptr[i] = cst_encode_media_type(raw[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_mixed_content> cst_encode_list_mixed_content(
+      List<MixedContent> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_mixed_content(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_mixed_content(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -2068,6 +2092,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_mixed_content(
+      MixedContent apiObj, wire_cst_mixed_content wireObj) {
+    if (apiObj is MixedContent_Text) {
+      var pre_field0 = cst_encode_String(apiObj.field0);
+      wireObj.tag = 0;
+      wireObj.kind.Text.field0 = pre_field0;
+      return;
+    }
+    if (apiObj is MixedContent_CustomUI) {
+      var pre_field0 = cst_encode_box_custom_ui(apiObj.field0);
+      wireObj.tag = 1;
+      wireObj.kind.CustomUI.field0 = pre_field0;
+      return;
+    }
+    if (apiObj is MixedContent_Table) {
+      var pre_field0 = cst_encode_list_row(apiObj.field0);
+      wireObj.tag = 2;
+      wireObj.kind.Table.field0 = pre_field0;
+      return;
+    }
+  }
+
+  @protected
   void cst_api_fill_to_wire_paragraph(
       Paragraph apiObj, wire_cst_paragraph wireObj) {
     if (apiObj is Paragraph_Text) {
@@ -2076,15 +2123,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.Text.content = pre_content;
       return;
     }
+    if (apiObj is Paragraph_Mixed) {
+      var pre_content = cst_encode_list_mixed_content(apiObj.content);
+      wireObj.tag = 1;
+      wireObj.kind.Mixed.content = pre_content;
+      return;
+    }
     if (apiObj is Paragraph_CustomUI) {
       var pre_ui = cst_encode_box_custom_ui(apiObj.ui);
-      wireObj.tag = 1;
+      wireObj.tag = 2;
       wireObj.kind.CustomUI.ui = pre_ui;
       return;
     }
     if (apiObj is Paragraph_Table) {
       var pre_columns = cst_encode_list_row(apiObj.columns);
-      wireObj.tag = 2;
+      wireObj.tag = 3;
       wireObj.kind.Table.columns = pre_columns;
       return;
     }
@@ -2772,6 +2825,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<MediaType> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_mixed_content(
+      List<MixedContent> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_paragraph(
       List<Paragraph> self, SseSerializer serializer);
 
@@ -2824,6 +2881,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_media_type(MediaType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_mixed_content(MixedContent self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_Map_String_String_None(
@@ -4638,6 +4698,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_media_type = _cst_new_list_media_typePtr
       .asFunction<ffi.Pointer<wire_cst_list_media_type> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_mixed_content> cst_new_list_mixed_content(int len) {
+    return _cst_new_list_mixed_content(len);
+  }
+
+  late final _cst_new_list_mixed_contentPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_mixed_content> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_mixed_content');
+  late final _cst_new_list_mixed_content = _cst_new_list_mixed_contentPtr
+      .asFunction<ffi.Pointer<wire_cst_list_mixed_content> Function(int)>();
+
   ffi.Pointer<wire_cst_list_paragraph> cst_new_list_paragraph(int len) {
     return _cst_new_list_paragraph(len);
   }
@@ -5365,12 +5436,53 @@ final class wire_cst_list_media_type extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_MixedContent_Text extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+}
+
+final class wire_cst_MixedContent_CustomUI extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> field0;
+}
+
 final class wire_cst_Paragraph_Text extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
 }
 
-final class wire_cst_Paragraph_CustomUI extends ffi.Struct {
-  external ffi.Pointer<wire_cst_custom_ui> ui;
+final class wire_cst_Paragraph_Mixed extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_mixed_content> content;
+}
+
+final class wire_cst_list_mixed_content extends ffi.Struct {
+  external ffi.Pointer<wire_cst_mixed_content> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_mixed_content extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external MixedContentKind kind;
+}
+
+final class MixedContentKind extends ffi.Union {
+  external wire_cst_MixedContent_Text Text;
+
+  external wire_cst_MixedContent_CustomUI CustomUI;
+
+  external wire_cst_MixedContent_Table Table;
+}
+
+final class wire_cst_MixedContent_Table extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_row> field0;
+}
+
+final class wire_cst_list_row extends ffi.Struct {
+  external ffi.Pointer<wire_cst_row> ptr;
+
+  @ffi.Int32()
+  external int len;
 }
 
 final class wire_cst_row extends ffi.Struct {
@@ -5394,20 +5506,19 @@ final class wire_cst_paragraph extends ffi.Struct {
 final class ParagraphKind extends ffi.Union {
   external wire_cst_Paragraph_Text Text;
 
+  external wire_cst_Paragraph_Mixed Mixed;
+
   external wire_cst_Paragraph_CustomUI CustomUI;
 
   external wire_cst_Paragraph_Table Table;
 }
 
-final class wire_cst_Paragraph_Table extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_row> columns;
+final class wire_cst_Paragraph_CustomUI extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> ui;
 }
 
-final class wire_cst_list_row extends ffi.Struct {
-  external ffi.Pointer<wire_cst_row> ptr;
-
-  @ffi.Int32()
-  external int len;
+final class wire_cst_Paragraph_Table extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_row> columns;
 }
 
 final class wire_cst_SettingValue_String extends ffi.Struct {

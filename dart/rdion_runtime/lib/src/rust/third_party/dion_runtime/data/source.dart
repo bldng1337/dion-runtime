@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'source.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -359,12 +359,30 @@ enum MediaType {
 }
 
 @freezed
+sealed class MixedContent with _$MixedContent {
+  const MixedContent._();
+
+  const factory MixedContent.text(
+    String field0,
+  ) = MixedContent_Text;
+  const factory MixedContent.customUi(
+    CustomUI field0,
+  ) = MixedContent_CustomUI;
+  const factory MixedContent.table(
+    List<Row> field0,
+  ) = MixedContent_Table;
+}
+
+@freezed
 sealed class Paragraph with _$Paragraph {
   const Paragraph._();
 
   const factory Paragraph.text({
     required String content,
   }) = Paragraph_Text;
+  const factory Paragraph.mixed({
+    required List<MixedContent> content,
+  }) = Paragraph_Mixed;
   const factory Paragraph.customUi({
     required CustomUI ui,
   }) = Paragraph_CustomUI;

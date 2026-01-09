@@ -15,10 +15,552 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$MixedContent {
+  Object get field0 => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) text,
+    required TResult Function(CustomUI field0) customUi,
+    required TResult Function(List<Row> field0) table,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? text,
+    TResult? Function(CustomUI field0)? customUi,
+    TResult? Function(List<Row> field0)? table,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? text,
+    TResult Function(CustomUI field0)? customUi,
+    TResult Function(List<Row> field0)? table,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MixedContent_Text value) text,
+    required TResult Function(MixedContent_CustomUI value) customUi,
+    required TResult Function(MixedContent_Table value) table,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MixedContent_Text value)? text,
+    TResult? Function(MixedContent_CustomUI value)? customUi,
+    TResult? Function(MixedContent_Table value)? table,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MixedContent_Text value)? text,
+    TResult Function(MixedContent_CustomUI value)? customUi,
+    TResult Function(MixedContent_Table value)? table,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MixedContentCopyWith<$Res> {
+  factory $MixedContentCopyWith(
+          MixedContent value, $Res Function(MixedContent) then) =
+      _$MixedContentCopyWithImpl<$Res, MixedContent>;
+}
+
+/// @nodoc
+class _$MixedContentCopyWithImpl<$Res, $Val extends MixedContent>
+    implements $MixedContentCopyWith<$Res> {
+  _$MixedContentCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$MixedContent_TextImplCopyWith<$Res> {
+  factory _$$MixedContent_TextImplCopyWith(_$MixedContent_TextImpl value,
+          $Res Function(_$MixedContent_TextImpl) then) =
+      __$$MixedContent_TextImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$MixedContent_TextImplCopyWithImpl<$Res>
+    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_TextImpl>
+    implements _$$MixedContent_TextImplCopyWith<$Res> {
+  __$$MixedContent_TextImplCopyWithImpl(_$MixedContent_TextImpl _value,
+      $Res Function(_$MixedContent_TextImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$MixedContent_TextImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MixedContent_TextImpl extends MixedContent_Text {
+  const _$MixedContent_TextImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'MixedContent.text(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MixedContent_TextImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MixedContent_TextImplCopyWith<_$MixedContent_TextImpl> get copyWith =>
+      __$$MixedContent_TextImplCopyWithImpl<_$MixedContent_TextImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) text,
+    required TResult Function(CustomUI field0) customUi,
+    required TResult Function(List<Row> field0) table,
+  }) {
+    return text(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? text,
+    TResult? Function(CustomUI field0)? customUi,
+    TResult? Function(List<Row> field0)? table,
+  }) {
+    return text?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? text,
+    TResult Function(CustomUI field0)? customUi,
+    TResult Function(List<Row> field0)? table,
+    required TResult orElse(),
+  }) {
+    if (text != null) {
+      return text(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MixedContent_Text value) text,
+    required TResult Function(MixedContent_CustomUI value) customUi,
+    required TResult Function(MixedContent_Table value) table,
+  }) {
+    return text(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MixedContent_Text value)? text,
+    TResult? Function(MixedContent_CustomUI value)? customUi,
+    TResult? Function(MixedContent_Table value)? table,
+  }) {
+    return text?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MixedContent_Text value)? text,
+    TResult Function(MixedContent_CustomUI value)? customUi,
+    TResult Function(MixedContent_Table value)? table,
+    required TResult orElse(),
+  }) {
+    if (text != null) {
+      return text(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MixedContent_Text extends MixedContent {
+  const factory MixedContent_Text(final String field0) =
+      _$MixedContent_TextImpl;
+  const MixedContent_Text._() : super._();
+
+  @override
+  String get field0;
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MixedContent_TextImplCopyWith<_$MixedContent_TextImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MixedContent_CustomUIImplCopyWith<$Res> {
+  factory _$$MixedContent_CustomUIImplCopyWith(
+          _$MixedContent_CustomUIImpl value,
+          $Res Function(_$MixedContent_CustomUIImpl) then) =
+      __$$MixedContent_CustomUIImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI field0});
+
+  $CustomUICopyWith<$Res> get field0;
+}
+
+/// @nodoc
+class __$$MixedContent_CustomUIImplCopyWithImpl<$Res>
+    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_CustomUIImpl>
+    implements _$$MixedContent_CustomUIImplCopyWith<$Res> {
+  __$$MixedContent_CustomUIImplCopyWithImpl(_$MixedContent_CustomUIImpl _value,
+      $Res Function(_$MixedContent_CustomUIImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$MixedContent_CustomUIImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get field0 {
+    return $CustomUICopyWith<$Res>(_value.field0, (value) {
+      return _then(_value.copyWith(field0: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
+  const _$MixedContent_CustomUIImpl(this.field0) : super._();
+
+  @override
+  final CustomUI field0;
+
+  @override
+  String toString() {
+    return 'MixedContent.customUi(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MixedContent_CustomUIImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
+      get copyWith => __$$MixedContent_CustomUIImplCopyWithImpl<
+          _$MixedContent_CustomUIImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) text,
+    required TResult Function(CustomUI field0) customUi,
+    required TResult Function(List<Row> field0) table,
+  }) {
+    return customUi(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? text,
+    TResult? Function(CustomUI field0)? customUi,
+    TResult? Function(List<Row> field0)? table,
+  }) {
+    return customUi?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? text,
+    TResult Function(CustomUI field0)? customUi,
+    TResult Function(List<Row> field0)? table,
+    required TResult orElse(),
+  }) {
+    if (customUi != null) {
+      return customUi(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MixedContent_Text value) text,
+    required TResult Function(MixedContent_CustomUI value) customUi,
+    required TResult Function(MixedContent_Table value) table,
+  }) {
+    return customUi(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MixedContent_Text value)? text,
+    TResult? Function(MixedContent_CustomUI value)? customUi,
+    TResult? Function(MixedContent_Table value)? table,
+  }) {
+    return customUi?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MixedContent_Text value)? text,
+    TResult Function(MixedContent_CustomUI value)? customUi,
+    TResult Function(MixedContent_Table value)? table,
+    required TResult orElse(),
+  }) {
+    if (customUi != null) {
+      return customUi(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MixedContent_CustomUI extends MixedContent {
+  const factory MixedContent_CustomUI(final CustomUI field0) =
+      _$MixedContent_CustomUIImpl;
+  const MixedContent_CustomUI._() : super._();
+
+  @override
+  CustomUI get field0;
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MixedContent_TableImplCopyWith<$Res> {
+  factory _$$MixedContent_TableImplCopyWith(_$MixedContent_TableImpl value,
+          $Res Function(_$MixedContent_TableImpl) then) =
+      __$$MixedContent_TableImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Row> field0});
+}
+
+/// @nodoc
+class __$$MixedContent_TableImplCopyWithImpl<$Res>
+    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_TableImpl>
+    implements _$$MixedContent_TableImplCopyWith<$Res> {
+  __$$MixedContent_TableImplCopyWithImpl(_$MixedContent_TableImpl _value,
+      $Res Function(_$MixedContent_TableImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$MixedContent_TableImpl(
+      null == field0
+          ? _value._field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as List<Row>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MixedContent_TableImpl extends MixedContent_Table {
+  const _$MixedContent_TableImpl(final List<Row> field0)
+      : _field0 = field0,
+        super._();
+
+  final List<Row> _field0;
+  @override
+  List<Row> get field0 {
+    if (_field0 is EqualUnmodifiableListView) return _field0;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_field0);
+  }
+
+  @override
+  String toString() {
+    return 'MixedContent.table(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MixedContent_TableImpl &&
+            const DeepCollectionEquality().equals(other._field0, _field0));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_field0));
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MixedContent_TableImplCopyWith<_$MixedContent_TableImpl> get copyWith =>
+      __$$MixedContent_TableImplCopyWithImpl<_$MixedContent_TableImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) text,
+    required TResult Function(CustomUI field0) customUi,
+    required TResult Function(List<Row> field0) table,
+  }) {
+    return table(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? text,
+    TResult? Function(CustomUI field0)? customUi,
+    TResult? Function(List<Row> field0)? table,
+  }) {
+    return table?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? text,
+    TResult Function(CustomUI field0)? customUi,
+    TResult Function(List<Row> field0)? table,
+    required TResult orElse(),
+  }) {
+    if (table != null) {
+      return table(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MixedContent_Text value) text,
+    required TResult Function(MixedContent_CustomUI value) customUi,
+    required TResult Function(MixedContent_Table value) table,
+  }) {
+    return table(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MixedContent_Text value)? text,
+    TResult? Function(MixedContent_CustomUI value)? customUi,
+    TResult? Function(MixedContent_Table value)? table,
+  }) {
+    return table?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MixedContent_Text value)? text,
+    TResult Function(MixedContent_CustomUI value)? customUi,
+    TResult Function(MixedContent_Table value)? table,
+    required TResult orElse(),
+  }) {
+    if (table != null) {
+      return table(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MixedContent_Table extends MixedContent {
+  const factory MixedContent_Table(final List<Row> field0) =
+      _$MixedContent_TableImpl;
+  const MixedContent_Table._() : super._();
+
+  @override
+  List<Row> get field0;
+
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MixedContent_TableImplCopyWith<_$MixedContent_TableImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$Paragraph {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
+    required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) =>
@@ -26,6 +568,7 @@ mixin _$Paragraph {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) =>
@@ -33,6 +576,7 @@ mixin _$Paragraph {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
+    TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -41,6 +585,7 @@ mixin _$Paragraph {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
     required TResult Function(Paragraph_CustomUI value) customUi,
     required TResult Function(Paragraph_Table value) table,
   }) =>
@@ -48,6 +593,7 @@ mixin _$Paragraph {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
     TResult? Function(Paragraph_CustomUI value)? customUi,
     TResult? Function(Paragraph_Table value)? table,
   }) =>
@@ -55,6 +601,7 @@ mixin _$Paragraph {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_Mixed value)? mixed,
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
@@ -152,6 +699,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
+    required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
@@ -162,6 +710,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
@@ -172,6 +721,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
+    TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -186,6 +736,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
     required TResult Function(Paragraph_CustomUI value) customUi,
     required TResult Function(Paragraph_Table value) table,
   }) {
@@ -196,6 +747,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
     TResult? Function(Paragraph_CustomUI value)? customUi,
     TResult? Function(Paragraph_Table value)? table,
   }) {
@@ -206,6 +758,7 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_Mixed value)? mixed,
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
@@ -228,6 +781,169 @@ abstract class Paragraph_Text extends Paragraph {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Paragraph_TextImplCopyWith<_$Paragraph_TextImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Paragraph_MixedImplCopyWith<$Res> {
+  factory _$$Paragraph_MixedImplCopyWith(_$Paragraph_MixedImpl value,
+          $Res Function(_$Paragraph_MixedImpl) then) =
+      __$$Paragraph_MixedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<MixedContent> content});
+}
+
+/// @nodoc
+class __$$Paragraph_MixedImplCopyWithImpl<$Res>
+    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_MixedImpl>
+    implements _$$Paragraph_MixedImplCopyWith<$Res> {
+  __$$Paragraph_MixedImplCopyWithImpl(
+      _$Paragraph_MixedImpl _value, $Res Function(_$Paragraph_MixedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? content = null,
+  }) {
+    return _then(_$Paragraph_MixedImpl(
+      content: null == content
+          ? _value._content
+          : content // ignore: cast_nullable_to_non_nullable
+              as List<MixedContent>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Paragraph_MixedImpl extends Paragraph_Mixed {
+  const _$Paragraph_MixedImpl({required final List<MixedContent> content})
+      : _content = content,
+        super._();
+
+  final List<MixedContent> _content;
+  @override
+  List<MixedContent> get content {
+    if (_content is EqualUnmodifiableListView) return _content;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_content);
+  }
+
+  @override
+  String toString() {
+    return 'Paragraph.mixed(content: $content)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Paragraph_MixedImpl &&
+            const DeepCollectionEquality().equals(other._content, _content));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_content));
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Paragraph_MixedImplCopyWith<_$Paragraph_MixedImpl> get copyWith =>
+      __$$Paragraph_MixedImplCopyWithImpl<_$Paragraph_MixedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String content) text,
+    required TResult Function(List<MixedContent> content) mixed,
+    required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
+  }) {
+    return mixed(content);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String content)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
+    TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
+  }) {
+    return mixed?.call(content);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String content)? text,
+    TResult Function(List<MixedContent> content)? mixed,
+    TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
+    required TResult orElse(),
+  }) {
+    if (mixed != null) {
+      return mixed(content);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
+    required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
+  }) {
+    return mixed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
+    TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
+  }) {
+    return mixed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_Mixed value)? mixed,
+    TResult Function(Paragraph_CustomUI value)? customUi,
+    TResult Function(Paragraph_Table value)? table,
+    required TResult orElse(),
+  }) {
+    if (mixed != null) {
+      return mixed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Paragraph_Mixed extends Paragraph {
+  const factory Paragraph_Mixed({required final List<MixedContent> content}) =
+      _$Paragraph_MixedImpl;
+  const Paragraph_Mixed._() : super._();
+
+  List<MixedContent> get content;
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Paragraph_MixedImplCopyWith<_$Paragraph_MixedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -313,6 +1029,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
+    required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
@@ -323,6 +1040,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
@@ -333,6 +1051,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
+    TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -347,6 +1066,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
     required TResult Function(Paragraph_CustomUI value) customUi,
     required TResult Function(Paragraph_Table value) table,
   }) {
@@ -357,6 +1077,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
     TResult? Function(Paragraph_CustomUI value)? customUi,
     TResult? Function(Paragraph_Table value)? table,
   }) {
@@ -367,6 +1088,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_Mixed value)? mixed,
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
@@ -470,6 +1192,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String content) text,
+    required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
@@ -480,6 +1203,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
@@ -490,6 +1214,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content)? text,
+    TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -504,6 +1229,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
     required TResult Function(Paragraph_CustomUI value) customUi,
     required TResult Function(Paragraph_Table value) table,
   }) {
@@ -514,6 +1240,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
     TResult? Function(Paragraph_CustomUI value)? customUi,
     TResult? Function(Paragraph_Table value)? table,
   }) {
@@ -524,6 +1251,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
+    TResult Function(Paragraph_Mixed value)? mixed,
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),

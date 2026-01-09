@@ -12,13 +12,11 @@ export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
 
 export type EntryId = { uid: string; iddata?: string | null };
 
-export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
-
 export type Link = { url: string; header?: { [key: string]: string } | null };
 
-export type EpisodeId = { uid: string; iddata?: string | null };
+export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
 
-export type Episode = { id: EpisodeId; name: string; description?: string | null; url: string; cover?: Link | null; timestamp?: string | null };
+export type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
 
 export type TimestampType = "Relative" | "Absolute";
 
@@ -26,9 +24,11 @@ export type UIAction = { type: "Action"; action: Action } | { type: "SwapContent
 
 export type SettingKind = "Extension" | "Search";
 
-export type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
-
 export type CustomUI = { type: "Text"; text: string } | { type: "Image"; image: Link; width: number | null; height: number | null } | { type: "Link"; link: string; label: string | null } | { type: "TimeStamp"; timestamp: string; display: TimestampType } | { type: "EntryCard"; entry: Entry } | { type: "Card"; image: Link; top: CustomUI; bottom: CustomUI } | { type: "Feed"; event: string; data: string } | { type: "Button"; label: string; on_click: UIAction | null } | { type: "InlineSetting"; setting_id: string; setting_kind: SettingKind; on_commit: UIAction | null } | { type: "Slot"; id: string; child: CustomUI } | { type: "Column"; children: CustomUI[] } | { type: "Row"; children: CustomUI[] };
+
+export type EpisodeId = { uid: string; iddata?: string | null };
+
+export type Episode = { id: EpisodeId; name: string; description?: string | null; url: string; cover?: Link | null; timestamp?: string | null };
 
 export type EntryDetailed = { id: EntryId; url: string; titles: string[]; author?: string[] | null; ui?: CustomUI | null; meta?: { [key: string]: string } | null; media_type: MediaType; status: ReleaseStatus; description: string; language: string; cover?: Link | null; poster?: Link | null; episodes: Episode[]; genres?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
 
@@ -68,9 +68,11 @@ export type ExtensionRepo = { remote_id: string; name: string; description: stri
 
 export type ImageListAudio = { link: Link; from: number; to: number };
 
+export type Paragraph = { type: "Text"; content: string } | { type: "Mixed"; content: MixedContent[] } | { type: "CustomUI"; ui: CustomUI } | { type: "Table"; columns: Row[] };
+
 export type Row = { cells: Paragraph[] };
 
-export type Paragraph = { type: "Text"; content: string } | { type: "CustomUI"; ui: CustomUI } | { type: "Table"; columns: Row[] };
+export type MixedContent = ({ type: "Text" } & string) | ({ type: "CustomUI" } & CustomUI) | ({ type: "Table" } & Row[]);
 
 export type Permission = { type: "Storage"; path: string; write: boolean } | { type: "Network"; domains: string[] } | { type: "ActionPopup" } | { type: "ArbitraryNetwork" };
 

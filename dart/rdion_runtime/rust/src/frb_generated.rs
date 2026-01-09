@@ -264,7 +264,7 @@ fn wire__crate__api__client__ManagerClient_init_impl(
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || {
             let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_get_path = decode_DartFn_Inputs__Output_String_AnyhowException(<flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer));
@@ -2805,9 +2805,23 @@ const _: fn() = || {
         let _: String = Link.url;
         let _: Option<std::collections::HashMap<String, String>> = Link.header;
     }
+    match None::<dion_runtime::data::source::MixedContent>.unwrap() {
+        dion_runtime::data::source::MixedContent::Text(field0) => {
+            let _: String = field0;
+        }
+        dion_runtime::data::source::MixedContent::CustomUI(field0) => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = field0;
+        }
+        dion_runtime::data::source::MixedContent::Table(field0) => {
+            let _: Vec<dion_runtime::data::source::Row> = field0;
+        }
+    }
     match None::<dion_runtime::data::source::Paragraph>.unwrap() {
         dion_runtime::data::source::Paragraph::Text { content } => {
             let _: String = content;
+        }
+        dion_runtime::data::source::Paragraph::Mixed { content } => {
+            let _: Vec<dion_runtime::data::source::MixedContent> = content;
         }
         dion_runtime::data::source::Paragraph::CustomUI { ui } => {
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = ui;
@@ -4302,6 +4316,20 @@ impl SseDecode for Vec<dion_runtime::data::source::MediaType> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::data::source::MixedContent> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::MixedContent>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::data::source::Paragraph> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4486,6 +4514,32 @@ impl SseDecode for dion_runtime::data::source::MediaType {
             4 => dion_runtime::data::source::MediaType::Unknown,
             _ => unreachable!("Invalid variant for MediaType: {}", inner),
         };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::MixedContent {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return dion_runtime::data::source::MixedContent::Text(var_field0);
+            }
+            1 => {
+                let mut var_field0 =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::source::MixedContent::CustomUI(var_field0);
+            }
+            2 => {
+                let mut var_field0 =
+                    <Vec<dion_runtime::data::source::Row>>::sse_decode(deserializer);
+                return dion_runtime::data::source::MixedContent::Table(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -4682,11 +4736,18 @@ impl SseDecode for dion_runtime::data::source::Paragraph {
                 };
             }
             1 => {
+                let mut var_content =
+                    <Vec<dion_runtime::data::source::MixedContent>>::sse_decode(deserializer);
+                return dion_runtime::data::source::Paragraph::Mixed {
+                    content: var_content,
+                };
+            }
+            2 => {
                 let mut var_ui =
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Paragraph::CustomUI { ui: var_ui };
             }
-            2 => {
+            3 => {
                 let mut var_columns =
                     <Vec<dion_runtime::data::source::Row>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Paragraph::Table {
@@ -5959,17 +6020,50 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Me
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::MixedContent> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::source::MixedContent::Text(field0) => {
+                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::source::MixedContent::CustomUI(field0) => {
+                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::source::MixedContent::Table(field0) => {
+                [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::MixedContent>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::MixedContent>>
+    for dion_runtime::data::source::MixedContent
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::MixedContent> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Paragraph> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
             dion_runtime::data::source::Paragraph::Text { content } => {
                 [0.into_dart(), content.into_into_dart().into_dart()].into_dart()
             }
+            dion_runtime::data::source::Paragraph::Mixed { content } => {
+                [1.into_dart(), content.into_into_dart().into_dart()].into_dart()
+            }
             dion_runtime::data::source::Paragraph::CustomUI { ui } => {
-                [1.into_dart(), ui.into_into_dart().into_dart()].into_dart()
+                [2.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
             dion_runtime::data::source::Paragraph::Table { columns } => {
-                [2.into_dart(), columns.into_into_dart().into_dart()].into_dart()
+                [3.into_dart(), columns.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -7268,6 +7362,16 @@ impl SseEncode for Vec<dion_runtime::data::source::MediaType> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::data::source::MixedContent> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::MixedContent>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::data::source::Paragraph> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7414,6 +7518,29 @@ impl SseEncode for dion_runtime::data::source::MediaType {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::MixedContent {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::data::source::MixedContent::Text(field0) => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            dion_runtime::data::source::MixedContent::CustomUI(field0) => {
+                <i32>::sse_encode(1, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(field0, serializer);
+            }
+            dion_runtime::data::source::MixedContent::Table(field0) => {
+                <i32>::sse_encode(2, serializer);
+                <Vec<dion_runtime::data::source::Row>>::sse_encode(field0, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -7575,12 +7702,16 @@ impl SseEncode for dion_runtime::data::source::Paragraph {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(content, serializer);
             }
-            dion_runtime::data::source::Paragraph::CustomUI { ui } => {
+            dion_runtime::data::source::Paragraph::Mixed { content } => {
                 <i32>::sse_encode(1, serializer);
+                <Vec<dion_runtime::data::source::MixedContent>>::sse_encode(content, serializer);
+            }
+            dion_runtime::data::source::Paragraph::CustomUI { ui } => {
+                <i32>::sse_encode(2, serializer);
                 <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(ui, serializer);
             }
             dion_runtime::data::source::Paragraph::Table { columns } => {
-                <i32>::sse_encode(2, serializer);
+                <i32>::sse_encode(3, serializer);
                 <Vec<dion_runtime::data::source::Row>>::sse_encode(columns, serializer);
             }
             _ => {
@@ -8830,6 +8961,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::data::source::MixedContent>> for *mut wire_cst_list_mixed_content {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::MixedContent> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<dion_runtime::data::source::Paragraph>> for *mut wire_cst_list_paragraph {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::Paragraph> {
@@ -8955,6 +9096,26 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<dion_runtime::data::source::MixedContent> for wire_cst_mixed_content {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::MixedContent {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.Text };
+                    dion_runtime::data::source::MixedContent::Text(ans.field0.cst_decode())
+                }
+                1 => {
+                    let ans = unsafe { self.kind.CustomUI };
+                    dion_runtime::data::source::MixedContent::CustomUI(ans.field0.cst_decode())
+                }
+                2 => {
+                    let ans = unsafe { self.kind.Table };
+                    dion_runtime::data::source::MixedContent::Table(ans.field0.cst_decode())
+                }
+                _ => unreachable!(),
+            }
+        }
+    }
     impl CstDecode<dion_runtime::data::source::Paragraph> for wire_cst_paragraph {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::source::Paragraph {
@@ -8966,12 +9127,18 @@ mod io {
                     }
                 }
                 1 => {
+                    let ans = unsafe { self.kind.Mixed };
+                    dion_runtime::data::source::Paragraph::Mixed {
+                        content: ans.content.cst_decode(),
+                    }
+                }
+                2 => {
                     let ans = unsafe { self.kind.CustomUI };
                     dion_runtime::data::source::Paragraph::CustomUI {
                         ui: ans.ui.cst_decode(),
                     }
                 }
-                2 => {
+                3 => {
                     let ans = unsafe { self.kind.Table };
                     dion_runtime::data::source::Paragraph::Table {
                         columns: ans.columns.cst_decode(),
@@ -9566,6 +9733,19 @@ mod io {
         }
     }
     impl Default for wire_cst_link {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_mixed_content {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: MixedContentKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_mixed_content {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -10666,6 +10846,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_mixed_content(
+        len: i32,
+    ) -> *mut wire_cst_list_mixed_content {
+        let wrap = wire_cst_list_mixed_content {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_mixed_content>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_paragraph(
         len: i32,
     ) -> *mut wire_cst_list_paragraph {
@@ -11317,6 +11511,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_mixed_content {
+        ptr: *mut wire_cst_mixed_content,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_paragraph {
         ptr: *mut wire_cst_paragraph,
         len: i32,
@@ -11389,6 +11589,35 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_mixed_content {
+        tag: i32,
+        kind: MixedContentKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union MixedContentKind {
+        Text: wire_cst_MixedContent_Text,
+        CustomUI: wire_cst_MixedContent_CustomUI,
+        Table: wire_cst_MixedContent_Table,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_MixedContent_Text {
+        field0: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_MixedContent_CustomUI {
+        field0: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_MixedContent_Table {
+        field0: *mut wire_cst_list_row,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_paragraph {
         tag: i32,
         kind: ParagraphKind,
@@ -11397,6 +11626,7 @@ mod io {
     #[derive(Clone, Copy)]
     pub union ParagraphKind {
         Text: wire_cst_Paragraph_Text,
+        Mixed: wire_cst_Paragraph_Mixed,
         CustomUI: wire_cst_Paragraph_CustomUI,
         Table: wire_cst_Paragraph_Table,
         nil__: (),
@@ -11405,6 +11635,11 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_Paragraph_Text {
         content: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Paragraph_Mixed {
+        content: *mut wire_cst_list_mixed_content,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

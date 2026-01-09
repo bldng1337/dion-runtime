@@ -194,8 +194,20 @@ pub enum Source {
 #[serde(tag = "type")]
 pub enum Paragraph {
     Text { content: String },
+    Mixed { content: Vec<MixedContent> },
     CustomUI { ui: Box<CustomUI> },
     Table { columns: Vec<Row> },
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+#[serde(tag = "type")]
+pub enum MixedContent {
+    Text(String),
+    CustomUI(Box<CustomUI>),
+    Table(Vec<Row>),
 }
 
 /// flutter_rust_bridge:non_opaque
