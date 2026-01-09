@@ -17,14 +17,13 @@ http-body-util = "0.1"
 arc-swap = "1.7.1"
 
 lazy_static = { version = "1.5.0" }
-
-boa_engine = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde", features = [
+boa_engine = { version="0.21.0", features = [
     "jsvalue-enum",
     # "temporal",
 ] }
 semver = "1.0.27"
-boa_runtime = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
-boa_gc = { git = "https://github.com/boa-dev/boa", rev = "6570619729faae32c49deec59a6d65f01e639bde" }
+boa_runtime = { version="0.21.0" }
+boa_gc = { version="0.21.0" }
 #6570619729faae32c49deec59a6d65f01e639bde
 
 #735cd3ece395f3ebe04258284dd561511b22d183

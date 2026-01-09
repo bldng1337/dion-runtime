@@ -1,12 +1,6 @@
-use anyhow::{Context as _, Result};
 use boa_engine::{
-    Context, JsArgs, JsData, JsError, JsNativeError, JsResult, JsString, JsValue, Module,
-    NativeFunction,
-    class::Class,
-    js_string,
-    module::SyntheticModuleInitializer,
-    object::{FunctionObjectBuilder, builtins::JsArray},
-    property::Attribute,
+    Context, JsData, JsError, JsNativeError, JsObject, JsResult, JsString, JsValue, class::Class,
+    object::builtins::JsArray, value::TryIntoJs,
 };
 use boa_gc::{Finalize, Trace};
 use dion_runtime::data::source::Paragraph;
@@ -14,7 +8,14 @@ use ego_tree::NodeId;
 use scraper::{ElementRef, Html, Selector};
 use std::rc::Rc;
 
-use crate::utils::{MapJsResult, VirtualModuleLoader};
+use boa_engine::boa_class;
+use boa_engine::boa_module;
+
+use anyhow::Result;
+
+use crate::utils::MapJsResult;
+use crate::utils::VirtualModuleLoader;
+use anyhow::Context as ErrorContext;
 
 pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     context
@@ -29,40 +30,38 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
         .register_global_class::<CSSSelector>()
         .map_anyhow_ctx(context)
         .context("Failed to Register CSSSelector class")?;
-    let parse_html_fn =
-        FunctionObjectBuilder::new(context.realm(), NativeFunction::from_fn_ptr(parse_html))
-            .length(1)
-            .name("parseHtml")
-            .build();
-    let parse_html_fragment_fn = FunctionObjectBuilder::new(
-        context.realm(),
-        NativeFunction::from_fn_ptr(parse_html_fragment),
-    )
-    .length(1)
-    .name("parseHtmlFragment")
-    .build();
-    let module = Module::synthetic(
-        &[js_string!("parseHtml"), js_string!("parseHtmlFragment")],
-        SyntheticModuleInitializer::from_copy_closure_with_captures(
-            move |m, (parse_html, parse_html_fragment), _ctx| {
-                m.set_export(&js_string!("parseHtml"), parse_html.clone().into())?;
-                m.set_export(
-                    &js_string!("parseHtmlFragment"),
-                    parse_html_fragment.clone().into(),
-                )?;
-                Ok(())
-            },
-            (parse_html_fn, parse_html_fragment_fn),
-        ),
-        None,
-        None,
-        context,
-    );
-    loader.insert("parse".to_string(), module);
+    loader.insert("parse".to_string(), parse::boa_module(None, context));
     Ok(())
 }
 
-#[derive(Debug, Trace, Finalize, JsData)]
+#[boa_module]
+mod parse {
+    use super::Element;
+    use scraper::Html;
+    use std::rc::Rc;
+
+    #[boa(rename = "parseHtml")]
+    fn parse_html(html: String) -> Element {
+        let doc = Html::parse_document(&html);
+        let node = doc.root_element().id();
+        Element {
+            doc: Rc::new(doc),
+            node,
+        }
+    }
+
+    #[boa(rename = "parseHtmlFragment")]
+    fn parse_html_fragment(html: String) -> Element {
+        let doc = Html::parse_fragment(&html);
+        let node = doc.root_element().id();
+        Element {
+            doc: Rc::new(doc),
+            node,
+        }
+    }
+}
+
+#[derive(Debug, Trace, Finalize, JsData, Clone)]
 struct ElementArray {
     #[unsafe_ignore_trace]
     doc: Rc<Html>,
@@ -70,332 +69,214 @@ struct ElementArray {
     nodes: Vec<NodeId>,
 }
 
+#[boa_class]
 impl ElementArray {
-    fn select(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let obj = val.get_or_undefined(0).to_object(context)?;
-            let selector = obj
-                .downcast_ref::<CSSSelector>()
-                .ok_or(JsNativeError::typ().with_message("'selector' is not a Selector object"))?;
-            let nodes: Vec<_> = this
-                .nodes
-                .iter()
-                .flat_map(|node| {
-                    let Some(node) = this.doc.tree.get(*node) else {
-                        return vec![];
-                    };
-                    let Some(element) = ElementRef::wrap(node) else {
-                        return vec![];
-                    };
-                    let mut ret = vec![];
-                    if selector.sel.matches(&element) {
-                        ret.push(element.id());
-                    }
-                    let mut res: Vec<NodeId> =
-                        element.select(&selector.sel).map(|e| e.id()).collect();
-                    ret.append(&mut res);
-                    ret
-                })
-                .collect();
-            let elarr = ElementArray {
-                doc: this.doc.clone(),
-                nodes,
-            };
-            return Ok(Class::from_data(elarr, context)?.into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+    #[boa(constructor)]
+    fn new() -> JsResult<Self> {
+        Err(JsError::from_native(JsNativeError::error().with_message(
+            "ElementArray cannot be directly constructed",
+        )))
     }
 
-    fn len(this: &JsValue, _: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            return Ok(this.nodes.len().into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+    fn select(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        selector: JsValue,
+        context: &mut Context,
+    ) -> JsResult<ElementArray> {
+        let obj = selector.to_object(context)?;
+        let selector = obj
+            .downcast_ref::<CSSSelector>()
+            .ok_or(JsNativeError::typ().with_message("'selector' is not a Selector object"))?;
+        let nodes: Vec<_> = self
+            .nodes
+            .iter()
+            .flat_map(|node| {
+                let Some(node) = self.doc.tree.get(*node) else {
+                    return vec![];
+                };
+                let Some(element) = ElementRef::wrap(node) else {
+                    return vec![];
+                };
+                let mut ret = vec![];
+                if selector.sel.matches(&element) {
+                    ret.push(element.id());
+                }
+                let mut res: Vec<NodeId> = element.select(&selector.sel).map(|e| e.id()).collect();
+                ret.append(&mut res);
+                ret
+            })
+            .collect();
+        let elarr = ElementArray {
+            doc: self.doc.clone(),
+            nodes,
+        };
+        Ok(elarr)
     }
-    fn text(this: &JsValue, _: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let str: String = this
-                .nodes
-                .iter()
-                .flat_map(|e| {
-                    this.doc
-                        .tree
-                        .get(*e)
-                        .and_then(ElementRef::wrap)
-                        .map(|e| e.text().collect::<Vec<_>>())
-                        .unwrap_or_default()
-                })
-                .collect();
-            return Ok(JsString::from(str).into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+
+    #[boa(getter)]
+    fn length(#[boa(error = "`this` was not an ElementArray")] &self) -> usize {
+        self.nodes.len()
     }
-    fn paragraphs(this: &JsValue, _: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let str: Vec<_> = this
-                .nodes
-                .iter()
-                .flat_map(|e| {
-                    this.doc
-                        .tree
-                        .get(*e)
-                        .and_then(ElementRef::wrap)
-                        .map(|e| e.text().collect::<Vec<_>>())
-                        .unwrap_or_default()
-                })
-                .map(|str| Paragraph::Text {
-                    content: str.to_string(),
-                })
-                .collect();
-            return JsValue::from_json(
-                &serde_json::to_value(str)
-                    .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
-                context,
-            );
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+
+    #[boa(getter)]
+    fn text(#[boa(error = "`this` was not an ElementArray")] &self) -> String {
+        self.nodes
+            .iter()
+            .flat_map(|e| {
+                self.doc
+                    .tree
+                    .get(*e)
+                    .and_then(ElementRef::wrap)
+                    .map(|e| e.text().collect::<Vec<_>>())
+                    .unwrap_or_default()
+            })
+            .collect()
     }
-    fn attr(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let attr = val
-                .get_or_undefined(0)
-                .to_string(context)?
-                .to_std_string_lossy();
-            let res = this
-                .nodes
-                .iter()
-                .flat_map(|e| {
-                    this.doc
-                        .tree
-                        .get(*e)
-                        .into_iter()
-                        .flat_map(ElementRef::wrap)
-                        .flat_map(|e| e.attr(&attr))
-                })
-                .map(|e| JsString::from(e.to_string()).into());
-            return Ok(JsArray::from_iter(res, context).into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+
+    #[boa(getter)]
+    fn paragraphs(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let str: Vec<_> = self
+            .nodes
+            .iter()
+            .flat_map(|e| {
+                self.doc
+                    .tree
+                    .get(*e)
+                    .and_then(ElementRef::wrap)
+                    .map(|e| e.text().collect::<Vec<_>>())
+                    .unwrap_or_default()
+            })
+            .map(|str| Paragraph::Text {
+                content: str.to_string(),
+            })
+            .collect();
+        JsValue::from_json(
+            &serde_json::to_value(str)
+                .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
+            context,
+        )
     }
-    fn get(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let index = val.get_or_undefined(0).to_u32(context)?;
-            let ret = this.nodes.get(index as usize).map(|e| Element {
-                doc: this.doc.clone(),
-                node: *e,
-            });
-            return match ret {
-                Some(ret) => Ok(Class::from_data(ret, context)?.into()),
-                None => Ok(JsValue::undefined()),
-            };
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+
+    fn attr(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        attr: String,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let res = self
+            .nodes
+            .iter()
+            .flat_map(|e| {
+                self.doc
+                    .tree
+                    .get(*e)
+                    .into_iter()
+                    .flat_map(ElementRef::wrap)
+                    .flat_map(|e| e.attr(&attr))
+            })
+            .map(|e| JsString::from(e.to_string()).into());
+        Ok(JsArray::from_iter(res, context).into())
     }
-    fn first(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let ret = this.nodes.first().map(|e| Element {
-                doc: this.doc.clone(),
-                node: *e,
-            });
-            return match ret {
-                Some(ret) => Ok(Class::from_data(ret, context)?.into()),
-                None => Ok(JsValue::undefined()),
-            };
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+
+    fn get(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        index: usize,
+    ) -> Option<Element> {
+        self.nodes.get(index).map(|e| Element {
+            doc: self.doc.clone(),
+            node: *e,
+        })
     }
-    fn map(thisv: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = thisv.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let callback = val
-                .get_or_undefined(0)
-                .as_callable()
-                .ok_or(JsNativeError::typ().with_message("Argument is not callable"))?;
-            let res: Vec<_> = this
-                .nodes
-                .iter()
-                .flat_map(|e| {
-                    callback.call(
-                        thisv,
-                        &[Class::from_data(
-                            Element {
-                                doc: this.doc.clone(),
-                                node: *e,
-                            },
-                            context,
-                        )?
-                        .into()],
-                        context,
-                    )
-                })
-                .collect();
-            return Ok(JsArray::from_iter(res, context).into());
+
+    #[boa(getter)]
+    fn first(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let ret = self.nodes.first().map(|e| Element {
+            doc: self.doc.clone(),
+            node: *e,
+        });
+        match ret {
+            Some(ret) => Ok(Class::from_data(ret, context)?.into()),
+            None => Ok(JsValue::undefined()),
         }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
     }
-    fn filter(thisv: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = thisv.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let callback = val
-                .get_or_undefined(0)
-                .as_callable()
-                .ok_or(JsNativeError::typ().with_message("Argument is not callable"))?;
-            let res: Vec<_> = this
-                .nodes
-                .iter()
-                .copied()
-                .filter(|e| {
-                    let Ok(el) = Class::from_data(
+
+    fn map(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        callback: JsValue,
+        context: &mut Context,
+    ) -> JsResult<Vec<JsValue>> {
+        let callback = callback
+            .as_callable()
+            .ok_or(JsNativeError::typ().with_message("callback is not callable"))?;
+        let this = self.try_into_js(context)?;
+        let res: Vec<_> = self
+            .nodes
+            .iter()
+            .flat_map(|e| {
+                callback.call(
+                    &this,
+                    &[Class::from_data(
                         Element {
-                            doc: this.doc.clone(),
+                            doc: self.doc.clone(),
                             node: *e,
                         },
                         context,
-                    ) else {
-                        return false;
-                    };
-                    let Ok(res) = callback.call(thisv, &[el.into()], context) else {
-                        return false;
-                    };
-
-                    res.as_boolean().unwrap_or(false)
-                })
-                .collect();
-            return Ok(Class::from_data(
-                ElementArray {
-                    doc: this.doc.clone(),
-                    nodes: res,
-                },
-                context,
-            )?
-            .into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a ElementArray object")
-            .into())
+                    )?
+                    .into()],
+                    context,
+                )
+            })
+            .collect();
+        Ok(res)
     }
 
-    //TODO: Map, Filter, foreach, paragraphtext
-}
+    fn filter(
+        #[boa(error = "`this` was not an ElementArray")] &self,
+        callback: JsValue,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let callback = callback
+            .as_callable()
+            .ok_or(JsNativeError::typ().with_message("callback is not callable"))?;
+        let this = self.try_into_js(context)?;
+        let res: Vec<_> = self
+            .nodes
+            .iter()
+            .copied()
+            .filter(|e| {
+                let Ok(el) = Class::from_data(
+                    Element {
+                        doc: self.doc.clone(),
+                        node: *e,
+                    },
+                    context,
+                ) else {
+                    return false;
+                };
+                let Ok(res) = callback.call(&this, &[el.into()], context) else {
+                    return false;
+                };
 
-impl Class for ElementArray {
-    const NAME: &'static str = "ElementArray";
-
-    fn init(class: &mut boa_engine::class::ClassBuilder<'_>) -> JsResult<()> {
-        class.method(
-            js_string!("attr"),
-            1,
-            NativeFunction::from_fn_ptr(Self::attr),
-        );
-        class.method(
-            js_string!("select"),
-            1,
-            NativeFunction::from_fn_ptr(Self::select),
-        );
-        class.method(js_string!("get"), 1, NativeFunction::from_fn_ptr(Self::get));
-        class.method(js_string!("map"), 1, NativeFunction::from_fn_ptr(Self::map));
-        class.method(
-            js_string!("filter"),
-            1,
-            NativeFunction::from_fn_ptr(Self::filter),
-        );
-
-        let paragraphs_fn = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::paragraphs),
-        )
-        .length(0)
-        .name("paragraphs")
-        .build();
-        class.accessor(
-            js_string!("paragraphs"),
-            Some(paragraphs_fn),
-            None,
-            Attribute::READONLY,
-        );
-
-        let len_fn = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::len),
-        )
-        .length(0)
-        .name("length")
-        .build();
-        class.accessor(
-            js_string!("length"),
-            Some(len_fn),
-            None,
-            Attribute::READONLY,
-        );
-
-        let text_fn = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::text),
-        )
-        .length(0)
-        .name("text")
-        .build();
-        class.accessor(js_string!("text"), Some(text_fn), None, Attribute::READONLY);
-
-        let first_fn = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::first),
-        )
-        .length(0)
-        .name("first")
-        .build();
-        class.accessor(
-            js_string!("first"),
-            Some(first_fn),
-            None,
-            Attribute::READONLY,
-        );
-
-        Ok(())
-    }
-
-    fn data_constructor(
-        _new_target: &JsValue,
-        _args: &[JsValue],
-        _context: &mut Context,
-    ) -> JsResult<Self> {
-        Err(JsError::from_native(JsNativeError::error()))
+                res.as_boolean().unwrap_or(false)
+            })
+            .collect();
+        Ok(Class::from_data(
+            ElementArray {
+                doc: self.doc.clone(),
+                nodes: res,
+            },
+            context,
+        )?
+        .into())
     }
 }
 
-#[derive(Debug, Trace, Finalize, JsData)]
+#[derive(Debug, Trace, Finalize, JsData, Clone)]
 struct Element {
     #[unsafe_ignore_trace]
     doc: Rc<Html>,
@@ -403,250 +284,132 @@ struct Element {
     node: NodeId,
 }
 
+#[boa_class]
 impl Element {
-    fn parent(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret = element.parent().and_then(ElementRef::wrap).map(|e| e.id());
-            return match ret {
-                Some(ret) => Ok(Class::from_data(
-                    Element {
-                        doc: this.doc.clone(),
-                        node: ret,
-                    },
-                    context,
-                )?
-                .into()),
-                None => Ok(JsValue::undefined()),
-            };
+    #[boa(constructor)]
+    fn new() -> JsResult<Self> {
+        Err(JsError::from_native(JsNativeError::error().with_message(
+            "ElementArray cannot be directly constructed",
+        )))
+    }
+    #[boa(getter)]
+    fn parent(
+        #[boa(error = "`this` was not an Element")] &self,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret = element.parent().and_then(ElementRef::wrap).map(|e| e.id());
+        match ret {
+            Some(ret) => Ok(Class::from_data(
+                Element {
+                    doc: self.doc.clone(),
+                    node: ret,
+                },
+                context,
+            )?
+            .into()),
+            None => Ok(JsValue::undefined()),
         }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
     }
-    fn children(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret = ElementArray {
-                doc: this.doc.clone(),
-                nodes: element
-                    .children()
-                    .flat_map(ElementRef::wrap)
-                    .map(|e| e.id())
-                    .collect(),
-            };
-            return Ok(Class::from_data(ret, context)?.into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
+    #[boa(getter)]
+    fn children(#[boa(error = "`this` was not an Element")] &self) -> JsResult<ElementArray> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret = ElementArray {
+            doc: self.doc.clone(),
+            nodes: element
+                .children()
+                .flat_map(ElementRef::wrap)
+                .map(|e| e.id())
+                .collect(),
+        };
+        Ok(ret)
     }
-    fn text(this: &JsValue, _val: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret: String = element.text().collect();
-            return Ok(JsString::from(ret).into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
+    #[boa(getter)]
+    fn text(#[boa(error = "`this` was not an Element")] &self) -> JsResult<String> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret: String = element.text().collect();
+        Ok(ret)
     }
-    fn paragraphs(this: &JsValue, _val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret = element.text().map(|str| JsString::from(str).into());
-            return Ok(JsArray::from_iter(ret, context).into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
+    #[boa(getter)]
+    fn paragraphs(
+        #[boa(error = "`this` was not an Element")] &self,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret = element.text().map(|str| JsString::from(str).into());
+        Ok(JsArray::from_iter(ret, context).into())
     }
-    fn name(this: &JsValue, _val: &[JsValue], _: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret: String = element.value().name().to_string();
-            return Ok(JsString::from(ret).into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
-    }
-    fn attr(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let attr = val
-                .get_or_undefined(0)
-                .to_string(context)?
-                .to_std_string_lossy();
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let ret = element.attr(&attr).map(|e| e.to_string());
-            return match ret {
-                Some(ret) => Ok(JsString::from(ret).into()),
-                None => Ok(JsValue::undefined()),
-            };
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
-    }
-    fn select(this: &JsValue, val: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-        if let Some(object) = this.as_object()
-            && let Some(this) = object.downcast_ref::<Self>()
-        {
-            let obj = val.get_or_undefined(0).to_object(context)?;
-            let selector = obj
-                .downcast_ref::<CSSSelector>()
-                .ok_or(JsNativeError::typ().with_message("'selector' is not a Selector object"))?;
-            let doc = this.doc.clone();
-
-            let node = this
-                .doc
-                .tree
-                .get(this.node)
-                .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
-            let element = ElementRef::wrap(node)
-                .ok_or(JsNativeError::error().with_message("Invalid element"))?;
-            let nodes = element.select(&selector.sel).map(|e| e.id()).collect();
-            let ret = ElementArray { doc, nodes };
-            return Ok(Class::from_data(ret, context)?.into());
-        }
-        Err(JsNativeError::typ()
-            .with_message("'this' is not a Element object")
-            .into())
-    }
-}
-
-impl Class for Element {
-    const NAME: &'static str = "Element";
-
-    fn init(class: &mut boa_engine::class::ClassBuilder<'_>) -> JsResult<()> {
-        class.method(
-            js_string!("attr"),
-            1,
-            NativeFunction::from_fn_ptr(Self::attr),
-        );
-        class.method(
-            js_string!("select"),
-            1,
-            NativeFunction::from_fn_ptr(Self::select),
-        );
-
-        let fn_obj = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::parent),
-        )
-        .length(0)
-        .name("parent")
-        .build();
-        class.accessor(
-            js_string!("parent"),
-            Some(fn_obj),
-            None,
-            Attribute::READONLY,
-        );
-
-        let fn_obj = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::children),
-        )
-        .length(0)
-        .name("children")
-        .build();
-        class.accessor(
-            js_string!("children"),
-            Some(fn_obj),
-            None,
-            Attribute::READONLY,
-        );
-
-        let fn_obj = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::paragraphs),
-        )
-        .length(0)
-        .name("paragraphs")
-        .build();
-        class.accessor(
-            js_string!("paragraphs"),
-            Some(fn_obj),
-            None,
-            Attribute::READONLY,
-        );
-
-        let fn_obj = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::text),
-        )
-        .length(0)
-        .name("text")
-        .build();
-        class.accessor(js_string!("text"), Some(fn_obj), None, Attribute::READONLY);
-
-        let fn_obj = FunctionObjectBuilder::new(
-            class.context().realm(),
-            NativeFunction::from_fn_ptr(Self::name),
-        )
-        .length(0)
-        .name("name")
-        .build();
-        class.accessor(js_string!("name"), Some(fn_obj), None, Attribute::READONLY);
-
-        Ok(())
+    #[boa(getter)]
+    fn name(#[boa(error = "`this` was not an Element")] &self) -> JsResult<JsValue> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret: String = element.value().name().to_string();
+        Ok(JsString::from(ret).into())
     }
 
-    fn data_constructor(
-        _new_target: &JsValue,
-        _args: &[JsValue],
-        _context: &mut Context,
-    ) -> JsResult<Self> {
-        Err(JsError::from_native(JsNativeError::error()))
+    fn attr(
+        #[boa(error = "`this` was not an Element")] &self,
+        attr: String,
+    ) -> JsResult<Option<String>> {
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let ret = element.attr(&attr).map(|e| e.to_string());
+        Ok(ret)
+    }
+
+    fn select(
+        #[boa(error = "`this` was not an Element")] &self,
+        selector: JsObject,
+    ) -> JsResult<ElementArray> {
+        let selector = selector
+            .downcast_ref::<CSSSelector>()
+            .ok_or(JsNativeError::typ().with_message("'selector' is not a Selector object"))?;
+        let doc = self.doc.clone();
+
+        let node = self
+            .doc
+            .tree
+            .get(self.node)
+            .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
+        let element =
+            ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
+        let nodes = element.select(&selector.sel).map(|e| e.id()).collect();
+        let ret = ElementArray { doc, nodes };
+        Ok(ret)
     }
 }
 
@@ -656,59 +419,14 @@ struct CSSSelector {
     sel: Selector,
 }
 
-impl Class for CSSSelector {
-    const NAME: &'static str = "CSSSelector";
-
-    fn init(_class: &mut boa_engine::class::ClassBuilder<'_>) -> JsResult<()> {
-        Ok(())
-    }
-
-    fn data_constructor(
-        _new_target: &JsValue,
-        args: &[JsValue],
-        context: &mut Context,
-    ) -> JsResult<Self> {
+#[boa_class]
+impl CSSSelector {
+    #[boa(constructor)]
+    fn new(selector: String) -> JsResult<Self> {
         Ok(Self {
-            sel: Selector::parse(
-                &args
-                    .get_or_undefined(0)
-                    .to_string(context)?
-                    .to_std_string_lossy(),
-            )
-            .map_err(|_e| JsNativeError::error().with_message("Failed to parse CSS Selector"))?,
+            sel: Selector::parse(selector.as_str()).map_err(|_e| {
+                JsNativeError::error().with_message("Failed to parse CSS Selector")
+            })?,
         }) //TODO: Improve Error Feedback
     }
-}
-
-fn parse_html_fragment(
-    _this: &JsValue,
-    args: &[JsValue],
-    context: &mut Context,
-) -> JsResult<JsValue> {
-    let resource = args
-        .get_or_undefined(0)
-        .to_string(context)?
-        .to_std_string_lossy();
-    let html = Html::parse_fragment(&resource);
-    let node = html.root_element().id();
-    let doc = Element {
-        doc: Rc::new(html),
-        node,
-    };
-
-    Ok(Class::from_data(doc, context)?.into())
-}
-
-fn parse_html(_this: &JsValue, args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
-    let resource = args
-        .get_or_undefined(0)
-        .to_string(context)?
-        .to_std_string_lossy();
-    let html = Html::parse_document(&resource);
-    let node = html.root_element().id();
-    let doc = Element {
-        doc: Rc::new(html),
-        node,
-    };
-    Ok(Class::from_data(doc, context)?.into())
 }
