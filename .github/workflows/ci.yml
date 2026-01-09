@@ -89,6 +89,9 @@ jobs:
         working-directory: dart/rdion_runtime
         run: flutter analyze lib
 
+      - name: Test build index
+        working-directory: tests
+        run: bunx dion-build-index
       # - name: Run integration tests
       #   working-directory: dart/rdion_runtime/example
       #   run: flutter test integration_test
