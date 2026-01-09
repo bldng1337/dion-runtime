@@ -3154,15 +3154,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (raw[0]) {
       case 0:
         return MixedContent_Text(
-          dco_decode_String(raw[1]),
+          content: dco_decode_String(raw[1]),
         );
       case 1:
         return MixedContent_CustomUI(
-          dco_decode_box_custom_ui(raw[1]),
+          ui: dco_decode_box_custom_ui(raw[1]),
         );
       case 2:
         return MixedContent_Table(
-          dco_decode_list_row(raw[1]),
+          columns: dco_decode_list_row(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -4786,14 +4786,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var tag_ = sse_decode_i_32(deserializer);
     switch (tag_) {
       case 0:
-        var var_field0 = sse_decode_String(deserializer);
-        return MixedContent_Text(var_field0);
+        var var_content = sse_decode_String(deserializer);
+        return MixedContent_Text(content: var_content);
       case 1:
-        var var_field0 = sse_decode_box_custom_ui(deserializer);
-        return MixedContent_CustomUI(var_field0);
+        var var_ui = sse_decode_box_custom_ui(deserializer);
+        return MixedContent_CustomUI(ui: var_ui);
       case 2:
-        var var_field0 = sse_decode_list_row(deserializer);
-        return MixedContent_Table(var_field0);
+        var var_columns = sse_decode_list_row(deserializer);
+        return MixedContent_Table(columns: var_columns);
       default:
         throw UnimplementedError('');
     }
@@ -6568,15 +6568,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_mixed_content(MixedContent self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case MixedContent_Text(field0: final field0):
+      case MixedContent_Text(content: final content):
         sse_encode_i_32(0, serializer);
-        sse_encode_String(field0, serializer);
-      case MixedContent_CustomUI(field0: final field0):
+        sse_encode_String(content, serializer);
+      case MixedContent_CustomUI(ui: final ui):
         sse_encode_i_32(1, serializer);
-        sse_encode_box_custom_ui(field0, serializer);
-      case MixedContent_Table(field0: final field0):
+        sse_encode_box_custom_ui(ui, serializer);
+      case MixedContent_Table(columns: final columns):
         sse_encode_i_32(2, serializer);
-        sse_encode_list_row(field0, serializer);
+        sse_encode_list_row(columns, serializer);
     }
   }
 

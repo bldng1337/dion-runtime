@@ -1105,6 +1105,10 @@ extension JsonParagraph on Paragraph {
             "type": "Text",
             "content": content,
           },
+        Paragraph_Mixed(:final content) => {
+            "type": "Mixed",
+            "content": content.map((e) => e.toJson()).toList(),
+          },
         Paragraph_CustomUI(:final ui) => {
             "type": "CustomUI",
             "ui": ui.toJson(),
@@ -1126,6 +1130,12 @@ extension JsonParagraph on Paragraph {
         return Paragraph.customUi(
           ui: JsonCustomUI.fromJson(value["ui"]),
         );
+      case "Mixed":
+        return Paragraph.mixed(
+          content: (value["content"] as List)
+              .map((e) => JsonMixedContent.fromJson(e))
+              .toList(),
+        );
       case "Table":
         return Paragraph.table(
           columns: (value["columns"] as List)
@@ -1134,6 +1144,45 @@ extension JsonParagraph on Paragraph {
         );
       default:
         throw FormatException("Unknown Paragraph type: $type");
+    }
+  }
+}
+
+extension JsonMixedContent on MixedContent {
+  dynamic toJson() => switch (this) {
+        MixedContent_Text(:final content) => {
+            "type": "Text",
+            "content": content,
+          },
+        MixedContent_CustomUI(:final ui) => {
+            "type": "CustomUI",
+            "ui": ui.toJson(),
+          },
+        MixedContent_Table(:final columns) => {
+            "type": "Table",
+            "columns": columns.map((row) => row.toJson()).toList(),
+          },
+      };
+
+  static MixedContent fromJson(dynamic value) {
+    final type = value["type"] as String;
+    switch (type) {
+      case "Text":
+        return MixedContent.text(
+          content: value["content"],
+        );
+      case "CustomUI":
+        return MixedContent.customUi(
+          ui: JsonCustomUI.fromJson(value["ui"]),
+        );
+      case "Table":
+        return MixedContent.table(
+          columns: (value["columns"] as List)
+              .map((row) => JsonRow.fromJson(row))
+              .toList(),
+        );
+      default:
+        throw FormatException("Unknown MixedContent type: $type");
     }
   }
 }

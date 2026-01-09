@@ -362,15 +362,15 @@ enum MediaType {
 sealed class MixedContent with _$MixedContent {
   const MixedContent._();
 
-  const factory MixedContent.text(
-    String field0,
-  ) = MixedContent_Text;
-  const factory MixedContent.customUi(
-    CustomUI field0,
-  ) = MixedContent_CustomUI;
-  const factory MixedContent.table(
-    List<Row> field0,
-  ) = MixedContent_Table;
+  const factory MixedContent.text({
+    required String content,
+  }) = MixedContent_Text;
+  const factory MixedContent.customUi({
+    required CustomUI ui,
+  }) = MixedContent_CustomUI;
+  const factory MixedContent.table({
+    required List<Row> columns,
+  }) = MixedContent_Table;
 }
 
 @freezed

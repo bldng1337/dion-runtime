@@ -264,7 +264,7 @@ fn wire__crate__api__client__ManagerClient_init_impl(
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "ManagerClient_init", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
             let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_get_path = decode_DartFn_Inputs__Output_String_AnyhowException(<flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer));
@@ -2806,14 +2806,14 @@ const _: fn() = || {
         let _: Option<std::collections::HashMap<String, String>> = Link.header;
     }
     match None::<dion_runtime::data::source::MixedContent>.unwrap() {
-        dion_runtime::data::source::MixedContent::Text(field0) => {
-            let _: String = field0;
+        dion_runtime::data::source::MixedContent::Text { content } => {
+            let _: String = content;
         }
-        dion_runtime::data::source::MixedContent::CustomUI(field0) => {
-            let _: Box<dion_runtime::data::custom_ui::CustomUI> = field0;
+        dion_runtime::data::source::MixedContent::CustomUI { ui } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = ui;
         }
-        dion_runtime::data::source::MixedContent::Table(field0) => {
-            let _: Vec<dion_runtime::data::source::Row> = field0;
+        dion_runtime::data::source::MixedContent::Table { columns } => {
+            let _: Vec<dion_runtime::data::source::Row> = columns;
         }
     }
     match None::<dion_runtime::data::source::Paragraph>.unwrap() {
@@ -4523,18 +4523,22 @@ impl SseDecode for dion_runtime::data::source::MixedContent {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_field0 = <String>::sse_decode(deserializer);
-                return dion_runtime::data::source::MixedContent::Text(var_field0);
+                let mut var_content = <String>::sse_decode(deserializer);
+                return dion_runtime::data::source::MixedContent::Text {
+                    content: var_content,
+                };
             }
             1 => {
-                let mut var_field0 =
+                let mut var_ui =
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
-                return dion_runtime::data::source::MixedContent::CustomUI(var_field0);
+                return dion_runtime::data::source::MixedContent::CustomUI { ui: var_ui };
             }
             2 => {
-                let mut var_field0 =
+                let mut var_columns =
                     <Vec<dion_runtime::data::source::Row>>::sse_decode(deserializer);
-                return dion_runtime::data::source::MixedContent::Table(var_field0);
+                return dion_runtime::data::source::MixedContent::Table {
+                    columns: var_columns,
+                };
             }
             _ => {
                 unimplemented!("");
@@ -6023,14 +6027,14 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Me
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::MixedContent> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::source::MixedContent::Text(field0) => {
-                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::source::MixedContent::Text { content } => {
+                [0.into_dart(), content.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::source::MixedContent::CustomUI(field0) => {
-                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::source::MixedContent::CustomUI { ui } => {
+                [1.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::source::MixedContent::Table(field0) => {
-                [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            dion_runtime::data::source::MixedContent::Table { columns } => {
+                [2.into_dart(), columns.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -7525,17 +7529,17 @@ impl SseEncode for dion_runtime::data::source::MixedContent {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::source::MixedContent::Text(field0) => {
+            dion_runtime::data::source::MixedContent::Text { content } => {
                 <i32>::sse_encode(0, serializer);
-                <String>::sse_encode(field0, serializer);
+                <String>::sse_encode(content, serializer);
             }
-            dion_runtime::data::source::MixedContent::CustomUI(field0) => {
+            dion_runtime::data::source::MixedContent::CustomUI { ui } => {
                 <i32>::sse_encode(1, serializer);
-                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(field0, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(ui, serializer);
             }
-            dion_runtime::data::source::MixedContent::Table(field0) => {
+            dion_runtime::data::source::MixedContent::Table { columns } => {
                 <i32>::sse_encode(2, serializer);
-                <Vec<dion_runtime::data::source::Row>>::sse_encode(field0, serializer);
+                <Vec<dion_runtime::data::source::Row>>::sse_encode(columns, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -9102,15 +9106,21 @@ mod io {
             match self.tag {
                 0 => {
                     let ans = unsafe { self.kind.Text };
-                    dion_runtime::data::source::MixedContent::Text(ans.field0.cst_decode())
+                    dion_runtime::data::source::MixedContent::Text {
+                        content: ans.content.cst_decode(),
+                    }
                 }
                 1 => {
                     let ans = unsafe { self.kind.CustomUI };
-                    dion_runtime::data::source::MixedContent::CustomUI(ans.field0.cst_decode())
+                    dion_runtime::data::source::MixedContent::CustomUI {
+                        ui: ans.ui.cst_decode(),
+                    }
                 }
                 2 => {
                     let ans = unsafe { self.kind.Table };
-                    dion_runtime::data::source::MixedContent::Table(ans.field0.cst_decode())
+                    dion_runtime::data::source::MixedContent::Table {
+                        columns: ans.columns.cst_decode(),
+                    }
                 }
                 _ => unreachable!(),
             }
@@ -11604,17 +11614,17 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_MixedContent_Text {
-        field0: *mut wire_cst_list_prim_u_8_strict,
+        content: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_MixedContent_CustomUI {
-        field0: *mut wire_cst_custom_ui,
+        ui: *mut wire_cst_custom_ui,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_MixedContent_Table {
-        field0: *mut wire_cst_list_row,
+        columns: *mut wire_cst_list_row,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

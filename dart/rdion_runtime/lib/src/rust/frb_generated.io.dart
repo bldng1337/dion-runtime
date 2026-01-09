@@ -2095,21 +2095,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_mixed_content(
       MixedContent apiObj, wire_cst_mixed_content wireObj) {
     if (apiObj is MixedContent_Text) {
-      var pre_field0 = cst_encode_String(apiObj.field0);
+      var pre_content = cst_encode_String(apiObj.content);
       wireObj.tag = 0;
-      wireObj.kind.Text.field0 = pre_field0;
+      wireObj.kind.Text.content = pre_content;
       return;
     }
     if (apiObj is MixedContent_CustomUI) {
-      var pre_field0 = cst_encode_box_custom_ui(apiObj.field0);
+      var pre_ui = cst_encode_box_custom_ui(apiObj.ui);
       wireObj.tag = 1;
-      wireObj.kind.CustomUI.field0 = pre_field0;
+      wireObj.kind.CustomUI.ui = pre_ui;
       return;
     }
     if (apiObj is MixedContent_Table) {
-      var pre_field0 = cst_encode_list_row(apiObj.field0);
+      var pre_columns = cst_encode_list_row(apiObj.columns);
       wireObj.tag = 2;
-      wireObj.kind.Table.field0 = pre_field0;
+      wireObj.kind.Table.columns = pre_columns;
       return;
     }
   }
@@ -5437,11 +5437,11 @@ final class wire_cst_list_media_type extends ffi.Struct {
 }
 
 final class wire_cst_MixedContent_Text extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
 }
 
 final class wire_cst_MixedContent_CustomUI extends ffi.Struct {
-  external ffi.Pointer<wire_cst_custom_ui> field0;
+  external ffi.Pointer<wire_cst_custom_ui> ui;
 }
 
 final class wire_cst_Paragraph_Text extends ffi.Struct {
@@ -5475,7 +5475,7 @@ final class MixedContentKind extends ffi.Union {
 }
 
 final class wire_cst_MixedContent_Table extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_row> field0;
+  external ffi.Pointer<wire_cst_list_row> columns;
 }
 
 final class wire_cst_list_row extends ffi.Struct {

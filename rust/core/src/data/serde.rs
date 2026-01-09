@@ -14,8 +14,8 @@ mod test {
         settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI},
         source::{
             Entry, EntryDetailed, EntryDetailedResult, EntryId, EntryList, Episode, EpisodeId,
-            ImageListAudio, Link, MediaType, Paragraph, ReleaseStatus, Source, SourceResult,
-            SourceType, StreamSource, Subtitles,
+            ImageListAudio, Link, MediaType, MixedContent, Paragraph, ReleaseStatus, Source,
+            SourceResult, SourceType, StreamSource, Subtitles,
         },
     };
 
@@ -1122,6 +1122,44 @@ mod test {
                     },
                     Paragraph::CustomUI {
                         ui: Box::new(generate_custom_ui_text()),
+                    },
+                    Paragraph::Table {
+                        columns: vec![
+                            crate::data::source::Row {
+                                cells: vec![Paragraph::Text {
+                                    content: "Cell A".to_string(),
+                                }],
+                            },
+                            crate::data::source::Row {
+                                cells: vec![Paragraph::Text {
+                                    content: "Cell B".to_string(),
+                                }],
+                            },
+                        ],
+                    },
+                    Paragraph::Mixed {
+                        content: vec![
+                            MixedContent::Text {
+                                content: "Some Content".to_string(),
+                            },
+                            MixedContent::CustomUI {
+                                ui: Box::new(generate_custom_ui_button()),
+                            },
+                            MixedContent::Table {
+                                columns: vec![
+                                    crate::data::source::Row {
+                                        cells: vec![Paragraph::Text {
+                                            content: "Cell A".to_string(),
+                                        }],
+                                    },
+                                    crate::data::source::Row {
+                                        cells: vec![Paragraph::Text {
+                                            content: "Cell B".to_string(),
+                                        }],
+                                    },
+                                ],
+                            },
+                        ],
                     },
                 ],
             },

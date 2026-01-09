@@ -205,9 +205,9 @@ pub enum Paragraph {
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum MixedContent {
-    Text(String),
-    CustomUI(Box<CustomUI>),
-    Table(Vec<Row>),
+    Text { content: String },
+    CustomUI { ui: Box<CustomUI> },
+    Table { columns: Vec<Row> },
 }
 
 /// flutter_rust_bridge:non_opaque
