@@ -75,6 +75,13 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Install Repo Scripts
+        run: bun -g i @dion-js/extension-scripts
+
+      - name: Test build index
+        working-directory: tests
+        run: bunx dion-build-index
+
       - name: Run Biome linting
         run: bunx @biomejs/biome check .
 
@@ -89,9 +96,6 @@ jobs:
         working-directory: dart/rdion_runtime
         run: flutter analyze lib
 
-      - name: Test build index
-        working-directory: tests
-        run: bunx dion-build-index
       # - name: Run integration tests
       #   working-directory: dart/rdion_runtime/example
       #   run: flutter test integration_test
