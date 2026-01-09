@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { main } from "./create/index.ts";
 
 main().catch((e) => {

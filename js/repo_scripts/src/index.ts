@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { copyFile, exists, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import {
