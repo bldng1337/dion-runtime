@@ -1,3 +1,20 @@
 {
-	"name": "repotest"
+	"name": "repotest",
+	"scripts": {
+		"build": "cd ../.. && bunx dion-build-index"
+	},
+	"dependencies": {
+		"arguments": "workspace:*",
+		"auth": "workspace:*",
+		"decode": "workspace:*",
+		"html": "workspace:*",
+		"native": "workspace:*",
+		"permissions": "workspace:*",
+		"proxy": "workspace:*",
+		"settings": "workspace:*",
+		"version_mismatch": "workspace:*",
+		"@dion-js/extension-scripts": "workspace:*",
+		"@dion-js/extension-test-utils": "workspace:*",
+		"@dion-js/runtime": "workspace:*"
+	}
 }

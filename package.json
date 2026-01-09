@@ -8,6 +8,9 @@
 		"js/**/*",
 		"tests/**/*"
 	],
+	"dependencies": {
+		"@dion-js/extension-scripts": "workspace:*"
+	},
 	"packageManager": "bun@1.2.19",
 	"catalog": {
 		"@dion-js/runtime-types": "0.4.0",
