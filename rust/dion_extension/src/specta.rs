@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 #[cfg(feature = "type")]
 mod ts {
     use specta::ts::ExportConfiguration;
