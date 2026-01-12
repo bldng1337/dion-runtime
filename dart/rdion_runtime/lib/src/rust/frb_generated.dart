@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1123242254;
+  int get rustContentHash => 859095815;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -254,6 +254,11 @@ abstract class RustLibApi extends BaseApi {
       {required ProxyExtension that,
       required EpisodeId epid,
       required Map<String, Setting> settings,
+      CancelToken? token});
+
+  Future<Account?> crateApiExtensionProxyExtensionValidate(
+      {required ProxyExtension that,
+      required Account account,
       CancelToken? token});
 
   Future<EntryList> dionRuntimeDataSourceEntryListDefault();
@@ -1599,6 +1604,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_source",
         argNames: ["that", "epid", "settings", "token"],
+      );
+
+  @override
+  Future<Account?> crateApiExtensionProxyExtensionValidate(
+      {required ProxyExtension that,
+      required Account account,
+      CancelToken? token}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            that, serializer);
+        sse_encode_box_autoadd_account(account, serializer);
+        sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+            token, serializer);
+        final raw_ = serializer.intoRaw();
+        return wire.wire__crate__api__extension__ProxyExtension_validate(
+            port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_opt_box_autoadd_account,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionValidateConstMeta,
+      argValues: [that, account, token],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionValidateConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_validate",
+        argNames: ["that", "account", "token"],
       );
 
   @override
@@ -3210,6 +3248,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         ? null
         : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             raw);
+  }
+
+  @protected
+  Account? dco_decode_opt_box_autoadd_account(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_account(raw);
   }
 
   @protected
@@ -4883,6 +4927,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_account(deserializer));
     } else {
       return null;
     }
@@ -6706,6 +6761,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_account(
+      Account? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_account(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_auth_creds(
       AuthCreds? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7397,4 +7463,8 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionSource(
           that: this, epid: epid, settings: settings, token: token);
+
+  Future<Account?> validate({required Account account, CancelToken? token}) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionValidate(
+          that: this, account: account, token: token);
 }

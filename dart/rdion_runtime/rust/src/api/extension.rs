@@ -156,6 +156,18 @@ impl ProxyExtension {
             .await
     }
 
+    #[frb(serialize)]
+    pub async fn validate(
+        &self,
+        account: Account,
+        token: Option<CancelToken>,
+    ) -> Result<Option<Account>> {
+        self.inner
+            .inner
+            .validate(account, token.map(|token| token.into()))
+            .await
+    }
+
     // SourceProvider
     #[frb(serialize)]
     pub async fn browse(&self, page: i32, token: Option<CancelToken>) -> Result<EntryList> {

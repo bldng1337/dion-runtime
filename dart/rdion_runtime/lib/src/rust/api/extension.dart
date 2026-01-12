@@ -120,4 +120,6 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       {required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
+
+  Future<Account?> validate({required Account account, CancelToken? token});
 }

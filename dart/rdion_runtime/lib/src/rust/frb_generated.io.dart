@@ -441,6 +441,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Account? dco_decode_opt_box_autoadd_account(dynamic raw);
+
+  @protected
   AuthCreds? dco_decode_opt_box_autoadd_auth_creds(dynamic raw);
 
   @protected
@@ -938,6 +941,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken?
       sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
+
+  @protected
+  Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
 
   @protected
   AuthCreds? sse_decode_opt_box_autoadd_auth_creds(
@@ -2949,6 +2955,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           CancelToken? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_account(
+      Account? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_auth_creds(
       AuthCreds? self, SseSerializer serializer);
 
@@ -4112,6 +4122,34 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__crate__api__extension__ProxyExtension_source =
       _wire__crate__api__extension__ProxyExtension_sourcePtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_validate(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_validate(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_validatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Int32,
+            ffi.Int32,
+          )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_validate',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_validate =
+      _wire__crate__api__extension__ProxyExtension_validatePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   void wire__dion_runtime__data__source__entry_list_default(int port_) {
