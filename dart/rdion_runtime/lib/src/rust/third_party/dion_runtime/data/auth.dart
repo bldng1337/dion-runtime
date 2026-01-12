@@ -63,6 +63,11 @@ sealed class AuthCreds with _$AuthCreds {
     required String username,
     required String password,
   }) = AuthCreds_UserPass;
+  const factory AuthCreds.oAuth({
+    required String accessToken,
+    String? refreshToken,
+    int? expiresAt,
+  }) = AuthCreds_OAuth;
 }
 
 @freezed
@@ -75,4 +80,11 @@ sealed class AuthData with _$AuthData {
   }) = AuthData_Cookie;
   const factory AuthData.apiKey() = AuthData_ApiKey;
   const factory AuthData.userPass() = AuthData_UserPass;
+  const factory AuthData.oAuth({
+    required String authorizationUrl,
+    String? tokenUrl,
+    required String clientId,
+    required String clientSecret,
+    String? scope,
+  }) = AuthData_OAuth;
 }

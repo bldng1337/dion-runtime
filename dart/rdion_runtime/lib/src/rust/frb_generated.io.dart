@@ -268,6 +268,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source dco_decode_box_autoadd_source(dynamic raw);
 
   @protected
+  int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
   CustomUI dco_decode_box_custom_ui(dynamic raw);
 
   @protected
@@ -460,6 +463,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SettingsUI? dco_decode_opt_box_autoadd_settings_ui(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
 
   @protected
   CustomUI? dco_decode_opt_box_custom_ui(dynamic raw);
@@ -749,6 +755,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source sse_decode_box_autoadd_source(SseDeserializer deserializer);
 
   @protected
+  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
   CustomUI sse_decode_box_custom_ui(SseDeserializer deserializer);
 
   @protected
@@ -956,6 +965,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SettingsUI? sse_decode_opt_box_autoadd_settings_ui(
       SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
   CustomUI? sse_decode_opt_box_custom_ui(SseDeserializer deserializer);
@@ -1212,6 +1224,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ptr = wire.cst_new_box_autoadd_settings_ui();
     cst_api_fill_to_wire_settings_ui(raw, ptr.ref);
     return ptr;
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint32> cst_encode_box_autoadd_u_32(int raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_u_32(cst_encode_u_32(raw));
   }
 
   @protected
@@ -1564,6 +1582,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_custom_ui(CustomUI? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_custom_ui(raw);
@@ -1669,6 +1693,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.UserPass.password = pre_password;
       return;
     }
+    if (apiObj is AuthCreds_OAuth) {
+      var pre_access_token = cst_encode_String(apiObj.accessToken);
+      var pre_refresh_token = cst_encode_opt_String(apiObj.refreshToken);
+      var pre_expires_at = cst_encode_opt_box_autoadd_u_32(apiObj.expiresAt);
+      wireObj.tag = 3;
+      wireObj.kind.OAuth.access_token = pre_access_token;
+      wireObj.kind.OAuth.refresh_token = pre_refresh_token;
+      wireObj.kind.OAuth.expires_at = pre_expires_at;
+      return;
+    }
   }
 
   @protected
@@ -1688,6 +1722,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is AuthData_UserPass) {
       wireObj.tag = 2;
+      return;
+    }
+    if (apiObj is AuthData_OAuth) {
+      var pre_authorization_url = cst_encode_String(apiObj.authorizationUrl);
+      var pre_token_url = cst_encode_opt_String(apiObj.tokenUrl);
+      var pre_client_id = cst_encode_String(apiObj.clientId);
+      var pre_client_secret = cst_encode_String(apiObj.clientSecret);
+      var pre_scope = cst_encode_opt_String(apiObj.scope);
+      wireObj.tag = 3;
+      wireObj.kind.OAuth.authorization_url = pre_authorization_url;
+      wireObj.kind.OAuth.token_url = pre_token_url;
+      wireObj.kind.OAuth.client_id = pre_client_id;
+      wireObj.kind.OAuth.client_secret = pre_client_secret;
+      wireObj.kind.OAuth.scope = pre_scope;
       return;
     }
   }
@@ -2706,6 +2754,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_source(Source self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_custom_ui(CustomUI self, SseSerializer serializer);
 
   @protected
@@ -2924,6 +2975,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_settings_ui(
       SettingsUI? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_custom_ui(CustomUI? self, SseSerializer serializer);
@@ -4536,6 +4590,17 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_settings_uiPtr
           .asFunction<ffi.Pointer<wire_cst_settings_ui> Function()>();
 
+  ffi.Pointer<ffi.Uint32> cst_new_box_autoadd_u_32(int value) {
+    return _cst_new_box_autoadd_u_32(value);
+  }
+
+  late final _cst_new_box_autoadd_u_32Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint32> Function(ffi.Uint32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_u_32',
+  );
+  late final _cst_new_box_autoadd_u_32 = _cst_new_box_autoadd_u_32Ptr
+      .asFunction<ffi.Pointer<ffi.Uint32> Function(int)>();
+
   ffi.Pointer<wire_cst_custom_ui> cst_new_box_custom_ui() {
     return _cst_new_box_custom_ui();
   }
@@ -4900,8 +4965,22 @@ final class wire_cst_AuthData_Cookie extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> logonpage;
 }
 
+final class wire_cst_AuthData_OAuth extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> authorization_url;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> token_url;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> client_id;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> client_secret;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> scope;
+}
+
 final class AuthDataKind extends ffi.Union {
   external wire_cst_AuthData_Cookie Cookie;
+
+  external wire_cst_AuthData_OAuth OAuth;
 }
 
 final class wire_cst_auth_data extends ffi.Struct {
@@ -4945,12 +5024,22 @@ final class wire_cst_AuthCreds_UserPass extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> password;
 }
 
+final class wire_cst_AuthCreds_OAuth extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> access_token;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> refresh_token;
+
+  external ffi.Pointer<ffi.Uint32> expires_at;
+}
+
 final class AuthCredsKind extends ffi.Union {
   external wire_cst_AuthCreds_Cookies Cookies;
 
   external wire_cst_AuthCreds_ApiKey ApiKey;
 
   external wire_cst_AuthCreds_UserPass UserPass;
+
+  external wire_cst_AuthCreds_OAuth OAuth;
 }
 
 final class wire_cst_auth_creds extends ffi.Struct {

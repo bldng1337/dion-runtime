@@ -2560,6 +2560,15 @@ const _: fn() = || {
             let _: String = username;
             let _: String = password;
         }
+        dion_runtime::data::auth::AuthCreds::OAuth {
+            access_token,
+            refresh_token,
+            expires_at,
+        } => {
+            let _: String = access_token;
+            let _: Option<String> = refresh_token;
+            let _: Option<u32> = expires_at;
+        }
     }
     match None::<dion_runtime::data::auth::AuthData>.unwrap() {
         dion_runtime::data::auth::AuthData::Cookie {
@@ -2571,6 +2580,19 @@ const _: fn() = || {
         }
         dion_runtime::data::auth::AuthData::ApiKey => {}
         dion_runtime::data::auth::AuthData::UserPass => {}
+        dion_runtime::data::auth::AuthData::OAuth {
+            authorization_url,
+            token_url,
+            client_id,
+            client_secret,
+            scope,
+        } => {
+            let _: String = authorization_url;
+            let _: Option<String> = token_url;
+            let _: String = client_id;
+            let _: String = client_secret;
+            let _: Option<String> = scope;
+        }
     }
     match None::<dion_runtime::data::custom_ui::CustomUI>.unwrap() {
         dion_runtime::data::custom_ui::CustomUI::Text { text } => {
@@ -3564,6 +3586,16 @@ impl SseDecode for dion_runtime::data::auth::AuthCreds {
                     password: var_password,
                 };
             }
+            3 => {
+                let mut var_accessToken = <String>::sse_decode(deserializer);
+                let mut var_refreshToken = <Option<String>>::sse_decode(deserializer);
+                let mut var_expiresAt = <Option<u32>>::sse_decode(deserializer);
+                return dion_runtime::data::auth::AuthCreds::OAuth {
+                    access_token: var_accessToken,
+                    refresh_token: var_refreshToken,
+                    expires_at: var_expiresAt,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
@@ -3589,6 +3621,20 @@ impl SseDecode for dion_runtime::data::auth::AuthData {
             }
             2 => {
                 return dion_runtime::data::auth::AuthData::UserPass;
+            }
+            3 => {
+                let mut var_authorizationUrl = <String>::sse_decode(deserializer);
+                let mut var_tokenUrl = <Option<String>>::sse_decode(deserializer);
+                let mut var_clientId = <String>::sse_decode(deserializer);
+                let mut var_clientSecret = <String>::sse_decode(deserializer);
+                let mut var_scope = <Option<String>>::sse_decode(deserializer);
+                return dion_runtime::data::auth::AuthData::OAuth {
+                    authorization_url: var_authorizationUrl,
+                    token_url: var_tokenUrl,
+                    client_id: var_clientId,
+                    client_secret: var_clientSecret,
+                    scope: var_scope,
+                };
             }
             _ => {
                 unimplemented!("");
@@ -4678,6 +4724,17 @@ impl SseDecode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseDecode for Option<u32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5382,6 +5439,17 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::auth::Auth
                 password.into_into_dart().into_dart(),
             ]
             .into_dart(),
+            dion_runtime::data::auth::AuthCreds::OAuth {
+                access_token,
+                refresh_token,
+                expires_at,
+            } => [
+                3.into_dart(),
+                access_token.into_into_dart().into_dart(),
+                refresh_token.into_into_dart().into_dart(),
+                expires_at.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -5414,6 +5482,21 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::auth::Auth
             .into_dart(),
             dion_runtime::data::auth::AuthData::ApiKey => [1.into_dart()].into_dart(),
             dion_runtime::data::auth::AuthData::UserPass => [2.into_dart()].into_dart(),
+            dion_runtime::data::auth::AuthData::OAuth {
+                authorization_url,
+                token_url,
+                client_id,
+                client_secret,
+                scope,
+            } => [
+                3.into_dart(),
+                authorization_url.into_into_dart().into_dart(),
+                token_url.into_into_dart().into_dart(),
+                client_id.into_into_dart().into_dart(),
+                client_secret.into_into_dart().into_dart(),
+                scope.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -6808,6 +6891,16 @@ impl SseEncode for dion_runtime::data::auth::AuthCreds {
                 <String>::sse_encode(username, serializer);
                 <String>::sse_encode(password, serializer);
             }
+            dion_runtime::data::auth::AuthCreds::OAuth {
+                access_token,
+                refresh_token,
+                expires_at,
+            } => {
+                <i32>::sse_encode(3, serializer);
+                <String>::sse_encode(access_token, serializer);
+                <Option<String>>::sse_encode(refresh_token, serializer);
+                <Option<u32>>::sse_encode(expires_at, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -6832,6 +6925,20 @@ impl SseEncode for dion_runtime::data::auth::AuthData {
             }
             dion_runtime::data::auth::AuthData::UserPass => {
                 <i32>::sse_encode(2, serializer);
+            }
+            dion_runtime::data::auth::AuthData::OAuth {
+                authorization_url,
+                token_url,
+                client_id,
+                client_secret,
+                scope,
+            } => {
+                <i32>::sse_encode(3, serializer);
+                <String>::sse_encode(authorization_url, serializer);
+                <Option<String>>::sse_encode(token_url, serializer);
+                <String>::sse_encode(client_id, serializer);
+                <String>::sse_encode(client_secret, serializer);
+                <Option<String>>::sse_encode(scope, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -7658,6 +7765,16 @@ impl SseEncode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseEncode for Option<u32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u32>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8380,6 +8497,14 @@ mod io {
                         password: ans.password.cst_decode(),
                     }
                 }
+                3 => {
+                    let ans = unsafe { self.kind.OAuth };
+                    dion_runtime::data::auth::AuthCreds::OAuth {
+                        access_token: ans.access_token.cst_decode(),
+                        refresh_token: ans.refresh_token.cst_decode(),
+                        expires_at: ans.expires_at.cst_decode(),
+                    }
+                }
                 _ => unreachable!(),
             }
         }
@@ -8397,6 +8522,16 @@ mod io {
                 }
                 1 => dion_runtime::data::auth::AuthData::ApiKey,
                 2 => dion_runtime::data::auth::AuthData::UserPass,
+                3 => {
+                    let ans = unsafe { self.kind.OAuth };
+                    dion_runtime::data::auth::AuthData::OAuth {
+                        authorization_url: ans.authorization_url.cst_decode(),
+                        token_url: ans.token_url.cst_decode(),
+                        client_id: ans.client_id.cst_decode(),
+                        client_secret: ans.client_secret.cst_decode(),
+                        scope: ans.scope.cst_decode(),
+                    }
+                }
                 _ => unreachable!(),
             }
         }
@@ -8480,6 +8615,12 @@ mod io {
         fn cst_decode(self) -> dion_runtime::data::settings::SettingsUI {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::settings::SettingsUI>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<u32> for *mut u32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> u32 {
+            unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
     impl CstDecode<Box<dion_runtime::data::custom_ui::CustomUI>> for *mut wire_cst_custom_ui {
@@ -10711,6 +10852,11 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_custom_ui() -> *mut wire_cst_custom_ui {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
     }
@@ -11092,6 +11238,7 @@ mod io {
         Cookies: wire_cst_AuthCreds_Cookies,
         ApiKey: wire_cst_AuthCreds_ApiKey,
         UserPass: wire_cst_AuthCreds_UserPass,
+        OAuth: wire_cst_AuthCreds_OAuth,
         nil__: (),
     }
     #[repr(C)]
@@ -11112,6 +11259,13 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_AuthCreds_OAuth {
+        access_token: *mut wire_cst_list_prim_u_8_strict,
+        refresh_token: *mut wire_cst_list_prim_u_8_strict,
+        expires_at: *mut u32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_auth_data {
         tag: i32,
         kind: AuthDataKind,
@@ -11120,6 +11274,7 @@ mod io {
     #[derive(Clone, Copy)]
     pub union AuthDataKind {
         Cookie: wire_cst_AuthData_Cookie,
+        OAuth: wire_cst_AuthData_OAuth,
         nil__: (),
     }
     #[repr(C)]
@@ -11127,6 +11282,15 @@ mod io {
     pub struct wire_cst_AuthData_Cookie {
         loginpage: *mut wire_cst_list_prim_u_8_strict,
         logonpage: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_AuthData_OAuth {
+        authorization_url: *mut wire_cst_list_prim_u_8_strict,
+        token_url: *mut wire_cst_list_prim_u_8_strict,
+        client_id: *mut wire_cst_list_prim_u_8_strict,
+        client_secret: *mut wire_cst_list_prim_u_8_strict,
+        scope: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

@@ -223,6 +223,20 @@ mod test {
             },
             AuthData::ApiKey,
             AuthData::UserPass,
+            AuthData::OAuth {
+                authorization_url: "https://auth.example.com".to_string(),
+                token_url: Some("https://token.example.com".to_string()),
+                client_id: "client_id_123".to_string(),
+                client_secret: "client_secret_abc".to_string(),
+                scope: Some("Some, Scope".to_string()),
+            },
+            AuthData::OAuth {
+                authorization_url: "https://auth2.example.com".to_string(),
+                token_url: None,
+                client_id: "client_id_456".to_string(),
+                client_secret: "client_secret_def".to_string(),
+                scope: Some("read write".to_string()),
+            },
         ]
     }
 

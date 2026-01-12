@@ -1189,6 +1189,21 @@ extension JsonMixedContent on MixedContent {
 
 extension JsonAuthData on AuthData {
   dynamic toJson() => switch (this) {
+        AuthData_OAuth(
+          :final authorizationUrl,
+          :final tokenUrl,
+          :final clientId,
+          :final clientSecret,
+          :final scope
+        ) =>
+          {
+            "type": "OAuth",
+            "authorization_url": authorizationUrl,
+            "token_url": tokenUrl,
+            "client_id": clientId,
+            "client_secret": clientSecret,
+            "scope": scope,
+          },
         AuthData_Cookie(:final loginpage, :final logonpage) => {
             "type": "Cookie",
             "loginpage": loginpage,
@@ -1205,6 +1220,14 @@ extension JsonAuthData on AuthData {
   static AuthData fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
+      case "OAuth":
+        return AuthData.oAuth(
+          authorizationUrl: value["authorization_url"],
+          tokenUrl: value["token_url"],
+          clientId: value["client_id"],
+          clientSecret: value["client_secret"],
+          scope: value["scope"],
+        );
       case "Cookie":
         return AuthData.cookie(
           loginpage: value["loginpage"],
@@ -1242,6 +1265,17 @@ extension JsonAccount on Account {
 
 extension JsonAuthCreds on AuthCreds {
   dynamic toJson() => switch (this) {
+        AuthCreds_OAuth(
+          :final accessToken,
+          :final refreshToken,
+          :final expiresAt
+        ) =>
+          {
+            "type": "OAuth",
+            "access_token": accessToken,
+            "refresh_token": refreshToken,
+            "expires_at": expiresAt,
+          },
         AuthCreds_Cookies(:final cookies) => {
             "type": "Cookies",
             "cookies": cookies,
@@ -1260,6 +1294,12 @@ extension JsonAuthCreds on AuthCreds {
   static AuthCreds fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
+      case "OAuth":
+        return AuthCreds.oAuth(
+          accessToken: value["access_token"],
+          refreshToken: value["refresh_token"],
+          expiresAt: value["expires_at"],
+        );
       case "Cookies":
         return AuthCreds.cookies(
           cookies: (value["cookies"] as Map).map(

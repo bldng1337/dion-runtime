@@ -2422,6 +2422,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           username: dco_decode_String(raw[1]),
           password: dco_decode_String(raw[2]),
         );
+      case 3:
+        return AuthCreds_OAuth(
+          accessToken: dco_decode_String(raw[1]),
+          refreshToken: dco_decode_opt_String(raw[2]),
+          expiresAt: dco_decode_opt_box_autoadd_u_32(raw[3]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -2440,6 +2446,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return const AuthData_ApiKey();
       case 2:
         return const AuthData_UserPass();
+      case 3:
+        return AuthData_OAuth(
+          authorizationUrl: dco_decode_String(raw[1]),
+          tokenUrl: dco_decode_opt_String(raw[2]),
+          clientId: dco_decode_String(raw[3]),
+          clientSecret: dco_decode_String(raw[4]),
+          scope: dco_decode_opt_String(raw[5]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -2584,6 +2598,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Source dco_decode_box_autoadd_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_source(raw);
+  }
+
+  @protected
+  int dco_decode_box_autoadd_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
   }
 
   @protected
@@ -3241,6 +3261,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int? dco_decode_opt_box_autoadd_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_u_32(raw);
+  }
+
+  @protected
   CustomUI? dco_decode_opt_box_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_custom_ui(raw);
@@ -3890,6 +3916,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_password = sse_decode_String(deserializer);
         return AuthCreds_UserPass(
             username: var_username, password: var_password);
+      case 3:
+        var var_accessToken = sse_decode_String(deserializer);
+        var var_refreshToken = sse_decode_opt_String(deserializer);
+        var var_expiresAt = sse_decode_opt_box_autoadd_u_32(deserializer);
+        return AuthCreds_OAuth(
+            accessToken: var_accessToken,
+            refreshToken: var_refreshToken,
+            expiresAt: var_expiresAt);
       default:
         throw UnimplementedError('');
     }
@@ -3910,6 +3944,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return const AuthData_ApiKey();
       case 2:
         return const AuthData_UserPass();
+      case 3:
+        var var_authorizationUrl = sse_decode_String(deserializer);
+        var var_tokenUrl = sse_decode_opt_String(deserializer);
+        var var_clientId = sse_decode_String(deserializer);
+        var var_clientSecret = sse_decode_String(deserializer);
+        var var_scope = sse_decode_opt_String(deserializer);
+        return AuthData_OAuth(
+            authorizationUrl: var_authorizationUrl,
+            tokenUrl: var_tokenUrl,
+            clientId: var_clientId,
+            clientSecret: var_clientSecret,
+            scope: var_scope);
       default:
         throw UnimplementedError('');
     }
@@ -4059,6 +4105,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Source sse_decode_box_autoadd_source(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_source(deserializer));
+  }
+
+  @protected
+  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_u_32(deserializer));
   }
 
   @protected
@@ -4922,6 +4974,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_settings_ui(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_u_32(deserializer));
     } else {
       return null;
     }
@@ -5804,6 +5867,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(2, serializer);
         sse_encode_String(username, serializer);
         sse_encode_String(password, serializer);
+      case AuthCreds_OAuth(
+          accessToken: final accessToken,
+          refreshToken: final refreshToken,
+          expiresAt: final expiresAt
+        ):
+        sse_encode_i_32(3, serializer);
+        sse_encode_String(accessToken, serializer);
+        sse_encode_opt_String(refreshToken, serializer);
+        sse_encode_opt_box_autoadd_u_32(expiresAt, serializer);
     }
   }
 
@@ -5822,6 +5894,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(1, serializer);
       case AuthData_UserPass():
         sse_encode_i_32(2, serializer);
+      case AuthData_OAuth(
+          authorizationUrl: final authorizationUrl,
+          tokenUrl: final tokenUrl,
+          clientId: final clientId,
+          clientSecret: final clientSecret,
+          scope: final scope
+        ):
+        sse_encode_i_32(3, serializer);
+        sse_encode_String(authorizationUrl, serializer);
+        sse_encode_opt_String(tokenUrl, serializer);
+        sse_encode_String(clientId, serializer);
+        sse_encode_String(clientSecret, serializer);
+        sse_encode_opt_String(scope, serializer);
     }
   }
 
@@ -5975,6 +6060,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_source(Source self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_source(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_32(self, serializer);
   }
 
   @protected
@@ -6695,6 +6786,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_settings_ui(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_u_32(self, serializer);
     }
   }
 
