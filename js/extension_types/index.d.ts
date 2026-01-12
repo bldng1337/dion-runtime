@@ -56,7 +56,7 @@ declare module "setting" {
 
 declare module "auth" {
 	type Link = string;
-	import type { Account } from "@dion-js/runtime-types/runtime";
+	import type { Account, AuthCreds } from "@dion-js/runtime-types/runtime";
 
 	/**
 	 * Initializes/Updates authentication for a given provider.
@@ -76,13 +76,7 @@ declare module "auth" {
 	/**
 	 * Returns the authentication secrets for the given domain.
 	 */
-	export function getAuthSecret(
-		domain: string,
-	): Promise<
-		| { user: string; pass: string; type: "userpass" }
-		| { type: "apikey"; key: string }
-		| { type: "cookie"; cookies: { [name: string]: string | string[] } }
-	>;
+	export function getAuthSecret(domain: string): Promise<AuthCreds>;
 }
 
 declare module "convert" {
@@ -117,6 +111,7 @@ declare module "parse" {
 	}
 }
 
+// biome-ignore lint/suspicious/noVar: console methods
 declare var console: {
 	// biome-ignore lint/suspicious/noExplicitAny: console methods
 	log(message?: any, ...optionalParams: any[]): void;

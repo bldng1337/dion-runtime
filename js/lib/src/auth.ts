@@ -1,16 +1,10 @@
-import type { Account } from "@dion-js/runtime-types/runtime";
+import type {
+	Account,
+	AuthCreds,
+	AuthData,
+} from "@dion-js/runtime-types/runtime";
 import { getAuthSecret, invalidate, isLoggedIn, mergeAuth } from "auth";
 import { logerr } from "./util.js";
-
-export type AuthSecret =
-	| { user: string; pass: string; type: "userpass" }
-	| { type: "apikey"; key: string }
-	| { type: "cookie"; cookies: { [name: string]: string | string[] } };
-
-export type AuthDataType =
-	| { type: "UserPass" }
-	| { type: "ApiKey" }
-	| { type: "Cookie"; loginpage: string; logonpage: string };
 
 type ValidateFunc = (account: AuthAccount) => Promise<{
 	userName?: string;
@@ -19,10 +13,10 @@ type ValidateFunc = (account: AuthAccount) => Promise<{
 
 export class AuthAccount {
 	domain: string;
-	authType: AuthDataType;
+	authType: AuthData;
 	validate: ValidateFunc;
 
-	constructor(domain: string, authType: AuthDataType, validate: ValidateFunc) {
+	constructor(domain: string, authType: AuthData, validate: ValidateFunc) {
 		this.validate = validate;
 		this.domain = domain;
 		this.authType = authType;
@@ -54,7 +48,7 @@ export class AuthAccount {
 		return await invalidate(this.domain);
 	}
 
-	async getAuthSecret(): Promise<AuthSecret | undefined> {
+	async getAuthSecret(): Promise<AuthCreds | undefined> {
 		try {
 			return await getAuthSecret(this.domain);
 		} catch (e) {
