@@ -2,21 +2,13 @@
 // dion runtime types
 // Version: 0.1.0
 
-export type AuthCreds = { type: "Cookies"; cookies: { [key: string]: string[] } } | { type: "ApiKey"; key: string } | { type: "UserPass"; username: string; password: string };
+export type AuthData = { type: "Cookie"; loginpage: string; logonpage: string } | { type: "ApiKey" } | { type: "UserPass" } | { type: "OAuth"; authorization_url: string; token_url: string | null; client_id: string; client_secret: string; scope: string | null };
 
-export type AuthData = { type: "Cookie"; loginpage: string; logonpage: string } | { type: "ApiKey" } | { type: "UserPass" };
+export type AuthCreds = { type: "Cookies"; cookies: { [key: string]: string[] } } | { type: "ApiKey"; key: string } | { type: "UserPass"; username: string; password: string } | { type: "OAuth"; access_token: string; refresh_token: string | null; expires_at: number | null };
 
 export type Account = { domain: string; user_name?: string | null; cover?: string | null; auth: AuthData; creds?: AuthCreds | null };
 
-export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
-
-export type EntryId = { uid: string; iddata?: string | null };
-
-export type Link = { url: string; header?: { [key: string]: string } | null };
-
-export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
-
-export type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
+export type PopupAction = { label: string; onclick: Action };
 
 export type TimestampType = "Relative" | "Absolute";
 
@@ -24,7 +16,17 @@ export type UIAction = { type: "Action"; action: Action } | { type: "SwapContent
 
 export type SettingKind = "Extension" | "Search";
 
+export type Link = { url: string; header?: { [key: string]: string } | null };
+
+export type EntryId = { uid: string; iddata?: string | null };
+
+export type MediaType = "Video" | "Comic" | "Audio" | "Book" | "Unknown";
+
+export type Entry = { id: EntryId; url: string; title: string; media_type: MediaType; cover?: Link | null; author?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
+
 export type CustomUI = { type: "Text"; text: string } | { type: "Image"; image: Link; width: number | null; height: number | null } | { type: "Link"; link: string; label: string | null } | { type: "TimeStamp"; timestamp: string; display: TimestampType } | { type: "EntryCard"; entry: Entry } | { type: "Card"; image: Link; top: CustomUI; bottom: CustomUI } | { type: "Feed"; event: string; data: string } | { type: "Button"; label: string; on_click: UIAction | null } | { type: "InlineSetting"; setting_id: string; setting_kind: SettingKind; on_commit: UIAction | null } | { type: "Slot"; id: string; child: CustomUI } | { type: "Column"; children: CustomUI[] } | { type: "Row"; children: CustomUI[] };
+
+export type ReleaseStatus = "Releasing" | "Complete" | "Unknown";
 
 export type EpisodeId = { uid: string; iddata?: string | null };
 
@@ -32,17 +34,15 @@ export type Episode = { id: EpisodeId; name: string; description?: string | null
 
 export type EntryDetailed = { id: EntryId; url: string; titles: string[]; author?: string[] | null; ui?: CustomUI | null; meta?: { [key: string]: string } | null; media_type: MediaType; status: ReleaseStatus; description: string; language: string; cover?: Link | null; poster?: Link | null; episodes: Episode[]; genres?: string[] | null; rating?: number | null; views?: number | null; length?: number | null };
 
-export type PopupAction = { label: string; onclick: Action };
-
 export type Action = { type: "OpenBrowser"; url: string } | { type: "Popup"; title: string; content: CustomUI; actions: PopupAction[] } | { type: "Nav"; title: string; content: CustomUI } | { type: "TriggerEvent"; event: string; data: string } | { type: "NavEntry"; entry: EntryDetailed };
 
 export type DropdownOption = { label: string; value: string };
 
 export type EntryActivity = { type: "EpisodeActivity"; progress: number };
 
-export type SettingsUI = { type: "CheckBox" } | { type: "Slider"; min: number; max: number; step: number } | { type: "Dropdown"; options: DropdownOption[] } | { type: "MultiDropdown"; options: DropdownOption[] };
-
 export type SettingValue = { type: "String"; data: string } | { type: "Number"; data: number } | { type: "Boolean"; data: boolean } | { type: "StringList"; data: string[] };
+
+export type SettingsUI = { type: "CheckBox" } | { type: "Slider"; min: number; max: number; step: number } | { type: "Dropdown"; options: DropdownOption[] } | { type: "MultiDropdown"; options: DropdownOption[] };
 
 export type Setting = { label: string; value: SettingValue; default: SettingValue; visible: boolean; ui?: SettingsUI | null };
 
@@ -72,7 +72,7 @@ export type Paragraph = { type: "Text"; content: string } | { type: "Mixed"; con
 
 export type Row = { cells: Paragraph[] };
 
-export type MixedContent = ({ type: "Text" } & string) | ({ type: "CustomUI" } & CustomUI) | ({ type: "Table" } & Row[]);
+export type MixedContent = { type: "Text"; content: string } | { type: "CustomUI"; ui: CustomUI } | { type: "Table"; columns: Row[] };
 
 export type Permission = { type: "Storage"; path: string; write: boolean } | { type: "Network"; domains: string[] } | { type: "ActionPopup" } | { type: "ArbitraryNetwork" };
 
@@ -80,9 +80,9 @@ export type RemoteExtension = { remote_id: string; id: string; name: string; url
 
 export type RemoteExtensionResult = { content: RemoteExtension[]; hasnext?: boolean | null; length?: number | null };
 
-export type StreamSource = { name: string; lang: string; url: Link };
-
 export type Subtitles = { title: string; lang: string; url: Link };
+
+export type StreamSource = { name: string; lang: string; url: Link };
 
 export type Source = { type: "Epub"; link: Link } | { type: "Pdf"; link: Link } | { type: "Imagelist"; links: Link[]; audio: ImageListAudio[] | null } | { type: "Video"; sources: StreamSource[]; sub: Subtitles[] } | { type: "Audio"; sources: StreamSource[] } | { type: "Paragraphlist"; paragraphs: Paragraph[] };
 

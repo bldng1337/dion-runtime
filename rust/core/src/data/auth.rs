@@ -35,6 +35,11 @@ pub enum AuthCreds {
         username: String,
         password: String,
     },
+    OAuth {
+        access_token: String,
+        refresh_token: Option<String>,
+        expires_at: Option<u32>,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -49,4 +54,11 @@ pub enum AuthData {
     },
     ApiKey,
     UserPass,
+    OAuth {
+        authorization_url: String,
+        token_url: Option<String>,
+        client_id: String,
+        client_secret: String,
+        scope: Option<String>,
+    },
 }
