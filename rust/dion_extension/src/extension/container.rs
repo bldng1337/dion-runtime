@@ -167,7 +167,7 @@ impl Extension for DionExtension {
                 let mut store = self.data.store.write().await;
                 let store_account = store
                     .auth
-                    .get_mut(&account.domain)
+                    .get_mut(&old.domain)
                     .ok_or(anyhow!("Couldnt find the account"))?;
                 match &res {
                     Some(acc) => {
