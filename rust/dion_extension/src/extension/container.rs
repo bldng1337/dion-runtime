@@ -163,7 +163,10 @@ impl Extension for DionExtension {
                 context
                     .send(task)
                     .context("Failed to send message to Extension Thread")?;
-                let res = response.await??;
+                let res = response.await??.map(|acc| Account {
+                    creds: old.creds.clone(),
+                    ..acc
+                });
                 let mut store = self.data.store.write().await;
                 let store_account = store
                     .auth
