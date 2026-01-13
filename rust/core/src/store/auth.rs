@@ -27,6 +27,10 @@ impl AuthStore {
             .await
     }
 
+    pub fn get_mut(&mut self, domain: &str) -> Option<&mut Account> {
+        self.accounts.iter_mut().find(|acc| acc.domain == domain)
+    }
+
     pub fn merge_auth(&mut self, account: &Account) {
         if !self.accounts.iter().any(|acc| acc.domain == account.domain) {
             self.accounts.push(account.clone());

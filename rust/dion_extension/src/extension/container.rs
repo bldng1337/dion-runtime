@@ -143,6 +143,14 @@ impl Extension for DionExtension {
         account: Account,
         token: Option<CancellationToken>,
     ) -> Result<Option<Account>> {
+        let mut store = self.data.store.write().await;
+        let store_account = store
+            .auth
+            .get_mut(&account.domain)
+            .ok_or(anyhow!("Couldnt find the account"))?;
+        // TODO: Potentially we could use less clones here but this is simpler for now
+        let old = store_account.clone();
+        *store_account = account.clone();
         match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
@@ -154,7 +162,17 @@ impl Extension for DionExtension {
                 context
                     .send(task)
                     .context("Failed to send message to Extension Thread")?;
-                response.await?
+                let res = response.await??;
+                match &res {
+                    Some(acc) => {
+                        *store_account = acc.clone();
+                        store.auth.save_state(self.data.client.as_ref()).await?;
+                    }
+                    None => {
+                        *store_account = old;
+                    }
+                }
+                Ok(res)
             }
             None => bail!("Extension is not enabled"),
         }
