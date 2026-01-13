@@ -20,5 +20,12 @@ export default class extends DefaultExtension {
 				`decode_base64 or encode_base64 not working for ${testcase}`,
 			);
 		}
+		//Also test btoa and atob for compatibility
+		for (const testcase of testcases) {
+			assert(
+				atob(btoa(testcase)) === testcase,
+				`atob or btoa not working for ${testcase}`,
+			);
+		}
 	}
 }
