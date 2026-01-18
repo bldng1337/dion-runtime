@@ -239,6 +239,10 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
             let api_get_path = decode_DartFn_Inputs__Output_String_AnyhowException(
                 <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
             );
+            let api_set_entry_setting =
+                decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+                    <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
+                );
             deserializer.end();
             move |context| {
                 transform_result_sse::<_, ()>((move || {
@@ -251,6 +255,7 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
                             api_do_action,
                             api_request_permission,
                             api_get_path,
+                            api_set_entry_setting,
                         ))?;
                     Ok(output_ok)
                 })())
@@ -2987,6 +2992,9 @@ const _: fn() = || {
         dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
             let _: Vec<dion_runtime::data::settings::DropdownOption> = options;
         }
+        dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
+            let _: dion_runtime::data::custom_ui::CustomUI = ui;
+        }
     }
     match None::<dion_runtime::data::source::Source>.unwrap() {
         dion_runtime::data::source::Source::Epub { link } => {
@@ -3177,6 +3185,55 @@ fn decode_DartFn_Inputs_action_Output_unit_AnyhowException(
         flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
             dart_opaque.clone(),
             arg0,
+        ))
+    }
+}
+fn decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+    dart_opaque: flutter_rust_bridge::DartOpaque,
+) -> impl Fn(
+    dion_runtime::data::source::EntryId,
+    String,
+    dion_runtime::data::settings::SettingValue,
+) -> flutter_rust_bridge::DartFnFuture<()> {
+    use flutter_rust_bridge::IntoDart;
+
+    async fn body(
+        dart_opaque: flutter_rust_bridge::DartOpaque,
+        arg0: dion_runtime::data::source::EntryId,
+        arg1: String,
+        arg2: dion_runtime::data::settings::SettingValue,
+    ) -> () {
+        let args = vec![
+            arg0.into_into_dart().into_dart(),
+            arg1.into_into_dart().into_dart(),
+            arg2.into_into_dart().into_dart(),
+        ];
+        let message = FLUTTER_RUST_BRIDGE_HANDLER
+            .dart_fn_invoke(dart_opaque, args)
+            .await;
+
+        let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+        let action = deserializer.cursor.read_u8().unwrap();
+        let ans = match action {
+            0 => std::result::Result::Ok(<()>::sse_decode(&mut deserializer)),
+            1 => std::result::Result::Err(
+                <flutter_rust_bridge::for_generated::anyhow::Error>::sse_decode(&mut deserializer),
+            ),
+            _ => unreachable!(),
+        };
+        deserializer.end();
+        let ans = ans.expect("Dart throws exception but Rust side assume it is not failable");
+        ans
+    }
+
+    move |arg0: dion_runtime::data::source::EntryId,
+          arg1: String,
+          arg2: dion_runtime::data::settings::SettingValue| {
+        flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
+            dart_opaque.clone(),
+            arg0,
+            arg1,
+            arg2,
         ))
     }
 }
@@ -5118,6 +5175,11 @@ impl SseDecode for dion_runtime::data::settings::SettingsUI {
                     options: var_options,
                 };
             }
+            4 => {
+                let mut var_ui =
+                    <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
+                return dion_runtime::data::settings::SettingsUI::CustomUI { ui: var_ui };
+            }
             _ => {
                 unimplemented!("");
             }
@@ -6491,6 +6553,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::
             }
             dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
                 [3.into_dart(), options.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
+                [4.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -8113,6 +8178,10 @@ impl SseEncode for dion_runtime::data::settings::SettingsUI {
                     options, serializer,
                 );
             }
+            dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
+                <i32>::sse_encode(4, serializer);
+                <dion_runtime::data::custom_ui::CustomUI>::sse_encode(ui, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -9535,6 +9604,12 @@ mod io {
                     let ans = unsafe { self.kind.MultiDropdown };
                     dion_runtime::data::settings::SettingsUI::MultiDropdown {
                         options: ans.options.cst_decode(),
+                    }
+                }
+                4 => {
+                    let ans = unsafe { self.kind.CustomUI };
+                    dion_runtime::data::settings::SettingsUI::CustomUI {
+                        ui: ans.ui.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -12052,6 +12127,7 @@ mod io {
         Slider: wire_cst_SettingsUI_Slider,
         Dropdown: wire_cst_SettingsUI_Dropdown,
         MultiDropdown: wire_cst_SettingsUI_MultiDropdown,
+        CustomUI: wire_cst_SettingsUI_CustomUI,
         nil__: (),
     }
     #[repr(C)]
@@ -12070,6 +12146,11 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_SettingsUI_MultiDropdown {
         options: *mut wire_cst_list_dropdown_option,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingsUI_CustomUI {
+        ui: *mut wire_cst_custom_ui,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

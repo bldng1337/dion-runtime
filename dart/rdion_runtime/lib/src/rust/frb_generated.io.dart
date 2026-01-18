@@ -123,6 +123,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_DartFn_Inputs_action_Output_unit_AnyhowException(dynamic raw);
 
   @protected
+  FutureOr<void> Function(EntryId, String, SettingValue)
+      dco_decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+          dynamic raw);
+
+  @protected
   FutureOr<ExtensionClient> Function(ExtensionData)
       dco_decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
           dynamic raw);
@@ -2345,6 +2350,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.MultiDropdown.options = pre_options;
       return;
     }
+    if (apiObj is SettingsUI_CustomUI) {
+      var pre_ui = cst_encode_box_autoadd_custom_ui(apiObj.ui);
+      wireObj.tag = 4;
+      wireObj.kind.CustomUI.ui = pre_ui;
+      return;
+    }
   }
 
   @protected
@@ -2593,6 +2604,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_DartFn_Inputs_action_Output_unit_AnyhowException(
       FutureOr<void> Function(Action) self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+          FutureOr<void> Function(EntryId, String, SettingValue) self,
+          SseSerializer serializer);
 
   @protected
   void
@@ -5441,12 +5458,18 @@ final class wire_cst_SettingsUI_MultiDropdown extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_dropdown_option> options;
 }
 
+final class wire_cst_SettingsUI_CustomUI extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> ui;
+}
+
 final class SettingsUIKind extends ffi.Union {
   external wire_cst_SettingsUI_Slider Slider;
 
   external wire_cst_SettingsUI_Dropdown Dropdown;
 
   external wire_cst_SettingsUI_MultiDropdown MultiDropdown;
+
+  external wire_cst_SettingsUI_CustomUI CustomUI;
 }
 
 final class wire_cst_settings_ui extends ffi.Struct {

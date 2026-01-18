@@ -3,6 +3,8 @@ use std::sync::Arc;
 use dion_runtime::data::action::Action;
 use dion_runtime::data::extension::ExtensionData;
 use dion_runtime::data::permission::Permission;
+use dion_runtime::data::settings::SettingValue;
+use dion_runtime::data::source::EntryId;
 use flutter_rust_bridge::frb;
 use flutter_rust_bridge::DartFnFuture;
 
@@ -34,6 +36,8 @@ pub struct ExtensionClient {
     pub(super) crequest_permission:
         Arc<dyn Fn(Permission, Option<String>) -> DartFnFuture<bool> + Send + Sync>,
     pub(super) cget_path: Arc<dyn Fn() -> DartFnFuture<String> + Send + Sync>,
+    pub(super) cset_entry_setting:
+        Arc<dyn Fn(EntryId,String, SettingValue) -> DartFnFuture<()> + Send + Sync>,
 }
 
 impl ExtensionClient {
@@ -49,6 +53,7 @@ impl ExtensionClient {
             + Sync
             + 'static,
         get_path: impl Fn() -> DartFnFuture<String> + Send + Sync + 'static,
+        set_entry_setting: impl Fn(EntryId,String, SettingValue) -> DartFnFuture<()> + Send + Sync + 'static,
     ) -> Self {
         Self {
             cload_data: Arc::new(load_data),
@@ -58,6 +63,7 @@ impl ExtensionClient {
             cdo_action: Arc::new(do_action),
             crequest_permission: Arc::new(request_permission),
             cget_path: Arc::new(get_path),
+            cset_entry_setting: Arc::new(set_entry_setting),
         }
     }
 }

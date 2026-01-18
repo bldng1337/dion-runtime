@@ -6,8 +6,11 @@ import 'dart:convert';
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../../frb_generated.dart';
+import 'action.dart';
+import 'custom_ui.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
+import 'source.dart';
 part 'settings.freezed.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
@@ -115,4 +118,7 @@ sealed class SettingsUI with _$SettingsUI {
   const factory SettingsUI.multiDropdown({
     required List<DropdownOption> options,
   }) = SettingsUI_MultiDropdown;
+  const factory SettingsUI.customUi({
+    required CustomUI ui,
+  }) = SettingsUI_CustomUI;
 }

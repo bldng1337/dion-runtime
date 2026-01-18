@@ -12,13 +12,6 @@ resolver = "3"
 [profile.bench]
 opt-level = 3
 
-[profile.test]
-opt-level = 1
-
-[profile.test.package."*"]
-opt-level = 3
-
-
 [profile.dev]
 opt-level = 1
 debug="line-tables-only"
@@ -33,3 +26,4 @@ strip = true
 lto = true
 codegen-units = 1
 panic = "abort"
+debug="none"

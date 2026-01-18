@@ -1,12 +1,15 @@
 import type {
+	CustomUI,
 	Setting,
 	SettingKind,
 	SettingsUI,
 	SettingValue,
 } from "@dion-js/runtime-types/runtime";
-import { getSetting, registerSetting, type Settingvalues } from "setting";
+import { getSetting, registerSetting } from "setting";
 import { assertDefined } from "./asserts.js";
 import { logerr } from "./util.js";
+
+type Settingvalues = SettingValue extends { data: infer D } ? D : never;
 
 type ExcludeLiteral<T> = T extends string
 	? string
@@ -209,6 +212,7 @@ export abstract class UI<T extends Settingvalues> {
 		return t;
 	}
 }
+
 //TODO: Implement on rust side
 // export class PathSelection extends UI<string> {
 // 	picktype: "folder" | "file";
@@ -226,6 +230,95 @@ export abstract class UI<T extends Settingvalues> {
 // 		};
 // 	}
 // }
+
+export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
+	ui: CustomUI;
+	constructor(ui: CustomUI) {
+		super();
+		this.ui = ui;
+	}
+
+	getDefinition(): SettingsUI {
+		return {
+			type: "CustomUI",
+			ui: this.ui,
+		};
+	}
+	fitsDefinition(ui: SettingsUI): boolean {
+		return ui.type == "CustomUI" && this.compareCustomUI(ui.ui, this.ui);
+	}
+	compareCustomUI(ui: CustomUI, other: CustomUI): boolean {
+		if (ui.type !== other.type) return false;
+		switch (ui.type) {
+			case "Text":
+				return ui.text === (other as typeof ui).text;
+			case "Image":
+				return (
+					ui.image === (other as typeof ui).image &&
+					ui.width === (other as typeof ui).width &&
+					ui.height === (other as typeof ui).height
+				);
+			case "Link":
+				return (
+					ui.link === (other as typeof ui).link &&
+					ui.label === (other as typeof ui).label
+				);
+			case "TimeStamp":
+				return (
+					ui.timestamp === (other as typeof ui).timestamp &&
+					ui.display === (other as typeof ui).display
+				);
+			case "EntryCard":
+				return (
+					JSON.stringify(ui.entry) ===
+					JSON.stringify((other as typeof ui).entry)
+				);
+			case "Card":
+				return (
+					ui.image === (other as typeof ui).image &&
+					this.compareCustomUI(ui.top, (other as typeof ui).top) &&
+					this.compareCustomUI(ui.bottom, (other as typeof ui).bottom)
+				);
+			case "Feed":
+				return (
+					ui.event === (other as typeof ui).event &&
+					ui.data === (other as typeof ui).data
+				);
+			case "Button":
+				return (
+					ui.label === (other as typeof ui).label &&
+					JSON.stringify(ui.on_click) ===
+						JSON.stringify((other as typeof ui).on_click)
+				);
+			case "InlineSetting":
+				return (
+					ui.setting_id === (other as typeof ui).setting_id &&
+					ui.setting_kind === (other as typeof ui).setting_kind &&
+					JSON.stringify(ui.on_commit) ===
+						JSON.stringify((other as typeof ui).on_commit)
+				);
+			case "Slot":
+				return (
+					ui.id === (other as typeof ui).id &&
+					this.compareCustomUI(ui.child, (other as typeof ui).child)
+				);
+			case "Column":
+			case "Row": {
+				const uiChildren = ui.children;
+				const otherChildren = (other as typeof ui).children;
+				if (uiChildren.length !== otherChildren.length) return false;
+				for (let i = 0; i < uiChildren.length; i++) {
+					if (!uiChildren[i] || !otherChildren[i]) return false;
+					if (!this.compareCustomUI(uiChildren[i]!, otherChildren[i]!))
+						return false;
+				}
+				return true;
+			}
+			default:
+				return false;
+		}
+	}
+}
 
 export class Slider extends UI<number> {
 	min: number;

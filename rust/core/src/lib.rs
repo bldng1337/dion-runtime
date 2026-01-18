@@ -21,7 +21,7 @@ mod test {
             extension::ExtensionData,
             extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
             permission::Permission,
-            settings::Setting,
+            settings::{Setting, SettingValue},
             source::{
                 EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Link, Source,
                 SourceResult,
@@ -268,6 +268,10 @@ mod test {
         }
 
         async fn store_data(&self, key: &str, data: String) -> Result<()> {
+            Ok(())
+        }
+
+        async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
             Ok(())
         }
 

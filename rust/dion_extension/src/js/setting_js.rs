@@ -20,7 +20,8 @@ mod setting {
         Context, JsError, JsNativeError, JsResult, JsValue, job::NativeAsyncJob,
         object::builtins::JsPromise,
     };
-    use dion_runtime::data::settings::{Setting, SettingKind};
+    use dion_runtime::data::settings::{Setting, SettingKind, SettingValue};
+    use dion_runtime::data::source::EntryId;
     use serde_json::Value;
 
     use crate::extension::executor::ExtensionRuntimeDataContainer;
@@ -143,6 +144,77 @@ mod setting {
                                     JsNativeError::error().with_message(e.to_string()),
                                 )
                             })?;
+                        Ok(JsValue::undefined())
+                    }
+                    .await as JsResult<JsValue>
+                    {
+                        Ok(val) => resolve.resolve.call(
+                            &promise.into(),
+                            &[val],
+                            &mut context.borrow_mut(),
+                        )?,
+                        Err(err) => {
+                            let mut context = context.borrow_mut();
+                            resolve.reject.call(
+                                &promise.into(),
+                                &[err.to_opaque(&mut context)],
+                                &mut context,
+                            )?
+                        }
+                    };
+                    Ok(JsValue::undefined())
+                },
+                context.realm().clone(),
+            )
+            .into(),
+        );
+        Ok(ret.into())
+    }
+
+    #[boa(rename = "setEntrySetting")]
+    fn set_entry_setting_js(
+        entry: JsValue,
+        key: String,
+        value: JsValue,
+        context: &mut Context,
+    ) -> JsResult<JsValue> {
+        let entryid: EntryId = serde_json::from_value(entry.to_json(context)?.unwrap_or(Value::Null))
+            .map_err(|e| {
+                JsError::from_native(
+                    JsNativeError::error().with_message(format!("Failed to parse entry id {}", e)),
+                )
+            })?;
+        let settingvalue: SettingValue = serde_json::from_value(
+            value.to_json(context)?.unwrap_or(Value::Null),
+        )
+        .map_err(|e| {
+            JsError::from_native(
+                JsNativeError::error().with_message(format!("Failed to parse value {}", e)),
+            )
+        })?;
+
+        let (promise, resolve) = JsPromise::new_pending(context);
+        let ret = promise.clone();
+        context.enqueue_job(
+            NativeAsyncJob::with_realm(
+                async move |context: &RefCell<&mut Context>| {
+                    match async {
+                        let runtime_data: Option<ExtensionRuntimeDataContainer> =
+                            context.borrow().get_data().cloned();
+                        let runtime_data =
+                            runtime_data.ok_or(JsError::from_native(JsNativeError::error()))?;
+                        let Some(runtime_data) = runtime_data.inner.upgrade() else {
+                            return Err(JsError::from_native(
+                                JsNativeError::error()
+                                    .with_message("Network container has been dropped"),
+                            ));
+                        };
+
+                        runtime_data
+                            .client
+                            .set_entry_setting(entryid, key, settingvalue)
+                            .await
+                            .map_err(|e| JsError::from_rust(&*e))?;
                         Ok(JsValue::undefined())
                     }
                     .await as JsResult<JsValue>

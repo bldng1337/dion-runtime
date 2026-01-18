@@ -720,6 +720,10 @@ extension JsonDropdownOption on DropdownOption {
 extension JsonSettingsUI on SettingsUI {
   dynamic toJson() => switch (this) {
         SettingsUI_CheckBox() => {"type": "CheckBox"},
+        SettingsUI_CustomUI(:final ui) => {
+            "type": "CustomUI",
+            "ui": ui.toJson(),
+          },
         SettingsUI_MultiDropdown(:final options) => {
             "type": "MultiDropdown",
             "options": options.map((e) => e.toJson()).toList()
@@ -739,6 +743,10 @@ extension JsonSettingsUI on SettingsUI {
   static SettingsUI fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
+      case "CustomUI":
+        return SettingsUI.customUi(
+          ui: JsonCustomUI.fromJson(value["ui"]),
+        );
       case "MultiDropdown":
         return SettingsUI.multiDropdown(
             options: (value["options"] as List)

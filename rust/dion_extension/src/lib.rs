@@ -56,6 +56,10 @@ mod tests {
             bail!("No loading implemented")
         }
 
+        async fn set_entry_setting(&self, _entry: EntryId, _key: String, _value: SettingValue) -> Result<()> {
+            Ok(())
+        }
+
         async fn store_data(&self, _key: &str, _data: String) -> Result<()> {
             Ok(())
         }

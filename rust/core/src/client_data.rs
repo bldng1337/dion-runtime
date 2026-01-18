@@ -2,7 +2,10 @@ use std::fmt::Debug;
 
 use anyhow::Result;
 
-use crate::data::{action::Action, extension::ExtensionData, permission::Permission};
+use crate::data::{
+    action::Action, extension::ExtensionData, permission::Permission, settings::SettingValue,
+    source::EntryId,
+};
 
 #[async_trait::async_trait]
 pub trait AdapterClient: Send + Sync {
@@ -24,6 +27,7 @@ pub trait ExtensionClient: Send + Sync + Debug {
 
     async fn do_action(&self, action: &Action) -> Result<()>;
 
+    async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()>;
     async fn request_permission(
         &self,
         permission: &Permission,

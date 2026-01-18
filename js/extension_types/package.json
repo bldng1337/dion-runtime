@@ -1,6 +1,6 @@
 {
 	"name": "@dion-js/extension-types",
-	"version": "0.6.0",
+	"version": "0.8.0",
 	"description": "Type declarations for the Dion extension API",
 	"files": [
 		"index.d.ts"

@@ -32,7 +32,7 @@ declare module "network" {
 }
 
 declare module "permission" {
-	import type { Permission } from "@dion-js/runtime-types/runtime";
+	import type { EntryId, Permission } from "@dion-js/runtime-types/runtime";
 	export function requestPermission(
 		permission: Permission,
 		msg?: string,
@@ -41,7 +41,12 @@ declare module "permission" {
 }
 
 declare module "setting" {
-	import type { Setting, SettingKind } from "@dion-js/runtime-types/runtime";
+	import type {
+		Setting,
+		SettingKind,
+		EntryId,
+		SettingValue,
+	} from "@dion-js/runtime-types/runtime";
 	export function getSetting(
 		settingid: string,
 		settingkind: SettingKind,
@@ -51,7 +56,11 @@ declare module "setting" {
 		setting: Setting,
 		settingkind: SettingKind,
 	): Promise<void>;
-	export type Settingvalues = string | number | boolean;
+	export function setEntrySetting(
+		entry: EntryId,
+		key: String,
+		value: SettingValue,
+	): Promise<void>;
 }
 
 declare module "auth" {

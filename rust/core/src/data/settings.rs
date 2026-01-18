@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "type")]
 use specta::Type;
 
+use crate::data::custom_ui::CustomUI;
+
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -87,6 +89,7 @@ pub enum SettingsUI {
     Slider { min: f64, max: f64, step: i32 },
     Dropdown { options: Vec<DropdownOption> },
     MultiDropdown { options: Vec<DropdownOption> },
+    CustomUI { ui: CustomUI },
 }
 
 /// flutter_rust_bridge:non_opaque

@@ -111,7 +111,9 @@ abstract class RustLibApi extends BaseApi {
       required FutureOr<void> Function(String, String) storeDataSecure,
       required FutureOr<void> Function(Action) doAction,
       required FutureOr<bool> Function(Permission, String?) requestPermission,
-      required FutureOr<String> Function() getPath});
+      required FutureOr<String> Function() getPath,
+      required FutureOr<void> Function(EntryId, String, SettingValue)
+          setEntrySetting});
 
   Future<ManagerClient> crateApiClientManagerClientInit(
       {required FutureOr<String> Function() getPath,
@@ -450,7 +452,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       required FutureOr<void> Function(String, String) storeDataSecure,
       required FutureOr<void> Function(Action) doAction,
       required FutureOr<bool> Function(Permission, String?) requestPermission,
-      required FutureOr<String> Function() getPath}) {
+      required FutureOr<String> Function() getPath,
+      required FutureOr<void> Function(EntryId, String, SettingValue)
+          setEntrySetting}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -468,6 +472,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             requestPermission, serializer);
         sse_encode_DartFn_Inputs__Output_String_AnyhowException(
             getPath, serializer);
+        sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+            setEntrySetting, serializer);
         final raw_ = serializer.intoRaw();
         return wire.wire__crate__api__client__ExtensionClient_init(
             port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
@@ -485,7 +491,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         storeDataSecure,
         doAction,
         requestPermission,
-        getPath
+        getPath,
+        setEntrySetting
       ],
       apiImpl: this,
     ));
@@ -501,7 +508,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "storeDataSecure",
           "doAction",
           "requestPermission",
-          "getPath"
+          "getPath",
+          "setEntrySetting"
         ],
       );
 
@@ -2057,6 +2065,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     };
   }
 
+  Future<void> Function(int, dynamic, dynamic, dynamic)
+      encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+          FutureOr<void> Function(EntryId, String, SettingValue) raw) {
+    return (callId, rawArg0, rawArg1, rawArg2) async {
+      final arg0 = dco_decode_entry_id(rawArg0);
+      final arg1 = dco_decode_String(rawArg1);
+      final arg2 = dco_decode_setting_value(rawArg2);
+
+      Box<void>? rawOutput;
+      Box<AnyhowException>? rawError;
+      try {
+        rawOutput = Box(await raw(arg0, arg1, arg2));
+      } catch (e, s) {
+        rawError = Box(AnyhowException("$e\n\n$s"));
+      }
+
+      final serializer = SseSerializer(generalizedFrbRustBinding);
+      assert((rawOutput != null) ^ (rawError != null));
+      if (rawOutput != null) {
+        serializer.buffer.putUint8(0);
+        sse_encode_unit(rawOutput.value, serializer);
+      } else {
+        serializer.buffer.putUint8(1);
+        sse_encode_AnyhowException(rawError!.value, serializer);
+      }
+      final output = serializer.intoRaw();
+
+      generalizedFrbRustBinding.dartFnDeliverOutput(
+          callId: callId,
+          ptr: output.ptr,
+          rustVecLen: output.rustVecLen,
+          dataLen: output.dataLen);
+    };
+  }
+
   Future<void> Function(int, dynamic)
       encode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
           FutureOr<ExtensionClient> Function(ExtensionData) raw) {
@@ -2277,6 +2320,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   FutureOr<void> Function(Action)
       dco_decode_DartFn_Inputs_action_Output_unit_AnyhowException(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError('');
+  }
+
+  @protected
+  FutureOr<void> Function(EntryId, String, SettingValue)
+      dco_decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+          dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
@@ -3544,6 +3595,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         return SettingsUI_MultiDropdown(
           options: dco_decode_list_dropdown_option(raw[1]),
+        );
+      case 4:
+        return SettingsUI_CustomUI(
+          ui: dco_decode_box_autoadd_custom_ui(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -5280,6 +5335,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         var var_options = sse_decode_list_dropdown_option(deserializer);
         return SettingsUI_MultiDropdown(options: var_options);
+      case 4:
+        var var_ui = sse_decode_box_autoadd_custom_ui(deserializer);
+        return SettingsUI_CustomUI(ui: var_ui);
       default:
         throw UnimplementedError('');
     }
@@ -5722,6 +5780,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_DartOpaque(
         encode_DartFn_Inputs_action_Output_unit_AnyhowException(self),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+          FutureOr<void> Function(EntryId, String, SettingValue) self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_DartOpaque(
+        encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+            self),
         serializer);
   }
 
@@ -7061,6 +7131,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case SettingsUI_MultiDropdown(options: final options):
         sse_encode_i_32(3, serializer);
         sse_encode_list_dropdown_option(options, serializer);
+      case SettingsUI_CustomUI(ui: final ui):
+        sse_encode_i_32(4, serializer);
+        sse_encode_box_autoadd_custom_ui(ui, serializer);
     }
   }
 

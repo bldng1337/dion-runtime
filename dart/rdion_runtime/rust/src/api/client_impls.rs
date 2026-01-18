@@ -4,7 +4,10 @@ use std::fmt::Debug;
 use anyhow::Result;
 use dion_runtime::{
     client_data::{AdapterClient, ExtensionClient},
-    data::{action::Action, extension::ExtensionData, permission::Permission},
+    data::{
+        action::Action, extension::ExtensionData, permission::Permission, settings::SettingValue,
+        source::EntryId,
+    },
 };
 
 use crate::api::client::{ExtensionClient as ProxyExtensionClient, ManagerClient};
@@ -20,12 +23,18 @@ impl Clone for ProxyExtensionClient {
             cdo_action: self.cdo_action.clone(),
             crequest_permission: self.crequest_permission.clone(),
             cget_path: self.cget_path.clone(),
+            cset_entry_setting: self.cset_entry_setting.clone(),
         }
     }
 }
 
 #[async_trait::async_trait]
 impl ExtensionClient for ProxyExtensionClient {
+    async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
+        (self.cset_entry_setting.as_ref())(entry, key, value).await;
+        Ok(())
+    }
+
     // #[frb(ignore)]
     async fn load_data(&self, key: &str) -> Result<String> {
         let res = (self.cload_data.as_ref())(key.to_string()).await;

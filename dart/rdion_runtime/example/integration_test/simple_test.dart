@@ -50,6 +50,7 @@ void main() {
       getPath: () => "./../../../tests/extensions/native/.dist",
       getClient: (data) async {
         return await ExtensionClient.init(
+            setEntrySetting: (id,key, value) async {},
             loadDataSecure: (key) {
               return "";
             },

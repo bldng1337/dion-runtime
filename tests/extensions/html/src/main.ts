@@ -12,22 +12,22 @@ function basic() {
 	const elarr = parsed.select(sel);
 	const el = elarr.first;
 	assert(el !== undefined, "div select not working");
-	assertDeepEqual("some text", el.text, "parse_html not working");
-	assertDeepEqual("body", el.parent?.name, "parse_html not working");
-	assertDeepEqual("div", el.name, "parse_html not working");
-	assertDeepEqual("value", el.attr("attr"), "parse_html not working");
-	assertDeepEqual(2, elarr.length, "parse_html not working");
+	assertDeepEqual("some text", el.text, "parse_html not working 1");
+	assertDeepEqual("body", el.parent?.name, "parse_html not working 2");
+	assertDeepEqual("div", el.name, "parse_html not working 3");
+	assertDeepEqual("value", el.attr("attr"), "parse_html not working 4");
+	assertDeepEqual(2, elarr.length, "parse_html not working 5");
 	assertDeepEqual(
 		"some text\nsome other text",
 		elarr.map((el) => el.text).join("\n"),
-		"parse_html not working",
+		"parse_html not working 6",
 	);
 }
 
 function element() {
 	const html = `<div attr="value"> some text <span>some other text</span></div>`;
 	const parsed = parseHtmlFragment(html).children.get(0);
-	assert(parsed !== undefined, "div select not working");
+	assert(parsed !== undefined, "div select not working 1");
 	assertDeepEqual("div", parsed.name, "Element.name not working");
 	assertDeepEqual(
 		"some text some other text",

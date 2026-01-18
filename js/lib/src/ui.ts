@@ -1,4 +1,10 @@
-import type { CustomUI, Entry, Link } from "@dion-js/runtime-types/runtime";
+import type {
+	CustomUI,
+	Entry,
+	Link,
+	SettingKind,
+	UIAction,
+} from "@dion-js/runtime-types/runtime";
 
 type CustomUIMaybe = CustomUI | undefined;
 
@@ -69,4 +75,53 @@ export function If<T extends CustomUI[] | CustomUIMaybe>(
 		return [] as unknown as T;
 	}
 	return undefined as T;
+}
+
+export function Card(image: Link, top: CustomUI, bottom: CustomUI): CustomUI {
+	return {
+		type: "Card",
+		image: image,
+		top: top,
+		bottom: bottom,
+	};
+}
+
+export function Feed(event: string, data: string): CustomUI {
+	return {
+		type: "Feed",
+		event: event,
+		data: data,
+	};
+}
+
+export function Button(
+	label: string,
+	on_click: UIAction | null = null,
+): CustomUI {
+	return {
+		type: "Button",
+		label: label,
+		on_click: on_click,
+	};
+}
+
+export function InlineSetting(
+	setting_id: string,
+	setting_kind: SettingKind,
+	on_commit: UIAction | null = null,
+): CustomUI {
+	return {
+		type: "InlineSetting",
+		setting_id: setting_id,
+		setting_kind: setting_kind,
+		on_commit: on_commit,
+	};
+}
+
+export function Slot(id: string, child: CustomUI): CustomUI {
+	return {
+		type: "Slot",
+		id: id,
+		child: child,
+	};
 }

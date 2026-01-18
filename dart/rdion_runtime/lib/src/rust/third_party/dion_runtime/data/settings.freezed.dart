@@ -733,6 +733,7 @@ mixin _$SettingsUI {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -741,6 +742,7 @@ mixin _$SettingsUI {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -749,6 +751,7 @@ mixin _$SettingsUI {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -758,6 +761,7 @@ mixin _$SettingsUI {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -766,6 +770,7 @@ mixin _$SettingsUI {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -774,6 +779,7 @@ mixin _$SettingsUI {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -846,6 +852,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
   }) {
     return checkBox();
   }
@@ -857,6 +864,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
   }) {
     return checkBox?.call();
   }
@@ -868,6 +876,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
     if (checkBox != null) {
@@ -883,6 +892,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return checkBox(this);
   }
@@ -894,6 +904,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return checkBox?.call(this);
   }
@@ -905,6 +916,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
     if (checkBox != null) {
@@ -1010,6 +1022,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
   }) {
     return slider(min, max, step);
   }
@@ -1021,6 +1034,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
   }) {
     return slider?.call(min, max, step);
   }
@@ -1032,6 +1046,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
     if (slider != null) {
@@ -1047,6 +1062,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return slider(this);
   }
@@ -1058,6 +1074,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return slider?.call(this);
   }
@@ -1069,6 +1086,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
     if (slider != null) {
@@ -1177,6 +1195,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
   }) {
     return dropdown(options);
   }
@@ -1188,6 +1207,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
   }) {
     return dropdown?.call(options);
   }
@@ -1199,6 +1219,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
     if (dropdown != null) {
@@ -1214,6 +1235,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return dropdown(this);
   }
@@ -1225,6 +1247,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return dropdown?.call(this);
   }
@@ -1236,6 +1259,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
     if (dropdown != null) {
@@ -1344,6 +1368,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
   }) {
     return multiDropdown(options);
   }
@@ -1355,6 +1380,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
   }) {
     return multiDropdown?.call(options);
   }
@@ -1366,6 +1392,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
     if (multiDropdown != null) {
@@ -1381,6 +1408,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return multiDropdown(this);
   }
@@ -1392,6 +1420,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return multiDropdown?.call(this);
   }
@@ -1403,6 +1432,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
     if (multiDropdown != null) {
@@ -1425,4 +1455,177 @@ abstract class SettingsUI_MultiDropdown extends SettingsUI {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SettingsUI_CustomUIImplCopyWith<$Res> {
+  factory _$$SettingsUI_CustomUIImplCopyWith(_$SettingsUI_CustomUIImpl value,
+          $Res Function(_$SettingsUI_CustomUIImpl) then) =
+      __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI ui});
+
+  $CustomUICopyWith<$Res> get ui;
+}
+
+/// @nodoc
+class __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>
+    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_CustomUIImpl>
+    implements _$$SettingsUI_CustomUIImplCopyWith<$Res> {
+  __$$SettingsUI_CustomUIImplCopyWithImpl(_$SettingsUI_CustomUIImpl _value,
+      $Res Function(_$SettingsUI_CustomUIImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? ui = null,
+  }) {
+    return _then(_$SettingsUI_CustomUIImpl(
+      ui: null == ui
+          ? _value.ui
+          : ui // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get ui {
+    return $CustomUICopyWith<$Res>(_value.ui, (value) {
+      return _then(_value.copyWith(ui: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
+  const _$SettingsUI_CustomUIImpl({required this.ui}) : super._();
+
+  @override
+  final CustomUI ui;
+
+  @override
+  String toString() {
+    return 'SettingsUI.customUi(ui: $ui)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SettingsUI_CustomUIImpl &&
+            (identical(other.ui, ui) || other.ui == ui));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, ui);
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SettingsUI_CustomUIImplCopyWith<_$SettingsUI_CustomUIImpl> get copyWith =>
+      __$$SettingsUI_CustomUIImplCopyWithImpl<_$SettingsUI_CustomUIImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkBox,
+    required TResult Function(double min, double max, int step) slider,
+    required TResult Function(List<DropdownOption> options) dropdown,
+    required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(CustomUI ui) customUi,
+  }) {
+    return customUi(ui);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkBox,
+    TResult? Function(double min, double max, int step)? slider,
+    TResult? Function(List<DropdownOption> options)? dropdown,
+    TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(CustomUI ui)? customUi,
+  }) {
+    return customUi?.call(ui);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkBox,
+    TResult Function(double min, double max, int step)? slider,
+    TResult Function(List<DropdownOption> options)? dropdown,
+    TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(CustomUI ui)? customUi,
+    required TResult orElse(),
+  }) {
+    if (customUi != null) {
+      return customUi(ui);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SettingsUI_CheckBox value) checkBox,
+    required TResult Function(SettingsUI_Slider value) slider,
+    required TResult Function(SettingsUI_Dropdown value) dropdown,
+    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
+  }) {
+    return customUi(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SettingsUI_CheckBox value)? checkBox,
+    TResult? Function(SettingsUI_Slider value)? slider,
+    TResult? Function(SettingsUI_Dropdown value)? dropdown,
+    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
+  }) {
+    return customUi?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SettingsUI_CheckBox value)? checkBox,
+    TResult Function(SettingsUI_Slider value)? slider,
+    TResult Function(SettingsUI_Dropdown value)? dropdown,
+    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
+    required TResult orElse(),
+  }) {
+    if (customUi != null) {
+      return customUi(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SettingsUI_CustomUI extends SettingsUI {
+  const factory SettingsUI_CustomUI({required final CustomUI ui}) =
+      _$SettingsUI_CustomUIImpl;
+  const SettingsUI_CustomUI._() : super._();
+
+  CustomUI get ui;
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SettingsUI_CustomUIImplCopyWith<_$SettingsUI_CustomUIImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

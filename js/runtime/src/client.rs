@@ -2,6 +2,8 @@
 
 use anyhow::bail;
 use anyhow::Result;
+use dion_runtime::data::settings::SettingValue;
+use dion_runtime::data::source::EntryId;
 use dion_runtime::{
   client_data::{AdapterClient, ExtensionClient},
   data::{action::Action, extension::ExtensionData, permission::Permission},
@@ -20,6 +22,7 @@ struct ClientExtensionHandlerInner {
   do_action: ThreadsafeFunction<serde_json::Value, ()>,
   request_permission: ThreadsafeFunction<FnArgs<(serde_json::Value, Option<String>)>, bool>,
   get_path: ThreadsafeFunction<(), String>,
+  set_entry_setting: ThreadsafeFunction<FnArgs<(serde_json::Value,serde_json::Value, serde_json::Value)>, ()>,
 }
 
 impl Debug for ClientExtensionHandlerInner {
@@ -54,6 +57,7 @@ impl ClientExtensionHandler {
     do_action: ThreadsafeFunction<serde_json::Value, ()>,
     request_permission: ThreadsafeFunction<FnArgs<(serde_json::Value, Option<String>)>, bool>,
     get_path: ThreadsafeFunction<(), String>,
+    set_entry_setting: ThreadsafeFunction<FnArgs<(serde_json::Value,serde_json::Value, serde_json::Value)>, ()>,
   ) -> Self {
     Self {
       inner: Arc::new(ClientExtensionHandlerInner {
@@ -62,6 +66,7 @@ impl ClientExtensionHandler {
         do_action,
         request_permission,
         get_path,
+        set_entry_setting,
       }),
     }
   }
@@ -69,6 +74,17 @@ impl ClientExtensionHandler {
 
 #[async_trait::async_trait]
 impl ExtensionClient for ClientExtensionHandler {
+  async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
+    self
+      .inner
+      .set_entry_setting
+      .call_async(Ok(
+        (serde_json::to_value(entry)?,serde_json::to_value(key)?, serde_json::to_value(value)?).into(),
+      ))
+      .await?;
+    Ok(())
+  }
+
   async fn load_data(&self, key: &str) -> Result<String> {
     let res = self.inner.load_data.call_async(Ok(key.to_string())).await?;
     Ok(res)
