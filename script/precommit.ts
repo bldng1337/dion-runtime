@@ -27,7 +27,7 @@ await $`bunx turbo check-types`;
 
 // Step 3: Run cargo tests
 console.log("\n3. Running cargo tests...");
-await $`cargo test --verbose`;
+await $`cargo test`;
 
 // Step 4: Check Rust formatting (fail if not formatted)
 console.log("\n4. Checking Rust formatting...");
