@@ -171,3 +171,56 @@ test("test auth - update existing account", async () => {
 	expect(account?.user_name).toBe("Updated Name");
 	expect(account?.cover).toBe("https://example.com/new-cover.jpg");
 });
+
+test("test auth - update existing account", async () => {
+	const mockmanager = new MockManagerClient(
+		join(import.meta.path, "../../.dist"),
+	);
+
+	mockmanager.getClient.mockImplementation((_err, extdata) => {
+		const ext = new MockExtensionClient(
+			extdata,
+			join(import.meta.path, "../../.dist"),
+		);
+		return ext.client;
+	});
+
+	const manager = await Adapter.init(mockmanager.client);
+	const ext = (await manager.getExtensions())[0];
+	expect(ext).toBeDefined();
+	if (!ext) return;
+
+	await ext.setEnabled(true);
+
+	await ext.mergeAuth({
+		domain: "validate.example.com",
+		user_name: "Validate Name",
+		cover: "https://example.com/new-cover.jpg",
+		auth: {
+			type: "UserPass",
+		},
+	});
+
+	const data = await ext.validate({
+		domain: "validate.example.com",
+		user_name: "Validate Name",
+		cover: "https://example.com/new-cover.jpg",
+		auth: {
+			type: "UserPass",
+		},
+		creds: {
+			type: "UserPass",
+			username: "Some",
+			password: "Pass",
+		},
+	});
+	console.log(data);
+	expect(data?.creds?.type).toBe("UserPass");
+	expect((data?.creds as { username: string }).username).toBe("Some");
+	expect((data?.creds as { password: string }).password).toBe("Pass");
+	const accounts = await ext.getAccounts();
+	const acc = accounts.filter((acc) => acc.domain == "validate.example.com")[0];
+	expect(acc?.creds?.type).toBe("UserPass");
+	expect((acc?.creds as { username: string }).username).toBe("Some");
+	expect((acc?.creds as { password: string }).password).toBe("Pass");
+});

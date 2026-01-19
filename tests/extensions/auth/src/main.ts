@@ -1,6 +1,10 @@
+import { Account } from "@dion-js/runtime-types/runtime";
 import { DefaultExtension } from "@dion-js/unit-test-utils/extension";
 import { mergeAuth, isLoggedIn, getAuthSecret, invalidate } from "auth";
 export default class extends DefaultExtension {
+	async validate(acc: Account): Promise<Account | undefined> {
+		return acc;
+	}
 	async load() {
 		// Test mergeAuth with different auth types
 		await mergeAuth({
