@@ -6,3 +6,4 @@ node_modules
 tests/jsondata
 .turbo
 .index
+.dist
