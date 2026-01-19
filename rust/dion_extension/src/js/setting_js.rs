@@ -178,12 +178,14 @@ mod setting {
         value: JsValue,
         context: &mut Context,
     ) -> JsResult<JsValue> {
-        let entryid: EntryId = serde_json::from_value(entry.to_json(context)?.unwrap_or(Value::Null))
-            .map_err(|e| {
-                JsError::from_native(
-                    JsNativeError::error().with_message(format!("Failed to parse entry id {}", e)),
-                )
-            })?;
+        let entryid: EntryId = serde_json::from_value(
+            entry.to_json(context)?.unwrap_or(Value::Null),
+        )
+        .map_err(|e| {
+            JsError::from_native(
+                JsNativeError::error().with_message(format!("Failed to parse entry id {}", e)),
+            )
+        })?;
         let settingvalue: SettingValue = serde_json::from_value(
             value.to_json(context)?.unwrap_or(Value::Null),
         )

@@ -271,7 +271,12 @@ mod test {
             Ok(())
         }
 
-        async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
+        async fn set_entry_setting(
+            &self,
+            entry: EntryId,
+            key: String,
+            value: SettingValue,
+        ) -> Result<()> {
             Ok(())
         }
 

@@ -30,7 +30,12 @@ impl Clone for ProxyExtensionClient {
 
 #[async_trait::async_trait]
 impl ExtensionClient for ProxyExtensionClient {
-    async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
+    async fn set_entry_setting(
+        &self,
+        entry: EntryId,
+        key: String,
+        value: SettingValue,
+    ) -> Result<()> {
         (self.cset_entry_setting.as_ref())(entry, key, value).await;
         Ok(())
     }

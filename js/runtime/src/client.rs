@@ -22,7 +22,8 @@ struct ClientExtensionHandlerInner {
   do_action: ThreadsafeFunction<serde_json::Value, ()>,
   request_permission: ThreadsafeFunction<FnArgs<(serde_json::Value, Option<String>)>, bool>,
   get_path: ThreadsafeFunction<(), String>,
-  set_entry_setting: ThreadsafeFunction<FnArgs<(serde_json::Value,serde_json::Value, serde_json::Value)>, ()>,
+  set_entry_setting:
+    ThreadsafeFunction<FnArgs<(serde_json::Value, serde_json::Value, serde_json::Value)>, ()>,
 }
 
 impl Debug for ClientExtensionHandlerInner {
@@ -57,7 +58,10 @@ impl ClientExtensionHandler {
     do_action: ThreadsafeFunction<serde_json::Value, ()>,
     request_permission: ThreadsafeFunction<FnArgs<(serde_json::Value, Option<String>)>, bool>,
     get_path: ThreadsafeFunction<(), String>,
-    set_entry_setting: ThreadsafeFunction<FnArgs<(serde_json::Value,serde_json::Value, serde_json::Value)>, ()>,
+    set_entry_setting: ThreadsafeFunction<
+      FnArgs<(serde_json::Value, serde_json::Value, serde_json::Value)>,
+      (),
+    >,
   ) -> Self {
     Self {
       inner: Arc::new(ClientExtensionHandlerInner {
@@ -74,12 +78,22 @@ impl ClientExtensionHandler {
 
 #[async_trait::async_trait]
 impl ExtensionClient for ClientExtensionHandler {
-  async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()> {
+  async fn set_entry_setting(
+    &self,
+    entry: EntryId,
+    key: String,
+    value: SettingValue,
+  ) -> Result<()> {
     self
       .inner
       .set_entry_setting
       .call_async(Ok(
-        (serde_json::to_value(entry)?,serde_json::to_value(key)?, serde_json::to_value(value)?).into(),
+        (
+          serde_json::to_value(entry)?,
+          serde_json::to_value(key)?,
+          serde_json::to_value(value)?,
+        )
+          .into(),
       ))
       .await?;
     Ok(())

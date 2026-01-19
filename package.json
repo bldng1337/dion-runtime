@@ -11,6 +11,9 @@
 	"dependencies": {
 		"@dion-js/extension-scripts": "workspace:*"
 	},
+	"devDependencies": {
+		"turbo": "^2.7.5"
+	},
 	"packageManager": "bun@1.2.19",
 	"catalog": {
 		"@dion-js/runtime-types": "workspace:*",

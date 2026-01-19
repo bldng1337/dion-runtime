@@ -27,7 +27,12 @@ pub trait ExtensionClient: Send + Sync + Debug {
 
     async fn do_action(&self, action: &Action) -> Result<()>;
 
-    async fn set_entry_setting(&self, entry: EntryId, key: String, value: SettingValue) -> Result<()>;
+    async fn set_entry_setting(
+        &self,
+        entry: EntryId,
+        key: String,
+        value: SettingValue,
+    ) -> Result<()>;
     async fn request_permission(
         &self,
         permission: &Permission,
