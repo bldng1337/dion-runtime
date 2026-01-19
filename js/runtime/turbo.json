@@ -1,0 +1,9 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": ["runtime.*.node","index.js","index.d.ts"],
+      "inputs": ["src/**", "Cargo.toml", "../../rust/core/Cargo.toml","../../rust/core/src/**", "../../rust/dion_extension/Cargo.toml","../../rust/dion_extension/src/**"]
+    }
+  }
+}
