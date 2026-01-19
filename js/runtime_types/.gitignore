@@ -1,0 +1,4 @@
+gen/dion_extension/generated_types.ts
+gen/dion_extension/generated_validators.ts
+gen/dion_runtime/generated_types.ts
+gen/dion_runtime/generated_validators.ts

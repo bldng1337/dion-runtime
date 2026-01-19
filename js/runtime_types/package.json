@@ -6,6 +6,9 @@
 		"gen",
 		"index.ts"
 	],
+	"scripts": {
+		"build": "bun run gentypes.ts"
+	},
 	"exports": {
 		"./extension": {
 			"default": "./gen/dion_extension/index.ts"

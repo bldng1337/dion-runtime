@@ -1,0 +1,18 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"dependsOn": [],
+			"outputs": ["gen/**"],
+			"inputs": [
+				"!gen/**",
+				"gentypes.ts",
+				"../../rust/core/Cargo.toml",
+				"../../rust/core/src/**",
+				"../../rust/dion_extension/Cargo.toml",
+				"../../rust/dion_extension/src/**"
+			]
+		}
+	}
+}
