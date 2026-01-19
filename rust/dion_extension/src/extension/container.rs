@@ -150,6 +150,7 @@ impl Extension for DionExtension {
             .ok_or(anyhow!("Couldnt find the account"))?;
         // TODO: Potentially we could use less clones here but this is simpler for now
         let old = store_account.clone();
+        let auth_creds = account.creds.clone();
         *store_account = account.clone();
         drop(store);
         match &*self.data.context.load() {
@@ -164,7 +165,7 @@ impl Extension for DionExtension {
                     .send(task)
                     .context("Failed to send message to Extension Thread")?;
                 let res = response.await??.map(|acc| Account {
-                    creds: old.creds.clone(),
+                    creds: auth_creds,
                     ..acc
                 });
                 let mut store = self.data.store.write().await;
