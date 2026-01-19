@@ -4,6 +4,9 @@
 	"engines": {
 		"bun": "^1.2.19"
 	},
+	"scripts": {
+		"precommit": "bun run script/precommit.ts"
+	},
 	"workspaces": [
 		"js/**/*",
 		"tests/**/*"
