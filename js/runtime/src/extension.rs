@@ -31,6 +31,26 @@ impl ExtensionProxy {
   pub fn enabled(&self) -> bool {
     self.extension.is_enabled()
   }
+
+  #[napi(
+    ts_args_type = "account: Account,  token?: CancelToken",
+    ts_return_type = "Promise<Account | null | undefined>"
+  )]
+  pub async fn validate(
+    &self,
+    account: serde_json::Value,
+    token: Option<&CancelTokenProxy>,
+  ) -> Result<serde_json::Value, napi::Error> {
+    let token = token.map(|v| v.take_token());
+    let account: Account = serde_json::from_value(account).map_to_node()?;
+    let inner = self
+      .extension
+      .validate(account, token)
+      .await
+      .map_to_node()?;
+    serde_json::to_value(inner).map_to_node()
+  }
+
   /// # Safety
   /// Safety is handled by napi
   #[napi]

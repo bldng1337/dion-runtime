@@ -20,6 +20,7 @@ export type CancelTokenProxy = CancelToken
 
 export declare class Extension {
   get enabled(): boolean
+  validate(account: Account,  token?: CancelToken): Promise<Account | null | undefined>
   /**
    * # Safety
    * Safety is handled by napi
