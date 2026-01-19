@@ -88,10 +88,7 @@ export class SettingStore {
 			};
 			return defaultval as ExcludeLiteral<T>;
 		}
-		if (setting.ui && ui && !ui.fitsDefinition(setting.ui)) {
-			console.log(`Setting UI changed for ${id}, overwriting`);
-			setting.ui = ui.getDefinition();
-		}
+		setting.ui = ui?.getDefinition();
 		setting.visible = visible;
 		setting.label = label ?? id;
 		setting.default = toSettingValue(defaultval);
