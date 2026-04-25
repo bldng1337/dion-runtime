@@ -1133,6 +1133,7 @@ mod test {
                 paragraphs: vec![
                     Paragraph::Text {
                         content: "Text paragraph".to_string(),
+                        style: None,
                     },
                     Paragraph::CustomUI {
                         ui: Box::new(generate_custom_ui_text()),
@@ -1142,11 +1143,13 @@ mod test {
                             crate::data::source::Row {
                                 cells: vec![Paragraph::Text {
                                     content: "Cell A".to_string(),
+                                    style: None,
                                 }],
                             },
                             crate::data::source::Row {
                                 cells: vec![Paragraph::Text {
                                     content: "Cell B".to_string(),
+                                    style: None,
                                 }],
                             },
                         ],
@@ -1155,6 +1158,7 @@ mod test {
                         content: vec![
                             MixedContent::Text {
                                 content: "Some Content".to_string(),
+                                style: None,
                             },
                             MixedContent::CustomUI {
                                 ui: Box::new(generate_custom_ui_button()),
@@ -1164,11 +1168,13 @@ mod test {
                                     crate::data::source::Row {
                                         cells: vec![Paragraph::Text {
                                             content: "Cell A".to_string(),
+                                            style: None,
                                         }],
                                     },
                                     crate::data::source::Row {
                                         cells: vec![Paragraph::Text {
                                             content: "Cell B".to_string(),
+                                            style: None,
                                         }],
                                     },
                                 ],
@@ -1206,9 +1212,11 @@ mod test {
         vec![
             Paragraph::Text {
                 content: "Test paragraph".to_string(),
+                style: None,
             },
             Paragraph::Text {
                 content: "Another paragraph".to_string(),
+                style: None,
             },
             Paragraph::CustomUI {
                 ui: Box::new(generate_custom_ui_text()),
@@ -1221,11 +1229,13 @@ mod test {
                     crate::data::source::Row {
                         cells: vec![Paragraph::Text {
                             content: "Cell 1".to_string(),
+                            style: None,
                         }],
                     },
                     crate::data::source::Row {
                         cells: vec![Paragraph::Text {
                             content: "Cell 2".to_string(),
+                            style: None,
                         }],
                     },
                 ],

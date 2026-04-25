@@ -3,9 +3,9 @@ use boa_engine::{
     object::builtins::JsArray, value::TryIntoJs,
 };
 use boa_gc::{Finalize, Trace};
-use dion_runtime::data::source::Paragraph;
+use dion_runtime::data::source::{MixedContent, Paragraph, Row, TextStyle};
 use ego_tree::NodeId;
-use scraper::{ElementRef, Html, Selector};
+use scraper::{ElementRef, Html, Node, Selector};
 use std::rc::Rc;
 
 use boa_engine::boa_class;
@@ -32,6 +32,319 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
         .context("Failed to Register CSSSelector class")?;
     loader.insert("parse".to_string(), parse::boa_module(None, context));
     Ok(())
+}
+
+fn apply_inline_style(element: &ElementRef, mut style: TextStyle) -> TextStyle {
+    let tag = element.value().name().to_ascii_lowercase();
+    match tag.as_str() {
+        "b" | "strong" => style.bold = Some(true),
+        "i" | "em" => style.italic = Some(true),
+        "u" | "ins" => style.underline = Some(true),
+        "s" | "strike" | "del" => style.strikethrough = Some(true),
+        "code" => style.code = Some(true),
+        "a" => {
+            if let Some(href) = element.attr("href") {
+                style.link = Some(href.to_string());
+            }
+        }
+        _ => {}
+    }
+    style
+}
+
+fn collect_text_with_style<'a>(
+    element: ElementRef<'a>,
+    base_style: &TextStyle,
+    doc: &'a Html,
+) -> Vec<MixedContent> {
+    let mut result = Vec::new();
+    let new_style = apply_inline_style(&element, base_style.clone());
+
+    for child in element.children() {
+        match child.value() {
+            Node::Text(text) => {
+                let trimmed = text.text.trim();
+                if !trimmed.is_empty() {
+                    result.push(MixedContent::Text {
+                        content: text.text.to_string(),
+                        style: if new_style == TextStyle::default() {
+                            None
+                        } else {
+                            Some(new_style.clone())
+                        },
+                    });
+                }
+            }
+            Node::Element(_) => {
+                if let Some(child_el) = ElementRef::wrap(child) {
+                    let tag = child_el.value().name().to_ascii_lowercase();
+                    if tag == "table" {
+                        result.push(MixedContent::Table {
+                            columns: convert_table(&child_el, doc),
+                        });
+                    } else if tag == "style" || tag == "script" {
+                        continue;
+                    } else {
+                        result.extend(collect_text_with_style(child_el, &new_style, doc));
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+    result
+}
+
+fn mixed_to_paragraph(mixed: Vec<MixedContent>) -> Paragraph {
+    if mixed.is_empty() {
+        return Paragraph::Text {
+            content: String::new(),
+            style: None,
+        };
+    }
+    if mixed.len() == 1 {
+        return match mixed.into_iter().next().unwrap() {
+            MixedContent::Text { content, style } => Paragraph::Text { content, style },
+            mc @ MixedContent::CustomUI { .. } => Paragraph::Mixed { content: vec![mc] },
+            MixedContent::Table { columns } => Paragraph::Table { columns },
+        };
+    }
+    Paragraph::Mixed { content: mixed }
+}
+
+fn convert_table(table: &ElementRef, doc: &Html) -> Vec<Row> {
+    let mut rows = Vec::new();
+    for tr in table.select(&Selector::parse("tr").unwrap()) {
+        let mut cells = Vec::new();
+        for cell in tr.select(&Selector::parse("th, td").unwrap()) {
+            let mixed = element_inner_to_mixed(cell, doc);
+            cells.push(mixed_to_paragraph(mixed));
+        }
+        if !cells.is_empty() {
+            rows.push(Row { cells });
+        }
+    }
+    rows
+}
+
+fn is_block_element(tag: &str) -> bool {
+    matches!(
+        tag,
+        "p"
+            | "div"
+            | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+            | "blockquote"
+            | "pre"
+            | "ul" | "ol" | "li"
+            | "table"
+            | "hr"
+            | "br"
+            | "section"
+            | "article"
+            | "aside"
+            | "header"
+            | "footer"
+            | "nav"
+            | "figure"
+            | "figcaption"
+            | "details"
+            | "summary"
+            | "main"
+            | "dl" | "dt" | "dd"
+    )
+}
+
+fn element_to_mixed_content(element: ElementRef, doc: &Html) -> Vec<MixedContent> {
+    let tag = element.value().name().to_ascii_lowercase();
+    if tag == "table" {
+        return vec![MixedContent::Table {
+            columns: convert_table(&element, doc),
+        }];
+    }
+    if tag == "style" || tag == "script" {
+        return vec![];
+    }
+    collect_text_with_style(element, &TextStyle::default(), doc)
+}
+
+fn element_inner_to_mixed(element: ElementRef, doc: &Html) -> Vec<MixedContent> {
+    let mut paragraphs: Vec<MixedContent> = Vec::new();
+    let mut current_inline: Vec<MixedContent> = Vec::new();
+
+    let flush_inline = |inline: &mut Vec<MixedContent>, paras: &mut Vec<MixedContent>| {
+        if inline.is_empty() {
+            return;
+        }
+        let content: Vec<MixedContent> = inline.drain(..).collect();
+        if content.len() == 1 {
+            paras.push(content.into_iter().next().unwrap());
+        } else {
+            paras.push(MixedContent::Text {
+                content: String::new(),
+                style: None,
+            });
+            paras.extend(content);
+        }
+    };
+
+    for child in element.children() {
+        match child.value() {
+            Node::Text(text) => {
+                let trimmed = text.text.trim();
+                if !trimmed.is_empty() {
+                    current_inline.push(MixedContent::Text {
+                        content: text.text.to_string(),
+                        style: None,
+                    });
+                }
+            }
+            Node::Element(_) => {
+                if let Some(child_el) = ElementRef::wrap(child) {
+                    let tag = child_el.value().name().to_ascii_lowercase();
+
+                    if tag == "style" || tag == "script" {
+                        continue;
+                    }
+
+                    if tag == "br" {
+                        if !current_inline.is_empty() {
+                            flush_inline(&mut current_inline, &mut paragraphs);
+                        }
+                        continue;
+                    }
+
+                    if tag == "hr" {
+                        flush_inline(&mut current_inline, &mut paragraphs);
+                        continue;
+                    }
+
+                    if tag == "table" {
+                        flush_inline(&mut current_inline, &mut paragraphs);
+                        paragraphs.push(MixedContent::Table {
+                            columns: convert_table(&child_el, doc),
+                        });
+                        continue;
+                    }
+
+                    if is_block_element(&tag) {
+                        flush_inline(&mut current_inline, &mut paragraphs);
+                        let inner = element_to_mixed_content(child_el, doc);
+                        paragraphs.extend(inner);
+                        continue;
+                    }
+
+                    current_inline.extend(collect_text_with_style(
+                        child_el,
+                        &TextStyle::default(),
+                        doc,
+                    ));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    flush_inline(&mut current_inline, &mut paragraphs);
+    paragraphs
+}
+
+fn element_to_paragraph_list(element: ElementRef, doc: &Html) -> Vec<Paragraph> {
+    let mut result = Vec::new();
+
+    for child in element.children() {
+        match child.value() {
+            Node::Text(text) => {
+                let trimmed = text.text.trim();
+                if !trimmed.is_empty() {
+                    result.push(Paragraph::Text {
+                        content: trimmed.to_string(),
+                        style: None,
+                    });
+                }
+            }
+            Node::Element(_) => {
+                if let Some(child_el) = ElementRef::wrap(child) {
+                    let tag = child_el.value().name().to_ascii_lowercase();
+
+                    if tag == "style" || tag == "script" {
+                        continue;
+                    }
+
+                    if tag == "table" {
+                        result.push(Paragraph::Table {
+                            columns: convert_table(&child_el, doc),
+                        });
+                        continue;
+                    }
+
+                    if tag == "br" || tag == "hr" {
+                        continue;
+                    }
+
+                    if is_block_element(&tag) {
+                        let mixed = element_to_mixed_content(child_el, doc);
+                        if mixed.is_empty() {
+                            continue;
+                        }
+                        let has_style = mixed.iter().any(|mc| {
+                            matches!(mc, MixedContent::Text { style: Some(_), .. })
+                        });
+                        let has_non_text = mixed
+                            .iter()
+                            .any(|mc| !matches!(mc, MixedContent::Text { style: None, .. }));
+
+                        if !has_non_text && !has_style {
+                            let text: String = mixed
+                                .iter()
+                                .filter_map(|mc| match mc {
+                                    MixedContent::Text { content, .. } => Some(content.as_str()),
+                                    _ => None,
+                                })
+                                .collect::<Vec<_>>()
+                                .join("");
+                            let trimmed = text.trim();
+                            if !trimmed.is_empty() {
+                                result.push(Paragraph::Text {
+                                    content: trimmed.to_string(),
+                                    style: None,
+                                });
+                            }
+                        } else if mixed.len() == 1 {
+                            result.push(match mixed.into_iter().next().unwrap() {
+                                MixedContent::Text { content, style } => Paragraph::Text {
+                                    content,
+                                    style,
+                                },
+                                mc @ MixedContent::CustomUI { .. } => Paragraph::Mixed {
+                                    content: vec![mc],
+                                },
+                                MixedContent::Table { columns } => Paragraph::Table { columns },
+                            });
+                        } else {
+                            result.push(Paragraph::Mixed { content: mixed });
+                        }
+                        continue;
+                    }
+
+                    let inline = collect_text_with_style(child_el, &TextStyle::default(), doc);
+                    for mc in inline {
+                        match mc {
+                            MixedContent::Text { ref content, .. } if content.trim().is_empty() => {}
+                            MixedContent::Table { columns } => {
+                                result.push(Paragraph::Table { columns });
+                            }
+                            mc => {
+                                result.push(Paragraph::Mixed { content: vec![mc] });
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    result
 }
 
 #[boa_module]
@@ -138,23 +451,16 @@ impl ElementArray {
         #[boa(error = "`this` was not an ElementArray")] &self,
         context: &mut Context,
     ) -> JsResult<JsValue> {
-        let str: Vec<_> = self
-            .nodes
-            .iter()
-            .flat_map(|e| {
-                self.doc
-                    .tree
-                    .get(*e)
-                    .and_then(ElementRef::wrap)
-                    .map(|e| e.text().collect::<Vec<_>>())
-                    .unwrap_or_default()
-            })
-            .map(|str| Paragraph::Text {
-                content: str.to_string(),
-            })
-            .collect();
+        let mut all_paragraphs: Vec<Paragraph> = Vec::new();
+        for node_id in &self.nodes {
+            if let Some(node) = self.doc.tree.get(*node_id) {
+                if let Some(element) = ElementRef::wrap(node) {
+                    all_paragraphs.extend(element_to_paragraph_list(element, &self.doc));
+                }
+            }
+        }
         JsValue::from_json(
-            &serde_json::to_value(str)
+            &serde_json::to_value(all_paragraphs)
                 .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
             context,
         )
@@ -360,8 +666,12 @@ impl Element {
             .ok_or(JsNativeError::error().with_message("Invalid Node"))?;
         let element =
             ElementRef::wrap(node).ok_or(JsNativeError::error().with_message("Invalid element"))?;
-        let ret = element.text().map(|str| JsString::from(str).into());
-        Ok(JsArray::from_iter(ret, context).into())
+        let paragraphs = element_to_paragraph_list(element, &self.doc);
+        JsValue::from_json(
+            &serde_json::to_value(paragraphs)
+                .map_err(|e| JsNativeError::error().with_message(e.to_string()))?,
+            context,
+        )
     }
     #[boa(getter)]
     fn name(#[boa(error = "`this` was not an Element")] &self) -> JsResult<JsValue> {

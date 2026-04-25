@@ -189,11 +189,36 @@ pub enum Source {
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct TextStyle {
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub bold: Option<bool>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub italic: Option<bool>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub underline: Option<bool>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub strikethrough: Option<bool>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub code: Option<bool>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub link: Option<String>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub font_size: Option<i32>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum Paragraph {
-    Text { content: String },
+    Text {
+        content: String,
+        #[cfg_attr(feature = "type", specta(optional))]
+        style: Option<TextStyle>,
+    },
     Mixed { content: Vec<MixedContent> },
     CustomUI { ui: Box<CustomUI> },
     Table { columns: Vec<Row> },
@@ -205,7 +230,11 @@ pub enum Paragraph {
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum MixedContent {
-    Text { content: String },
+    Text {
+        content: String,
+        #[cfg_attr(feature = "type", specta(optional))]
+        style: Option<TextStyle>,
+    },
     CustomUI { ui: Box<CustomUI> },
     Table { columns: Vec<Row> },
 }
