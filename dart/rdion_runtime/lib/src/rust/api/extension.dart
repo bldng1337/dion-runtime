@@ -32,6 +32,10 @@ abstract class ProxyAdapter implements RustOpaqueInterface {
       RustLib.instance.api
           .crateApiExtensionProxyAdapterInitDion(client: client);
 
+  static Future<ProxyAdapter> initMihon({required ManagerClient client}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyAdapterInitMihon(client: client);
+
   Future<ProxyExtension> install({required String location});
 
   Future<void> uninstall({required ProxyExtension ext});

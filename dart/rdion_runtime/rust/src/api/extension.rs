@@ -5,6 +5,7 @@ use crate::api::ext_wrap::WrapperExtension;
 use anyhow::Result;
 
 use dion_extension::extension_manager::DionExtensionAdapter;
+use mihon_adapter::MihonAdapter;
 use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
@@ -23,6 +24,7 @@ use dion_runtime::data::source::EntryList;
 use dion_runtime::data::source::EpisodeId;
 use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
+use dion_runtime::extension::Adapter;
 pub use dion_runtime::extension::Extension;
 
 use flutter_rust_bridge::frb;
@@ -308,6 +310,14 @@ impl ProxyAdapter {
             .await
             .map(|ext| ProxyAdapter {
                 inner: Box::new(ext).into(),
+            })
+    }
+
+    pub async fn init_mihon(client: &ManagerClient) -> Result<ProxyAdapter> {
+        MihonAdapter::new(Box::new(client.clone()))
+            .await
+            .map(|ext| ProxyAdapter {
+                inner: (Box::new(ext) as Box<dyn Adapter>).into(),
             })
     }
 

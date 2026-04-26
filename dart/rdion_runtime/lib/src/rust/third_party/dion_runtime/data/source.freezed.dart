@@ -18,21 +18,21 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MixedContent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -89,7 +89,7 @@ abstract class _$$MixedContent_TextImplCopyWith<$Res> {
           $Res Function(_$MixedContent_TextImpl) then) =
       __$$MixedContent_TextImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String content});
+  $Res call({String content, TextStyle? style});
 }
 
 /// @nodoc
@@ -106,12 +106,17 @@ class __$$MixedContent_TextImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? content = null,
+    Object? style = freezed,
   }) {
     return _then(_$MixedContent_TextImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      style: freezed == style
+          ? _value.style
+          : style // ignore: cast_nullable_to_non_nullable
+              as TextStyle?,
     ));
   }
 }
@@ -119,14 +124,17 @@ class __$$MixedContent_TextImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MixedContent_TextImpl extends MixedContent_Text {
-  const _$MixedContent_TextImpl({required this.content}) : super._();
+  const _$MixedContent_TextImpl({required this.content, this.style})
+      : super._();
 
   @override
   final String content;
+  @override
+  final TextStyle? style;
 
   @override
   String toString() {
-    return 'MixedContent.text(content: $content)';
+    return 'MixedContent.text(content: $content, style: $style)';
   }
 
   @override
@@ -134,11 +142,12 @@ class _$MixedContent_TextImpl extends MixedContent_Text {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MixedContent_TextImpl &&
-            (identical(other.content, content) || other.content == content));
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.style, style) || other.style == style));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, content);
+  int get hashCode => Object.hash(runtimeType, content, style);
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
@@ -152,33 +161,33 @@ class _$MixedContent_TextImpl extends MixedContent_Text {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
-    return text(content);
+    return text(content, style);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
-    return text?.call(content);
+    return text?.call(content, style);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
   }) {
     if (text != null) {
-      return text(content);
+      return text(content, style);
     }
     return orElse();
   }
@@ -219,11 +228,13 @@ class _$MixedContent_TextImpl extends MixedContent_Text {
 }
 
 abstract class MixedContent_Text extends MixedContent {
-  const factory MixedContent_Text({required final String content}) =
-      _$MixedContent_TextImpl;
+  const factory MixedContent_Text(
+      {required final String content,
+      final TextStyle? style}) = _$MixedContent_TextImpl;
   const MixedContent_Text._() : super._();
 
   String get content;
+  TextStyle? get style;
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
@@ -314,7 +325,7 @@ class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
@@ -324,7 +335,7 @@ class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
@@ -334,7 +345,7 @@ class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -471,7 +482,7 @@ class _$MixedContent_TableImpl extends MixedContent_Table {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
@@ -481,7 +492,7 @@ class _$MixedContent_TableImpl extends MixedContent_Table {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
@@ -491,7 +502,7 @@ class _$MixedContent_TableImpl extends MixedContent_Table {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
@@ -555,7 +566,7 @@ abstract class MixedContent_Table extends MixedContent {
 mixin _$Paragraph {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
@@ -563,7 +574,7 @@ mixin _$Paragraph {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
@@ -571,7 +582,7 @@ mixin _$Paragraph {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
@@ -631,7 +642,7 @@ abstract class _$$Paragraph_TextImplCopyWith<$Res> {
           $Res Function(_$Paragraph_TextImpl) then) =
       __$$Paragraph_TextImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String content});
+  $Res call({String content, TextStyle? style});
 }
 
 /// @nodoc
@@ -648,12 +659,17 @@ class __$$Paragraph_TextImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? content = null,
+    Object? style = freezed,
   }) {
     return _then(_$Paragraph_TextImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      style: freezed == style
+          ? _value.style
+          : style // ignore: cast_nullable_to_non_nullable
+              as TextStyle?,
     ));
   }
 }
@@ -661,14 +677,16 @@ class __$$Paragraph_TextImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$Paragraph_TextImpl extends Paragraph_Text {
-  const _$Paragraph_TextImpl({required this.content}) : super._();
+  const _$Paragraph_TextImpl({required this.content, this.style}) : super._();
 
   @override
   final String content;
+  @override
+  final TextStyle? style;
 
   @override
   String toString() {
-    return 'Paragraph.text(content: $content)';
+    return 'Paragraph.text(content: $content, style: $style)';
   }
 
   @override
@@ -676,11 +694,12 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Paragraph_TextImpl &&
-            (identical(other.content, content) || other.content == content));
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.style, style) || other.style == style));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, content);
+  int get hashCode => Object.hash(runtimeType, content, style);
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
@@ -694,36 +713,36 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
   }) {
-    return text(content);
+    return text(content, style);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
   }) {
-    return text?.call(content);
+    return text?.call(content, style);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
   }) {
     if (text != null) {
-      return text(content);
+      return text(content, style);
     }
     return orElse();
   }
@@ -767,11 +786,13 @@ class _$Paragraph_TextImpl extends Paragraph_Text {
 }
 
 abstract class Paragraph_Text extends Paragraph {
-  const factory Paragraph_Text({required final String content}) =
-      _$Paragraph_TextImpl;
+  const factory Paragraph_Text(
+      {required final String content,
+      final TextStyle? style}) = _$Paragraph_TextImpl;
   const Paragraph_Text._() : super._();
 
   String get content;
+  TextStyle? get style;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
@@ -857,7 +878,7 @@ class _$Paragraph_MixedImpl extends Paragraph_Mixed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
@@ -868,7 +889,7 @@ class _$Paragraph_MixedImpl extends Paragraph_Mixed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
@@ -879,7 +900,7 @@ class _$Paragraph_MixedImpl extends Paragraph_Mixed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
@@ -1024,7 +1045,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
@@ -1035,7 +1056,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
@@ -1046,7 +1067,7 @@ class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
@@ -1187,7 +1208,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String content) text,
+    required TResult Function(String content, TextStyle? style) text,
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
@@ -1198,7 +1219,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content)? text,
+    TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
@@ -1209,7 +1230,7 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content)? text,
+    TResult Function(String content, TextStyle? style)? text,
     TResult Function(List<MixedContent> content)? mixed,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,

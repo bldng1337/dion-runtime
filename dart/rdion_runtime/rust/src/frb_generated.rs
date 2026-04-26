@@ -53,7 +53,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 859095815;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -84116015;
 
 // Section: executor
 
@@ -463,6 +463,53 @@ fn wire__crate__api__extension__ProxyAdapter_init_dion_impl(
                         let api_client_guard = api_client_guard.unwrap();
                         let output_ok =
                             crate::api::extension::ProxyAdapter::init_dion(&*api_client_guard)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyAdapter_init_mihon_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    client: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ManagerClient>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyAdapter_init_mihon",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_client,
+                                    0,
+                                    false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_client_guard = api_client_guard.unwrap();
+                        let output_ok =
+                            crate::api::extension::ProxyAdapter::init_mihon(&*api_client_guard)
                                 .await?;
                         Ok(output_ok)
                     })()
@@ -2557,6 +2604,26 @@ fn wire__dion_runtime__data__extension__source_open_type_default_impl(
         },
     )
 }
+fn wire__dion_runtime__data__source__text_style_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "text_style_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::source::TextStyle::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__dion_runtime__data__custom_ui__timestamp_type_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
@@ -2895,8 +2962,9 @@ const _: fn() = || {
         let _: Option<std::collections::HashMap<String, String>> = Link.header;
     }
     match None::<dion_runtime::data::source::MixedContent>.unwrap() {
-        dion_runtime::data::source::MixedContent::Text { content } => {
+        dion_runtime::data::source::MixedContent::Text { content, style } => {
             let _: String = content;
+            let _: Option<dion_runtime::data::source::TextStyle> = style;
         }
         dion_runtime::data::source::MixedContent::CustomUI { ui } => {
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = ui;
@@ -2906,8 +2974,9 @@ const _: fn() = || {
         }
     }
     match None::<dion_runtime::data::source::Paragraph>.unwrap() {
-        dion_runtime::data::source::Paragraph::Text { content } => {
+        dion_runtime::data::source::Paragraph::Text { content, style } => {
             let _: String = content;
+            let _: Option<dion_runtime::data::source::TextStyle> = style;
         }
         dion_runtime::data::source::Paragraph::Mixed { content } => {
             let _: Vec<dion_runtime::data::source::MixedContent> = content;
@@ -3035,6 +3104,16 @@ const _: fn() = || {
         let _: String = Subtitles.title;
         let _: String = Subtitles.lang;
         let _: dion_runtime::data::source::Link = Subtitles.url;
+    }
+    {
+        let TextStyle = None::<dion_runtime::data::source::TextStyle>.unwrap();
+        let _: Option<bool> = TextStyle.bold;
+        let _: Option<bool> = TextStyle.italic;
+        let _: Option<bool> = TextStyle.underline;
+        let _: Option<bool> = TextStyle.strikethrough;
+        let _: Option<bool> = TextStyle.code;
+        let _: Option<String> = TextStyle.link;
+        let _: Option<i32> = TextStyle.font_size;
     }
     match None::<dion_runtime::data::action::UIAction>.unwrap() {
         dion_runtime::data::action::UIAction::Action { action } => {
@@ -4689,8 +4768,11 @@ impl SseDecode for dion_runtime::data::source::MixedContent {
         match tag_ {
             0 => {
                 let mut var_content = <String>::sse_decode(deserializer);
+                let mut var_style =
+                    <Option<dion_runtime::data::source::TextStyle>>::sse_decode(deserializer);
                 return dion_runtime::data::source::MixedContent::Text {
                     content: var_content,
+                    style: var_style,
                 };
             }
             1 => {
@@ -4856,6 +4938,19 @@ impl SseDecode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::data::source::TextStyle> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::source::TextStyle>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4924,8 +5019,11 @@ impl SseDecode for dion_runtime::data::source::Paragraph {
         match tag_ {
             0 => {
                 let mut var_content = <String>::sse_decode(deserializer);
+                let mut var_style =
+                    <Option<dion_runtime::data::source::TextStyle>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Paragraph::Text {
                     content: var_content,
+                    style: var_style,
                 };
             }
             1 => {
@@ -5310,6 +5408,28 @@ impl SseDecode for dion_runtime::data::source::Subtitles {
             title: var_title,
             lang: var_lang,
             url: var_url,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::TextStyle {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_bold = <Option<bool>>::sse_decode(deserializer);
+        let mut var_italic = <Option<bool>>::sse_decode(deserializer);
+        let mut var_underline = <Option<bool>>::sse_decode(deserializer);
+        let mut var_strikethrough = <Option<bool>>::sse_decode(deserializer);
+        let mut var_code = <Option<bool>>::sse_decode(deserializer);
+        let mut var_link = <Option<String>>::sse_decode(deserializer);
+        let mut var_fontSize = <Option<i32>>::sse_decode(deserializer);
+        return dion_runtime::data::source::TextStyle {
+            bold: var_bold,
+            italic: var_italic,
+            underline: var_underline,
+            strikethrough: var_strikethrough,
+            code: var_code,
+            link: var_link,
+            font_size: var_fontSize,
         };
     }
 }
@@ -6247,9 +6367,12 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Me
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::MixedContent> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::source::MixedContent::Text { content } => {
-                [0.into_dart(), content.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::source::MixedContent::Text { content, style } => [
+                0.into_dart(),
+                content.into_into_dart().into_dart(),
+                style.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             dion_runtime::data::source::MixedContent::CustomUI { ui } => {
                 [1.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
@@ -6277,9 +6400,12 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Mi
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Paragraph> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::source::Paragraph::Text { content } => {
-                [0.into_dart(), content.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::source::Paragraph::Text { content, style } => [
+                0.into_dart(),
+                content.into_into_dart().into_dart(),
+                style.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             dion_runtime::data::source::Paragraph::Mixed { content } => {
                 [1.into_dart(), content.into_into_dart().into_dart()].into_dart()
             }
@@ -6727,6 +6853,32 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Su
     for dion_runtime::data::source::Subtitles
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Subtitles> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::TextStyle> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.bold.into_into_dart().into_dart(),
+            self.0.italic.into_into_dart().into_dart(),
+            self.0.underline.into_into_dart().into_dart(),
+            self.0.strikethrough.into_into_dart().into_dart(),
+            self.0.code.into_into_dart().into_dart(),
+            self.0.link.into_into_dart().into_dart(),
+            self.0.font_size.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::TextStyle>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::TextStyle>>
+    for dion_runtime::data::source::TextStyle
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::TextStyle> {
         self.into()
     }
 }
@@ -7776,9 +7928,10 @@ impl SseEncode for dion_runtime::data::source::MixedContent {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::source::MixedContent::Text { content } => {
+            dion_runtime::data::source::MixedContent::Text { content, style } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(content, serializer);
+                <Option<dion_runtime::data::source::TextStyle>>::sse_encode(style, serializer);
             }
             dion_runtime::data::source::MixedContent::CustomUI { ui } => {
                 <i32>::sse_encode(1, serializer);
@@ -7915,6 +8068,16 @@ impl SseEncode for Option<dion_runtime::data::settings::SettingsUI> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::data::source::TextStyle> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::source::TextStyle>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<u32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7969,9 +8132,10 @@ impl SseEncode for dion_runtime::data::source::Paragraph {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::source::Paragraph::Text { content } => {
+            dion_runtime::data::source::Paragraph::Text { content, style } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(content, serializer);
+                <Option<dion_runtime::data::source::TextStyle>>::sse_encode(style, serializer);
             }
             dion_runtime::data::source::Paragraph::Mixed { content } => {
                 <i32>::sse_encode(1, serializer);
@@ -8290,6 +8454,19 @@ impl SseEncode for dion_runtime::data::source::Subtitles {
         <String>::sse_encode(self.title, serializer);
         <String>::sse_encode(self.lang, serializer);
         <dion_runtime::data::source::Link>::sse_encode(self.url, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::TextStyle {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<bool>>::sse_encode(self.bold, serializer);
+        <Option<bool>>::sse_encode(self.italic, serializer);
+        <Option<bool>>::sse_encode(self.underline, serializer);
+        <Option<bool>>::sse_encode(self.strikethrough, serializer);
+        <Option<bool>>::sse_encode(self.code, serializer);
+        <Option<String>>::sse_encode(self.link, serializer);
+        <Option<i32>>::sse_encode(self.font_size, serializer);
     }
 }
 
@@ -8769,6 +8946,13 @@ mod io {
         fn cst_decode(self) -> dion_runtime::data::settings::SettingsUI {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::settings::SettingsUI>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::source::TextStyle> for *mut wire_cst_text_style {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::TextStyle {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::source::TextStyle>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<u32> for *mut u32 {
@@ -9403,6 +9587,7 @@ mod io {
                     let ans = unsafe { self.kind.Text };
                     dion_runtime::data::source::MixedContent::Text {
                         content: ans.content.cst_decode(),
+                        style: ans.style.cst_decode(),
                     }
                 }
                 1 => {
@@ -9429,6 +9614,7 @@ mod io {
                     let ans = unsafe { self.kind.Text };
                     dion_runtime::data::source::Paragraph::Text {
                         content: ans.content.cst_decode(),
+                        style: ans.style.cst_decode(),
                     }
                 }
                 1 => {
@@ -9688,6 +9874,20 @@ mod io {
                 title: self.title.cst_decode(),
                 lang: self.lang.cst_decode(),
                 url: self.url.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::source::TextStyle> for wire_cst_text_style {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::TextStyle {
+            dion_runtime::data::source::TextStyle {
+                bold: self.bold.cst_decode(),
+                italic: self.italic.cst_decode(),
+                underline: self.underline.cst_decode(),
+                strikethrough: self.strikethrough.cst_decode(),
+                code: self.code.cst_decode(),
+                link: self.link.cst_decode(),
+                font_size: self.font_size.cst_decode(),
             }
         }
     }
@@ -10279,6 +10479,24 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_text_style {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                bold: core::ptr::null_mut(),
+                italic: core::ptr::null_mut(),
+                underline: core::ptr::null_mut(),
+                strikethrough: core::ptr::null_mut(),
+                code: core::ptr::null_mut(),
+                link: core::ptr::null_mut(),
+                font_size: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_text_style {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_ui_action {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -10376,6 +10594,14 @@ mod io {
         client: usize,
     ) {
         wire__crate__api__extension__ProxyAdapter_init_dion_impl(port_, client)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_mihon(
+        port_: i64,
+        client: usize,
+    ) {
+        wire__crate__api__extension__ProxyAdapter_init_mihon_impl(port_, client)
     }
 
     #[unsafe(no_mangle)]
@@ -10858,6 +11084,13 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__text_style_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__source__text_style_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__timestamp_type_default(
         port_: i64,
     ) {
@@ -11023,6 +11256,14 @@ mod io {
     ) -> *mut wire_cst_settings_ui {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
             wire_cst_settings_ui::new_with_null_ptr(),
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_text_style(
+    ) -> *mut wire_cst_text_style {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_text_style::new_with_null_ptr(),
         )
     }
 
@@ -11954,6 +12195,7 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_MixedContent_Text {
         content: *mut wire_cst_list_prim_u_8_strict,
+        style: *mut wire_cst_text_style,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -11984,6 +12226,7 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_Paragraph_Text {
         content: *mut wire_cst_list_prim_u_8_strict,
+        style: *mut wire_cst_text_style,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12220,6 +12463,17 @@ mod io {
         title: *mut wire_cst_list_prim_u_8_strict,
         lang: *mut wire_cst_list_prim_u_8_strict,
         url: wire_cst_link,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_text_style {
+        bold: *mut bool,
+        italic: *mut bool,
+        underline: *mut bool,
+        strikethrough: *mut bool,
+        code: *mut bool,
+        link: *mut wire_cst_list_prim_u_8_strict,
+        font_size: *mut i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

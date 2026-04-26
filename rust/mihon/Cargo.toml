@@ -1,0 +1,53 @@
+[package]
+name = "mihon-adapter"
+version = "0.1.0"
+edition = "2021"
+description = "Mihon/Tachiyomi extension adapter for dion-runtime"
+
+[dependencies]
+dion-runtime = { path = "../core" }
+
+# JNI is declared in platform-specific sections below
+
+# APK parsing
+zip = "2.1"
+byteorder = "1.5"
+
+# Async
+tokio = { version = "1.46", features = ["fs", "rt-multi-thread", "sync"] }
+async-trait = "0.1"
+
+# Serialization (for JNI JSON bridge)
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# HTTP (for downloading APKs from repos)
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+
+# Utils
+anyhow = "1.0"
+log = "0.4"
+thiserror = "1.0"
+tokio-util = "0.7"
+
+# Android-specific dependencies
+[target.'cfg(target_os = "android")'.dependencies]
+ndk-context = "0.1"
+jni = { version = "0.21", default-features = false }
+
+# Desktop-only dependencies (JVM invocation for embedding a JVM)
+[target.'cfg(not(target_os = "android"))'.dependencies]
+jni = { version = "0.21", default-features = false, features = ["invocation"] }
+
+[dev-dependencies]
+uuid = { version = "1.0", features = ["v4"] }
+
+[build-dependencies]
+# For running gradle - none needed, we use std::process::Command
+
+[features]
+default = []
+# Desktop feature - includes compat JAR embedding and JVM creation
+desktop = []
+# Android feature - uses native Android class loading
+android = []

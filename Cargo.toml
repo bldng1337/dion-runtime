@@ -5,7 +5,7 @@ members = [
     "rust/dion_extension",
     "dart/rdion_runtime/rust",
     "js/runtime",
-    "rust/specta_valibot",
+    "rust/specta_valibot", "rust/mihon",
 ]
 resolver = "3"
 

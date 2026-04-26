@@ -38,7 +38,6 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
   path_provider: ^2.1.5
-  flutter_json_view: ^1.1.5
   shelf: ^1.4.2
   shelf_router: ^1.1.4
   shelf_static: ^1.1.3

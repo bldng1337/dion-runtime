@@ -273,6 +273,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source dco_decode_box_autoadd_source(dynamic raw);
 
   @protected
+  TextStyle dco_decode_box_autoadd_text_style(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
 
   @protected
@@ -473,6 +476,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SettingsUI? dco_decode_opt_box_autoadd_settings_ui(dynamic raw);
 
   @protected
+  TextStyle? dco_decode_opt_box_autoadd_text_style(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
 
   @protected
@@ -546,6 +552,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Subtitles dco_decode_subtitles(dynamic raw);
+
+  @protected
+  TextStyle dco_decode_text_style(dynamic raw);
 
   @protected
   TimestampType dco_decode_timestamp_type(dynamic raw);
@@ -763,6 +772,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source sse_decode_box_autoadd_source(SseDeserializer deserializer);
 
   @protected
+  TextStyle sse_decode_box_autoadd_text_style(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
@@ -978,6 +990,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  TextStyle? sse_decode_opt_box_autoadd_text_style(
+      SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
@@ -1056,6 +1072,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Subtitles sse_decode_subtitles(SseDeserializer deserializer);
+
+  @protected
+  TextStyle sse_decode_text_style(SseDeserializer deserializer);
 
   @protected
   TimestampType sse_decode_timestamp_type(SseDeserializer deserializer);
@@ -1234,6 +1253,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_settings_ui();
     cst_api_fill_to_wire_settings_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_text_style> cst_encode_box_autoadd_text_style(
+      TextStyle raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_text_style();
+    cst_api_fill_to_wire_text_style(raw, ptr.ref);
     return ptr;
   }
 
@@ -1593,6 +1621,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_text_style> cst_encode_opt_box_autoadd_text_style(
+      TextStyle? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_text_style(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
@@ -1797,6 +1832,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_autoadd_settings_ui(
       SettingsUI apiObj, ffi.Pointer<wire_cst_settings_ui> wireObj) {
     cst_api_fill_to_wire_settings_ui(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_box_autoadd_text_style(
+      TextStyle apiObj, ffi.Pointer<wire_cst_text_style> wireObj) {
+    cst_api_fill_to_wire_text_style(apiObj, wireObj.ref);
   }
 
   @protected
@@ -2155,8 +2196,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MixedContent apiObj, wire_cst_mixed_content wireObj) {
     if (apiObj is MixedContent_Text) {
       var pre_content = cst_encode_String(apiObj.content);
+      var pre_style = cst_encode_opt_box_autoadd_text_style(apiObj.style);
       wireObj.tag = 0;
       wireObj.kind.Text.content = pre_content;
+      wireObj.kind.Text.style = pre_style;
       return;
     }
     if (apiObj is MixedContent_CustomUI) {
@@ -2178,8 +2221,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Paragraph apiObj, wire_cst_paragraph wireObj) {
     if (apiObj is Paragraph_Text) {
       var pre_content = cst_encode_String(apiObj.content);
+      var pre_style = cst_encode_opt_box_autoadd_text_style(apiObj.style);
       wireObj.tag = 0;
       wireObj.kind.Text.content = pre_content;
+      wireObj.kind.Text.style = pre_style;
       return;
     }
     if (apiObj is Paragraph_Mixed) {
@@ -2423,6 +2468,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.title = cst_encode_String(apiObj.title);
     wireObj.lang = cst_encode_String(apiObj.lang);
     cst_api_fill_to_wire_link(apiObj.url, wireObj.url);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_text_style(
+      TextStyle apiObj, wire_cst_text_style wireObj) {
+    wireObj.bold = cst_encode_opt_box_autoadd_bool(apiObj.bold);
+    wireObj.italic = cst_encode_opt_box_autoadd_bool(apiObj.italic);
+    wireObj.underline = cst_encode_opt_box_autoadd_bool(apiObj.underline);
+    wireObj.strikethrough =
+        cst_encode_opt_box_autoadd_bool(apiObj.strikethrough);
+    wireObj.code = cst_encode_opt_box_autoadd_bool(apiObj.code);
+    wireObj.link = cst_encode_opt_String(apiObj.link);
+    wireObj.font_size = cst_encode_opt_box_autoadd_i_32(apiObj.fontSize);
   }
 
   @protected
@@ -2777,6 +2835,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_source(Source self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_text_style(
+      TextStyle self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
 
   @protected
@@ -3004,6 +3066,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SettingsUI? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_text_style(
+      TextStyle? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
 
   @protected
@@ -3084,6 +3150,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_subtitles(Subtitles self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_text_style(TextStyle self, SseSerializer serializer);
 
   @protected
   void sse_encode_timestamp_type(TimestampType self, SseSerializer serializer);
@@ -3329,6 +3398,21 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__crate__api__extension__ProxyAdapter_init_dion =
       _wire__crate__api__extension__ProxyAdapter_init_dionPtr
+          .asFunction<void Function(int, int)>();
+
+  void wire__crate__api__extension__ProxyAdapter_init_mihon(
+    int port_,
+    int client,
+  ) {
+    return _wire__crate__api__extension__ProxyAdapter_init_mihon(port_, client);
+  }
+
+  late final _wire__crate__api__extension__ProxyAdapter_init_mihonPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_mihon',
+  );
+  late final _wire__crate__api__extension__ProxyAdapter_init_mihon =
+      _wire__crate__api__extension__ProxyAdapter_init_mihonPtr
           .asFunction<void Function(int, int)>();
 
   void wire__crate__api__extension__ProxyAdapter_install(
@@ -4322,6 +4406,18 @@ class RustLibWire implements BaseWire {
       _wire__dion_runtime__data__extension__source_open_type_defaultPtr
           .asFunction<void Function(int)>();
 
+  void wire__dion_runtime__data__source__text_style_default(int port_) {
+    return _wire__dion_runtime__data__source__text_style_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__source__text_style_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__text_style_default',
+  );
+  late final _wire__dion_runtime__data__source__text_style_default =
+      _wire__dion_runtime__data__source__text_style_defaultPtr
+          .asFunction<void Function(int)>();
+
   void wire__dion_runtime__data__custom_ui__timestamp_type_default(int port_) {
     return _wire__dion_runtime__data__custom_ui__timestamp_type_default(port_);
   }
@@ -4644,6 +4740,18 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_settings_ui =
       _cst_new_box_autoadd_settings_uiPtr
           .asFunction<ffi.Pointer<wire_cst_settings_ui> Function()>();
+
+  ffi.Pointer<wire_cst_text_style> cst_new_box_autoadd_text_style() {
+    return _cst_new_box_autoadd_text_style();
+  }
+
+  late final _cst_new_box_autoadd_text_stylePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_text_style> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_text_style',
+  );
+  late final _cst_new_box_autoadd_text_style =
+      _cst_new_box_autoadd_text_stylePtr
+          .asFunction<ffi.Pointer<wire_cst_text_style> Function()>();
 
   ffi.Pointer<ffi.Uint32> cst_new_box_autoadd_u_32(int value) {
     return _cst_new_box_autoadd_u_32(value);
@@ -5479,6 +5587,22 @@ final class wire_cst_settings_ui extends ffi.Struct {
   external SettingsUIKind kind;
 }
 
+final class wire_cst_text_style extends ffi.Struct {
+  external ffi.Pointer<ffi.Bool> bold;
+
+  external ffi.Pointer<ffi.Bool> italic;
+
+  external ffi.Pointer<ffi.Bool> underline;
+
+  external ffi.Pointer<ffi.Bool> strikethrough;
+
+  external ffi.Pointer<ffi.Bool> code;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
+
+  external ffi.Pointer<ffi.Int32> font_size;
+}
+
 final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension
     extends ffi.Struct {
   external ffi.Pointer<ffi.UintPtr> ptr;
@@ -5588,6 +5712,8 @@ final class wire_cst_list_media_type extends ffi.Struct {
 
 final class wire_cst_MixedContent_Text extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
+
+  external ffi.Pointer<wire_cst_text_style> style;
 }
 
 final class wire_cst_MixedContent_CustomUI extends ffi.Struct {
@@ -5596,6 +5722,8 @@ final class wire_cst_MixedContent_CustomUI extends ffi.Struct {
 
 final class wire_cst_Paragraph_Text extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> content;
+
+  external ffi.Pointer<wire_cst_text_style> style;
 }
 
 final class wire_cst_Paragraph_Mixed extends ffi.Struct {

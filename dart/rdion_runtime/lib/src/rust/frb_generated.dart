@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 859095815;
+  int get rustContentHash => -84116015;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -131,6 +131,9 @@ abstract class RustLibApi extends BaseApi {
       {required ProxyAdapter that, required String url});
 
   Future<ProxyAdapter> crateApiExtensionProxyAdapterInitDion(
+      {required ManagerClient client});
+
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitMihon(
       {required ManagerClient client});
 
   Future<ProxyExtension> crateApiExtensionProxyAdapterInstall(
@@ -286,6 +289,8 @@ abstract class RustLibApi extends BaseApi {
       dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
 
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
+
+  Future<TextStyle> dionRuntimeDataSourceTextStyleDefault();
 
   Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault();
 
@@ -657,6 +662,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiExtensionProxyAdapterInitDionConstMeta =>
       const TaskConstMeta(
         debugName: "ProxyAdapter_init_dion",
+        argNames: ["client"],
+      );
+
+  @override
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitMihon(
+      {required ManagerClient client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+                client);
+        return wire.wire__crate__api__extension__ProxyAdapter_init_mihon(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData:
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyAdapterInitMihonConstMeta,
+      argValues: [client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyAdapterInitMihonConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyAdapter_init_mihon",
         argNames: ["client"],
       );
 
@@ -1909,6 +1942,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<TextStyle> dionRuntimeDataSourceTextStyleDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire.wire__dion_runtime__data__source__text_style_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_text_style,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataSourceTextStyleDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataSourceTextStyleDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "text_style_default",
+        argNames: [],
+      );
+
+  @override
   Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -2690,6 +2745,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextStyle dco_decode_box_autoadd_text_style(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_text_style(raw);
+  }
+
+  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -3264,6 +3325,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 0:
         return MixedContent_Text(
           content: dco_decode_String(raw[1]),
+          style: dco_decode_opt_box_autoadd_text_style(raw[2]),
         );
       case 1:
         return MixedContent_CustomUI(
@@ -3356,6 +3418,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextStyle? dco_decode_opt_box_autoadd_text_style(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_text_style(raw);
+  }
+
+  @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_32(raw);
@@ -3392,6 +3460,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 0:
         return Paragraph_Text(
           content: dco_decode_String(raw[1]),
+          style: dco_decode_opt_box_autoadd_text_style(raw[2]),
         );
       case 1:
         return Paragraph_Mixed(
@@ -3687,6 +3756,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       title: dco_decode_String(arr[0]),
       lang: dco_decode_String(arr[1]),
       url: dco_decode_link(arr[2]),
+    );
+  }
+
+  @protected
+  TextStyle dco_decode_text_style(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return TextStyle(
+      bold: dco_decode_opt_box_autoadd_bool(arr[0]),
+      italic: dco_decode_opt_box_autoadd_bool(arr[1]),
+      underline: dco_decode_opt_box_autoadd_bool(arr[2]),
+      strikethrough: dco_decode_opt_box_autoadd_bool(arr[3]),
+      code: dco_decode_opt_box_autoadd_bool(arr[4]),
+      link: dco_decode_opt_String(arr[5]),
+      fontSize: dco_decode_opt_box_autoadd_i_32(arr[6]),
     );
   }
 
@@ -4204,6 +4290,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Source sse_decode_box_autoadd_source(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_source(deserializer));
+  }
+
+  @protected
+  TextStyle sse_decode_box_autoadd_text_style(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_text_style(deserializer));
   }
 
   @protected
@@ -4938,7 +5030,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_content = sse_decode_String(deserializer);
-        return MixedContent_Text(content: var_content);
+        var var_style = sse_decode_opt_box_autoadd_text_style(deserializer);
+        return MixedContent_Text(content: var_content, style: var_style);
       case 1:
         var var_ui = sse_decode_box_custom_ui(deserializer);
         return MixedContent_CustomUI(ui: var_ui);
@@ -5090,6 +5183,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextStyle? sse_decode_opt_box_autoadd_text_style(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_text_style(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -5153,7 +5258,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_content = sse_decode_String(deserializer);
-        return Paragraph_Text(content: var_content);
+        var var_style = sse_decode_opt_box_autoadd_text_style(deserializer);
+        return Paragraph_Text(content: var_content, style: var_style);
       case 1:
         var var_content = sse_decode_list_mixed_content(deserializer);
         return Paragraph_Mixed(content: var_content);
@@ -5412,6 +5518,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_lang = sse_decode_String(deserializer);
     var var_url = sse_decode_link(deserializer);
     return Subtitles(title: var_title, lang: var_lang, url: var_url);
+  }
+
+  @protected
+  TextStyle sse_decode_text_style(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_bold = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_italic = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_underline = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_strikethrough = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_code = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_link = sse_decode_opt_String(deserializer);
+    var var_fontSize = sse_decode_opt_box_autoadd_i_32(deserializer);
+    return TextStyle(
+        bold: var_bold,
+        italic: var_italic,
+        underline: var_underline,
+        strikethrough: var_strikethrough,
+        code: var_code,
+        link: var_link,
+        fontSize: var_fontSize);
   }
 
   @protected
@@ -6188,6 +6314,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_text_style(
+      TextStyle self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_text_style(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_32(self, serializer);
@@ -6784,9 +6917,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_mixed_content(MixedContent self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case MixedContent_Text(content: final content):
+      case MixedContent_Text(content: final content, style: final style):
         sse_encode_i_32(0, serializer);
         sse_encode_String(content, serializer);
+        sse_encode_opt_box_autoadd_text_style(style, serializer);
       case MixedContent_CustomUI(ui: final ui):
         sse_encode_i_32(1, serializer);
         sse_encode_box_custom_ui(ui, serializer);
@@ -6926,6 +7060,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_text_style(
+      TextStyle? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_text_style(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -6981,9 +7126,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_paragraph(Paragraph self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case Paragraph_Text(content: final content):
+      case Paragraph_Text(content: final content, style: final style):
         sse_encode_i_32(0, serializer);
         sse_encode_String(content, serializer);
+        sse_encode_opt_box_autoadd_text_style(style, serializer);
       case Paragraph_Mixed(content: final content):
         sse_encode_i_32(1, serializer);
         sse_encode_list_mixed_content(content, serializer);
@@ -7198,6 +7344,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.title, serializer);
     sse_encode_String(self.lang, serializer);
     sse_encode_link(self.url, serializer);
+  }
+
+  @protected
+  void sse_encode_text_style(TextStyle self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_box_autoadd_bool(self.bold, serializer);
+    sse_encode_opt_box_autoadd_bool(self.italic, serializer);
+    sse_encode_opt_box_autoadd_bool(self.underline, serializer);
+    sse_encode_opt_box_autoadd_bool(self.strikethrough, serializer);
+    sse_encode_opt_box_autoadd_bool(self.code, serializer);
+    sse_encode_opt_String(self.link, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.fontSize, serializer);
   }
 
   @protected

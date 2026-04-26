@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'source.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -364,6 +364,7 @@ sealed class MixedContent with _$MixedContent {
 
   const factory MixedContent.text({
     required String content,
+    TextStyle? style,
   }) = MixedContent_Text;
   const factory MixedContent.customUi({
     required CustomUI ui,
@@ -379,6 +380,7 @@ sealed class Paragraph with _$Paragraph {
 
   const factory Paragraph.text({
     required String content,
+    TextStyle? style,
   }) = Paragraph_Text;
   const factory Paragraph.mixed({
     required List<MixedContent> content,
@@ -532,4 +534,52 @@ class Subtitles {
           title == other.title &&
           lang == other.lang &&
           url == other.url;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class TextStyle {
+  final bool? bold;
+  final bool? italic;
+  final bool? underline;
+  final bool? strikethrough;
+  final bool? code;
+  final String? link;
+  final int? fontSize;
+
+  const TextStyle({
+    this.bold,
+    this.italic,
+    this.underline,
+    this.strikethrough,
+    this.code,
+    this.link,
+    this.fontSize,
+  });
+
+  static Future<TextStyle> default_() =>
+      RustLib.instance.api.dionRuntimeDataSourceTextStyleDefault();
+
+  @override
+  int get hashCode =>
+      bold.hashCode ^
+      italic.hashCode ^
+      underline.hashCode ^
+      strikethrough.hashCode ^
+      code.hashCode ^
+      link.hashCode ^
+      fontSize.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TextStyle &&
+          runtimeType == other.runtimeType &&
+          bold == other.bold &&
+          italic == other.italic &&
+          underline == other.underline &&
+          strikethrough == other.strikethrough &&
+          code == other.code &&
+          link == other.link &&
+          fontSize == other.fontSize;
 }
