@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -10,6 +10,7 @@ use dion_runtime::{
     data::{
         extension::{ExtensionData, ExtensionType},
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+        settings::{Setting, SettingKind},
         source::{Link, MediaType},
     },
     extension::{Adapter, Extension},
@@ -52,6 +53,8 @@ pub struct ExtensionMetadata {
     pub license: String,
 
     pub api_version: String,
+
+    pub settings: HashMap<SettingKind, HashMap<String, Setting>>,
 }
 
 impl ExtensionMetadata {

@@ -8,7 +8,7 @@ use crate::data::custom_ui::CustomUI;
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Hash)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum SettingKind {
     Extension,
