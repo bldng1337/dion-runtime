@@ -24,12 +24,12 @@ mixin _$Action {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String url)? openBrowser,
@@ -37,22 +37,23 @@ mixin _$Action {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Action_OpenBrowser value) openBrowser,
@@ -60,7 +61,8 @@ mixin _$Action {
     required TResult Function(Action_Nav value) nav,
     required TResult Function(Action_TriggerEvent value) triggerEvent,
     required TResult Function(Action_NavEntry value) navEntry,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Action_OpenBrowser value)? openBrowser,
@@ -68,7 +70,8 @@ mixin _$Action {
     TResult? Function(Action_Nav value)? nav,
     TResult? Function(Action_TriggerEvent value)? triggerEvent,
     TResult? Function(Action_NavEntry value)? navEntry,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Action_OpenBrowser value)? openBrowser,
@@ -77,7 +80,8 @@ mixin _$Action {
     TResult Function(Action_TriggerEvent value)? triggerEvent,
     TResult Function(Action_NavEntry value)? navEntry,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -129,7 +133,7 @@ class __$$Action_OpenBrowserImplCopyWithImpl<$Res>
         url: null == url
             ? _value.url
             : url // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -178,8 +182,7 @@ class _$Action_OpenBrowserImpl extends Action_OpenBrowser {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
@@ -195,8 +198,7 @@ class _$Action_OpenBrowserImpl extends Action_OpenBrowser {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
@@ -209,7 +211,7 @@ class _$Action_OpenBrowserImpl extends Action_OpenBrowser {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
@@ -311,15 +313,15 @@ class __$$Action_PopupImplCopyWithImpl<$Res>
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         content: null == content
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
         actions: null == actions
             ? _value._actions
             : actions // ignore: cast_nullable_to_non_nullable
-                  as List<PopupAction>,
+                as List<PopupAction>,
       ),
     );
   }
@@ -342,8 +344,8 @@ class _$Action_PopupImpl extends Action_Popup {
     required this.title,
     required this.content,
     required final List<PopupAction> actions,
-  }) : _actions = actions,
-       super._();
+  })  : _actions = actions,
+        super._();
 
   @override
   final String title;
@@ -374,11 +376,11 @@ class _$Action_PopupImpl extends Action_Popup {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    title,
-    content,
-    const DeepCollectionEquality().hash(_actions),
-  );
+        runtimeType,
+        title,
+        content,
+        const DeepCollectionEquality().hash(_actions),
+      );
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
@@ -396,8 +398,7 @@ class _$Action_PopupImpl extends Action_Popup {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
@@ -413,8 +414,7 @@ class _$Action_PopupImpl extends Action_Popup {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
@@ -427,7 +427,7 @@ class _$Action_PopupImpl extends Action_Popup {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
@@ -530,11 +530,11 @@ class __$$Action_NavImplCopyWithImpl<$Res>
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         content: null == content
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -554,7 +554,7 @@ class __$$Action_NavImplCopyWithImpl<$Res>
 
 class _$Action_NavImpl extends Action_Nav {
   const _$Action_NavImpl({required this.title, required this.content})
-    : super._();
+      : super._();
 
   @override
   final String title;
@@ -594,8 +594,7 @@ class _$Action_NavImpl extends Action_Nav {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
@@ -611,8 +610,7 @@ class _$Action_NavImpl extends Action_Nav {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
@@ -625,7 +623,7 @@ class _$Action_NavImpl extends Action_Nav {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
@@ -724,11 +722,11 @@ class __$$Action_TriggerEventImplCopyWithImpl<$Res>
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -738,7 +736,7 @@ class __$$Action_TriggerEventImplCopyWithImpl<$Res>
 
 class _$Action_TriggerEventImpl extends Action_TriggerEvent {
   const _$Action_TriggerEventImpl({required this.event, required this.data})
-    : super._();
+      : super._();
 
   @override
   final String event;
@@ -781,8 +779,7 @@ class _$Action_TriggerEventImpl extends Action_TriggerEvent {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
@@ -798,8 +795,7 @@ class _$Action_TriggerEventImpl extends Action_TriggerEvent {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
@@ -812,7 +808,7 @@ class _$Action_TriggerEventImpl extends Action_TriggerEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
@@ -911,7 +907,7 @@ class __$$Action_NavEntryImplCopyWithImpl<$Res>
         entry: null == entry
             ? _value.entry
             : entry // ignore: cast_nullable_to_non_nullable
-                  as EntryDetailed,
+                as EntryDetailed,
       ),
     );
   }
@@ -960,8 +956,7 @@ class _$Action_NavEntryImpl extends Action_NavEntry {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )
-    popup,
+    ) popup,
     required TResult Function(String title, CustomUI content) nav,
     required TResult Function(String event, String data) triggerEvent,
     required TResult Function(EntryDetailed entry) navEntry,
@@ -977,8 +972,7 @@ class _$Action_NavEntryImpl extends Action_NavEntry {
       String title,
       CustomUI content,
       List<PopupAction> actions,
-    )?
-    popup,
+    )? popup,
     TResult? Function(String title, CustomUI content)? nav,
     TResult? Function(String event, String data)? triggerEvent,
     TResult? Function(EntryDetailed entry)? navEntry,
@@ -991,7 +985,7 @@ class _$Action_NavEntryImpl extends Action_NavEntry {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
     TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-    popup,
+        popup,
     TResult Function(String title, CustomUI content)? nav,
     TResult Function(String event, String data)? triggerEvent,
     TResult Function(EntryDetailed entry)? navEntry,
@@ -1065,42 +1059,48 @@ mixin _$EventData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String event, String targetid, String data)
-    swapContent,
+        swapContent,
     required TResult Function(String event, String data, int page) feedUpdate,
     required TResult Function(String event, String data) action,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String event, String targetid, String data)? swapContent,
     TResult? Function(String event, String data, int page)? feedUpdate,
     TResult? Function(String event, String data)? action,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String event, String targetid, String data)? swapContent,
     TResult Function(String event, String data, int page)? feedUpdate,
     TResult Function(String event, String data)? action,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(EventData_SwapContent value) swapContent,
     required TResult Function(EventData_FeedUpdate value) feedUpdate,
     required TResult Function(EventData_Action value) action,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(EventData_SwapContent value)? swapContent,
     TResult? Function(EventData_FeedUpdate value)? feedUpdate,
     TResult? Function(EventData_Action value)? action,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(EventData_SwapContent value)? swapContent,
     TResult Function(EventData_FeedUpdate value)? feedUpdate,
     TResult Function(EventData_Action value)? action,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of EventData
   /// with the given fields replaced by the non-null parameter values.
@@ -1134,16 +1134,15 @@ class _$EventDataCopyWithImpl<$Res, $Val extends EventData>
   $Res call({Object? event = null, Object? data = null}) {
     return _then(
       _value.copyWith(
-            event: null == event
-                ? _value.event
-                : event // ignore: cast_nullable_to_non_nullable
-                      as String,
-            data: null == data
-                ? _value.data
-                : data // ignore: cast_nullable_to_non_nullable
-                      as String,
-          )
-          as $Val,
+        event: null == event
+            ? _value.event
+            : event // ignore: cast_nullable_to_non_nullable
+                as String,
+        data: null == data
+            ? _value.data
+            : data // ignore: cast_nullable_to_non_nullable
+                as String,
+      ) as $Val,
     );
   }
 }
@@ -1183,15 +1182,15 @@ class __$$EventData_SwapContentImplCopyWithImpl<$Res>
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         targetid: null == targetid
             ? _value.targetid
             : targetid // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -1238,17 +1237,17 @@ class _$EventData_SwapContentImpl extends EventData_SwapContent {
   @override
   @pragma('vm:prefer-inline')
   _$$EventData_SwapContentImplCopyWith<_$EventData_SwapContentImpl>
-  get copyWith =>
-      __$$EventData_SwapContentImplCopyWithImpl<_$EventData_SwapContentImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$EventData_SwapContentImplCopyWithImpl<
+              _$EventData_SwapContentImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String event, String targetid, String data)
-    swapContent,
+        swapContent,
     required TResult Function(String event, String data, int page) feedUpdate,
     required TResult Function(String event, String data) action,
   }) {
@@ -1333,7 +1332,7 @@ abstract class EventData_SwapContent extends EventData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EventData_SwapContentImplCopyWith<_$EventData_SwapContentImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1367,15 +1366,15 @@ class __$$EventData_FeedUpdateImplCopyWithImpl<$Res>
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         page: null == page
             ? _value.page
             : page // ignore: cast_nullable_to_non_nullable
-                  as int,
+                as int,
       ),
     );
   }
@@ -1421,17 +1420,17 @@ class _$EventData_FeedUpdateImpl extends EventData_FeedUpdate {
   @override
   @pragma('vm:prefer-inline')
   _$$EventData_FeedUpdateImplCopyWith<_$EventData_FeedUpdateImpl>
-  get copyWith =>
-      __$$EventData_FeedUpdateImplCopyWithImpl<_$EventData_FeedUpdateImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith =>
+          __$$EventData_FeedUpdateImplCopyWithImpl<_$EventData_FeedUpdateImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String event, String targetid, String data)
-    swapContent,
+        swapContent,
     required TResult Function(String event, String data, int page) feedUpdate,
     required TResult Function(String event, String data) action,
   }) {
@@ -1516,7 +1515,7 @@ abstract class EventData_FeedUpdate extends EventData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EventData_FeedUpdateImplCopyWith<_$EventData_FeedUpdateImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1550,11 +1549,11 @@ class __$$EventData_ActionImplCopyWithImpl<$Res>
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -1564,7 +1563,7 @@ class __$$EventData_ActionImplCopyWithImpl<$Res>
 
 class _$EventData_ActionImpl extends EventData_Action {
   const _$EventData_ActionImpl({required this.event, required this.data})
-    : super._();
+      : super._();
 
   @override
   final String event;
@@ -1603,7 +1602,7 @@ class _$EventData_ActionImpl extends EventData_Action {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String event, String targetid, String data)
-    swapContent,
+        swapContent,
     required TResult Function(String event, String data, int page) feedUpdate,
     required TResult Function(String event, String data) action,
   }) {
@@ -1699,38 +1698,43 @@ mixin _$EventResult {
       List<CustomUI> customui,
       bool? hasnext,
       int? length,
-    )
-    feedUpdate,
-  }) => throw _privateConstructorUsedError;
+    ) feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(CustomUI customui)? swapContent,
     TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
-  }) => throw _privateConstructorUsedError;
+        feedUpdate,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(CustomUI customui)? swapContent,
     TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
+        feedUpdate,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(EventResult_SwapContent value) swapContent,
     required TResult Function(EventResult_FeedUpdate value) feedUpdate,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(EventResult_SwapContent value)? swapContent,
     TResult? Function(EventResult_FeedUpdate value)? feedUpdate,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(EventResult_SwapContent value)? swapContent,
     TResult Function(EventResult_FeedUpdate value)? feedUpdate,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1786,7 +1790,7 @@ class __$$EventResult_SwapContentImplCopyWithImpl<$Res>
         customui: null == customui
             ? _value.customui
             : customui // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -1833,10 +1837,8 @@ class _$EventResult_SwapContentImpl extends EventResult_SwapContent {
   @override
   @pragma('vm:prefer-inline')
   _$$EventResult_SwapContentImplCopyWith<_$EventResult_SwapContentImpl>
-  get copyWith =>
-      __$$EventResult_SwapContentImplCopyWithImpl<
-        _$EventResult_SwapContentImpl
-      >(this, _$identity);
+      get copyWith => __$$EventResult_SwapContentImplCopyWithImpl<
+          _$EventResult_SwapContentImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1846,8 +1848,7 @@ class _$EventResult_SwapContentImpl extends EventResult_SwapContent {
       List<CustomUI> customui,
       bool? hasnext,
       int? length,
-    )
-    feedUpdate,
+    ) feedUpdate,
   }) {
     return swapContent(customui);
   }
@@ -1857,7 +1858,7 @@ class _$EventResult_SwapContentImpl extends EventResult_SwapContent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(CustomUI customui)? swapContent,
     TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
+        feedUpdate,
   }) {
     return swapContent?.call(customui);
   }
@@ -1867,7 +1868,7 @@ class _$EventResult_SwapContentImpl extends EventResult_SwapContent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(CustomUI customui)? swapContent,
     TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
+        feedUpdate,
     required TResult orElse(),
   }) {
     if (swapContent != null) {
@@ -1920,7 +1921,7 @@ abstract class EventResult_SwapContent extends EventResult {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EventResult_SwapContentImplCopyWith<_$EventResult_SwapContentImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1956,15 +1957,15 @@ class __$$EventResult_FeedUpdateImplCopyWithImpl<$Res>
         customui: null == customui
             ? _value._customui
             : customui // ignore: cast_nullable_to_non_nullable
-                  as List<CustomUI>,
+                as List<CustomUI>,
         hasnext: freezed == hasnext
             ? _value.hasnext
             : hasnext // ignore: cast_nullable_to_non_nullable
-                  as bool?,
+                as bool?,
         length: freezed == length
             ? _value.length
             : length // ignore: cast_nullable_to_non_nullable
-                  as int?,
+                as int?,
       ),
     );
   }
@@ -1977,8 +1978,8 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
     required final List<CustomUI> customui,
     this.hasnext,
     this.length,
-  }) : _customui = customui,
-       super._();
+  })  : _customui = customui,
+        super._();
 
   final List<CustomUI> _customui;
   @override
@@ -2010,11 +2011,11 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_customui),
-    hasnext,
-    length,
-  );
+        runtimeType,
+        const DeepCollectionEquality().hash(_customui),
+        hasnext,
+        length,
+      );
 
   /// Create a copy of EventResult
   /// with the given fields replaced by the non-null parameter values.
@@ -2022,11 +2023,11 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
   @override
   @pragma('vm:prefer-inline')
   _$$EventResult_FeedUpdateImplCopyWith<_$EventResult_FeedUpdateImpl>
-  get copyWith =>
-      __$$EventResult_FeedUpdateImplCopyWithImpl<_$EventResult_FeedUpdateImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$EventResult_FeedUpdateImplCopyWithImpl<
+              _$EventResult_FeedUpdateImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -2036,8 +2037,7 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
       List<CustomUI> customui,
       bool? hasnext,
       int? length,
-    )
-    feedUpdate,
+    ) feedUpdate,
   }) {
     return feedUpdate(customui, hasnext, length);
   }
@@ -2047,7 +2047,7 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(CustomUI customui)? swapContent,
     TResult? Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
+        feedUpdate,
   }) {
     return feedUpdate?.call(customui, hasnext, length);
   }
@@ -2057,7 +2057,7 @@ class _$EventResult_FeedUpdateImpl extends EventResult_FeedUpdate {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(CustomUI customui)? swapContent,
     TResult Function(List<CustomUI> customui, bool? hasnext, int? length)?
-    feedUpdate,
+        feedUpdate,
     required TResult orElse(),
   }) {
     if (feedUpdate != null) {
@@ -2115,7 +2115,7 @@ abstract class EventResult_FeedUpdate extends EventResult {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EventResult_FeedUpdateImplCopyWith<_$EventResult_FeedUpdateImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2128,9 +2128,9 @@ mixin _$UIAction {
       String event,
       String data,
       CustomUI? placeholder,
-    )
-    swapContent,
-  }) => throw _privateConstructorUsedError;
+    ) swapContent,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Action action)? action,
@@ -2139,9 +2139,9 @@ mixin _$UIAction {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
-  }) => throw _privateConstructorUsedError;
+    )? swapContent,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Action action)? action,
@@ -2150,26 +2150,29 @@ mixin _$UIAction {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
+    )? swapContent,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UIAction_Action value) action,
     required TResult Function(UIAction_SwapContent value) swapContent,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UIAction_Action value)? action,
     TResult? Function(UIAction_SwapContent value)? swapContent,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UIAction_Action value)? action,
     TResult Function(UIAction_SwapContent value)? swapContent,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2223,7 +2226,7 @@ class __$$UIAction_ActionImplCopyWithImpl<$Res>
         action: null == action
             ? _value.action
             : action // ignore: cast_nullable_to_non_nullable
-                  as Action,
+                as Action,
       ),
     );
   }
@@ -2283,8 +2286,7 @@ class _$UIAction_ActionImpl extends UIAction_Action {
       String event,
       String data,
       CustomUI? placeholder,
-    )
-    swapContent,
+    ) swapContent,
   }) {
     return action(this.action);
   }
@@ -2298,8 +2300,7 @@ class _$UIAction_ActionImpl extends UIAction_Action {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
+    )? swapContent,
   }) {
     return action?.call(this.action);
   }
@@ -2313,8 +2314,7 @@ class _$UIAction_ActionImpl extends UIAction_Action {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
+    )? swapContent,
     required TResult orElse(),
   }) {
     if (action != null) {
@@ -2410,19 +2410,19 @@ class __$$UIAction_SwapContentImplCopyWithImpl<$Res>
         targetid: null == targetid
             ? _value.targetid
             : targetid // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         placeholder: freezed == placeholder
             ? _value.placeholder
             : placeholder // ignore: cast_nullable_to_non_nullable
-                  as CustomUI?,
+                as CustomUI?,
       ),
     );
   }
@@ -2489,11 +2489,11 @@ class _$UIAction_SwapContentImpl extends UIAction_SwapContent {
   @override
   @pragma('vm:prefer-inline')
   _$$UIAction_SwapContentImplCopyWith<_$UIAction_SwapContentImpl>
-  get copyWith =>
-      __$$UIAction_SwapContentImplCopyWithImpl<_$UIAction_SwapContentImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith =>
+          __$$UIAction_SwapContentImplCopyWithImpl<_$UIAction_SwapContentImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -2504,8 +2504,7 @@ class _$UIAction_SwapContentImpl extends UIAction_SwapContent {
       String event,
       String data,
       CustomUI? placeholder,
-    )
-    swapContent,
+    ) swapContent,
   }) {
     return swapContent(targetid, event, data, placeholder);
   }
@@ -2519,8 +2518,7 @@ class _$UIAction_SwapContentImpl extends UIAction_SwapContent {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
+    )? swapContent,
   }) {
     return swapContent?.call(targetid, event, data, placeholder);
   }
@@ -2534,8 +2532,7 @@ class _$UIAction_SwapContentImpl extends UIAction_SwapContent {
       String event,
       String data,
       CustomUI? placeholder,
-    )?
-    swapContent,
+    )? swapContent,
     required TResult orElse(),
   }) {
     if (swapContent != null) {
@@ -2594,5 +2591,5 @@ abstract class UIAction_SwapContent extends UIAction {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UIAction_SwapContentImplCopyWith<_$UIAction_SwapContentImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }

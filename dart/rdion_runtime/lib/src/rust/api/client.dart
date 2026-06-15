@@ -25,17 +25,18 @@ abstract class ExtensionClient implements RustOpaqueInterface {
     required FutureOr<bool> Function(Permission, String?) requestPermission,
     required FutureOr<String> Function() getPath,
     required FutureOr<void> Function(EntryId, String, SettingValue)
-    setEntrySetting,
-  }) => RustLib.instance.api.crateApiClientExtensionClientInit(
-    loadData: loadData,
-    storeData: storeData,
-    loadDataSecure: loadDataSecure,
-    storeDataSecure: storeDataSecure,
-    doAction: doAction,
-    requestPermission: requestPermission,
-    getPath: getPath,
-    setEntrySetting: setEntrySetting,
-  );
+        setEntrySetting,
+  }) =>
+      RustLib.instance.api.crateApiClientExtensionClientInit(
+        loadData: loadData,
+        storeData: storeData,
+        loadDataSecure: loadDataSecure,
+        storeDataSecure: storeDataSecure,
+        doAction: doAction,
+        requestPermission: requestPermission,
+        getPath: getPath,
+        setEntrySetting: setEntrySetting,
+      );
 }
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ManagerClient>>
@@ -43,8 +44,9 @@ abstract class ManagerClient implements RustOpaqueInterface {
   static Future<ManagerClient> init({
     required FutureOr<String> Function() getPath,
     required FutureOr<ExtensionClient> Function(ExtensionData) getClient,
-  }) => RustLib.instance.api.crateApiClientManagerClientInit(
-    getPath: getPath,
-    getClient: getClient,
-  );
+  }) =>
+      RustLib.instance.api.crateApiClientManagerClientInit(
+        getPath: getPath,
+        getClient: getClient,
+      );
 }

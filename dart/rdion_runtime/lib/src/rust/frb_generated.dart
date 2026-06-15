@@ -83,10 +83,10 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-        stem: 'rdion_runtime',
-        ioDirectory: 'rust/target/release/',
-        webPrefix: 'pkg/',
-      );
+    stem: 'rdion_runtime',
+    ioDirectory: 'rust/target/release/',
+    webPrefix: 'pkg/',
+  );
 }
 
 abstract class RustLibApi extends BaseApi {
@@ -111,7 +111,7 @@ abstract class RustLibApi extends BaseApi {
     required FutureOr<bool> Function(Permission, String?) requestPermission,
     required FutureOr<String> Function() getPath,
     required FutureOr<void> Function(EntryId, String, SettingValue)
-    setEntrySetting,
+        setEntrySetting,
   });
 
   Future<ManagerClient> crateApiClientManagerClientInit({
@@ -323,7 +323,7 @@ abstract class RustLibApi extends BaseApi {
   Future<ExtensionData> dionRuntimeDataExtensionExtensionDataDefault();
 
   Future<ExtensionManagerData>
-  dionRuntimeDataExtensionManagerExtensionManagerDataDefault();
+      dionRuntimeDataExtensionManagerExtensionManagerDataDefault();
 
   Future<ExtensionRepo> dionRuntimeDataExtensionRepoExtensionRepoDefault();
 
@@ -338,7 +338,7 @@ abstract class RustLibApi extends BaseApi {
   Future<RemoteExtension> dionRuntimeDataExtensionRepoRemoteExtensionDefault();
 
   Future<RemoteExtensionResult>
-  dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
+      dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
 
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
 
@@ -347,47 +347,47 @@ abstract class RustLibApi extends BaseApi {
   Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault();
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_CancelToken;
+      get rust_arc_increment_strong_count_CancelToken;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_CancelToken;
+      get rust_arc_decrement_strong_count_CancelToken;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CancelTokenPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ExtensionClient;
+      get rust_arc_increment_strong_count_ExtensionClient;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ExtensionClient;
+      get rust_arc_decrement_strong_count_ExtensionClient;
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_ExtensionClientPtr;
+      get rust_arc_decrement_strong_count_ExtensionClientPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ManagerClient;
+      get rust_arc_increment_strong_count_ManagerClient;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ManagerClient;
+      get rust_arc_decrement_strong_count_ManagerClient;
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_ManagerClientPtr;
+      get rust_arc_decrement_strong_count_ManagerClientPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ProxyAdapter;
+      get rust_arc_increment_strong_count_ProxyAdapter;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ProxyAdapter;
+      get rust_arc_decrement_strong_count_ProxyAdapter;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ProxyAdapterPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ProxyExtension;
+      get rust_arc_increment_strong_count_ProxyExtension;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ProxyExtension;
+      get rust_arc_decrement_strong_count_ProxyExtension;
 
   CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_ProxyExtensionPtr;
+      get rust_arc_decrement_strong_count_ProxyExtensionPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -405,8 +405,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__cancel__CancelToken_cancel(port_, arg0);
         },
         codec: DcoCodec(
@@ -432,8 +432,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__cancel__CancelToken_get_child(
             port_,
             arg0,
@@ -466,8 +466,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__cancel__CancelToken_is_cancelled(
             port_,
             arg0,
@@ -522,7 +522,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required FutureOr<bool> Function(Permission, String?) requestPermission,
     required FutureOr<String> Function() getPath,
     required FutureOr<void> Function(EntryId, String, SettingValue)
-    setEntrySetting,
+        setEntrySetting,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -658,8 +658,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_box_autoadd_extension_repo(repo);
           var arg2 = cst_encode_i_32(page);
           return wire.wire__crate__api__extension__ProxyAdapter_browse_repo(
@@ -695,8 +695,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__extension__ProxyAdapter_get_extensions(
             port_,
             arg0,
@@ -730,8 +730,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_String(url);
           return wire.wire__crate__api__extension__ProxyAdapter_get_repo(
             port_,
@@ -765,8 +765,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
-                client,
-              );
+            client,
+          );
           return wire.wire__crate__api__extension__ProxyAdapter_init_dion(
             port_,
             arg0,
@@ -799,8 +799,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
-                client,
-              );
+            client,
+          );
           return wire.wire__crate__api__extension__ProxyAdapter_init_mihon(
             port_,
             arg0,
@@ -834,8 +834,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_String(location);
           return wire.wire__crate__api__extension__ProxyAdapter_install(
             port_,
@@ -871,12 +871,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
-                that,
-              );
+            that,
+          );
           var arg1 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                ext,
-              );
+            ext,
+          );
           return wire.wire__crate__api__extension__ProxyAdapter_uninstall(
             port_,
             arg0,
@@ -1086,11 +1086,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_get_extension_data(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_extension_data,
@@ -1124,11 +1124,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_get_permissions(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_permission,
@@ -1205,11 +1205,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_get_setting_ids(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_String,
@@ -1278,13 +1278,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_String(url);
           var arg2 =
               cst_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
-                token,
-              );
+            token,
+          );
           return wire.wire__crate__api__extension__ProxyExtension_handle_url(
             port_,
             arg0,
@@ -1326,11 +1326,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_has_permission(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -1359,8 +1359,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_String(domain);
           return wire.wire__crate__api__extension__ProxyExtension_invalidate(
             port_,
@@ -1394,8 +1394,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__extension__ProxyExtension_is_enabled(
             port_,
             arg0,
@@ -1428,8 +1428,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_String(domain);
           return wire.wire__crate__api__extension__ProxyExtension_is_logged_in(
             port_,
@@ -1558,8 +1558,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_box_autoadd_account(account);
           return wire.wire__crate__api__extension__ProxyExtension_merge_auth(
             port_,
@@ -1605,11 +1605,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_merge_setting_definition(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1624,11 +1624,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiExtensionProxyExtensionMergeSettingDefinitionConstMeta =>
-      const TaskConstMeta(
-        debugName: "ProxyExtension_merge_setting_definition",
-        argNames: ["that", "id", "kind", "definition"],
-      );
+      get kCrateApiExtensionProxyExtensionMergeSettingDefinitionConstMeta =>
+          const TaskConstMeta(
+            debugName: "ProxyExtension_merge_setting_definition",
+            argNames: ["that", "id", "kind", "definition"],
+          );
 
   @override
   Future<void> crateApiExtensionProxyExtensionOnEntryActivity({
@@ -1656,11 +1656,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_on_entry_activity(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1688,8 +1688,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__extension__ProxyExtension_reload(
             port_,
             arg0,
@@ -1729,11 +1729,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_remove_permission(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1771,11 +1771,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final raw_ = serializer.intoRaw();
           return wire
               .wire__crate__api__extension__ProxyExtension_remove_setting(
-                port_,
-                raw_.ptr,
-                raw_.rustVecLen,
-                raw_.dataLen,
-              );
+            port_,
+            raw_.ptr,
+            raw_.rustVecLen,
+            raw_.dataLen,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1803,13 +1803,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           return wire
               .wire__crate__api__extension__ProxyExtension_save_auth_state(
-                port_,
-                arg0,
-              );
+            port_,
+            arg0,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_unit,
@@ -1837,13 +1837,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           return wire
               .wire__crate__api__extension__ProxyExtension_save_permissions(
-                port_,
-                arg0,
-              );
+            port_,
+            arg0,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_unit,
@@ -1871,8 +1871,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           return wire.wire__crate__api__extension__ProxyExtension_save_settings(
             port_,
             arg0,
@@ -1951,8 +1951,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           var arg0 =
               cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
-                that,
-              );
+            that,
+          );
           var arg1 = cst_encode_bool(enabled);
           return wire.wire__crate__api__extension__ProxyExtension_set_enabled(
             port_,
@@ -2140,8 +2140,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension__extension_data_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_extension_data,
@@ -2159,14 +2159,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<ExtensionManagerData>
-  dionRuntimeDataExtensionManagerExtensionManagerDataDefault() {
+      dionRuntimeDataExtensionManagerExtensionManagerDataDefault() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension_manager__extension_manager_data_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_extension_manager_data,
@@ -2181,11 +2181,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kDionRuntimeDataExtensionManagerExtensionManagerDataDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "extension_manager_data_default",
-        argNames: [],
-      );
+      get kDionRuntimeDataExtensionManagerExtensionManagerDataDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "extension_manager_data_default",
+            argNames: [],
+          );
 
   @override
   Future<ExtensionRepo> dionRuntimeDataExtensionRepoExtensionRepoDefault() {
@@ -2194,8 +2194,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension_repo__extension_repo_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_extension_repo,
@@ -2209,8 +2209,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kDionRuntimeDataExtensionRepoExtensionRepoDefaultConstMeta =>
-      const TaskConstMeta(debugName: "extension_repo_default", argNames: []);
+      get kDionRuntimeDataExtensionRepoExtensionRepoDefaultConstMeta =>
+          const TaskConstMeta(
+              debugName: "extension_repo_default", argNames: []);
 
   @override
   Future<void> crateApiLetsInitAppHere() {
@@ -2307,8 +2308,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension_repo__remote_extension_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_remote_extension,
@@ -2322,19 +2323,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kDionRuntimeDataExtensionRepoRemoteExtensionDefaultConstMeta =>
-      const TaskConstMeta(debugName: "remote_extension_default", argNames: []);
+      get kDionRuntimeDataExtensionRepoRemoteExtensionDefaultConstMeta =>
+          const TaskConstMeta(
+              debugName: "remote_extension_default", argNames: []);
 
   @override
   Future<RemoteExtensionResult>
-  dionRuntimeDataExtensionRepoRemoteExtensionResultDefault() {
+      dionRuntimeDataExtensionRepoRemoteExtensionResultDefault() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension_repo__remote_extension_result_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_remote_extension_result,
@@ -2349,11 +2351,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kDionRuntimeDataExtensionRepoRemoteExtensionResultDefaultConstMeta =>
-      const TaskConstMeta(
-        debugName: "remote_extension_result_default",
-        argNames: [],
-      );
+      get kDionRuntimeDataExtensionRepoRemoteExtensionResultDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "remote_extension_result_default",
+            argNames: [],
+          );
 
   @override
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault() {
@@ -2362,8 +2364,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__extension__source_open_type_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_source_open_type,
@@ -2409,8 +2411,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: (port_) {
           return wire
               .wire__dion_runtime__data__custom_ui__timestamp_type_default(
-                port_,
-              );
+            port_,
+          );
         },
         codec: DcoCodec(
           decodeSuccessData: dco_decode_timestamp_type,
@@ -2427,7 +2429,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "timestamp_type_default", argNames: []);
 
   Future<void> Function(int, dynamic)
-  encode_DartFn_Inputs_String_Output_String_AnyhowException(
+      encode_DartFn_Inputs_String_Output_String_AnyhowException(
     FutureOr<String> Function(String) raw,
   ) {
     return (callId, rawArg0) async {
@@ -2462,7 +2464,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic, dynamic)
-  encode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
+      encode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
     FutureOr<void> Function(String, String) raw,
   ) {
     return (callId, rawArg0, rawArg1) async {
@@ -2498,7 +2500,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int)
-  encode_DartFn_Inputs__Output_String_AnyhowException(
+      encode_DartFn_Inputs__Output_String_AnyhowException(
     FutureOr<String> Function() raw,
   ) {
     return (callId) async {
@@ -2531,7 +2533,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic)
-  encode_DartFn_Inputs_action_Output_unit_AnyhowException(
+      encode_DartFn_Inputs_action_Output_unit_AnyhowException(
     FutureOr<void> Function(Action) raw,
   ) {
     return (callId, rawArg0) async {
@@ -2566,7 +2568,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic, dynamic, dynamic)
-  encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+      encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
     FutureOr<void> Function(EntryId, String, SettingValue) raw,
   ) {
     return (callId, rawArg0, rawArg1, rawArg2) async {
@@ -2603,7 +2605,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic)
-  encode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
+      encode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
     FutureOr<ExtensionClient> Function(ExtensionData) raw,
   ) {
     return (callId, rawArg0) async {
@@ -2641,7 +2643,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   Future<void> Function(int, dynamic, dynamic)
-  encode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
+      encode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
     FutureOr<bool> Function(Permission, String?) raw,
   ) {
     return (callId, rawArg0, rawArg1) async {
@@ -2677,44 +2679,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_CancelToken => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
+      get rust_arc_increment_strong_count_CancelToken => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_CancelToken => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
+      get rust_arc_decrement_strong_count_CancelToken => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ExtensionClient => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient;
+      get rust_arc_increment_strong_count_ExtensionClient => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ExtensionClient => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient;
+      get rust_arc_decrement_strong_count_ExtensionClient => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ManagerClient => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient;
+      get rust_arc_increment_strong_count_ManagerClient => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ManagerClient => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient;
+      get rust_arc_decrement_strong_count_ManagerClient => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ProxyAdapter => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
+      get rust_arc_increment_strong_count_ProxyAdapter => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ProxyAdapter => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
+      get rust_arc_decrement_strong_count_ProxyAdapter => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ProxyExtension => wire
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
+      get rust_arc_increment_strong_count_ProxyExtension => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ProxyExtension => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
+      get rust_arc_decrement_strong_count_ProxyExtension => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -2724,7 +2726,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2733,7 +2735,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ExtensionClient
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2742,7 +2744,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2751,7 +2753,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2760,7 +2762,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2769,7 +2771,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2778,7 +2780,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2787,7 +2789,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2796,7 +2798,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2805,7 +2807,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2814,14 +2816,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   FutureOr<String> Function(String)
-  dco_decode_DartFn_Inputs_String_Output_String_AnyhowException(dynamic raw) {
+      dco_decode_DartFn_Inputs_String_Output_String_AnyhowException(
+          dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<void> Function(String, String)
-  dco_decode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
+      dco_decode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2830,21 +2833,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   FutureOr<String> Function()
-  dco_decode_DartFn_Inputs__Output_String_AnyhowException(dynamic raw) {
+      dco_decode_DartFn_Inputs__Output_String_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<void> Function(Action)
-  dco_decode_DartFn_Inputs_action_Output_unit_AnyhowException(dynamic raw) {
+      dco_decode_DartFn_Inputs_action_Output_unit_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     throw UnimplementedError('');
   }
 
   @protected
   FutureOr<void> Function(EntryId, String, SettingValue)
-  dco_decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+      dco_decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2853,7 +2856,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   FutureOr<ExtensionClient> Function(ExtensionData)
-  dco_decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
+      dco_decode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2862,7 +2865,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   FutureOr<bool> Function(Permission, String?)
-  dco_decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
+      dco_decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2909,7 +2912,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2918,7 +2921,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ExtensionClient
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2927,7 +2930,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2936,7 +2939,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -2945,7 +2948,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3092,7 +3095,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3619,7 +3622,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   List<ProxyExtension>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3818,7 +3821,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken?
-  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -4266,7 +4269,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4278,7 +4281,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ExtensionClient
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4290,7 +4293,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4302,7 +4305,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4314,7 +4317,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4326,7 +4329,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4338,7 +4341,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4350,7 +4353,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4362,7 +4365,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4374,7 +4377,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4420,7 +4423,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4432,7 +4435,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ExtensionClient
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4444,7 +4447,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ManagerClient
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4456,7 +4459,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyAdapter
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4468,7 +4471,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   ProxyExtension
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4652,7 +4655,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken
-  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5239,7 +5242,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   List<ProxyExtension>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5613,7 +5616,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   CancelToken?
-  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6158,8 +6161,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6168,8 +6170,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6178,8 +6179,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6188,8 +6188,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  int cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6198,8 +6197,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6208,8 +6206,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     ManagerClient raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6218,8 +6215,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6228,8 +6224,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  int cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6238,8 +6233,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6248,8 +6242,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     ManagerClient raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6258,8 +6251,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6268,8 +6260,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  int
-  cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+  int cst_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension raw,
   ) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -6366,7 +6357,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken self,
     SseSerializer serializer,
   ) {
@@ -6379,7 +6370,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     ExtensionClient self,
     SseSerializer serializer,
   ) {
@@ -6392,7 +6383,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     ManagerClient self,
     SseSerializer serializer,
   ) {
@@ -6405,7 +6396,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter self,
     SseSerializer serializer,
   ) {
@@ -6418,7 +6409,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension self,
     SseSerializer serializer,
   ) {
@@ -6431,7 +6422,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension self,
     SseSerializer serializer,
   ) {
@@ -6444,7 +6435,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken self,
     SseSerializer serializer,
   ) {
@@ -6457,7 +6448,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     ManagerClient self,
     SseSerializer serializer,
   ) {
@@ -6470,7 +6461,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter self,
     SseSerializer serializer,
   ) {
@@ -6483,7 +6474,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension self,
     SseSerializer serializer,
   ) {
@@ -6544,7 +6535,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
+      sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
     FutureOr<void> Function(EntryId, String, SettingValue) self,
     SseSerializer serializer,
   ) {
@@ -6559,7 +6550,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
+      sse_encode_DartFn_Inputs_extension_data_Output_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient_AnyhowException(
     FutureOr<ExtensionClient> Function(ExtensionData) self,
     SseSerializer serializer,
   ) {
@@ -6574,7 +6565,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
+      sse_encode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
     FutureOr<bool> Function(Permission, String?) self,
     SseSerializer serializer,
   ) {
@@ -6640,7 +6631,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken self,
     SseSerializer serializer,
   ) {
@@ -6653,7 +6644,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerExtensionClient(
     ExtensionClient self,
     SseSerializer serializer,
   ) {
@@ -6666,7 +6657,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
     ManagerClient self,
     SseSerializer serializer,
   ) {
@@ -6679,7 +6670,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter(
     ProxyAdapter self,
     SseSerializer serializer,
   ) {
@@ -6692,7 +6683,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     ProxyExtension self,
     SseSerializer serializer,
   ) {
@@ -6763,10 +6754,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_String(url, serializer);
       case Action_Popup(
-        title: final title,
-        content: final content,
-        actions: final actions,
-      ):
+          title: final title,
+          content: final content,
+          actions: final actions,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_String(title, serializer);
         sse_encode_box_custom_ui(content, serializer);
@@ -6796,17 +6787,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(1, serializer);
         sse_encode_String(key, serializer);
       case AuthCreds_UserPass(
-        username: final username,
-        password: final password,
-      ):
+          username: final username,
+          password: final password,
+        ):
         sse_encode_i_32(2, serializer);
         sse_encode_String(username, serializer);
         sse_encode_String(password, serializer);
       case AuthCreds_OAuth(
-        accessToken: final accessToken,
-        refreshToken: final refreshToken,
-        expiresAt: final expiresAt,
-      ):
+          accessToken: final accessToken,
+          refreshToken: final refreshToken,
+          expiresAt: final expiresAt,
+        ):
         sse_encode_i_32(3, serializer);
         sse_encode_String(accessToken, serializer);
         sse_encode_opt_String(refreshToken, serializer);
@@ -6819,9 +6810,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
       case AuthData_Cookie(
-        loginpage: final loginpage,
-        logonpage: final logonpage,
-      ):
+          loginpage: final loginpage,
+          logonpage: final logonpage,
+        ):
         sse_encode_i_32(0, serializer);
         sse_encode_String(loginpage, serializer);
         sse_encode_String(logonpage, serializer);
@@ -6830,12 +6821,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case AuthData_UserPass():
         sse_encode_i_32(2, serializer);
       case AuthData_OAuth(
-        authorizationUrl: final authorizationUrl,
-        tokenUrl: final tokenUrl,
-        clientId: final clientId,
-        clientSecret: final clientSecret,
-        scope: final scope,
-      ):
+          authorizationUrl: final authorizationUrl,
+          tokenUrl: final tokenUrl,
+          clientId: final clientId,
+          clientSecret: final clientSecret,
+          scope: final scope,
+        ):
         sse_encode_i_32(3, serializer);
         sse_encode_String(authorizationUrl, serializer);
         sse_encode_opt_String(tokenUrl, serializer);
@@ -6859,7 +6850,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken self,
     SseSerializer serializer,
   ) {
@@ -7067,10 +7058,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_String(text, serializer);
       case CustomUI_Image(
-        image: final image,
-        width: final width,
-        height: final height,
-      ):
+          image: final image,
+          width: final width,
+          height: final height,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_box_autoadd_link(image, serializer);
         sse_encode_opt_box_autoadd_i_32(width, serializer);
@@ -7080,9 +7071,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(link, serializer);
         sse_encode_opt_String(label, serializer);
       case CustomUI_TimeStamp(
-        timestamp: final timestamp,
-        display: final display,
-      ):
+          timestamp: final timestamp,
+          display: final display,
+        ):
         sse_encode_i_32(3, serializer);
         sse_encode_String(timestamp, serializer);
         sse_encode_timestamp_type(display, serializer);
@@ -7090,10 +7081,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(4, serializer);
         sse_encode_box_autoadd_entry(entry, serializer);
       case CustomUI_Card(
-        image: final image,
-        top: final top,
-        bottom: final bottom,
-      ):
+          image: final image,
+          top: final top,
+          bottom: final bottom,
+        ):
         sse_encode_i_32(5, serializer);
         sse_encode_box_autoadd_link(image, serializer);
         sse_encode_box_custom_ui(top, serializer);
@@ -7107,10 +7098,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(label, serializer);
         sse_encode_opt_box_ui_action(onClick, serializer);
       case CustomUI_InlineSetting(
-        settingId: final settingId,
-        settingKind: final settingKind,
-        onCommit: final onCommit,
-      ):
+          settingId: final settingId,
+          settingKind: final settingKind,
+          onCommit: final onCommit,
+        ):
         sse_encode_i_32(8, serializer);
         sse_encode_String(settingId, serializer);
         sse_encode_setting_kind(settingKind, serializer);
@@ -7232,19 +7223,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
       case EventData_SwapContent(
-        event: final event,
-        targetid: final targetid,
-        data: final data,
-      ):
+          event: final event,
+          targetid: final targetid,
+          data: final data,
+        ):
         sse_encode_i_32(0, serializer);
         sse_encode_String(event, serializer);
         sse_encode_String(targetid, serializer);
         sse_encode_String(data, serializer);
       case EventData_FeedUpdate(
-        event: final event,
-        data: final data,
-        page: final page,
-      ):
+          event: final event,
+          data: final data,
+          page: final page,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_String(event, serializer);
         sse_encode_String(data, serializer);
@@ -7264,10 +7255,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_box_autoadd_custom_ui(customui, serializer);
       case EventResult_FeedUpdate(
-        customui: final customui,
-        hasnext: final hasnext,
-        length: final length,
-      ):
+          customui: final customui,
+          hasnext: final hasnext,
+          length: final length,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_list_custom_ui(customui, serializer);
         sse_encode_opt_box_autoadd_bool(hasnext, serializer);
@@ -7324,16 +7315,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_bool(hasSearch, serializer);
       case ExtensionType_SourceProcessor(
-        sourcetypes: final sourcetypes,
-        opentype: final opentype,
-      ):
+          sourcetypes: final sourcetypes,
+          opentype: final opentype,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_Set_source_type_None(sourcetypes, serializer);
         sse_encode_Set_source_open_type_None(opentype, serializer);
       case ExtensionType_EntryProcessor(
-        triggerMapEntry: final triggerMapEntry,
-        triggerOnEntryActivity: final triggerOnEntryActivity,
-      ):
+          triggerMapEntry: final triggerMapEntry,
+          triggerOnEntryActivity: final triggerOnEntryActivity,
+        ):
         sse_encode_i_32(2, serializer);
         sse_encode_bool(triggerMapEntry, serializer);
         sse_encode_bool(triggerOnEntryActivity, serializer);
@@ -7387,7 +7378,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+      sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
     List<ProxyExtension> self,
     SseSerializer serializer,
   ) {
@@ -7717,7 +7708,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
     CancelToken? self,
     SseSerializer serializer,
   ) {
@@ -8180,11 +8171,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_box_action(action, serializer);
       case UIAction_SwapContent(
-        targetid: final targetid,
-        event: final event,
-        data: final data,
-        placeholder: final placeholder,
-      ):
+          targetid: final targetid,
+          event: final event,
+          data: final data,
+          placeholder: final placeholder,
+        ):
         sse_encode_i_32(1, serializer);
         sse_encode_String(targetid, serializer);
         sse_encode_String(event, serializer);
@@ -8209,11 +8200,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 class CancelTokenImpl extends RustOpaque implements CancelToken {
   // Not to be used by end users
   CancelTokenImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
+      : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   CancelTokenImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -8238,11 +8229,11 @@ class CancelTokenImpl extends RustOpaque implements CancelToken {
 class ExtensionClientImpl extends RustOpaque implements ExtensionClient {
   // Not to be used by end users
   ExtensionClientImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
+      : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   ExtensionClientImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -8258,11 +8249,11 @@ class ExtensionClientImpl extends RustOpaque implements ExtensionClient {
 class ManagerClientImpl extends RustOpaque implements ManagerClient {
   // Not to be used by end users
   ManagerClientImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
+      : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   ManagerClientImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -8278,11 +8269,11 @@ class ManagerClientImpl extends RustOpaque implements ManagerClient {
 class ProxyAdapterImpl extends RustOpaque implements ProxyAdapter {
   // Not to be used by end users
   ProxyAdapterImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
+      : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   ProxyAdapterImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -8296,11 +8287,12 @@ class ProxyAdapterImpl extends RustOpaque implements ProxyAdapter {
   Future<RemoteExtensionResult> browseRepo({
     required ExtensionRepo repo,
     required int page,
-  }) => RustLib.instance.api.crateApiExtensionProxyAdapterBrowseRepo(
-    that: this,
-    repo: repo,
-    page: page,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyAdapterBrowseRepo(
+        that: this,
+        repo: repo,
+        page: page,
+      );
 
   Future<List<ProxyExtension>> getExtensions() => RustLib.instance.api
       .crateApiExtensionProxyAdapterGetExtensions(that: this);
@@ -8308,10 +8300,9 @@ class ProxyAdapterImpl extends RustOpaque implements ProxyAdapter {
   Future<ExtensionRepo> getRepo({required String url}) => RustLib.instance.api
       .crateApiExtensionProxyAdapterGetRepo(that: this, url: url);
 
-  Future<ProxyExtension> install({required String location}) => RustLib
-      .instance
-      .api
-      .crateApiExtensionProxyAdapterInstall(that: this, location: location);
+  Future<ProxyExtension> install({required String location}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyAdapterInstall(that: this, location: location);
 
   Future<void> uninstall({required ProxyExtension ext}) => RustLib.instance.api
       .crateApiExtensionProxyAdapterUninstall(that: this, ext: ext);
@@ -8321,11 +8312,11 @@ class ProxyAdapterImpl extends RustOpaque implements ProxyAdapter {
 class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
   // Not to be used by end users
   ProxyExtensionImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
+      : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
   ProxyExtensionImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
@@ -8347,12 +8338,13 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required EntryId entryid,
     required Map<String, Setting> settings,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionDetail(
-    that: this,
-    entryid: entryid,
-    settings: settings,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionDetail(
+        that: this,
+        entryid: entryid,
+        settings: settings,
+        token: token,
+      );
 
   Future<EventResult?> event({required EventData event, CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionEvent(
@@ -8377,10 +8369,9 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
         kind: kind,
       );
 
-  Future<List<String>> getSettingIds({required SettingKind kind}) => RustLib
-      .instance
-      .api
-      .crateApiExtensionProxyExtensionGetSettingIds(that: this, kind: kind);
+  Future<List<String>> getSettingIds({required SettingKind kind}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyExtensionGetSettingIds(that: this, kind: kind);
 
   Future<Map<String, Setting>> getSettings({required SettingKind kind}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionGetSettings(
@@ -8414,25 +8405,27 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required EntryDetailed entry,
     required Map<String, Setting> settings,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionMapEntry(
-    that: this,
-    entry: entry,
-    settings: settings,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionMapEntry(
+        that: this,
+        entry: entry,
+        settings: settings,
+        token: token,
+      );
 
   Future<SourceResult> mapSource({
     required Source source,
     required EpisodeId epid,
     required Map<String, Setting> settings,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionMapSource(
-    that: this,
-    source: source,
-    epid: epid,
-    settings: settings,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionMapSource(
+        that: this,
+        source: source,
+        epid: epid,
+        settings: settings,
+        token: token,
+      );
 
   Future<void> mergeAuth({required Account account}) => RustLib.instance.api
       .crateApiExtensionProxyExtensionMergeAuth(that: this, account: account);
@@ -8441,8 +8434,9 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required String id,
     required SettingKind kind,
     required Setting definition,
-  }) => RustLib.instance.api
-      .crateApiExtensionProxyExtensionMergeSettingDefinition(
+  }) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyExtensionMergeSettingDefinition(
         that: this,
         id: id,
         kind: kind,
@@ -8454,13 +8448,14 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required EntryDetailed entry,
     required Map<String, Setting> settings,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionOnEntryActivity(
-    that: this,
-    activity: activity,
-    entry: entry,
-    settings: settings,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionOnEntryActivity(
+        that: this,
+        activity: activity,
+        entry: entry,
+        settings: settings,
+        token: token,
+      );
 
   Future<void> reload() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionReload(that: this);
@@ -8491,12 +8486,13 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required int page,
     required String filter,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionSearch(
-    that: this,
-    page: page,
-    filter: filter,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSearch(
+        that: this,
+        page: page,
+        filter: filter,
+        token: token,
+      );
 
   Future<void> setEnabled({required bool enabled}) => RustLib.instance.api
       .crateApiExtensionProxyExtensionSetEnabled(that: this, enabled: enabled);
@@ -8505,23 +8501,25 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
     required String id,
     required SettingKind kind,
     required SettingValue value,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionSetSetting(
-    that: this,
-    id: id,
-    kind: kind,
-    value: value,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSetSetting(
+        that: this,
+        id: id,
+        kind: kind,
+        value: value,
+      );
 
   Future<SourceResult> source({
     required EpisodeId epid,
     required Map<String, Setting> settings,
     CancelToken? token,
-  }) => RustLib.instance.api.crateApiExtensionProxyExtensionSource(
-    that: this,
-    epid: epid,
-    settings: settings,
-    token: token,
-  );
+  }) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionSource(
+        that: this,
+        epid: epid,
+        settings: settings,
+        token: token,
+      );
 
   Future<Account?> validate({required Account account, CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionValidate(

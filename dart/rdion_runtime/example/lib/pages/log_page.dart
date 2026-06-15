@@ -70,9 +70,8 @@ class _LogPageState extends State<LogPage> {
               ),
               const SizedBox(width: 12),
               FilledButton.tonalIcon(
-                onPressed: widget.log.isEmpty
-                    ? null
-                    : () => _showClearDialog(context),
+                onPressed:
+                    widget.log.isEmpty ? null : () => _showClearDialog(context),
                 icon: const Icon(Icons.delete_outline, size: 18),
                 label: const Text('Clear'),
               ),

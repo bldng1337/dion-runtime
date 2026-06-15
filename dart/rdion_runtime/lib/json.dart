@@ -2,12 +2,12 @@ import 'package:rdion_runtime/rdion_runtime.dart';
 
 extension JsonMediaType on MediaType {
   dynamic toJson() => switch (this) {
-    MediaType.video => "Video",
-    MediaType.audio => "Audio",
-    MediaType.book => "Book",
-    MediaType.comic => "Comic",
-    MediaType.unknown => "Unknown",
-  };
+        MediaType.video => "Video",
+        MediaType.audio => "Audio",
+        MediaType.book => "Book",
+        MediaType.comic => "Comic",
+        MediaType.unknown => "Unknown",
+      };
   static MediaType fromJson(dynamic value) =>
       switch (value.toString().toLowerCase()) {
         "video" => MediaType.video,
@@ -22,44 +22,45 @@ extension JsonMediaType on MediaType {
 extension JsonStreamSource on StreamSource {
   dynamic toJson() => {"name": name, "lang": lang, "url": url.toJson()};
   static StreamSource fromJson(dynamic value) => StreamSource(
-    name: value["name"],
-    lang: value["lang"],
-    url: JsonLink.fromJson(value["url"]),
-  );
+        name: value["name"],
+        lang: value["lang"],
+        url: JsonLink.fromJson(value["url"]),
+      );
 }
 
 extension JsonLink on Link {
   dynamic toJson() => {"url": url, if (header != null) "header": header};
   static Link fromJson(dynamic value) => Link(
-    url: value["url"],
-    header: (value["header"] as Map<String, dynamic>?)?.cast<String, String>(),
-  );
+        url: value["url"],
+        header:
+            (value["header"] as Map<String, dynamic>?)?.cast<String, String>(),
+      );
 }
 
 extension JsonAction on Action {
   dynamic toJson() => switch (this) {
-    Action_OpenBrowser(:final url) => {"type": "OpenBrowser", "url": url},
-    Action_Popup(:final title, :final content, :final actions) => {
-      "type": "Popup",
-      "title": title,
-      "content": content.toJson(),
-      "actions": actions.map((e) => e.toJson()).toList(),
-    },
-    Action_Nav(:final title, :final content) => {
-      "type": "Nav",
-      "title": title,
-      "content": content.toJson(),
-    },
-    Action_TriggerEvent(:final event, :final data) => {
-      "type": "TriggerEvent",
-      "event": event,
-      "data": data,
-    },
-    Action_NavEntry(:final entry) => {
-      "type": "NavEntry",
-      "entry": entry.toJson(),
-    },
-  };
+        Action_OpenBrowser(:final url) => {"type": "OpenBrowser", "url": url},
+        Action_Popup(:final title, :final content, :final actions) => {
+            "type": "Popup",
+            "title": title,
+            "content": content.toJson(),
+            "actions": actions.map((e) => e.toJson()).toList(),
+          },
+        Action_Nav(:final title, :final content) => {
+            "type": "Nav",
+            "title": title,
+            "content": content.toJson(),
+          },
+        Action_TriggerEvent(:final event, :final data) => {
+            "type": "TriggerEvent",
+            "event": event,
+            "data": data,
+          },
+        Action_NavEntry(:final entry) => {
+            "type": "NavEntry",
+            "entry": entry.toJson(),
+          },
+      };
 
   static Action fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -95,31 +96,31 @@ extension JsonPopupAction on PopupAction {
   dynamic toJson() => {"label": label, "onclick": onclick.toJson()};
 
   static PopupAction fromJson(dynamic value) => PopupAction(
-    label: value["label"],
-    onclick: JsonAction.fromJson(value["onclick"]),
-  );
+        label: value["label"],
+        onclick: JsonAction.fromJson(value["onclick"]),
+      );
 }
 
 extension JsonUIAction on UIAction {
   dynamic toJson() => switch (this) {
-    UIAction_Action(:final action) => {
-      "type": "Action",
-      "action": action.toJson(),
-    },
-    UIAction_SwapContent(
-      :final targetid,
-      :final event,
-      :final data,
-      :final placeholder,
-    ) =>
-      {
-        "type": "SwapContent",
-        "targetid": targetid,
-        "event": event,
-        "data": data,
-        if (placeholder != null) "placeholder": placeholder.toJson(),
-      },
-  };
+        UIAction_Action(:final action) => {
+            "type": "Action",
+            "action": action.toJson(),
+          },
+        UIAction_SwapContent(
+          :final targetid,
+          :final event,
+          :final data,
+          :final placeholder,
+        ) =>
+          {
+            "type": "SwapContent",
+            "targetid": targetid,
+            "event": event,
+            "data": data,
+            if (placeholder != null) "placeholder": placeholder.toJson(),
+          },
+      };
 
   static UIAction fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -143,24 +144,24 @@ extension JsonUIAction on UIAction {
 
 extension JsonEventData on EventData {
   dynamic toJson() => switch (this) {
-    EventData_SwapContent(:final event, :final targetid, :final data) => {
-      "type": "SwapContent",
-      "event": event,
-      "targetid": targetid,
-      "data": data,
-    },
-    EventData_FeedUpdate(:final event, :final data, :final page) => {
-      "type": "FeedUpdate",
-      "event": event,
-      "data": data,
-      "page": page,
-    },
-    EventData_Action(:final event, :final data) => {
-      "type": "Action",
-      "event": event,
-      "data": data,
-    },
-  };
+        EventData_SwapContent(:final event, :final targetid, :final data) => {
+            "type": "SwapContent",
+            "event": event,
+            "targetid": targetid,
+            "data": data,
+          },
+        EventData_FeedUpdate(:final event, :final data, :final page) => {
+            "type": "FeedUpdate",
+            "event": event,
+            "data": data,
+            "page": page,
+          },
+        EventData_Action(:final event, :final data) => {
+            "type": "Action",
+            "event": event,
+            "data": data,
+          },
+      };
 
   static EventData fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -187,17 +188,22 @@ extension JsonEventData on EventData {
 
 extension JsonEventResult on EventResult {
   dynamic toJson() => switch (this) {
-    EventResult_SwapContent(:final customui) => {
-      "type": "SwapContent",
-      "customui": customui.toJson(),
-    },
-    EventResult_FeedUpdate(:final customui, :final hasnext, :final length) => {
-      "type": "FeedUpdate",
-      "customui": customui.map((e) => e.toJson()).toList(),
-      if (hasnext != null) "hasnext": hasnext,
-      if (length != null) "length": length,
-    },
-  };
+        EventResult_SwapContent(:final customui) => {
+            "type": "SwapContent",
+            "customui": customui.toJson(),
+          },
+        EventResult_FeedUpdate(
+          :final customui,
+          :final hasnext,
+          :final length
+        ) =>
+          {
+            "type": "FeedUpdate",
+            "customui": customui.map((e) => e.toJson()).toList(),
+            if (hasnext != null) "hasnext": hasnext,
+            if (length != null) "length": length,
+          },
+      };
 
   static EventResult fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -222,11 +228,11 @@ extension JsonEventResult on EventResult {
 
 extension JsonEntryActivity on EntryActivity {
   dynamic toJson() => switch (this) {
-    EntryActivity_EpisodeActivity(:final progress) => {
-      "type": "EpisodeActivity",
-      "progress": progress,
-    },
-  };
+        EntryActivity_EpisodeActivity(:final progress) => {
+            "type": "EpisodeActivity",
+            "progress": progress,
+          },
+      };
 
   static EntryActivity fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -241,81 +247,81 @@ extension JsonEntryActivity on EntryActivity {
 
 extension JsonTimestampType on TimestampType {
   dynamic toJson() => switch (this) {
-    TimestampType.relative => "Relative",
-    TimestampType.absolute => "Absolute",
-  };
+        TimestampType.relative => "Relative",
+        TimestampType.absolute => "Absolute",
+      };
 
   static TimestampType fromJson(dynamic value) => switch (value.toString()) {
-    "Relative" => TimestampType.relative,
-    "Absolute" => TimestampType.absolute,
-    _ => TimestampType.relative,
-  };
+        "Relative" => TimestampType.relative,
+        "Absolute" => TimestampType.absolute,
+        _ => TimestampType.relative,
+      };
 }
 
 extension JsonCustomUI on CustomUI {
   dynamic toJson() => switch (this) {
-    CustomUI_Text(:final text) => {"type": "Text", "text": text},
-    CustomUI_Image(:final image, :final width, :final height) => {
-      "type": "Image",
-      "image": image.toJson(),
-      if (width != null) "width": width,
-      if (height != null) "height": height,
-    },
-    CustomUI_Link(:final link, :final label) => {
-      "type": "Link",
-      "link": link,
-      if (label != null) "label": label,
-    },
-    CustomUI_TimeStamp(:final timestamp, :final display) => {
-      "type": "TimeStamp",
-      "timestamp": timestamp,
-      "display": display.toJson(),
-    },
-    CustomUI_EntryCard(:final entry) => {
-      "type": "EntryCard",
-      "entry": entry.toJson(),
-    },
-    CustomUI_Card(:final image, :final top, :final bottom) => {
-      "type": "Card",
-      "image": image.toJson(),
-      "top": top.toJson(),
-      "bottom": bottom.toJson(),
-    },
-    CustomUI_Feed(:final event, :final data) => {
-      "type": "Feed",
-      "event": event,
-      "data": data,
-    },
-    CustomUI_Button(:final label, :final onClick) => {
-      "type": "Button",
-      "label": label,
-      if (onClick != null) "on_click": onClick.toJson(),
-    },
-    CustomUI_InlineSetting(
-      :final settingId,
-      :final settingKind,
-      :final onCommit,
-    ) =>
-      {
-        "type": "InlineSetting",
-        "setting_id": settingId,
-        "setting_kind": settingKind.toJson(),
-        if (onCommit != null) "on_commit": onCommit.toJson(),
-      },
-    CustomUI_Slot(:final id, :final child) => {
-      "type": "Slot",
-      "id": id,
-      "child": child.toJson(),
-    },
-    CustomUI_Column(:final children) => {
-      "type": "Column",
-      "children": children.map((e) => e.toJson()).toList(),
-    },
-    CustomUI_Row(:final children) => {
-      "type": "Row",
-      "children": children.map((e) => e.toJson()).toList(),
-    },
-  };
+        CustomUI_Text(:final text) => {"type": "Text", "text": text},
+        CustomUI_Image(:final image, :final width, :final height) => {
+            "type": "Image",
+            "image": image.toJson(),
+            if (width != null) "width": width,
+            if (height != null) "height": height,
+          },
+        CustomUI_Link(:final link, :final label) => {
+            "type": "Link",
+            "link": link,
+            if (label != null) "label": label,
+          },
+        CustomUI_TimeStamp(:final timestamp, :final display) => {
+            "type": "TimeStamp",
+            "timestamp": timestamp,
+            "display": display.toJson(),
+          },
+        CustomUI_EntryCard(:final entry) => {
+            "type": "EntryCard",
+            "entry": entry.toJson(),
+          },
+        CustomUI_Card(:final image, :final top, :final bottom) => {
+            "type": "Card",
+            "image": image.toJson(),
+            "top": top.toJson(),
+            "bottom": bottom.toJson(),
+          },
+        CustomUI_Feed(:final event, :final data) => {
+            "type": "Feed",
+            "event": event,
+            "data": data,
+          },
+        CustomUI_Button(:final label, :final onClick) => {
+            "type": "Button",
+            "label": label,
+            if (onClick != null) "on_click": onClick.toJson(),
+          },
+        CustomUI_InlineSetting(
+          :final settingId,
+          :final settingKind,
+          :final onCommit,
+        ) =>
+          {
+            "type": "InlineSetting",
+            "setting_id": settingId,
+            "setting_kind": settingKind.toJson(),
+            if (onCommit != null) "on_commit": onCommit.toJson(),
+          },
+        CustomUI_Slot(:final id, :final child) => {
+            "type": "Slot",
+            "id": id,
+            "child": child.toJson(),
+          },
+        CustomUI_Column(:final children) => {
+            "type": "Column",
+            "children": children.map((e) => e.toJson()).toList(),
+          },
+        CustomUI_Row(:final children) => {
+            "type": "Row",
+            "children": children.map((e) => e.toJson()).toList(),
+          },
+      };
 
   static CustomUI fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -385,84 +391,84 @@ extension JsonCustomUI on CustomUI {
 
 extension JsonExtensionData on ExtensionData {
   dynamic toJson() => {
-    "id": id,
-    "name": name,
-    "url": url,
-    "icon": icon,
-    if (desc != null) "desc": desc,
-    "author": author,
-    "tags": tags,
-    "lang": lang,
-    "nsfw": nsfw,
-    "media_type": mediaType.map((e) => e.toJson()).toList(),
-    "extension_type": extensionType.map((e) => e.toJson()).toList(),
-    if (repo != null) "repo": repo,
-    "version": version,
-    "license": license,
-    "compatible": compatible,
-  };
+        "id": id,
+        "name": name,
+        "url": url,
+        "icon": icon,
+        if (desc != null) "desc": desc,
+        "author": author,
+        "tags": tags,
+        "lang": lang,
+        "nsfw": nsfw,
+        "media_type": mediaType.map((e) => e.toJson()).toList(),
+        "extension_type": extensionType.map((e) => e.toJson()).toList(),
+        if (repo != null) "repo": repo,
+        "version": version,
+        "license": license,
+        "compatible": compatible,
+      };
 
   static ExtensionData fromJson(dynamic value) => ExtensionData(
-    id: value["id"],
-    name: value["name"],
-    url: value["url"],
-    icon: value["icon"],
-    desc: value["desc"],
-    author: List<String>.from(value["author"]),
-    tags: List<String>.from(value["tags"]),
-    lang: List<String>.from(value["lang"]),
-    nsfw: value["nsfw"],
-    mediaType: (value["media_type"] as List)
-        .map((e) => JsonMediaType.fromJson(e))
-        .toSet(),
-    extensionType: (value["extension_type"] as List)
-        .map((e) => JsonExtensionType.fromJson(e))
-        .toSet(),
-    repo: value["repo"],
-    version: value["version"],
-    license: value["license"],
-    compatible: value["compatible"],
-  );
+        id: value["id"],
+        name: value["name"],
+        url: value["url"],
+        icon: value["icon"],
+        desc: value["desc"],
+        author: List<String>.from(value["author"]),
+        tags: List<String>.from(value["tags"]),
+        lang: List<String>.from(value["lang"]),
+        nsfw: value["nsfw"],
+        mediaType: (value["media_type"] as List)
+            .map((e) => JsonMediaType.fromJson(e))
+            .toSet(),
+        extensionType: (value["extension_type"] as List)
+            .map((e) => JsonExtensionType.fromJson(e))
+            .toSet(),
+        repo: value["repo"],
+        version: value["version"],
+        license: value["license"],
+        compatible: value["compatible"],
+      );
 }
 
 extension JsonSourceOpenType on SourceOpenType {
   dynamic toJson() => switch (this) {
-    SourceOpenType.download => "Download",
-    SourceOpenType.stream => "Stream",
-  };
+        SourceOpenType.download => "Download",
+        SourceOpenType.stream => "Stream",
+      };
 
   static SourceOpenType fromJson(dynamic value) => switch (value.toString()) {
-    "Download" => SourceOpenType.download,
-    "Stream" => SourceOpenType.stream,
-    _ => SourceOpenType.stream,
-  };
+        "Download" => SourceOpenType.download,
+        "Stream" => SourceOpenType.stream,
+        _ => SourceOpenType.stream,
+      };
 }
 
 extension JsonExtensionType on ExtensionType {
   dynamic toJson() => switch (this) {
-    ExtensionType_EntryProvider(:final hasSearch) => {
-      "type": "EntryProvider",
-      "has_search": hasSearch,
-    },
-    ExtensionType_SourceProcessor(:final sourcetypes, :final opentype) => {
-      "type": "SourceProcessor",
-      "sourcetypes": sourcetypes.map((e) => e.toJson()).toList(),
-      "opentype": opentype.map((e) => e.toJson()).toList(),
-    },
-    ExtensionType_EntryProcessor(
-      :final triggerMapEntry,
-      :final triggerOnEntryActivity,
-    ) =>
-      {
-        "type": "EntryProcessor",
-        "trigger_map_entry": triggerMapEntry,
-        "trigger_on_entry_activity": triggerOnEntryActivity,
-      },
-    ExtensionType_URLHandler(:final urlPatterns) => {
-      "type": "URLHandler",
-      "url_patterns": urlPatterns,
-    },
-  };
+        ExtensionType_EntryProvider(:final hasSearch) => {
+            "type": "EntryProvider",
+            "has_search": hasSearch,
+          },
+        ExtensionType_SourceProcessor(:final sourcetypes, :final opentype) => {
+            "type": "SourceProcessor",
+            "sourcetypes": sourcetypes.map((e) => e.toJson()).toList(),
+            "opentype": opentype.map((e) => e.toJson()).toList(),
+          },
+        ExtensionType_EntryProcessor(
+          :final triggerMapEntry,
+          :final triggerOnEntryActivity,
+        ) =>
+          {
+            "type": "EntryProcessor",
+            "trigger_map_entry": triggerMapEntry,
+            "trigger_on_entry_activity": triggerOnEntryActivity,
+          },
+        ExtensionType_URLHandler(:final urlPatterns) => {
+            "type": "URLHandler",
+            "url_patterns": urlPatterns,
+          },
+      };
 
   static ExtensionType fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -495,88 +501,89 @@ extension JsonExtensionType on ExtensionType {
 
 extension JsonExtensionManagerData on ExtensionManagerData {
   dynamic toJson() => {
-    "name": name,
-    if (icon != null) "icon": icon,
-    if (repo != null) "repo": repo,
-    "api_version": apiVersion,
-  };
+        "name": name,
+        if (icon != null) "icon": icon,
+        if (repo != null) "repo": repo,
+        "api_version": apiVersion,
+      };
 
   static ExtensionManagerData fromJson(dynamic value) => ExtensionManagerData(
-    name: value["name"],
-    icon: value["icon"],
-    repo: value["repo"],
-    apiVersion: value["api_version"],
-  );
+        name: value["name"],
+        icon: value["icon"],
+        repo: value["repo"],
+        apiVersion: value["api_version"],
+      );
 }
 
 extension JsonExtensionRepo on ExtensionRepo {
   dynamic toJson() => {
-    "name": name,
-    "description": description,
-    "url": url,
-    "remote_id": remoteId,
-  };
+        "name": name,
+        "description": description,
+        "url": url,
+        "remote_id": remoteId,
+      };
 
   static ExtensionRepo fromJson(dynamic value) => ExtensionRepo(
-    name: value["name"],
-    description: value["description"],
-    url: value["url"],
-    remoteId: value["remote_id"],
-  );
+        name: value["name"],
+        description: value["description"],
+        url: value["url"],
+        remoteId: value["remote_id"],
+      );
 }
 
 extension JsonRemoteExtension on RemoteExtension {
   dynamic toJson() => {
-    "id": id,
-    "remote_id": remoteId,
-    "name": name,
-    "url": url,
-    if (cover != null) "cover": cover!.toJson(),
-    "version": version,
-    "compatible": compatible,
-  };
+        "id": id,
+        "remote_id": remoteId,
+        "name": name,
+        "url": url,
+        if (cover != null) "cover": cover!.toJson(),
+        "version": version,
+        "compatible": compatible,
+      };
 
   static RemoteExtension fromJson(dynamic value) => RemoteExtension(
-    id: value["id"],
-    url: value["url"],
-    remoteId: value["remote_id"],
-    name: value["name"],
-    cover: value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-    version: value["version"],
-    compatible: value["compatible"],
-  );
+        id: value["id"],
+        url: value["url"],
+        remoteId: value["remote_id"],
+        name: value["name"],
+        cover:
+            value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
+        version: value["version"],
+        compatible: value["compatible"],
+      );
 }
 
 extension JsonRemoteExtensionResult on RemoteExtensionResult {
   dynamic toJson() => {
-    "content": content.map((e) => e.toJson()).toList(),
-    if (hasnext != null) "hasnext": hasnext,
-    if (length != null) "length": length,
-  };
+        "content": content.map((e) => e.toJson()).toList(),
+        if (hasnext != null) "hasnext": hasnext,
+        if (length != null) "length": length,
+      };
 
   static RemoteExtensionResult fromJson(dynamic value) => RemoteExtensionResult(
-    content: (value["content"] as List)
-        .map((e) => JsonRemoteExtension.fromJson(e))
-        .toList(),
-    hasnext: value["hasnext"],
-    length: value["length"],
-  );
+        content: (value["content"] as List)
+            .map((e) => JsonRemoteExtension.fromJson(e))
+            .toList(),
+        hasnext: value["hasnext"],
+        length: value["length"],
+      );
 }
 
 extension JsonPermission on Permission {
   dynamic toJson() => switch (this) {
-    Permission_Storage(:final path, :final write) => {
-      "type": "Storage",
-      "path": path,
-      "write": write,
-    },
-    Permission_Network(:final domains) => {
-      "type": "Network",
-      "domains": domains,
-    },
-    Permission_ActionPopup() => {"type": "ActionPopup"},
-    Permission_ArbitraryNetwork() => {"type": "ArbitraryNetwork"},
-  };
+        Permission_Storage(:final path, :final write) => {
+            "type": "Storage",
+            "path": path,
+            "write": write,
+          },
+        Permission_Network(:final domains) => {
+            "type": "Network",
+            "domains": domains,
+          },
+        Permission_ActionPopup() => {"type": "ActionPopup"},
+        Permission_ArbitraryNetwork() => {"type": "ArbitraryNetwork"},
+      };
 
   static Permission fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -604,27 +611,27 @@ extension JsonPermission on Permission {
 
 extension JsonSettingKind on SettingKind {
   dynamic toJson() => switch (this) {
-    SettingKind.extension_ => "Extension",
-    SettingKind.search => "Search",
-  };
+        SettingKind.extension_ => "Extension",
+        SettingKind.search => "Search",
+      };
 
   static SettingKind fromJson(dynamic value) => switch (value.toString()) {
-    "Extension" => SettingKind.extension_,
-    "Search" => SettingKind.search,
-    _ => SettingKind.extension_,
-  };
+        "Extension" => SettingKind.extension_,
+        "Search" => SettingKind.search,
+        _ => SettingKind.extension_,
+      };
 }
 
 extension JsonSettingValue on SettingValue {
   dynamic toJson() => switch (this) {
-    SettingValue_String(:final data) => {"type": "String", "data": data},
-    SettingValue_Number(:final data) => {"type": "Number", "data": data},
-    SettingValue_Boolean(:final data) => {"type": "Boolean", "data": data},
-    SettingValue_StringList(:final data) => {
-      "type": "StringList",
-      "data": data,
-    },
-  };
+        SettingValue_String(:final data) => {"type": "String", "data": data},
+        SettingValue_Number(:final data) => {"type": "Number", "data": data},
+        SettingValue_Boolean(:final data) => {"type": "Boolean", "data": data},
+        SettingValue_StringList(:final data) => {
+            "type": "StringList",
+            "data": data,
+          },
+      };
 
   static SettingValue fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -652,23 +659,26 @@ extension JsonDropdownOption on DropdownOption {
 
 extension JsonSettingsUI on SettingsUI {
   dynamic toJson() => switch (this) {
-    SettingsUI_CheckBox() => {"type": "CheckBox"},
-    SettingsUI_CustomUI(:final ui) => {"type": "CustomUI", "ui": ui.toJson()},
-    SettingsUI_MultiDropdown(:final options) => {
-      "type": "MultiDropdown",
-      "options": options.map((e) => e.toJson()).toList(),
-    },
-    SettingsUI_Slider(:final min, :final max, :final step) => {
-      "type": "Slider",
-      "min": min,
-      "max": max,
-      "step": step,
-    },
-    SettingsUI_Dropdown(:final options) => {
-      "type": "Dropdown",
-      "options": options.map((e) => e.toJson()).toList(),
-    },
-  };
+        SettingsUI_CheckBox() => {"type": "CheckBox"},
+        SettingsUI_CustomUI(:final ui) => {
+            "type": "CustomUI",
+            "ui": ui.toJson()
+          },
+        SettingsUI_MultiDropdown(:final options) => {
+            "type": "MultiDropdown",
+            "options": options.map((e) => e.toJson()).toList(),
+          },
+        SettingsUI_Slider(:final min, :final max, :final step) => {
+            "type": "Slider",
+            "min": min,
+            "max": max,
+            "step": step,
+          },
+        SettingsUI_Dropdown(:final options) => {
+            "type": "Dropdown",
+            "options": options.map((e) => e.toJson()).toList(),
+          },
+      };
 
   static SettingsUI fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -703,104 +713,107 @@ extension JsonSettingsUI on SettingsUI {
 
 extension JsonSetting on Setting {
   dynamic toJson() => {
-    "label": label,
-    "value": value.toJson(),
-    "default": default_.toJson(),
-    "visible": visible,
-    if (ui != null) "ui": ui!.toJson(),
-  };
+        "label": label,
+        "value": value.toJson(),
+        "default": default_.toJson(),
+        "visible": visible,
+        if (ui != null) "ui": ui!.toJson(),
+      };
 
   static Setting fromJson(dynamic value) => Setting(
-    label: value["label"],
-    value: JsonSettingValue.fromJson(value["value"]),
-    default_: JsonSettingValue.fromJson(value["default"]),
-    visible: value["visible"],
-    ui: value["ui"] != null ? JsonSettingsUI.fromJson(value["ui"]) : null,
-  );
+        label: value["label"],
+        value: JsonSettingValue.fromJson(value["value"]),
+        default_: JsonSettingValue.fromJson(value["default"]),
+        visible: value["visible"],
+        ui: value["ui"] != null ? JsonSettingsUI.fromJson(value["ui"]) : null,
+      );
 }
 
 extension JsonEntry on Entry {
   dynamic toJson() => {
-    "id": id.toJson(),
-    "url": url,
-    "title": title,
-    "media_type": mediaType.toJson(),
-    if (cover != null) "cover": cover!.toJson(),
-    if (author != null) "author": author,
-    if (rating != null) "rating": rating,
-    if (views != null) "views": views,
-    if (length != null) "length": length,
-  };
+        "id": id.toJson(),
+        "url": url,
+        "title": title,
+        "media_type": mediaType.toJson(),
+        if (cover != null) "cover": cover!.toJson(),
+        if (author != null) "author": author,
+        if (rating != null) "rating": rating,
+        if (views != null) "views": views,
+        if (length != null) "length": length,
+      };
 
   static Entry fromJson(dynamic value) => Entry(
-    id: JsonEntryId.fromJson(value["id"]),
-    url: value["url"],
-    title: value["title"],
-    mediaType: JsonMediaType.fromJson(value["media_type"]),
-    cover: value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-    author: (value["author"] as List<dynamic>?)?.cast<String>(),
-    rating: value["rating"],
-    views: value["views"],
-    length: value["length"],
-  );
+        id: JsonEntryId.fromJson(value["id"]),
+        url: value["url"],
+        title: value["title"],
+        mediaType: JsonMediaType.fromJson(value["media_type"]),
+        cover:
+            value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
+        author: (value["author"] as List<dynamic>?)?.cast<String>(),
+        rating: value["rating"],
+        views: value["views"],
+        length: value["length"],
+      );
 }
 
 extension JsonEntryDetailed on EntryDetailed {
   dynamic toJson() => {
-    "id": id.toJson(),
-    "url": url,
-    "titles": titles,
-    if (author != null) "author": author,
-    if (ui != null) "ui": ui!.toJson(),
-    if (meta != null) "meta": meta,
-    "media_type": mediaType.toJson(),
-    "status": status.toJson(),
-    "description": description,
-    "language": language,
-    if (cover != null) "cover": cover!.toJson(),
-    if (poster != null) "poster": poster!.toJson(),
-    "episodes": episodes.map((e) => e.toJson()).toList(),
-    if (genres != null) "genres": genres,
-    if (rating != null) "rating": rating,
-    if (views != null) "views": views,
-    if (length != null) "length": length,
-  };
+        "id": id.toJson(),
+        "url": url,
+        "titles": titles,
+        if (author != null) "author": author,
+        if (ui != null) "ui": ui!.toJson(),
+        if (meta != null) "meta": meta,
+        "media_type": mediaType.toJson(),
+        "status": status.toJson(),
+        "description": description,
+        "language": language,
+        if (cover != null) "cover": cover!.toJson(),
+        if (poster != null) "poster": poster!.toJson(),
+        "episodes": episodes.map((e) => e.toJson()).toList(),
+        if (genres != null) "genres": genres,
+        if (rating != null) "rating": rating,
+        if (views != null) "views": views,
+        if (length != null) "length": length,
+      };
 
   static EntryDetailed fromJson(dynamic value) => EntryDetailed(
-    id: JsonEntryId.fromJson(value["id"]),
-    url: value["url"],
-    titles: List<String>.from(value["titles"]),
-    author: (value["author"] as List<dynamic>?)?.cast<String>(),
-    ui: value["ui"] != null ? JsonCustomUI.fromJson(value["ui"]) : null,
-    meta: (value["meta"] as Map<String, dynamic>?)?.cast<String, String>(),
-    mediaType: JsonMediaType.fromJson(value["media_type"]),
-    status: JsonReleaseStatus.fromJson(value["status"]),
-    description: value["description"],
-    language: value["language"],
-    cover: value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-    poster: value["poster"] != null ? JsonLink.fromJson(value["poster"]) : null,
-    episodes: (value["episodes"] as List)
-        .map((e) => JsonEpisode.fromJson(e))
-        .toList(),
-    genres: (value["genres"] as List<dynamic>?)?.cast<String>(),
-    rating: value["rating"],
-    views: value["views"],
-    length: value["length"],
-  );
+        id: JsonEntryId.fromJson(value["id"]),
+        url: value["url"],
+        titles: List<String>.from(value["titles"]),
+        author: (value["author"] as List<dynamic>?)?.cast<String>(),
+        ui: value["ui"] != null ? JsonCustomUI.fromJson(value["ui"]) : null,
+        meta: (value["meta"] as Map<String, dynamic>?)?.cast<String, String>(),
+        mediaType: JsonMediaType.fromJson(value["media_type"]),
+        status: JsonReleaseStatus.fromJson(value["status"]),
+        description: value["description"],
+        language: value["language"],
+        cover:
+            value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
+        poster:
+            value["poster"] != null ? JsonLink.fromJson(value["poster"]) : null,
+        episodes: (value["episodes"] as List)
+            .map((e) => JsonEpisode.fromJson(e))
+            .toList(),
+        genres: (value["genres"] as List<dynamic>?)?.cast<String>(),
+        rating: value["rating"],
+        views: value["views"],
+        length: value["length"],
+      );
 }
 
 extension JsonEntryDetailedResult on EntryDetailedResult {
   dynamic toJson() => {
-    "entry": entry.toJson(),
-    "settings": settings.map((key, value) => MapEntry(key, value.toJson())),
-  };
+        "entry": entry.toJson(),
+        "settings": settings.map((key, value) => MapEntry(key, value.toJson())),
+      };
 
   static EntryDetailedResult fromJson(dynamic value) => EntryDetailedResult(
-    entry: JsonEntryDetailed.fromJson(value["entry"]),
-    settings: (value["settings"] as Map).map(
-      (key, v) => MapEntry(key, JsonSetting.fromJson(v)),
-    ),
-  );
+        entry: JsonEntryDetailed.fromJson(value["entry"]),
+        settings: (value["settings"] as Map).map(
+          (key, v) => MapEntry(key, JsonSetting.fromJson(v)),
+        ),
+      );
 }
 
 extension JsonEntryId on EntryId {
@@ -812,38 +825,39 @@ extension JsonEntryId on EntryId {
 
 extension JsonEntryList on EntryList {
   dynamic toJson() => {
-    if (hasnext != null) "hasnext": hasnext,
-    if (length != null) "length": length,
-    "content": content.map((e) => e.toJson()).toList(),
-  };
+        if (hasnext != null) "hasnext": hasnext,
+        if (length != null) "length": length,
+        "content": content.map((e) => e.toJson()).toList(),
+      };
 
   static EntryList fromJson(dynamic value) => EntryList(
-    hasnext: value["hasnext"],
-    length: value["length"],
-    content: (value["content"] as List)
-        .map((e) => JsonEntry.fromJson(e))
-        .toList(),
-  );
+        hasnext: value["hasnext"],
+        length: value["length"],
+        content: (value["content"] as List)
+            .map((e) => JsonEntry.fromJson(e))
+            .toList(),
+      );
 }
 
 extension JsonEpisode on Episode {
   dynamic toJson() => {
-    "id": id.toJson(),
-    "name": name,
-    if (description != null) "description": description,
-    "url": url,
-    if (cover != null) "cover": cover!.toJson(),
-    if (timestamp != null) "timestamp": timestamp,
-  };
+        "id": id.toJson(),
+        "name": name,
+        if (description != null) "description": description,
+        "url": url,
+        if (cover != null) "cover": cover!.toJson(),
+        if (timestamp != null) "timestamp": timestamp,
+      };
 
   static Episode fromJson(dynamic value) => Episode(
-    id: JsonEpisodeId.fromJson(value["id"]),
-    name: value["name"],
-    description: value["description"],
-    url: value["url"],
-    cover: value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-    timestamp: value["timestamp"],
-  );
+        id: JsonEpisodeId.fromJson(value["id"]),
+        name: value["name"],
+        description: value["description"],
+        url: value["url"],
+        cover:
+            value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
+        timestamp: value["timestamp"],
+      );
 }
 
 extension JsonEpisodeId on EpisodeId {
@@ -857,50 +871,50 @@ extension JsonImageListAudio on ImageListAudio {
   dynamic toJson() => {"link": link.toJson(), "from": from, "to": to};
 
   static ImageListAudio fromJson(dynamic value) => ImageListAudio(
-    link: JsonLink.fromJson(value["link"]),
-    from: value["from"],
-    to: value["to"],
-  );
+        link: JsonLink.fromJson(value["link"]),
+        from: value["from"],
+        to: value["to"],
+      );
 }
 
 extension JsonReleaseStatus on ReleaseStatus {
   dynamic toJson() => switch (this) {
-    ReleaseStatus.releasing => "Releasing",
-    ReleaseStatus.complete => "Complete",
-    ReleaseStatus.unknown => "Unknown",
-  };
+        ReleaseStatus.releasing => "Releasing",
+        ReleaseStatus.complete => "Complete",
+        ReleaseStatus.unknown => "Unknown",
+      };
 
   static ReleaseStatus fromJson(dynamic value) => switch (value.toString()) {
-    "Releasing" => ReleaseStatus.releasing,
-    "Complete" => ReleaseStatus.complete,
-    "Unknown" => ReleaseStatus.unknown,
-    _ => ReleaseStatus.unknown,
-  };
+        "Releasing" => ReleaseStatus.releasing,
+        "Complete" => ReleaseStatus.complete,
+        "Unknown" => ReleaseStatus.unknown,
+        _ => ReleaseStatus.unknown,
+      };
 }
 
 extension JsonSource on Source {
   dynamic toJson() => switch (this) {
-    Source_Epub(:final link) => {"type": "Epub", "link": link.toJson()},
-    Source_Pdf(:final link) => {"type": "Pdf", "link": link.toJson()},
-    Source_Imagelist(:final links, :final audio) => {
-      "type": "Imagelist",
-      "links": links.map((e) => e.toJson()).toList(),
-      if (audio != null) "audio": audio.map((e) => e.toJson()).toList(),
-    },
-    Source_Video(:final sources, :final sub) => {
-      "type": "Video",
-      "sources": sources.map((e) => e.toJson()).toList(),
-      "sub": sub.map((e) => e.toJson()).toList(),
-    },
-    Source_Audio(:final sources) => {
-      "type": "Audio",
-      "sources": sources.map((e) => e.toJson()).toList(),
-    },
-    Source_Paragraphlist(:final paragraphs) => {
-      "type": "Paragraphlist",
-      "paragraphs": paragraphs.map((e) => e.toJson()).toList(),
-    },
-  };
+        Source_Epub(:final link) => {"type": "Epub", "link": link.toJson()},
+        Source_Pdf(:final link) => {"type": "Pdf", "link": link.toJson()},
+        Source_Imagelist(:final links, :final audio) => {
+            "type": "Imagelist",
+            "links": links.map((e) => e.toJson()).toList(),
+            if (audio != null) "audio": audio.map((e) => e.toJson()).toList(),
+          },
+        Source_Video(:final sources, :final sub) => {
+            "type": "Video",
+            "sources": sources.map((e) => e.toJson()).toList(),
+            "sub": sub.map((e) => e.toJson()).toList(),
+          },
+        Source_Audio(:final sources) => {
+            "type": "Audio",
+            "sources": sources.map((e) => e.toJson()).toList(),
+          },
+        Source_Paragraphlist(:final paragraphs) => {
+            "type": "Paragraphlist",
+            "paragraphs": paragraphs.map((e) => e.toJson()).toList(),
+          },
+      };
 
   static Source fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -916,8 +930,8 @@ extension JsonSource on Source {
               .toList(),
           audio: value["audio"] != null
               ? (value["audio"] as List)
-                    .map((e) => JsonImageListAudio.fromJson(e))
-                    .toList()
+                  .map((e) => JsonImageListAudio.fromJson(e))
+                  .toList()
               : null,
         );
       case "Video":
@@ -927,8 +941,8 @@ extension JsonSource on Source {
               .toList(),
           sub: value["sub"] != null
               ? (value["sub"] as List)
-                    .map((e) => JsonSubtitles.fromJson(e))
-                    .toList()
+                  .map((e) => JsonSubtitles.fromJson(e))
+                  .toList()
               : [],
         );
       case "Audio":
@@ -951,72 +965,75 @@ extension JsonSource on Source {
 
 extension JsonSourceResult on SourceResult {
   dynamic toJson() => {
-    "source": source.toJson(),
-    "settings": settings.map((key, value) => MapEntry(key, value.toJson())),
-  };
+        "source": source.toJson(),
+        "settings": settings.map((key, value) => MapEntry(key, value.toJson())),
+      };
 
   static SourceResult fromJson(dynamic value) => SourceResult(
-    source: JsonSource.fromJson(value["source"]),
-    settings: (value["settings"] as Map).map(
-      (key, v) => MapEntry(key, JsonSetting.fromJson(v)),
-    ),
-  );
+        source: JsonSource.fromJson(value["source"]),
+        settings: (value["settings"] as Map).map(
+          (key, v) => MapEntry(key, JsonSetting.fromJson(v)),
+        ),
+      );
 }
 
 extension JsonSourceType on SourceType {
   dynamic toJson() => switch (this) {
-    SourceType.epub => "Epub",
-    SourceType.pdf => "Pdf",
-    SourceType.imagelist => "Imagelist",
-    SourceType.video => "Video",
-    SourceType.audio => "Audio",
-    SourceType.paragraphlist => "Paragraphlist",
-  };
+        SourceType.epub => "Epub",
+        SourceType.pdf => "Pdf",
+        SourceType.imagelist => "Imagelist",
+        SourceType.video => "Video",
+        SourceType.audio => "Audio",
+        SourceType.paragraphlist => "Paragraphlist",
+      };
 
   static SourceType fromJson(dynamic value) => switch (value.toString()) {
-    "Epub" => SourceType.epub,
-    "Pdf" => SourceType.pdf,
-    "Imagelist" => SourceType.imagelist,
-    "Video" => SourceType.video,
-    "Audio" => SourceType.audio,
-    "Paragraphlist" => SourceType.paragraphlist,
-    _ => throw FormatException("Unknown SourceType: $value"),
-  };
+        "Epub" => SourceType.epub,
+        "Pdf" => SourceType.pdf,
+        "Imagelist" => SourceType.imagelist,
+        "Video" => SourceType.video,
+        "Audio" => SourceType.audio,
+        "Paragraphlist" => SourceType.paragraphlist,
+        _ => throw FormatException("Unknown SourceType: $value"),
+      };
 }
 
 extension JsonSubtitles on Subtitles {
   dynamic toJson() => {"title": title, "lang": lang, "url": url.toJson()};
 
   static Subtitles fromJson(dynamic value) => Subtitles(
-    title: value["title"],
-    lang: value["lang"],
-    url: JsonLink.fromJson(value["url"]),
-  );
+        title: value["title"],
+        lang: value["lang"],
+        url: JsonLink.fromJson(value["url"]),
+      );
 }
 
 extension JsonRow on Row {
   dynamic toJson() => {"cells": cells.map((e) => e.toJson()).toList()};
 
   static Row fromJson(dynamic value) => Row(
-    cells: (value["cells"] as List)
-        .map((e) => JsonParagraph.fromJson(e))
-        .toList(),
-  );
+        cells: (value["cells"] as List)
+            .map((e) => JsonParagraph.fromJson(e))
+            .toList(),
+      );
 }
 
 extension JsonParagraph on Paragraph {
   dynamic toJson() => switch (this) {
-    Paragraph_Text(:final content) => {"type": "Text", "content": content},
-    Paragraph_Mixed(:final content) => {
-      "type": "Mixed",
-      "content": content.map((e) => e.toJson()).toList(),
-    },
-    Paragraph_CustomUI(:final ui) => {"type": "CustomUI", "ui": ui.toJson()},
-    Paragraph_Table(:final columns) => {
-      "type": "Table",
-      "columns": columns.map((row) => row.toJson()).toList(),
-    },
-  };
+        Paragraph_Text(:final content) => {"type": "Text", "content": content},
+        Paragraph_Mixed(:final content) => {
+            "type": "Mixed",
+            "content": content.map((e) => e.toJson()).toList(),
+          },
+        Paragraph_CustomUI(:final ui) => {
+            "type": "CustomUI",
+            "ui": ui.toJson()
+          },
+        Paragraph_Table(:final columns) => {
+            "type": "Table",
+            "columns": columns.map((row) => row.toJson()).toList(),
+          },
+      };
 
   static Paragraph fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -1045,13 +1062,19 @@ extension JsonParagraph on Paragraph {
 
 extension JsonMixedContent on MixedContent {
   dynamic toJson() => switch (this) {
-    MixedContent_Text(:final content) => {"type": "Text", "content": content},
-    MixedContent_CustomUI(:final ui) => {"type": "CustomUI", "ui": ui.toJson()},
-    MixedContent_Table(:final columns) => {
-      "type": "Table",
-      "columns": columns.map((row) => row.toJson()).toList(),
-    },
-  };
+        MixedContent_Text(:final content) => {
+            "type": "Text",
+            "content": content
+          },
+        MixedContent_CustomUI(:final ui) => {
+            "type": "CustomUI",
+            "ui": ui.toJson()
+          },
+        MixedContent_Table(:final columns) => {
+            "type": "Table",
+            "columns": columns.map((row) => row.toJson()).toList(),
+          },
+      };
 
   static MixedContent fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -1074,29 +1097,29 @@ extension JsonMixedContent on MixedContent {
 
 extension JsonAuthData on AuthData {
   dynamic toJson() => switch (this) {
-    AuthData_OAuth(
-      :final authorizationUrl,
-      :final tokenUrl,
-      :final clientId,
-      :final clientSecret,
-      :final scope,
-    ) =>
-      {
-        "type": "OAuth",
-        "authorization_url": authorizationUrl,
-        "token_url": tokenUrl,
-        "client_id": clientId,
-        "client_secret": clientSecret,
-        "scope": scope,
-      },
-    AuthData_Cookie(:final loginpage, :final logonpage) => {
-      "type": "Cookie",
-      "loginpage": loginpage,
-      "logonpage": logonpage,
-    },
-    AuthData_ApiKey() => {"type": "ApiKey"},
-    AuthData_UserPass() => {"type": "UserPass"},
-  };
+        AuthData_OAuth(
+          :final authorizationUrl,
+          :final tokenUrl,
+          :final clientId,
+          :final clientSecret,
+          :final scope,
+        ) =>
+          {
+            "type": "OAuth",
+            "authorization_url": authorizationUrl,
+            "token_url": tokenUrl,
+            "client_id": clientId,
+            "client_secret": clientSecret,
+            "scope": scope,
+          },
+        AuthData_Cookie(:final loginpage, :final logonpage) => {
+            "type": "Cookie",
+            "loginpage": loginpage,
+            "logonpage": logonpage,
+          },
+        AuthData_ApiKey() => {"type": "ApiKey"},
+        AuthData_UserPass() => {"type": "UserPass"},
+      };
 
   static AuthData fromJson(dynamic value) {
     final type = value["type"] as String;
@@ -1126,48 +1149,48 @@ extension JsonAuthData on AuthData {
 
 extension JsonAccount on Account {
   dynamic toJson() => {
-    "domain": domain,
-    if (userName != null) "user_name": userName,
-    if (cover != null) "cover": cover,
-    "auth": auth.toJson(),
-    if (creds != null) "creds": creds,
-  };
+        "domain": domain,
+        if (userName != null) "user_name": userName,
+        if (cover != null) "cover": cover,
+        "auth": auth.toJson(),
+        if (creds != null) "creds": creds,
+      };
 
   static Account fromJson(dynamic value) => Account(
-    domain: value["domain"],
-    userName: value["user_name"],
-    cover: value["cover"],
-    auth: JsonAuthData.fromJson(value["auth"]),
-    creds: value["creds"] != null
-        ? JsonAuthCreds.fromJson(value["creds"])
-        : null,
-  );
+        domain: value["domain"],
+        userName: value["user_name"],
+        cover: value["cover"],
+        auth: JsonAuthData.fromJson(value["auth"]),
+        creds: value["creds"] != null
+            ? JsonAuthCreds.fromJson(value["creds"])
+            : null,
+      );
 }
 
 extension JsonAuthCreds on AuthCreds {
   dynamic toJson() => switch (this) {
-    AuthCreds_OAuth(
-      :final accessToken,
-      :final refreshToken,
-      :final expiresAt,
-    ) =>
-      {
-        "type": "OAuth",
-        "access_token": accessToken,
-        "refresh_token": refreshToken,
-        "expires_at": expiresAt,
-      },
-    AuthCreds_Cookies(:final cookies) => {
-      "type": "Cookies",
-      "cookies": cookies,
-    },
-    AuthCreds_ApiKey(:final key) => {"type": "ApiKey", "key": key},
-    AuthCreds_UserPass(:final username, :final password) => {
-      "type": "UserPass",
-      "username": username,
-      "password": password,
-    },
-  };
+        AuthCreds_OAuth(
+          :final accessToken,
+          :final refreshToken,
+          :final expiresAt,
+        ) =>
+          {
+            "type": "OAuth",
+            "access_token": accessToken,
+            "refresh_token": refreshToken,
+            "expires_at": expiresAt,
+          },
+        AuthCreds_Cookies(:final cookies) => {
+            "type": "Cookies",
+            "cookies": cookies,
+          },
+        AuthCreds_ApiKey(:final key) => {"type": "ApiKey", "key": key},
+        AuthCreds_UserPass(:final username, :final password) => {
+            "type": "UserPass",
+            "username": username,
+            "password": password,
+          },
+      };
 
   static AuthCreds fromJson(dynamic value) {
     final type = value["type"] as String;

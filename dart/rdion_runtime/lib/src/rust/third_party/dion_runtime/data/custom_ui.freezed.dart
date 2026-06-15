@@ -23,7 +23,7 @@ mixin _$CustomUI {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -32,12 +32,12 @@ mixin _$CustomUI {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String text)? text,
@@ -52,12 +52,12 @@ mixin _$CustomUI {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String text)? text,
@@ -72,13 +72,13 @@ mixin _$CustomUI {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CustomUI_Text value) text,
@@ -93,7 +93,8 @@ mixin _$CustomUI {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CustomUI_Text value)? text,
@@ -108,7 +109,8 @@ mixin _$CustomUI {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CustomUI_Text value)? text,
@@ -124,7 +126,8 @@ mixin _$CustomUI {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -176,7 +179,7 @@ class __$$CustomUI_TextImplCopyWithImpl<$Res>
         text: null == text
             ? _value.text
             : text // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -221,7 +224,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -230,8 +233,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -254,8 +256,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -278,8 +279,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -400,15 +400,15 @@ class __$$CustomUI_ImageImplCopyWithImpl<$Res>
         image: null == image
             ? _value.image
             : image // ignore: cast_nullable_to_non_nullable
-                  as Link,
+                as Link,
         width: freezed == width
             ? _value.width
             : width // ignore: cast_nullable_to_non_nullable
-                  as int?,
+                as int?,
         height: freezed == height
             ? _value.height
             : height // ignore: cast_nullable_to_non_nullable
-                  as int?,
+                as int?,
       ),
     );
   }
@@ -418,7 +418,7 @@ class __$$CustomUI_ImageImplCopyWithImpl<$Res>
 
 class _$CustomUI_ImageImpl extends CustomUI_Image {
   const _$CustomUI_ImageImpl({required this.image, this.width, this.height})
-    : super._();
+      : super._();
 
   @override
   final Link image;
@@ -463,7 +463,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -472,8 +472,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -496,8 +495,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -520,8 +518,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -643,11 +640,11 @@ class __$$CustomUI_LinkImplCopyWithImpl<$Res>
         link: null == link
             ? _value.link
             : link // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         label: freezed == label
             ? _value.label
             : label // ignore: cast_nullable_to_non_nullable
-                  as String?,
+                as String?,
       ),
     );
   }
@@ -695,7 +692,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -704,8 +701,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -728,8 +724,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -752,8 +747,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -873,11 +867,11 @@ class __$$CustomUI_TimeStampImplCopyWithImpl<$Res>
         timestamp: null == timestamp
             ? _value.timestamp
             : timestamp // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         display: null == display
             ? _value.display
             : display // ignore: cast_nullable_to_non_nullable
-                  as TimestampType,
+                as TimestampType,
       ),
     );
   }
@@ -932,7 +926,7 @@ class _$CustomUI_TimeStampImpl extends CustomUI_TimeStamp {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -941,8 +935,7 @@ class _$CustomUI_TimeStampImpl extends CustomUI_TimeStamp {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -965,8 +958,7 @@ class _$CustomUI_TimeStampImpl extends CustomUI_TimeStamp {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -989,8 +981,7 @@ class _$CustomUI_TimeStampImpl extends CustomUI_TimeStamp {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -1110,7 +1101,7 @@ class __$$CustomUI_EntryCardImplCopyWithImpl<$Res>
         entry: null == entry
             ? _value.entry
             : entry // ignore: cast_nullable_to_non_nullable
-                  as Entry,
+                as Entry,
       ),
     );
   }
@@ -1158,7 +1149,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -1167,8 +1158,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -1191,8 +1181,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -1215,8 +1204,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -1336,15 +1324,15 @@ class __$$CustomUI_CardImplCopyWithImpl<$Res>
         image: null == image
             ? _value.image
             : image // ignore: cast_nullable_to_non_nullable
-                  as Link,
+                as Link,
         top: null == top
             ? _value.top
             : top // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
         bottom: null == bottom
             ? _value.bottom
             : bottom // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -1419,7 +1407,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -1428,8 +1416,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -1452,8 +1439,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -1476,8 +1462,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -1599,11 +1584,11 @@ class __$$CustomUI_FeedImplCopyWithImpl<$Res>
         event: null == event
             ? _value.event
             : event // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -1613,7 +1598,7 @@ class __$$CustomUI_FeedImplCopyWithImpl<$Res>
 
 class _$CustomUI_FeedImpl extends CustomUI_Feed {
   const _$CustomUI_FeedImpl({required this.event, required this.data})
-    : super._();
+      : super._();
 
   @override
   final String event;
@@ -1652,7 +1637,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -1661,8 +1646,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -1685,8 +1669,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -1709,8 +1692,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -1832,11 +1814,11 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
         label: null == label
             ? _value.label
             : label // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         onClick: freezed == onClick
             ? _value.onClick
             : onClick // ignore: cast_nullable_to_non_nullable
-                  as UIAction?,
+                as UIAction?,
       ),
     );
   }
@@ -1901,7 +1883,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -1910,8 +1892,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -1934,8 +1915,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -1958,8 +1938,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -2085,15 +2064,15 @@ class __$$CustomUI_InlineSettingImplCopyWithImpl<$Res>
         settingId: null == settingId
             ? _value.settingId
             : settingId // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         settingKind: null == settingKind
             ? _value.settingKind
             : settingKind // ignore: cast_nullable_to_non_nullable
-                  as SettingKind,
+                as SettingKind,
         onCommit: freezed == onCommit
             ? _value.onCommit
             : onCommit // ignore: cast_nullable_to_non_nullable
-                  as UIAction?,
+                as UIAction?,
       ),
     );
   }
@@ -2157,11 +2136,11 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
   @override
   @pragma('vm:prefer-inline')
   _$$CustomUI_InlineSettingImplCopyWith<_$CustomUI_InlineSettingImpl>
-  get copyWith =>
-      __$$CustomUI_InlineSettingImplCopyWithImpl<_$CustomUI_InlineSettingImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$CustomUI_InlineSettingImplCopyWithImpl<
+              _$CustomUI_InlineSettingImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -2170,7 +2149,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -2179,8 +2158,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -2203,8 +2181,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -2227,8 +2204,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -2318,7 +2294,7 @@ abstract class CustomUI_InlineSetting extends CustomUI {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomUI_InlineSettingImplCopyWith<_$CustomUI_InlineSettingImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2352,11 +2328,11 @@ class __$$CustomUI_SlotImplCopyWithImpl<$Res>
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         child: null == child
             ? _value.child
             : child // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -2376,7 +2352,7 @@ class __$$CustomUI_SlotImplCopyWithImpl<$Res>
 
 class _$CustomUI_SlotImpl extends CustomUI_Slot {
   const _$CustomUI_SlotImpl({required this.id, required this.child})
-    : super._();
+      : super._();
 
   @override
   final String id;
@@ -2415,7 +2391,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -2424,8 +2400,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -2448,8 +2423,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -2472,8 +2446,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -2593,7 +2566,7 @@ class __$$CustomUI_ColumnImplCopyWithImpl<$Res>
         children: null == children
             ? _value._children
             : children // ignore: cast_nullable_to_non_nullable
-                  as List<CustomUI>,
+                as List<CustomUI>,
       ),
     );
   }
@@ -2603,8 +2576,8 @@ class __$$CustomUI_ColumnImplCopyWithImpl<$Res>
 
 class _$CustomUI_ColumnImpl extends CustomUI_Column {
   const _$CustomUI_ColumnImpl({required final List<CustomUI> children})
-    : _children = children,
-      super._();
+      : _children = children,
+        super._();
 
   final List<CustomUI> _children;
   @override
@@ -2649,7 +2622,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -2658,8 +2631,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -2682,8 +2654,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -2706,8 +2677,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
@@ -2824,7 +2794,7 @@ class __$$CustomUI_RowImplCopyWithImpl<$Res>
         children: null == children
             ? _value._children
             : children // ignore: cast_nullable_to_non_nullable
-                  as List<CustomUI>,
+                as List<CustomUI>,
       ),
     );
   }
@@ -2834,8 +2804,8 @@ class __$$CustomUI_RowImplCopyWithImpl<$Res>
 
 class _$CustomUI_RowImpl extends CustomUI_Row {
   const _$CustomUI_RowImpl({required final List<CustomUI> children})
-    : _children = children,
-      super._();
+      : _children = children,
+        super._();
 
   final List<CustomUI> _children;
   @override
@@ -2877,7 +2847,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
-    timeStamp,
+        timeStamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function(String event, String data) feed,
@@ -2886,8 +2856,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )
-    inlineSetting,
+    ) inlineSetting,
     required TResult Function(String id, CustomUI child) slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
@@ -2910,8 +2879,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult? Function(String id, CustomUI child)? slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
@@ -2934,8 +2902,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
       String settingId,
       SettingKind settingKind,
       UIAction? onCommit,
-    )?
-    inlineSetting,
+    )? inlineSetting,
     TResult Function(String id, CustomUI child)? slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,

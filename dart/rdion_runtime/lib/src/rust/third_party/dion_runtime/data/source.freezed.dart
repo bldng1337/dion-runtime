@@ -22,39 +22,45 @@ mixin _$MixedContent {
     required TResult Function(String content, TextStyle? style) text,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content, TextStyle? style)? text,
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MixedContent_Text value) text,
     required TResult Function(MixedContent_CustomUI value) customUi,
     required TResult Function(MixedContent_Table value) table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MixedContent_Text value)? text,
     TResult? Function(MixedContent_CustomUI value)? customUi,
     TResult? Function(MixedContent_Table value)? table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MixedContent_Text value)? text,
     TResult Function(MixedContent_CustomUI value)? customUi,
     TResult Function(MixedContent_Table value)? table,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -108,11 +114,11 @@ class __$$MixedContent_TextImplCopyWithImpl<$Res>
         content: null == content
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         style: freezed == style
             ? _value.style
             : style // ignore: cast_nullable_to_non_nullable
-                  as TextStyle?,
+                as TextStyle?,
       ),
     );
   }
@@ -122,7 +128,7 @@ class __$$MixedContent_TextImplCopyWithImpl<$Res>
 
 class _$MixedContent_TextImpl extends MixedContent_Text {
   const _$MixedContent_TextImpl({required this.content, this.style})
-    : super._();
+      : super._();
 
   @override
   final String content;
@@ -274,7 +280,7 @@ class __$$MixedContent_CustomUIImplCopyWithImpl<$Res>
         ui: null == ui
             ? _value.ui
             : ui // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -320,11 +326,11 @@ class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
   @override
   @pragma('vm:prefer-inline')
   _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
-  get copyWith =>
-      __$$MixedContent_CustomUIImplCopyWithImpl<_$MixedContent_CustomUIImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$MixedContent_CustomUIImplCopyWithImpl<
+              _$MixedContent_CustomUIImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -406,7 +412,7 @@ abstract class MixedContent_CustomUI extends MixedContent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -438,7 +444,7 @@ class __$$MixedContent_TableImplCopyWithImpl<$Res>
         columns: null == columns
             ? _value._columns
             : columns // ignore: cast_nullable_to_non_nullable
-                  as List<Row>,
+                as List<Row>,
       ),
     );
   }
@@ -448,8 +454,8 @@ class __$$MixedContent_TableImplCopyWithImpl<$Res>
 
 class _$MixedContent_TableImpl extends MixedContent_Table {
   const _$MixedContent_TableImpl({required final List<Row> columns})
-    : _columns = columns,
-      super._();
+      : _columns = columns,
+        super._();
 
   final List<Row> _columns;
   @override
@@ -578,14 +584,16 @@ mixin _$Paragraph {
     required TResult Function(List<MixedContent> content) mixed,
     required TResult Function(CustomUI ui) customUi,
     required TResult Function(List<Row> columns) table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String content, TextStyle? style)? text,
     TResult? Function(List<MixedContent> content)? mixed,
     TResult? Function(CustomUI ui)? customUi,
     TResult? Function(List<Row> columns)? table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String content, TextStyle? style)? text,
@@ -593,21 +601,24 @@ mixin _$Paragraph {
     TResult Function(CustomUI ui)? customUi,
     TResult Function(List<Row> columns)? table,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Paragraph_Text value) text,
     required TResult Function(Paragraph_Mixed value) mixed,
     required TResult Function(Paragraph_CustomUI value) customUi,
     required TResult Function(Paragraph_Table value) table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Paragraph_Text value)? text,
     TResult? Function(Paragraph_Mixed value)? mixed,
     TResult? Function(Paragraph_CustomUI value)? customUi,
     TResult? Function(Paragraph_Table value)? table,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
@@ -615,7 +626,8 @@ mixin _$Paragraph {
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -667,11 +679,11 @@ class __$$Paragraph_TextImplCopyWithImpl<$Res>
         content: null == content
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         style: freezed == style
             ? _value.style
             : style // ignore: cast_nullable_to_non_nullable
-                  as TextStyle?,
+                as TextStyle?,
       ),
     );
   }
@@ -836,7 +848,7 @@ class __$$Paragraph_MixedImplCopyWithImpl<$Res>
         content: null == content
             ? _value._content
             : content // ignore: cast_nullable_to_non_nullable
-                  as List<MixedContent>,
+                as List<MixedContent>,
       ),
     );
   }
@@ -846,8 +858,8 @@ class __$$Paragraph_MixedImplCopyWithImpl<$Res>
 
 class _$Paragraph_MixedImpl extends Paragraph_Mixed {
   const _$Paragraph_MixedImpl({required final List<MixedContent> content})
-    : _content = content,
-      super._();
+      : _content = content,
+        super._();
 
   final List<MixedContent> _content;
   @override
@@ -1005,7 +1017,7 @@ class __$$Paragraph_CustomUIImplCopyWithImpl<$Res>
         ui: null == ui
             ? _value.ui
             : ui // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }
@@ -1174,7 +1186,7 @@ class __$$Paragraph_TableImplCopyWithImpl<$Res>
         columns: null == columns
             ? _value._columns
             : columns // ignore: cast_nullable_to_non_nullable
-                  as List<Row>,
+                as List<Row>,
       ),
     );
   }
@@ -1184,8 +1196,8 @@ class __$$Paragraph_TableImplCopyWithImpl<$Res>
 
 class _$Paragraph_TableImpl extends Paragraph_Table {
   const _$Paragraph_TableImpl({required final List<Row> columns})
-    : _columns = columns,
-      super._();
+      : _columns = columns,
+        super._();
 
   final List<Row> _columns;
   @override
@@ -1319,12 +1331,13 @@ mixin _$Source {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Link link)? epub,
@@ -1333,7 +1346,8 @@ mixin _$Source {
     TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
     TResult? Function(List<StreamSource> sources)? audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Link link)? epub,
@@ -1343,7 +1357,8 @@ mixin _$Source {
     TResult Function(List<StreamSource> sources)? audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Source_Epub value) epub,
@@ -1352,7 +1367,8 @@ mixin _$Source {
     required TResult Function(Source_Video value) video,
     required TResult Function(Source_Audio value) audio,
     required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Source_Epub value)? epub,
@@ -1361,7 +1377,8 @@ mixin _$Source {
     TResult? Function(Source_Video value)? video,
     TResult? Function(Source_Audio value)? audio,
     TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Source_Epub value)? epub,
@@ -1371,7 +1388,8 @@ mixin _$Source {
     TResult Function(Source_Audio value)? audio,
     TResult Function(Source_Paragraphlist value)? paragraphlist,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1423,7 +1441,7 @@ class __$$Source_EpubImplCopyWithImpl<$Res>
         link: null == link
             ? _value.link
             : link // ignore: cast_nullable_to_non_nullable
-                  as Link,
+                as Link,
       ),
     );
   }
@@ -1467,9 +1485,9 @@ class _$Source_EpubImpl extends Source_Epub {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -1592,7 +1610,7 @@ class __$$Source_PdfImplCopyWithImpl<$Res>
         link: null == link
             ? _value.link
             : link // ignore: cast_nullable_to_non_nullable
-                  as Link,
+                as Link,
       ),
     );
   }
@@ -1636,9 +1654,9 @@ class _$Source_PdfImpl extends Source_Pdf {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -1761,11 +1779,11 @@ class __$$Source_ImagelistImplCopyWithImpl<$Res>
         links: null == links
             ? _value._links
             : links // ignore: cast_nullable_to_non_nullable
-                  as List<Link>,
+                as List<Link>,
         audio: freezed == audio
             ? _value._audio
             : audio // ignore: cast_nullable_to_non_nullable
-                  as List<ImageListAudio>?,
+                as List<ImageListAudio>?,
       ),
     );
   }
@@ -1777,9 +1795,9 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
   const _$Source_ImagelistImpl({
     required final List<Link> links,
     final List<ImageListAudio>? audio,
-  }) : _links = links,
-       _audio = audio,
-       super._();
+  })  : _links = links,
+        _audio = audio,
+        super._();
 
   final List<Link> _links;
   @override
@@ -1815,10 +1833,10 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_links),
-    const DeepCollectionEquality().hash(_audio),
-  );
+        runtimeType,
+        const DeepCollectionEquality().hash(_links),
+        const DeepCollectionEquality().hash(_audio),
+      );
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -1837,9 +1855,9 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -1966,11 +1984,11 @@ class __$$Source_VideoImplCopyWithImpl<$Res>
         sources: null == sources
             ? _value._sources
             : sources // ignore: cast_nullable_to_non_nullable
-                  as List<StreamSource>,
+                as List<StreamSource>,
         sub: null == sub
             ? _value._sub
             : sub // ignore: cast_nullable_to_non_nullable
-                  as List<Subtitles>,
+                as List<Subtitles>,
       ),
     );
   }
@@ -1982,9 +2000,9 @@ class _$Source_VideoImpl extends Source_Video {
   const _$Source_VideoImpl({
     required final List<StreamSource> sources,
     required final List<Subtitles> sub,
-  }) : _sources = sources,
-       _sub = sub,
-       super._();
+  })  : _sources = sources,
+        _sub = sub,
+        super._();
 
   final List<StreamSource> _sources;
   @override
@@ -2018,10 +2036,10 @@ class _$Source_VideoImpl extends Source_Video {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_sources),
-    const DeepCollectionEquality().hash(_sub),
-  );
+        runtimeType,
+        const DeepCollectionEquality().hash(_sources),
+        const DeepCollectionEquality().hash(_sub),
+      );
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2037,9 +2055,9 @@ class _$Source_VideoImpl extends Source_Video {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -2166,7 +2184,7 @@ class __$$Source_AudioImplCopyWithImpl<$Res>
         sources: null == sources
             ? _value._sources
             : sources // ignore: cast_nullable_to_non_nullable
-                  as List<StreamSource>,
+                as List<StreamSource>,
       ),
     );
   }
@@ -2176,8 +2194,8 @@ class __$$Source_AudioImplCopyWithImpl<$Res>
 
 class _$Source_AudioImpl extends Source_Audio {
   const _$Source_AudioImpl({required final List<StreamSource> sources})
-    : _sources = sources,
-      super._();
+      : _sources = sources,
+        super._();
 
   final List<StreamSource> _sources;
   @override
@@ -2218,9 +2236,9 @@ class _$Source_AudioImpl extends Source_Audio {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -2344,7 +2362,7 @@ class __$$Source_ParagraphlistImplCopyWithImpl<$Res>
         paragraphs: null == paragraphs
             ? _value._paragraphs
             : paragraphs // ignore: cast_nullable_to_non_nullable
-                  as List<Paragraph>,
+                as List<Paragraph>,
       ),
     );
   }
@@ -2354,8 +2372,8 @@ class __$$Source_ParagraphlistImplCopyWithImpl<$Res>
 
 class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
   const _$Source_ParagraphlistImpl({required final List<Paragraph> paragraphs})
-    : _paragraphs = paragraphs,
-      super._();
+      : _paragraphs = paragraphs,
+        super._();
 
   final List<Paragraph> _paragraphs;
   @override
@@ -2383,9 +2401,9 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_paragraphs),
-  );
+        runtimeType,
+        const DeepCollectionEquality().hash(_paragraphs),
+      );
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2393,11 +2411,11 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
   @override
   @pragma('vm:prefer-inline')
   _$$Source_ParagraphlistImplCopyWith<_$Source_ParagraphlistImpl>
-  get copyWith =>
-      __$$Source_ParagraphlistImplCopyWithImpl<_$Source_ParagraphlistImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith =>
+          __$$Source_ParagraphlistImplCopyWithImpl<_$Source_ParagraphlistImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -2405,9 +2423,9 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     required TResult Function(Link link) epub,
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-    imagelist,
+        imagelist,
     required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
-    video,
+        video,
     required TResult Function(List<StreamSource> sources) audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
@@ -2500,5 +2518,5 @@ abstract class Source_Paragraphlist extends Source {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Source_ParagraphlistImplCopyWith<_$Source_ParagraphlistImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }

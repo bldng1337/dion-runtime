@@ -21,30 +21,36 @@ mixin _$EntryActivity {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int progress) episodeActivity,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int progress)? episodeActivity,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int progress)? episodeActivity,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(EntryActivity_EpisodeActivity value)
-    episodeActivity,
-  }) => throw _privateConstructorUsedError;
+        episodeActivity,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(EntryActivity_EpisodeActivity value)? episodeActivity,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(EntryActivity_EpisodeActivity value)? episodeActivity,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of EntryActivity
   /// with the given fields replaced by the non-null parameter values.
@@ -80,12 +86,11 @@ class _$EntryActivityCopyWithImpl<$Res, $Val extends EntryActivity>
   $Res call({Object? progress = null}) {
     return _then(
       _value.copyWith(
-            progress: null == progress
-                ? _value.progress
-                : progress // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
+        progress: null == progress
+            ? _value.progress
+            : progress // ignore: cast_nullable_to_non_nullable
+                as int,
+      ) as $Val,
     );
   }
 }
@@ -104,8 +109,8 @@ abstract class _$$EntryActivity_EpisodeActivityImplCopyWith<$Res>
 
 /// @nodoc
 class __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>
-    extends
-        _$EntryActivityCopyWithImpl<$Res, _$EntryActivity_EpisodeActivityImpl>
+    extends _$EntryActivityCopyWithImpl<$Res,
+        _$EntryActivity_EpisodeActivityImpl>
     implements _$$EntryActivity_EpisodeActivityImplCopyWith<$Res> {
   __$$EntryActivity_EpisodeActivityImplCopyWithImpl(
     _$EntryActivity_EpisodeActivityImpl _value,
@@ -122,7 +127,7 @@ class __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>
         progress: null == progress
             ? _value.progress
             : progress // ignore: cast_nullable_to_non_nullable
-                  as int,
+                as int,
       ),
     );
   }
@@ -133,7 +138,7 @@ class __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>
 class _$EntryActivity_EpisodeActivityImpl
     extends EntryActivity_EpisodeActivity {
   const _$EntryActivity_EpisodeActivityImpl({required this.progress})
-    : super._();
+      : super._();
 
   @override
   final int progress;
@@ -161,12 +166,9 @@ class _$EntryActivity_EpisodeActivityImpl
   @override
   @pragma('vm:prefer-inline')
   _$$EntryActivity_EpisodeActivityImplCopyWith<
-    _$EntryActivity_EpisodeActivityImpl
-  >
-  get copyWith =>
-      __$$EntryActivity_EpisodeActivityImplCopyWithImpl<
-        _$EntryActivity_EpisodeActivityImpl
-      >(this, _$identity);
+          _$EntryActivity_EpisodeActivityImpl>
+      get copyWith => __$$EntryActivity_EpisodeActivityImplCopyWithImpl<
+          _$EntryActivity_EpisodeActivityImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -200,7 +202,7 @@ class _$EntryActivity_EpisodeActivityImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(EntryActivity_EpisodeActivity value)
-    episodeActivity,
+        episodeActivity,
   }) {
     return episodeActivity(this);
   }
@@ -239,7 +241,6 @@ abstract class EntryActivity_EpisodeActivity extends EntryActivity {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EntryActivity_EpisodeActivityImplCopyWith<
-    _$EntryActivity_EpisodeActivityImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
+          _$EntryActivity_EpisodeActivityImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

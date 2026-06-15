@@ -241,9 +241,8 @@ class _RepoPageState extends State<RepoPage> {
                 padding: const EdgeInsets.only(top: 12),
                 child: Center(
                   child: FilledButton.tonal(
-                    onPressed: _repoLoading
-                        ? null
-                        : () => _browseRepo(nextPage: true),
+                    onPressed:
+                        _repoLoading ? null : () => _browseRepo(nextPage: true),
                     child: _repoLoading
                         ? const SizedBox(
                             width: 16,

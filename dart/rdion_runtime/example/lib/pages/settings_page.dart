@@ -113,7 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 SizedBox(
                   width: 180,
                   child: DropdownButtonFormField<rdion.SettingKind>(
-                    value: _kind,
+                    initialValue: _kind,
                     decoration: const InputDecoration(
                       labelText: 'Kind',
                       border: OutlineInputBorder(),

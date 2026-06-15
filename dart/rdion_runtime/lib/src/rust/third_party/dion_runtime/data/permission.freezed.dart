@@ -23,14 +23,16 @@ mixin _$Permission {
     required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
     TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
@@ -38,22 +40,25 @@ mixin _$Permission {
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Permission_Storage value) storage,
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-    arbitraryNetwork,
-  }) => throw _privateConstructorUsedError;
+        arbitraryNetwork,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Permission_Storage value)? storage,
     TResult? Function(Permission_Network value)? network,
     TResult? Function(Permission_ActionPopup value)? actionPopup,
     TResult? Function(Permission_ArbitraryNetwork value)? arbitraryNetwork,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Permission_Storage value)? storage,
@@ -61,7 +66,8 @@ mixin _$Permission {
     TResult Function(Permission_ActionPopup value)? actionPopup,
     TResult Function(Permission_ArbitraryNetwork value)? arbitraryNetwork,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -115,11 +121,11 @@ class __$$Permission_StorageImplCopyWithImpl<$Res>
         path: null == path
             ? _value.path
             : path // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
         write: null == write
             ? _value.write
             : write // ignore: cast_nullable_to_non_nullable
-                  as bool,
+                as bool,
       ),
     );
   }
@@ -129,7 +135,7 @@ class __$$Permission_StorageImplCopyWithImpl<$Res>
 
 class _$Permission_StorageImpl extends Permission_Storage {
   const _$Permission_StorageImpl({required this.path, required this.write})
-    : super._();
+      : super._();
 
   @override
   final String path;
@@ -208,7 +214,7 @@ class _$Permission_StorageImpl extends Permission_Storage {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-    arbitraryNetwork,
+        arbitraryNetwork,
   }) {
     return storage(this);
   }
@@ -286,7 +292,7 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
         domains: null == domains
             ? _value._domains
             : domains // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
+                as List<String>,
       ),
     );
   }
@@ -296,8 +302,8 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
 
 class _$Permission_NetworkImpl extends Permission_Network {
   const _$Permission_NetworkImpl({required final List<String> domains})
-    : _domains = domains,
-      super._();
+      : _domains = domains,
+        super._();
 
   final List<String> _domains;
   @override
@@ -379,7 +385,7 @@ class _$Permission_NetworkImpl extends Permission_Network {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-    arbitraryNetwork,
+        arbitraryNetwork,
   }) {
     return network(this);
   }
@@ -510,7 +516,7 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-    arbitraryNetwork,
+        arbitraryNetwork,
   }) {
     return actionPopup(this);
   }
@@ -632,7 +638,7 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-    arbitraryNetwork,
+        arbitraryNetwork,
   }) {
     return arbitraryNetwork(this);
   }

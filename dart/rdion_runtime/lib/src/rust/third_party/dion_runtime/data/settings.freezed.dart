@@ -24,14 +24,16 @@ mixin _$SettingValue {
     required TResult Function(double data) number,
     required TResult Function(bool data) boolean,
     required TResult Function(List<String> data) stringList,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String data)? string,
     TResult? Function(double data)? number,
     TResult? Function(bool data)? boolean,
     TResult? Function(List<String> data)? stringList,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String data)? string,
@@ -39,21 +41,24 @@ mixin _$SettingValue {
     TResult Function(bool data)? boolean,
     TResult Function(List<String> data)? stringList,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SettingValue_String value) string,
     required TResult Function(SettingValue_Number value) number,
     required TResult Function(SettingValue_Boolean value) boolean,
     required TResult Function(SettingValue_StringList value) stringList,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SettingValue_String value)? string,
     TResult? Function(SettingValue_Number value)? number,
     TResult? Function(SettingValue_Boolean value)? boolean,
     TResult? Function(SettingValue_StringList value)? stringList,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingValue_String value)? string,
@@ -61,7 +66,8 @@ mixin _$SettingValue {
     TResult Function(SettingValue_Boolean value)? boolean,
     TResult Function(SettingValue_StringList value)? stringList,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -115,7 +121,7 @@ class __$$SettingValue_StringImplCopyWithImpl<$Res>
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as String,
+                as String,
       ),
     );
   }
@@ -275,7 +281,7 @@ class __$$SettingValue_NumberImplCopyWithImpl<$Res>
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as double,
+                as double,
       ),
     );
   }
@@ -435,7 +441,7 @@ class __$$SettingValue_BooleanImplCopyWithImpl<$Res>
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as bool,
+                as bool,
       ),
     );
   }
@@ -471,11 +477,11 @@ class _$SettingValue_BooleanImpl extends SettingValue_Boolean {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-  get copyWith =>
-      __$$SettingValue_BooleanImplCopyWithImpl<_$SettingValue_BooleanImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith =>
+          __$$SettingValue_BooleanImplCopyWithImpl<_$SettingValue_BooleanImpl>(
+            this,
+            _$identity,
+          );
 
   @override
   @optionalTypeArgs
@@ -564,7 +570,7 @@ abstract class SettingValue_Boolean extends SettingValue {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -596,7 +602,7 @@ class __$$SettingValue_StringListImplCopyWithImpl<$Res>
         data: null == data
             ? _value._data
             : data // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
+                as List<String>,
       ),
     );
   }
@@ -606,8 +612,8 @@ class __$$SettingValue_StringListImplCopyWithImpl<$Res>
 
 class _$SettingValue_StringListImpl extends SettingValue_StringList {
   const _$SettingValue_StringListImpl({required final List<String> data})
-    : _data = data,
-      super._();
+      : _data = data,
+        super._();
 
   final List<String> _data;
   @override
@@ -640,10 +646,8 @@ class _$SettingValue_StringListImpl extends SettingValue_StringList {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-  get copyWith =>
-      __$$SettingValue_StringListImplCopyWithImpl<
-        _$SettingValue_StringListImpl
-      >(this, _$identity);
+      get copyWith => __$$SettingValue_StringListImplCopyWithImpl<
+          _$SettingValue_StringListImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -732,7 +736,7 @@ abstract class SettingValue_StringList extends SettingValue {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -744,7 +748,8 @@ mixin _$SettingsUI {
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
     required TResult Function(CustomUI ui) customUi,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkBox,
@@ -752,7 +757,8 @@ mixin _$SettingsUI {
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
     TResult? Function(CustomUI ui)? customUi,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkBox,
@@ -761,7 +767,8 @@ mixin _$SettingsUI {
     TResult Function(List<DropdownOption> options)? multiDropdown,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SettingsUI_CheckBox value) checkBox,
@@ -769,7 +776,8 @@ mixin _$SettingsUI {
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
     required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SettingsUI_CheckBox value)? checkBox,
@@ -777,7 +785,8 @@ mixin _$SettingsUI {
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingsUI_CheckBox value)? checkBox,
@@ -786,7 +795,8 @@ mixin _$SettingsUI {
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -967,15 +977,15 @@ class __$$SettingsUI_SliderImplCopyWithImpl<$Res>
         min: null == min
             ? _value.min
             : min // ignore: cast_nullable_to_non_nullable
-                  as double,
+                as double,
         max: null == max
             ? _value.max
             : max // ignore: cast_nullable_to_non_nullable
-                  as double,
+                as double,
         step: null == step
             ? _value.step
             : step // ignore: cast_nullable_to_non_nullable
-                  as int,
+                as int,
       ),
     );
   }
@@ -1155,7 +1165,7 @@ class __$$SettingsUI_DropdownImplCopyWithImpl<$Res>
         options: null == options
             ? _value._options
             : options // ignore: cast_nullable_to_non_nullable
-                  as List<DropdownOption>,
+                as List<DropdownOption>,
       ),
     );
   }
@@ -1165,8 +1175,8 @@ class __$$SettingsUI_DropdownImplCopyWithImpl<$Res>
 
 class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
   const _$SettingsUI_DropdownImpl({required final List<DropdownOption> options})
-    : _options = options,
-      super._();
+      : _options = options,
+        super._();
 
   final List<DropdownOption> _options;
   @override
@@ -1329,7 +1339,7 @@ class __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>
         options: null == options
             ? _value._options
             : options // ignore: cast_nullable_to_non_nullable
-                  as List<DropdownOption>,
+                as List<DropdownOption>,
       ),
     );
   }
@@ -1340,8 +1350,8 @@ class __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>
 class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
   const _$SettingsUI_MultiDropdownImpl({
     required final List<DropdownOption> options,
-  }) : _options = options,
-       super._();
+  })  : _options = options,
+        super._();
 
   final List<DropdownOption> _options;
   @override
@@ -1374,10 +1384,8 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-  get copyWith =>
-      __$$SettingsUI_MultiDropdownImplCopyWithImpl<
-        _$SettingsUI_MultiDropdownImpl
-      >(this, _$identity);
+      get copyWith => __$$SettingsUI_MultiDropdownImplCopyWithImpl<
+          _$SettingsUI_MultiDropdownImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1472,7 +1480,7 @@ abstract class SettingsUI_MultiDropdown extends SettingsUI {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1506,7 +1514,7 @@ class __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>
         ui: null == ui
             ? _value.ui
             : ui // ignore: cast_nullable_to_non_nullable
-                  as CustomUI,
+                as CustomUI,
       ),
     );
   }

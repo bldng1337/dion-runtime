@@ -78,8 +78,7 @@ class _PlaygroundState extends State<Playground> {
     _NavItem('Log', Icons.article_outlined, 'Operation log'),
   ];
 
-  rdion.ProxyExtension? get _ext =>
-      _extensions.isNotEmpty &&
+  rdion.ProxyExtension? get _ext => _extensions.isNotEmpty &&
           _selectedExtensionIndex >= 0 &&
           _selectedExtensionIndex < _extensions.length
       ? _extensions[_selectedExtensionIndex]
@@ -200,8 +199,9 @@ class _PlaygroundState extends State<Playground> {
       final clientDir = _clientDirController.text.trim();
       final serverUrl = _serverUrlController.text.trim();
 
-      if (extensionDir.isEmpty)
+      if (extensionDir.isEmpty) {
         throw Exception('Extension directory is required');
+      }
       if (clientDir.isEmpty) throw Exception('Client directory is required');
 
       await Directory(extensionDir).create(recursive: true);
@@ -850,9 +850,8 @@ class _PlaygroundState extends State<Playground> {
                     enabled ? 'Enabled' : 'Disabled',
                     style: const TextStyle(fontSize: 11),
                   ),
-                  backgroundColor: enabled
-                      ? Colors.green[100]
-                      : Colors.red[100],
+                  backgroundColor:
+                      enabled ? Colors.green[100] : Colors.red[100],
                   padding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,
                 );

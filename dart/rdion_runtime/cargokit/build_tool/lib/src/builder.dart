@@ -1,5 +1,6 @@
 /// This is copied from Cargokit (which is the official way to use it currently)
 /// Details: https://fzyzcjy.github.io/flutter_rust_bridge/manual/integrate/builtin
+library;
 
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -20,10 +21,10 @@ enum BuildConfiguration { debug, release, profile }
 extension on BuildConfiguration {
   bool get isDebug => this == BuildConfiguration.debug;
   String get rustName => switch (this) {
-    BuildConfiguration.debug => 'debug',
-    BuildConfiguration.release => 'release',
-    BuildConfiguration.profile => 'release',
-  };
+        BuildConfiguration.debug => 'debug',
+        BuildConfiguration.release => 'release',
+        BuildConfiguration.profile => 'release',
+      };
 }
 
 class BuildException implements Exception {
@@ -92,9 +93,8 @@ class BuildEnvironment {
       isAndroid: isAndroid,
       androidSdkPath: isAndroid ? Environment.sdkPath : null,
       androidNdkVersion: isAndroid ? Environment.ndkVersion : null,
-      androidMinSdkVersion: isAndroid
-          ? int.parse(Environment.minSdkVersion)
-          : null,
+      androidMinSdkVersion:
+          isAndroid ? int.parse(Environment.minSdkVersion) : null,
       javaHome: isAndroid ? Environment.javaHome : null,
     );
   }
@@ -128,22 +128,25 @@ class RustBuilder {
   Future<String> build() async {
     final extraArgs = _buildOptions?.flags ?? [];
     final manifestPath = path.join(environment.manifestDir, 'Cargo.toml');
-    runCommand('rustup', [
-      'run',
-      _toolchain,
-      'cargo',
-      'build',
-      ...extraArgs,
-      '--manifest-path',
-      manifestPath,
-      '-p',
-      environment.crateInfo.packageName,
-      if (!environment.configuration.isDebug) '--release',
-      '--target',
-      target.rust,
-      '--target-dir',
-      environment.targetTempDir,
-    ], environment: await _buildEnvironment());
+    runCommand(
+        'rustup',
+        [
+          'run',
+          _toolchain,
+          'cargo',
+          'build',
+          ...extraArgs,
+          '--manifest-path',
+          manifestPath,
+          '-p',
+          environment.crateInfo.packageName,
+          if (!environment.configuration.isDebug) '--release',
+          '--target',
+          target.rust,
+          '--target-dir',
+          environment.targetTempDir,
+        ],
+        environment: await _buildEnvironment());
     return path.join(
       environment.targetTempDir,
       target.rust,
