@@ -1,0 +1,42 @@
+{
+	"name": "my-extension",
+	"version": "1.0.0",
+	"description": "A short, human-readable summary (npm-standard; not used as Dion metadata).",
+	"icon": "https://example.com/icon.png",
+	"keywords": ["example", "dion"],
+	"authors": ["Your Name"],
+	"tags": ["example"],
+	"desc": "One-line Dion description shown in the extension list.",
+	"api_version": "*",
+	"lang": ["en"],
+	"nsfw": false,
+	"url": "https://example.com",
+	"extension_type": [],
+	"media_type": ["Book"],
+	"license": "MIT",
+	"id": "00000000-0000-0000-0000-000000000000",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test": "bun test",
+		"lint": "bunx biome check",
+		"format": "bunx biome format --write",
+		"build": "bunx dion-bundle",
+		"check-types": "bunx tsc --noEmit"
+	},
+	"dependencies": {
+		"@dion-js/runtime-lib": "catalog:",
+		"valibot": "catalog:"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@biomejs/biome": "catalog:",
+		"@dion-js/runtime": "catalog:",
+		"@dion-js/runtime-types": "catalog:",
+		"@dion-js/extension-types": "catalog:",
+		"@dion-js/config": "workspace:*",
+		"@dion-js/extension-scripts": "workspace:*",
+		"@dion-js/extension-test-utils": "workspace:*",
+		"typescript": "catalog:"
+	}
+}
