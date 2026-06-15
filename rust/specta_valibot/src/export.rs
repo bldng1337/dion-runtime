@@ -1,10 +1,12 @@
 use super::*;
 use anyhow::Result;
+use regex::Regex;
 use specta::datatype::{DataType, EnumType, EnumVariant, NamedDataTypeItem};
 use specta::export::TYPES;
 use specta::ts::{self, ExportConfiguration};
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::path::PathBuf;
+use std::sync::OnceLock;
 
 pub struct Exporter {
     pub rust_to_ts_libs: HashMap<String, String>,
@@ -191,6 +193,21 @@ impl Exporter {
         }
         self.write_imports(&mut vali_out, &vali_imports, &filtered_types);
 
+        // Recursive types are annotated with `v.GenericSchema<NameType, NameType>`
+        // so that `v.lazy(() => Name)` references infer the real type instead
+        // of degrading to `unknown`. The TS type declarations live in the
+        // sibling `generated_types.js` file. They are imported under an alias
+        // (`NameType`) to avoid TS2395 conflicts with the exported `const Name`.
+        if !vali_conf.recursive_types.is_empty() {
+            let mut names: Vec<_> = vali_conf.recursive_types.iter().copied().collect();
+            names.sort();
+            let aliases: Vec<String> = names.iter().map(|n| format!("{n} as {n}Type")).collect();
+            vali_out += &format!(
+                "import type {{ {} }} from \"./generated_types.js\";\n\n",
+                aliases.join(", ")
+            );
+        }
+
         for name in &sorted_names {
             let (_, dt) = filtered_types.get(name).unwrap();
             ts_out += &format_comments(dt.comments);
@@ -198,9 +215,14 @@ impl Exporter {
 
             vali_out += &format_comments(dt.comments);
             let type_annotation = if vali_conf.recursive_types.contains(name) {
-                ": v.GenericSchema"
+                // Preserve the input/output type so that `v.lazy(() => Name)`
+                // references infer the real type instead of degrading to
+                // `unknown`. A bare `v.GenericSchema` defaults to
+                // `<unknown, unknown>`, which breaks assignability checks for
+                // any field that references a recursive type.
+                format!(": v.GenericSchema<{}Type, {}Type>", dt.name, dt.name)
             } else {
-                ""
+                String::new()
             };
             vali_out += &format!("export const {}{} = ", dt.name, type_annotation);
 
@@ -220,6 +242,8 @@ impl Exporter {
         if !self.output_path.exists() {
             std::fs::create_dir_all(&self.output_path)?;
         }
+
+        let ts_out = fix_mapped_index_signatures(ts_out);
 
         std::fs::write(self.output_path.join("generated_types.ts"), ts_out)?;
         std::fs::write(self.output_path.join("generated_validators.ts"), vali_out)?;
@@ -483,6 +507,29 @@ impl Exporter {
             }
         }
     }
+}
+
+/// Convert invalid TypeScript index signatures whose key type is a literal
+/// or union (e.g. an enum) into mapped types.
+///
+/// specta emits `{ [key: SettingKind]: V }` for a `HashMap<SettingKind, V>`,
+/// but TypeScript forbids literal/union types as index signature parameters
+/// (TS1337). The semantically-equivalent valid form is a mapped type:
+/// `{ [key in SettingKind]?: V }`.
+fn fix_mapped_index_signatures(ts: String) -> String {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    let re =
+        RE.get_or_init(|| Regex::new(r"\{\s*\[(\w+):\s*([^\]]+?)\]\s*:").expect("invalid regex"));
+
+    re.replace_all(&ts, |caps: &regex::Captures| {
+        let param = &caps[1];
+        let ty = caps[2].trim();
+        match ty {
+            "string" | "number" | "symbol" => format!("{{ [{param}: {ty}]:"),
+            _ => format!("{{ [{param} in {ty}]?:"),
+        }
+    })
+    .to_string()
 }
 
 fn format_comments(comments: &[&str]) -> String {
