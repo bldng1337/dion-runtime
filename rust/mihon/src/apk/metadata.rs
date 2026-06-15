@@ -157,7 +157,7 @@ impl MihonExtensionMetadata {
         // Check lib_version is within supported range
         // Suwayomi uses: LIB_VERSION_MIN = 1.3, LIB_VERSION_MAX = 1.5
         match self.lib_version {
-            Some(v) => v >= 1.3 && v <= 1.5,
+            Some(v) => (1.3..=1.5).contains(&v),
             None => true, // Assume compatible if not specified
         }
     }

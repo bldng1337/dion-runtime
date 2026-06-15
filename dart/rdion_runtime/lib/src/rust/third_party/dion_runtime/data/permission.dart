@@ -21,9 +21,8 @@ sealed class Permission with _$Permission {
     required String path,
     required bool write,
   }) = Permission_Storage;
-  const factory Permission.network({
-    required List<String> domains,
-  }) = Permission_Network;
+  const factory Permission.network({required List<String> domains}) =
+      Permission_Network;
   const factory Permission.actionPopup() = Permission_ActionPopup;
   const factory Permission.arbitraryNetwork() = Permission_ArbitraryNetwork;
 }

@@ -21,20 +21,24 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyAdapter>>
 abstract class ProxyAdapter implements RustOpaqueInterface {
-  Future<RemoteExtensionResult> browseRepo(
-      {required ExtensionRepo repo, required int page});
+  Future<RemoteExtensionResult> browseRepo({
+    required ExtensionRepo repo,
+    required int page,
+  });
 
   Future<List<ProxyExtension>> getExtensions();
 
   Future<ExtensionRepo> getRepo({required String url});
 
   static Future<ProxyAdapter> initDion({required ManagerClient client}) =>
-      RustLib.instance.api
-          .crateApiExtensionProxyAdapterInitDion(client: client);
+      RustLib.instance.api.crateApiExtensionProxyAdapterInitDion(
+        client: client,
+      );
 
   static Future<ProxyAdapter> initMihon({required ManagerClient client}) =>
-      RustLib.instance.api
-          .crateApiExtensionProxyAdapterInitMihon(client: client);
+      RustLib.instance.api.crateApiExtensionProxyAdapterInitMihon(
+        client: client,
+      );
 
   Future<ProxyExtension> install({required String location});
 
@@ -45,10 +49,11 @@ abstract class ProxyAdapter implements RustOpaqueInterface {
 abstract class ProxyExtension implements RustOpaqueInterface {
   Future<EntryList> browse({required int page, CancelToken? token});
 
-  Future<EntryDetailedResult> detail(
-      {required EntryId entryid,
-      required Map<String, Setting> settings,
-      CancelToken? token});
+  Future<EntryDetailedResult> detail({
+    required EntryId entryid,
+    required Map<String, Setting> settings,
+    CancelToken? token,
+  });
 
   Future<EventResult?> event({required EventData event, CancelToken? token});
 
@@ -74,29 +79,33 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<bool> isLoggedIn({required String domain});
 
-  Future<EntryDetailedResult> mapEntry(
-      {required EntryDetailed entry,
-      required Map<String, Setting> settings,
-      CancelToken? token});
+  Future<EntryDetailedResult> mapEntry({
+    required EntryDetailed entry,
+    required Map<String, Setting> settings,
+    CancelToken? token,
+  });
 
-  Future<SourceResult> mapSource(
-      {required Source source,
-      required EpisodeId epid,
-      required Map<String, Setting> settings,
-      CancelToken? token});
+  Future<SourceResult> mapSource({
+    required Source source,
+    required EpisodeId epid,
+    required Map<String, Setting> settings,
+    CancelToken? token,
+  });
 
   Future<void> mergeAuth({required Account account});
 
-  Future<void> mergeSettingDefinition(
-      {required String id,
-      required SettingKind kind,
-      required Setting definition});
+  Future<void> mergeSettingDefinition({
+    required String id,
+    required SettingKind kind,
+    required Setting definition,
+  });
 
-  Future<void> onEntryActivity(
-      {required EntryActivity activity,
-      required EntryDetailed entry,
-      required Map<String, Setting> settings,
-      CancelToken? token});
+  Future<void> onEntryActivity({
+    required EntryActivity activity,
+    required EntryDetailed entry,
+    required Map<String, Setting> settings,
+    CancelToken? token,
+  });
 
   Future<void> reload();
 
@@ -110,20 +119,25 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<void> saveSettings();
 
-  Future<EntryList> search(
-      {required int page, required String filter, CancelToken? token});
+  Future<EntryList> search({
+    required int page,
+    required String filter,
+    CancelToken? token,
+  });
 
   Future<void> setEnabled({required bool enabled});
 
-  Future<void> setSetting(
-      {required String id,
-      required SettingKind kind,
-      required SettingValue value});
+  Future<void> setSetting({
+    required String id,
+    required SettingKind kind,
+    required SettingValue value,
+  });
 
-  Future<SourceResult> source(
-      {required EpisodeId epid,
-      required Map<String, Setting> settings,
-      CancelToken? token});
+  Future<SourceResult> source({
+    required EpisodeId epid,
+    required Map<String, Setting> settings,
+    CancelToken? token,
+  });
 
   Future<Account?> validate({required Account account, CancelToken? token});
 }

@@ -12,7 +12,8 @@ part of 'settings.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$SettingValue {
@@ -23,16 +24,14 @@ mixin _$SettingValue {
     required TResult Function(double data) number,
     required TResult Function(bool data) boolean,
     required TResult Function(List<String> data) stringList,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String data)? string,
     TResult? Function(double data)? number,
     TResult? Function(bool data)? boolean,
     TResult? Function(List<String> data)? stringList,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String data)? string,
@@ -40,24 +39,21 @@ mixin _$SettingValue {
     TResult Function(bool data)? boolean,
     TResult Function(List<String> data)? stringList,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SettingValue_String value) string,
     required TResult Function(SettingValue_Number value) number,
     required TResult Function(SettingValue_Boolean value) boolean,
     required TResult Function(SettingValue_StringList value) stringList,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SettingValue_String value)? string,
     TResult? Function(SettingValue_Number value)? number,
     TResult? Function(SettingValue_Boolean value)? boolean,
     TResult? Function(SettingValue_StringList value)? stringList,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingValue_String value)? string,
@@ -65,15 +61,15 @@ mixin _$SettingValue {
     TResult Function(SettingValue_Boolean value)? boolean,
     TResult Function(SettingValue_StringList value)? stringList,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $SettingValueCopyWith<$Res> {
   factory $SettingValueCopyWith(
-          SettingValue value, $Res Function(SettingValue) then) =
-      _$SettingValueCopyWithImpl<$Res, SettingValue>;
+    SettingValue value,
+    $Res Function(SettingValue) then,
+  ) = _$SettingValueCopyWithImpl<$Res, SettingValue>;
 }
 
 /// @nodoc
@@ -92,9 +88,10 @@ class _$SettingValueCopyWithImpl<$Res, $Val extends SettingValue>
 
 /// @nodoc
 abstract class _$$SettingValue_StringImplCopyWith<$Res> {
-  factory _$$SettingValue_StringImplCopyWith(_$SettingValue_StringImpl value,
-          $Res Function(_$SettingValue_StringImpl) then) =
-      __$$SettingValue_StringImplCopyWithImpl<$Res>;
+  factory _$$SettingValue_StringImplCopyWith(
+    _$SettingValue_StringImpl value,
+    $Res Function(_$SettingValue_StringImpl) then,
+  ) = __$$SettingValue_StringImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String data});
 }
@@ -103,23 +100,24 @@ abstract class _$$SettingValue_StringImplCopyWith<$Res> {
 class __$$SettingValue_StringImplCopyWithImpl<$Res>
     extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_StringImpl>
     implements _$$SettingValue_StringImplCopyWith<$Res> {
-  __$$SettingValue_StringImplCopyWithImpl(_$SettingValue_StringImpl _value,
-      $Res Function(_$SettingValue_StringImpl) _then)
-      : super(_value, _then);
+  __$$SettingValue_StringImplCopyWithImpl(
+    _$SettingValue_StringImpl _value,
+    $Res Function(_$SettingValue_StringImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SettingValue_StringImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  $Res call({Object? data = null}) {
+    return _then(
+      _$SettingValue_StringImpl(
+        data: null == data
+            ? _value.data
+            : data // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
   }
 }
 
@@ -154,7 +152,9 @@ class _$SettingValue_StringImpl extends SettingValue_String {
   @pragma('vm:prefer-inline')
   _$$SettingValue_StringImplCopyWith<_$SettingValue_StringImpl> get copyWith =>
       __$$SettingValue_StringImplCopyWithImpl<_$SettingValue_StringImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -248,9 +248,10 @@ abstract class SettingValue_String extends SettingValue {
 
 /// @nodoc
 abstract class _$$SettingValue_NumberImplCopyWith<$Res> {
-  factory _$$SettingValue_NumberImplCopyWith(_$SettingValue_NumberImpl value,
-          $Res Function(_$SettingValue_NumberImpl) then) =
-      __$$SettingValue_NumberImplCopyWithImpl<$Res>;
+  factory _$$SettingValue_NumberImplCopyWith(
+    _$SettingValue_NumberImpl value,
+    $Res Function(_$SettingValue_NumberImpl) then,
+  ) = __$$SettingValue_NumberImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double data});
 }
@@ -259,23 +260,24 @@ abstract class _$$SettingValue_NumberImplCopyWith<$Res> {
 class __$$SettingValue_NumberImplCopyWithImpl<$Res>
     extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_NumberImpl>
     implements _$$SettingValue_NumberImplCopyWith<$Res> {
-  __$$SettingValue_NumberImplCopyWithImpl(_$SettingValue_NumberImpl _value,
-      $Res Function(_$SettingValue_NumberImpl) _then)
-      : super(_value, _then);
+  __$$SettingValue_NumberImplCopyWithImpl(
+    _$SettingValue_NumberImpl _value,
+    $Res Function(_$SettingValue_NumberImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SettingValue_NumberImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
+  $Res call({Object? data = null}) {
+    return _then(
+      _$SettingValue_NumberImpl(
+        data: null == data
+            ? _value.data
+            : data // ignore: cast_nullable_to_non_nullable
+                  as double,
+      ),
+    );
   }
 }
 
@@ -310,7 +312,9 @@ class _$SettingValue_NumberImpl extends SettingValue_Number {
   @pragma('vm:prefer-inline')
   _$$SettingValue_NumberImplCopyWith<_$SettingValue_NumberImpl> get copyWith =>
       __$$SettingValue_NumberImplCopyWithImpl<_$SettingValue_NumberImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -404,9 +408,10 @@ abstract class SettingValue_Number extends SettingValue {
 
 /// @nodoc
 abstract class _$$SettingValue_BooleanImplCopyWith<$Res> {
-  factory _$$SettingValue_BooleanImplCopyWith(_$SettingValue_BooleanImpl value,
-          $Res Function(_$SettingValue_BooleanImpl) then) =
-      __$$SettingValue_BooleanImplCopyWithImpl<$Res>;
+  factory _$$SettingValue_BooleanImplCopyWith(
+    _$SettingValue_BooleanImpl value,
+    $Res Function(_$SettingValue_BooleanImpl) then,
+  ) = __$$SettingValue_BooleanImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool data});
 }
@@ -415,23 +420,24 @@ abstract class _$$SettingValue_BooleanImplCopyWith<$Res> {
 class __$$SettingValue_BooleanImplCopyWithImpl<$Res>
     extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_BooleanImpl>
     implements _$$SettingValue_BooleanImplCopyWith<$Res> {
-  __$$SettingValue_BooleanImplCopyWithImpl(_$SettingValue_BooleanImpl _value,
-      $Res Function(_$SettingValue_BooleanImpl) _then)
-      : super(_value, _then);
+  __$$SettingValue_BooleanImplCopyWithImpl(
+    _$SettingValue_BooleanImpl _value,
+    $Res Function(_$SettingValue_BooleanImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SettingValue_BooleanImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+  $Res call({Object? data = null}) {
+    return _then(
+      _$SettingValue_BooleanImpl(
+        data: null == data
+            ? _value.data
+            : data // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
   }
 }
 
@@ -465,9 +471,11 @@ class _$SettingValue_BooleanImpl extends SettingValue_Boolean {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-      get copyWith =>
-          __$$SettingValue_BooleanImplCopyWithImpl<_$SettingValue_BooleanImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$SettingValue_BooleanImplCopyWithImpl<_$SettingValue_BooleanImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -556,15 +564,15 @@ abstract class SettingValue_Boolean extends SettingValue {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$SettingValue_StringListImplCopyWith<$Res> {
   factory _$$SettingValue_StringListImplCopyWith(
-          _$SettingValue_StringListImpl value,
-          $Res Function(_$SettingValue_StringListImpl) then) =
-      __$$SettingValue_StringListImplCopyWithImpl<$Res>;
+    _$SettingValue_StringListImpl value,
+    $Res Function(_$SettingValue_StringListImpl) then,
+  ) = __$$SettingValue_StringListImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<String> data});
 }
@@ -574,23 +582,23 @@ class __$$SettingValue_StringListImplCopyWithImpl<$Res>
     extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_StringListImpl>
     implements _$$SettingValue_StringListImplCopyWith<$Res> {
   __$$SettingValue_StringListImplCopyWithImpl(
-      _$SettingValue_StringListImpl _value,
-      $Res Function(_$SettingValue_StringListImpl) _then)
-      : super(_value, _then);
+    _$SettingValue_StringListImpl _value,
+    $Res Function(_$SettingValue_StringListImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SettingValue_StringListImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
+  $Res call({Object? data = null}) {
+    return _then(
+      _$SettingValue_StringListImpl(
+        data: null == data
+            ? _value._data
+            : data // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+      ),
+    );
   }
 }
 
@@ -598,8 +606,8 @@ class __$$SettingValue_StringListImplCopyWithImpl<$Res>
 
 class _$SettingValue_StringListImpl extends SettingValue_StringList {
   const _$SettingValue_StringListImpl({required final List<String> data})
-      : _data = data,
-        super._();
+    : _data = data,
+      super._();
 
   final List<String> _data;
   @override
@@ -632,8 +640,10 @@ class _$SettingValue_StringListImpl extends SettingValue_StringList {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-      get copyWith => __$$SettingValue_StringListImplCopyWithImpl<
-          _$SettingValue_StringListImpl>(this, _$identity);
+  get copyWith =>
+      __$$SettingValue_StringListImplCopyWithImpl<
+        _$SettingValue_StringListImpl
+      >(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -722,7 +732,7 @@ abstract class SettingValue_StringList extends SettingValue {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -734,8 +744,7 @@ mixin _$SettingsUI {
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
     required TResult Function(CustomUI ui) customUi,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkBox,
@@ -743,8 +752,7 @@ mixin _$SettingsUI {
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
     TResult? Function(CustomUI ui)? customUi,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkBox,
@@ -753,8 +761,7 @@ mixin _$SettingsUI {
     TResult Function(List<DropdownOption> options)? multiDropdown,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SettingsUI_CheckBox value) checkBox,
@@ -762,8 +769,7 @@ mixin _$SettingsUI {
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
     required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SettingsUI_CheckBox value)? checkBox,
@@ -771,8 +777,7 @@ mixin _$SettingsUI {
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingsUI_CheckBox value)? checkBox,
@@ -781,15 +786,15 @@ mixin _$SettingsUI {
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $SettingsUICopyWith<$Res> {
   factory $SettingsUICopyWith(
-          SettingsUI value, $Res Function(SettingsUI) then) =
-      _$SettingsUICopyWithImpl<$Res, SettingsUI>;
+    SettingsUI value,
+    $Res Function(SettingsUI) then,
+  ) = _$SettingsUICopyWithImpl<$Res, SettingsUI>;
 }
 
 /// @nodoc
@@ -808,18 +813,20 @@ class _$SettingsUICopyWithImpl<$Res, $Val extends SettingsUI>
 
 /// @nodoc
 abstract class _$$SettingsUI_CheckBoxImplCopyWith<$Res> {
-  factory _$$SettingsUI_CheckBoxImplCopyWith(_$SettingsUI_CheckBoxImpl value,
-          $Res Function(_$SettingsUI_CheckBoxImpl) then) =
-      __$$SettingsUI_CheckBoxImplCopyWithImpl<$Res>;
+  factory _$$SettingsUI_CheckBoxImplCopyWith(
+    _$SettingsUI_CheckBoxImpl value,
+    $Res Function(_$SettingsUI_CheckBoxImpl) then,
+  ) = __$$SettingsUI_CheckBoxImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
 class __$$SettingsUI_CheckBoxImplCopyWithImpl<$Res>
     extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_CheckBoxImpl>
     implements _$$SettingsUI_CheckBoxImplCopyWith<$Res> {
-  __$$SettingsUI_CheckBoxImplCopyWithImpl(_$SettingsUI_CheckBoxImpl _value,
-      $Res Function(_$SettingsUI_CheckBoxImpl) _then)
-      : super(_value, _then);
+  __$$SettingsUI_CheckBoxImplCopyWithImpl(
+    _$SettingsUI_CheckBoxImpl _value,
+    $Res Function(_$SettingsUI_CheckBoxImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
@@ -933,9 +940,10 @@ abstract class SettingsUI_CheckBox extends SettingsUI {
 
 /// @nodoc
 abstract class _$$SettingsUI_SliderImplCopyWith<$Res> {
-  factory _$$SettingsUI_SliderImplCopyWith(_$SettingsUI_SliderImpl value,
-          $Res Function(_$SettingsUI_SliderImpl) then) =
-      __$$SettingsUI_SliderImplCopyWithImpl<$Res>;
+  factory _$$SettingsUI_SliderImplCopyWith(
+    _$SettingsUI_SliderImpl value,
+    $Res Function(_$SettingsUI_SliderImpl) then,
+  ) = __$$SettingsUI_SliderImplCopyWithImpl<$Res>;
   @useResult
   $Res call({double min, double max, int step});
 }
@@ -944,42 +952,43 @@ abstract class _$$SettingsUI_SliderImplCopyWith<$Res> {
 class __$$SettingsUI_SliderImplCopyWithImpl<$Res>
     extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_SliderImpl>
     implements _$$SettingsUI_SliderImplCopyWith<$Res> {
-  __$$SettingsUI_SliderImplCopyWithImpl(_$SettingsUI_SliderImpl _value,
-      $Res Function(_$SettingsUI_SliderImpl) _then)
-      : super(_value, _then);
+  __$$SettingsUI_SliderImplCopyWithImpl(
+    _$SettingsUI_SliderImpl _value,
+    $Res Function(_$SettingsUI_SliderImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? min = null,
-    Object? max = null,
-    Object? step = null,
-  }) {
-    return _then(_$SettingsUI_SliderImpl(
-      min: null == min
-          ? _value.min
-          : min // ignore: cast_nullable_to_non_nullable
-              as double,
-      max: null == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as double,
-      step: null == step
-          ? _value.step
-          : step // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+  $Res call({Object? min = null, Object? max = null, Object? step = null}) {
+    return _then(
+      _$SettingsUI_SliderImpl(
+        min: null == min
+            ? _value.min
+            : min // ignore: cast_nullable_to_non_nullable
+                  as double,
+        max: null == max
+            ? _value.max
+            : max // ignore: cast_nullable_to_non_nullable
+                  as double,
+        step: null == step
+            ? _value.step
+            : step // ignore: cast_nullable_to_non_nullable
+                  as int,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
-  const _$SettingsUI_SliderImpl(
-      {required this.min, required this.max, required this.step})
-      : super._();
+  const _$SettingsUI_SliderImpl({
+    required this.min,
+    required this.max,
+    required this.step,
+  }) : super._();
 
   @override
   final double min;
@@ -1013,7 +1022,9 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
   @pragma('vm:prefer-inline')
   _$$SettingsUI_SliderImplCopyWith<_$SettingsUI_SliderImpl> get copyWith =>
       __$$SettingsUI_SliderImplCopyWithImpl<_$SettingsUI_SliderImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -1097,10 +1108,11 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
 }
 
 abstract class SettingsUI_Slider extends SettingsUI {
-  const factory SettingsUI_Slider(
-      {required final double min,
-      required final double max,
-      required final int step}) = _$SettingsUI_SliderImpl;
+  const factory SettingsUI_Slider({
+    required final double min,
+    required final double max,
+    required final int step,
+  }) = _$SettingsUI_SliderImpl;
   const SettingsUI_Slider._() : super._();
 
   double get min;
@@ -1116,9 +1128,10 @@ abstract class SettingsUI_Slider extends SettingsUI {
 
 /// @nodoc
 abstract class _$$SettingsUI_DropdownImplCopyWith<$Res> {
-  factory _$$SettingsUI_DropdownImplCopyWith(_$SettingsUI_DropdownImpl value,
-          $Res Function(_$SettingsUI_DropdownImpl) then) =
-      __$$SettingsUI_DropdownImplCopyWithImpl<$Res>;
+  factory _$$SettingsUI_DropdownImplCopyWith(
+    _$SettingsUI_DropdownImpl value,
+    $Res Function(_$SettingsUI_DropdownImpl) then,
+  ) = __$$SettingsUI_DropdownImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<DropdownOption> options});
 }
@@ -1127,23 +1140,24 @@ abstract class _$$SettingsUI_DropdownImplCopyWith<$Res> {
 class __$$SettingsUI_DropdownImplCopyWithImpl<$Res>
     extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_DropdownImpl>
     implements _$$SettingsUI_DropdownImplCopyWith<$Res> {
-  __$$SettingsUI_DropdownImplCopyWithImpl(_$SettingsUI_DropdownImpl _value,
-      $Res Function(_$SettingsUI_DropdownImpl) _then)
-      : super(_value, _then);
+  __$$SettingsUI_DropdownImplCopyWithImpl(
+    _$SettingsUI_DropdownImpl _value,
+    $Res Function(_$SettingsUI_DropdownImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? options = null,
-  }) {
-    return _then(_$SettingsUI_DropdownImpl(
-      options: null == options
-          ? _value._options
-          : options // ignore: cast_nullable_to_non_nullable
-              as List<DropdownOption>,
-    ));
+  $Res call({Object? options = null}) {
+    return _then(
+      _$SettingsUI_DropdownImpl(
+        options: null == options
+            ? _value._options
+            : options // ignore: cast_nullable_to_non_nullable
+                  as List<DropdownOption>,
+      ),
+    );
   }
 }
 
@@ -1151,8 +1165,8 @@ class __$$SettingsUI_DropdownImplCopyWithImpl<$Res>
 
 class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
   const _$SettingsUI_DropdownImpl({required final List<DropdownOption> options})
-      : _options = options,
-        super._();
+    : _options = options,
+      super._();
 
   final List<DropdownOption> _options;
   @override
@@ -1186,7 +1200,9 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
   @pragma('vm:prefer-inline')
   _$$SettingsUI_DropdownImplCopyWith<_$SettingsUI_DropdownImpl> get copyWith =>
       __$$SettingsUI_DropdownImplCopyWithImpl<_$SettingsUI_DropdownImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -1270,9 +1286,9 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
 }
 
 abstract class SettingsUI_Dropdown extends SettingsUI {
-  const factory SettingsUI_Dropdown(
-          {required final List<DropdownOption> options}) =
-      _$SettingsUI_DropdownImpl;
+  const factory SettingsUI_Dropdown({
+    required final List<DropdownOption> options,
+  }) = _$SettingsUI_DropdownImpl;
   const SettingsUI_Dropdown._() : super._();
 
   List<DropdownOption> get options;
@@ -1287,9 +1303,9 @@ abstract class SettingsUI_Dropdown extends SettingsUI {
 /// @nodoc
 abstract class _$$SettingsUI_MultiDropdownImplCopyWith<$Res> {
   factory _$$SettingsUI_MultiDropdownImplCopyWith(
-          _$SettingsUI_MultiDropdownImpl value,
-          $Res Function(_$SettingsUI_MultiDropdownImpl) then) =
-      __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>;
+    _$SettingsUI_MultiDropdownImpl value,
+    $Res Function(_$SettingsUI_MultiDropdownImpl) then,
+  ) = __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<DropdownOption> options});
 }
@@ -1299,33 +1315,33 @@ class __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>
     extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_MultiDropdownImpl>
     implements _$$SettingsUI_MultiDropdownImplCopyWith<$Res> {
   __$$SettingsUI_MultiDropdownImplCopyWithImpl(
-      _$SettingsUI_MultiDropdownImpl _value,
-      $Res Function(_$SettingsUI_MultiDropdownImpl) _then)
-      : super(_value, _then);
+    _$SettingsUI_MultiDropdownImpl _value,
+    $Res Function(_$SettingsUI_MultiDropdownImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? options = null,
-  }) {
-    return _then(_$SettingsUI_MultiDropdownImpl(
-      options: null == options
-          ? _value._options
-          : options // ignore: cast_nullable_to_non_nullable
-              as List<DropdownOption>,
-    ));
+  $Res call({Object? options = null}) {
+    return _then(
+      _$SettingsUI_MultiDropdownImpl(
+        options: null == options
+            ? _value._options
+            : options // ignore: cast_nullable_to_non_nullable
+                  as List<DropdownOption>,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
-  const _$SettingsUI_MultiDropdownImpl(
-      {required final List<DropdownOption> options})
-      : _options = options,
-        super._();
+  const _$SettingsUI_MultiDropdownImpl({
+    required final List<DropdownOption> options,
+  }) : _options = options,
+       super._();
 
   final List<DropdownOption> _options;
   @override
@@ -1358,8 +1374,10 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
   @override
   @pragma('vm:prefer-inline')
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-      get copyWith => __$$SettingsUI_MultiDropdownImplCopyWithImpl<
-          _$SettingsUI_MultiDropdownImpl>(this, _$identity);
+  get copyWith =>
+      __$$SettingsUI_MultiDropdownImplCopyWithImpl<
+        _$SettingsUI_MultiDropdownImpl
+      >(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1443,9 +1461,9 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
 }
 
 abstract class SettingsUI_MultiDropdown extends SettingsUI {
-  const factory SettingsUI_MultiDropdown(
-          {required final List<DropdownOption> options}) =
-      _$SettingsUI_MultiDropdownImpl;
+  const factory SettingsUI_MultiDropdown({
+    required final List<DropdownOption> options,
+  }) = _$SettingsUI_MultiDropdownImpl;
   const SettingsUI_MultiDropdown._() : super._();
 
   List<DropdownOption> get options;
@@ -1454,14 +1472,15 @@ abstract class SettingsUI_MultiDropdown extends SettingsUI {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$SettingsUI_CustomUIImplCopyWith<$Res> {
-  factory _$$SettingsUI_CustomUIImplCopyWith(_$SettingsUI_CustomUIImpl value,
-          $Res Function(_$SettingsUI_CustomUIImpl) then) =
-      __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>;
+  factory _$$SettingsUI_CustomUIImplCopyWith(
+    _$SettingsUI_CustomUIImpl value,
+    $Res Function(_$SettingsUI_CustomUIImpl) then,
+  ) = __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>;
   @useResult
   $Res call({CustomUI ui});
 
@@ -1472,23 +1491,24 @@ abstract class _$$SettingsUI_CustomUIImplCopyWith<$Res> {
 class __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>
     extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_CustomUIImpl>
     implements _$$SettingsUI_CustomUIImplCopyWith<$Res> {
-  __$$SettingsUI_CustomUIImplCopyWithImpl(_$SettingsUI_CustomUIImpl _value,
-      $Res Function(_$SettingsUI_CustomUIImpl) _then)
-      : super(_value, _then);
+  __$$SettingsUI_CustomUIImplCopyWithImpl(
+    _$SettingsUI_CustomUIImpl _value,
+    $Res Function(_$SettingsUI_CustomUIImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? ui = null,
-  }) {
-    return _then(_$SettingsUI_CustomUIImpl(
-      ui: null == ui
-          ? _value.ui
-          : ui // ignore: cast_nullable_to_non_nullable
-              as CustomUI,
-    ));
+  $Res call({Object? ui = null}) {
+    return _then(
+      _$SettingsUI_CustomUIImpl(
+        ui: null == ui
+            ? _value.ui
+            : ui // ignore: cast_nullable_to_non_nullable
+                  as CustomUI,
+      ),
+    );
   }
 
   /// Create a copy of SettingsUI
@@ -1533,7 +1553,9 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
   @pragma('vm:prefer-inline')
   _$$SettingsUI_CustomUIImplCopyWith<_$SettingsUI_CustomUIImpl> get copyWith =>
       __$$SettingsUI_CustomUIImplCopyWithImpl<_$SettingsUI_CustomUIImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs

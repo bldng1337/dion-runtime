@@ -69,7 +69,9 @@ class _DetailPageState extends State<DetailPage> {
           const SizedBox(height: 8),
           Text(
             'Get detailed information about a specific entry',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -90,7 +92,11 @@ class _DetailPageState extends State<DetailPage> {
               FilledButton.icon(
                 onPressed: _loading ? null : _run,
                 icon: _loading
-                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Icon(Icons.play_arrow),
                 label: const Text('Run'),
               ),

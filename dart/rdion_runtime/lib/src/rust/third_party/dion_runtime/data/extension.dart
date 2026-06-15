@@ -97,9 +97,8 @@ class ExtensionData {
 sealed class ExtensionType with _$ExtensionType {
   const ExtensionType._();
 
-  const factory ExtensionType.entryProvider({
-    required bool hasSearch,
-  }) = ExtensionType_EntryProvider;
+  const factory ExtensionType.entryProvider({required bool hasSearch}) =
+      ExtensionType_EntryProvider;
   const factory ExtensionType.sourceProcessor({
     required Set<SourceType> sourcetypes,
     required Set<SourceOpenType> opentype,
@@ -108,17 +107,15 @@ sealed class ExtensionType with _$ExtensionType {
     required bool triggerMapEntry,
     required bool triggerOnEntryActivity,
   }) = ExtensionType_EntryProcessor;
-  const factory ExtensionType.urlHandler({
-    required List<String> urlPatterns,
-  }) = ExtensionType_URLHandler;
+  const factory ExtensionType.urlHandler({required List<String> urlPatterns}) =
+      ExtensionType_URLHandler;
 }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 enum SourceOpenType {
   download,
-  stream,
-  ;
+  stream;
 
   static Future<SourceOpenType> default_() =>
       RustLib.instance.api.dionRuntimeDataExtensionSourceOpenTypeDefault();

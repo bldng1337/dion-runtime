@@ -80,7 +80,9 @@ class _HandleUrlPageState extends State<HandleUrlPage> {
                     Text('Handle URL', style: theme.textTheme.headlineSmall),
                     Text(
                       'Try to handle a URL with the extension',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 ),

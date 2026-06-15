@@ -16,8 +16,11 @@ void main() {
       final encoded = mediaType.toJson();
       final redecoded = JsonMediaType.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("MediaType[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("MediaType[$i]", item, encoded),
+      );
       // expect(redecoded, equals(mediaType),
       //     reason: "Object equality check failed for MediaType at index $i");
     }
@@ -152,8 +155,11 @@ void main() {
       final encoded = timestampType.toJson();
       final redecoded = JsonTimestampType.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("TimestampType[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("TimestampType[$i]", item, encoded),
+      );
       // expect(redecoded, equals(timestampType),
       //     reason: "Object equality check failed for TimestampType at index $i");
     }
@@ -198,8 +204,11 @@ void main() {
       final encoded = sourceOpenType.toJson();
       final redecoded = JsonSourceOpenType.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("SourceOpenType[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("SourceOpenType[$i]", item, encoded),
+      );
       // expect(redecoded, equals(sourceOpenType),
       //     reason:
       //         "Object equality check failed for SourceOpenType at index $i");
@@ -308,8 +317,11 @@ void main() {
       final encoded = settingKind.toJson();
       final redecoded = JsonSettingKind.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("SettingKind[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("SettingKind[$i]", item, encoded),
+      );
       // expect(redecoded, equals(settingKind),
       //     reason: "Object equality check failed for SettingKind at index $i");
     }
@@ -478,8 +490,11 @@ void main() {
       final encoded = releaseStatus.toJson();
       final redecoded = JsonReleaseStatus.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("ReleaseStatus[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("ReleaseStatus[$i]", item, encoded),
+      );
       // expect(redecoded, equals(releaseStatus),
       //     reason: "Object equality check failed for ReleaseStatus at index $i");
     }
@@ -569,8 +584,11 @@ void main() {
       final encoded = sourceType.toJson();
       final redecoded = JsonSourceType.fromJson(encoded);
 
-      expect(encoded, equals(item),
-          reason: _buildJsonEqualityError("SourceType[$i]", item, encoded));
+      expect(
+        encoded,
+        equals(item),
+        reason: _buildJsonEqualityError("SourceType[$i]", item, encoded),
+      );
       // expect(redecoded, equals(sourceType),
       //     reason: "Object equality check failed for SourceType at index $i");
     }
@@ -633,55 +651,111 @@ void _deepEquals(dynamic a, dynamic b, String path) {
     final filteredA = _removeNullValues(a.cast());
     final filteredB = _removeNullValues(b.cast());
 
-    expect(filteredA.length, equals(filteredB.length),
-        reason: _buildError(
-            path,
-            "Map length mismatch",
-            "Expected ${filteredB.length} keys, got ${filteredA.length}",
-            a,
-            b));
+    expect(
+      filteredA.length,
+      equals(filteredB.length),
+      reason: _buildError(
+        path,
+        "Map length mismatch",
+        "Expected ${filteredB.length} keys, got ${filteredA.length}",
+        a,
+        b,
+      ),
+    );
 
     for (final key in filteredA.keys) {
       final newPath = "$path.$key";
-      expect(filteredB.containsKey(key), isTrue,
-          reason: _buildError(newPath, "Key not found in encoded JSON",
-              "Original JSON has key '$key' but encoded JSON does not", a, b));
+      expect(
+        filteredB.containsKey(key),
+        isTrue,
+        reason: _buildError(
+          newPath,
+          "Key not found in encoded JSON",
+          "Original JSON has key '$key' but encoded JSON does not",
+          a,
+          b,
+        ),
+      );
       _deepEquals(filteredA[key], filteredB[key], newPath);
     }
 
     // Check for keys in b that aren't in a
     for (final key in filteredB.keys) {
       if (!filteredA.containsKey(key)) {
-        fail(_buildError("$path.$key", "Extra key in encoded JSON",
-            "Encoded JSON has key '$key' but original JSON does not", a, b));
+        fail(
+          _buildError(
+            "$path.$key",
+            "Extra key in encoded JSON",
+            "Encoded JSON has key '$key' but original JSON does not",
+            a,
+            b,
+          ),
+        );
       }
     }
   } else if (a is List && b is List) {
-    expect(a.length, equals(b.length),
-        reason: _buildError(path, "List length mismatch",
-            "Expected length ${b.length}, got ${a.length}", a, b));
+    expect(
+      a.length,
+      equals(b.length),
+      reason: _buildError(
+        path,
+        "List length mismatch",
+        "Expected length ${b.length}, got ${a.length}",
+        a,
+        b,
+      ),
+    );
     for (int i = 0; i < a.length; i++) {
       _deepEquals(a[i], b[i], "$path[$i]");
     }
   } else if (a is Set && b is Set) {
-    expect(a.length, equals(b.length),
-        reason: _buildError(path, "Set size mismatch",
-            "Expected ${b.length} elements, got ${a.length}", a, b));
+    expect(
+      a.length,
+      equals(b.length),
+      reason: _buildError(
+        path,
+        "Set size mismatch",
+        "Expected ${b.length} elements, got ${a.length}",
+        a,
+        b,
+      ),
+    );
     for (final item in a) {
-      expect(b.contains(item), isTrue,
-          reason: _buildError(path, "Element not found in encoded set",
-              "Original set contains '$item' but encoded set does not", a, b));
+      expect(
+        b.contains(item),
+        isTrue,
+        reason: _buildError(
+          path,
+          "Element not found in encoded set",
+          "Original set contains '$item' but encoded set does not",
+          a,
+          b,
+        ),
+      );
     }
   } else {
-    expect(a, equals(b),
-        reason: _buildError(path, "Value mismatch",
-            "Expected: ${_formatValue(b)}\nActual: ${_formatValue(a)}", a, b));
+    expect(
+      a,
+      equals(b),
+      reason: _buildError(
+        path,
+        "Value mismatch",
+        "Expected: ${_formatValue(b)}\nActual: ${_formatValue(a)}",
+        a,
+        b,
+      ),
+    );
   }
 }
 
 /// Builds a detailed error message with JSON path and full content.
-String _buildError(String path, String summary, String details,
-    dynamic original, dynamic encoded) {
+String _buildError(
+  String path,
+  String summary,
+  String details,
+  dynamic original,
+  dynamic encoded,
+) {
   return '''
 ================================================================================
 JSON Equality Test Failed
@@ -751,8 +825,9 @@ Map<String, dynamic> _removeNullValues(Map<String, dynamic> map) {
       continue;
     } else if (entry.value is Map) {
       // Recursively remove null values from nested maps
-      result[entry.key] =
-          _removeNullValues((entry.value as Map).cast<String, dynamic>());
+      result[entry.key] = _removeNullValues(
+        (entry.value as Map).cast<String, dynamic>(),
+      );
     } else if (entry.value is List) {
       // Recursively process list items
       final list = entry.value as List;

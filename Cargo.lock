@@ -3990,6 +3990,7 @@ name = "specta-valibot"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "regex",
  "specta 1.0.5",
 ]
 

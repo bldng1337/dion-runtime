@@ -30,14 +30,20 @@ class _SettingsPageState extends State<SettingsPage> {
     widget.controller.log(label, 'Running...');
     try {
       if (_showBoth) {
-        final extSettings = await ext.getSettings(kind: rdion.SettingKind.extension_);
-        final searchSettings = await ext.getSettings(kind: rdion.SettingKind.search);
+        final extSettings = await ext.getSettings(
+          kind: rdion.SettingKind.extension_,
+        );
+        final searchSettings = await ext.getSettings(
+          kind: rdion.SettingKind.search,
+        );
         final encoded = widget.controller.encodeResult({
           'extension': Map.fromEntries(
             extSettings.entries.map((e) => MapEntry(e.key, e.value.toJson())),
           ),
           'search': Map.fromEntries(
-            searchSettings.entries.map((e) => MapEntry(e.key, e.value.toJson())),
+            searchSettings.entries.map(
+              (e) => MapEntry(e.key, e.value.toJson()),
+            ),
           ),
         });
         setState(() {
@@ -49,7 +55,9 @@ class _SettingsPageState extends State<SettingsPage> {
       } else {
         final settings = await ext.getSettings(kind: _kind);
         final encoded = widget.controller.encodeResult(
-          Map.fromEntries(settings.entries.map((e) => MapEntry(e.key, e.value.toJson()))),
+          Map.fromEntries(
+            settings.entries.map((e) => MapEntry(e.key, e.value.toJson())),
+          ),
         );
         setState(() {
           _result = encoded;
@@ -81,7 +89,9 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 8),
           Text(
             'View extension settings by kind',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -126,7 +136,11 @@ class _SettingsPageState extends State<SettingsPage> {
               FilledButton.icon(
                 onPressed: _loading ? null : _run,
                 icon: _loading
-                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Icon(Icons.play_arrow),
                 label: const Text('Run'),
               ),

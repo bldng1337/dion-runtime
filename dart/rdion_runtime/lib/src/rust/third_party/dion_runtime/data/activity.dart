@@ -16,7 +16,6 @@ part 'activity.freezed.dart';
 sealed class EntryActivity with _$EntryActivity {
   const EntryActivity._();
 
-  const factory EntryActivity.episodeActivity({
-    required int progress,
-  }) = EntryActivity_EpisodeActivity;
+  const factory EntryActivity.episodeActivity({required int progress}) =
+      EntryActivity_EpisodeActivity;
 }

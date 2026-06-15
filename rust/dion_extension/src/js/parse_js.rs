@@ -130,12 +130,18 @@ fn convert_table(table: &ElementRef, doc: &Html) -> Vec<Row> {
 fn is_block_element(tag: &str) -> bool {
     matches!(
         tag,
-        "p"
-            | "div"
-            | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+        "p" | "div"
+            | "h1"
+            | "h2"
+            | "h3"
+            | "h4"
+            | "h5"
+            | "h6"
             | "blockquote"
             | "pre"
-            | "ul" | "ol" | "li"
+            | "ul"
+            | "ol"
+            | "li"
             | "table"
             | "hr"
             | "br"
@@ -150,7 +156,9 @@ fn is_block_element(tag: &str) -> bool {
             | "details"
             | "summary"
             | "main"
-            | "dl" | "dt" | "dd"
+            | "dl"
+            | "dt"
+            | "dd"
     )
 }
 
@@ -175,7 +183,7 @@ fn element_inner_to_mixed(element: ElementRef, doc: &Html) -> Vec<MixedContent> 
         if inline.is_empty() {
             return;
         }
-        let content: Vec<MixedContent> = inline.drain(..).collect();
+        let content: Vec<MixedContent> = std::mem::take(inline);
         if content.len() == 1 {
             paras.push(content.into_iter().next().unwrap());
         } else {
@@ -286,9 +294,9 @@ fn element_to_paragraph_list(element: ElementRef, doc: &Html) -> Vec<Paragraph> 
                         if mixed.is_empty() {
                             continue;
                         }
-                        let has_style = mixed.iter().any(|mc| {
-                            matches!(mc, MixedContent::Text { style: Some(_), .. })
-                        });
+                        let has_style = mixed
+                            .iter()
+                            .any(|mc| matches!(mc, MixedContent::Text { style: Some(_), .. }));
                         let has_non_text = mixed
                             .iter()
                             .any(|mc| !matches!(mc, MixedContent::Text { style: None, .. }));
@@ -311,13 +319,12 @@ fn element_to_paragraph_list(element: ElementRef, doc: &Html) -> Vec<Paragraph> 
                             }
                         } else if mixed.len() == 1 {
                             result.push(match mixed.into_iter().next().unwrap() {
-                                MixedContent::Text { content, style } => Paragraph::Text {
-                                    content,
-                                    style,
-                                },
-                                mc @ MixedContent::CustomUI { .. } => Paragraph::Mixed {
-                                    content: vec![mc],
-                                },
+                                MixedContent::Text { content, style } => {
+                                    Paragraph::Text { content, style }
+                                }
+                                mc @ MixedContent::CustomUI { .. } => {
+                                    Paragraph::Mixed { content: vec![mc] }
+                                }
                                 MixedContent::Table { columns } => Paragraph::Table { columns },
                             });
                         } else {
@@ -329,7 +336,8 @@ fn element_to_paragraph_list(element: ElementRef, doc: &Html) -> Vec<Paragraph> 
                     let inline = collect_text_with_style(child_el, &TextStyle::default(), doc);
                     for mc in inline {
                         match mc {
-                            MixedContent::Text { ref content, .. } if content.trim().is_empty() => {}
+                            MixedContent::Text { ref content, .. } if content.trim().is_empty() => {
+                            }
                             MixedContent::Table { columns } => {
                                 result.push(Paragraph::Table { columns });
                             }
@@ -453,10 +461,10 @@ impl ElementArray {
     ) -> JsResult<JsValue> {
         let mut all_paragraphs: Vec<Paragraph> = Vec::new();
         for node_id in &self.nodes {
-            if let Some(node) = self.doc.tree.get(*node_id) {
-                if let Some(element) = ElementRef::wrap(node) {
-                    all_paragraphs.extend(element_to_paragraph_list(element, &self.doc));
-                }
+            if let Some(node) = self.doc.tree.get(*node_id)
+                && let Some(element) = ElementRef::wrap(node)
+            {
+                all_paragraphs.extend(element_to_paragraph_list(element, &self.doc));
             }
         }
         JsValue::from_json(

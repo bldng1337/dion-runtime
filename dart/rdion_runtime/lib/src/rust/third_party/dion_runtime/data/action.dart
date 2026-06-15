@@ -19,25 +19,20 @@ part 'action.freezed.dart';
 sealed class Action with _$Action {
   const Action._();
 
-  const factory Action.openBrowser({
-    required String url,
-  }) = Action_OpenBrowser;
+  const factory Action.openBrowser({required String url}) = Action_OpenBrowser;
   const factory Action.popup({
     required String title,
     required CustomUI content,
     required List<PopupAction> actions,
   }) = Action_Popup;
-  const factory Action.nav({
-    required String title,
-    required CustomUI content,
-  }) = Action_Nav;
+  const factory Action.nav({required String title, required CustomUI content}) =
+      Action_Nav;
   const factory Action.triggerEvent({
     required String event,
     required String data,
   }) = Action_TriggerEvent;
-  const factory Action.navEntry({
-    required EntryDetailed entry,
-  }) = Action_NavEntry;
+  const factory Action.navEntry({required EntryDetailed entry}) =
+      Action_NavEntry;
 }
 
 @freezed
@@ -64,9 +59,8 @@ sealed class EventData with _$EventData {
 sealed class EventResult with _$EventResult {
   const EventResult._();
 
-  const factory EventResult.swapContent({
-    required CustomUI customui,
-  }) = EventResult_SwapContent;
+  const factory EventResult.swapContent({required CustomUI customui}) =
+      EventResult_SwapContent;
   const factory EventResult.feedUpdate({
     required List<CustomUI> customui,
     bool? hasnext,
@@ -80,10 +74,7 @@ class PopupAction {
   final String label;
   final Action onclick;
 
-  const PopupAction({
-    required this.label,
-    required this.onclick,
-  });
+  const PopupAction({required this.label, required this.onclick});
 
   @override
   int get hashCode => label.hashCode ^ onclick.hashCode;
@@ -101,9 +92,7 @@ class PopupAction {
 sealed class UIAction with _$UIAction {
   const UIAction._();
 
-  const factory UIAction.action({
-    required Action action,
-  }) = UIAction_Action;
+  const factory UIAction.action({required Action action}) = UIAction_Action;
   const factory UIAction.swapContent({
     required String targetid,
     required String event,

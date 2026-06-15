@@ -54,17 +54,25 @@ class _LogPageState extends State<LogPage> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Row(
             children: [
-              Icon(Icons.article_outlined, color: theme.colorScheme.primary, size: 24),
+              Icon(
+                Icons.article_outlined,
+                color: theme.colorScheme.primary,
+                size: 24,
+              ),
               const SizedBox(width: 8),
               Text('Operation Log', style: theme.textTheme.titleLarge),
               const Spacer(),
               Text(
                 '${widget.log.length} entries',
-                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.outline,
+                ),
               ),
               const SizedBox(width: 12),
               FilledButton.tonalIcon(
-                onPressed: widget.log.isEmpty ? null : () => _showClearDialog(context),
+                onPressed: widget.log.isEmpty
+                    ? null
+                    : () => _showClearDialog(context),
                 icon: const Icon(Icons.delete_outline, size: 18),
                 label: const Text('Clear'),
               ),
@@ -78,16 +86,24 @@ class _LogPageState extends State<LogPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.article_outlined, size: 48, color: theme.colorScheme.outline),
+                  Icon(
+                    Icons.article_outlined,
+                    size: 48,
+                    color: theme.colorScheme.outline,
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     'No log entries yet',
-                    style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.outline),
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Run an operation from any page to see results here',
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
                 ],
               ),
@@ -115,7 +131,9 @@ class _LogPageState extends State<LogPage> {
                           Row(
                             children: [
                               Icon(
-                                entry.isError ? Icons.error_outline : Icons.check_circle_outline,
+                                entry.isError
+                                    ? Icons.error_outline
+                                    : Icons.check_circle_outline,
                                 size: 16,
                                 color: entry.isError
                                     ? theme.colorScheme.error

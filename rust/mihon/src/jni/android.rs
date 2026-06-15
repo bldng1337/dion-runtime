@@ -56,8 +56,7 @@ static APP_CONTEXT_CACHE: OnceLock<jni::objects::GlobalRef> = OnceLock::new();
 /// `vm_ptr` must be a valid, non-null `JavaVM*` pointer provided by the
 /// Android runtime during `JNI_OnLoad`.
 pub unsafe fn init_android(vm_ptr: *mut jni::sys::JavaVM) -> Result<()> {
-    let jvm = unsafe { jni::JavaVM::from_raw(vm_ptr) }
-        .context("Failed to wrap JavaVM pointer")?;
+    let jvm = unsafe { jni::JavaVM::from_raw(vm_ptr) }.context("Failed to wrap JavaVM pointer")?;
 
     let mut env = jvm
         .get_env()
@@ -87,7 +86,9 @@ pub unsafe fn init_android(vm_ptr: *mut jni::sys::JavaVM) -> Result<()> {
     if has_context {
         log::info!("JNI_OnLoad: stored Application context in ndk_context");
     } else {
-        log::error!("JNI_OnLoad: failed to obtain Application context, ndk_context context is null");
+        log::error!(
+            "JNI_OnLoad: failed to obtain Application context, ndk_context context is null"
+        );
     }
 
     // --- 2. Cache the bridge class as a GlobalRef ---
@@ -190,10 +191,10 @@ fn get_application_context(env: &mut jni::JNIEnv) -> Option<jni::objects::Global
 /// native-attached threads use `get_bridge_class()` to retrieve the cached
 /// reference instead of calling `FindClass` (which would fail).
 fn cache_bridge_class(env: &mut jni::JNIEnv) -> Result<()> {
-    let class = env
-        .find_class(BRIDGE_CLASS)
-        .context("Failed to find AndroidMihonBridge class during JNI_OnLoad. \
-                  Ensure the compat-android Kotlin sources are compiled into the APK")?;
+    let class = env.find_class(BRIDGE_CLASS).context(
+        "Failed to find AndroidMihonBridge class during JNI_OnLoad. \
+                  Ensure the compat-android Kotlin sources are compiled into the APK",
+    )?;
 
     // Create a global reference so the class survives across threads.
     // JClass -> JObject conversion is safe (jclass IS jobject in JNI).
@@ -206,7 +207,10 @@ fn cache_bridge_class(env: &mut jni::JNIEnv) -> Result<()> {
         .set(global_ref)
         .map_err(|_| anyhow::anyhow!("Bridge class cache already initialized"))?;
 
-    log::info!("Cached {} as GlobalRef for native thread access", BRIDGE_CLASS);
+    log::info!(
+        "Cached {} as GlobalRef for native thread access",
+        BRIDGE_CLASS
+    );
     Ok(())
 }
 
@@ -242,8 +246,7 @@ pub fn get_bridge_class<'a>(env: &mut jni::JNIEnv<'a>) -> Result<JClass<'a>> {
         // 5. We pass env as an explicit parameter to make the lifetime dependency
         //    clear at the call site, even though we don't call any env methods here.
         let _ = env; // Ensure the caller holds a valid JNIEnv for lifetime 'a
-        let class =
-            unsafe { JClass::from_raw(global_ref.as_raw() as jni::sys::jclass) };
+        let class = unsafe { JClass::from_raw(global_ref.as_raw() as jni::sys::jclass) };
         Ok(class)
     } else {
         log::warn!(
@@ -294,8 +297,8 @@ impl JvmHandle {
         // Safety: The vm_ptr comes from ndk_context, which is set by the
         // Android runtime during JNI_OnLoad or native activity creation.
         // It is a valid, non-null JavaVM* pointer.
-        let jvm = unsafe { jni::JavaVM::from_raw(vm_ptr) }
-            .context("Failed to wrap JavaVM pointer")?;
+        let jvm =
+            unsafe { jni::JavaVM::from_raw(vm_ptr) }.context("Failed to wrap JavaVM pointer")?;
 
         log::info!("Successfully attached to existing Android JVM");
         Ok(Self { jvm })

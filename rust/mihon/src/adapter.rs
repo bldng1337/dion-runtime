@@ -10,24 +10,21 @@
 //! - **Android**: Attaches to the existing ART/Dalvik VM, loads extensions directly
 //!   from APK using native PathClassLoader. No compat JAR or dex2jar needed.
 
+use anyhow::{bail, Context, Result};
+use async_trait::async_trait;
 use dion_runtime::{
     client_data::AdapterClient,
-    data::{
-        extension::ExtensionType,
-        source::MediaType,
-    },
+    data::{extension::ExtensionType, source::MediaType},
     extension::{Adapter, Extension},
 };
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use anyhow::{Context, bail, Result};
-use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
 
-use crate::jni::{JvmHandle, MihonBridge};
 use crate::extension::MihonExtension;
+use crate::jni::{JvmHandle, MihonBridge};
 
 /// Embedded mihon-compat.jar - built by build.rs and embedded at compile time.
 /// Only used on desktop platforms; on Android, native class loading is used.
@@ -76,12 +73,16 @@ impl MihonAdapter {
     pub async fn new(client: Box<dyn AdapterClient>) -> Result<Self> {
         // Get base path from client
         let base_path = PathBuf::from(
-            client.get_path().await.context("Failed to get adapter path")?
+            client
+                .get_path()
+                .await
+                .context("Failed to get adapter path")?,
         );
 
         // Ensure jars directory exists (used for extension storage on all platforms)
         let jars_dir = base_path.join("jars");
-        tokio::fs::create_dir_all(&jars_dir).await
+        tokio::fs::create_dir_all(&jars_dir)
+            .await
             .context("Failed to create jars directory")?;
 
         // Initialize JVM (platform-specific)
@@ -91,9 +92,9 @@ impl MihonAdapter {
 
         // Initialize the bridge with the extensions directory.
         // On Android, this also sets the Android Context via ndk_context.
-        let jars_dir_str = jars_dir.to_str()
-            .context("Invalid jars directory path")?;
-        bridge.initialize(jars_dir_str)
+        let jars_dir_str = jars_dir.to_str().context("Invalid jars directory path")?;
+        bridge
+            .initialize(jars_dir_str)
             .context("Failed to initialize MihonBridge")?;
 
         Ok(Self {
@@ -113,7 +114,7 @@ impl MihonAdapter {
     /// - **Android**: Attaches to the existing ART/Dalvik VM via ndk_context.
     ///   No compat JAR is needed because native Android class loading is used.
     #[cfg(not(target_os = "android"))]
-    async fn create_jvm(base_path: &PathBuf) -> Result<JvmHandle> {
+    async fn create_jvm(base_path: &Path) -> Result<JvmHandle> {
         let compat_jar = base_path.join("mihon-compat.jar");
 
         // Extract embedded compat JAR if not present or outdated
@@ -124,7 +125,7 @@ impl MihonAdapter {
     }
 
     #[cfg(target_os = "android")]
-    async fn create_jvm(_base_path: &PathBuf) -> Result<JvmHandle> {
+    async fn create_jvm(_base_path: &Path) -> Result<JvmHandle> {
         // On Android, attach to the existing ART/Dalvik VM.
         // The compat JAR is not needed — Android provides native class loading
         // via PathClassLoader and the compat-android AAR handles bridging.
@@ -137,11 +138,12 @@ impl MihonAdapter {
     /// The JAR is embedded in the binary at compile time and extracted at runtime.
     /// The MIHON_COMPAT_JAR environment variable can override this behavior.
     #[cfg(not(target_os = "android"))]
-    async fn ensure_compat_jar(target_path: &PathBuf) -> Result<()> {
+    async fn ensure_compat_jar(target_path: &Path) -> Result<()> {
         // If target already exists and is a valid JAR, use it
         if target_path.exists() {
             let meta = tokio::fs::metadata(target_path).await?;
-            if meta.len() > 1000 {  // More than just a placeholder
+            if meta.len() > 1000 {
+                // More than just a placeholder
                 return Ok(());
             }
         }
@@ -151,7 +153,8 @@ impl MihonAdapter {
             let path = PathBuf::from(&env_path);
             if path.exists() {
                 log::info!("Using mihon-compat.jar from MIHON_COMPAT_JAR: {:?}", path);
-                tokio::fs::copy(&path, target_path).await
+                tokio::fs::copy(&path, target_path)
+                    .await
                     .context("Failed to copy mihon-compat.jar from MIHON_COMPAT_JAR")?;
                 return Ok(());
             }
@@ -175,37 +178,40 @@ impl MihonAdapter {
             MIHON_COMPAT_JAR.len(),
             target_path
         );
-        tokio::fs::write(target_path, MIHON_COMPAT_JAR).await
+        tokio::fs::write(target_path, MIHON_COMPAT_JAR)
+            .await
             .context("Failed to write embedded mihon-compat.jar")?;
 
         Ok(())
     }
 
     /// Get metadata file path for a JAR
-    fn get_meta_path(jar_path: &PathBuf) -> PathBuf {
+    fn get_meta_path(jar_path: &Path) -> PathBuf {
         jar_path.with_extension("json")
     }
 
     /// Load metadata for a JAR file
-    async fn load_meta(jar_path: &PathBuf) -> Result<Option<ExtensionMeta>> {
+    async fn load_meta(jar_path: &Path) -> Result<Option<ExtensionMeta>> {
         let meta_path = Self::get_meta_path(jar_path);
         if !meta_path.exists() {
             return Ok(None);
         }
 
-        let contents = tokio::fs::read_to_string(&meta_path).await
+        let contents = tokio::fs::read_to_string(&meta_path)
+            .await
             .context("Failed to read metadata file")?;
-        let meta: ExtensionMeta = serde_json::from_str(&contents)
-            .context("Failed to parse metadata file")?;
+        let meta: ExtensionMeta =
+            serde_json::from_str(&contents).context("Failed to parse metadata file")?;
         Ok(Some(meta))
     }
 
     /// Save metadata for a JAR file
-    async fn save_meta(jar_path: &PathBuf, meta: &ExtensionMeta) -> Result<()> {
+    async fn save_meta(jar_path: &Path, meta: &ExtensionMeta) -> Result<()> {
         let meta_path = Self::get_meta_path(jar_path);
-        let contents = serde_json::to_string_pretty(meta)
-            .context("Failed to serialize metadata")?;
-        tokio::fs::write(&meta_path, contents).await
+        let contents =
+            serde_json::to_string_pretty(meta).context("Failed to serialize metadata")?;
+        tokio::fs::write(&meta_path, contents)
+            .await
             .context("Failed to write metadata file")?;
         Ok(())
     }
@@ -214,8 +220,14 @@ impl MihonAdapter {
     ///
     /// On desktop, `jar_path` points to a converted JAR from dex2jar.
     /// On Android, `jar_path` points directly to the APK file.
-    async fn load_extension_from_jar(&self, jar_path: &PathBuf, class_name: &str, meta: Option<&ExtensionMeta>) -> Result<Vec<Box<dyn Extension>>> {
-        let jar_path_str = jar_path.to_str()
+    async fn load_extension_from_jar(
+        &self,
+        jar_path: &Path,
+        class_name: &str,
+        meta: Option<&ExtensionMeta>,
+    ) -> Result<Vec<Box<dyn Extension>>> {
+        let jar_path_str = jar_path
+            .to_str()
             .ok_or_else(|| anyhow::anyhow!("Invalid JAR path"))?;
 
         // Load extension via JNI (platform-specific bridge handles the details)
@@ -257,13 +269,16 @@ impl MihonAdapter {
                 media_type: media_types,
                 extension_type: extension_types,
                 repo: None,
-                version: meta.map(|m| m.version.clone()).unwrap_or_else(|| "1.0.0".to_string()),
+                version: meta
+                    .map(|m| m.version.clone())
+                    .unwrap_or_else(|| "1.0.0".to_string()),
                 license: String::new(),
                 compatible: true,
             };
 
             // Get ExtensionClient from host
-            let ext_client = self.client
+            let ext_client = self
+                .client
                 .get_extension_client(ext_data.clone())
                 .await
                 .context("Failed to get ExtensionClient")?;
@@ -275,13 +290,14 @@ impl MihonAdapter {
                 ext_data,
                 ext_client,
                 self.bridge.clone(),
-            ).await?;
+            )
+            .await?;
 
             // Track extension -> jar_path mapping for cleanup during uninstall
-            self.extension_jar_paths.write().await.insert(
-                format!("mihon:{}", source_id),
-                jar_path.clone(),
-            );
+            self.extension_jar_paths
+                .write()
+                .await
+                .insert(format!("mihon:{}", source_id), jar_path.to_path_buf());
 
             extensions.push(Box::new(ext) as Box<dyn Extension>);
         }
@@ -301,7 +317,8 @@ impl Adapter for MihonAdapter {
         // Keyed by package_name for deduplication.
         // System-installed extensions are added first (lower priority),
         // then private extensions from jars/ overwrite them (higher priority).
-        let mut candidates: HashMap<String, (PathBuf, String, Option<ExtensionMeta>)> = HashMap::new();
+        let mut candidates: HashMap<String, (PathBuf, String, Option<ExtensionMeta>)> =
+            HashMap::new();
 
         // On Android, discover system-installed extensions first (lower priority).
         // These are APKs installed via the system package manager that declare
@@ -327,14 +344,19 @@ impl Adapter for MihonAdapter {
         // Scan jars directory for privately installed extensions (higher priority).
         // These overwrite any system-installed extension with the same package name.
         if jars_dir.exists() {
-            let mut entries = tokio::fs::read_dir(&jars_dir).await
+            let mut entries = tokio::fs::read_dir(&jars_dir)
+                .await
                 .context("Failed to read jars directory")?;
 
             while let Some(entry) = entries.next_entry().await? {
                 let path = entry.path();
                 // On desktop: look for .jar files; on Android: look for .apk files
-                let expected_ext = if cfg!(target_os = "android") { "apk" } else { "jar" };
-                let is_valid = path.extension().map_or(false, |e| e == expected_ext);
+                let expected_ext = if cfg!(target_os = "android") {
+                    "apk"
+                } else {
+                    "jar"
+                };
+                let is_valid = path.extension().is_some_and(|e| e == expected_ext);
 
                 if is_valid {
                     // Try to load metadata from sidecar file
@@ -363,7 +385,10 @@ impl Adapter for MihonAdapter {
                                             nsfw: native_meta.nsfw,
                                         };
                                         if let Err(e) = Self::save_meta(&path, &recovered).await {
-                                            log::warn!("Failed to save recovered metadata: {:?}", e);
+                                            log::warn!(
+                                                "Failed to save recovered metadata: {:?}",
+                                                e
+                                            );
                                         }
                                         candidates.insert(
                                             recovered.package_name.clone(),
@@ -414,7 +439,10 @@ impl Adapter for MihonAdapter {
                 }
             }
 
-            match self.load_extension_from_jar(&path, &class_name, meta.as_ref()).await {
+            match self
+                .load_extension_from_jar(&path, &class_name, meta.as_ref())
+                .await
+            {
                 Ok(exts) => extensions.extend(exts),
                 Err(e) => log::error!("Failed to load {:?}: {:?}", path, e),
             }
@@ -432,17 +460,19 @@ impl Adapter for MihonAdapter {
         let apk_bytes = if url.starts_with("file://") {
             // Local file
             let path = url.strip_prefix("file://").unwrap();
-            tokio::fs::read(path).await
+            tokio::fs::read(path)
+                .await
                 .context("Failed to read local APK")?
         } else {
             // Remote URL
-            let response = reqwest::get(url).await
-                .context("Failed to download APK")?;
+            let response = reqwest::get(url).await.context("Failed to download APK")?;
             let status = response.status();
             if !status.is_success() {
                 bail!("Failed to download APK: HTTP {}", status);
             }
-            response.bytes().await
+            response
+                .bytes()
+                .await
                 .context("Failed to read APK bytes")?
                 .to_vec()
         };
@@ -455,15 +485,14 @@ impl Adapter for MihonAdapter {
                 .unwrap_or_default()
                 .as_millis()
         ));
-        tokio::fs::write(&temp_apk, &apk_bytes).await
+        tokio::fs::write(&temp_apk, &apk_bytes)
+            .await
             .context("Failed to write temp APK")?;
 
         // Install extension via JNI bridge.
         // On desktop: APK -> JAR conversion (dex2jar).
         // On Android: metadata extraction only (APK path returned as-is).
-        let install_result = self.bridge.install_extension(
-            temp_apk.to_str().unwrap(),
-        )?;
+        let install_result = self.bridge.install_extension(temp_apk.to_str().unwrap())?;
 
         // On desktop, the temp APK is converted to a JAR. On Android, the APK is kept.
         // Clean up temp APK only on desktop (on Android, the bridge returns the APK path).
@@ -485,7 +514,8 @@ impl Adapter for MihonAdapter {
             let apk_name = format!("{}.apk", install_result.metadata.package_name);
             let dest = jars_dir.join(&apk_name);
             if dest != jar_path {
-                tokio::fs::copy(&jar_path, &dest).await
+                tokio::fs::copy(&jar_path, &dest)
+                    .await
                     .context("Failed to copy APK to jars directory")?;
                 // Set file read-only to satisfy Android 14+ W^X enforcement
                 // for DEX loading. Writable DEX files are rejected by the runtime.
@@ -501,7 +531,9 @@ impl Adapter for MihonAdapter {
         // Save metadata alongside the JAR/APK using the same package-based naming
         let final_jar_path = {
             #[cfg(not(target_os = "android"))]
-            { jar_path.clone() }
+            {
+                jar_path.clone()
+            }
             #[cfg(target_os = "android")]
             {
                 let jars_dir = self.base_path.join("jars");
@@ -519,7 +551,9 @@ impl Adapter for MihonAdapter {
         Self::save_meta(&final_jar_path, &meta).await?;
 
         // Load the installed extension
-        let exts = self.load_extension_from_jar(&final_jar_path, &install_result.class_name, Some(&meta)).await?;
+        let exts = self
+            .load_extension_from_jar(&final_jar_path, &install_result.class_name, Some(&meta))
+            .await?;
 
         exts.into_iter()
             .next()
@@ -553,7 +587,10 @@ impl Adapter for MihonAdapter {
         // Delete the JAR/APK and its metadata sidecar
         if let Some(jar_path) = jar_path {
             // Unload the entire extension (all sources from the same JAR/APK)
-            if let Err(e) = self.bridge.unload_extension(jar_path.to_str().unwrap_or_default()) {
+            if let Err(e) = self
+                .bridge
+                .unload_extension(jar_path.to_str().unwrap_or_default())
+            {
                 log::warn!("Failed to unload extension from JVM: {:?}", e);
             }
 
@@ -577,7 +614,10 @@ impl Adapter for MihonAdapter {
     }
 
     /// Get extension repository metadata
-    async fn get_repo(&self, _url: &str) -> Result<dion_runtime::data::extension_repo::ExtensionRepo> {
+    async fn get_repo(
+        &self,
+        _url: &str,
+    ) -> Result<dion_runtime::data::extension_repo::ExtensionRepo> {
         bail!("Repository support not yet implemented")
     }
 

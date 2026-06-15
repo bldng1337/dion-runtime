@@ -270,7 +270,10 @@ mod tests {
     #[test]
     fn pages_to_source_propagates_page_headers() {
         let mut headers = HashMap::new();
-        headers.insert("Referer".to_string(), "https://example.org/chapter/1".to_string());
+        headers.insert(
+            "Referer".to_string(),
+            "https://example.org/chapter/1".to_string(),
+        );
         headers.insert("User-Agent".to_string(), "custom-agent".to_string());
 
         let page = PageDto {

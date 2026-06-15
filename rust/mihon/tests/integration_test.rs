@@ -11,8 +11,8 @@ use std::path::PathBuf;
 
 use dion_runtime::client_data::{AdapterClient, ExtensionClient};
 use dion_runtime::data::{
-    action::Action, extension::ExtensionData, permission::Permission,
-    settings::SettingValue, source::EntryId,
+    action::Action, extension::ExtensionData, permission::Permission, settings::SettingValue,
+    source::EntryId,
 };
 use dion_runtime::extension::Adapter;
 
@@ -207,6 +207,10 @@ impl ExtensionClient for MockExtensionClient {
 }
 
 #[tokio::test]
+#[cfg_attr(
+    not(mihon_compat_jar_available),
+    ignore = "mihon-compat.jar not built (Gradle unavailable); run: cd rust/mihon/compat && gradle shadowJar"
+)]
 async fn test_full_extension_workflow() -> anyhow::Result<()> {
     // Initialize test client
     let client = Box::new(MockAdapterClient::new());

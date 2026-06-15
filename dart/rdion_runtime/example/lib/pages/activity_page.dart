@@ -84,7 +84,9 @@ class _ActivityPageState extends State<ActivityPage> {
           const SizedBox(height: 8),
           Text(
             'Report an entry activity (e.g. reading/watching progress)',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(

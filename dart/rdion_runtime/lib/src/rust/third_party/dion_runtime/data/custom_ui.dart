@@ -19,61 +19,42 @@ part 'custom_ui.freezed.dart';
 sealed class CustomUI with _$CustomUI {
   const CustomUI._();
 
-  const factory CustomUI.text({
-    required String text,
-  }) = CustomUI_Text;
-  const factory CustomUI.image({
-    required Link image,
-    int? width,
-    int? height,
-  }) = CustomUI_Image;
-  const factory CustomUI.link({
-    required String link,
-    String? label,
-  }) = CustomUI_Link;
+  const factory CustomUI.text({required String text}) = CustomUI_Text;
+  const factory CustomUI.image({required Link image, int? width, int? height}) =
+      CustomUI_Image;
+  const factory CustomUI.link({required String link, String? label}) =
+      CustomUI_Link;
   const factory CustomUI.timeStamp({
     required String timestamp,
     required TimestampType display,
   }) = CustomUI_TimeStamp;
-  const factory CustomUI.entryCard({
-    required Entry entry,
-  }) = CustomUI_EntryCard;
+  const factory CustomUI.entryCard({required Entry entry}) = CustomUI_EntryCard;
   const factory CustomUI.card({
     required Link image,
     required CustomUI top,
     required CustomUI bottom,
   }) = CustomUI_Card;
-  const factory CustomUI.feed({
-    required String event,
-    required String data,
-  }) = CustomUI_Feed;
-  const factory CustomUI.button({
-    required String label,
-    UIAction? onClick,
-  }) = CustomUI_Button;
+  const factory CustomUI.feed({required String event, required String data}) =
+      CustomUI_Feed;
+  const factory CustomUI.button({required String label, UIAction? onClick}) =
+      CustomUI_Button;
   const factory CustomUI.inlineSetting({
     required String settingId,
     required SettingKind settingKind,
     UIAction? onCommit,
   }) = CustomUI_InlineSetting;
-  const factory CustomUI.slot({
-    required String id,
-    required CustomUI child,
-  }) = CustomUI_Slot;
-  const factory CustomUI.column({
-    required List<CustomUI> children,
-  }) = CustomUI_Column;
-  const factory CustomUI.row({
-    required List<CustomUI> children,
-  }) = CustomUI_Row;
+  const factory CustomUI.slot({required String id, required CustomUI child}) =
+      CustomUI_Slot;
+  const factory CustomUI.column({required List<CustomUI> children}) =
+      CustomUI_Column;
+  const factory CustomUI.row({required List<CustomUI> children}) = CustomUI_Row;
 }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 enum TimestampType {
   relative,
-  absolute,
-  ;
+  absolute;
 
   static Future<TimestampType> default_() =>
       RustLib.instance.api.dionRuntimeDataCustomUiTimestampTypeDefault();

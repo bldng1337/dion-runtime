@@ -98,16 +98,25 @@ class _RepoPageState extends State<RepoPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.cloud_download_outlined, color: theme.colorScheme.primary, size: 28),
+              Icon(
+                Icons.cloud_download_outlined,
+                color: theme.colorScheme.primary,
+                size: 28,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Repository Browser', style: theme.textTheme.headlineSmall),
+                    Text(
+                      'Repository Browser',
+                      style: theme.textTheme.headlineSmall,
+                    ),
                     Text(
                       'Browse and install extensions from repositories',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 ),
@@ -136,7 +145,11 @@ class _RepoPageState extends State<RepoPage> {
               FilledButton.icon(
                 onPressed: _repoLoading ? null : () => _browseRepo(),
                 icon: _repoLoading
-                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Icon(Icons.search),
                 label: const Text('Browse'),
               ),
@@ -151,7 +164,11 @@ class _RepoPageState extends State<RepoPage> {
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Icon(Icons.error_outline, size: 18, color: theme.colorScheme.error),
+                    Icon(
+                      Icons.error_outline,
+                      size: 18,
+                      color: theme.colorScheme.error,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -177,7 +194,11 @@ class _RepoPageState extends State<RepoPage> {
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    Icon(Icons.folder_special, size: 20, color: theme.colorScheme.primary),
+                    Icon(
+                      Icons.folder_special,
+                      size: 20,
+                      color: theme.colorScheme.primary,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
@@ -190,7 +211,9 @@ class _RepoPageState extends State<RepoPage> {
                           if (_currentRepo!.description.isNotEmpty)
                             Text(
                               _currentRepo!.description,
-                              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.outline,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -199,7 +222,9 @@ class _RepoPageState extends State<RepoPage> {
                     ),
                     Text(
                       'Page $_repoPage${_repoHasNext ? ' · More available' : ''}',
-                      style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 ),
@@ -216,9 +241,15 @@ class _RepoPageState extends State<RepoPage> {
                 padding: const EdgeInsets.only(top: 12),
                 child: Center(
                   child: FilledButton.tonal(
-                    onPressed: _repoLoading ? null : () => _browseRepo(nextPage: true),
+                    onPressed: _repoLoading
+                        ? null
+                        : () => _browseRepo(nextPage: true),
                     child: _repoLoading
-                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                         : const Text('Load More'),
                   ),
                 ),
@@ -232,11 +263,17 @@ class _RepoPageState extends State<RepoPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.cloud_download_outlined, size: 64, color: theme.colorScheme.outline),
+                    Icon(
+                      Icons.cloud_download_outlined,
+                      size: 64,
+                      color: theme.colorScheme.outline,
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       'Enter a repository URL to browse extensions',
-                      style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 ),
@@ -254,11 +291,15 @@ class _RepoPageState extends State<RepoPage> {
       child: ListTile(
         dense: true,
         leading: CircleAvatar(
-          backgroundColor: ext.compatible ? theme.colorScheme.primaryContainer : theme.colorScheme.errorContainer,
+          backgroundColor: ext.compatible
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.errorContainer,
           child: Icon(
             ext.compatible ? Icons.extension : Icons.warning,
             size: 18,
-            color: ext.compatible ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onErrorContainer,
+            color: ext.compatible
+                ? theme.colorScheme.onPrimaryContainer
+                : theme.colorScheme.onErrorContainer,
           ),
         ),
         title: Row(
@@ -266,7 +307,10 @@ class _RepoPageState extends State<RepoPage> {
             Expanded(child: Text(ext.name)),
             if (!ext.compatible)
               Chip(
-                label: const Text('incompatible', style: TextStyle(fontSize: 10)),
+                label: const Text(
+                  'incompatible',
+                  style: TextStyle(fontSize: 10),
+                ),
                 backgroundColor: Colors.orange[100],
                 padding: EdgeInsets.zero,
                 visualDensity: VisualDensity.compact,
@@ -276,11 +320,17 @@ class _RepoPageState extends State<RepoPage> {
         ),
         subtitle: Text('v${ext.version} · ${ext.id}'),
         trailing: isInstalling
-            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             : IconButton(
                 icon: const Icon(Icons.download),
                 tooltip: 'Install',
-                onPressed: widget.controller.getAdapter() != null ? () => _installFromRepo(ext) : null,
+                onPressed: widget.controller.getAdapter() != null
+                    ? () => _installFromRepo(ext)
+                    : null,
               ),
       ),
     );

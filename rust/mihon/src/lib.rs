@@ -20,11 +20,11 @@
 //! ```
 
 mod adapter;
-mod extension;
 pub mod apk;
+mod extension;
 pub mod jni;
 mod mapping;
 
 pub use adapter::MihonAdapter;
-pub use extension::{MihonExtension, MihonSourceType};
 pub use apk::MihonExtensionMetadata;
+pub use extension::{MihonExtension, MihonSourceType};

@@ -58,10 +58,12 @@ fn main() {
         std::fs::copy(&prebuilt_jar, &output_jar)
             .expect("Failed to copy prebuilt mihon-compat.jar to OUT_DIR");
 
-        let size = std::fs::metadata(&output_jar)
-            .map(|m| m.len())
-            .unwrap_or(0);
-        println!("cargo:warning=Using prebuilt mihon-compat.jar ({} bytes)", size);
+        let size = std::fs::metadata(&output_jar).map(|m| m.len()).unwrap_or(0);
+        println!(
+            "cargo:warning=Using prebuilt mihon-compat.jar ({} bytes)",
+            size
+        );
+        println!("cargo:rustc-cfg=mihon_compat_jar_available");
         return;
     }
 
@@ -95,11 +97,13 @@ fn main() {
                 std::fs::copy(&prebuilt_jar, &output_jar)
                     .expect("Failed to copy mihon-compat.jar to OUT_DIR");
 
-                let size = std::fs::metadata(&output_jar)
-                    .map(|m| m.len())
-                    .unwrap_or(0);
+                let size = std::fs::metadata(&output_jar).map(|m| m.len()).unwrap_or(0);
                 println!("cargo:rerun-if-changed={}", prebuilt_jar.display());
-                println!("cargo:warning=mihon-compat.jar built successfully ({} bytes)", size);
+                println!(
+                    "cargo:warning=mihon-compat.jar built successfully ({} bytes)",
+                    size
+                );
+                println!("cargo:rustc-cfg=mihon_compat_jar_available");
             } else {
                 println!(
                     "cargo:warning=Gradle reported success but JAR not found at {:?}",
@@ -119,8 +123,10 @@ fn main() {
                 println!("cargo:warning=  stderr: {}", stderr.trim());
             }
             println!("cargo:warning=The embedded JAR will be a placeholder.");
-            println!("cargo:warning=To build manually: cd rust/mihon/compat && {} shadowJar", 
-                if using_wrapper { "./gradlew" } else { "gradle" });
+            println!(
+                "cargo:warning=To build manually: cd rust/mihon/compat && {} shadowJar",
+                if using_wrapper { "./gradlew" } else { "gradle" }
+            );
             write_placeholder(&output_jar);
         }
         Err(e) => {
@@ -158,6 +164,5 @@ fn is_valid_jar(path: &Path) -> bool {
 /// Write a placeholder file when the real JAR cannot be built
 fn write_placeholder(output_path: &Path) {
     // Write a small invalid ZIP-like file that will be detected at runtime
-    std::fs::write(output_path, b"placeholder")
-        .expect("Failed to write placeholder JAR");
+    std::fs::write(output_path, b"placeholder").expect("Failed to write placeholder JAR");
 }

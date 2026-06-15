@@ -159,10 +159,7 @@ class EntryDetailedResult {
   final EntryDetailed entry;
   final Map<String, Setting> settings;
 
-  const EntryDetailedResult({
-    required this.entry,
-    required this.settings,
-  });
+  const EntryDetailedResult({required this.entry, required this.settings});
 
   @override
   int get hashCode => entry.hashCode ^ settings.hashCode;
@@ -182,10 +179,7 @@ class EntryId {
   final String uid;
   final String? iddata;
 
-  const EntryId({
-    required this.uid,
-    this.iddata,
-  });
+  const EntryId({required this.uid, this.iddata});
 
   @override
   int get hashCode => uid.hashCode ^ iddata.hashCode;
@@ -206,11 +200,7 @@ class EntryList {
   final int? length;
   final List<Entry> content;
 
-  const EntryList({
-    this.hasnext,
-    this.length,
-    required this.content,
-  });
+  const EntryList({this.hasnext, this.length, required this.content});
 
   static Future<EntryList> default_() =>
       RustLib.instance.api.dionRuntimeDataSourceEntryListDefault();
@@ -275,10 +265,7 @@ class EpisodeId {
   final String uid;
   final String? iddata;
 
-  const EpisodeId({
-    required this.uid,
-    this.iddata,
-  });
+  const EpisodeId({required this.uid, this.iddata});
 
   @override
   int get hashCode => uid.hashCode ^ iddata.hashCode;
@@ -324,10 +311,7 @@ class Link {
   final String url;
   final Map<String, String>? header;
 
-  const Link({
-    required this.url,
-    this.header,
-  });
+  const Link({required this.url, this.header});
 
   static Future<Link> default_() =>
       RustLib.instance.api.dionRuntimeDataSourceLinkDefault();
@@ -351,8 +335,7 @@ enum MediaType {
   comic,
   audio,
   book,
-  unknown,
-  ;
+  unknown;
 
   static Future<MediaType> default_() =>
       RustLib.instance.api.dionRuntimeDataSourceMediaTypeDefault();
@@ -362,35 +345,24 @@ enum MediaType {
 sealed class MixedContent with _$MixedContent {
   const MixedContent._();
 
-  const factory MixedContent.text({
-    required String content,
-    TextStyle? style,
-  }) = MixedContent_Text;
-  const factory MixedContent.customUi({
-    required CustomUI ui,
-  }) = MixedContent_CustomUI;
-  const factory MixedContent.table({
-    required List<Row> columns,
-  }) = MixedContent_Table;
+  const factory MixedContent.text({required String content, TextStyle? style}) =
+      MixedContent_Text;
+  const factory MixedContent.customUi({required CustomUI ui}) =
+      MixedContent_CustomUI;
+  const factory MixedContent.table({required List<Row> columns}) =
+      MixedContent_Table;
 }
 
 @freezed
 sealed class Paragraph with _$Paragraph {
   const Paragraph._();
 
-  const factory Paragraph.text({
-    required String content,
-    TextStyle? style,
-  }) = Paragraph_Text;
-  const factory Paragraph.mixed({
-    required List<MixedContent> content,
-  }) = Paragraph_Mixed;
-  const factory Paragraph.customUi({
-    required CustomUI ui,
-  }) = Paragraph_CustomUI;
-  const factory Paragraph.table({
-    required List<Row> columns,
-  }) = Paragraph_Table;
+  const factory Paragraph.text({required String content, TextStyle? style}) =
+      Paragraph_Text;
+  const factory Paragraph.mixed({required List<MixedContent> content}) =
+      Paragraph_Mixed;
+  const factory Paragraph.customUi({required CustomUI ui}) = Paragraph_CustomUI;
+  const factory Paragraph.table({required List<Row> columns}) = Paragraph_Table;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -398,8 +370,7 @@ sealed class Paragraph with _$Paragraph {
 enum ReleaseStatus {
   releasing,
   complete,
-  unknown,
-  ;
+  unknown;
 
   static Future<ReleaseStatus> default_() =>
       RustLib.instance.api.dionRuntimeDataSourceReleaseStatusDefault();
@@ -410,9 +381,7 @@ enum ReleaseStatus {
 class Row {
   final List<Paragraph> cells;
 
-  const Row({
-    required this.cells,
-  });
+  const Row({required this.cells});
 
   @override
   int get hashCode => cells.hashCode;
@@ -427,12 +396,8 @@ class Row {
 sealed class Source with _$Source {
   const Source._();
 
-  const factory Source.epub({
-    required Link link,
-  }) = Source_Epub;
-  const factory Source.pdf({
-    required Link link,
-  }) = Source_Pdf;
+  const factory Source.epub({required Link link}) = Source_Epub;
+  const factory Source.pdf({required Link link}) = Source_Pdf;
   const factory Source.imagelist({
     required List<Link> links,
     List<ImageListAudio>? audio,
@@ -441,12 +406,10 @@ sealed class Source with _$Source {
     required List<StreamSource> sources,
     required List<Subtitles> sub,
   }) = Source_Video;
-  const factory Source.audio({
-    required List<StreamSource> sources,
-  }) = Source_Audio;
-  const factory Source.paragraphlist({
-    required List<Paragraph> paragraphs,
-  }) = Source_Paragraphlist;
+  const factory Source.audio({required List<StreamSource> sources}) =
+      Source_Audio;
+  const factory Source.paragraphlist({required List<Paragraph> paragraphs}) =
+      Source_Paragraphlist;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -455,10 +418,7 @@ class SourceResult {
   final Source source;
   final Map<String, Setting> settings;
 
-  const SourceResult({
-    required this.source,
-    required this.settings,
-  });
+  const SourceResult({required this.source, required this.settings});
 
   @override
   int get hashCode => source.hashCode ^ settings.hashCode;
@@ -474,15 +434,7 @@ class SourceResult {
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-enum SourceType {
-  epub,
-  pdf,
-  imagelist,
-  video,
-  audio,
-  paragraphlist,
-  ;
-}
+enum SourceType { epub, pdf, imagelist, video, audio, paragraphlist }
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -517,11 +469,7 @@ class Subtitles {
   final String lang;
   final Link url;
 
-  const Subtitles({
-    required this.title,
-    required this.lang,
-    required this.url,
-  });
+  const Subtitles({required this.title, required this.lang, required this.url});
 
   @override
   int get hashCode => title.hashCode ^ lang.hashCode ^ url.hashCode;

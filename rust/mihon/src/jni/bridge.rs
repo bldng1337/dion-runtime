@@ -116,10 +116,8 @@ impl MihonBridge {
     /// Discover extensions already installed on the device (Android only).
     /// Returns a list of InstallResult with jarPath pointing to installed APKs.
     pub fn get_installed_extensions(&self) -> Result<Vec<InstallResult>> {
-        let result = self.call_bridge_method_no_args(
-            "getInstalledExtensions",
-            "()Ljava/lang/String;",
-        )?;
+        let result =
+            self.call_bridge_method_no_args("getInstalledExtensions", "()Ljava/lang/String;")?;
         self.parse_result(&result)
     }
 

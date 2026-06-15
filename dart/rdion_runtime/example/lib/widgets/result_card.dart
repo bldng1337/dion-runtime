@@ -29,7 +29,9 @@ class ResultCard extends StatelessWidget {
     }
 
     return Card(
-      color: isError ? theme.colorScheme.errorContainer : theme.colorScheme.surfaceContainerLow,
+      color: isError
+          ? theme.colorScheme.errorContainer
+          : theme.colorScheme.surfaceContainerLow,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -40,13 +42,17 @@ class ResultCard extends StatelessWidget {
                 Icon(
                   isError ? Icons.error_outline : Icons.check_circle_outline,
                   size: 16,
-                  color: isError ? theme.colorScheme.error : theme.colorScheme.primary,
+                  color: isError
+                      ? theme.colorScheme.error
+                      : theme.colorScheme.primary,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   isError ? 'Error' : 'Result',
                   style: theme.textTheme.labelLarge?.copyWith(
-                    color: isError ? theme.colorScheme.error : theme.colorScheme.primary,
+                    color: isError
+                        ? theme.colorScheme.error
+                        : theme.colorScheme.primary,
                   ),
                 ),
               ],

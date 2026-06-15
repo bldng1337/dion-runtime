@@ -219,9 +219,15 @@ pub enum Paragraph {
         #[cfg_attr(feature = "type", specta(optional))]
         style: Option<TextStyle>,
     },
-    Mixed { content: Vec<MixedContent> },
-    CustomUI { ui: Box<CustomUI> },
-    Table { columns: Vec<Row> },
+    Mixed {
+        content: Vec<MixedContent>,
+    },
+    CustomUI {
+        ui: Box<CustomUI>,
+    },
+    Table {
+        columns: Vec<Row>,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -235,8 +241,12 @@ pub enum MixedContent {
         #[cfg_attr(feature = "type", specta(optional))]
         style: Option<TextStyle>,
     },
-    CustomUI { ui: Box<CustomUI> },
-    Table { columns: Vec<Row> },
+    CustomUI {
+        ui: Box<CustomUI>,
+    },
+    Table {
+        columns: Vec<Row>,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque

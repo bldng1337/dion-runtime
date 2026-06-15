@@ -97,13 +97,9 @@ fn ensure_java_home() -> Result<()> {
 fn search_java_installations() -> Option<PathBuf> {
     let candidates = discover_java_candidates();
 
-    for candidate in candidates {
-        if find_jvm_library(&candidate).is_some() {
-            return Some(candidate);
-        }
-    }
-
-    None
+    candidates
+        .into_iter()
+        .find(|candidate| find_jvm_library(candidate).is_some())
 }
 
 /// Generate a list of candidate Java installation directories to search.
@@ -112,7 +108,8 @@ fn discover_java_candidates() -> Vec<PathBuf> {
 
     if cfg!(windows) {
         // Program Files directories
-        let program_files = std::env::var("ProgramFiles").unwrap_or_else(|_| r"C:\Program Files".into());
+        let program_files =
+            std::env::var("ProgramFiles").unwrap_or_else(|_| r"C:\Program Files".into());
         let program_files_x86 =
             std::env::var("ProgramFiles(x86)").unwrap_or_else(|_| r"C:\Program Files (x86)".into());
 

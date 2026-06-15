@@ -56,9 +56,7 @@ sealed class AuthCreds with _$AuthCreds {
   const factory AuthCreds.cookies({
     required Map<String, List<String>> cookies,
   }) = AuthCreds_Cookies;
-  const factory AuthCreds.apiKey({
-    required String key,
-  }) = AuthCreds_ApiKey;
+  const factory AuthCreds.apiKey({required String key}) = AuthCreds_ApiKey;
   const factory AuthCreds.userPass({
     required String username,
     required String password,

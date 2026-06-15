@@ -63,7 +63,9 @@ class _ReloadPageState extends State<ReloadPage> {
                     Text('Reload', style: theme.textTheme.headlineSmall),
                     Text(
                       'Reload the extension to refresh its state',
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ],
                 ),

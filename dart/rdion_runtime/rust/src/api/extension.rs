@@ -5,7 +5,6 @@ use crate::api::ext_wrap::WrapperExtension;
 use anyhow::Result;
 
 use dion_extension::extension_manager::DionExtensionAdapter;
-use mihon_adapter::MihonAdapter;
 use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
@@ -26,6 +25,7 @@ use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
 use dion_runtime::extension::Adapter;
 pub use dion_runtime::extension::Extension;
+use mihon_adapter::MihonAdapter;
 
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;

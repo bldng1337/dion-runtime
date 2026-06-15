@@ -48,7 +48,9 @@ class _PlaygroundState extends State<Playground> {
   // Config controllers
   final _extensionDirController = TextEditingController();
   final _clientDirController = TextEditingController();
-  final _serverUrlController = TextEditingController(text: 'http://localhost:3010');
+  final _serverUrlController = TextEditingController(
+    text: 'http://localhost:3010',
+  );
 
   // Log
   final List<LogEntry> _log = [];
@@ -68,14 +70,20 @@ class _PlaygroundState extends State<Playground> {
     _NavItem('Activity', Icons.event, 'Report activity'),
     _NavItem('Settings', Icons.settings, 'View settings'),
     _NavItem('Reload', Icons.refresh, 'Reload extension'),
-    _NavItem('Repo Browser', Icons.cloud_download_outlined, 'Browse repositories'),
+    _NavItem(
+      'Repo Browser',
+      Icons.cloud_download_outlined,
+      'Browse repositories',
+    ),
     _NavItem('Log', Icons.article_outlined, 'Operation log'),
   ];
 
   rdion.ProxyExtension? get _ext =>
-      _extensions.isNotEmpty && _selectedExtensionIndex >= 0 && _selectedExtensionIndex < _extensions.length
-          ? _extensions[_selectedExtensionIndex]
-          : null;
+      _extensions.isNotEmpty &&
+          _selectedExtensionIndex >= 0 &&
+          _selectedExtensionIndex < _extensions.length
+      ? _extensions[_selectedExtensionIndex]
+      : null;
 
   late final PlaygroundController _controller = PlaygroundController(
     getExt: () => _ext,
@@ -118,35 +126,41 @@ class _PlaygroundState extends State<Playground> {
       final router = shelf_router.Router()
         ..get(
           "/getEntry",
-          (Request request) => Response.ok(const JsonEncoder().convert(
-            const rdion.EntryDetailed(
-              id: rdion.EntryId(uid: '', iddata: ''),
-              url: 'https://example.com/entry',
-              titles: ['Test Entry'],
-              mediaType: rdion.MediaType.audio,
-              status: rdion.ReleaseStatus.unknown,
-              description: 'Test description',
-              language: 'en',
-              episodes: [],
-            ).toJson(),
-          )),
+          (Request request) => Response.ok(
+            const JsonEncoder().convert(
+              const rdion.EntryDetailed(
+                id: rdion.EntryId(uid: '', iddata: ''),
+                url: 'https://example.com/entry',
+                titles: ['Test Entry'],
+                mediaType: rdion.MediaType.audio,
+                status: rdion.ReleaseStatus.unknown,
+                description: 'Test description',
+                language: 'en',
+                episodes: [],
+              ).toJson(),
+            ),
+          ),
         )
         ..get(
           "/getEntries",
-          (Request request) => Response.ok(const JsonEncoder().convert([
-            const rdion.Entry(
-              id: rdion.EntryId(uid: '', iddata: ''),
-              url: 'https://example.com/entry',
-              title: 'Test Entry',
-              mediaType: rdion.MediaType.audio,
-            ).toJson(),
-          ])),
+          (Request request) => Response.ok(
+            const JsonEncoder().convert([
+              const rdion.Entry(
+                id: rdion.EntryId(uid: '', iddata: ''),
+                url: 'https://example.com/entry',
+                title: 'Test Entry',
+                mediaType: rdion.MediaType.audio,
+              ).toJson(),
+            ]),
+          ),
         )
         ..get(
           "/getSource",
-          (Request request) => Response.ok(const JsonEncoder().convert(
-            const rdion.Source.epub(link: rdion.Link(url: '')).toJson(),
-          )),
+          (Request request) => Response.ok(
+            const JsonEncoder().convert(
+              const rdion.Source.epub(link: rdion.Link(url: '')).toJson(),
+            ),
+          ),
         );
 
       _testServer = await shelf_io.serve(
@@ -155,7 +169,8 @@ class _PlaygroundState extends State<Playground> {
         3010,
       );
       setState(() {
-        _serverUrlController.text = 'http://${_testServer!.address.address}:${_testServer!.port}';
+        _serverUrlController.text =
+            'http://${_testServer!.address.address}:${_testServer!.port}';
       });
       _logResponse('Server', 'Started at ${_serverUrlController.text}');
     } catch (e, st) {
@@ -185,7 +200,8 @@ class _PlaygroundState extends State<Playground> {
       final clientDir = _clientDirController.text.trim();
       final serverUrl = _serverUrlController.text.trim();
 
-      if (extensionDir.isEmpty) throw Exception('Extension directory is required');
+      if (extensionDir.isEmpty)
+        throw Exception('Extension directory is required');
       if (clientDir.isEmpty) throw Exception('Client directory is required');
 
       await Directory(extensionDir).create(recursive: true);
@@ -309,7 +325,8 @@ class _PlaygroundState extends State<Playground> {
       setState(() {
         _extensions.removeAt(_selectedExtensionIndex);
         _extensionNames.removeAt(_selectedExtensionIndex);
-        if (_selectedExtensionIndex >= _extensions.length && _selectedExtensionIndex > 0) {
+        if (_selectedExtensionIndex >= _extensions.length &&
+            _selectedExtensionIndex > 0) {
           _selectedExtensionIndex = _extensions.length - 1;
         }
       });
@@ -323,7 +340,14 @@ class _PlaygroundState extends State<Playground> {
 
   void _logResponse(String label, String message, {bool isError = false}) {
     setState(() {
-      _log.add(LogEntry(label: label, message: message, isError: isError, timestamp: DateTime.now()));
+      _log.add(
+        LogEntry(
+          label: label,
+          message: message,
+          isError: isError,
+          timestamp: DateTime.now(),
+        ),
+      );
     });
     _scrollLogToBottom();
   }
@@ -352,23 +376,35 @@ class _PlaygroundState extends State<Playground> {
       }
       if (result is rdion.EntryDetailedResult) {
         return const JsonEncoder.withIndent('  ').convert({
-          'settings': Map.fromEntries(result.settings.entries.map((e) => MapEntry(e.key, e.value.toJson()))),
+          'settings': Map.fromEntries(
+            result.settings.entries.map(
+              (e) => MapEntry(e.key, e.value.toJson()),
+            ),
+          ),
           'entry': result.entry.toJson(),
         });
       }
       if (result is rdion.SourceResult) {
         return const JsonEncoder.withIndent('  ').convert({
-          'settings': Map.fromEntries(result.settings.entries.map((e) => MapEntry(e.key, e.value.toJson()))),
+          'settings': Map.fromEntries(
+            result.settings.entries.map(
+              (e) => MapEntry(e.key, e.value.toJson()),
+            ),
+          ),
           'source': result.source.toJson(),
         });
       }
       if (result is Map) {
         return const JsonEncoder.withIndent('  ').convert(
-          Map.fromEntries(result.entries.map((e) => MapEntry(e.key, e.value?.toJson()))),
+          Map.fromEntries(
+            result.entries.map((e) => MapEntry(e.key, e.value?.toJson())),
+          ),
         );
       }
       if (result is List) {
-        return const JsonEncoder.withIndent('  ').convert(result.map((e) => e?.toJson()).toList());
+        return const JsonEncoder.withIndent(
+          '  ',
+        ).convert(result.map((e) => e?.toJson()).toList());
       }
       return result.toString();
     } catch (e) {
@@ -415,7 +451,11 @@ class _PlaygroundState extends State<Playground> {
                     border: const OutlineInputBorder(),
                     helperText: 'URL for the mock data server',
                     suffixIcon: _testServer != null
-                        ? const Icon(Icons.check_circle, color: Colors.green, size: 20)
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 20,
+                          )
                         : null,
                   ),
                 ),
@@ -450,7 +490,10 @@ class _PlaygroundState extends State<Playground> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Close'),
+          ),
         ],
       ),
     );
@@ -475,7 +518,10 @@ class _PlaygroundState extends State<Playground> {
           },
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
@@ -680,19 +726,25 @@ class _PlaygroundState extends State<Playground> {
             items: const [
               DropdownMenuItem(
                 value: AdapterType.dion,
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(Icons.extension, size: 18),
-                  SizedBox(width: 6),
-                  Text('Dion (Native)'),
-                ]),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.extension, size: 18),
+                    SizedBox(width: 6),
+                    Text('Dion (Native)'),
+                  ],
+                ),
               ),
               DropdownMenuItem(
                 value: AdapterType.mihon,
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(Icons.android, size: 18),
-                  SizedBox(width: 6),
-                  Text('Mihon (Tachiyomi)'),
-                ]),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.android, size: 18),
+                    SizedBox(width: 6),
+                    Text('Mihon (Tachiyomi)'),
+                  ],
+                ),
               ),
             ],
             onChanged: _isLoading
@@ -709,7 +761,11 @@ class _PlaygroundState extends State<Playground> {
           FilledButton.tonal(
             onPressed: _isLoading ? null : _initializeAdapter,
             child: _isLoading
-                ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
                 : const Text('Load'),
           ),
           if (!_isLoading && _adapter != null)
@@ -717,7 +773,11 @@ class _PlaygroundState extends State<Playground> {
           if (!_isLoading && _initError != null)
             Tooltip(
               message: 'Initialization failed',
-              child: Icon(Icons.error, color: theme.colorScheme.error, size: 20),
+              child: Icon(
+                Icons.error,
+                color: theme.colorScheme.error,
+                size: 20,
+              ),
             ),
         ],
       ),
@@ -738,7 +798,9 @@ class _PlaygroundState extends State<Playground> {
         padding: const EdgeInsets.all(12),
         child: Text(
           'Initialization failed: $_initError',
-          style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.error),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.error,
+          ),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
@@ -784,15 +846,23 @@ class _PlaygroundState extends State<Playground> {
               builder: (context, snap) {
                 final enabled = snap.data ?? false;
                 return Chip(
-                  label: Text(enabled ? 'Enabled' : 'Disabled', style: const TextStyle(fontSize: 11)),
-                  backgroundColor: enabled ? Colors.green[100] : Colors.red[100],
+                  label: Text(
+                    enabled ? 'Enabled' : 'Disabled',
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                  backgroundColor: enabled
+                      ? Colors.green[100]
+                      : Colors.red[100],
                   padding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,
                 );
               },
             ),
           ] else
-            Text('No extensions loaded — use Install or configure directory', style: theme.textTheme.bodyMedium),
+            Text(
+              'No extensions loaded — use Install or configure directory',
+              style: theme.textTheme.bodyMedium,
+            ),
           IconButton(
             icon: const Icon(Icons.add_circle_outline),
             tooltip: 'Install extension from URL/path',

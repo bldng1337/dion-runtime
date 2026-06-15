@@ -68,7 +68,9 @@ class _SearchPageState extends State<SearchPage> {
           const SizedBox(height: 8),
           Text(
             'Search for entries using a filter string',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(

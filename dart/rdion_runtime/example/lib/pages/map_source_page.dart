@@ -37,7 +37,9 @@ class _MapSourcePageState extends State<MapSourcePage> {
     widget.controller.log(label, 'Running...');
     try {
       final result = await ext.mapSource(
-        source: const rdion.Source.epub(link: rdion.Link(url: 'https://example.com/test.epub')),
+        source: const rdion.Source.epub(
+          link: rdion.Link(url: 'https://example.com/test.epub'),
+        ),
         epid: rdion.EpisodeId(uid: uid, iddata: 'test'),
         settings: {},
       );
@@ -71,7 +73,9 @@ class _MapSourcePageState extends State<MapSourcePage> {
           const SizedBox(height: 8),
           Text(
             'Map a source using the extension',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 16),
           Wrap(
@@ -92,7 +96,11 @@ class _MapSourcePageState extends State<MapSourcePage> {
               FilledButton.icon(
                 onPressed: _loading ? null : _run,
                 icon: _loading
-                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Icon(Icons.play_arrow),
                 label: const Text('Run'),
               ),

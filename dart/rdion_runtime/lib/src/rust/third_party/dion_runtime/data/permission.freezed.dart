@@ -12,7 +12,8 @@ part of 'permission.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$Permission {
@@ -22,16 +23,14 @@ mixin _$Permission {
     required TResult Function(List<String> domains) network,
     required TResult Function() actionPopup,
     required TResult Function() arbitraryNetwork,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String path, bool write)? storage,
     TResult? Function(List<String> domains)? network,
     TResult? Function()? actionPopup,
     TResult? Function()? arbitraryNetwork,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String path, bool write)? storage,
@@ -39,25 +38,22 @@ mixin _$Permission {
     TResult Function()? actionPopup,
     TResult Function()? arbitraryNetwork,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Permission_Storage value) storage,
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-        arbitraryNetwork,
-  }) =>
-      throw _privateConstructorUsedError;
+    arbitraryNetwork,
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Permission_Storage value)? storage,
     TResult? Function(Permission_Network value)? network,
     TResult? Function(Permission_ActionPopup value)? actionPopup,
     TResult? Function(Permission_ArbitraryNetwork value)? arbitraryNetwork,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Permission_Storage value)? storage,
@@ -65,15 +61,15 @@ mixin _$Permission {
     TResult Function(Permission_ActionPopup value)? actionPopup,
     TResult Function(Permission_ArbitraryNetwork value)? arbitraryNetwork,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $PermissionCopyWith<$Res> {
   factory $PermissionCopyWith(
-          Permission value, $Res Function(Permission) then) =
-      _$PermissionCopyWithImpl<$Res, Permission>;
+    Permission value,
+    $Res Function(Permission) then,
+  ) = _$PermissionCopyWithImpl<$Res, Permission>;
 }
 
 /// @nodoc
@@ -92,9 +88,10 @@ class _$PermissionCopyWithImpl<$Res, $Val extends Permission>
 
 /// @nodoc
 abstract class _$$Permission_StorageImplCopyWith<$Res> {
-  factory _$$Permission_StorageImplCopyWith(_$Permission_StorageImpl value,
-          $Res Function(_$Permission_StorageImpl) then) =
-      __$$Permission_StorageImplCopyWithImpl<$Res>;
+  factory _$$Permission_StorageImplCopyWith(
+    _$Permission_StorageImpl value,
+    $Res Function(_$Permission_StorageImpl) then,
+  ) = __$$Permission_StorageImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String path, bool write});
 }
@@ -103,28 +100,28 @@ abstract class _$$Permission_StorageImplCopyWith<$Res> {
 class __$$Permission_StorageImplCopyWithImpl<$Res>
     extends _$PermissionCopyWithImpl<$Res, _$Permission_StorageImpl>
     implements _$$Permission_StorageImplCopyWith<$Res> {
-  __$$Permission_StorageImplCopyWithImpl(_$Permission_StorageImpl _value,
-      $Res Function(_$Permission_StorageImpl) _then)
-      : super(_value, _then);
+  __$$Permission_StorageImplCopyWithImpl(
+    _$Permission_StorageImpl _value,
+    $Res Function(_$Permission_StorageImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? path = null,
-    Object? write = null,
-  }) {
-    return _then(_$Permission_StorageImpl(
-      path: null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      write: null == write
-          ? _value.write
-          : write // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+  $Res call({Object? path = null, Object? write = null}) {
+    return _then(
+      _$Permission_StorageImpl(
+        path: null == path
+            ? _value.path
+            : path // ignore: cast_nullable_to_non_nullable
+                  as String,
+        write: null == write
+            ? _value.write
+            : write // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
   }
 }
 
@@ -132,7 +129,7 @@ class __$$Permission_StorageImplCopyWithImpl<$Res>
 
 class _$Permission_StorageImpl extends Permission_Storage {
   const _$Permission_StorageImpl({required this.path, required this.write})
-      : super._();
+    : super._();
 
   @override
   final String path;
@@ -163,7 +160,9 @@ class _$Permission_StorageImpl extends Permission_Storage {
   @pragma('vm:prefer-inline')
   _$$Permission_StorageImplCopyWith<_$Permission_StorageImpl> get copyWith =>
       __$$Permission_StorageImplCopyWithImpl<_$Permission_StorageImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -209,7 +208,7 @@ class _$Permission_StorageImpl extends Permission_Storage {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-        arbitraryNetwork,
+    arbitraryNetwork,
   }) {
     return storage(this);
   }
@@ -242,9 +241,10 @@ class _$Permission_StorageImpl extends Permission_Storage {
 }
 
 abstract class Permission_Storage extends Permission {
-  const factory Permission_Storage(
-      {required final String path,
-      required final bool write}) = _$Permission_StorageImpl;
+  const factory Permission_Storage({
+    required final String path,
+    required final bool write,
+  }) = _$Permission_StorageImpl;
   const Permission_Storage._() : super._();
 
   String get path;
@@ -259,9 +259,10 @@ abstract class Permission_Storage extends Permission {
 
 /// @nodoc
 abstract class _$$Permission_NetworkImplCopyWith<$Res> {
-  factory _$$Permission_NetworkImplCopyWith(_$Permission_NetworkImpl value,
-          $Res Function(_$Permission_NetworkImpl) then) =
-      __$$Permission_NetworkImplCopyWithImpl<$Res>;
+  factory _$$Permission_NetworkImplCopyWith(
+    _$Permission_NetworkImpl value,
+    $Res Function(_$Permission_NetworkImpl) then,
+  ) = __$$Permission_NetworkImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<String> domains});
 }
@@ -270,23 +271,24 @@ abstract class _$$Permission_NetworkImplCopyWith<$Res> {
 class __$$Permission_NetworkImplCopyWithImpl<$Res>
     extends _$PermissionCopyWithImpl<$Res, _$Permission_NetworkImpl>
     implements _$$Permission_NetworkImplCopyWith<$Res> {
-  __$$Permission_NetworkImplCopyWithImpl(_$Permission_NetworkImpl _value,
-      $Res Function(_$Permission_NetworkImpl) _then)
-      : super(_value, _then);
+  __$$Permission_NetworkImplCopyWithImpl(
+    _$Permission_NetworkImpl _value,
+    $Res Function(_$Permission_NetworkImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? domains = null,
-  }) {
-    return _then(_$Permission_NetworkImpl(
-      domains: null == domains
-          ? _value._domains
-          : domains // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
+  $Res call({Object? domains = null}) {
+    return _then(
+      _$Permission_NetworkImpl(
+        domains: null == domains
+            ? _value._domains
+            : domains // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+      ),
+    );
   }
 }
 
@@ -294,8 +296,8 @@ class __$$Permission_NetworkImplCopyWithImpl<$Res>
 
 class _$Permission_NetworkImpl extends Permission_Network {
   const _$Permission_NetworkImpl({required final List<String> domains})
-      : _domains = domains,
-        super._();
+    : _domains = domains,
+      super._();
 
   final List<String> _domains;
   @override
@@ -329,7 +331,9 @@ class _$Permission_NetworkImpl extends Permission_Network {
   @pragma('vm:prefer-inline')
   _$$Permission_NetworkImplCopyWith<_$Permission_NetworkImpl> get copyWith =>
       __$$Permission_NetworkImplCopyWithImpl<_$Permission_NetworkImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -375,7 +379,7 @@ class _$Permission_NetworkImpl extends Permission_Network {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-        arbitraryNetwork,
+    arbitraryNetwork,
   }) {
     return network(this);
   }
@@ -424,9 +428,9 @@ abstract class Permission_Network extends Permission {
 /// @nodoc
 abstract class _$$Permission_ActionPopupImplCopyWith<$Res> {
   factory _$$Permission_ActionPopupImplCopyWith(
-          _$Permission_ActionPopupImpl value,
-          $Res Function(_$Permission_ActionPopupImpl) then) =
-      __$$Permission_ActionPopupImplCopyWithImpl<$Res>;
+    _$Permission_ActionPopupImpl value,
+    $Res Function(_$Permission_ActionPopupImpl) then,
+  ) = __$$Permission_ActionPopupImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -434,9 +438,9 @@ class __$$Permission_ActionPopupImplCopyWithImpl<$Res>
     extends _$PermissionCopyWithImpl<$Res, _$Permission_ActionPopupImpl>
     implements _$$Permission_ActionPopupImplCopyWith<$Res> {
   __$$Permission_ActionPopupImplCopyWithImpl(
-      _$Permission_ActionPopupImpl _value,
-      $Res Function(_$Permission_ActionPopupImpl) _then)
-      : super(_value, _then);
+    _$Permission_ActionPopupImpl _value,
+    $Res Function(_$Permission_ActionPopupImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
@@ -506,7 +510,7 @@ class _$Permission_ActionPopupImpl extends Permission_ActionPopup {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-        arbitraryNetwork,
+    arbitraryNetwork,
   }) {
     return actionPopup(this);
   }
@@ -546,9 +550,9 @@ abstract class Permission_ActionPopup extends Permission {
 /// @nodoc
 abstract class _$$Permission_ArbitraryNetworkImplCopyWith<$Res> {
   factory _$$Permission_ArbitraryNetworkImplCopyWith(
-          _$Permission_ArbitraryNetworkImpl value,
-          $Res Function(_$Permission_ArbitraryNetworkImpl) then) =
-      __$$Permission_ArbitraryNetworkImplCopyWithImpl<$Res>;
+    _$Permission_ArbitraryNetworkImpl value,
+    $Res Function(_$Permission_ArbitraryNetworkImpl) then,
+  ) = __$$Permission_ArbitraryNetworkImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -556,9 +560,9 @@ class __$$Permission_ArbitraryNetworkImplCopyWithImpl<$Res>
     extends _$PermissionCopyWithImpl<$Res, _$Permission_ArbitraryNetworkImpl>
     implements _$$Permission_ArbitraryNetworkImplCopyWith<$Res> {
   __$$Permission_ArbitraryNetworkImplCopyWithImpl(
-      _$Permission_ArbitraryNetworkImpl _value,
-      $Res Function(_$Permission_ArbitraryNetworkImpl) _then)
-      : super(_value, _then);
+    _$Permission_ArbitraryNetworkImpl _value,
+    $Res Function(_$Permission_ArbitraryNetworkImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Permission
   /// with the given fields replaced by the non-null parameter values.
@@ -628,7 +632,7 @@ class _$Permission_ArbitraryNetworkImpl extends Permission_ArbitraryNetwork {
     required TResult Function(Permission_Network value) network,
     required TResult Function(Permission_ActionPopup value) actionPopup,
     required TResult Function(Permission_ArbitraryNetwork value)
-        arbitraryNetwork,
+    arbitraryNetwork,
   }) {
     return arbitraryNetwork(this);
   }

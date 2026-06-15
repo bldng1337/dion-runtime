@@ -22,10 +22,7 @@ class DropdownOption {
   final String label;
   final String value;
 
-  const DropdownOption({
-    required this.label,
-    required this.value,
-  });
+  const DropdownOption({required this.label, required this.value});
 
   @override
   int get hashCode => label.hashCode ^ value.hashCode;
@@ -78,28 +75,20 @@ class Setting {
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-enum SettingKind {
-  extension_,
-  search,
-  ;
-}
+enum SettingKind { extension_, search }
 
 @freezed
 sealed class SettingValue with _$SettingValue {
   const SettingValue._();
 
-  const factory SettingValue.string({
-    required String data,
-  }) = SettingValue_String;
-  const factory SettingValue.number({
-    required double data,
-  }) = SettingValue_Number;
-  const factory SettingValue.boolean({
-    required bool data,
-  }) = SettingValue_Boolean;
-  const factory SettingValue.stringList({
-    required List<String> data,
-  }) = SettingValue_StringList;
+  const factory SettingValue.string({required String data}) =
+      SettingValue_String;
+  const factory SettingValue.number({required double data}) =
+      SettingValue_Number;
+  const factory SettingValue.boolean({required bool data}) =
+      SettingValue_Boolean;
+  const factory SettingValue.stringList({required List<String> data}) =
+      SettingValue_StringList;
 }
 
 @freezed
@@ -112,13 +101,11 @@ sealed class SettingsUI with _$SettingsUI {
     required double max,
     required int step,
   }) = SettingsUI_Slider;
-  const factory SettingsUI.dropdown({
-    required List<DropdownOption> options,
-  }) = SettingsUI_Dropdown;
+  const factory SettingsUI.dropdown({required List<DropdownOption> options}) =
+      SettingsUI_Dropdown;
   const factory SettingsUI.multiDropdown({
     required List<DropdownOption> options,
   }) = SettingsUI_MultiDropdown;
-  const factory SettingsUI.customUi({
-    required CustomUI ui,
-  }) = SettingsUI_CustomUI;
+  const factory SettingsUI.customUi({required CustomUI ui}) =
+      SettingsUI_CustomUI;
 }

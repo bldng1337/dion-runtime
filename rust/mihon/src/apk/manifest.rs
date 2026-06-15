@@ -253,6 +253,12 @@ impl BinaryXmlParser {
     }
 }
 
+impl Default for BinaryXmlParser {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl XmlDocument {
     /// Find elements by name recursively
     pub fn find_elements(&self, name: &str) -> Vec<&XmlElement> {

@@ -72,7 +72,9 @@ class _BrowsePageState extends State<BrowsePage> {
           const SizedBox(height: 4),
           Text(
             'Browse entries from the extension catalog',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.outline),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.outline,
+            ),
           ),
           const SizedBox(height: 24),
           Wrap(
@@ -107,11 +109,7 @@ class _BrowsePageState extends State<BrowsePage> {
             ],
           ),
           const SizedBox(height: 16),
-          ResultCard(
-            result: _result,
-            isError: _isError,
-            isLoading: _loading,
-          ),
+          ResultCard(result: _result, isError: _isError, isLoading: _loading),
         ],
       ),
     );
