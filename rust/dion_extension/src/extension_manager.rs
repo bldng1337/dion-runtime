@@ -8,6 +8,7 @@ use anyhow::{Context, Result, anyhow, bail};
 use dion_runtime::{
     client_data::AdapterClient,
     data::{
+        auth::Account,
         extension::{ExtensionData, ExtensionType},
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         settings::{Setting, SettingKind},
@@ -54,7 +55,10 @@ pub struct ExtensionMetadata {
 
     pub api_version: String,
 
+    #[serde(default)]
     pub settings: HashMap<SettingKind, HashMap<String, Setting>>,
+    #[serde(default)]
+    pub accounts: Vec<Account>,
 }
 
 impl ExtensionMetadata {

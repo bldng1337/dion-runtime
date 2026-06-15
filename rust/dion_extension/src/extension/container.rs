@@ -74,7 +74,7 @@ impl DionExtension {
         });
         let proxy = manager.proxy.clone();
         let proxy_ref = ProxyExtensionRef::new(&proxy, Arc::downgrade(&data)).await;
-        let mut extension = Self {
+        let extension = Self {
             _proxy_ref: proxy_ref,
             data,
             path,
@@ -82,19 +82,25 @@ impl DionExtension {
         };
         // We should use into_iter to avoid clones but then we would need to remove the settings from the extension data, ideally we want to have another type of extension data for runtime that doesnt have the settings in it but then we would have the core extension data, the serialized extension data and the runtime extension data
 
-        extdata
-            .settings
-            .iter()
-            .try_for_each(|(setting_kind, settings)| {
-                settings.iter().try_for_each(|(name, def)| {
-                    extension
-                        .data
-                        .store
-                        .get_mut()
-                        .settings
-                        .merge_setting_definition(name.clone(), setting_kind, def.clone())
-                })
-            })?;
+        {
+            let mut store = extension.data.store.write().await;
+            extdata
+                .settings
+                .iter()
+                .try_for_each(|(setting_kind, settings)| {
+                    settings.iter().try_for_each(|(name, def)| {
+                        store.settings.merge_setting_definition(
+                            name.clone(),
+                            setting_kind,
+                            def.clone(),
+                        )
+                    })
+                })?;
+
+            for account in &extdata.accounts {
+                store.auth.merge_auth(account);
+            }
+        }
 
         Ok(extension)
     }
