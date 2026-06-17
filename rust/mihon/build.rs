@@ -32,14 +32,20 @@ fn main() {
 
     let compat_dir = Path::new(&manifest_dir).join("compat");
 
-    // Emit rerun-if-changed so cargo re-runs this script if the gradle file appears
+    // Emit rerun-if-changed so cargo re-runs this script if the gradle setup changes
     println!("cargo:rerun-if-changed=compat/build.gradle.kts");
+    println!("cargo:rerun-if-changed=compat/settings.gradle.kts");
+    println!("cargo:rerun-if-changed=compat/gradle.properties");
+    println!("cargo:rerun-if-changed=compat/gradlew");
+    println!("cargo:rerun-if-changed=compat/gradlew.bat");
+    println!("cargo:rerun-if-changed=compat/gradle/wrapper/gradle-wrapper.properties");
+    println!("cargo:rerun-if-changed=compat/gradle/wrapper/gradle-wrapper.jar");
 
     // Only try to build if the compat directory exists and has Gradle files
     if !compat_dir.join("build.gradle.kts").exists() {
         println!("cargo:warning=compat/build.gradle.kts not found, skipping JAR build");
         println!("cargo:warning=The embedded JAR will be a placeholder. Build the JAR with:");
-        println!("cargo:warning=  cd rust/mihon/compat && gradle shadowJar");
+        println!("cargo:warning=  cd rust/mihon/compat && ./gradlew shadowJar");
         write_placeholder(&output_jar);
         return;
     }
@@ -69,7 +75,6 @@ fn main() {
 
     // Rerun if source changes
     println!("cargo:rerun-if-changed=compat/src");
-    println!("cargo:rerun-if-changed=compat/build.gradle.kts");
 
     // Check if Gradle wrapper exists
     let gradle_wrapper = if cfg!(windows) {
@@ -135,7 +140,9 @@ fn main() {
                 println!("cargo:warning=Gradle not found on PATH. Install Gradle or add a Gradle wrapper.");
             }
             println!("cargo:warning=The embedded JAR will be a placeholder.");
-            println!("cargo:warning=To build manually: cd rust/mihon/compat && gradle shadowJar");
+            println!(
+                "cargo:warning=To build manually: cd rust/mihon/compat && ./gradlew shadowJar"
+            );
             write_placeholder(&output_jar);
         }
     }
