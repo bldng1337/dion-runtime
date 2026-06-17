@@ -79,8 +79,10 @@ object AndroidMihonBridge {
     const val METADATA_NSFW = "tachiyomi.extension.nsfw"
     const val METADATA_LIB_VERSION = "tachiyomi.extension.lib.version"
 
-    // Supported extension lib versions (must match desktop ExtensionLoader)
-    const val LIB_VERSION_MIN = 1.3
+    // Supported extension lib versions (must match desktop ExtensionLoader).
+    // 1.0 allows legacy extensions that predate the
+    // tachiyomi.extension.lib.version metadata.
+    const val LIB_VERSION_MIN = 1.0
     const val LIB_VERSION_MAX = 1.5
 
     /**
