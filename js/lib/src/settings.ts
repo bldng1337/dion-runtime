@@ -9,7 +9,7 @@ import { getSetting, registerSetting } from "setting";
 import { assertDefined } from "./asserts.js";
 import { logerr } from "./util.js";
 
-type Settingvalues = SettingValue extends { data: infer D } ? D : never;
+export type Settingvalues = SettingValue extends { data: infer D } ? D : never;
 
 type ExcludeLiteral<T> = T extends string
 	? string

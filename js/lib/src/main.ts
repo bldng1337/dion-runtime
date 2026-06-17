@@ -8,9 +8,8 @@ import type {
 	EventData,
 	EventResult,
 } from "@dion-js/runtime-types/runtime";
-import type { Settingvalues } from "setting";
 import type { AuthAccount } from "./auth.ts";
-import type { ExtensionSetting } from "./settings.js";
+import type { ExtensionSetting, Settingvalues } from "./settings.js";
 
 type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably not really better than casting to any
 export abstract class DionExtension implements Extension {
