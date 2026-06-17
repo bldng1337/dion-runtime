@@ -139,26 +139,48 @@ impl MihonAdapter {
     /// The MIHON_COMPAT_JAR environment variable can override this behavior.
     #[cfg(not(target_os = "android"))]
     async fn ensure_compat_jar(target_path: &Path) -> Result<()> {
-        // If target already exists and is a valid JAR, use it
-        if target_path.exists() {
-            let meta = tokio::fs::metadata(target_path).await?;
-            if meta.len() > 1000 {
-                // More than just a placeholder
+        // Compile-time digest of the embedded JAR (length + FNV-1a checksum),
+        // emitted by build.rs. Comparing this against a sidecar written next to
+        // the extracted JAR lets us detect a stale on-disk copy and re-extract
+        // the newly embedded JAR after a rebuild. The previous implementation
+        // only checked that the file was larger than 1000 bytes, so an updated
+        // binary would keep running the old Kotlin code forever.
+        let embedded_len: usize = env!("MIHON_COMPAT_JAR_LEN")
+            .parse()
+            .expect("MIHON_COMPAT_JAR_LEN must be set by build script");
+        let embedded_checksum = u64::from_str_radix(env!("MIHON_COMPAT_JAR_CHECKSUM"), 16)
+            .expect("MIHON_COMPAT_JAR_CHECKSUM must be set by build script");
+        let embedded_tag = format!("{}:{:016x}", embedded_len, embedded_checksum);
+
+        let sidecar = target_path.with_extension("version");
+
+        // --- MIHON_COMPAT_JAR environment override (development only) ---
+        // When the override is set, always (re)copy the external JAR unless the
+        // cached copy already came from the exact same path.
+        if let Ok(env_path) = std::env::var("MIHON_COMPAT_JAR") {
+            let env_tag = format!("env:{}", env_path);
+            if Self::sidecar_matches(&sidecar, &env_tag).await && target_path.exists() {
                 return Ok(());
             }
-        }
-
-        // Check environment variable override
-        if let Ok(env_path) = std::env::var("MIHON_COMPAT_JAR") {
             let path = PathBuf::from(&env_path);
             if path.exists() {
                 log::info!("Using mihon-compat.jar from MIHON_COMPAT_JAR: {:?}", path);
                 tokio::fs::copy(&path, target_path)
                     .await
                     .context("Failed to copy mihon-compat.jar from MIHON_COMPAT_JAR")?;
+                Self::write_sidecar(&sidecar, &env_tag).await?;
                 return Ok(());
             }
             log::warn!("MIHON_COMPAT_JAR set but file not found: {:?}", path);
+            // Fall through to embedded extraction below.
+        }
+
+        // --- Embedded JAR ---
+        // Reuse the cached copy only if its recorded digest matches the
+        // embedded one. A missing/old sidecar (e.g. after a rebuild, or when
+        // upgrading from a version that didn't write one) forces re-extraction.
+        if Self::sidecar_matches(&sidecar, &embedded_tag).await && target_path.exists() {
+            return Ok(());
         }
 
         // Verify embedded JAR is valid (starts with ZIP magic bytes PK\x03\x04)
@@ -172,16 +194,37 @@ impl MihonAdapter {
             );
         }
 
-        // Extract embedded JAR to target path
+        // Extract embedded JAR to target path, then write the sidecar *after*
+        // the JAR so a crash never leaves a sidecar pointing at a partial file.
         log::info!(
-            "Extracting embedded mihon-compat.jar ({} bytes) to {:?}",
+            "Extracting embedded mihon-compat.jar ({} bytes) to {:?} \
+             (cached copy was missing or stale)",
             MIHON_COMPAT_JAR.len(),
             target_path
         );
         tokio::fs::write(target_path, MIHON_COMPAT_JAR)
             .await
             .context("Failed to write embedded mihon-compat.jar")?;
+        Self::write_sidecar(&sidecar, &embedded_tag).await?;
 
+        Ok(())
+    }
+
+    /// Return true if the sidecar file's tag matches `expected`.
+    #[cfg(not(target_os = "android"))]
+    async fn sidecar_matches(sidecar: &Path, expected: &str) -> bool {
+        match tokio::fs::read_to_string(sidecar).await {
+            Ok(contents) => contents.trim() == expected,
+            Err(_) => false,
+        }
+    }
+
+    /// Write the digest tag to the sidecar file alongside the extracted JAR.
+    #[cfg(not(target_os = "android"))]
+    async fn write_sidecar(sidecar: &Path, tag: &str) -> Result<()> {
+        tokio::fs::write(sidecar, tag.as_bytes())
+            .await
+            .with_context(|| format!("Failed to write sidecar {:?}", sidecar))?;
         Ok(())
     }
 

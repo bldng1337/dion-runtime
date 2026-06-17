@@ -11,6 +11,7 @@
 //! is used instead), so the Gradle build is skipped entirely.
 
 use std::env;
+use std::io::Read;
 use std::path::Path;
 use std::process::Command;
 
@@ -69,6 +70,7 @@ fn main() {
             "cargo:warning=Using prebuilt mihon-compat.jar ({} bytes)",
             size
         );
+        emit_jar_digest(&output_jar);
         println!("cargo:rustc-cfg=mihon_compat_jar_available");
         return;
     }
@@ -108,6 +110,7 @@ fn main() {
                     "cargo:warning=mihon-compat.jar built successfully ({} bytes)",
                     size
                 );
+                emit_jar_digest(&output_jar);
                 println!("cargo:rustc-cfg=mihon_compat_jar_available");
             } else {
                 println!(
@@ -150,8 +153,6 @@ fn main() {
 
 /// Check if a file looks like a valid JAR (ZIP) file by checking magic bytes
 fn is_valid_jar(path: &Path) -> bool {
-    use std::io::Read;
-
     if let Ok(metadata) = std::fs::metadata(path) {
         // JAR must be at least 1KB (placeholder is ~11 bytes)
         if metadata.len() < 1024 {
@@ -172,4 +173,44 @@ fn is_valid_jar(path: &Path) -> bool {
 fn write_placeholder(output_path: &Path) {
     // Write a small invalid ZIP-like file that will be detected at runtime
     std::fs::write(output_path, b"placeholder").expect("Failed to write placeholder JAR");
+    // No valid JAR available: emit zero values so the runtime staleness
+    // check does not treat a stale cached JAR as current.
+    emit_no_jar_digest();
+}
+
+/// Compute a FNV-1a 64-bit checksum over the given bytes.
+///
+/// This is not cryptographically secure, but it is fully deterministic and
+/// collision-resistant enough to detect when an embedded JAR has been replaced
+/// with a different build (the runtime use case for `ensure_compat_jar`).
+fn fnv1a_64(data: &[u8]) -> u64 {
+    let mut hash: u64 = 0xcbf29ce484222325;
+    for &b in data {
+        hash ^= u64::from(b);
+        hash = hash.wrapping_mul(0x100000001b3);
+    }
+    hash
+}
+
+/// Emit the embedded JAR's length + checksum as compile-time env vars so the
+/// runtime can detect whether the on-disk cached JAR is stale.
+fn emit_jar_digest(jar_path: &Path) {
+    let (len, checksum) = match std::fs::read(jar_path) {
+        Ok(bytes) => (bytes.len(), fnv1a_64(&bytes)),
+        Err(_) => {
+            emit_no_jar_digest();
+            return;
+        }
+    };
+    println!("cargo:rustc-env=MIHON_COMPAT_JAR_LEN={}", len);
+    println!(
+        "cargo:rustc-env=MIHON_COMPAT_JAR_CHECKSUM={:016x}",
+        checksum
+    );
+}
+
+/// Emit digest values indicating no valid embedded JAR is available.
+fn emit_no_jar_digest() {
+    println!("cargo:rustc-env=MIHON_COMPAT_JAR_LEN=0");
+    println!("cargo:rustc-env=MIHON_COMPAT_JAR_CHECKSUM=0");
 }
