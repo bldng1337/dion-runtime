@@ -27,6 +27,19 @@ impl JvmHandle {
             .option(&classpath)
             // Increase heap size for extensions
             .option("-Xmx512m")
+            // Disable JVM bytecode verification.
+            //
+            // Extensions are loaded as JVM bytecode produced by dex2jar from the
+            // extension's Android DEX. dex2jar's output is occasionally missing
+            // stackmap frames that the JVM verifier requires (manifesting as
+            // `VerifyError: Expecting a stackmap frame at branch target ...`),
+            // which prevents otherwise-functional extensions from loading.
+            // Android's own runtime does not perform JVM-style bytecode
+            // verification on this code, and the extension classpath is already
+            // trusted (user-installed extension APKs converted by our loader),
+            // so disabling verification here aligns with the runtime's threat
+            // model and avoids rejecting extensions over dex2jar codegen quirks.
+            .option("-Xverify:none")
             .build()
             .context("Failed to build JVM args")?;
 

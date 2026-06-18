@@ -13,6 +13,7 @@ interface SManga {
     var status: Int
     var thumbnail_url: String?
     var initialized: Boolean
+    var update_strategy: UpdateStrategy
 
     companion object {
         const val UNKNOWN = 0
@@ -37,4 +38,5 @@ class SMangaImpl : SManga {
     override var status: Int = SManga.UNKNOWN
     override var thumbnail_url: String? = null
     override var initialized: Boolean = false
+    override var update_strategy: UpdateStrategy = UpdateStrategy.ALWAYS
 }

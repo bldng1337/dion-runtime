@@ -10,6 +10,9 @@ sealed class Filter<T>(val name: String, var state: T) {
     abstract class Text(name: String, state: String = "") : Filter<String>(name, state)
     abstract class CheckBox(name: String, state: Boolean = false) : Filter<Boolean>(name, state)
     abstract class TriState(name: String, state: Int = STATE_IGNORE) : Filter<Int>(name, state) {
+        fun isIncluded(): Boolean = state == STATE_INCLUDE
+        fun isExcluded(): Boolean = state == STATE_EXCLUDE
+        fun isIgnored(): Boolean = state == STATE_IGNORE
         companion object {
             const val STATE_IGNORE = 0
             const val STATE_INCLUDE = 1
@@ -27,13 +30,13 @@ sealed class Filter<T>(val name: String, var state: T) {
  * This is a data class that wraps a list of filters and delegates to it.
  */
 data class FilterList(val list: List<Filter<*>>) : List<Filter<*>> by list {
-    
+
     constructor(vararg fs: Filter<*>) : this(if (fs.isNotEmpty()) fs.asList() else emptyList())
-    
+
     override fun equals(other: Any?): Boolean {
         return false
     }
-    
+
     override fun hashCode(): Int {
         return list.hashCode()
     }

@@ -13,19 +13,35 @@ import java.util.TimeZone as JavaTimeZone
 
 /**
  * A SimpleDateFormat replacement that uses ICU4J for Android-compatible date parsing.
- * 
+ *
  * Android's SimpleDateFormat is based on ICU (International Components for Unicode),
  * which handles certain date patterns differently than the standard JDK implementation.
  * This class provides a drop-in replacement that uses ICU4J to match Android behavior.
- * 
+ *
  * The BytecodeEditor rewrites all references to java.text.SimpleDateFormat in extension
  * code to use this class instead.
  */
 class SimpleDateFormat : java.text.DateFormat {
-    
+
     private val icuFormat: com.ibm.icu.text.SimpleDateFormat
     private var pattern: String
-    
+
+    init {
+        // java.text.DateFormat's no-arg constructor leaves its protected
+        // `calendar` and `numberFormat` fields null, and several inherited
+        // methods dereference them (e.g. DateFormat.setTimeZone does
+        // `this.calendar.setTimeZone(zone)`). The real JDK SimpleDateFormat
+        // initializes them in its constructor; we do the same here so that
+        // inherited methods don't NPE.
+        //
+        // We call the superclass setters directly (`super.x`) to bypass our
+        // own overrides, which depend on `icuFormat` being assigned later in
+        // the secondary constructor body. This init block runs after
+        // super() and before that body.
+        super.setCalendar(java.util.Calendar.getInstance())
+        super.setNumberFormat(java.text.NumberFormat.getInstance())
+    }
+
     /**
      * Constructs a SimpleDateFormat using the default pattern and date format symbols
      * for the default locale.
@@ -35,7 +51,7 @@ class SimpleDateFormat : java.text.DateFormat {
         this.icuFormat = com.ibm.icu.text.SimpleDateFormat()
         syncTimeZone()
     }
-    
+
     /**
      * Constructs a SimpleDateFormat using the given pattern and the default date
      * format symbols for the default locale.
@@ -45,7 +61,7 @@ class SimpleDateFormat : java.text.DateFormat {
         this.icuFormat = com.ibm.icu.text.SimpleDateFormat(pattern)
         syncTimeZone()
     }
-    
+
     /**
      * Constructs a SimpleDateFormat using the given pattern and locale.
      */
@@ -54,7 +70,7 @@ class SimpleDateFormat : java.text.DateFormat {
         this.icuFormat = com.ibm.icu.text.SimpleDateFormat(pattern, locale)
         syncTimeZone()
     }
-    
+
     /**
      * Constructs a SimpleDateFormat using the given pattern and date format symbols.
      */
@@ -71,20 +87,20 @@ class SimpleDateFormat : java.text.DateFormat {
         this.icuFormat = com.ibm.icu.text.SimpleDateFormat(pattern, icuSymbols)
         syncTimeZone()
     }
-    
+
     private fun syncTimeZone() {
         val javaZone = JavaTimeZone.getDefault()
         icuFormat.timeZone = IcuTimeZone.getTimeZone(javaZone.id)
     }
-    
+
     override fun format(date: Date, toAppendTo: StringBuffer, fieldPosition: FieldPosition): StringBuffer {
         return icuFormat.format(date, toAppendTo, fieldPosition)
     }
-    
+
     override fun parse(source: String, pos: ParsePosition): Date? {
         return icuFormat.parse(source, pos)
     }
-    
+
     override fun parse(source: String): Date {
         val pos = ParsePosition(0)
         val result = icuFormat.parse(source, pos)
@@ -93,29 +109,29 @@ class SimpleDateFormat : java.text.DateFormat {
         }
         return result
     }
-    
+
     override fun formatToCharacterIterator(obj: Any): AttributedCharacterIterator {
         return icuFormat.formatToCharacterIterator(obj)
     }
-    
+
     override fun setTimeZone(zone: JavaTimeZone) {
         super.setTimeZone(zone)
         icuFormat.timeZone = IcuTimeZone.getTimeZone(zone.id)
     }
-    
+
     override fun getTimeZone(): JavaTimeZone {
         return JavaTimeZone.getTimeZone(icuFormat.timeZone.id)
     }
-    
+
     override fun setLenient(lenient: Boolean) {
         super.setLenient(lenient)
         icuFormat.isLenient = lenient
     }
-    
+
     override fun isLenient(): Boolean {
         return icuFormat.isLenient
     }
-    
+
     override fun setCalendar(newCalendar: java.util.Calendar) {
         super.setCalendar(newCalendar)
         val icuCalendar = Calendar.getInstance(
@@ -125,7 +141,7 @@ class SimpleDateFormat : java.text.DateFormat {
         icuCalendar.time = newCalendar.time
         icuFormat.calendar = icuCalendar
     }
-    
+
     override fun getCalendar(): java.util.Calendar {
         val icuCalendar = icuFormat.calendar
         val javaCalendar = java.util.Calendar.getInstance(
@@ -135,17 +151,17 @@ class SimpleDateFormat : java.text.DateFormat {
         javaCalendar.time = icuCalendar.time
         return javaCalendar
     }
-    
+
     /**
      * Returns the pattern string describing this date format.
      */
     fun toPattern(): String = icuFormat.toPattern()
-    
+
     /**
      * Returns a localized pattern string describing this date format.
      */
     fun toLocalizedPattern(): String = icuFormat.toLocalizedPattern()
-    
+
     /**
      * Applies the given pattern string to this date format.
      */
@@ -153,7 +169,7 @@ class SimpleDateFormat : java.text.DateFormat {
         this.pattern = pattern
         icuFormat.applyPattern(pattern)
     }
-    
+
     /**
      * Applies the given localized pattern string to this date format.
      */
@@ -161,7 +177,7 @@ class SimpleDateFormat : java.text.DateFormat {
         this.pattern = pattern
         icuFormat.applyLocalizedPattern(pattern)
     }
-    
+
     /**
      * Gets a copy of the date and time format symbols of this date format.
      */
@@ -176,7 +192,7 @@ class SimpleDateFormat : java.text.DateFormat {
         javaSymbols.eras = icuSymbols.eras
         return javaSymbols
     }
-    
+
     /**
      * Sets the date and time format symbols of this date format.
      */
@@ -190,7 +206,7 @@ class SimpleDateFormat : java.text.DateFormat {
         icuSymbols.eras = newFormatSymbols.eras
         icuFormat.dateFormatSymbols = icuSymbols
     }
-    
+
     /**
      * Sets the 100-year period 2-digit years will be interpreted as being in
      * to begin on the date the user specifies.
@@ -198,7 +214,7 @@ class SimpleDateFormat : java.text.DateFormat {
     fun set2DigitYearStart(startDate: Date) {
         icuFormat.set2DigitYearStart(startDate)
     }
-    
+
     /**
      * Returns the beginning date of the 100-year period 2-digit years are
      * interpreted as being within.
@@ -206,16 +222,16 @@ class SimpleDateFormat : java.text.DateFormat {
     fun get2DigitYearStart(): Date {
         return icuFormat.get2DigitYearStart()
     }
-    
+
     override fun clone(): Any {
         val clone = super.clone() as SimpleDateFormat
         return clone
     }
-    
+
     override fun hashCode(): Int {
         return icuFormat.hashCode()
     }
-    
+
     override fun equals(other: Any?): Boolean {
         if (other !is SimpleDateFormat) return false
         return icuFormat == other.icuFormat
