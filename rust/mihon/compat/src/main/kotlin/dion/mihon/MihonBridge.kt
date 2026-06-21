@@ -35,6 +35,23 @@ object MihonBridge {
     private val sourceManager = SourceManager()
 
     /**
+     * Format a bridge error message, prefixing the throwable's class name.
+     *
+     * Bridge methods are the JNI boundary: they `catch (e: Throwable)` so that
+     * `Error` subtypes (NoSuchMethodError, NoClassDefFoundError, LinkageError,
+     * ...) are captured and reported instead of escaping to the JNI layer as an
+     * opaque "Java exception was thrown". Including the fully-qualified class
+     * name in the message lets the Rust caller — and the integration test's
+     * `tolerate_only_network_errors` — classify the failure, e.g. flag a
+     * `NoSuchMethodError` as a compat bug rather than silently tolerating it.
+     * (`e.message` alone almost never contains the exception's class name, so
+     * without this prefix the code-error indicators in the test could never
+     * match.)
+     */
+    private fun formatError(e: Throwable): String =
+        e.javaClass.name + ": " + (e.message ?: "Unknown error")
+
+    /**
      * Initialize the bridge with extensions directory
      * @param extensionsDir Directory for storing converted JARs
      */
@@ -51,9 +68,9 @@ object MihonBridge {
             initializeInjekt(extDir)
 
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to initialize MihonBridge" }
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -108,9 +125,9 @@ object MihonBridge {
             logger.info { "Installing extension from: $apkPath" }
             val result = getLoader().install(apkPath)
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to install extension: $apkPath" }
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -128,9 +145,9 @@ object MihonBridge {
             sources.forEach { sourceManager.register(it) }
             logger.info { "Loaded ${sources.size} source(s) with IDs: ${sources.map { it.id }}" }
             json.encodeToString(SourceIdsResult(sources.map { it.id }))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to load extension: $jarPath" }
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -144,9 +161,9 @@ object MihonBridge {
             logger.info { "Unloading extension: $jarPath" }
             getLoader().unload(jarPath)
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to unload extension: $jarPath" }
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -160,9 +177,9 @@ object MihonBridge {
             logger.debug { "Unloading source: $sourceId" }
             sourceManager.unregister(sourceId)
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to unload source: $sourceId" }
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -178,8 +195,8 @@ object MihonBridge {
             val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
             json.encodeToString(SourceInfo.from(source))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -198,8 +215,8 @@ object MihonBridge {
                 else -> "unknown"
             }
             json.encodeToString(SourceTypeResult(type))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -213,8 +230,8 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val filters = source.getFilterList()
             json.encodeToString(filters.map { it.toDto() })
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -237,8 +254,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -262,8 +279,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -294,8 +311,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -319,8 +336,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -343,8 +360,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(ChapterListResult(result))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -369,8 +386,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(PageListResult(result))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -394,8 +411,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -420,8 +437,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -453,8 +470,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -479,8 +496,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -503,8 +520,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(EpisodeListResult(result))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 
@@ -527,8 +544,8 @@ object MihonBridge {
                 }
             }
             json.encodeToString(VideoListResult(result))
-        } catch (e: Exception) {
-            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
 }

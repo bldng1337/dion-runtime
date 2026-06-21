@@ -13,6 +13,7 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
+use anyhow::Context;
 use dion_runtime::client_data::{AdapterClient, ExtensionClient};
 use dion_runtime::data::{
     action::Action, extension::ExtensionData, permission::Permission, settings::SettingValue,
@@ -376,12 +377,38 @@ async fn run_extension_workflow(adapter: &MihonAdapter, apk_path: &Path) -> anyh
     Ok(())
 }
 
-#[tokio::test]
+#[test]
 #[cfg_attr(
     not(mihon_compat_jar_available),
     ignore = "mihon-compat.jar not built (Gradle unavailable); run: cd rust/mihon/compat && gradle shadowJar"
 )]
-async fn test_full_extension_workflow() -> anyhow::Result<()> {
+fn test_full_extension_workflow() -> anyhow::Result<()> {
+    // Run the workflow on a dedicated thread with a large stack.
+    //
+    // Extension execution reaches the JVM via JNI on this thread, and the
+    // call stack nests deeply: OkHttp's interceptor chain, RxJava Observable
+    // operators, and Kotlin coroutine suspend machinery all stack on top of the
+    // extension's own parsing logic. The default ~2 MB test-thread stack is not
+    // enough for some extensions (e.g. Jkanime), which then throw a
+    // `StackOverflowError`. A 16 MB stack gives the legitimately-deep — but
+    // finite — recursion room to complete. (The JVM-created worker threads are
+    // unaffected; this only sizes the thread that drives the JNI calls.)
+    std::thread::Builder::new()
+        .stack_size(16 * 1024 * 1024)
+        .spawn(test_full_extension_workflow_blocking)?
+        .join()
+        .map_err(|_| anyhow::anyhow!("test_full_extension_workflow worker thread panicked"))?
+}
+
+fn test_full_extension_workflow_blocking() -> anyhow::Result<()> {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .context("Failed to build tokio runtime")?
+        .block_on(test_full_extension_workflow_impl())
+}
+
+async fn test_full_extension_workflow_impl() -> anyhow::Result<()> {
     let apks = discover_test_apks();
     if apks.is_empty() {
         panic!(
