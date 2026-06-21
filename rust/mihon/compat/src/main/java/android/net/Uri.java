@@ -7,68 +7,131 @@ import java.util.List;
  * Minimal Uri stub.
  */
 public abstract class Uri {
-    
+
     public static final Uri EMPTY = new StringUri("");
-    
+
     public abstract String getScheme();
+
     public abstract String getSchemeSpecificPart();
+
     public abstract String getEncodedSchemeSpecificPart();
+
     public abstract String getAuthority();
+
     public abstract String getEncodedAuthority();
+
     public abstract String getUserInfo();
+
     public abstract String getEncodedUserInfo();
+
     public abstract String getHost();
+
     public abstract int getPort();
+
     public abstract String getPath();
+
     public abstract String getEncodedPath();
+
     public abstract String getQuery();
+
     public abstract String getEncodedQuery();
+
     public abstract String getFragment();
+
     public abstract String getEncodedFragment();
+
     public abstract List<String> getPathSegments();
+
     public abstract String getLastPathSegment();
-    
+
     public String getQueryParameter(String key) {
         return null;
     }
-    
+
+    /**
+     * Encodes a string for use in a URI. Characters that are unreserved
+     * (alphanumerics and {@code -_.~!*'()}) are left as-is; everything else is
+     * percent-encoded as UTF-8. Mirrors {@code android.net.Uri.encode(String)}.
+     */
+    public static String encode(String s) {
+        return encode(s, null);
+    }
+
+    /**
+     * Encodes {@code s}, additionally leaving every character in
+     * {@code allow} unencoded. A {@code null} allow-set encodes all reserved
+     * characters.
+     */
+    public static String encode(String s, String allow) {
+        if (s == null) {
+            return null;
+        }
+        // Pre-size the builder; encoded chars grow the output.
+        StringBuilder encoded = new StringBuilder(s.length() + 16);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (
+                (c >= 'A' && c <= 'Z') ||
+                (c >= 'a' && c <= 'z') ||
+                (c >= '0' && c <= '9') ||
+                "-_.~!*'()".indexOf(c) != -1 ||
+                (allow != null && allow.indexOf(c) != -1)
+            ) {
+                encoded.append(c);
+            } else {
+                // Percent-encode as UTF-8.
+                for (byte b : String.valueOf(c).getBytes(
+                    java.nio.charset.StandardCharsets.UTF_8
+                )) {
+                    encoded.append('%');
+                    encoded.append(HEX[(b >> 4) & 0xF]);
+                    encoded.append(HEX[b & 0xF]);
+                }
+            }
+        }
+        return encoded.toString();
+    }
+
+    private static final char[] HEX = "0123456789ABCDEF".toCharArray();
+
     public static Uri parse(String uriString) {
         return new StringUri(uriString);
     }
-    
+
     public static Uri fromFile(File file) {
         return new StringUri("file://" + file.getAbsolutePath());
     }
-    
+
     public Builder buildUpon() {
         return new Builder();
     }
-    
+
     // Simple string-based Uri implementation
     private static class StringUri extends Uri {
+
         private final String mUri;
-        
+
         StringUri(String uri) {
             mUri = uri != null ? uri : "";
         }
-        
+
         @Override
         public String getScheme() {
             int sep = mUri.indexOf(':');
             return sep > 0 ? mUri.substring(0, sep) : null;
         }
-        
+
         @Override
         public String getSchemeSpecificPart() {
             int sep = mUri.indexOf(':');
             return sep > 0 ? mUri.substring(sep + 1) : mUri;
         }
-        
+
         @Override
         public String getEncodedSchemeSpecificPart() {
             return getSchemeSpecificPart();
         }
-        
+
         @Override
         public String getAuthority() {
             String ssp = getSchemeSpecificPart();
@@ -78,12 +141,12 @@ public abstract class Uri {
             }
             return null;
         }
-        
+
         @Override
         public String getEncodedAuthority() {
             return getAuthority();
         }
-        
+
         @Override
         public String getUserInfo() {
             String auth = getAuthority();
@@ -93,12 +156,12 @@ public abstract class Uri {
             }
             return null;
         }
-        
+
         @Override
         public String getEncodedUserInfo() {
             return getUserInfo();
         }
-        
+
         @Override
         public String getHost() {
             String auth = getAuthority();
@@ -106,11 +169,13 @@ public abstract class Uri {
                 int at = auth.indexOf('@');
                 int start = at >= 0 ? at + 1 : 0;
                 int colon = auth.indexOf(':', start);
-                return colon >= 0 ? auth.substring(start, colon) : auth.substring(start);
+                return colon >= 0
+                    ? auth.substring(start, colon)
+                    : auth.substring(start);
             }
             return null;
         }
-        
+
         @Override
         public int getPort() {
             String auth = getAuthority();
@@ -126,7 +191,7 @@ public abstract class Uri {
             }
             return -1;
         }
-        
+
         @Override
         public String getPath() {
             String ssp = getSchemeSpecificPart();
@@ -134,45 +199,49 @@ public abstract class Uri {
                 int start = ssp.indexOf('/', 2);
                 if (start >= 0) {
                     int query = ssp.indexOf('?', start);
-                    return query >= 0 ? ssp.substring(start, query) : ssp.substring(start);
+                    return query >= 0
+                        ? ssp.substring(start, query)
+                        : ssp.substring(start);
                 }
                 return "";
             }
             int query = ssp.indexOf('?');
             return query >= 0 ? ssp.substring(0, query) : ssp;
         }
-        
+
         @Override
         public String getEncodedPath() {
             return getPath();
         }
-        
+
         @Override
         public String getQuery() {
             int query = mUri.indexOf('?');
             if (query >= 0) {
                 int frag = mUri.indexOf('#', query);
-                return frag >= 0 ? mUri.substring(query + 1, frag) : mUri.substring(query + 1);
+                return frag >= 0
+                    ? mUri.substring(query + 1, frag)
+                    : mUri.substring(query + 1);
             }
             return null;
         }
-        
+
         @Override
         public String getEncodedQuery() {
             return getQuery();
         }
-        
+
         @Override
         public String getFragment() {
             int frag = mUri.indexOf('#');
             return frag >= 0 ? mUri.substring(frag + 1) : null;
         }
-        
+
         @Override
         public String getEncodedFragment() {
             return getFragment();
         }
-        
+
         @Override
         public List<String> getPathSegments() {
             String path = getPath();
@@ -187,41 +256,44 @@ public abstract class Uri {
             }
             return segments;
         }
-        
+
         @Override
         public String getLastPathSegment() {
             List<String> segments = getPathSegments();
-            return segments.isEmpty() ? null : segments.get(segments.size() - 1);
+            return segments.isEmpty()
+                ? null
+                : segments.get(segments.size() - 1);
         }
-        
+
         @Override
         public String toString() {
             return mUri;
         }
     }
-    
+
     public static class Builder {
+
         private String scheme;
         private String authority;
         private String path;
         private String query;
         private String fragment;
-        
+
         public Builder scheme(String scheme) {
             this.scheme = scheme;
             return this;
         }
-        
+
         public Builder authority(String authority) {
             this.authority = authority;
             return this;
         }
-        
+
         public Builder path(String path) {
             this.path = path;
             return this;
         }
-        
+
         public Builder appendPath(String newSegment) {
             if (path == null) {
                 path = "/" + newSegment;
@@ -232,7 +304,7 @@ public abstract class Uri {
             }
             return this;
         }
-        
+
         public Builder appendQueryParameter(String key, String value) {
             if (query == null) {
                 query = key + "=" + value;
@@ -241,17 +313,17 @@ public abstract class Uri {
             }
             return this;
         }
-        
+
         public Builder query(String query) {
             this.query = query;
             return this;
         }
-        
+
         public Builder fragment(String fragment) {
             this.fragment = fragment;
             return this;
         }
-        
+
         public Uri build() {
             StringBuilder sb = new StringBuilder();
             if (scheme != null) {

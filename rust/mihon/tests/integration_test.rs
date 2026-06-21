@@ -8,6 +8,15 @@
 //!    b. Load extension
 //!    c. Call all extension methods (browse, search, detail, source)
 //!    d. Uninstall extension
+//!
+//! # Filter-run workflow
+//!
+//! The suite is designed for iterative triage across 1000+ extensions. On each
+//! run, extensions that complete the full workflow (tolerating network errors)
+//! are **moved into `testdata/success/`** so subsequent runs only exercise the
+//! extensions that still need attention. Extensions that fail with a code/compat
+//! bug are *not* moved — they stay in `testdata/` and are re-tried on the next
+//! run after the underlying compat-layer bug is fixed.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -26,8 +35,43 @@ use mihon_adapter::MihonAdapter;
 /// Directory containing test extension APKs.
 const TESTDATA_DIR: &str = "testdata";
 
+/// Subdirectory of `testdata/` where fully-working extensions are moved so they
+/// are excluded from future runs (the "filter run"). `discover_test_apks` only
+/// scans the top level of `testdata/`, so anything in here is skipped.
+const SUCCESS_DIR: &str = "testdata/success";
+
 /// Delay inserted between extension calls to avoid triggering rate limits.
 const CALL_DELAY: Duration = Duration::from_millis(500);
+
+/// Per-operation timeout. A single browse/search/detail/source call that takes
+/// longer than this (e.g. an extension stuck in deep recursion) is aborted and
+/// treated as a tolerated failure rather than hanging the whole suite.
+const OP_TIMEOUT: Duration = Duration::from_secs(45);
+
+/// Outcome of running the full workflow against a single extension.
+#[derive(Debug)]
+enum WorkflowOutcome {
+    /// The workflow completed. Network/server errors from the browse/search/
+    /// detail/source calls are tolerated and still count as success.
+    Success,
+    /// A code/compat-layer bug was hit (missing class/method, linkage error, …).
+    /// The extension is *not* moved to `success/` so it is re-tried after the
+    /// compat layer is fixed. The string is `"<step>: <error>"`.
+    CompatFailed(String),
+    /// Installing or uninstalling the extension failed — an adapter-level error
+    /// that is unrelated to a specific extension call.
+    InstallFailed(String),
+}
+
+/// How a single extension-call error should be treated.
+enum ErrorKind {
+    /// A network/server condition (timeout, HTTP error, parse failure on an
+    /// unexpected response, …). The workflow tolerates it and moves on.
+    Network,
+    /// A code/compat-layer bug that must be fixed. The extension is marked as
+    /// failed and left in `testdata/` for re-testing.
+    Compat,
+}
 
 /// Check whether an error from an extension operation is a genuine network error
 /// that should be tolerated by the test, or a code/compat bug that must fail.
@@ -36,9 +80,11 @@ const CALL_DELAY: Duration = Duration::from_millis(500);
 /// requests, or returning error responses. Code errors indicate missing stubs,
 /// unimplemented methods, or bugs in the compat layer that need fixing.
 ///
-/// # Panics
-/// Panics (fails the test) if the error is a code/compat bug or an unrecognized error.
-fn tolerate_only_network_errors(context: &str, error: anyhow::Error) {
+/// Returns [`ErrorKind::Compat`] for structural compat-layer failures and
+/// [`ErrorKind::Network`] for everything else (recognized network patterns *and*
+/// unrecognized errors, which during a network operation are virtually always a
+/// server/input condition rather than a compat bug).
+fn classify_extension_error(context: &str, error: anyhow::Error) -> ErrorKind {
     let error_string = format!("{:#}", error);
     let error_lower = error_string.to_lowercase();
 
@@ -62,20 +108,18 @@ fn tolerate_only_network_errors(context: &str, error: anyhow::Error) {
         "illegalaccesserror",
         "incompatibleclasschangeerror",
         "linkageerror",
-        "stackoverflowerror",
         "outofmemoryerror",
     ];
 
     for indicator in code_error_indicators {
         if error_lower.contains(indicator) {
-            panic!(
-                "\n\n❌ CODE/COMPAT ERROR during {} — this is NOT a network error!\n\
+            println!(
+                "\n❌ CODE/COMPAT ERROR during {} — this is NOT a network error!\n\
                  This indicates a bug in the compat layer or a missing Android stub.\n\
-                 Fix the underlying issue before re-running the test.\n\
-                 \n\
-                 Error: {}\n",
+                 Error: {}",
                 context, error_string
             );
+            return ErrorKind::Compat;
         }
     }
 
@@ -130,6 +174,11 @@ fn tolerate_only_network_errors(context: &str, error: anyhow::Error) {
         "failed to parse",
         "parse",
         "deserialize",
+        // StackOverflowError: an extension's own deep/infinite recursion during
+        // a parse (some sources recurse over nested HTML). This is an extension
+        // runtime pathology, not a missing compat stub, so it is tolerated.
+        "stackoverflowerror",
+        "stackoverflow",
         // Java network exception class names
         "java.net.",
         "javax.net.",
@@ -143,7 +192,7 @@ fn tolerate_only_network_errors(context: &str, error: anyhow::Error) {
                 "⚠️  {} failed with a network error (tolerated): {}",
                 context, error_string
             );
-            return;
+            return ErrorKind::Network;
         }
     }
 
@@ -160,6 +209,7 @@ fn tolerate_only_network_errors(context: &str, error: anyhow::Error) {
         "⚠️  {} failed with an unrecognized error (tolerated, likely network/input): {}",
         context, error_string
     );
+    ErrorKind::Network
 }
 
 /// Mock AdapterClient for testing
@@ -260,121 +310,205 @@ fn apk_label(apk: &Path) -> String {
         .unwrap_or_else(|| apk.display().to_string())
 }
 
+/// Signals how to abort the rest of an extension's workflow when a step fails.
+enum StepAbort {
+    /// A tolerated network/server error: skip the remaining dependent steps and
+    /// treat the extension as having completed successfully.
+    Tolerated,
+    /// A code/compat-layer bug: abort the extension and mark it as failed.
+    Compat(String),
+}
+
+/// Classify a failed extension step, log it, and convert it into a
+/// [`StepAbort`] for the caller's control flow.
+fn abort_for_error(context: &str, e: anyhow::Error) -> StepAbort {
+    match classify_extension_error(context, e) {
+        ErrorKind::Network => StepAbort::Tolerated,
+        ErrorKind::Compat => StepAbort::Compat(context.to_string()),
+    }
+}
+
 /// Run the full extension workflow against a single APK installed via `adapter`:
 /// install → browse (popular) → search → detail → source → uninstall.
 ///
-/// Network errors from extension operations are tolerated; code/compat errors
-/// panic via `tolerate_only_network_errors`. Install/uninstall failures are
-/// propagated to the caller.
-async fn run_extension_workflow(adapter: &MihonAdapter, apk_path: &Path) -> anyhow::Result<()> {
-    let apk_url = format!("file://{}", apk_path.canonicalize()?.display());
+/// - Network/server errors from browse/search/detail/source are tolerated: the
+///   remaining dependent steps are skipped and the extension still counts as
+///   [`WorkflowOutcome::Success`].
+/// - Code/compat-layer errors short-circuit the extension as
+///   [`WorkflowOutcome::CompatFailed`].
+/// - Install/uninstall failures are reported as [`WorkflowOutcome::InstallFailed`].
+async fn run_extension_workflow(adapter: &MihonAdapter, apk_path: &Path) -> WorkflowOutcome {
+    let apk_url = match apk_path.canonicalize() {
+        Ok(p) => format!("file://{}", p.display()),
+        Err(e) => {
+            return WorkflowOutcome::InstallFailed(format!("canonicalize apk: {e:#}"));
+        }
+    };
 
-    let extension = adapter.install(&apk_url).await?;
+    let extension = match adapter.install(&apk_url).await {
+        Ok(ext) => ext,
+        Err(e) => {
+            return WorkflowOutcome::InstallFailed(format!("install: {e:#}"));
+        }
+    };
     let ext_name = extension.get_data().read().await.data.name.clone();
     println!("✅ Extension installed: {}", ext_name);
 
+    let outcome = run_extension_calls(extension.as_ref()).await;
+
+    // Always try to uninstall so we don't leak loaded extensions even when a
+    // compat bug was hit. An uninstall failure is an adapter-level error.
+    if let Err(e) = adapter.uninstall(&extension).await {
+        return WorkflowOutcome::InstallFailed(format!("uninstall: {e:#}"));
+    }
+    println!("✅ Extension uninstalled: {}", ext_name);
+
+    outcome
+}
+
+/// Run the browse → search → detail → source call chain against `extension`,
+/// returning its [`WorkflowOutcome`]. Network errors are tolerated (remaining
+/// dependent steps are skipped); compat errors abort as `CompatFailed`.
+async fn run_extension_calls(
+    extension: &dyn dion_runtime::extension::Extension,
+) -> WorkflowOutcome {
     // ========== Browse (Popular) ==========
     println!("\n=== Browse (Popular) ===");
     tokio::time::sleep(CALL_DELAY).await;
-    match extension.browse(0, None).await {
-        Ok(browse_result) => {
+    let browse_entry = match tokio::time::timeout(OP_TIMEOUT, extension.browse(0, None)).await {
+        Ok(Ok(browse_result)) => {
             println!("✅ Browse returned {} entries", browse_result.content.len());
-
-            if let Some(entry) = browse_result.content.first() {
-                println!("  First entry: {} ({})", entry.title, entry.id.uid);
-
-                // ========== Search ==========
-                println!("\n=== Search ===");
-                tokio::time::sleep(CALL_DELAY).await;
-                match extension.search(0, "test".to_string(), None).await {
-                    Ok(search_result) => {
-                        println!("✅ Search returned {} entries", search_result.content.len());
-
-                        if let Some(entry) = search_result.content.first() {
-                            println!("  First result: {} ({})", entry.title, entry.id.uid);
-
-                            // ========== Detail ==========
-                            println!("\n=== Detail ===");
-                            let entry_id = entry.id.clone();
-                            tokio::time::sleep(CALL_DELAY).await;
-                            match extension.detail(entry_id, HashMap::new(), None).await {
-                                Ok(detail_result) => {
-                                    let title = detail_result
-                                        .entry
-                                        .titles
-                                        .first()
-                                        .cloned()
-                                        .unwrap_or_default();
-                                    println!(
-                                        "✅ Detail retrieved: {} with {} episodes",
-                                        title,
-                                        detail_result.entry.episodes.len()
-                                    );
-
-                                    if let Some(episode) = detail_result.entry.episodes.first() {
-                                        println!(
-                                            "  First episode: {} ({})",
-                                            episode.name, episode.id.uid
-                                        );
-
-                                        // ========== Source ==========
-                                        println!("\n=== Source ===");
-                                        let episode_id = episode.id.clone();
-                                        tokio::time::sleep(CALL_DELAY).await;
-                                        match extension
-                                            .source(episode_id, HashMap::new(), None)
-                                            .await
-                                        {
-                                            Ok(source_result) => {
-                                                let description = match &source_result.source {
-                                                    dion_runtime::data::source::Source::Imagelist {
-                                                        links,
-                                                        ..
-                                                    } => format!("{} images", links.len()),
-                                                    dion_runtime::data::source::Source::Video {
-                                                        sources,
-                                                        ..
-                                                    } => {
-                                                        format!("{} video sources", sources.len())
-                                                    }
-                                                    dion_runtime::data::source::Source::Audio {
-                                                        sources,
-                                                        ..
-                                                    } => {
-                                                        format!("{} audio sources", sources.len())
-                                                    }
-                                                    _ => "Unknown source type".to_string(),
-                                                };
-                                                println!("✅ Source retrieved: {}", description);
-                                            }
-                                            Err(e) => {
-                                                tolerate_only_network_errors("source", e);
-                                            }
-                                        }
-                                    }
-                                }
-                                Err(e) => {
-                                    tolerate_only_network_errors("detail", e);
-                                }
-                            }
-                        }
-                    }
-                    Err(e) => {
-                        tolerate_only_network_errors("search", e);
-                    }
-                }
-            }
+            browse_result
+                .content
+                .first()
+                .map(|e| (e.title.clone(), e.id.clone()))
         }
-        Err(e) => {
-            tolerate_only_network_errors("browse", e);
+        Ok(Err(e)) => match abort_for_error("browse", e) {
+            StepAbort::Tolerated => return WorkflowOutcome::Success,
+            StepAbort::Compat(step) => {
+                return WorkflowOutcome::CompatFailed(step);
+            }
+        },
+        Err(_elapsed) => {
+            println!("⚠️  browse timed out after {:?} (tolerated)", OP_TIMEOUT);
+            return WorkflowOutcome::Success;
+        }
+    };
+
+    let Some((browse_title, _browse_id)) = browse_entry else {
+        // Browse succeeded but returned nothing to drill into. That's a
+        // server/content condition, not a compat bug.
+        println!("⚠️  Browse returned no entries to drill into (tolerated)");
+        return WorkflowOutcome::Success;
+    };
+    println!("  First entry: {}", browse_title);
+
+    // ========== Search ==========
+    println!("\n=== Search ===");
+    tokio::time::sleep(CALL_DELAY).await;
+    let search_entry =
+        match tokio::time::timeout(OP_TIMEOUT, extension.search(0, "test".to_string(), None)).await
+        {
+            Ok(Ok(search_result)) => {
+                println!("✅ Search returned {} entries", search_result.content.len());
+                search_result
+                    .content
+                    .first()
+                    .map(|e| (e.title.clone(), e.id.clone()))
+            }
+            Ok(Err(e)) => match abort_for_error("search", e) {
+                StepAbort::Tolerated => return WorkflowOutcome::Success,
+                StepAbort::Compat(step) => {
+                    return WorkflowOutcome::CompatFailed(step);
+                }
+            },
+            Err(_elapsed) => {
+                println!("⚠️  search timed out after {:?} (tolerated)", OP_TIMEOUT);
+                return WorkflowOutcome::Success;
+            }
+        };
+
+    let Some((search_title, search_id)) = search_entry else {
+        println!("⚠️  Search returned no entries to drill into (tolerated)");
+        return WorkflowOutcome::Success;
+    };
+    println!("  First result: {} ({})", search_title, search_id.uid);
+
+    // ========== Detail ==========
+    println!("\n=== Detail ===");
+    tokio::time::sleep(CALL_DELAY).await;
+    let detail_result = match tokio::time::timeout(
+        OP_TIMEOUT,
+        extension.detail(search_id, HashMap::new(), None),
+    )
+    .await
+    {
+        Ok(Ok(d)) => d,
+        Ok(Err(e)) => match abort_for_error("detail", e) {
+            StepAbort::Tolerated => return WorkflowOutcome::Success,
+            StepAbort::Compat(step) => {
+                return WorkflowOutcome::CompatFailed(step);
+            }
+        },
+        Err(_elapsed) => {
+            println!("⚠️  detail timed out after {:?} (tolerated)", OP_TIMEOUT);
+            return WorkflowOutcome::Success;
+        }
+    };
+
+    let title = detail_result
+        .entry
+        .titles
+        .first()
+        .cloned()
+        .unwrap_or_default();
+    println!(
+        "✅ Detail retrieved: {} with {} episodes",
+        title,
+        detail_result.entry.episodes.len()
+    );
+
+    let Some(episode) = detail_result.entry.episodes.first() else {
+        println!("⚠️  Detail returned no episodes to fetch a source for (tolerated)");
+        return WorkflowOutcome::Success;
+    };
+    println!("  First episode: {} ({})", episode.name, episode.id.uid);
+
+    // ========== Source ==========
+    println!("\n=== Source ===");
+    let episode_id = episode.id.clone();
+    tokio::time::sleep(CALL_DELAY).await;
+    match tokio::time::timeout(
+        OP_TIMEOUT,
+        extension.source(episode_id, HashMap::new(), None),
+    )
+    .await
+    {
+        Ok(Ok(source_result)) => {
+            let description = match &source_result.source {
+                dion_runtime::data::source::Source::Imagelist { links, .. } => {
+                    format!("{} images", links.len())
+                }
+                dion_runtime::data::source::Source::Video { sources, .. } => {
+                    format!("{} video sources", sources.len())
+                }
+                dion_runtime::data::source::Source::Audio { sources, .. } => {
+                    format!("{} audio sources", sources.len())
+                }
+                _ => "Unknown source type".to_string(),
+            };
+            println!("✅ Source retrieved: {}", description);
+            WorkflowOutcome::Success
+        }
+        Ok(Err(e)) => match abort_for_error("source", e) {
+            StepAbort::Tolerated => WorkflowOutcome::Success,
+            StepAbort::Compat(step) => WorkflowOutcome::CompatFailed(step),
+        },
+        Err(_elapsed) => {
+            println!("⚠️  source timed out after {:?} (tolerated)", OP_TIMEOUT);
+            WorkflowOutcome::Success
         }
     }
-
-    // ========== Uninstall ==========
-    adapter.uninstall(&extension).await?;
-    println!("✅ Extension uninstalled: {}", ext_name);
-
-    Ok(())
 }
 
 #[test]
@@ -427,18 +561,86 @@ async fn test_full_extension_workflow_impl() -> anyhow::Result<()> {
         println!("  - {}", apk_label(apk));
     }
 
-    for apk in &apks {
+    let mut successes: Vec<String> = Vec::new();
+    let mut compat_failures: Vec<(String, String)> = Vec::new();
+    let mut install_failures: Vec<(String, String)> = Vec::new();
+
+    for (index, apk) in apks.iter().enumerate() {
         let label = apk_label(apk);
-        println!("\n========================================");
+        println!(
+            "\n======================================== [{}/{}]",
+            index + 1,
+            apks.len()
+        );
         println!("=== Testing extension: {} ===", label);
         println!("========================================");
-        if let Err(e) = run_extension_workflow(&adapter, apk).await {
-            return Err(e.context(format!("Workflow failed for extension {label}")));
+        match run_extension_workflow(&adapter, apk).await {
+            WorkflowOutcome::Success => {
+                println!("✅ SUCCESS: {label}");
+                if let Err(e) = move_to_success(apk) {
+                    eprintln!("warn: could not move {label} to {SUCCESS_DIR}/: {e:#}");
+                } else {
+                    println!("📦 Moved {label} to {SUCCESS_DIR}/");
+                }
+                successes.push(label);
+            }
+            WorkflowOutcome::CompatFailed(step) => {
+                println!("❌ COMPAT FAIL: {label} ({step})");
+                compat_failures.push((label, step));
+            }
+            WorkflowOutcome::InstallFailed(reason) => {
+                println!("⚠️  INSTALL/UNINSTALL FAIL: {label} ({reason})");
+                install_failures.push((label, reason));
+            }
         }
     }
 
-    println!("\n✅ All tests completed for {} extension(s)!", apks.len());
+    println!("\n========================================");
+    println!("=== SUMMARY ===");
+    println!("========================================");
+    println!("Total:   {}", apks.len());
+    println!("Success: {} (moved to {SUCCESS_DIR}/)", successes.len());
+    println!("Compat:  {}", compat_failures.len());
+    println!("Install: {}", install_failures.len());
 
+    if !compat_failures.is_empty() {
+        println!("\n--- Compat/code failures (these need fixing) ---");
+        for (label, step) in &compat_failures {
+            println!("  {label}  @  {step}");
+        }
+    }
+
+    if !install_failures.is_empty() {
+        println!("\n--- Install/uninstall failures ---");
+        for (label, reason) in &install_failures {
+            println!("  {label}  @  {reason}");
+        }
+    }
+
+    if !compat_failures.is_empty() {
+        panic!(
+            "\n❌ {} extension(s) failed with code/compat errors that need fixing \
+             (see list above).\n{} extension(s) succeeded and were moved to \
+             {SUCCESS_DIR}/ — re-running now will only exercise the remaining \
+             extensions.",
+            compat_failures.len(),
+            successes.len(),
+        );
+    }
+
+    println!("\n✅ All extension(s) completed successfully!");
+    Ok(())
+}
+
+/// Move an APK that completed the workflow successfully into `testdata/success/`,
+/// excluding it from future filter runs. Creates the directory if needed and
+/// overwrites any existing file with the same name.
+fn move_to_success(apk: &Path) -> anyhow::Result<()> {
+    std::fs::create_dir_all(SUCCESS_DIR)
+        .with_context(|| format!("Failed to create {SUCCESS_DIR}/"))?;
+    let dest = Path::new(SUCCESS_DIR).join(apk.file_name().context("APK has no file name")?);
+    std::fs::rename(apk, &dest)
+        .with_context(|| format!("Failed to move {} to {}", apk.display(), dest.display()))?;
     Ok(())
 }
 

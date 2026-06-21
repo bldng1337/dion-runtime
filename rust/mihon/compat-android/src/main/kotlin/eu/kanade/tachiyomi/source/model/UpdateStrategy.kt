@@ -9,7 +9,7 @@ package eu.kanade.tachiyomi.source.model
  */
 enum class UpdateStrategy {
     /** Always update this manga when checking for library updates. */
-    ALWAYS,
+    ALWAYS_UPDATE,
 
     /** Only fetch the chapter list once; never automatically refresh it. */
     ONLY_FETCH_ONCE,

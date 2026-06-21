@@ -38,5 +38,5 @@ class SMangaImpl : SManga {
     override var status: Int = SManga.UNKNOWN
     override var thumbnail_url: String? = null
     override var initialized: Boolean = false
-    override var update_strategy: UpdateStrategy = UpdateStrategy.ALWAYS
+    override var update_strategy: UpdateStrategy = UpdateStrategy.ALWAYS_UPDATE
 }

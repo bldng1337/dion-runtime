@@ -16,6 +16,8 @@ public class WebSettings {
 
     public void setBlockNetworkLoads(boolean flag) {}
 
+    public void setLoadsImagesAutomatically(boolean flag) {}
+
     public void setDatabaseEnabled(boolean flag) {}
 
     public void setLoadWithOverviewMode(boolean flag) {}

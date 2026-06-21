@@ -24,14 +24,24 @@ public class WebView {
 
     public void addJavascriptInterface(Object object, String name) {}
 
+    public void removeJavascriptInterface(String name) {}
+
     public void loadUrl(String url) {}
 
-    public void loadUrl(String url, java.util.Map<String, String> additionalHttpHeaders) {}
+    public void loadUrl(
+        String url,
+        java.util.Map<String, String> additionalHttpHeaders
+    ) {}
 
     public void loadData(String data, String mimeType, String encoding) {}
 
     public void loadDataWithBaseURL(
-            String baseUrl, String data, String mimeType, String encoding, String historyUrl) {}
+        String baseUrl,
+        String data,
+        String mimeType,
+        String encoding,
+        String historyUrl
+    ) {}
 
     public void reload() {}
 
@@ -49,9 +59,14 @@ public class WebView {
         return null;
     }
 
-    public void evaluateJavascript(String script, ValueCallback<String> resultCallback) {}
+    public void evaluateJavascript(
+        String script,
+        ValueCallback<String> resultCallback
+    ) {}
 
     public void post(Runnable action) {}
+
+    public void setLayoutParams(android.view.ViewGroup.LayoutParams params) {}
 
     public void stopLoading() {}
 

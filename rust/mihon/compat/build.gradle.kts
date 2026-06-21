@@ -39,13 +39,17 @@ dependencies {
     implementation("com.squareup.okio:okio:3.9.0")
 
     // HTML parsing (JSoup - required by most extensions)
-    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.jsoup:jsoup:1.22.2")
 
     // org.json (Android's org.json API — JSONObject/JSONArray — used by many extensions)
     implementation("org.json:json:20240303")
 
     // ICU for Android-compatible date parsing
     implementation("com.ibm.icu:icu4j:75.1")
+
+    // Rhino: pure-Java JavaScript engine used to back the QuickJs bridge
+    // (some Tachiyomi extensions evaluate JS to decrypt URLs / bypass protection).
+    implementation("org.mozilla:rhino:1.7.15")
 
     // RxJava (some extensions use it)
     implementation("io.reactivex:rxjava:1.3.8")

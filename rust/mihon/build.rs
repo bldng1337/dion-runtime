@@ -16,6 +16,11 @@ use std::path::Path;
 use std::process::Command;
 
 fn main() {
+    // Declare the custom cfg set below so rustc's `unexpected_cfgs` lint knows
+    // about it (instead of warning at every use site).
+    println!("cargo::rustc-check-cfg=cfg(mihon_compat_jar_available)");
+    println!("cargo::rustc-check-cfg=cfg(mihon_android)");
+
     let out_dir = env::var("OUT_DIR").expect("OUT_DIR not set");
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set");
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap_or_default();
