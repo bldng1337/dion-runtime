@@ -172,8 +172,8 @@ impl Extension for MihonExtension {
         match self.source_type {
             MihonSourceType::Manga => {
                 let details = self.bridge.get_details(self.source_id, &entry_json)?;
-                let chapters = self.bridge.get_chapter_list(self.source_id, &entry_json)?;
-
+                let mut chapters = self.bridge.get_chapter_list(self.source_id, &entry_json)?;
+                chapters.reverse();
                 let detailed = details.into_entry_detailed(chapters, MediaType::Comic);
                 Ok(EntryDetailedResult {
                     entry: detailed,
@@ -182,7 +182,8 @@ impl Extension for MihonExtension {
             }
             MihonSourceType::Anime => {
                 let details = self.bridge.get_anime_details(self.source_id, &entry_json)?;
-                let episodes = self.bridge.get_episode_list(self.source_id, &entry_json)?;
+                let mut episodes = self.bridge.get_episode_list(self.source_id, &entry_json)?;
+                episodes.reverse();
 
                 // Anime episodes share the same JSON shape as manga chapters
                 // (url/name/dateUpload/scanlator), so we reuse ChapterDto's
