@@ -4,6 +4,7 @@ import com.googlecode.d2j.dex.Dex2jar
 import com.googlecode.d2j.reader.MultiDexFileReader
 import com.googlecode.dex2jar.tools.BaksmaliBaseDexExceptionHandler
 import dion.mihon.dto.*
+import eu.kanade.tachiyomi.animesource.AnimeSourceFactory
 import eu.kanade.tachiyomi.source.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import net.dongliu.apk.parser.ApkFile
@@ -56,9 +57,14 @@ class ExtensionLoader(
         val manifestXml = apk.manifestXml
         val metaDataMap = parseMetaDataFromManifest(manifestXml)
 
-        // Extract extension class name from manifest
-        val className = metaDataMap[METADATA_SOURCE_CLASS]
-            ?: throw IllegalArgumentException("Missing $METADATA_SOURCE_CLASS meta-data in APK")
+        // Extract extension class name from manifest.
+        // Anime extensions use the `tachiyomi.animeextension.*` meta-data keys
+        // instead of the manga `tachiyomi.extension.*` keys, so we fall back
+        // to the anime keys when the manga keys are absent.
+        val isAnime = metaDataMap[METADATA_ANIME_SOURCE_CLASS] != null
+        val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+        val className = metaDataMap[classKey]
+            ?: throw IllegalArgumentException("Missing $classKey meta-data in APK")
 
         val fullClassName = if (className.startsWith(".")) {
             packageName + className
@@ -103,9 +109,12 @@ class ExtensionLoader(
             apk.close()
         }
 
-        // Extract metadata
-        val nsfw = metaDataMap[METADATA_NSFW] == "1"
-        val libVersion = metaDataMap[METADATA_LIB_VERSION] ?: "1.0"
+        // Extract metadata. Anime extensions use the `tachiyomi.animeextension.*`
+        // keys; manga extensions use `tachiyomi.extension.*`.
+        val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
+        val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
+        val nsfw = metaDataMap[nsfwKey]?.let { it == "1" || it.equals("true", ignoreCase = true) } ?: false
+        val libVersion = metaDataMap[libVersionKey] ?: "1.0"
 
         // Validate lib version for compatibility
         val libVersionNum = libVersion.substringBeforeLast('.').toDoubleOrNull()
@@ -302,12 +311,15 @@ class ExtensionLoader(
             val mainClass = Class.forName(className, false, classLoader)
             val instance = mainClass.getDeclaredConstructor().newInstance()
 
-            // Handle Source or SourceFactory
+            // Handle Source, SourceFactory, or AnimeSourceFactory.
+            // Anime extensions expose an AnimeSourceFactory (Aniyomi API);
+            // since AnimeSource extends Source, its sources are valid Sources.
             val sources = when (instance) {
+                is AnimeSourceFactory -> instance.createSources()
                 is SourceFactory -> instance.createSources()
                 is Source -> listOf(instance)
                 else -> throw IllegalArgumentException(
-                    "Extension class is not a Source or SourceFactory: ${instance.javaClass}"
+                    "Extension class is not a Source, SourceFactory, or AnimeSourceFactory: ${instance.javaClass}"
                 )
             }
 
@@ -367,6 +379,12 @@ class ExtensionLoader(
         const val METADATA_SOURCE_CLASS = "tachiyomi.extension.class"
         const val METADATA_NSFW = "tachiyomi.extension.nsfw"
         const val METADATA_LIB_VERSION = "tachiyomi.extension.lib.version"
+
+        // Anime extensions (Aniyomi) use a parallel set of meta-data keys under
+        // the `tachiyomi.animeextension` namespace.
+        const val METADATA_ANIME_SOURCE_CLASS = "tachiyomi.animeextension.class"
+        const val METADATA_ANIME_NSFW = "tachiyomi.animeextension.nsfw"
+        const val METADATA_ANIME_LIB_VERSION = "tachiyomi.animeextension.lib.version"
 
         // Supported extension lib versions (1.0 allows legacy
         // extensions that predate the tachiyomi.extension.lib.version metadata)

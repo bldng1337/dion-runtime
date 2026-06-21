@@ -100,7 +100,9 @@ impl MihonExtensionMetadata {
             .cloned()
             .unwrap_or_else(|| package.clone());
 
-        // Extract meta-data
+        // Extract meta-data. Anime extensions (Aniyomi) use the
+        // `tachiyomi.animeextension.*` keys instead of the manga
+        // `tachiyomi.extension.*` keys, so we check both.
         let mut entry_class = String::new();
         let mut nsfw = false;
         let mut lib_version = None;
@@ -119,17 +121,17 @@ impl MihonExtensionMetadata {
                     .unwrap_or("");
 
                 match name {
-                    "tachiyomi.extension.class" => {
+                    "tachiyomi.extension.class" | "tachiyomi.animeextension.class" => {
                         entry_class = if value.starts_with('.') {
                             format!("{}{}", package, value)
                         } else {
                             value.to_string()
                         };
                     }
-                    "tachiyomi.extension.nsfw" => {
+                    "tachiyomi.extension.nsfw" | "tachiyomi.animeextension.nsfw" => {
                         nsfw = value == "1" || value == "true";
                     }
-                    "tachiyomi.extension.lib.version" => {
+                    "tachiyomi.extension.lib.version" | "tachiyomi.animeextension.lib.version" => {
                         lib_version = value.parse().ok();
                     }
                     _ => {}

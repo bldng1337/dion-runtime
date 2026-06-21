@@ -1,6 +1,6 @@
 //! MihonExtension - Implements the Extension trait for a single Mihon source
 
-use anyhow::{bail, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 use dion_runtime::{
     client_data::ExtensionClient,
@@ -11,7 +11,8 @@ use dion_runtime::{
         extension::ExtensionData,
         settings::Setting,
         source::{
-            EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
+            EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, MediaType, Source,
+            SourceResult,
         },
     },
     extension::Extension,
@@ -122,9 +123,7 @@ impl Extension for MihonExtension {
         let mihon_page = page + 1;
         let result = match self.source_type {
             MihonSourceType::Manga => self.bridge.get_popular(self.source_id, mihon_page)?,
-            MihonSourceType::Anime => {
-                bail!("Anime not yet implemented")
-            }
+            MihonSourceType::Anime => self.bridge.get_popular_anime(self.source_id, mihon_page)?,
         };
 
         Ok(result.into_entry_list(self.source_type))
@@ -147,7 +146,8 @@ impl Extension for MihonExtension {
                     .search(self.source_id, mihon_page, &query, &filters_json)?
             }
             MihonSourceType::Anime => {
-                bail!("Anime not yet implemented")
+                self.bridge
+                    .search_anime(self.source_id, mihon_page, &query, &filters_json)?
             }
         };
 
@@ -174,14 +174,35 @@ impl Extension for MihonExtension {
                 let details = self.bridge.get_details(self.source_id, &entry_json)?;
                 let chapters = self.bridge.get_chapter_list(self.source_id, &entry_json)?;
 
-                let detailed = details.into_entry_detailed(chapters);
+                let detailed = details.into_entry_detailed(chapters, MediaType::Comic);
                 Ok(EntryDetailedResult {
                     entry: detailed,
                     settings,
                 })
             }
             MihonSourceType::Anime => {
-                bail!("Anime not yet implemented")
+                let details = self.bridge.get_anime_details(self.source_id, &entry_json)?;
+                let episodes = self.bridge.get_episode_list(self.source_id, &entry_json)?;
+
+                // Anime episodes share the same JSON shape as manga chapters
+                // (url/name/dateUpload/scanlator), so we reuse ChapterDto's
+                // conversion into dion Episodes by transmuting the fields.
+                let chapters: Vec<ChapterDto> = episodes
+                    .into_iter()
+                    .map(|e| ChapterDto {
+                        url: e.url,
+                        name: e.name,
+                        date_upload: e.date_upload,
+                        chapter_number: e.episode_number,
+                        scanlator: e.scanlator,
+                    })
+                    .collect();
+
+                let detailed = details.into_entry_detailed(chapters, MediaType::Video);
+                Ok(EntryDetailedResult {
+                    entry: detailed,
+                    settings,
+                })
             }
         }
     }
@@ -204,7 +225,12 @@ impl Extension for MihonExtension {
                 })
             }
             MihonSourceType::Anime => {
-                bail!("Anime not yet implemented")
+                let episode_json = serde_json::to_string(&EpisodeDto::from_episode_id(&epid))?;
+                let videos = self.bridge.get_video_list(self.source_id, &episode_json)?;
+                Ok(SourceResult {
+                    source: videos_to_source(videos),
+                    settings,
+                })
             }
         }
     }

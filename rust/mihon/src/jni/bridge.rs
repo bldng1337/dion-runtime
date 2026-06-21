@@ -269,6 +269,104 @@ impl MihonBridge {
         self.parse_result(&result)
     }
 
+    // ========== Anime Source Methods ==========
+
+    /// Get popular anime list
+    pub fn get_popular_anime(&self, source_id: i64, page: i32) -> Result<MangasPageDto> {
+        let result = self.call_bridge_method_long_int(
+            "getPopularAnime",
+            "(JI)Ljava/lang/String;",
+            source_id,
+            page,
+        )?;
+        self.parse_result(&result)
+    }
+
+    /// Get latest anime updates
+    #[allow(dead_code)]
+    pub fn get_latest_anime(&self, source_id: i64, page: i32) -> Result<MangasPageDto> {
+        let result = self.call_bridge_method_long_int(
+            "getLatestAnime",
+            "(JI)Ljava/lang/String;",
+            source_id,
+            page,
+        )?;
+        self.parse_result(&result)
+    }
+
+    /// Search anime
+    pub fn search_anime(
+        &self,
+        source_id: i64,
+        page: i32,
+        query: &str,
+        filters_json: &str,
+    ) -> Result<MangasPageDto> {
+        let mut env = self.jvm.attach_current_thread()?;
+
+        let class = Self::get_bridge_class(&mut env)?;
+
+        let query_str = env.new_string(query)?;
+        let filters_str = env.new_string(filters_json)?;
+
+        let query_obj: JObject = query_str.into();
+        let filters_obj: JObject = filters_str.into();
+
+        let result = env
+            .call_static_method(
+                &class,
+                "searchAnime",
+                "(JILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+                &[
+                    JValue::Long(source_id),
+                    JValue::Int(page),
+                    JValue::Object(&query_obj),
+                    JValue::Object(&filters_obj),
+                ],
+            )
+            .context("Failed to call searchAnime")?;
+
+        let jstring = JString::from(result.l()?);
+        let rust_string: String = env.get_string(&jstring)?.into();
+
+        self.parse_result(&rust_string)
+    }
+
+    /// Get anime details
+    pub fn get_anime_details(&self, source_id: i64, anime_json: &str) -> Result<MangaDto> {
+        let result = self.call_bridge_method_long_string(
+            "getAnimeDetails",
+            "(JLjava/lang/String;)Ljava/lang/String;",
+            source_id,
+            anime_json,
+        )?;
+        self.parse_result(&result)
+    }
+
+    /// Get episode list for anime
+    pub fn get_episode_list(&self, source_id: i64, anime_json: &str) -> Result<Vec<EpisodeDto>> {
+        let result = self.call_bridge_method_long_string(
+            "getEpisodeList",
+            "(JLjava/lang/String;)Ljava/lang/String;",
+            source_id,
+            anime_json,
+        )?;
+        let response: EpisodeListResult = self.parse_result(&result)?;
+        Ok(response.episodes)
+    }
+
+    /// Get video list for episode
+    pub fn get_video_list(&self, source_id: i64, episode_json: &str) -> Result<Vec<VideoDto>> {
+        let result = self.call_bridge_method_long_string(
+            "getVideoList",
+            "(JLjava/lang/String;)Ljava/lang/String;",
+            source_id,
+            episode_json,
+        )?;
+        let response: VideoListResult = self.parse_result(&result)?;
+        Ok(response.videos)
+    }
+
     // ========== Helper Methods ==========
 
     fn call_bridge_method_no_args(&self, method: &str, sig: &str) -> Result<String> {

@@ -5,7 +5,7 @@
 
 use dion_runtime::data::source::{
     Entry, EntryDetailed, EntryId, EntryList, Episode, EpisodeId, Link, MediaType, ReleaseStatus,
-    Source,
+    Source, StreamSource,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -105,6 +105,48 @@ pub struct PageDto {
     pub headers: Option<HashMap<String, String>>,
 }
 
+// ========== Anime DTOs ==========
+
+/// DTO for an anime episode. Mirrors the Kotlin `EpisodeDto` in `dion.mihon.dto`
+/// (which itself mirrors `SEpisode`). Structurally identical to [ChapterDto]
+/// except for the `episode_number` field name, so it serializes to/from the
+/// same JSON shape.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct EpisodeDto {
+    pub url: String,
+    pub name: String,
+    #[serde(rename = "dateUpload", default)]
+    pub date_upload: i64,
+    #[serde(rename = "episodeNumber", default)]
+    pub episode_number: f32,
+    #[serde(default)]
+    pub scanlator: Option<String>,
+}
+
+/// Wrapper for the JSON payload returned by `MihonBridge.getEpisodeList`.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EpisodeListResult {
+    pub episodes: Vec<EpisodeDto>,
+}
+
+/// DTO for a video stream returned by `MihonBridge.getVideoList`.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct VideoDto {
+    pub url: String,
+    #[serde(default)]
+    pub quality: Option<String>,
+    #[serde(rename = "videoUrl", default)]
+    pub video_url: Option<String>,
+    #[serde(default)]
+    pub headers: Option<HashMap<String, String>>,
+}
+
+/// Wrapper for the JSON payload returned by `MihonBridge.getVideoList`.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct VideoListResult {
+    pub videos: Vec<VideoDto>,
+}
+
 // ========== Filter DTOs ==========
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -158,7 +200,11 @@ impl MangaDto {
         }
     }
 
-    pub fn into_entry_detailed(self, chapters: Vec<ChapterDto>) -> EntryDetailed {
+    pub fn into_entry_detailed(
+        self,
+        chapters: Vec<ChapterDto>,
+        media_type: MediaType,
+    ) -> EntryDetailed {
         let status = match self.status {
             1 => ReleaseStatus::Releasing,
             2 => ReleaseStatus::Complete,
@@ -175,7 +221,7 @@ impl MangaDto {
             author: self.author.map(|a| vec![a]),
             ui: None,
             meta: None,
-            media_type: MediaType::Comic,
+            media_type,
             status,
             description: self.description.unwrap_or_default(),
             language: String::new(),
@@ -258,6 +304,77 @@ pub fn pages_to_source(pages: Vec<PageDto>) -> Source {
     Source::Imagelist {
         links: pages.into_iter().map(|p| p.into_link()).collect(),
         audio: None,
+    }
+}
+
+// ========== Anime Conversions ==========
+
+impl EpisodeDto {
+    /// Convert an [EpisodeDto] (from `MihonBridge.getEpisodeList`) into a
+    /// dion [Episode]. Behaves identically to [ChapterDto::into_episode] but
+    /// operates on the anime episode payload.
+    pub fn into_episode(self, _index: usize) -> Episode {
+        Episode {
+            id: EpisodeId {
+                uid: self.url.clone(),
+                iddata: None,
+            },
+            name: self.name,
+            description: self.scanlator,
+            url: self.url,
+            cover: None,
+            timestamp: if self.date_upload > 0 {
+                Some(self.date_upload.to_string())
+            } else {
+                None
+            },
+        }
+    }
+
+    /// Reconstruct a minimal [EpisodeDto] from an [EpisodeId] for the
+    /// `MihonBridge.getVideoList` round-trip. Only `url` is meaningful.
+    pub fn from_episode_id(id: &EpisodeId) -> Self {
+        Self {
+            url: id.uid.clone(),
+            name: String::new(),
+            date_upload: 0,
+            episode_number: 0.0,
+            scanlator: None,
+        }
+    }
+}
+
+impl VideoDto {
+    /// Convert a [VideoDto] into a [StreamSource] for the dion runtime.
+    ///
+    /// `video_url` (the resolved, directly playable stream URL) is preferred
+    /// when present; otherwise we fall back to `url` (the page/embed URL).
+    /// The `quality` label becomes the stream name, which the player surfaces
+    /// to the user when picking a source. Any HTTP headers attached to the
+    /// video (e.g. `Referer`, custom `User-Agent`) are propagated onto the
+    /// [Link] so the player can fetch the stream successfully.
+    pub fn into_stream_source(self) -> StreamSource {
+        StreamSource {
+            name: self.quality.unwrap_or_else(|| "Default".to_string()),
+            lang: String::new(),
+            url: Link {
+                url: self.video_url.unwrap_or(self.url),
+                header: self.headers,
+            },
+        }
+    }
+}
+
+/// Convert a list of videos into a [Source::Video] with no subtitle tracks.
+///
+/// Anime sources map naturally onto dion's [Source::Video] variant: each
+/// [VideoDto] becomes one [StreamSource] (e.g. one quality/server), and the
+/// subtitle list is left empty because Aniyomi-style sources do not emit
+/// separate subtitle tracks through `getVideoList`.
+pub fn videos_to_source(videos: Vec<VideoDto>) -> Source {
+    Source::Video {
+        sources: videos.into_iter().map(|v| v.into_stream_source()).collect(),
+        sub: Vec::new(),
     }
 }
 
@@ -357,7 +474,7 @@ mod tests {
             initialized: true,
         };
 
-        let detailed = manga.into_entry_detailed(Vec::new());
+        let detailed = manga.into_entry_detailed(Vec::new(), MediaType::Comic);
         let cover = detailed.cover.expect("cover should be present");
         assert_eq!(cover.header.as_ref(), Some(&headers));
     }

@@ -1,5 +1,9 @@
 package dion.mihon.dto
 
+import eu.kanade.tachiyomi.animesource.AnimeCatalogueSource
+import eu.kanade.tachiyomi.animesource.ConfigurableAnimeSource
+import eu.kanade.tachiyomi.animesource.model.*
+import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
 import eu.kanade.tachiyomi.source.*
 import eu.kanade.tachiyomi.source.model.*
 import eu.kanade.tachiyomi.source.online.HttpSource
@@ -71,14 +75,16 @@ data class SourceInfo(
     companion object {
         fun from(source: Source): SourceInfo {
             val catalogueSource = source as? CatalogueSource
+            val animeCatalogueSource = source as? AnimeCatalogueSource
             val httpSource = source as? HttpSource
+            val animeHttpSource = source as? AnimeHttpSource
             return SourceInfo(
                 id = source.id,
                 name = source.name,
                 lang = source.lang,
-                baseUrl = httpSource?.baseUrl,
-                supportsLatest = catalogueSource?.supportsLatest ?: false,
-                isConfigurable = source is ConfigurableSource
+                baseUrl = httpSource?.baseUrl ?: animeHttpSource?.baseUrl,
+                supportsLatest = catalogueSource?.supportsLatest ?: animeCatalogueSource?.supportsLatest ?: false,
+                isConfigurable = source is ConfigurableSource || source is ConfigurableAnimeSource
             )
         }
     }
@@ -121,6 +127,33 @@ data class PageDto(
     val url: String,
     val imageUrl: String? = null,
     val headers: Map<String, String>? = null
+)
+
+@Serializable
+data class VideoDto(
+    val url: String,
+    val quality: String? = null,
+    val videoUrl: String? = null,
+    val headers: Map<String, String>? = null
+)
+
+@Serializable
+data class VideoListResult(
+    val videos: List<VideoDto>
+)
+
+@Serializable
+data class EpisodeListResult(
+    val episodes: List<EpisodeDto>
+)
+
+@Serializable
+data class EpisodeDto(
+    val url: String,
+    val name: String,
+    val dateUpload: Long = 0,
+    val episodeNumber: Float = -1f,
+    val scanlator: String? = null
 )
 
 // ========== Filter DTOs ==========
@@ -242,6 +275,117 @@ fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<FilterDto>) {
                 is Filter.Header -> Unit
                 is Filter.Separator -> Unit
                 is Filter.Group<*> -> Unit
+            }
+        } catch (e: Exception) {
+            // Silently skip malformed filter state; the search will proceed with defaults
+        }
+    }
+}
+
+// ========== Anime Conversions ==========
+
+fun AnimesPage.toDto(thumbnailHeaders: Map<String, String>? = null): MangasPageDto = MangasPageDto(
+    mangas = animes.map { it.toDto(thumbnailHeaders) },
+    hasNextPage = hasNextPage
+)
+
+fun SAnime.toDto(thumbnailHeaders: Map<String, String>? = null): MangaDto = MangaDto(
+    url = url,
+    title = title,
+    artist = artist,
+    author = author,
+    description = description,
+    genre = genre,
+    status = status,
+    thumbnailUrl = thumbnail_url,
+    thumbnailHeaders = thumbnailHeaders,
+    initialized = initialized
+)
+
+fun MangaDto.toSAnime(): SAnime = SAnime.create().apply {
+    url = this@toSAnime.url
+    title = this@toSAnime.title
+    artist = this@toSAnime.artist
+    author = this@toSAnime.author
+    description = this@toSAnime.description
+    genre = this@toSAnime.genre
+    status = this@toSAnime.status
+    thumbnail_url = this@toSAnime.thumbnailUrl
+    initialized = this@toSAnime.initialized
+}
+
+fun SEpisode.toDto(): EpisodeDto = EpisodeDto(
+    url = url,
+    name = name,
+    dateUpload = date_upload,
+    episodeNumber = episode_number,
+    scanlator = scanlator
+)
+
+fun EpisodeDto.toSEpisode(): SEpisode = SEpisode.create().apply {
+    url = this@toSEpisode.url
+    name = this@toSEpisode.name
+    date_upload = this@toSEpisode.dateUpload
+    episode_number = this@toSEpisode.episodeNumber
+    scanlator = this@toSEpisode.scanlator
+}
+
+fun Video.toDto(): VideoDto = VideoDto(
+    url = url,
+    quality = quality,
+    videoUrl = videoUrl,
+    headers = headers?.toMultimap()?.mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+)
+
+fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
+    type = this::class.simpleName ?: "Unknown",
+    name = name,
+    state = when (this) {
+        is AnimeFilter.Header -> ""
+        is AnimeFilter.Separator -> ""
+        is AnimeFilter.Select<*> -> state.toString()
+        is AnimeFilter.Text -> state
+        is AnimeFilter.CheckBox -> state.toString()
+        is AnimeFilter.TriState -> state.toString()
+        is AnimeFilter.Sort -> {
+            val s = state
+            if (s != null) "${s.index};${s.ascending}" else ""
+        }
+        is AnimeFilter.Group<*> -> ""
+        else -> ""
+    }
+)
+
+/**
+ * Apply filter states from a list of [FilterDto] to a live anime filter list.
+ *
+ * Anime equivalent of [applyFilterStates]; filters are matched by [name] and
+ * their [FilterDto.state] string is parsed back into the concrete type.
+ */
+fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<FilterDto>) {
+    val stateMap = filterStates.associateBy { it.name }
+    for (filter in filters) {
+        val dto = stateMap[filter.name] ?: continue
+        try {
+            when (filter) {
+                is AnimeFilter.Text -> filter.state = dto.state
+                is AnimeFilter.CheckBox -> filter.state = dto.state.toBooleanStrictOrNull() ?: false
+                is AnimeFilter.TriState -> filter.state = dto.state.toIntOrNull() ?: 0
+                is AnimeFilter.Select<*> -> {
+                    val idx = dto.state.toIntOrNull() ?: 0
+                    if (idx in 0 until filter.values.size) {
+                        filter.state = idx
+                    }
+                }
+                is AnimeFilter.Sort -> {
+                    val parts = dto.state.split(";")
+                    val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                    val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
+                    filter.state = AnimeFilter.Sort.Selection(idx, asc)
+                }
+                is AnimeFilter.Header -> Unit
+                is AnimeFilter.Separator -> Unit
+                is AnimeFilter.Group<*> -> Unit
             }
         } catch (e: Exception) {
             // Silently skip malformed filter state; the search will proceed with defaults

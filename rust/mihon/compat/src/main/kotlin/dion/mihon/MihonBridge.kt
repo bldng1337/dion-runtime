@@ -4,6 +4,8 @@ import android.app.Application
 import dion.mihon.android.CustomContext
 import dion.mihon.android.FakeApplication
 import dion.mihon.dto.*
+import eu.kanade.tachiyomi.animesource.AnimeCatalogueSource
+import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
 import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.source.*
 import eu.kanade.tachiyomi.source.model.*
@@ -22,16 +24,16 @@ import java.io.File
  */
 object MihonBridge {
     private val logger = KotlinLogging.logger {}
-    
-    private val json = Json { 
-        ignoreUnknownKeys = true 
+
+    private val json = Json {
+        ignoreUnknownKeys = true
         encodeDefaults = true
         isLenient = true
     }
-    
+
     private var extensionLoader: ExtensionLoader? = null
     private val sourceManager = SourceManager()
-    
+
     /**
      * Initialize the bridge with extensions directory
      * @param extensionsDir Directory for storing converted JARs
@@ -40,44 +42,44 @@ object MihonBridge {
     fun initialize(extensionsDir: String): String {
         return try {
             logger.info { "Initializing MihonBridge with extensions dir: $extensionsDir" }
-            
+
             val extDir = File(extensionsDir)
             extensionLoader = ExtensionLoader(extDir)
-            
+
             // Initialize Injekt with an Application singleton
             // Extensions use Injekt.get<Application>() to get SharedPreferences
             initializeInjekt(extDir)
-            
+
             json.encodeToString(SuccessResult(true))
         } catch (e: Exception) {
             logger.error(e) { "Failed to initialize MihonBridge" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Initialize Injekt dependency injection with required singletons.
-     * 
+     *
      * Mihon extensions use Injekt.get<Application>() to access SharedPreferences.
      * We register a FakeApplication that wraps our CustomContext.
      */
     private fun initializeInjekt(extensionsDir: File) {
         logger.debug { "Initializing Injekt with FakeApplication" }
-        
+
         // Create a CustomContext for the global application
         val dataDir = File(extensionsDir, "data")
         dataDir.mkdirs()
         val context = CustomContext.getOrCreate("dion.mihon.global", dataDir)
-        
+
         // Create and register the FakeApplication
         val app = FakeApplication(context)
         Injekt.addSingleton<Application>(app)
-        
+
         // Create and register NetworkHelper
         // Extensions use network.client for HTTP requests
         val networkHelper = NetworkHelper(context)
         Injekt.addSingleton(networkHelper)
-        
+
         // Register Json instance for extensions that use Injekt.get<Json>()
         // Configuration matches the expected defaults from extensions-lib 16+
         val extensionJson = Json {
@@ -85,16 +87,16 @@ object MihonBridge {
             explicitNulls = false
         }
         Injekt.addSingleton(extensionJson)
-        
+
         logger.info { "Injekt initialized with FakeApplication, NetworkHelper, and Json (dataDir: $dataDir)" }
     }
-    
+
     private fun getLoader(): ExtensionLoader {
         return extensionLoader ?: throw IllegalStateException("MihonBridge not initialized. Call initialize() first.")
     }
-    
+
     // ========== Extension Lifecycle ==========
-    
+
     /**
      * Install extension: Convert APK to JAR
      * @param apkPath Path to the APK file
@@ -111,7 +113,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Load extension from JAR file
      * @param jarPath Path to the JAR file
@@ -131,7 +133,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Unload extension JAR and remove all its sources
      * @param jarPath Path to the JAR file
@@ -147,7 +149,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Unload a specific source
      * @param sourceId Source ID to unload
@@ -163,9 +165,9 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     // ========== Source Info ==========
-    
+
     /**
      * Get source metadata
      * @return JSON: SourceInfo { id, name, lang, baseUrl, supportsLatest, isConfigurable }
@@ -173,14 +175,14 @@ object MihonBridge {
     @JvmStatic
     fun getSourceInfo(sourceId: Long): String {
         return try {
-            val source = sourceManager.get(sourceId) 
+            val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
             json.encodeToString(SourceInfo.from(source))
         } catch (e: Exception) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get source type (manga or anime)
      * @return JSON: "manga" | "anime" | "unknown"
@@ -188,9 +190,10 @@ object MihonBridge {
     @JvmStatic
     fun getSourceType(sourceId: Long): String {
         return try {
-            val source = sourceManager.get(sourceId) 
+            val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
             val type = when (source) {
+                is AnimeCatalogueSource -> "anime"
                 is CatalogueSource -> "manga"
                 else -> "unknown"
             }
@@ -199,7 +202,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get filter list for source
      * @return JSON: List<FilterDto>
@@ -214,9 +217,9 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     // ========== Manga Source Methods ==========
-    
+
     /**
      * Get popular manga list
      * @return JSON: MangasPageDto { mangas, hasNextPage }
@@ -225,7 +228,7 @@ object MihonBridge {
     fun getPopular(sourceId: Long, page: Int): String {
         return try {
             val source = sourceManager.getCatalogue(sourceId)
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getPopularManga(page).toDto(thumbnailHeaders)
@@ -238,7 +241,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get latest manga updates
      * @return JSON: MangasPageDto
@@ -250,7 +253,7 @@ object MihonBridge {
             if (!source.supportsLatest) {
                 return json.encodeToString(ErrorResult("Source does not support latest"))
             }
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getLatestUpdates(page).toDto(thumbnailHeaders)
@@ -263,7 +266,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Search manga
      * @param filtersJson JSON-encoded filter state (empty string for defaults)
@@ -282,7 +285,7 @@ object MihonBridge {
                     logger.warn(e) { "Failed to parse filtersJson, using default filters" }
                 }
             }
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getSearchManga(page, query, filters).toDto(thumbnailHeaders)
@@ -295,7 +298,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get manga details
      * @param mangaJson JSON: MangaDto (must have url field)
@@ -307,7 +310,7 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getMangaDetails(manga).toDto(thumbnailHeaders)
@@ -320,7 +323,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get chapter list for manga
      * @param mangaJson JSON: MangaDto
@@ -332,7 +335,7 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     source.getChapterList(manga).map { it.toDto() }
                 } else {
@@ -344,7 +347,7 @@ object MihonBridge {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
-    
+
     /**
      * Get page list for chapter
      * @param chapterJson JSON: ChapterDto
@@ -356,7 +359,7 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val chapterDto = json.decodeFromString<ChapterDto>(chapterJson)
             val chapter = chapterDto.toSChapter()
-            val result = runBlocking { 
+            val result = runBlocking {
                 if (source is HttpSource) {
                     source.getPageList(chapter).map { page ->
                         page.toDto(headers = source.imageRequestHeaders(page))
@@ -366,6 +369,164 @@ object MihonBridge {
                 }
             }
             json.encodeToString(PageListResult(result))
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    // ========== Anime Source Methods ==========
+
+    /**
+     * Get popular anime list
+     * @return JSON: MangasPageDto { mangas, hasNextPage }
+     */
+    @JvmStatic
+    fun getPopularAnime(sourceId: Long, page: Int): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders = source.headers.toMultimap()
+                        .mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getPopularAnime(page).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get latest anime updates
+     * @return JSON: MangasPageDto
+     */
+    @JvmStatic
+    fun getLatestAnime(sourceId: Long, page: Int): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            if (!source.supportsLatest) {
+                return json.encodeToString(ErrorResult("Source does not support latest"))
+            }
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders = source.headers.toMultimap()
+                        .mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getLatestUpdates(page).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Search anime
+     * @param filtersJson JSON-encoded filter state (empty string for defaults)
+     * @return JSON: MangasPageDto
+     */
+    @JvmStatic
+    fun searchAnime(sourceId: Long, page: Int, query: String, filtersJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val filters = source.getFilterList()
+            if (filtersJson.isNotEmpty()) {
+                try {
+                    val filterStates = json.decodeFromString<List<FilterDto>>(filtersJson)
+                    applyAnimeFilterStates(filters, filterStates)
+                } catch (e: Exception) {
+                    logger.warn(e) { "Failed to parse filtersJson, using default filters" }
+                }
+            }
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders = source.headers.toMultimap()
+                        .mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getSearchAnime(page, query, filters).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get anime details
+     * @param animeJson JSON: MangaDto (must have url field)
+     * @return JSON: MangaDto (with all fields populated)
+     */
+    @JvmStatic
+    fun getAnimeDetails(sourceId: Long, animeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val animeDto = json.decodeFromString<MangaDto>(animeJson)
+            val anime = animeDto.toSAnime()
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders = source.headers.toMultimap()
+                        .mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getAnimeDetails(anime).toDto(thumbnailHeaders)
+                } else {
+                    animeDto
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get episode list for anime
+     * @param animeJson JSON: MangaDto
+     * @return JSON: EpisodeListResult { episodes: [...] }
+     */
+    @JvmStatic
+    fun getEpisodeList(sourceId: Long, animeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val animeDto = json.decodeFromString<MangaDto>(animeJson)
+            val anime = animeDto.toSAnime()
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    source.getEpisodeList(anime).map { it.toDto() }
+                } else {
+                    emptyList()
+                }
+            }
+            json.encodeToString(EpisodeListResult(result))
+        } catch (e: Exception) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get video list for episode
+     * @param episodeJson JSON: EpisodeDto
+     * @return JSON: VideoListResult { videos: [...] }
+     */
+    @JvmStatic
+    fun getVideoList(sourceId: Long, episodeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val episodeDto = json.decodeFromString<EpisodeDto>(episodeJson)
+            val episode = episodeDto.toSEpisode()
+            val result = runBlocking {
+                if (source is AnimeHttpSource) {
+                    source.getVideoList(episode).map { it.toDto() }
+                } else {
+                    emptyList()
+                }
+            }
+            json.encodeToString(VideoListResult(result))
         } catch (e: Exception) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
