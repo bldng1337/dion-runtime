@@ -17,6 +17,8 @@ import kotlinx.serialization.json.Json
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.addSingleton
 import java.io.File
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 
 /**
  * Apply filter states from a list of [FilterDto] to a live filter list obtained from a source.
@@ -39,12 +41,14 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
                         filter.state = idx
                     }
                 }
+
                 is Filter.Sort -> {
                     val parts = dto.state.split(";")
                     val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
                     val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
                     filter.state = Filter.Sort.Selection(idx, asc)
                 }
+
                 is Filter.Header -> Unit
                 is Filter.Separator -> Unit
                 is Filter.Group<*> -> Unit
@@ -54,6 +58,7 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
         }
     }
 }
+
 /**
  * Bridge class providing JNI-callable static methods for Rust.
  * Android implementation using native class loading instead of dex2jar.
@@ -75,6 +80,10 @@ object AndroidMihonBridge {
     private val classLoaders = mutableMapOf<String, ClassLoader>()
     private val jarToSourceIds = mutableMapOf<String, List<Long>>()
 
+    /** Extensions data directory (the Rust adapter's `jars` dir). Used to
+     *  persist extracted extension icons across restarts. */
+    private var extensionsDir: File? = null
+
     const val METADATA_SOURCE_CLASS = "tachiyomi.extension.class"
     const val METADATA_NSFW = "tachiyomi.extension.nsfw"
     const val METADATA_LIB_VERSION = "tachiyomi.extension.lib.version"
@@ -84,6 +93,21 @@ object AndroidMihonBridge {
     // tachiyomi.extension.lib.version metadata.
     const val LIB_VERSION_MIN = 1.0
     const val LIB_VERSION_MAX = 1.5
+
+    // Density ranking for Android resource qualifiers (higher = preferred).
+    // Used by [extractIcon] to pick the highest-resolution raster launcher
+    // icon available in the APK. `anydpi`/`nodpi` rank lowest because they
+    // frequently hold adaptive-icon XMLs rather than raster images.
+    private val ICON_DENSITY_RANK = mapOf(
+        "xxxhdpi" to 6,
+        "xxhdpi" to 5,
+        "xhdpi" to 4,
+        "hdpi" to 3,
+        "mdpi" to 2,
+        "ldpi" to 1,
+        "nodpi" to 0,
+        "anydpi" to 0
+    )
 
     /**
      * Set the Android context. Must be called before [initialize].
@@ -103,12 +127,13 @@ object AndroidMihonBridge {
      * Initialize the bridge with extensions directory.
      * On Android, this initializes Injekt with the real Application context.
      *
-     * @param extensionsDir Directory for storing extension data (unused on Android but kept for API compatibility)
+     * @param extensionsDir Directory for storing extension data (used to persist extracted icons)
      */
     @JvmStatic
     fun initialize(extensionsDir: String): String {
         return try {
             logger.info { "Initializing AndroidMihonBridge with extensions dir: $extensionsDir" }
+            this.extensionsDir = File(extensionsDir)
 
             val appContext = getContext()
 
@@ -155,6 +180,54 @@ object AndroidMihonBridge {
 
     private fun requireInitialized() {
         check(initialized) { "AndroidMihonBridge not initialized. Call initialize() first." }
+    }
+
+    /**
+     * Extract the extension's launcher icon from the APK and save it as a file.
+     *
+     * Scans the APK's `res/mipmap-*` and `res/drawable-*` entries for a raster
+     * `ic_launcher` image (PNG/WebP), preferring the highest available density.
+     * Adaptive-icon XMLs are skipped since the host image loader cannot render
+     * Android vector drawables.
+     *
+     * @return the absolute path to the saved icon file, or null if the APK
+     *   contained no extractable raster launcher icon.
+     */
+    private fun extractIcon(apkFile: File, packageName: String): String? {
+        val dir = extensionsDir ?: return null
+        val iconsDir = File(dir, "icons").apply { mkdirs() }
+
+        return ZipFile(apkFile).use { zip ->
+            var bestEntry: ZipEntry? = null
+            var bestRank = -1
+            var bestExt = "png"
+
+            val entries = zip.entries()
+            while (entries.hasMoreElements()) {
+                val entry = entries.nextElement()
+                if (entry.isDirectory) continue
+                val name = entry.name.lowercase()
+                if (!name.endsWith(".png") && !name.endsWith(".webp")) continue
+                if (!name.contains("ic_launcher")) continue
+                if (!name.startsWith("res/mipmap") && !name.startsWith("res/drawable")) continue
+
+                val density = ICON_DENSITY_RANK.keys.firstOrNull { name.contains("-$it") }
+                val rank = ICON_DENSITY_RANK[density] ?: 1
+                if (rank > bestRank) {
+                    bestRank = rank
+                    bestEntry = entry
+                    bestExt = if (name.endsWith(".webp")) "webp" else "png"
+                }
+            }
+
+            val entry = bestEntry ?: return@use null
+            val iconFile = File(iconsDir, "$packageName.$bestExt")
+            zip.getInputStream(entry).use { input ->
+                iconFile.outputStream().use { output -> input.copyTo(output) }
+            }
+            logger.debug { "Extracted icon for $packageName -> ${iconFile.absolutePath}" }
+            iconFile.absolutePath
+        }
     }
 
     // ========== Extension Lifecycle ==========
@@ -225,14 +298,24 @@ object AndroidMihonBridge {
             if (libVersionNum == null || libVersionNum < LIB_VERSION_MIN || libVersionNum > LIB_VERSION_MAX) {
                 throw IllegalArgumentException(
                     "Lib version is $libVersionNum, while only versions " +
-                        "$LIB_VERSION_MIN to $LIB_VERSION_MAX are allowed"
+                            "$LIB_VERSION_MIN to $LIB_VERSION_MAX are allowed"
                 )
             }
 
             val versionName = packageInfo.versionName ?: "1.0"
+
             @Suppress("DEPRECATION")
             val versionCode = packageInfo.versionCode ?: 1
             val label = packageInfo.applicationInfo?.loadLabel(pm)?.toString() ?: packageName
+
+            // Extract the extension's launcher icon from the APK so the host
+            // image loader can render it via a `file://` URL.
+            val iconPath = try {
+                extractIcon(apkFile, packageName)
+            } catch (e: Exception) {
+                logger.warn(e) { "Failed to extract icon for $packageName" }
+                null
+            }
 
             // On Android, the jarPath is the APK path itself (no conversion needed)
             val result = InstallResult(
@@ -245,7 +328,8 @@ object AndroidMihonBridge {
                     label = label,
                     nsfw = nsfw,
                     libVersion = libVersion
-                )
+                ),
+                iconPath = iconPath
             )
 
             logger.info { "Extension installed successfully: $packageName -> $apkPath" }
@@ -272,10 +356,10 @@ object AndroidMihonBridge {
 
             @Suppress("DEPRECATION")
             val flags = PackageManager.GET_META_DATA or
-                PackageManager.GET_CONFIGURATIONS or
-                PackageManager.GET_SIGNATURES or
-                (if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
-                    PackageManager.GET_SIGNING_CERTIFICATES else 0)
+                    PackageManager.GET_CONFIGURATIONS or
+                    PackageManager.GET_SIGNATURES or
+                    (if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
+                        PackageManager.GET_SIGNING_CERTIFICATES else 0)
 
             val installedPkgs = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                 pm.getInstalledPackages(PackageManager.PackageInfoFlags.of(flags.toLong()))
@@ -312,9 +396,17 @@ object AndroidMihonBridge {
                         val nsfw = metaData.getInt(METADATA_NSFW, 0) == 1
                         val libVersion = metaData.getString(METADATA_LIB_VERSION) ?: "1.0"
                         val versionName = pkgInfo.versionName ?: "1.0"
+
                         @Suppress("DEPRECATION")
                         val versionCode = pkgInfo.versionCode ?: 1
                         val label = appInfo.loadLabel(pm)?.toString() ?: packageName
+
+                        val iconPath = try {
+                            extractIcon(File(apkPath), packageName)
+                        } catch (e: Exception) {
+                            logger.warn(e) { "Failed to extract icon for $packageName" }
+                            null
+                        }
 
                         InstallResult(
                             jarPath = apkPath,
@@ -326,7 +418,8 @@ object AndroidMihonBridge {
                                 label = label,
                                 nsfw = nsfw,
                                 libVersion = libVersion
-                            )
+                            ),
+                            iconPath = iconPath
                         )
                     } catch (e: Exception) {
                         logger.warn(e) { "Failed to parse installed extension: ${pkgInfo.packageName}" }
@@ -524,7 +617,8 @@ object AndroidMihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getPopularManga(page).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -549,7 +643,8 @@ object AndroidMihonBridge {
             }
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getLatestUpdates(page).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -581,7 +676,8 @@ object AndroidMihonBridge {
             }
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getSearchManga(page, query, filters).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -606,7 +702,8 @@ object AndroidMihonBridge {
             val manga = mangaDto.toSManga()
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getMangaDetails(manga).toDto(thumbnailHeaders)
                 } else {
                     mangaDto

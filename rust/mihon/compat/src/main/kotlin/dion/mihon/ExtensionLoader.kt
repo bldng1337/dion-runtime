@@ -13,6 +13,7 @@ import java.io.FileOutputStream
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 import javax.xml.parsers.DocumentBuilderFactory
@@ -121,8 +122,18 @@ class ExtensionLoader(
         if (libVersionNum == null || libVersionNum < LIB_VERSION_MIN || libVersionNum > LIB_VERSION_MAX) {
             throw IllegalArgumentException(
                 "Lib version is $libVersionNum, while only versions " +
-                    "$LIB_VERSION_MIN to $LIB_VERSION_MAX are allowed"
+                        "$LIB_VERSION_MIN to $LIB_VERSION_MAX are allowed"
             )
+        }
+
+        // Extract the extension's launcher icon from the APK. The host image
+        // loader cannot resolve the legacy `mihon://icon/{id}` placeholder, so
+        // we extract a raster icon to a file and return its path instead.
+        val iconPath = try {
+            extractIcon(apkFile, packageName)
+        } catch (e: Exception) {
+            logger.warn(e) { "Failed to extract icon for $packageName" }
+            null
         }
 
         return InstallResult(
@@ -135,7 +146,8 @@ class ExtensionLoader(
                 label = manifest.label ?: packageName,
                 nsfw = nsfw,
                 libVersion = libVersion
-            )
+            ),
+            iconPath = iconPath
         )
     }
 
@@ -285,6 +297,53 @@ class ExtensionLoader(
     }
 
     /**
+     * Extract the extension's launcher icon from the APK and save it as a file.
+     *
+     * Scans the APK's `res/mipmap-*` and `res/drawable-*` entries for a raster
+     * `ic_launcher` image (PNG/WebP), preferring the highest available density.
+     * Adaptive-icon XMLs are skipped since the host image loader cannot render
+     * Android vector drawables.
+     *
+     * @return the absolute path to the saved icon file, or null if the APK
+     *   contained no extractable raster launcher icon.
+     */
+    private fun extractIcon(apkFile: File, packageName: String): String? {
+        val iconsDir = File(extensionsDir, "icons").apply { mkdirs() }
+
+        return ZipFile(apkFile).use { zip ->
+            var bestEntry: ZipEntry? = null
+            var bestRank = -1
+            var bestExt = "png"
+
+            val entries = zip.entries()
+            while (entries.hasMoreElements()) {
+                val entry = entries.nextElement()
+                if (entry.isDirectory) continue
+                val name = entry.name.lowercase()
+                if (!name.endsWith(".png") && !name.endsWith(".webp")) continue
+                if (!name.contains("ic_launcher")) continue
+                if (!name.startsWith("res/mipmap") && !name.startsWith("res/drawable")) continue
+
+                val density = ICON_DENSITY_RANK.keys.firstOrNull { name.contains("-$it") }
+                val rank = ICON_DENSITY_RANK[density] ?: 1
+                if (rank > bestRank) {
+                    bestRank = rank
+                    bestEntry = entry
+                    bestExt = if (name.endsWith(".webp")) "webp" else "png"
+                }
+            }
+
+            val entry = bestEntry ?: return@use null
+            val iconFile = File(iconsDir, "$packageName.$bestExt")
+            zip.getInputStream(entry).use { input ->
+                iconFile.outputStream().use { output -> input.copyTo(output) }
+            }
+            logger.debug { "Extracted icon for $packageName -> ${iconFile.absolutePath}" }
+            iconFile.absolutePath
+        }
+    }
+
+    /**
      * Load extension classes from JAR file
      *
      * @param jarPath Path to the JAR file
@@ -390,5 +449,20 @@ class ExtensionLoader(
         // extensions that predate the tachiyomi.extension.lib.version metadata)
         const val LIB_VERSION_MIN = 1.0
         const val LIB_VERSION_MAX = 1.5
+
+        // Density ranking for Android resource qualifiers (higher = preferred).
+        // Used by [extractIcon] to pick the highest-resolution raster launcher
+        // icon available in the APK. `anydpi`/`nodpi` rank lowest because they
+        // frequently hold adaptive-icon XMLs rather than raster images.
+        private val ICON_DENSITY_RANK = mapOf(
+            "xxxhdpi" to 6,
+            "xxhdpi" to 5,
+            "xhdpi" to 4,
+            "hdpi" to 3,
+            "mdpi" to 2,
+            "ldpi" to 1,
+            "nodpi" to 0,
+            "anydpi" to 0
+        )
     }
 }

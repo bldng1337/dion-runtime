@@ -44,7 +44,13 @@ data class PageListResult(
 data class InstallResult(
     val jarPath: String,
     val className: String,
-    val metadata: ExtensionMetadata
+    val metadata: ExtensionMetadata,
+    /**
+     * Absolute path to the extracted extension icon file, or null if the APK
+     * contained no extractable raster icon. The host builds a `file://` URL
+     * from this path so its image loader can render the icon.
+     */
+    val iconPath: String? = null
 )
 
 @Serializable
@@ -201,6 +207,7 @@ fun Filter<*>.toDto(): FilterDto = FilterDto(
             val s = state
             if (s != null) "${s.index};${s.ascending}" else ""
         }
+
         is Filter.Group<*> -> ""
         else -> ""
     }

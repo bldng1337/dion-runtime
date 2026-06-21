@@ -38,6 +38,11 @@ struct ExtensionMeta {
     package_name: String,
     version: String,
     nsfw: bool,
+    /// Absolute path to the extracted extension icon file, if any.
+    /// Persisted in the sidecar JSON so `get_extensions` can rebuild the
+    /// `file://` icon URL without re-parsing the APK.
+    #[serde(default)]
+    icon_path: Option<String>,
 }
 
 /// Mihon/Tachiyomi extension adapter for dion-runtime
@@ -299,11 +304,20 @@ impl MihonAdapter {
             let mut extension_types = HashSet::new();
             extension_types.insert(ExtensionType::EntryProvider { has_search: true });
 
+            // Resolve the icon URL. Prefer a `file://` URL pointing at the
+            // icon extracted from the APK during install (the host image
+            // loader can resolve it directly); fall back to the legacy
+            // `mihon://icon/{id}` placeholder when no icon was extracted.
+            let icon = meta
+                .and_then(|m| m.icon_path.as_ref())
+                .map(|p| format!("file://{}", p))
+                .unwrap_or_else(|| format!("mihon://icon/{}", source_id));
+
             let ext_data = dion_runtime::data::extension::ExtensionData {
                 id: format!("mihon:{}", source_id),
                 name: source_info.name.clone(),
                 url: source_info.base_url.clone().unwrap_or_default(),
-                icon: format!("mihon://icon/{}", source_id),
+                icon,
                 desc: None,
                 author: Vec::new(),
                 tags: Vec::new(),
@@ -426,6 +440,7 @@ impl Adapter for MihonAdapter {
                                             package_name: native_meta.package.clone(),
                                             version: native_meta.version_name.clone(),
                                             nsfw: native_meta.nsfw,
+                                            icon_path: None,
                                         };
                                         if let Err(e) = Self::save_meta(&path, &recovered).await {
                                             log::warn!(
@@ -590,6 +605,7 @@ impl Adapter for MihonAdapter {
             package_name: install_result.metadata.package_name.clone(),
             version: install_result.metadata.version_name.clone(),
             nsfw: install_result.metadata.nsfw,
+            icon_path: install_result.icon_path.clone(),
         };
         Self::save_meta(&final_jar_path, &meta).await?;
 

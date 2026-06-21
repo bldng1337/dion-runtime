@@ -48,7 +48,13 @@ data class PageListResult(
 data class InstallResult(
     val jarPath: String,
     val className: String,
-    val metadata: ExtensionMetadata
+    val metadata: ExtensionMetadata,
+    /**
+     * Absolute path to the extracted extension icon file, or null if the APK
+     * contained no extractable raster icon. The host builds a `file://` URL
+     * from this path so its image loader can render the icon.
+     */
+    val iconPath: String? = null
 )
 
 @Serializable
@@ -134,7 +140,14 @@ data class VideoDto(
     val url: String,
     val quality: String? = null,
     val videoUrl: String? = null,
-    val headers: Map<String, String>? = null
+    val headers: Map<String, String>? = null,
+    val subtitleTracks: List<SubtitleTrackDto>? = null
+)
+
+@Serializable
+data class SubtitleTrackDto(
+    val url: String,
+    val lang: String
 )
 
 @Serializable
@@ -234,6 +247,7 @@ fun Filter<*>.toDto(): FilterDto = FilterDto(
             val s = state
             if (s != null) "${s.index};${s.ascending}" else ""
         }
+
         is Filter.Group<*> -> ""
         else -> ""
     }
@@ -266,12 +280,14 @@ fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<FilterDto>) {
                         filter.state = idx
                     }
                 }
+
                 is Filter.Sort -> {
                     val parts = dto.state.split(";")
                     val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
                     val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
                     filter.state = Filter.Sort.Selection(idx, asc)
                 }
+
                 is Filter.Header -> Unit
                 is Filter.Separator -> Unit
                 is Filter.Group<*> -> Unit
@@ -334,7 +350,13 @@ fun Video.toDto(): VideoDto = VideoDto(
     url = url,
     quality = quality,
     videoUrl = videoUrl,
-    headers = headers?.toMultimap()?.mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+    headers = headers?.toMultimap()?.mapValues { (_, values) -> values.lastOrNull().orEmpty() },
+    subtitleTracks = subtitleTracks?.map { it.toDto() }
+)
+
+fun Track.toDto(): SubtitleTrackDto = SubtitleTrackDto(
+    url = url,
+    lang = lang
 )
 
 fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
@@ -351,6 +373,7 @@ fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
             val s = state
             if (s != null) "${s.index};${s.ascending}" else ""
         }
+
         is AnimeFilter.Group<*> -> ""
         else -> ""
     }
@@ -377,12 +400,14 @@ fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<Fil
                         filter.state = idx
                     }
                 }
+
                 is AnimeFilter.Sort -> {
                     val parts = dto.state.split(";")
                     val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
                     val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
                     filter.state = AnimeFilter.Sort.Selection(idx, asc)
                 }
+
                 is AnimeFilter.Header -> Unit
                 is AnimeFilter.Separator -> Unit
                 is AnimeFilter.Group<*> -> Unit
