@@ -507,8 +507,8 @@ impl MihonBridge {
     fn parse_result<T: serde::de::DeserializeOwned>(&self, json: &str) -> Result<T> {
         // First check if it's an error response
         if let Ok(error) = serde_json::from_str::<ErrorResponse>(json) {
-            if let Some(err_msg) = error.error {
-                bail!("JVM error: {}", err_msg);
+            if error.error.is_some() {
+                bail!("JVM error: {}", error.full_error_message());
             }
         }
 
@@ -518,8 +518,8 @@ impl MihonBridge {
     fn check_success(&self, json: &str) -> Result<()> {
         // Check for error
         if let Ok(error) = serde_json::from_str::<ErrorResponse>(json) {
-            if let Some(err_msg) = error.error {
-                bail!("JVM error: {}", err_msg);
+            if error.error.is_some() {
+                bail!("JVM error: {}", error.full_error_message());
             }
         }
 
@@ -538,8 +538,30 @@ impl MihonBridge {
 struct ErrorResponse {
     error: Option<String>,
     #[serde(rename = "stackTrace")]
-    #[allow(dead_code)]
     stack_trace: Option<String>,
+}
+
+impl ErrorResponse {
+    /// Format the error message together with its stack trace.
+    ///
+    /// The exception *class name* (e.g. `NoClassDefFoundError`,
+    /// `NoSuchMethodError`) only appears in the stack trace, not in the
+    /// `message`. Including it lets callers (and the integration-test error
+    /// classifier) match on the exception type to distinguish real
+    /// code/compat-layer bugs from transient network conditions.
+    fn full_error_message(&self) -> String {
+        match &self.stack_trace {
+            Some(trace) if !trace.is_empty() => format!(
+                "{}\n{}",
+                self.error.as_deref().unwrap_or("Unknown error"),
+                trace
+            ),
+            _ => self
+                .error
+                .clone()
+                .unwrap_or_else(|| "Unknown error".to_string()),
+        }
+    }
 }
 
 #[derive(serde::Deserialize)]

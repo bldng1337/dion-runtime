@@ -572,6 +572,12 @@ impl Adapter for MihonAdapter {
             let apk_name = format!("{}.apk", install_result.metadata.package_name);
             let dest = jars_dir.join(&apk_name);
             if dest != jar_path {
+                // Remove any stale APK from a previous install. It is created
+                // read-only (0o444) below to satisfy Android 14+ W^X DEX
+                // loading, so `fs::copy` would otherwise fail with EACCES when
+                // re-installing the same package (e.g. on a filter re-run or
+                // after a crash left the previous copy behind).
+                tokio::fs::remove_file(&dest).await.ok();
                 tokio::fs::copy(&jar_path, &dest)
                     .await
                     .context("Failed to copy APK to jars directory")?;

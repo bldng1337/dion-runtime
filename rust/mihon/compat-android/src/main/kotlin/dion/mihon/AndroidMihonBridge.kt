@@ -6,6 +6,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import dalvik.system.PathClassLoader
 import dion.mihon.dto.*
+import eu.kanade.tachiyomi.animesource.AnimeCatalogueSource
+import eu.kanade.tachiyomi.animesource.AnimeSourceFactory
+import eu.kanade.tachiyomi.animesource.model.*
+import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
 import eu.kanade.tachiyomi.source.*
 import eu.kanade.tachiyomi.source.model.*
 import eu.kanade.tachiyomi.network.NetworkHelper
@@ -60,6 +64,45 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
 }
 
 /**
+ * Apply filter states from a list of [FilterDto] to a live anime filter list.
+ *
+ * Anime equivalent of [applyFilterStates]; filters are matched by [name] and
+ * their [FilterDto.state] string is parsed back into the concrete type.
+ */
+fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<FilterDto>) {
+    val stateMap = filterStates.associateBy { it.name }
+    for (filter in filters) {
+        val dto = stateMap[filter.name] ?: continue
+        try {
+            when (filter) {
+                is AnimeFilter.Text -> filter.state = dto.state
+                is AnimeFilter.CheckBox -> filter.state = dto.state.toBooleanStrictOrNull() ?: false
+                is AnimeFilter.TriState -> filter.state = dto.state.toIntOrNull() ?: 0
+                is AnimeFilter.Select<*> -> {
+                    val idx = dto.state.toIntOrNull() ?: 0
+                    if (idx in 0 until filter.values.size) {
+                        filter.state = idx
+                    }
+                }
+
+                is AnimeFilter.Sort -> {
+                    val parts = dto.state.split(";")
+                    val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                    val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
+                    filter.state = AnimeFilter.Sort.Selection(idx, asc)
+                }
+
+                is AnimeFilter.Header -> Unit
+                is AnimeFilter.Separator -> Unit
+                is AnimeFilter.Group<*> -> Unit
+            }
+        } catch (_: Exception) {
+            // Silently skip malformed filter state; the search will proceed with defaults
+        }
+    }
+}
+
+/**
  * Bridge class providing JNI-callable static methods for Rust.
  * Android implementation using native class loading instead of dex2jar.
  *
@@ -76,6 +119,9 @@ object AndroidMihonBridge {
 
     private var context: Context? = null
     private var initialized = false
+
+    @Volatile
+    private var globalUncaughtHandlerInstalled = false
     private val sourceManager = SourceManager()
     private val classLoaders = mutableMapOf<String, ClassLoader>()
     private val jarToSourceIds = mutableMapOf<String, List<Long>>()
@@ -84,9 +130,62 @@ object AndroidMihonBridge {
      *  persist extracted extension icons across restarts. */
     private var extensionsDir: File? = null
 
+    /**
+     * Run a blocking coroutine on a worker thread with a large stack.
+     *
+     * Extension call chains nest deeply on the calling thread: OkHttp's
+     * interceptor chain, RxJava Observable operators, Kotlin coroutine
+     * suspend machinery and the extension's own (sometimes recursive)
+     * parsing all stack on top of each other. The FFI worker threads that
+     * drive these calls use the platform default stack (~1-2 MB), which some
+     * extensions overflow — producing a native `SIGSEGV` (stack overflow)
+     * that kills the whole app process.
+     *
+     * This mirrors the Rust integration test, which runs the workflow on a
+     * large-stack thread for exactly this reason. Running each source call on
+     * its own 64 MB-stack thread gives the legitimately-deep — but finite —
+     * recursion room to complete instead of crashing the process.
+     */
+    private fun <T> runBlockingLargeStack(block: suspend () -> T): T {
+        // Holder for the result / error communicated back from the worker.
+        @Suppress("UNCHECKED_CAST")
+        val result = arrayOfNulls<Any>(1)
+        val worker = Thread(
+            null,
+            {
+                try {
+                    result[0] = runBlocking { block() }
+                } catch (e: Throwable) {
+                    // Wrap so join() can rethrow on the caller thread, where the
+                    // bridge method's catch (e: Throwable) returns an ErrorResult.
+                    result[0] = LargeStackFailure(e)
+                }
+            },
+            "mihon-large-stack",
+            64L * 1024 * 1024, // 64 MB stack — some extensions' OkHttp HTTP/2 +
+            // recursive-parse chains overflow 16 MB on Android.
+        )
+        worker.start()
+        worker.join()
+        val outcome = result[0]
+        if (outcome is LargeStackFailure) throw outcome.cause
+        return outcome as T
+    }
+
+    /** Marker wrapper used by [runBlockingLargeStack] to ferry a thrown
+     *  exception from the worker thread back to the caller. */
+    private class LargeStackFailure(val cause: Throwable)
+
     const val METADATA_SOURCE_CLASS = "tachiyomi.extension.class"
     const val METADATA_NSFW = "tachiyomi.extension.nsfw"
     const val METADATA_LIB_VERSION = "tachiyomi.extension.lib.version"
+
+    // Anime extensions (Aniyomi) use a parallel set of meta-data keys under
+    // the `tachiyomi.animeextension` namespace. Must match desktop
+    // ExtensionLoader so aniyomi APKs install on both platforms.
+    const val METADATA_ANIME_SOURCE_CLASS = "tachiyomi.animeextension.class"
+    const val METADATA_ANIME_NSFW = "tachiyomi.animeextension.nsfw"
+    const val METADATA_ANIME_LIB_VERSION = "tachiyomi.animeextension.lib.version"
 
     // Supported extension lib versions (must match desktop ExtensionLoader).
     // 1.0 allows legacy extensions that predate the
@@ -137,13 +236,37 @@ object AndroidMihonBridge {
 
             val appContext = getContext()
 
+            // Install a global uncaught-exception handler so that an `Error`
+            // thrown on an extension's own background thread (e.g. a fire-and-
+            // forget `launch {}` coroutine on Dispatchers.IO, or an OkHttp/
+            // RxJava worker) does NOT tear down the whole app process.
+            //
+            // The per-call `catch (e: Throwable)` in each bridge method only
+            // covers the synchronous path through `runBlocking`; exceptions on
+            // standalone coroutines escape to their thread's handler. Here we
+            // log them and swallow, which lets the awaiting call surface a
+            // result (CancellationException is caught by the bridge) or hit the
+            // Dart-side operation timeout — either way the 1000+ extension test
+            // suite keeps making progress instead of dying on one bad source.
+            if (!globalUncaughtHandlerInstalled) {
+                globalUncaughtHandlerInstalled = true
+                Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+                    logger.error(throwable) {
+                        "Uncaught exception on ${thread.name} (swallowed to keep process alive)"
+                    }
+                    // Intentionally do NOT forward to the previous handler: the
+                    // default Android handler calls Process.killProcess(), which
+                    // is exactly the process death we are preventing here.
+                }
+            }
+
             // Initialize Injekt with the real Android Application
             initializeInjekt(appContext)
 
             initialized = true
             logger.info { "AndroidMihonBridge initialized successfully" }
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to initialize AndroidMihonBridge" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -271,10 +394,16 @@ object AndroidMihonBridge {
             val packageName = packageInfo.packageName
             logger.debug { "Package name: $packageName" }
 
-            // Extract metadata from AndroidManifest.xml
+            // Extract metadata from AndroidManifest.xml.
+            // Anime extensions (Aniyomi) use the `tachiyomi.animeextension.*`
+            // meta-data keys instead of the manga `tachiyomi.extension.*` keys,
+            // so we fall back to the anime keys when the manga keys are absent
+            // (same logic as the desktop ExtensionLoader).
             val metaData: Bundle? = packageInfo.applicationInfo?.metaData
-            val classNames = metaData?.getString(METADATA_SOURCE_CLASS)
-                ?: throw IllegalArgumentException("Missing $METADATA_SOURCE_CLASS meta-data in APK")
+            val isAnime = metaData?.getString(METADATA_ANIME_SOURCE_CLASS) != null
+            val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+            val classNames = metaData?.getString(classKey)
+                ?: throw IllegalArgumentException("Missing $classKey meta-data in APK")
 
             // Handle semicolon-separated class names (multi-source extensions)
             // e.g. ".Source1;.Source2" -> ["com.pkg.Source1", "com.pkg.Source2"]
@@ -290,8 +419,10 @@ object AndroidMihonBridge {
                 }
             logger.debug { "Extension main class(es): $fullClassNames" }
 
-            val nsfw = metaData.getInt(METADATA_NSFW, 0) == 1
-            val libVersion = metaData.getString(METADATA_LIB_VERSION) ?: "1.0"
+            val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
+            val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
+            val nsfw = metaData.getInt(nsfwKey, 0) == 1
+            val libVersion = metaData.getString(libVersionKey) ?: "1.0"
 
             // Validate lib version for compatibility (security parity with desktop)
             val libVersionNum = libVersion.substringBeforeLast('.').toDoubleOrNull()
@@ -312,7 +443,7 @@ object AndroidMihonBridge {
             // image loader can render it via a `file://` URL.
             val iconPath = try {
                 extractIcon(apkFile, packageName)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 logger.warn(e) { "Failed to extract icon for $packageName" }
                 null
             }
@@ -334,7 +465,7 @@ object AndroidMihonBridge {
 
             logger.info { "Extension installed successfully: $packageName -> $apkPath" }
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to install extension: $apkPath" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -370,7 +501,13 @@ object AndroidMihonBridge {
 
             val results = installedPkgs
                 .filter { pkgInfo ->
-                    pkgInfo.reqFeatures?.any { it.name == "tachiyomi.extension" } == true
+                    pkgInfo.reqFeatures?.any {
+                        // Manga extensions declare `tachiyomi.extension`;
+                        // anime (Aniyomi) extensions declare
+                        // `tachiyomi.animeextension`.
+                        it.name == "tachiyomi.extension" ||
+                                it.name == "tachiyomi.animeextension"
+                    } == true
                 }
                 .mapNotNull { pkgInfo ->
                     try {
@@ -379,7 +516,11 @@ object AndroidMihonBridge {
                         val packageName = pkgInfo.packageName
 
                         val metaData = appInfo.metaData
-                        val classNames = metaData?.getString(METADATA_SOURCE_CLASS)
+                        // Anime extensions use the animeextension.* keys;
+                        // fall back like installExtension does.
+                        val isAnime = metaData?.getString(METADATA_ANIME_SOURCE_CLASS) != null
+                        val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+                        val classNames = metaData?.getString(classKey)
                             ?: return@mapNotNull null
 
                         val fullClassNames = classNames.split(";")
@@ -393,8 +534,10 @@ object AndroidMihonBridge {
                                 }
                             }
 
-                        val nsfw = metaData.getInt(METADATA_NSFW, 0) == 1
-                        val libVersion = metaData.getString(METADATA_LIB_VERSION) ?: "1.0"
+                        val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
+                        val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
+                        val nsfw = metaData.getInt(nsfwKey, 0) == 1
+                        val libVersion = metaData.getString(libVersionKey) ?: "1.0"
                         val versionName = pkgInfo.versionName ?: "1.0"
 
                         @Suppress("DEPRECATION")
@@ -403,7 +546,7 @@ object AndroidMihonBridge {
 
                         val iconPath = try {
                             extractIcon(File(apkPath), packageName)
-                        } catch (e: Exception) {
+                        } catch (e: Throwable) {
                             logger.warn(e) { "Failed to extract icon for $packageName" }
                             null
                         }
@@ -421,7 +564,7 @@ object AndroidMihonBridge {
                             ),
                             iconPath = iconPath
                         )
-                    } catch (e: Exception) {
+                    } catch (e: Throwable) {
                         logger.warn(e) { "Failed to parse installed extension: ${pkgInfo.packageName}" }
                         null
                     }
@@ -429,7 +572,7 @@ object AndroidMihonBridge {
 
             logger.info { "Found ${results.size} installed extension(s)" }
             json.encodeToString(results)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to scan for installed extensions" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -480,12 +623,16 @@ object AndroidMihonBridge {
                         val mainClass = Class.forName(trimmed, false, classLoader)
                         val instance = mainClass.getDeclaredConstructor().newInstance()
 
-                        // Handle SourceFactory or Source patterns
+                        // Handle Source, SourceFactory, or AnimeSourceFactory.
+                        // Anime extensions expose an AnimeSourceFactory (Aniyomi
+                        // API); since AnimeSource extends Source, its sources are
+                        // valid Sources.
                         when (instance) {
+                            is AnimeSourceFactory -> instance.createSources()
                             is SourceFactory -> instance.createSources()
                             is Source -> listOf(instance)
                             else -> throw IllegalArgumentException(
-                                "Extension class is not a Source or SourceFactory: ${instance.javaClass}"
+                                "Extension class is not a Source, SourceFactory, or AnimeSourceFactory: ${instance.javaClass}"
                             )
                         }
                     } catch (e: LinkageError) {
@@ -496,10 +643,11 @@ object AndroidMihonBridge {
                         val instance = mainClass.getDeclaredConstructor().newInstance()
 
                         when (instance) {
+                            is AnimeSourceFactory -> instance.createSources()
                             is SourceFactory -> instance.createSources()
                             is Source -> listOf(instance)
                             else -> throw IllegalArgumentException(
-                                "Extension class is not a Source or SourceFactory: ${instance.javaClass}"
+                                "Extension class is not a Source, SourceFactory, or AnimeSourceFactory: ${instance.javaClass}"
                             )
                         }
                     }
@@ -511,7 +659,7 @@ object AndroidMihonBridge {
             jarToSourceIds[jarPath] = sourceIds
             logger.info { "Loaded ${sources.size} source(s) with IDs: $sourceIds" }
             json.encodeToString(SourceIdsResult(sourceIds))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to load extension: $jarPath" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -532,7 +680,7 @@ object AndroidMihonBridge {
             // Remove class loader reference
             classLoaders.remove(jarPath)
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to unload extension: $jarPath" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -548,7 +696,7 @@ object AndroidMihonBridge {
             logger.debug { "Unloading source: $sourceId" }
             sourceManager.unregister(sourceId)
             json.encodeToString(SuccessResult(true))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error(e) { "Failed to unload source: $sourceId" }
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
@@ -566,7 +714,7 @@ object AndroidMihonBridge {
             val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
             json.encodeToString(SourceInfo.from(source))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -581,11 +729,12 @@ object AndroidMihonBridge {
             val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
             val type = when (source) {
+                is AnimeCatalogueSource -> "anime"
                 is CatalogueSource -> "manga"
                 else -> "unknown"
             }
             json.encodeToString(SourceTypeResult(type))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -600,7 +749,7 @@ object AndroidMihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val filters = source.getFilterList()
             json.encodeToString(filters.map { it.toDto() })
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -615,7 +764,7 @@ object AndroidMihonBridge {
     fun getPopular(sourceId: Long, page: Int): String {
         return try {
             val source = sourceManager.getCatalogue(sourceId)
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     val thumbnailHeaders =
                         source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
@@ -625,7 +774,7 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -641,7 +790,7 @@ object AndroidMihonBridge {
             if (!source.supportsLatest) {
                 return json.encodeToString(ErrorResult("Source does not support latest"))
             }
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     val thumbnailHeaders =
                         source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
@@ -651,7 +800,7 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -670,11 +819,11 @@ object AndroidMihonBridge {
                 try {
                     val filterStates = json.decodeFromString<List<FilterDto>>(filtersJson)
                     applyFilterStates(filters, filterStates)
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     logger.warn(e) { "Failed to parse filtersJson, using default filters" }
                 }
             }
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     val thumbnailHeaders =
                         source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
@@ -684,7 +833,7 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -700,7 +849,7 @@ object AndroidMihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     val thumbnailHeaders =
                         source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
@@ -710,7 +859,7 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -726,7 +875,7 @@ object AndroidMihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     source.getChapterList(manga).map { it.toDto() }
                 } else {
@@ -734,7 +883,7 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(ChapterListResult(result))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
@@ -750,7 +899,7 @@ object AndroidMihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val chapterDto = json.decodeFromString<ChapterDto>(chapterJson)
             val chapter = chapterDto.toSChapter()
-            val result = runBlocking {
+            val result = runBlockingLargeStack {
                 if (source is HttpSource) {
                     source.getPageList(chapter).map { page ->
                         page.toDto(headers = source.imageRequestHeaders(page))
@@ -760,7 +909,165 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(PageListResult(result))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    // ========== Anime Source Methods ==========
+
+    /**
+     * Get popular anime list.
+     * @return JSON: MangasPageDto { mangas, hasNextPage }
+     */
+    @JvmStatic
+    fun getPopularAnime(sourceId: Long, page: Int): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getPopularAnime(page).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get latest anime updates.
+     * @return JSON: MangasPageDto
+     */
+    @JvmStatic
+    fun getLatestAnime(sourceId: Long, page: Int): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            if (!source.supportsLatest) {
+                return json.encodeToString(ErrorResult("Source does not support latest"))
+            }
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getLatestUpdates(page).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Search anime.
+     * @param filtersJson JSON-encoded filter state (empty string for defaults)
+     * @return JSON: MangasPageDto
+     */
+    @JvmStatic
+    fun searchAnime(sourceId: Long, page: Int, query: String, filtersJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val filters = source.getFilterList()
+            if (filtersJson.isNotEmpty()) {
+                try {
+                    val filterStates = json.decodeFromString<List<FilterDto>>(filtersJson)
+                    applyAnimeFilterStates(filters, filterStates)
+                } catch (e: Throwable) {
+                    logger.warn(e) { "Failed to parse filtersJson, using default filters" }
+                }
+            }
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getSearchAnime(page, query, filters).toDto(thumbnailHeaders)
+                } else {
+                    MangasPageDto(emptyList(), false)
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get anime details.
+     * @param animeJson JSON: MangaDto (must have url field)
+     * @return JSON: MangaDto (with all fields populated)
+     */
+    @JvmStatic
+    fun getAnimeDetails(sourceId: Long, animeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val animeDto = json.decodeFromString<MangaDto>(animeJson)
+            val anime = animeDto.toSAnime()
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    source.getAnimeDetails(anime).toDto(thumbnailHeaders)
+                } else {
+                    animeDto
+                }
+            }
+            json.encodeToString(result)
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get episode list for anime.
+     * @param animeJson JSON: MangaDto
+     * @return JSON: EpisodeListResult { episodes: [...] }
+     */
+    @JvmStatic
+    fun getEpisodeList(sourceId: Long, animeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val animeDto = json.decodeFromString<MangaDto>(animeJson)
+            val anime = animeDto.toSAnime()
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    source.getEpisodeList(anime).map { it.toDto() }
+                } else {
+                    emptyList()
+                }
+            }
+            json.encodeToString(EpisodeListResult(result))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get video list for episode.
+     * @param episodeJson JSON: EpisodeDto
+     * @return JSON: VideoListResult { videos: [...] }
+     */
+    @JvmStatic
+    fun getVideoList(sourceId: Long, episodeJson: String): String {
+        return try {
+            val source = sourceManager.getAnimeCatalogue(sourceId)
+            val episodeDto = json.decodeFromString<EpisodeDto>(episodeJson)
+            val episode = episodeDto.toSEpisode()
+            val result = runBlockingLargeStack {
+                if (source is AnimeHttpSource) {
+                    source.getVideoList(episode).map { it.toDto() }
+                } else {
+                    emptyList()
+                }
+            }
+            json.encodeToString(VideoListResult(result))
+        } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
     }
