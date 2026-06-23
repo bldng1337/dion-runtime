@@ -54,28 +54,45 @@ android {
         minSdkVersion 26
     }
 
-    // Include compat-android Kotlin sources (AndroidMihonBridge + source-api stubs)
+    // Include compat-android Kotlin + Java sources (AndroidMihonBridge,
+    // source-api stubs, and the Rhino-backed QuickJs bridge).
     sourceSets {
         main {
             java.srcDirs += '../../../rust/mihon/compat-android/src/main/kotlin'
+            java.srcDirs += '../../../rust/mihon/compat-android/src/main/java'
         }
     }
 }
 
 dependencies {
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+    // Kotlin. stdlib pinned to 2.1.20 (newer than the 2.1.0 Gradle plugin, which
+    // is allowed) to provide kotlin.time.Instant, added to the stdlib in 2.1.20
+    // and used by some extensions (e.g. komiic).
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.20"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+    // JSON parsing directly from Okio sources (kotlinx.serialization.json.okio.
+    // OkioStreamsKt) — used by many extensions in mangaDetailsParse etc. Without
+    // this the class is absent and those sources throw NoClassDefFoundError.
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.7.3"
+    // Protobuf serialization (used by a few extensions for binary API payloads)
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.7.3"
 
     // HTTP client (OkHttp - required by Mihon extensions)
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.14"
 
-    // HTML parsing (JSoup - required by most extensions)
-    implementation "org.jsoup:jsoup:1.17.2"
+    // HTML parsing (JSoup - required by most extensions). Pinned to 1.22.2 to
+    // match the desktop compat layer and include newer APIs some extensions use
+    // (e.g. Elements.selectFirst, absent in 1.17.x).
+    implementation "org.jsoup:jsoup:1.22.2"
 
     // RxJava (some extensions use it)
     implementation "io.reactivex:rxjava:1.3.8"
+
+    // Rhino: pure-Java JavaScript engine backing the app.cash.quickjs.QuickJs
+    // bridge (some extensions evaluate JS to decrypt URLs / bypass protection).
+    // Works on Android (ART) since Rhino is pure Java.
+    implementation "org.mozilla:rhino:1.7.15"
 
     // Injekt - dependency injection used by Mihon extensions
     implementation "com.github.mihonapp:injekt:91edab2317"
