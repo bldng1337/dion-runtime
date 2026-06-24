@@ -501,13 +501,21 @@ object AndroidMihonBridge {
 
             val results = installedPkgs
                 .filter { pkgInfo ->
-                    pkgInfo.reqFeatures?.any {
-                        // Manga extensions declare `tachiyomi.extension`;
-                        // anime (Aniyomi) extensions declare
-                        // `tachiyomi.animeextension`.
+                    // Primary detection: extensions declare a <uses-feature>.
+                    // Manga extensions declare `tachiyomi.extension`;
+                    // anime (Aniyomi) extensions declare
+                    // `tachiyomi.animeextension`.
+                    val hasFeature = pkgInfo.reqFeatures?.any {
                         it.name == "tachiyomi.extension" ||
                                 it.name == "tachiyomi.animeextension"
                     } == true
+                    if (hasFeature) return@filter true
+                    // Fallback: some extensions omit <uses-feature> but still
+                    // declare the tachiyomi meta-data class keys. metaData is
+                    // already populated because GET_META_DATA is part of `flags`.
+                    val md = pkgInfo.applicationInfo?.metaData
+                    md?.getString(METADATA_SOURCE_CLASS) != null ||
+                            md?.getString(METADATA_ANIME_SOURCE_CLASS) != null
                 }
                 .mapNotNull { pkgInfo ->
                     try {

@@ -1,2 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" />
+<!--
+    Package visibility for installed extension discovery.
+
+    Tachiyomi/Mihon (and Aniyomi) extensions are standalone APKs that the host
+    app discovers via PackageManager.getInstalledPackages(). On Android 11+
+    (API 30+) the OS hides other installed packages unless the app declares
+    visibility into them.
+
+    Extensions identify themselves with `<uses-feature android:name=
+    "tachiyomi.extension">` (or `tachiyomi.animeextension`), which has no
+    equivalent `<queries>` element. The only way to reliably enumerate such
+    feature-tagged packages is therefore QUERY_ALL_PACKAGES.
+
+    This mirrors what Mihon/Tachiyomi itself declares. These apps and their
+    extensions are sideloaded, so the Google Play restriction on this
+    permission does not apply.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+</manifest>

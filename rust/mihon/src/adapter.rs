@@ -386,9 +386,20 @@ impl Adapter for MihonAdapter {
                 Ok(installed) => {
                     log::info!("Found {} system-installed extension(s)", installed.len());
                     for ext in installed {
+                        // Carry the metadata returned by the bridge (version,
+                        // nsfw flag, extracted icon path) so installed
+                        // extensions show up with the correct details and icon
+                        // instead of placeholder values.
+                        let meta = ExtensionMeta {
+                            class_name: ext.class_name.clone(),
+                            package_name: ext.metadata.package_name.clone(),
+                            version: ext.metadata.version_name.clone(),
+                            nsfw: ext.metadata.nsfw,
+                            icon_path: ext.icon_path.clone(),
+                        };
                         candidates.insert(
-                            ext.metadata.package_name.clone(),
-                            (PathBuf::from(&ext.jar_path), ext.class_name, None),
+                            meta.package_name.clone(),
+                            (PathBuf::from(&ext.jar_path), ext.class_name, Some(meta)),
                         );
                     }
                 }
