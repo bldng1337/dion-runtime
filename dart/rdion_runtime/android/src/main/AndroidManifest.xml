@@ -1,5 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.flutter_rust_bridge.rdion_runtime">
+
+    <!-- Required to discover installed Tachiyomi/Mihon (and Aniyomi) extensions.
+
+         Extensions are standalone APKs identified by `<uses-feature android:name=
+         "tachiyomi.extension">`. On Android 11+ (API 30+) the OS hides other
+         installed packages unless the app declares visibility into them, and
+         `<uses-feature>` has no matching `<queries>` form, so the only way to
+         enumerate such packages is QUERY_ALL_PACKAGES.
+
+         NOTE: this permission lives here (not in compat-android's manifest)
+         because rdion_runtime consumes compat-android as raw Kotlin/Java
+         source via sourceSets (see android/build.gradle), which does not merge
+         the compat-android AndroidManifest.xml. As a Flutter plugin this
+         manifest is merged into every app that depends on rdion_runtime. -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
     <application>
         <provider
             android:name=".RdionRuntimePlugin"
