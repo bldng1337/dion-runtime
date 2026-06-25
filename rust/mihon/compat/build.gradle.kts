@@ -94,6 +94,7 @@ tasks.register<JavaExec>("integrationTest") {
     dependsOn(tasks.classes)
 }
 
+
 tasks.build {
     dependsOn(tasks.shadowJar)
 }

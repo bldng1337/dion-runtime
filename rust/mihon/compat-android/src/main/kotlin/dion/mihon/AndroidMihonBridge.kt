@@ -21,8 +21,6 @@ import kotlinx.serialization.json.Json
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.addSingleton
 import java.io.File
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 
 /**
  * Apply filter states from a list of [FilterDto] to a live filter list obtained from a source.
@@ -193,21 +191,6 @@ object AndroidMihonBridge {
     const val LIB_VERSION_MIN = 1.0
     const val LIB_VERSION_MAX = 1.5
 
-    // Density ranking for Android resource qualifiers (higher = preferred).
-    // Used by [extractIcon] to pick the highest-resolution raster launcher
-    // icon available in the APK. `anydpi`/`nodpi` rank lowest because they
-    // frequently hold adaptive-icon XMLs rather than raster images.
-    private val ICON_DENSITY_RANK = mapOf(
-        "xxxhdpi" to 6,
-        "xxhdpi" to 5,
-        "xhdpi" to 4,
-        "hdpi" to 3,
-        "mdpi" to 2,
-        "ldpi" to 1,
-        "nodpi" to 0,
-        "anydpi" to 0
-    )
-
     /**
      * Set the Android context. Must be called before [initialize].
      * @param androidContext The application context
@@ -306,50 +289,55 @@ object AndroidMihonBridge {
     }
 
     /**
-     * Extract the extension's launcher icon from the APK and save it as a file.
+     * Extract the extension's launcher icon and save it as a PNG file.
      *
-     * Scans the APK's `res/mipmap-*` and `res/drawable-*` entries for a raster
-     * `ic_launcher` image (PNG/WebP), preferring the highest available density.
-     * Adaptive-icon XMLs are skipped since the host image loader cannot render
-     * Android vector drawables.
+     * Mihon/Tachiyomi extension APKs are built with Android Gradle Plugin
+     * resource obfuscation, which renames every resource file to a short,
+     * meaningless name (e.g. `res/9w.png`). The logical `ic_launcher` name
+     * then only exists *inside* `resources.arsc`, so a raw zip-entry scan for
+     * `ic_launcher` finds nothing.
      *
-     * @return the absolute path to the saved icon file, or null if the APK
-     *   contained no extractable raster launcher icon.
+     * Instead we let the platform resolve the icon via
+     * `ApplicationInfo.loadIcon(pm)`, which reads `resources.arsc` and renders
+     * even adaptive/vector icons to a raster `Drawable`. We then draw that
+     * drawable onto a `Bitmap` and persist it as PNG so the host image loader
+     * can render it through a `file://` URL.
+     *
+     * @return the absolute path to the saved PNG file, or null if the icon
+     *   could not be resolved or rendered.
      */
-    private fun extractIcon(apkFile: File, packageName: String): String? {
+    private fun extractIcon(appInfo: android.content.pm.ApplicationInfo, packageName: String): String? {
         val dir = extensionsDir ?: return null
         val iconsDir = File(dir, "icons").apply { mkdirs() }
 
-        return ZipFile(apkFile).use { zip ->
-            var bestEntry: ZipEntry? = null
-            var bestRank = -1
-            var bestExt = "png"
+        val pm = getContext().packageManager
+        val drawable = try {
+            appInfo.loadIcon(pm)
+        } catch (e: Throwable) {
+            logger.warn(e) { "loadIcon failed for $packageName" }
+            return null
+        }
 
-            val entries = zip.entries()
-            while (entries.hasMoreElements()) {
-                val entry = entries.nextElement()
-                if (entry.isDirectory) continue
-                val name = entry.name.lowercase()
-                if (!name.endsWith(".png") && !name.endsWith(".webp")) continue
-                if (!name.contains("ic_launcher")) continue
-                if (!name.startsWith("res/mipmap") && !name.startsWith("res/drawable")) continue
+        val width = drawable.intrinsicWidth.takeIf { it > 0 } ?: 192
+        val height = drawable.intrinsicHeight.takeIf { it > 0 } ?: 192
 
-                val density = ICON_DENSITY_RANK.keys.firstOrNull { name.contains("-$it") }
-                val rank = ICON_DENSITY_RANK[density] ?: 1
-                if (rank > bestRank) {
-                    bestRank = rank
-                    bestEntry = entry
-                    bestExt = if (name.endsWith(".webp")) "webp" else "png"
-                }
-            }
+        val bitmap = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(bitmap)
+        drawable.setBounds(0, 0, width, height)
+        drawable.draw(canvas)
 
-            val entry = bestEntry ?: return@use null
-            val iconFile = File(iconsDir, "$packageName.$bestExt")
-            zip.getInputStream(entry).use { input ->
-                iconFile.outputStream().use { output -> input.copyTo(output) }
+        val iconFile = File(iconsDir, "$packageName.png")
+        try {
+            iconFile.outputStream().use { out ->
+                bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
             }
             logger.debug { "Extracted icon for $packageName -> ${iconFile.absolutePath}" }
             iconFile.absolutePath
+        } catch (e: Throwable) {
+            logger.warn(e) { "Failed to write icon for $packageName" }
+            null
+        } finally {
+            bitmap.recycle()
         }
     }
 
@@ -439,10 +427,10 @@ object AndroidMihonBridge {
             val versionCode = packageInfo.versionCode ?: 1
             val label = packageInfo.applicationInfo?.loadLabel(pm)?.toString() ?: packageName
 
-            // Extract the extension's launcher icon from the APK so the host
-            // image loader can render it via a `file://` URL.
+            // Extract the extension's launcher icon. loadIcon() resolves it
+            // through resources.arsc, so obfuscated APKs work correctly.
             val iconPath = try {
-                extractIcon(apkFile, packageName)
+                packageInfo.applicationInfo?.let { extractIcon(it, packageName) }
             } catch (e: Throwable) {
                 logger.warn(e) { "Failed to extract icon for $packageName" }
                 null
@@ -553,7 +541,7 @@ object AndroidMihonBridge {
                         val label = appInfo.loadLabel(pm)?.toString() ?: packageName
 
                         val iconPath = try {
-                            extractIcon(File(apkPath), packageName)
+                            extractIcon(appInfo, packageName)
                         } catch (e: Throwable) {
                             logger.warn(e) { "Failed to extract icon for $packageName" }
                             null

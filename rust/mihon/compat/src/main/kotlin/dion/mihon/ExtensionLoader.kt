@@ -299,10 +299,16 @@ class ExtensionLoader(
     /**
      * Extract the extension's launcher icon from the APK and save it as a file.
      *
-     * Scans the APK's `res/mipmap-*` and `res/drawable-*` entries for a raster
-     * `ic_launcher` image (PNG/WebP), preferring the highest available density.
-     * Adaptive-icon XMLs are skipped since the host image loader cannot render
-     * Android vector drawables.
+     * Mihon/Tachiyomi extension APKs are built with Android Gradle Plugin
+     * resource obfuscation, which renames every resource file to a short,
+     * meaningless name (e.g. `res/9w.png`). The logical `ic_launcher` name then
+     * only exists *inside* `resources.arsc`, never in the zip entry paths.
+     *
+     * To resolve the icon correctly we ask the apk-parser library, which parses
+     * `resources.arsc` and exposes the launcher icon(s) as resolved raster
+     * files. We pick the highest-density variant for best quality and fall back
+     * to a raw zip-entry scan (matching `ic_launcher` in the path) for APKs the
+     * library cannot resolve.
      *
      * @return the absolute path to the saved icon file, or null if the APK
      *   contained no extractable raster launcher icon.
@@ -310,6 +316,33 @@ class ExtensionLoader(
     private fun extractIcon(apkFile: File, packageName: String): String? {
         val iconsDir = File(extensionsDir, "icons").apply { mkdirs() }
 
+        // Primary path: resolve via resources.arsc so obfuscated APKs work.
+        // ApkFile owns the file channel and must be closed after use.
+        try {
+            ApkFile(apkFile).use { apk ->
+                // icon.data is nullable in this library version, so pair each
+                // icon with its non-null bytes and pick the highest density.
+                val best = apk.iconFiles
+                    .asSequence()
+                    .filter { it.isFile }
+                    .mapNotNull { icon -> icon.data?.takeIf { it.isNotEmpty() }?.let { icon to it } }
+                    .maxByOrNull { it.first.density }
+                if (best != null) {
+                    val (icon, data) = best
+                    val ext = icon.path.substringAfterLast('.', "png").lowercase()
+                        .ifEmpty { "png" }
+                    val iconFile = File(iconsDir, "$packageName.$ext")
+                    iconFile.writeBytes(data)
+                    logger.debug { "Extracted icon for $packageName -> ${iconFile.absolutePath}" }
+                    return iconFile.absolutePath
+                }
+            }
+        } catch (e: Exception) {
+            logger.warn(e) { "apk-parser icon resolution failed for $packageName; falling back to name scan" }
+        }
+
+        // Fallback: raw zip scan for APKs whose resources.arsc the library
+        // could not resolve (e.g. legacy, non-obfuscated builds).
         return ZipFile(apkFile).use { zip ->
             var bestEntry: ZipEntry? = null
             var bestRank = -1
