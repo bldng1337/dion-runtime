@@ -14,7 +14,11 @@ use anyhow::{bail, Context, Result};
 use async_trait::async_trait;
 use dion_runtime::{
     client_data::AdapterClient,
-    data::{extension::ExtensionType, source::MediaType},
+    data::{
+        extension::ExtensionType,
+        extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+        source::MediaType,
+    },
     extension::{Adapter, Extension},
 };
 use serde::{Deserialize, Serialize};
@@ -25,6 +29,7 @@ use tokio::sync::RwLock;
 
 use crate::extension::MihonExtension;
 use crate::jni::{JvmHandle, MihonBridge};
+use crate::repo;
 
 /// Embedded mihon-compat.jar - built by build.rs and embedded at compile time.
 /// Only used on desktop platforms; on Android, native class loading is used.
@@ -62,6 +67,11 @@ pub struct MihonAdapter {
 
     /// Base path for extension storage
     base_path: PathBuf,
+
+    /// In-memory cache for fetched repo indexes, keyed by index URL.
+    /// Avoids re-downloading the (potentially large) `index.min.json` on
+    /// every `browse_repo` / `get_remote_extension` call.
+    repo_index_cache: RwLock<HashMap<String, Arc<Vec<repo::RepoExtension>>>>,
 }
 
 impl MihonAdapter {
@@ -108,6 +118,7 @@ impl MihonAdapter {
             bridge,
             extension_jar_paths: RwLock::new(HashMap::new()),
             base_path,
+            repo_index_cache: RwLock::new(HashMap::new()),
         })
     }
 
@@ -262,6 +273,40 @@ impl MihonAdapter {
             .await
             .context("Failed to write metadata file")?;
         Ok(())
+    }
+
+    /// Fetch and parse a Mihon repo index (`index.min.json`), caching the
+    /// result in memory so repeated calls (pagination, lookups) don't
+    /// re-download the potentially large file.
+    async fn fetch_repo_index(&self, index_url: &str) -> Result<Arc<Vec<repo::RepoExtension>>> {
+        // Fast path: already cached.
+        if let Some(cached) = self.repo_index_cache.read().await.get(index_url) {
+            return Ok(cached.clone());
+        }
+
+        // Slow path: download + parse.
+        let response = reqwest::get(index_url)
+            .await
+            .with_context(|| format!("Failed to fetch repo index from {}", index_url))?;
+        let status = response.status();
+        if !status.is_success() {
+            bail!(
+                "Failed to fetch repo index: HTTP {} from {}",
+                status,
+                index_url
+            );
+        }
+        let index: Vec<repo::RepoExtension> = response
+            .json()
+            .await
+            .with_context(|| format!("Failed to parse repo index from {}", index_url))?;
+
+        let index = Arc::new(index);
+        self.repo_index_cache
+            .write()
+            .await
+            .insert(index_url.to_string(), index.clone());
+        Ok(index)
     }
 
     /// Load extension from a JAR file (desktop) or APK file (Android).
@@ -689,29 +734,45 @@ impl Adapter for MihonAdapter {
         Ok(())
     }
 
-    /// Get extension repository metadata
-    async fn get_repo(
-        &self,
-        _url: &str,
-    ) -> Result<dion_runtime::data::extension_repo::ExtensionRepo> {
-        bail!("Repository support not yet implemented")
+    /// Get extension repository metadata.
+    ///
+    /// Mihon repo indexes carry no top-level repo metadata, so the
+    /// [`ExtensionRepo`] is built from the URL. The index is still fetched
+    /// to validate the URL and warm the cache for subsequent `browse_repo`
+    /// / `get_remote_extension` calls.
+    ///
+    /// Accepts either a bare repo URL (`…/repo`) or a full index URL
+    /// (`…/repo/index.min.json`).
+    async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
+        let index_url = repo::normalize_index_url(url);
+        // Fetch to validate the URL and prime the cache.
+        self.fetch_repo_index(&index_url).await?;
+        Ok(repo::build_extension_repo(&index_url))
     }
 
-    /// Get specific remote extension
+    /// Get a specific remote extension by package name.
     async fn get_remote_extension(
         &self,
-        _repo: &dion_runtime::data::extension_repo::ExtensionRepo,
-        _extension_id: String,
-    ) -> Result<Option<dion_runtime::data::extension_repo::RemoteExtension>> {
-        Ok(None)
+        repo: &ExtensionRepo,
+        extension_id: String,
+    ) -> Result<Option<RemoteExtension>> {
+        let index = self.fetch_repo_index(&repo.remote_id).await?;
+        let base_url = repo::repo_base_url(&repo.remote_id);
+        Ok(index
+            .iter()
+            .find(|e| e.pkg == extension_id)
+            .map(|e| e.to_remote(&base_url)))
     }
 
-    /// Browse extensions in repository
-    async fn browse_repo(
-        &self,
-        _repo: &dion_runtime::data::extension_repo::ExtensionRepo,
-        _page: i32,
-    ) -> Result<dion_runtime::data::extension_repo::RemoteExtensionResult> {
-        bail!("Repository browsing not yet implemented")
+    /// Browse all extensions in a repository.
+    ///
+    /// The Mihon index returns every extension in a single file, so the
+    /// `page` parameter is ignored — all entries are returned at once with
+    /// `hasnext: false` and `length` set to the total count. Filtering /
+    /// client-side pagination is left to the host application.
+    async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
+        let index = self.fetch_repo_index(&repo.remote_id).await?;
+        let base_url = repo::repo_base_url(&repo.remote_id);
+        Ok(repo::index_to_result(&index, &base_url))
     }
 }

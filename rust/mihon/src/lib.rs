@@ -24,6 +24,7 @@ pub mod apk;
 mod extension;
 pub mod jni;
 mod mapping;
+mod repo;
 
 pub use adapter::MihonAdapter;
 pub use apk::MihonExtensionMetadata;
