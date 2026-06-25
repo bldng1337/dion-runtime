@@ -130,9 +130,21 @@ impl RepoExtension {
 
     /// Convert to a [`RemoteExtension`] resolved against `base_url`
     /// (the repo directory that contains `apk/` and `icon/`).
+    ///
+    /// The id is derived from the first source's Mihon source id as
+    /// `mihon:{source_id}` so it matches the id assigned to the extension
+    /// once installed (see `MihonAdapter::load_extension_from_jar`). This
+    /// lets the host match a repo entry against its installed counterpart.
+    /// When the index lists no sources (no source id available) we fall
+    /// back to the package name so the entry is still representable.
     pub(crate) fn to_remote(&self, base_url: &str) -> RemoteExtension {
+        let id = self
+            .sources
+            .first()
+            .map(|s| format!("mihon:{}", s.id))
+            .unwrap_or_else(|| self.pkg.clone());
         RemoteExtension {
-            id: self.pkg.clone(),
+            id,
             remote_id: format!("{}/apk/{}", base_url, self.apk),
             name: self.name.clone(),
             url: self
@@ -269,7 +281,9 @@ mod tests {
         };
         let base = "https://raw.githubusercontent.com/owner/repo/branch";
         let remote = ext.to_remote(base);
-        assert_eq!(remote.id, "eu.kanade.test");
+        // id is derived from the first source's Mihon source id, matching the
+        // id assigned to the extension once installed.
+        assert_eq!(remote.id, "mihon:123");
         assert_eq!(
             remote.remote_id,
             "https://raw.githubusercontent.com/owner/repo/branch/apk/test-v1.0.apk"
@@ -281,6 +295,24 @@ mod tests {
         assert_eq!(remote.url, "https://example.com");
         assert_eq!(remote.version, "1.0");
         assert!(remote.compatible);
+    }
+
+    #[test]
+    fn to_remote_falls_back_to_pkg_without_sources() {
+        // When the index lists no sources there is no source id to derive a
+        // `mihon:{id}` from, so fall back to the package name.
+        let ext = RepoExtension {
+            name: "Test".to_string(),
+            pkg: "eu.kanade.test".to_string(),
+            apk: "test-v1.0.apk".to_string(),
+            lang: String::new(),
+            code: 0,
+            version: String::new(),
+            nsfw: 0,
+            sources: vec![],
+        };
+        let remote = ext.to_remote("https://example.com/repo");
+        assert_eq!(remote.id, "eu.kanade.test");
     }
 
     #[test]

@@ -750,7 +750,12 @@ impl Adapter for MihonAdapter {
         Ok(repo::build_extension_repo(&index_url))
     }
 
-    /// Get a specific remote extension by package name.
+    /// Get a specific remote extension by id.
+    ///
+    /// `extension_id` is matched against the canonical id produced by
+    /// [`repo::RepoExtension::to_remote`] (`mihon:{source_id}`), with a
+    /// fallback to the package name for callers that still pass the bare
+    /// package.
     async fn get_remote_extension(
         &self,
         repo: &ExtensionRepo,
@@ -760,7 +765,12 @@ impl Adapter for MihonAdapter {
         let base_url = repo::repo_base_url(&repo.remote_id);
         Ok(index
             .iter()
-            .find(|e| e.pkg == extension_id)
+            .find(|e| {
+                e.sources
+                    .first()
+                    .is_some_and(|s| format!("mihon:{}", s.id) == extension_id)
+                    || e.pkg == extension_id
+            })
             .map(|e| e.to_remote(&base_url)))
     }
 
