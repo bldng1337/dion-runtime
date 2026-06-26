@@ -262,11 +262,37 @@ impl MihonBridge {
     }
 
     /// Get filter list for source
-    #[allow(dead_code)]
     pub fn get_filter_list(&self, source_id: i64) -> Result<Vec<FilterDto>> {
         let result =
             self.call_bridge_method_long("getFilterList", "(J)Ljava/lang/String;", source_id)?;
         self.parse_result(&result)
+    }
+
+    /// Get configurable preferences for a source.
+    ///
+    /// Invokes the source's `setupPreferenceScreen` reflectively (via the
+    /// bridge) and returns the registered preferences. Returns an empty list
+    /// for non-configurable sources.
+    pub fn get_preference_list(&self, source_id: i64) -> Result<Vec<PreferenceDto>> {
+        let result =
+            self.call_bridge_method_long("getPreferenceList", "(J)Ljava/lang/String;", source_id)?;
+        let response: PreferenceListResult = self.parse_result(&result)?;
+        Ok(response.preferences)
+    }
+
+    /// Apply preference values to the source's backing SharedPreferences.
+    ///
+    /// Only the `key` and `value` fields of each [PreferenceDto] are read by
+    /// the bridge. This writes to the conventional `source_<id>` SharedPreferences
+    /// (and the package-name fallback) so the source observes the values.
+    pub fn apply_preferences(&self, source_id: i64, prefs_json: &str) -> Result<()> {
+        let result = self.call_bridge_method_long_string(
+            "applyPreferences",
+            "(JLjava/lang/String;)Ljava/lang/String;",
+            source_id,
+            prefs_json,
+        )?;
+        self.check_success(&result)
     }
 
     // ========== Anime Source Methods ==========

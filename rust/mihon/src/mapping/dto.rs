@@ -181,6 +181,63 @@ pub struct FilterDto {
     pub name: String,
     #[serde(default)]
     pub state: String,
+    /// Selectable options for `Select` and `Sort` filters; `None` otherwise.
+    /// For `Sort`, these are the sort field names.
+    #[serde(default)]
+    pub values: Option<Vec<String>>,
+}
+
+// ========== Preference DTOs ==========
+//
+// Mirror of the Kotlin `PreferenceDto`/`PrefValue`/`PrefOption` types in
+// `dion.mihon.dto`. These are the bridge-level representation of a source's
+// configurable preferences; `extension.rs` maps them onto dion's
+// `Setting`/`SettingValue`/`SettingsUI`.
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PreferenceDto {
+    /// SharedPreferences key the source reads this value under.
+    pub key: String,
+    /// Display label.
+    pub title: String,
+    /// "switch" | "text" | "list" | "multiselect".
+    pub kind: String,
+    /// Current value.
+    pub value: PrefValue,
+    /// Default value declared by the source.
+    pub default: PrefValue,
+    /// Display/value pairs for "list" and "multiselect" kinds.
+    #[serde(default)]
+    pub options: Option<Vec<PrefOption>>,
+    /// Whether the preference should be shown in the UI.
+    #[serde(default = "default_true")]
+    pub visible: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PrefOption {
+    pub label: String,
+    pub value: String,
+}
+
+/// Polymorphic preference value. The `type` discriminator matches dion's
+/// `SettingValue` wire format.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type")]
+pub enum PrefValue {
+    String { data: String },
+    Number { data: f32 },
+    Boolean { data: bool },
+    StringList { data: Vec<String> },
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PreferenceListResult {
+    pub preferences: Vec<PreferenceDto>,
+}
+
+fn default_true() -> bool {
+    true
 }
 
 // ========== Conversions ==========

@@ -1,5 +1,14 @@
 package dion.mihon.dto
 
+import android.content.Context
+import androidx.preference.CheckBoxPreference
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceScreen
+import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.TwoStatePreference
 import eu.kanade.tachiyomi.animesource.AnimeCatalogueSource
 import eu.kanade.tachiyomi.animesource.ConfigurableAnimeSource
 import eu.kanade.tachiyomi.animesource.model.*
@@ -7,6 +16,7 @@ import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
 import eu.kanade.tachiyomi.source.*
 import eu.kanade.tachiyomi.source.model.*
 import eu.kanade.tachiyomi.source.online.HttpSource
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 // ========== Result Types ==========
@@ -175,8 +185,176 @@ data class EpisodeDto(
 data class FilterDto(
     val type: String,
     val name: String,
-    val state: String = ""
+    val state: String = "",
+    /**
+     * Selectable options for `Select` and `Sort` filters. `null` for filters
+     * that have no option list (Text, CheckBox, TriState, Header, Separator).
+     * For `Sort`, the labels are the sort field names.
+     */
+    val values: List<String>? = null
 )
+
+// ========== Preference DTOs ==========
+
+/**
+ * A user-configurable source preference, surfaced to the host as a
+ * `SettingKind::Extension` setting.
+ *
+ * This is a neutral bridge type: the Rust adapter maps it onto dion's
+ * `Setting`/`SettingValue`/`SettingsUI`. It intentionally does not mirror the
+ * dion data model so the compat layer stays decoupled from it.
+ *
+ * @param key SharedPreferences key the source reads this value under.
+ * @param title Display label (the Preference's title).
+ * @param kind One of "switch", "text", "list", "multiselect".
+ * @param value Current value of the preference.
+ * @param default Default value declared by the source in `setupPreferenceScreen`.
+ * @param options Display/value pairs for "list" and "multiselect" kinds.
+ * @param visible Whether the preference should be shown in the UI.
+ */
+@Serializable
+data class PreferenceDto(
+    val key: String,
+    val title: String,
+    val kind: String,
+    val value: PrefValue,
+    val default: PrefValue,
+    val options: List<PrefOption>? = null,
+    val visible: Boolean = true
+)
+
+@Serializable
+data class PrefOption(
+    val label: String,
+    val value: String
+)
+
+/**
+ * Polymorphic preference value. The `type` discriminator mirrors the wire
+ * format dion uses for `SettingValue`, so the value survives the Rust↔JVM
+ * crossing unchanged.
+ */
+@Serializable
+sealed class PrefValue {
+    @Serializable
+    @SerialName("String")
+    data class Str(val data: String) : PrefValue()
+
+    @Serializable
+    @SerialName("Number")
+    data class Num(val data: Float) : PrefValue()
+
+    @Serializable
+    @SerialName("Boolean")
+    data class Bool(val data: Boolean) : PrefValue()
+
+    @Serializable
+    @SerialName("StringList")
+    data class StrList(val data: List<String>) : PrefValue()
+}
+
+@Serializable
+data class PreferenceListResult(
+    val preferences: List<PreferenceDto>
+)
+
+/**
+ * Convert a [Preference] added via `setupPreferenceScreen` into a [PreferenceDto].
+ *
+ * Only preferences carrying a key are surfaced; keyless preferences (plain
+ * titles, informational rows) carry no persistable state and are dropped.
+ */
+fun Preference.toDto(): PreferenceDto? {
+    val key = this.key ?: return null
+
+    return when (this) {
+        is TwoStatePreference -> PreferenceDto(
+            key = key,
+            title = this.title?.toString().orEmpty(),
+            kind = "switch",
+            value = PrefValue.Bool(this.isChecked),
+            default = PrefValue.Bool(this.isChecked),
+            visible = this.isVisible,
+        )
+
+        is EditTextPreference -> PreferenceDto(
+            key = key,
+            title = this.title?.toString().orEmpty(),
+            kind = "text",
+            value = PrefValue.Str(this.text.orEmpty()),
+            default = PrefValue.Str(this.text.orEmpty()),
+            visible = this.isVisible,
+        )
+
+        is ListPreference -> {
+            val entries = this.entries?.map { it.toString() }.orEmpty()
+            val entryValues = this.entryValues?.map { it.toString() }.orEmpty()
+            val options = entries.zip(entryValues).map { (label, value) ->
+                PrefOption(label, value)
+            }
+            PreferenceDto(
+                key = key,
+                title = this.title?.toString().orEmpty(),
+                kind = "list",
+                value = PrefValue.Str(this.value.orEmpty()),
+                default = PrefValue.Str(this.value.orEmpty()),
+                options = options,
+                visible = this.isVisible,
+            )
+        }
+
+        is MultiSelectListPreference -> {
+            val entries = this.entries?.map { it.toString() }.orEmpty()
+            val entryValues = this.entryValues?.map { it.toString() }.orEmpty()
+            val options = entries.zip(entryValues).map { (label, value) ->
+                PrefOption(label, value)
+            }
+            PreferenceDto(
+                key = key,
+                title = this.title?.toString().orEmpty(),
+                kind = "multiselect",
+                value = PrefValue.StrList(this.values.map { it.toString() }),
+                default = PrefValue.StrList(this.values.map { it.toString() }),
+                options = options,
+                visible = this.isVisible,
+            )
+        }
+
+        else -> {
+            // Generic Preference with a key but no recognized subtype: there's
+            // no value to read/write, so skip it.
+            null
+        }
+    }
+}
+
+/**
+ * Build the list of [PreferenceDto] for a configurable source by invoking its
+ * `setupPreferenceScreen` and reading back the preferences it registered.
+ *
+ * `setupPreferenceScreen` is declared on [ConfigurableAnimeSource] but, for
+ * manga sources, is only present on the concrete source class (the
+ * [ConfigurableSource] marker interface does not redeclare it). We therefore
+ * locate and invoke it reflectively so both hierarchies are handled uniformly.
+ */
+fun buildPreferenceList(context: Context, source: Source): List<PreferenceDto> {
+    val configurable = source is ConfigurableSource || source is ConfigurableAnimeSource
+    if (!configurable) return emptyList()
+
+    val setup = source::class.java.methods.firstOrNull {
+        it.name == "setupPreferenceScreen" &&
+                it.parameterTypes.size == 1 &&
+                it.parameterTypes[0] == PreferenceScreen::class.java
+    } ?: return emptyList()
+
+    val screen = PreferenceScreen(context)
+    setup.isAccessible = true
+    setup.invoke(source, screen)
+
+    return (0 until screen.preferenceCount)
+        .map { screen.getPreference(it) }
+        .mapNotNull { it.toDto() }
+}
 
 // ========== Conversions ==========
 
@@ -249,7 +427,11 @@ fun Filter<*>.toDto(): FilterDto = FilterDto(
         }
 
         is Filter.Group<*> -> ""
-        else -> ""
+    },
+    values = when (this) {
+        is Filter.Select<*> -> values.map { it.toString() }
+        is Filter.Sort -> values.toList()
+        else -> null
     }
 )
 
@@ -375,7 +557,11 @@ fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
         }
 
         is AnimeFilter.Group<*> -> ""
-        else -> ""
+    },
+    values = when (this) {
+        is AnimeFilter.Select<*> -> values.map { it.toString() }
+        is AnimeFilter.Sort -> values.toList()
+        else -> null
     }
 )
 

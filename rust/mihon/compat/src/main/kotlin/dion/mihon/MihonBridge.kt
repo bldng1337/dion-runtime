@@ -1,6 +1,7 @@
 package dion.mihon
 
 import android.app.Application
+import android.content.Context
 import dion.mihon.android.CustomContext
 import dion.mihon.android.FakeApplication
 import dion.mihon.dto.*
@@ -16,6 +17,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.addSingleton
+import uy.kohesive.injekt.api.get
 import java.io.File
 
 /**
@@ -235,6 +237,72 @@ object MihonBridge {
         }
     }
 
+    /**
+     * Get the configurable preferences for a source by invoking its
+     * `setupPreferenceScreen` and reading back the registered preferences.
+     *
+     * Works for both manga ([ConfigurableSource]) and anime
+     * ([ConfigurableAnimeSource]) sources; `setupPreferenceScreen` is located
+     * reflectively. Returns an empty list for non-configurable sources.
+     *
+     * @return JSON: PreferenceListResult { preferences: [...] }
+     */
+    @JvmStatic
+    fun getPreferenceList(sourceId: Long): String {
+        return try {
+            val source = sourceManager.get(sourceId)
+                ?: throw IllegalArgumentException("Source not found: $sourceId")
+            val context = Injekt.get<Application>()
+            val prefs = buildPreferenceList(context, source)
+            json.encodeToString(PreferenceListResult(prefs))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Apply preference values to the source's backing SharedPreferences so the
+     * source observes them on its next operation.
+     *
+     * The concrete SharedPreferences file a source reads from is source
+     * specific, but the overwhelming convention (Mihon's `HttpSource` and most
+     * extensions) is `"source_$id"`, with the app package name as a fallback
+     * (used by `PreferenceManager.getDefaultSharedPreferences`). We write to
+     * both so the value lands wherever the source looks it up.
+     *
+     * @param prefsJson JSON: List<PreferenceDto> (only `key` and `value` are
+     *                  read; everything else is ignored)
+     */
+    @JvmStatic
+    fun applyPreferences(sourceId: Long, prefsJson: String): String {
+        return try {
+            val app = Injekt.get<Application>()
+            val updates = json.decodeFromString<List<PreferenceDto>>(prefsJson)
+            val targets = listOfNotNull(
+                "source_$sourceId",
+                app.packageName,
+            ).toSet()
+
+            for (name in targets) {
+                val sp = app.getSharedPreferences(name, Context.MODE_PRIVATE)
+                val editor = sp.edit()
+                for (pref in updates) {
+                    when (val v = pref.value) {
+                        is PrefValue.Bool -> editor.putBoolean(pref.key, v.data)
+                        is PrefValue.Str -> editor.putString(pref.key, v.data)
+                        is PrefValue.Num -> editor.putFloat(pref.key, v.data)
+                        is PrefValue.StrList ->
+                            editor.putStringSet(pref.key, v.data.toMutableSet())
+                    }
+                }
+                editor.apply()
+            }
+            json.encodeToString(SuccessResult(true))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
+        }
+    }
+
     // ========== Manga Source Methods ==========
 
     /**
@@ -247,7 +315,8 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getPopularManga(page).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -272,7 +341,8 @@ object MihonBridge {
             }
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getLatestUpdates(page).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -304,7 +374,8 @@ object MihonBridge {
             }
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getSearchManga(page, query, filters).toDto(thumbnailHeaders)
                 } else {
                     MangasPageDto(emptyList(), false)
@@ -329,7 +400,8 @@ object MihonBridge {
             val manga = mangaDto.toSManga()
             val result = runBlocking {
                 if (source is HttpSource) {
-                    val thumbnailHeaders = source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
+                    val thumbnailHeaders =
+                        source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
                     source.getMangaDetails(manga).toDto(thumbnailHeaders)
                 } else {
                     mangaDto
