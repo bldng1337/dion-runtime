@@ -327,7 +327,7 @@ object AndroidMihonBridge {
         drawable.draw(canvas)
 
         val iconFile = File(iconsDir, "$packageName.png")
-        try {
+        return try {
             iconFile.outputStream().use { out ->
                 bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
             }
