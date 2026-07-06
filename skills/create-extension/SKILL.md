@@ -7,13 +7,9 @@ description: Create and scaffold Dion runtime extensions — TypeScript/JavaScri
 
 A Dion **extension** is a bundled JavaScript module that plugs into the Dion runtime
 (a Rust host embedding the `boa_engine` JS VM). Extensions provide media content —
-"entries" (books, comics, videos, audio) and the "sources" to play/read them — from a website or API.
+"entries" (books, comics, videos, audio) and the "sources" to play/read them — from a website or API or give the ability to transform entries.
 
 This skill tells you how to scaffold, implement, build, test, and package an extension.
-Read the supporting files in this directory for full detail:
-
-- `reference/api.md` — complete API and data-type reference (modules, types, interfaces).
-- `templates/` — copy-and-adapt scaffolding (`package.json`, `main.ts`, `main.test.ts`, `tsconfig.json`, `biome.json`).
 
 ## Mental model: how an extension runs
 
@@ -24,17 +20,12 @@ Read the supporting files in this directory for full detail:
    - reads the metadata comment, checks `api_version` compatibility,
    - parses the module, instantiates the default-exported class,
    - calls `load()` once if present,
-   - then calls interface methods (`browse`, `search`, `detail`, `source`, …) as needed,
-     each of which **must return a Promise**.
+   - then calls interface methods (`browse`, `search`, `detail`, `source`, …) as needed, each of which **must return a Promise**.
 
 Everything crosses the JS↔Rust boundary as JSON, so return plain JSON-serialisable objects.
 
 ## Scaffolding
-
-### Option A — `dion-create` (preferred when available)
-
-The `@dion-js/extension-scripts` package ships a `dion-create` CLI. Inside a repo that
-has it installed, run interactively or non-interactively:
+The `@dion-js/extension-scripts` package ships a `dion-create` CLI. Run interactively or non-interactively:
 
 ```sh
 bunx dion-create                      # interactive prompts
@@ -43,36 +34,13 @@ bunx dion-create -y --name my-ext --media Book --url https://example.com
 ```
 
 Flags: `--name/-n`, `--description`, `--url`, `--author`, `--icon`, `--keywords`
-(comma-separated), `--media` (comma-separated: `Video,Comic,Audio,Book,Unknown`), `-y/--yes`
-(non-interactive with defaults). It generates `package.json`, `tsconfig.json`, `biome.json`,
-`src/main.ts`, and `src/main.test.ts`. Follow the printed next steps:
-`bun install`, `bun run build`, `bun test`.
-
-### Option B — manual / outside the repo
-
-Copy the files from this skill's `templates/` directory, then adjust `package.json` and
-`src/main.ts`. The minimum project shape is:
-
-```
-my-extension/
-├── package.json
-├── tsconfig.json
-├── biome.json
-└── src/
-    ├── main.ts        # the extension (default export class)
-    └── main.test.ts   # bun:test integration test
-```
+(comma-separated), `--media` (comma-separated: `Video,Comic,Audio,Book,Unknown`), `-y/--yes` (non-interactive with defaults). It generates `package.json`, `tsconfig.json`, `biome.json`, `src/main.ts`, and `src/main.test.ts`. Follow the printed next steps: `bun install`.
 
 ## `package.json` — the extension manifest
 
-`package.json` doubles as the **Dion metadata manifest**. At bundle time `dion-bundle`
-reads it, validates the Dion fields, and writes them into the `//<metadata>` header. The
-canonical Dion field names come from the `ExtensionMetadata` schema — **note these differ
-from the npm-standard names** (`desc` not `description`, `authors` not `author`, `tags` not
-`keywords`). The npm-standard fields are harmless but **ignored** for Dion metadata.
+`package.json` doubles as the **Dion metadata manifest**. At bundle time `dion-bundle` reads it, validates the Dion fields, and writes them into the `//<metadata>` header. The canonical Dion field names come from the `ExtensionMetadata` schema — **note these differ from the npm-standard names** (`desc` not `description`, `authors` not `author`, `tags` not `keywords`). The npm-standard fields are harmless but **ignored** for Dion metadata.
 
 Required Dion fields (validation fails without these):
-
 | Field | Type | Notes |
 |---|---|---|
 | `id` | string | Stable unique id. `dion-create` generates a UUID. |
@@ -84,13 +52,12 @@ Required Dion fields (validation fails without these):
 | `api_version` | string | **Semver requirement** matched against the host runtime version. Use `"*"` unless you need to pin a host range (e.g. `">=1.0.0"`). A mismatch marks the extension `compatible: false`. |
 | `nsfw` | boolean | Mark adult content. |
 | `media_type` | `MediaType[]` | Any of: `Video`, `Comic`, `Audio`, `Book`, `Unknown`. |
-| `extension_type` | `ExtensionType[]` | Declared capabilities. Often `[]` in practice; the host also infers behaviour from which methods you implement. |
+| `extension_type` | `ExtensionType[]` | Declared capabilities. Depend on which interfaces you implement. See `@dion-js/runtime-types/gen/dion_runtime/generated_types.ts` |
 
 Optional Dion fields: `desc` (string), `authors` (string[]), `tags` (string[]),
 `lang` (string[]), `repo` (string — usually auto-filled from git), `settings`, `accounts`.
 
-Also required by the tooling: `"type": "module"`, `"private": true`, and the standard
-`scripts` block (see `templates/package.json`):
+Also required by the tooling: `"type": "module"`, `"private": true`, and the standard `scripts` block:
 
 ```json
 "scripts": {
@@ -149,7 +116,7 @@ export default class extends DionExtension implements SourceProvider {
 
 Method-name spellings matter exactly — the host dispatches by name
 (`browse`, `search`, `detail`, `source`, `mapEntry`, `onEntryActivity`, `mapSource`,
-`handleUrl`, `handleProxy`, `onEvent`, `validate`, `load`). See `reference/api.md`.
+`handleUrl`, `handleProxy`, `onEvent`, `validate`, `load`). Use the TypeScript interfaces to get the correct signatures.
 
 ### Lifecycle
 
@@ -183,7 +150,7 @@ These are **external** — import them, do not bundle them. Ambient types come f
 - `console` — `log/error/warn/info/debug`.
 - global `appdata` — `{ app, version, platform }`.
 
-Full signatures and the data types they use are in `reference/api.md`.
+For full signatures and the data types they use look at `@dion-js/extension-types`.
 
 ## Key data types (return these)
 
@@ -206,8 +173,7 @@ All defined in `@dion-js/runtime-types/runtime`. Tagged unions use a `"type"` di
   the player must send).
 - `MediaType` — `"Video" | "Comic" | "Audio" | "Book" | "Unknown"`.
 
-See `reference/api.md` for `Setting`/`SettingValue`/`SettingsUI`, `Account`/`AuthData`/
-`AuthCreds`, `CustomUI`, `EventData`/`EventResult`, `ProxyRequest`/`ProxyResponse`.
+See `@dion-js/runtime-types/runtime`
 
 ## Settings & auth (use the `runtime-lib` helpers)
 
@@ -226,6 +192,8 @@ UI builders (`@dion-js/runtime-lib`): `Text`, `Image`, `HyperLink`, `Timestamp`,
 `Row`, `Card`, `EntryCard`, `Feed`, `Button`, `InlineSetting`, `Slot`, `If`.
 `log/logwarn/logerr` (JSON-stringified), `makeurl`, `makeFormdata`, `parseNumberwithSuffix`,
 `toStatus`, `encodeURL`, `deduplicate`.
+
+Make sure that the settings are in the right scope: `"Extension"` is for general extension settings, `"Search"` is for per-search settings like categories. The Settings passed to `detail` and `source` are the same for each entry, they are for per entry settings. Always echo back the `settings` in your return values.
 
 ## Build, test, lint
 
