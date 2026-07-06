@@ -101,8 +101,9 @@ impl MihonExtensionMetadata {
             .unwrap_or_else(|| package.clone());
 
         // Extract meta-data. Anime extensions (Aniyomi) use the
-        // `tachiyomi.animeextension.*` keys instead of the manga
-        // `tachiyomi.extension.*` keys, so we check both.
+        // `tachiyomi.animeextension.*` keys and novel (tsundoku) extensions use
+        // the `tachiyomi.novelextension.*` keys instead of the manga
+        // `tachiyomi.extension.*` keys, so we check all three namespaces.
         let mut entry_class = String::new();
         let mut nsfw = false;
         let mut lib_version = None;
@@ -121,14 +122,18 @@ impl MihonExtensionMetadata {
                     .unwrap_or("");
 
                 match name {
-                    "tachiyomi.extension.class" | "tachiyomi.animeextension.class" => {
+                    "tachiyomi.extension.class"
+                    | "tachiyomi.animeextension.class"
+                    | "tachiyomi.novelextension.class" => {
                         entry_class = if value.starts_with('.') {
                             format!("{}{}", package, value)
                         } else {
                             value.to_string()
                         };
                     }
-                    "tachiyomi.extension.nsfw" | "tachiyomi.animeextension.nsfw" => {
+                    "tachiyomi.extension.nsfw"
+                    | "tachiyomi.animeextension.nsfw"
+                    | "tachiyomi.novelextension.nsfw" => {
                         nsfw = value == "1" || value == "true";
                     }
                     "tachiyomi.extension.lib.version" | "tachiyomi.animeextension.lib.version" => {
@@ -140,7 +145,10 @@ impl MihonExtensionMetadata {
         }
 
         if entry_class.is_empty() {
-            bail!("Missing tachiyomi.extension.class meta-data");
+            bail!(
+                "Missing tachiyomi.extension.class / animeextension.class / novelextension.class \
+                 meta-data"
+            );
         }
 
         Ok(Self {

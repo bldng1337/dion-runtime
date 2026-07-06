@@ -4,8 +4,8 @@
 //! for JSON serialization between Rust and the JVM.
 
 use dion_runtime::data::source::{
-    Entry, EntryDetailed, EntryId, EntryList, Episode, EpisodeId, Link, MediaType, ReleaseStatus,
-    Source, StreamSource, Subtitles,
+    Entry, EntryDetailed, EntryId, EntryList, Episode, EpisodeId, Link, MediaType, Paragraph,
+    ReleaseStatus, Source, StreamSource, Subtitles,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -247,6 +247,7 @@ impl MangasPageDto {
         let media_type = match source_type {
             MihonSourceType::Manga => MediaType::Comic,
             MihonSourceType::Anime => MediaType::Video,
+            MihonSourceType::Novel => MediaType::Book,
         };
 
         EntryList {
@@ -389,6 +390,132 @@ pub fn pages_to_source(pages: Vec<PageDto>) -> Source {
     }
 }
 
+/// Convert novel chapter text into a `Source::Paragraphlist`.
+///
+/// Novel (tsundoku) sources return the chapter body as a single string that
+/// may be HTML, Markdown, or plain text (the host auto-detects at render
+/// time). To produce a non-trivial paragraph list we split the text on
+/// block-level boundaries: HTML `<p>...</p>` / `<br>` tags first, then blank
+/// lines, and finally fall back to the whole blob as one paragraph. A light
+/// HTML-entity unescape is applied so the rendered text is readable.
+pub fn text_to_paragraph_source(text: String) -> Source {
+    let paragraphs = split_novel_text(&text)
+        .into_iter()
+        .map(|p| Paragraph::Text {
+            content: p,
+            style: None,
+        })
+        .collect();
+    Source::Paragraphlist { paragraphs }
+}
+
+/// Split a novel chapter's text into paragraph strings.
+///
+/// Recognizes HTML block structure (`<p>`, `<br>`, `<div>`) when present, and
+/// otherwise falls back to blank-line separation. HTML tags are stripped from
+/// each resulting paragraph and common entities are unescaped. Paragraphs that
+/// are empty after cleaning are dropped.
+fn split_novel_text(text: &str) -> Vec<String> {
+    let trimmed = text.trim();
+    if trimmed.is_empty() {
+        return Vec::new();
+    }
+
+    // If the text looks like HTML (contains block tags), split on those.
+    let looks_like_html =
+        trimmed.contains('<') && contains_block_tag(trimmed);
+
+    let chunks: Vec<String> = if looks_like_html {
+        split_html_blocks(trimmed)
+    } else {
+        // Plain text / markdown: split on blank lines, keeping non-empty parts.
+        trimmed
+            .split("\n\n")
+            .flat_map(|block| {
+                block
+                    .lines()
+                    .filter(|l| !l.trim().is_empty())
+                    .map(|l| l.trim().to_string())
+                    .collect::<Vec<_>>()
+            })
+            .collect()
+    };
+
+    chunks
+        .into_iter()
+        .map(|c| clean_html_text(&c))
+        .filter(|c| !c.is_empty())
+        .collect()
+}
+
+/// Return true if `text` contains any HTML block-level tag.
+fn contains_block_tag(text: &str) -> bool {
+    const TAGS: &[&str] = &[
+        "<p>", "<p ", "<br", "<div", "<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<li", "<blockquote",
+    ];
+    let lower = text.to_lowercase();
+    TAGS.iter().any(|t| lower.contains(t))
+}
+
+/// Split HTML text on block-level tags into raw chunk strings.
+///
+/// Inserts boundaries at `<p>`, `<br>`, `<div>`, and heading/list open/close
+/// tags so each block becomes its own chunk. The tags themselves are kept in
+/// the chunks here; [clean_html_text] strips them afterward.
+fn split_html_blocks(text: &str) -> Vec<String> {
+    // Replace block closers/openers with a delimiter, then split.
+    let with_delims = text
+        .replace("<br>", "\n\x00")
+        .replace("<br/>", "\n\x00")
+        .replace("<br />", "\n\x00")
+        .replace("<br>", "\n\x00")
+        .replace("</p>", "\n\x00")
+        .replace("</div>", "\n\x00")
+        .replace("</li>", "\n\x00")
+        .replace("</h1>", "\n\x00")
+        .replace("</h2>", "\n\x00")
+        .replace("</h3>", "\n\x00")
+        .replace("</h4>", "\n\x00")
+        .replace("</h5>", "\n\x00")
+        .replace("</h6>", "\n\x00")
+        .replace("</blockquote>", "\n\x00");
+
+    with_delims
+        .split('\x00')
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
+/// Strip HTML tags and unescape common entities from a chunk of novel text.
+fn clean_html_text(text: &str) -> String {
+    // Strip any remaining tags (opening/closing/simple).
+    let mut out = String::with_capacity(text.len());
+    let mut in_tag = false;
+    for ch in text.chars() {
+        match ch {
+            '<' => in_tag = true,
+            '>' => in_tag = false,
+            _ if !in_tag => out.push(ch),
+            _ => {}
+        }
+    }
+
+    let out = out
+        .replace("&nbsp;", " ")
+        .replace("&amp;", "&")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&apos;", "'")
+        .replace("&mdash;", "—")
+        .replace("&ndash;", "–")
+        .replace("&hellip;", "…");
+
+    out.trim().replace("\r", "").trim().to_string()
+}
+
 // ========== Anime Conversions ==========
 
 impl EpisodeDto {
@@ -503,7 +630,7 @@ pub fn videos_to_source(videos: Vec<VideoDto>) -> Source {
 
 #[cfg(test)]
 mod tests {
-    use super::{pages_to_source, videos_to_source, MangaDto, PageDto, SubtitleTrackDto, VideoDto};
+    use super::{pages_to_source, text_to_paragraph_source, videos_to_source, MangaDto, PageDto, SubtitleTrackDto, VideoDto};
     use dion_runtime::data::source::{MediaType, Source};
     use std::collections::HashMap;
 
@@ -735,6 +862,63 @@ mod tests {
         match source {
             Source::Video { sub, .. } => assert!(sub.is_empty()),
             _ => panic!("expected Source::Video"),
+        }
+    }
+
+    #[test]
+    fn text_to_paragraph_source_splits_html_into_paragraphs() {
+        use dion_runtime::data::source::Paragraph;
+        let html = "<p>First paragraph.</p><p>Second paragraph with <b>bold</b>.</p><p></p>";
+        let source = text_to_paragraph_source(html.to_string());
+        match source {
+            Source::Paragraphlist { paragraphs } => {
+                assert_eq!(paragraphs.len(), 2, "empty <p></p> should be dropped");
+                // Each paragraph should have tags stripped.
+                for p in &paragraphs {
+                    if let Paragraph::Text { content, .. } = p {
+                        assert!(!content.contains('<'), "tags should be stripped");
+                    }
+                }
+            }
+            _ => panic!("expected Source::Paragraphlist"),
+        }
+    }
+
+    #[test]
+    fn text_to_paragraph_source_unescapes_html_entities() {
+        use dion_runtime::data::source::Paragraph;
+        let html = "<p>Tom &amp; Jerry &lt;3</p>";
+        let source = text_to_paragraph_source(html.to_string());
+        match source {
+            Source::Paragraphlist { paragraphs } => {
+                assert_eq!(paragraphs.len(), 1);
+                match &paragraphs[0] {
+                    Paragraph::Text { content, .. } => assert_eq!(content, "Tom & Jerry <3"),
+                    _ => panic!("expected Text paragraph"),
+                }
+            }
+            _ => panic!("expected Source::Paragraphlist"),
+        }
+    }
+
+    #[test]
+    fn text_to_paragraph_source_splits_plain_text_on_lines() {
+        let text = "Line one.\nLine two.\n\nLine three.";
+        let source = text_to_paragraph_source(text.to_string());
+        match source {
+            Source::Paragraphlist { paragraphs } => {
+                assert_eq!(paragraphs.len(), 3, "each non-empty line is a paragraph");
+            }
+            _ => panic!("expected Source::Paragraphlist"),
+        }
+    }
+
+    #[test]
+    fn text_to_paragraph_source_empty_yields_no_paragraphs() {
+        let source = text_to_paragraph_source("   \n\n  ".to_string());
+        match source {
+            Source::Paragraphlist { paragraphs } => assert!(paragraphs.is_empty()),
+            _ => panic!("expected Source::Paragraphlist"),
         }
     }
 }

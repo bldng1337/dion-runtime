@@ -343,6 +343,7 @@ impl MihonAdapter {
             media_types.insert(match source_type.as_str() {
                 "manga" => MediaType::Comic,
                 "anime" => MediaType::Video,
+                "novel" => MediaType::Book,
                 _ => MediaType::Unknown,
             });
 

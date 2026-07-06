@@ -52,6 +52,11 @@ data class PageListResult(
     val pages: List<PageDto>
 )
 
+@Serializable
+data class PageTextResult(
+    val text: String
+)
+
 // ========== Install Result ==========
 
 @Serializable

@@ -27,17 +27,21 @@ use tokio_util::sync::CancellationToken;
 use crate::jni::MihonBridge;
 use crate::mapping::dto::*;
 
-/// Source type (Manga or Anime)
+/// Source type (Manga, Anime, or Novel)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MihonSourceType {
     Manga,
     Anime,
+    /// Text-based novel source (tsundoku extensions). Content is fetched as
+    /// text via `fetchPageText` and surfaced as a `Source::Paragraphlist`.
+    Novel,
 }
 
 impl MihonSourceType {
     pub fn parse(s: &str) -> Self {
         match s {
             "anime" => Self::Anime,
+            "novel" => Self::Novel,
             _ => Self::Manga,
         }
     }
@@ -216,7 +220,9 @@ impl Extension for MihonExtension {
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
         let result = match self.source_type {
-            MihonSourceType::Manga => self.bridge.get_popular(self.source_id, mihon_page)?,
+            MihonSourceType::Manga | MihonSourceType::Novel => {
+                self.bridge.get_popular(self.source_id, mihon_page)?
+            }
             MihonSourceType::Anime => self.bridge.get_popular_anime(self.source_id, mihon_page)?,
         };
 
@@ -246,7 +252,7 @@ impl Extension for MihonExtension {
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
         let result = match self.source_type {
-            MihonSourceType::Manga => {
+            MihonSourceType::Manga | MihonSourceType::Novel => {
                 self.bridge
                     .search(self.source_id, mihon_page, &query, &filters_json)?
             }
@@ -280,11 +286,15 @@ impl Extension for MihonExtension {
         let entry_json = serde_json::to_string(&MangaDto::from_entry_id(&entryid))?;
 
         match self.source_type {
-            MihonSourceType::Manga => {
+            MihonSourceType::Manga | MihonSourceType::Novel => {
                 let details = self.bridge.get_details(self.source_id, &entry_json)?;
                 let mut chapters = self.bridge.get_chapter_list(self.source_id, &entry_json)?;
                 chapters.reverse();
-                let detailed = details.into_entry_detailed(chapters, MediaType::Comic);
+                let media_type = match self.source_type {
+                    MihonSourceType::Novel => MediaType::Book,
+                    _ => MediaType::Comic,
+                };
+                let detailed = details.into_entry_detailed(chapters, media_type);
                 Ok(EntryDetailedResult {
                     entry: detailed,
                     settings,
@@ -336,6 +346,16 @@ impl Extension for MihonExtension {
                 let pages = self.bridge.get_page_list(self.source_id, &chapter_json)?;
                 Ok(SourceResult {
                     source: pages_to_source(pages),
+                    settings,
+                })
+            }
+            MihonSourceType::Novel => {
+                // A novel chapter is a single text page. Fetch its text via the
+                // source's `fetchPageText` and surface it as a Paragraphlist.
+                let chapter_json = serde_json::to_string(&ChapterDto::from_episode_id(&epid))?;
+                let page_text = self.bridge.get_page_text(self.source_id, &chapter_json)?;
+                Ok(SourceResult {
+                    source: text_to_paragraph_source(page_text.text),
                     settings,
                 })
             }

@@ -60,10 +60,16 @@ class ExtensionLoader(
 
         // Extract extension class name from manifest.
         // Anime extensions use the `tachiyomi.animeextension.*` meta-data keys
-        // instead of the manga `tachiyomi.extension.*` keys, so we fall back
-        // to the anime keys when the manga keys are absent.
+        // and novel (tsundoku) extensions use the `tachiyomi.novelextension.*`
+        // keys, instead of the manga `tachiyomi.extension.*` keys, so we fall
+        // back across the three namespaces when the manga keys are absent.
         val isAnime = metaDataMap[METADATA_ANIME_SOURCE_CLASS] != null
-        val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+        val isNovel = metaDataMap[METADATA_NOVEL_SOURCE_CLASS] != null
+        val classKey = when {
+            isAnime -> METADATA_ANIME_SOURCE_CLASS
+            isNovel -> METADATA_NOVEL_SOURCE_CLASS
+            else -> METADATA_SOURCE_CLASS
+        }
         val className = metaDataMap[classKey]
             ?: throw IllegalArgumentException("Missing $classKey meta-data in APK")
 
@@ -111,11 +117,21 @@ class ExtensionLoader(
         }
 
         // Extract metadata. Anime extensions use the `tachiyomi.animeextension.*`
-        // keys; manga extensions use `tachiyomi.extension.*`.
-        val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
-        val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
+        // keys, novel (tsundoku) extensions use the `tachiyomi.novelextension.*`
+        // keys, and manga extensions use `tachiyomi.extension.*`.
+        val nsfwKey = when {
+            isAnime -> METADATA_ANIME_NSFW
+            isNovel -> METADATA_NOVEL_NSFW
+            else -> METADATA_NSFW
+        }
+        val libVersionKey = when {
+            isAnime -> METADATA_ANIME_LIB_VERSION
+            // Novel extensions don't ship a lib version; default to 1.0 below.
+            isNovel -> null
+            else -> METADATA_LIB_VERSION
+        }
         val nsfw = metaDataMap[nsfwKey]?.let { it == "1" || it.equals("true", ignoreCase = true) } ?: false
-        val libVersion = metaDataMap[libVersionKey] ?: "1.0"
+        val libVersion = libVersionKey?.let { metaDataMap[it] } ?: "1.0"
 
         // Validate lib version for compatibility
         val libVersionNum = libVersion.substringBeforeLast('.').toDoubleOrNull()
@@ -477,6 +493,11 @@ class ExtensionLoader(
         const val METADATA_ANIME_SOURCE_CLASS = "tachiyomi.animeextension.class"
         const val METADATA_ANIME_NSFW = "tachiyomi.animeextension.nsfw"
         const val METADATA_ANIME_LIB_VERSION = "tachiyomi.animeextension.lib.version"
+
+        // Novel extensions (tsundoku) use a parallel set of meta-data keys under
+        // the `tachiyomi.novelextension` namespace. They ship no lib version.
+        const val METADATA_NOVEL_SOURCE_CLASS = "tachiyomi.novelextension.class"
+        const val METADATA_NOVEL_NSFW = "tachiyomi.novelextension.nsfw"
 
         // Supported extension lib versions (1.0 allows legacy
         // extensions that predate the tachiyomi.extension.lib.version metadata)

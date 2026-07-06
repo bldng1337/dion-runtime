@@ -204,16 +204,22 @@ object MihonBridge {
 
     /**
      * Get source type (manga or anime)
-     * @return JSON: "manga" | "anime" | "unknown"
+     * @return JSON: "novel" | "manga" | "anime" | "unknown"
+     *
+     * Novel is checked first because novel (tsundoku) sources extend
+     * [HttpSource] (a [CatalogueSource]) and would otherwise be classified as
+     * manga. The novel flag is the `Source.isNovelSource` property, virtual-
+     * dispatched across classloaders.
      */
     @JvmStatic
     fun getSourceType(sourceId: Long): String {
         return try {
             val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
-            val type = when (source) {
-                is AnimeCatalogueSource -> "anime"
-                is CatalogueSource -> "manga"
+            val type = when {
+                source.isNovelSource -> "novel"
+                source is AnimeCatalogueSource -> "anime"
+                source is CatalogueSource -> "manga"
                 else -> "unknown"
             }
             json.encodeToString(SourceTypeResult(type))
@@ -417,6 +423,12 @@ object MihonBridge {
      * Get chapter list for manga
      * @param mangaJson JSON: MangaDto
      * @return JSON: List<ChapterDto>
+     *
+     * Routes through the context-aware `getChapterList(manga, RefreshContext)`
+     * overload so novel (tsundoku) sources — which override that 2-arg form
+     * rather than the plain one — dispatch correctly. Manga/anime sources
+     * inherit a default that delegates to the plain [HttpSource.getChapterList],
+     * so their behavior is unchanged.
      */
     @JvmStatic
     fun getChapterList(sourceId: Long, mangaJson: String): String {
@@ -425,11 +437,15 @@ object MihonBridge {
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
             val result = runBlocking {
-                if (source is HttpSource) {
-                    source.getChapterList(manga).map { it.toDto() }
-                } else {
-                    emptyList()
-                }
+                // forceRefresh=true so novel sources' count-based short-circuit
+                // never skips the fetch on the host's discrete detail calls.
+                val context = RefreshContext(
+                    mangaId = 0L,
+                    existingChapters = emptyList(),
+                    lastFetchTime = 0L,
+                    forceRefresh = true,
+                )
+                source.getChapterList(manga, context).map { it.toDto() }
             }
             json.encodeToString(ChapterListResult(result))
         } catch (e: Throwable) {
@@ -458,6 +474,35 @@ object MihonBridge {
                 }
             }
             json.encodeToString(PageListResult(result))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Get the text content for a novel chapter.
+     *
+     * Novel (tsundoku) sources return a single text page per chapter; this
+     * fetches that page's text via the source's [Source.fetchPageText]. The
+     * returned string may be HTML, Markdown, or plain text — the host
+     * auto-detects at render time.
+     *
+     * @param chapterJson JSON: ChapterDto (only `url` is used)
+     * @return JSON: PageTextResult { text: "..." }
+     */
+    @JvmStatic
+    fun getPageText(sourceId: Long, chapterJson: String): String {
+        return try {
+            val source = sourceManager.get(sourceId)
+                ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
+            val chapterDto = json.decodeFromString<ChapterDto>(chapterJson)
+            val chapter = chapterDto.toSChapter()
+            val result = runBlocking {
+                // A novel chapter is a single page whose URL is the chapter URL.
+                val page = Page(0, chapter.url)
+                source.fetchPageText(page)
+            }
+            json.encodeToString(PageTextResult(result))
         } catch (e: Throwable) {
             json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }

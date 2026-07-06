@@ -261,6 +261,21 @@ impl MihonBridge {
         Ok(response.pages)
     }
 
+    /// Get the text content for a novel chapter.
+    ///
+    /// Novel (tsundoku) sources return a single text page per chapter; this
+    /// fetches it via the source's `fetchPageText`. The returned string may be
+    /// HTML, Markdown, or plain text.
+    pub fn get_page_text(&self, source_id: i64, chapter_json: &str) -> Result<PageTextResult> {
+        let result = self.call_bridge_method_long_string(
+            "getPageText",
+            "(JLjava/lang/String;)Ljava/lang/String;",
+            source_id,
+            chapter_json,
+        )?;
+        self.parse_result(&result)
+    }
+
     /// Get filter list for source
     pub fn get_filter_list(&self, source_id: i64) -> Result<Vec<FilterDto>> {
         let result =
@@ -614,4 +629,10 @@ struct ChapterListResult {
 #[derive(serde::Deserialize)]
 struct PageListResult {
     pages: Vec<PageDto>,
+}
+
+/// Wrapper for the JSON payload returned by `MihonBridge.getPageText`.
+#[derive(serde::Deserialize, Debug)]
+pub struct PageTextResult {
+    pub text: String,
 }

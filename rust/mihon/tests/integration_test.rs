@@ -495,6 +495,9 @@ async fn run_extension_calls(
                 dion_runtime::data::source::Source::Audio { sources, .. } => {
                     format!("{} audio sources", sources.len())
                 }
+                dion_runtime::data::source::Source::Paragraphlist { paragraphs, .. } => {
+                    format!("{} paragraphs", paragraphs.len())
+                }
                 _ => "Unknown source type".to_string(),
             };
             println!("✅ Source retrieved: {}", description);
