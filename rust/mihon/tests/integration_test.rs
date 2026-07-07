@@ -395,13 +395,22 @@ async fn run_extension_calls(
         }
     };
 
-    let Some((browse_title, _browse_id)) = browse_entry else {
+    let Some((browse_title, browse_id)) = browse_entry else {
         // Browse succeeded but returned nothing to drill into. That's a
         // server/content condition, not a compat bug.
         println!("⚠️  Browse returned no entries to drill into (tolerated)");
         return WorkflowOutcome::Success;
     };
     println!("  First entry: {}", browse_title);
+
+    // The entry's identity (its URL) must be non-empty — it is the key used to
+    // fetch details and chapters/episodes later, and an empty uid means our
+    // mapping lost the entry's URL.
+    if browse_id.uid.is_empty() {
+        return WorkflowOutcome::CompatFailed(
+            "browse: first entry has an empty uid (entry URL was lost)".to_string(),
+        );
+    }
 
     // ========== Search ==========
     println!("\n=== Search ===");
@@ -434,9 +443,18 @@ async fn run_extension_calls(
     };
     println!("  First result: {} ({})", search_title, search_id.uid);
 
+    if search_id.uid.is_empty() {
+        return WorkflowOutcome::CompatFailed(
+            "search: first result has an empty uid (entry URL was lost)".to_string(),
+        );
+    }
+
     // ========== Detail ==========
     println!("\n=== Detail ===");
     tokio::time::sleep(CALL_DELAY).await;
+    // Capture the requested id before it is moved into detail(); the detailed
+    // entry's uid must round-trip back to this value.
+    let requested_uid = search_id.uid.clone();
     let detail_result = match tokio::time::timeout(
         OP_TIMEOUT,
         extension.detail(search_id, HashMap::new(), None),
@@ -468,11 +486,36 @@ async fn run_extension_calls(
         detail_result.entry.episodes.len()
     );
 
+    // The detail call must preserve the entry's identity: the detailed entry's
+    // uid must be non-empty and match the id we asked details for. Some
+    // Tachiyomi/Mihon extensions return a fresh SManga from getMangaDetails
+    // with an empty url; the adapter must fall back to the original id in that
+    // case rather than propagating an empty uid.
+    if detail_result.entry.id.uid.is_empty() {
+        return WorkflowOutcome::CompatFailed(
+            "detail: entry id uid is empty after fetching details".to_string(),
+        );
+    }
+    if detail_result.entry.id.uid != requested_uid {
+        return WorkflowOutcome::CompatFailed(format!(
+            "detail: entry id uid changed from {:?} (search) to {:?} (detail)",
+            requested_uid, detail_result.entry.id.uid
+        ));
+    }
+
     let Some(episode) = detail_result.entry.episodes.first() else {
         println!("⚠️  Detail returned no episodes to fetch a source for (tolerated)");
         return WorkflowOutcome::Success;
     };
     println!("  First episode: {} ({})", episode.name, episode.id.uid);
+
+    // Episode ids (chapter/anime URLs) must be non-empty: they are the key used
+    // to resolve the actual content (pages/videos/text) in the source step.
+    if episode.id.uid.is_empty() {
+        return WorkflowOutcome::CompatFailed(
+            "detail: first episode has an empty uid (chapter/episode URL was lost)".to_string(),
+        );
+    }
 
     // ========== Source ==========
     println!("\n=== Source ===");

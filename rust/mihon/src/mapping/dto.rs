@@ -285,6 +285,7 @@ impl MangaDto {
 
     pub fn into_entry_detailed(
         self,
+        id: EntryId,
         chapters: Vec<ChapterDto>,
         media_type: MediaType,
     ) -> EntryDetailed {
@@ -294,12 +295,20 @@ impl MangaDto {
             _ => ReleaseStatus::Unknown,
         };
 
+        // Many Tachiyomi/Mihon extensions return a *new* SManga from
+        // `getMangaDetails` with only the detail fields set and leave `url`
+        // empty. The entry's identity must not be lost in that case, so the
+        // caller-supplied `id` is preserved, and we fall back to it for the
+        // canonical `url` when the details response omitted it.
+        let url = if self.url.is_empty() {
+            id.uid.clone()
+        } else {
+            self.url
+        };
+
         EntryDetailed {
-            id: EntryId {
-                uid: self.url.clone(),
-                iddata: None,
-            },
-            url: self.url,
+            id,
+            url,
             titles: vec![self.title],
             author: self.author.map(|a| vec![a]),
             ui: None,
@@ -422,8 +431,7 @@ fn split_novel_text(text: &str) -> Vec<String> {
     }
 
     // If the text looks like HTML (contains block tags), split on those.
-    let looks_like_html =
-        trimmed.contains('<') && contains_block_tag(trimmed);
+    let looks_like_html = trimmed.contains('<') && contains_block_tag(trimmed);
 
     let chunks: Vec<String> = if looks_like_html {
         split_html_blocks(trimmed)
@@ -451,7 +459,18 @@ fn split_novel_text(text: &str) -> Vec<String> {
 /// Return true if `text` contains any HTML block-level tag.
 fn contains_block_tag(text: &str) -> bool {
     const TAGS: &[&str] = &[
-        "<p>", "<p ", "<br", "<div", "<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<li", "<blockquote",
+        "<p>",
+        "<p ",
+        "<br",
+        "<div",
+        "<h1",
+        "<h2",
+        "<h3",
+        "<h4",
+        "<h5",
+        "<h6",
+        "<li",
+        "<blockquote",
     ];
     let lower = text.to_lowercase();
     TAGS.iter().any(|t| lower.contains(t))
@@ -630,8 +649,11 @@ pub fn videos_to_source(videos: Vec<VideoDto>) -> Source {
 
 #[cfg(test)]
 mod tests {
-    use super::{pages_to_source, text_to_paragraph_source, videos_to_source, MangaDto, PageDto, SubtitleTrackDto, VideoDto};
-    use dion_runtime::data::source::{MediaType, Source};
+    use super::{
+        pages_to_source, text_to_paragraph_source, videos_to_source, MangaDto, PageDto,
+        SubtitleTrackDto, VideoDto,
+    };
+    use dion_runtime::data::source::{EntryId, MediaType, Source};
     use std::collections::HashMap;
 
     #[test]
@@ -704,6 +726,7 @@ mod tests {
         let entry = manga.into_entry(MediaType::Comic);
         let cover = entry.cover.expect("cover should be present");
         assert_eq!(cover.header.as_ref(), Some(&headers));
+        assert_eq!(entry.id.uid, "/manga/slug");
     }
 
     #[test]
@@ -724,9 +747,94 @@ mod tests {
             initialized: true,
         };
 
-        let detailed = manga.into_entry_detailed(Vec::new(), MediaType::Comic);
+        let detailed = manga.into_entry_detailed(
+            EntryId {
+                uid: "/manga/slug".to_string(),
+                iddata: None,
+            },
+            Vec::new(),
+            MediaType::Comic,
+        );
         let cover = detailed.cover.expect("cover should be present");
         assert_eq!(cover.header.as_ref(), Some(&headers));
+        // The caller-supplied id is preserved.
+        assert_eq!(detailed.id.uid, "/manga/slug");
+        assert_eq!(detailed.url, "/manga/slug");
+    }
+
+    /// Regression test: many Tachiyomi/Mihon extensions return a fresh `SManga`
+    /// from `getMangaDetails` with only the detail fields set and leave `url`
+    /// empty. `into_entry_detailed` must preserve the caller-supplied `EntryId`
+    /// (so the entry keeps a usable identity) and fall back to it for the
+    /// canonical `url`, rather than propagating an empty uid.
+    #[test]
+    fn into_entry_detailed_preserves_id_when_details_url_is_empty() {
+        let manga = MangaDto {
+            url: String::new(),
+            title: "Title".to_string(),
+            artist: None,
+            author: Some("Author".to_string()),
+            description: Some("desc".to_string()),
+            genre: None,
+            status: 1,
+            thumbnail_url: None,
+            thumbnail_headers: None,
+            initialized: true,
+        };
+
+        let original_id = EntryId {
+            uid: "/manga/original-slug".to_string(),
+            iddata: None,
+        };
+
+        let detailed = manga.into_entry_detailed(original_id.clone(), Vec::new(), MediaType::Comic);
+
+        // The identity must survive the round-trip.
+        assert_eq!(detailed.id.uid, original_id.uid);
+        assert!(!detailed.id.uid.is_empty());
+        // The canonical url falls back to the original id's uid.
+        assert_eq!(detailed.url, "/manga/original-slug");
+        // Detail fields from the response are still applied.
+        assert_eq!(detailed.description, "desc");
+        assert_eq!(detailed.author, Some(vec!["Author".to_string()]));
+    }
+
+    /// When the details response *does* include a url, it is used for the
+    /// canonical url while the caller-supplied id is still preserved.
+    #[test]
+    fn into_entry_detailed_keeps_response_url_when_present() {
+        let manga = MangaDto {
+            url: "/manga/response-slug".to_string(),
+            title: "Title".to_string(),
+            ..as_detailed_dto()
+        };
+
+        let detailed = manga.into_entry_detailed(
+            EntryId {
+                uid: "/manga/requested-slug".to_string(),
+                iddata: None,
+            },
+            Vec::new(),
+            MediaType::Comic,
+        );
+
+        assert_eq!(detailed.id.uid, "/manga/requested-slug");
+        assert_eq!(detailed.url, "/manga/response-slug");
+    }
+
+    fn as_detailed_dto() -> MangaDto {
+        MangaDto {
+            url: String::new(),
+            title: String::new(),
+            artist: None,
+            author: None,
+            description: None,
+            genre: None,
+            status: 0,
+            thumbnail_url: None,
+            thumbnail_headers: None,
+            initialized: false,
+        }
     }
 
     fn video_with_subs(url: &str, subs: Vec<(&str, &str)>) -> VideoDto {

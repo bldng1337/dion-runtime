@@ -294,7 +294,7 @@ impl Extension for MihonExtension {
                     MihonSourceType::Novel => MediaType::Book,
                     _ => MediaType::Comic,
                 };
-                let detailed = details.into_entry_detailed(chapters, media_type);
+                let detailed = details.into_entry_detailed(entryid, chapters, media_type);
                 Ok(EntryDetailedResult {
                     entry: detailed,
                     settings,
@@ -319,7 +319,7 @@ impl Extension for MihonExtension {
                     })
                     .collect();
 
-                let detailed = details.into_entry_detailed(chapters, MediaType::Video);
+                let detailed = details.into_entry_detailed(entryid, chapters, MediaType::Video);
                 Ok(EntryDetailedResult {
                     entry: detailed,
                     settings,
