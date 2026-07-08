@@ -42,6 +42,11 @@ data class PageListResult(
     val pages: List<PageDto>
 )
 
+@Serializable
+data class PageTextResult(
+    val text: String
+)
+
 // ========== Install Result ==========
 
 @Serializable
@@ -177,7 +182,8 @@ data class EpisodeDto(
 data class FilterDto(
     val type: String,
     val name: String,
-    val state: String = ""
+    val state: String = "",
+    val values: List<String>? = null
 )
 
 // ========== Conversions ==========

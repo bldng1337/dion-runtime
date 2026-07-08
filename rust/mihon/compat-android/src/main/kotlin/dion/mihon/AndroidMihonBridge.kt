@@ -753,9 +753,10 @@ object AndroidMihonBridge {
         return try {
             val source = sourceManager.get(sourceId)
                 ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
-            val type = when (source) {
-                is AnimeCatalogueSource -> "anime"
-                is CatalogueSource -> "manga"
+            val type = when {
+                source.isNovelSource -> "novel"
+                source is AnimeCatalogueSource -> "anime"
+                source is CatalogueSource -> "manga"
                 else -> "unknown"
             }
             json.encodeToString(SourceTypeResult(type))
@@ -901,8 +902,16 @@ object AndroidMihonBridge {
             val mangaDto = json.decodeFromString<MangaDto>(mangaJson)
             val manga = mangaDto.toSManga()
             val result = runBlockingLargeStack {
+                // forceRefresh=true so novel sources' count-based short-circuit
+                // never skips the fetch on the host's discrete detail calls.
+                val context = RefreshContext(
+                    mangaId = 0L,
+                    existingChapters = emptyList(),
+                    lastFetchTime = 0L,
+                    forceRefresh = true,
+                )
                 if (source is HttpSource) {
-                    source.getChapterList(manga).map { it.toDto() }
+                    source.getChapterList(manga, context).map { it.toDto() }
                 } else {
                     emptyList()
                 }
@@ -934,6 +943,37 @@ object AndroidMihonBridge {
                 }
             }
             json.encodeToString(PageListResult(result))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    // ========== Novel Source Methods ==========
+
+    /**
+     * Get the text content for a novel chapter.
+     *
+     * Novel (tsundoku) sources return a single text page per chapter; this
+     * fetches that page's text via the source's [Source.fetchPageText]. The
+     * returned string may be HTML, Markdown, or plain text — the host
+     * auto-detects at render time.
+     *
+     * @param chapterJson JSON: ChapterDto (only `url` is used)
+     * @return JSON: PageTextResult { text: "..." }
+     */
+    @JvmStatic
+    fun getPageText(sourceId: Long, chapterJson: String): String {
+        return try {
+            val source = sourceManager.get(sourceId)
+                ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
+            val chapterDto = json.decodeFromString<ChapterDto>(chapterJson)
+            val chapter = chapterDto.toSChapter()
+            val result = runBlockingLargeStack {
+                // A novel chapter is a single page whose URL is the chapter URL.
+                val page = Page(0, chapter.url)
+                source.fetchPageText(page)
+            }
+            json.encodeToString(PageTextResult(result))
         } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }

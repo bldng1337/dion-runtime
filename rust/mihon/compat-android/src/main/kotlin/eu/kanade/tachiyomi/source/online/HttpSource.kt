@@ -4,6 +4,7 @@ import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.network.asObservableSuccess
 import eu.kanade.tachiyomi.source.CatalogueSource
+import eu.kanade.tachiyomi.source.isNovelSource
 import eu.kanade.tachiyomi.source.model.*
 import okhttp3.Headers
 import okhttp3.OkHttpClient
@@ -204,7 +205,7 @@ abstract class HttpSource : CatalogueSource {
      * Uses fetchMangaDetails().awaitSingle() to allow extensions to override fetchMangaDetails.
      */
     @Suppress("DEPRECATION")
-    suspend fun getMangaDetails(manga: SManga): SManga {
+    override suspend fun getMangaDetails(manga: SManga): SManga {
         return fetchMangaDetails(manga).awaitSingle()
     }
 
@@ -239,8 +240,22 @@ abstract class HttpSource : CatalogueSource {
      * Uses fetchChapterList().awaitSingle() to allow extensions to override fetchChapterList.
      */
     @Suppress("DEPRECATION")
-    suspend fun getChapterList(manga: SManga): List<SChapter> {
+    override suspend fun getChapterList(manga: SManga): List<SChapter> {
         return fetchChapterList(manga).awaitSingle()
+    }
+
+    /**
+     * Get all the available chapters for a manga with a refresh context.
+     *
+     * Novel (tsundoku) sources override this 2-arg overload — their
+     * `getChapterList` short-circuits early based on the `existingChapters`
+     * count in [RefreshContext] to avoid re-fetching. The context is ignored
+     * here and the call delegates to the plain [getChapterList]; subclasses
+     * (novel sources) override this method directly. Routing chapter fetches
+     * through this overload is what makes a novel source's override dispatch.
+     */
+    override suspend fun getChapterList(manga: SManga, context: RefreshContext): List<SChapter> {
+        return getChapterList(manga)
     }
 
     /**
@@ -272,9 +287,17 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Suspend version: Get the list of pages a chapter has.
      * Uses fetchPageList().awaitSingle() to allow extensions to override fetchPageList.
+     *
+     * A novel chapter is a single text page fetched once in [fetchPageText]; the
+     * page-list request would fetch the chapter page only for pageListParse to
+     * discard the body, so every novel source would otherwise double-fetch.
+     * Novel sources thus short-circuit to a single placeholder page here.
      */
     @Suppress("DEPRECATION")
-    suspend fun getPageList(chapter: SChapter): List<Page> {
+    override suspend fun getPageList(chapter: SChapter): List<Page> {
+        if (isNovelSource()) {
+            return listOf(Page(0, chapter.url))
+        }
         return fetchPageList(chapter).awaitSingle()
     }
 
@@ -297,6 +320,9 @@ abstract class HttpSource : CatalogueSource {
      */
     @Deprecated("Use the non-RxJava API instead", replaceWith = ReplaceWith("getImageUrl"))
     open fun fetchImageUrl(page: Page): Observable<String> {
+        if (this.isNovelSource()) {
+            return Observable.just("")
+        }
         return client.newCall(imageUrlRequest(page))
             .asObservableSuccess()
             .map { response ->
@@ -307,9 +333,15 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Suspend version: Get the image URL for a page.
      * Uses fetchImageUrl().awaitSingle() to allow extensions to override fetchImageUrl.
+     *
+     * For novel sources, the page is a text placeholder with no image URL,
+     * so return an empty string.
      */
     @Suppress("DEPRECATION")
     open suspend fun getImageUrl(page: Page): String {
+        if (this.isNovelSource()) {
+            return ""
+        }
         return fetchImageUrl(page).awaitSingle()
     }
 
@@ -331,9 +363,14 @@ abstract class HttpSource : CatalogueSource {
 
     /**
      * Returns the request for getting the source image.
+     *
+     * For novel sources, [Page.imageUrl] is null/empty (the page is a text
+     * placeholder from [getPageList]); a dummy request is returned to avoid
+     * crashing on the non-null assertion.
      */
     protected open fun imageRequest(page: Page): Request {
-        return GET(page.imageUrl!!, headers)
+        val url = if (this.isNovelSource()) "" else page.imageUrl!!
+        return GET(url, headers)
     }
 
     /**
