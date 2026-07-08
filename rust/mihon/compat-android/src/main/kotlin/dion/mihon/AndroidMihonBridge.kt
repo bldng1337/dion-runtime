@@ -185,6 +185,12 @@ object AndroidMihonBridge {
     const val METADATA_ANIME_NSFW = "tachiyomi.animeextension.nsfw"
     const val METADATA_ANIME_LIB_VERSION = "tachiyomi.animeextension.lib.version"
 
+    // Novel extensions (tsundoku) use a parallel set of meta-data keys under
+    // the `tachiyomi.novelextension` namespace. Must match desktop
+    // ExtensionLoader so novel APKs install on both platforms.
+    const val METADATA_NOVEL_SOURCE_CLASS = "tachiyomi.novelextension.class"
+    const val METADATA_NOVEL_NSFW = "tachiyomi.novelextension.nsfw"
+
     // Supported extension lib versions (must match desktop ExtensionLoader).
     // 1.0 allows legacy extensions that predate the
     // tachiyomi.extension.lib.version metadata.
@@ -389,7 +395,12 @@ object AndroidMihonBridge {
             // (same logic as the desktop ExtensionLoader).
             val metaData: Bundle? = packageInfo.applicationInfo?.metaData
             val isAnime = metaData?.getString(METADATA_ANIME_SOURCE_CLASS) != null
-            val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+            val isNovel = metaData?.getString(METADATA_NOVEL_SOURCE_CLASS) != null
+            val classKey = when {
+                isAnime -> METADATA_ANIME_SOURCE_CLASS
+                isNovel -> METADATA_NOVEL_SOURCE_CLASS
+                else -> METADATA_SOURCE_CLASS
+            }
             val classNames = metaData?.getString(classKey)
                 ?: throw IllegalArgumentException("Missing $classKey meta-data in APK")
 
@@ -407,10 +418,15 @@ object AndroidMihonBridge {
                 }
             logger.debug { "Extension main class(es): $fullClassNames" }
 
-            val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
+            val nsfwKey = when {
+                isAnime -> METADATA_ANIME_NSFW
+                isNovel -> METADATA_NOVEL_NSFW
+                else -> METADATA_NSFW
+            }
             val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
             val nsfw = metaData.getInt(nsfwKey, 0) == 1
-            val libVersion = metaData.getString(libVersionKey) ?: "1.0"
+            // Novel extensions don't ship a lib version; default to 1.0
+            val libVersion = if (isNovel) "1.0" else (metaData.getString(libVersionKey) ?: "1.0")
 
             // Validate lib version for compatibility (security parity with desktop)
             val libVersionNum = libVersion.substringBeforeLast('.').toDoubleOrNull()
@@ -495,7 +511,8 @@ object AndroidMihonBridge {
                     // `tachiyomi.animeextension`.
                     val hasFeature = pkgInfo.reqFeatures?.any {
                         it.name == "tachiyomi.extension" ||
-                                it.name == "tachiyomi.animeextension"
+                                it.name == "tachiyomi.animeextension" ||
+                                it.name == "tachiyomi.novelextension"
                     } == true
                     if (hasFeature) return@filter true
                     // Fallback: some extensions omit <uses-feature> but still
@@ -503,7 +520,8 @@ object AndroidMihonBridge {
                     // already populated because GET_META_DATA is part of `flags`.
                     val md = pkgInfo.applicationInfo?.metaData
                     md?.getString(METADATA_SOURCE_CLASS) != null ||
-                            md?.getString(METADATA_ANIME_SOURCE_CLASS) != null
+                            md?.getString(METADATA_ANIME_SOURCE_CLASS) != null ||
+                            md?.getString(METADATA_NOVEL_SOURCE_CLASS) != null
                 }
                 .mapNotNull { pkgInfo ->
                     try {
@@ -512,10 +530,16 @@ object AndroidMihonBridge {
                         val packageName = pkgInfo.packageName
 
                         val metaData = appInfo.metaData
-                        // Anime extensions use the animeextension.* keys;
-                        // fall back like installExtension does.
+                        // Anime extensions use the animeextension.* keys,
+                        // novel (tsundoku) extensions use the novelextension.*
+                        // keys; fall back like installExtension does.
                         val isAnime = metaData?.getString(METADATA_ANIME_SOURCE_CLASS) != null
-                        val classKey = if (isAnime) METADATA_ANIME_SOURCE_CLASS else METADATA_SOURCE_CLASS
+                        val isNovel = metaData?.getString(METADATA_NOVEL_SOURCE_CLASS) != null
+                        val classKey = when {
+                            isAnime -> METADATA_ANIME_SOURCE_CLASS
+                            isNovel -> METADATA_NOVEL_SOURCE_CLASS
+                            else -> METADATA_SOURCE_CLASS
+                        }
                         val classNames = metaData?.getString(classKey)
                             ?: return@mapNotNull null
 
@@ -530,10 +554,15 @@ object AndroidMihonBridge {
                                 }
                             }
 
-                        val nsfwKey = if (isAnime) METADATA_ANIME_NSFW else METADATA_NSFW
+                        val nsfwKey = when {
+                            isAnime -> METADATA_ANIME_NSFW
+                            isNovel -> METADATA_NOVEL_NSFW
+                            else -> METADATA_NSFW
+                        }
                         val libVersionKey = if (isAnime) METADATA_ANIME_LIB_VERSION else METADATA_LIB_VERSION
                         val nsfw = metaData.getInt(nsfwKey, 0) == 1
-                        val libVersion = metaData.getString(libVersionKey) ?: "1.0"
+                        // Novel extensions don't ship a lib version; default to 1.0
+                        val libVersion = if (isNovel) "1.0" else (metaData.getString(libVersionKey) ?: "1.0")
                         val versionName = pkgInfo.versionName ?: "1.0"
 
                         @Suppress("DEPRECATION")
