@@ -12,8 +12,7 @@ part of 'activity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$EntryActivity {
@@ -62,9 +61,8 @@ mixin _$EntryActivity {
 /// @nodoc
 abstract class $EntryActivityCopyWith<$Res> {
   factory $EntryActivityCopyWith(
-    EntryActivity value,
-    $Res Function(EntryActivity) then,
-  ) = _$EntryActivityCopyWithImpl<$Res, EntryActivity>;
+          EntryActivity value, $Res Function(EntryActivity) then) =
+      _$EntryActivityCopyWithImpl<$Res, EntryActivity>;
   @useResult
   $Res call({int progress});
 }
@@ -83,15 +81,15 @@ class _$EntryActivityCopyWithImpl<$Res, $Val extends EntryActivity>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? progress = null}) {
-    return _then(
-      _value.copyWith(
-        progress: null == progress
-            ? _value.progress
-            : progress // ignore: cast_nullable_to_non_nullable
-                as int,
-      ) as $Val,
-    );
+  $Res call({
+    Object? progress = null,
+  }) {
+    return _then(_value.copyWith(
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
@@ -99,9 +97,9 @@ class _$EntryActivityCopyWithImpl<$Res, $Val extends EntryActivity>
 abstract class _$$EntryActivity_EpisodeActivityImplCopyWith<$Res>
     implements $EntryActivityCopyWith<$Res> {
   factory _$$EntryActivity_EpisodeActivityImplCopyWith(
-    _$EntryActivity_EpisodeActivityImpl value,
-    $Res Function(_$EntryActivity_EpisodeActivityImpl) then,
-  ) = __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>;
+          _$EntryActivity_EpisodeActivityImpl value,
+          $Res Function(_$EntryActivity_EpisodeActivityImpl) then) =
+      __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int progress});
@@ -113,23 +111,23 @@ class __$$EntryActivity_EpisodeActivityImplCopyWithImpl<$Res>
         _$EntryActivity_EpisodeActivityImpl>
     implements _$$EntryActivity_EpisodeActivityImplCopyWith<$Res> {
   __$$EntryActivity_EpisodeActivityImplCopyWithImpl(
-    _$EntryActivity_EpisodeActivityImpl _value,
-    $Res Function(_$EntryActivity_EpisodeActivityImpl) _then,
-  ) : super(_value, _then);
+      _$EntryActivity_EpisodeActivityImpl _value,
+      $Res Function(_$EntryActivity_EpisodeActivityImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of EntryActivity
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? progress = null}) {
-    return _then(
-      _$EntryActivity_EpisodeActivityImpl(
-        progress: null == progress
-            ? _value.progress
-            : progress // ignore: cast_nullable_to_non_nullable
-                as int,
-      ),
-    );
+  $Res call({
+    Object? progress = null,
+  }) {
+    return _then(_$EntryActivity_EpisodeActivityImpl(
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 

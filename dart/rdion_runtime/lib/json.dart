@@ -51,6 +51,7 @@ extension JsonAction on Action {
             "title": title,
             "content": content.toJson(),
           },
+        Action_PopView() => {"type": "PopView"},
         Action_TriggerEvent(:final event, :final data) => {
             "type": "TriggerEvent",
             "event": event,
@@ -80,6 +81,8 @@ extension JsonAction on Action {
           title: value["title"],
           content: JsonCustomUI.fromJson(value["content"]),
         );
+      case "PopView":
+        return const Action.popView();
       case "TriggerEvent":
         return Action.triggerEvent(event: value["event"], data: value["data"]);
       case "NavEntry":
@@ -156,8 +159,8 @@ extension JsonEventData on EventData {
             "data": data,
             "page": page,
           },
-        EventData_Action(:final event, :final data) => {
-            "type": "Action",
+        EventData_Trigger(:final event, :final data) => {
+            "type": "Trigger",
             "event": event,
             "data": data,
           },
@@ -178,8 +181,8 @@ extension JsonEventData on EventData {
           data: value["data"],
           page: value["page"],
         );
-      case "Action":
-        return EventData.action(event: value["event"], data: value["data"]);
+      case "Trigger":
+        return EventData.trigger(event: value["event"], data: value["data"]);
       default:
         throw FormatException("Unknown EventData type: $type");
     }
@@ -203,6 +206,11 @@ extension JsonEventResult on EventResult {
             if (hasnext != null) "hasnext": hasnext,
             if (length != null) "length": length,
           },
+        EventResult_DoAction(:final action) => {
+            "type": "DoAction",
+            "action": action.toJson(),
+          },
+        EventResult_Return() => {"type": "Return"},
       };
 
   static EventResult fromJson(dynamic value) {
@@ -220,6 +228,12 @@ extension JsonEventResult on EventResult {
           hasnext: value["hasnext"],
           length: value["length"],
         );
+      case "DoAction":
+        return EventResult.doAction(
+          action: JsonAction.fromJson(value["action"]),
+        );
+      case "Return":
+        return const EventResult.return_();
       default:
         throw FormatException("Unknown EventResult type: $type");
     }
@@ -272,8 +286,8 @@ extension JsonCustomUI on CustomUI {
             "link": link,
             if (label != null) "label": label,
           },
-        CustomUI_TimeStamp(:final timestamp, :final display) => {
-            "type": "TimeStamp",
+        CustomUI_Timestamp(:final timestamp, :final display) => {
+            "type": "Timestamp",
             "timestamp": timestamp,
             "display": display.toJson(),
           },
@@ -287,6 +301,7 @@ extension JsonCustomUI on CustomUI {
             "top": top.toJson(),
             "bottom": bottom.toJson(),
           },
+        CustomUI_Spinner() => {"type": "Spinner"},
         CustomUI_Feed(:final event, :final data) => {
             "type": "Feed",
             "event": event,
@@ -308,10 +323,11 @@ extension JsonCustomUI on CustomUI {
             "setting_kind": settingKind.toJson(),
             if (onCommit != null) "on_commit": onCommit.toJson(),
           },
-        CustomUI_Slot(:final id, :final child) => {
+        CustomUI_Slot(:final id, :final child, :final onMount) => {
             "type": "Slot",
             "id": id,
             "child": child.toJson(),
+            if (onMount != null) "on_mount": onMount.toJson(),
           },
         CustomUI_Column(:final children) => {
             "type": "Column",
@@ -336,8 +352,8 @@ extension JsonCustomUI on CustomUI {
         );
       case "Link":
         return CustomUI.link(link: value["link"], label: value["label"]);
-      case "TimeStamp":
-        return CustomUI.timeStamp(
+      case "Timestamp":
+        return CustomUI.timestamp(
           timestamp: value["timestamp"],
           display: JsonTimestampType.fromJson(value["display"]),
         );
@@ -349,6 +365,8 @@ extension JsonCustomUI on CustomUI {
           top: JsonCustomUI.fromJson(value["top"]),
           bottom: JsonCustomUI.fromJson(value["bottom"]),
         );
+      case "Spinner":
+        return const CustomUI.spinner();
       case "Feed":
         return CustomUI.feed(event: value["event"], data: value["data"]);
       case "Button":
@@ -370,6 +388,9 @@ extension JsonCustomUI on CustomUI {
         return CustomUI.slot(
           id: value["id"],
           child: JsonCustomUI.fromJson(value["child"]),
+          onMount: value["on_mount"] != null
+              ? JsonUIAction.fromJson(value["on_mount"])
+              : null,
         );
       case "Column":
         return CustomUI.column(

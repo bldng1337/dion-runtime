@@ -39,7 +39,7 @@ pub enum CustomUI {
         #[cfg_attr(feature = "type", specta(optional))]
         label: Option<String>,
     },
-    TimeStamp {
+    Timestamp {
         timestamp: String,
         #[serde(default)]
         display: TimestampType,
@@ -52,6 +52,7 @@ pub enum CustomUI {
         top: Box<CustomUI>,
         bottom: Box<CustomUI>,
     },
+    Spinner,
     Feed {
         event: String,
         data: String,
@@ -70,6 +71,8 @@ pub enum CustomUI {
     Slot {
         id: String,
         child: Box<CustomUI>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        on_mount: Option<Box<UIAction>>,
     },
     Column {
         children: Vec<CustomUI>,

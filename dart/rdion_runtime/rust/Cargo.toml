@@ -8,7 +8,7 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-flutter_rust_bridge = { version = "=2.11.1", features = ["log"] }
+flutter_rust_bridge = { version = "=2.12.0", features = ["log"] }
 dion-runtime = { path = "../../../rust/core" }
 dion-extension = { path = "../../../rust/dion_extension" }
 mihon-adapter = { path = "../../../rust/mihon" }

@@ -9,12 +9,17 @@ import type {
 	EventResult,
 } from "@dion-js/runtime-types/runtime";
 import type { AuthAccount } from "./auth.ts";
+import type { Region } from "./region.js";
+import { routeEvent } from "./region.js";
 import type { ExtensionSetting, Settingvalues } from "./settings.js";
+import { BaseTrigger, routeTrigger, Trigger } from "./trigger.ts";
 
 type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably not really better than casting to any
 export abstract class DionExtension implements Extension {
 	abstract settings: { [key: string]: ExtensionSetting<Settingvalues> };
 	abstract accounts: { [key: string]: AuthAccount };
+  regions: { [key: string]: Region } = {};
+  triggers: { [key: string]: BaseTrigger } = {};
 
 	async validate(acc: Account): Promise<Account | undefined> {
 		for (const account of Object.values(this.accounts)) {
@@ -56,7 +61,13 @@ export abstract class DionExtension implements Extension {
 			this.mapSource = (this.mapSource as bindable).bind(this);
 		await this.onload();
 	}
-	abstract onEvent(data: EventData): Promise<EventResult | undefined>;
+  async onEvent(data: EventData): Promise<EventResult | undefined> {
+    if (data.type === "FeedUpdate" || data.type === "SwapContent") {
+      return await routeEvent(this.regions, data);
+    }
+		return await routeTrigger(this.triggers, data);
+  }
+
 	async handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;
 
 	async onload(): Promise<void> {

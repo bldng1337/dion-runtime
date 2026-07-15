@@ -260,7 +260,7 @@ export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 					ui.link === (other as typeof ui).link &&
 					ui.label === (other as typeof ui).label
 				);
-			case "TimeStamp":
+			case "Timestamp":
 				return (
 					ui.timestamp === (other as typeof ui).timestamp &&
 					ui.display === (other as typeof ui).display
@@ -276,6 +276,8 @@ export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 					this.compareCustomUI(ui.top, (other as typeof ui).top) &&
 					this.compareCustomUI(ui.bottom, (other as typeof ui).bottom)
 				);
+			case "Spinner":
+				return true;
 			case "Feed":
 				return (
 					ui.event === (other as typeof ui).event &&
@@ -297,7 +299,9 @@ export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 			case "Slot":
 				return (
 					ui.id === (other as typeof ui).id &&
-					this.compareCustomUI(ui.child, (other as typeof ui).child)
+					this.compareCustomUI(ui.child, (other as typeof ui).child) &&
+					JSON.stringify(ui.on_mount) ===
+						JSON.stringify((other as typeof ui).on_mount)
 				);
 			case "Column":
 			case "Row": {

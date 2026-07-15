@@ -1,12 +1,21 @@
 import type {
+	Action,
 	CustomUI,
 	Entry,
+	EntryDetailed,
+	EventResult,
 	Link,
+	PopupAction,
 	SettingKind,
+	TimestampType,
 	UIAction,
 } from "@dion-js/runtime-types/runtime";
 
 type CustomUIMaybe = CustomUI | undefined;
+
+// ============================================================================
+// Leaf nodes
+// ============================================================================
 
 export function Text(text: string): CustomUI {
 	return {
@@ -17,64 +26,47 @@ export function Text(text: string): CustomUI {
 
 export function Timestamp(
 	timestamp: string,
-	display: "Relative" | "Absolute" = "Relative",
+	display: TimestampType = "Relative",
 ): CustomUI {
 	return {
-		type: "TimeStamp",
+		type: "Timestamp",
 		timestamp: timestamp,
 		display: display,
 	};
 }
 
-export function Image(link: Link, width?: number, height?: number): CustomUI {
+export function Image(
+	image: Link,
+	width?: number,
+	height?: number,
+): CustomUI {
 	return {
 		type: "Image",
-		image: link,
-		width: width ?? null, //TODO: Lax the types on rust side so its undefined||null
+		image: image,
+		width: width ?? null,
 		height: height ?? null,
 	};
 }
 
-export function HyperLink(url: string, label?: string): CustomUI {
+export function Spinner(): CustomUI {
+	return {
+		type: "Spinner",
+	};
+}
+
+export function Link(url: string, label?: string): CustomUI {
 	return {
 		type: "Link",
 		link: url,
-		label: label ?? null, //TODO: Lax the types on rust side so its undefined||null
+		label: label ?? null,
 	};
 }
 
-export function Column(...children: CustomUIMaybe[]): CustomUI {
-	return {
-		type: "Column",
-		children: children.filter((x) => x !== undefined) as CustomUI[],
-	};
-}
-
-export function EntryCard(centry: Entry): CustomUI {
+export function EntryCard(entry: Entry): CustomUI {
 	return {
 		type: "EntryCard",
-		entry: centry,
+		entry: entry,
 	};
-}
-
-export function Row(...children: CustomUIMaybe[]): CustomUI {
-	return {
-		type: "Row",
-		children: children.filter((x) => x !== undefined) as CustomUI[],
-	};
-}
-
-export function If<T extends CustomUI[] | CustomUIMaybe>(
-	condition: boolean,
-	ui: T,
-): T {
-	if (condition) {
-		return ui;
-	}
-	if (Array.isArray(ui)) {
-		return [] as unknown as T;
-	}
-	return undefined as T;
 }
 
 export function Card(image: Link, top: CustomUI, bottom: CustomUI): CustomUI {
@@ -86,7 +78,27 @@ export function Card(image: Link, top: CustomUI, bottom: CustomUI): CustomUI {
 	};
 }
 
-export function Feed(event: string, data: string): CustomUI {
+// ============================================================================
+// Container nodes ============================================================================
+
+export function Column(...children: CustomUIMaybe[]): CustomUI {
+	return {
+		type: "Column",
+		children: children.filter((x) => x !== undefined) as CustomUI[],
+	};
+}
+
+export function Row(...children: CustomUIMaybe[]): CustomUI {
+	return {
+		type: "Row",
+		children: children.filter((x) => x !== undefined) as CustomUI[],
+	};
+}
+
+// ============================================================================
+// Interactive nodes ============================================================================
+
+export function Feed(event: string, data = ""): CustomUI {
 	return {
 		type: "Feed",
 		event: event,
@@ -94,34 +106,131 @@ export function Feed(event: string, data: string): CustomUI {
 	};
 }
 
-export function Button(
-	label: string,
-	on_click: UIAction | null = null,
-): CustomUI {
+export function Button(label: string, onClick: UIAction | null = null): CustomUI {
 	return {
 		type: "Button",
 		label: label,
-		on_click: on_click,
+		on_click: onClick,
 	};
 }
 
 export function InlineSetting(
-	setting_id: string,
-	setting_kind: SettingKind,
-	on_commit: UIAction | null = null,
+	settingId: string,
+	settingKind: SettingKind,
+	onCommit: UIAction | null = null,
 ): CustomUI {
 	return {
 		type: "InlineSetting",
-		setting_id: setting_id,
-		setting_kind: setting_kind,
-		on_commit: on_commit,
+		setting_id: settingId,
+		setting_kind: settingKind,
+		on_commit: onCommit,
 	};
 }
 
-export function Slot(id: string, child: CustomUI): CustomUI {
+export function Slot(
+	id: string,
+	child: CustomUI,
+	onMount?: UIAction,
+): CustomUI {
 	return {
 		type: "Slot",
 		id: id,
 		child: child,
+		on_mount: onMount ?? null,
+	};
+}
+
+// ============================================================================
+// Action builders
+// ============================================================================
+
+export function OpenBrowser(url: string): Action {
+	return {
+		type: "OpenBrowser",
+		url: url,
+	};
+}
+
+export function TriggerEvent(event: string, data = ""): Action {
+	return {
+		type: "TriggerEvent",
+		event: event,
+		data: data,
+	};
+}
+
+export function Nav(title: string, content: CustomUI): Action {
+	return {
+		type: "Nav",
+		title: title,
+		content: content,
+	};
+}
+
+export function NavEntry(entry: EntryDetailed): Action {
+	return {
+		type: "NavEntry",
+		entry: entry,
+	};
+}
+
+export function Popup(
+	title: string,
+	content: CustomUI,
+	actions: PopupAction[],
+): Action {
+	return {
+		type: "Popup",
+		title: title,
+		content: content,
+		actions: actions,
+	};
+}
+
+// ============================================================================
+// UIAction builders
+// ============================================================================
+
+export function Do(action: Action): UIAction {
+	return {
+		type: "Action",
+		action: action,
+	};
+}
+
+export function SwapContent(
+	targetId: string,
+	event: string,
+	data = "",
+	placeholder?: CustomUI,
+): UIAction {
+	return {
+		type: "SwapContent",
+		targetid: targetId,
+		event: event,
+		data: data,
+		placeholder: placeholder ?? null,
+	};
+}
+
+// ============================================================================
+// EventResult builders ============================================================================
+
+export function SwapResult(customui: CustomUI): EventResult {
+	return {
+		type: "SwapContent",
+		customui: customui,
+	};
+}
+
+export function FeedResult(
+	items: CustomUI[],
+	opts: { hasNext?: boolean; length?: number } = {},
+): EventResult {
+	return {
+		type: "FeedUpdate",
+		customui: items,
+		hasnext: opts.hasNext ?? null,
+		length: opts.length ?? null,
 	};
 }

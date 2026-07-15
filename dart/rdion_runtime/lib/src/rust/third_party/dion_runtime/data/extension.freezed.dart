@@ -12,8 +12,7 @@ part of 'extension.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ExtensionType {
@@ -21,9 +20,8 @@ mixin _$ExtensionType {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
     required TResult Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    ) sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
+        sourceProcessor,
     required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
@@ -33,9 +31,8 @@ mixin _$ExtensionType {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
     TResult? Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    )? sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
     TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
@@ -84,9 +81,8 @@ mixin _$ExtensionType {
 /// @nodoc
 abstract class $ExtensionTypeCopyWith<$Res> {
   factory $ExtensionTypeCopyWith(
-    ExtensionType value,
-    $Res Function(ExtensionType) then,
-  ) = _$ExtensionTypeCopyWithImpl<$Res, ExtensionType>;
+          ExtensionType value, $Res Function(ExtensionType) then) =
+      _$ExtensionTypeCopyWithImpl<$Res, ExtensionType>;
 }
 
 /// @nodoc
@@ -106,9 +102,9 @@ class _$ExtensionTypeCopyWithImpl<$Res, $Val extends ExtensionType>
 /// @nodoc
 abstract class _$$ExtensionType_EntryProviderImplCopyWith<$Res> {
   factory _$$ExtensionType_EntryProviderImplCopyWith(
-    _$ExtensionType_EntryProviderImpl value,
-    $Res Function(_$ExtensionType_EntryProviderImpl) then,
-  ) = __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>;
+          _$ExtensionType_EntryProviderImpl value,
+          $Res Function(_$ExtensionType_EntryProviderImpl) then) =
+      __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool hasSearch});
 }
@@ -118,23 +114,23 @@ class __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>
     extends _$ExtensionTypeCopyWithImpl<$Res, _$ExtensionType_EntryProviderImpl>
     implements _$$ExtensionType_EntryProviderImplCopyWith<$Res> {
   __$$ExtensionType_EntryProviderImplCopyWithImpl(
-    _$ExtensionType_EntryProviderImpl _value,
-    $Res Function(_$ExtensionType_EntryProviderImpl) _then,
-  ) : super(_value, _then);
+      _$ExtensionType_EntryProviderImpl _value,
+      $Res Function(_$ExtensionType_EntryProviderImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? hasSearch = null}) {
-    return _then(
-      _$ExtensionType_EntryProviderImpl(
-        hasSearch: null == hasSearch
-            ? _value.hasSearch
-            : hasSearch // ignore: cast_nullable_to_non_nullable
-                as bool,
-      ),
-    );
+  $Res call({
+    Object? hasSearch = null,
+  }) {
+    return _then(_$ExtensionType_EntryProviderImpl(
+      hasSearch: null == hasSearch
+          ? _value.hasSearch
+          : hasSearch // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
@@ -178,9 +174,8 @@ class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
     required TResult Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    ) sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
+        sourceProcessor,
     required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
@@ -193,9 +188,8 @@ class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
     TResult? Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    )? sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
     TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
@@ -277,9 +271,9 @@ abstract class ExtensionType_EntryProvider extends ExtensionType {
 /// @nodoc
 abstract class _$$ExtensionType_SourceProcessorImplCopyWith<$Res> {
   factory _$$ExtensionType_SourceProcessorImplCopyWith(
-    _$ExtensionType_SourceProcessorImpl value,
-    $Res Function(_$ExtensionType_SourceProcessorImpl) then,
-  ) = __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>;
+          _$ExtensionType_SourceProcessorImpl value,
+          $Res Function(_$ExtensionType_SourceProcessorImpl) then) =
+      __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Set<SourceType> sourcetypes, Set<SourceOpenType> opentype});
 }
@@ -290,27 +284,28 @@ class __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>
         _$ExtensionType_SourceProcessorImpl>
     implements _$$ExtensionType_SourceProcessorImplCopyWith<$Res> {
   __$$ExtensionType_SourceProcessorImplCopyWithImpl(
-    _$ExtensionType_SourceProcessorImpl _value,
-    $Res Function(_$ExtensionType_SourceProcessorImpl) _then,
-  ) : super(_value, _then);
+      _$ExtensionType_SourceProcessorImpl _value,
+      $Res Function(_$ExtensionType_SourceProcessorImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? sourcetypes = null, Object? opentype = null}) {
-    return _then(
-      _$ExtensionType_SourceProcessorImpl(
-        sourcetypes: null == sourcetypes
-            ? _value._sourcetypes
-            : sourcetypes // ignore: cast_nullable_to_non_nullable
-                as Set<SourceType>,
-        opentype: null == opentype
-            ? _value._opentype
-            : opentype // ignore: cast_nullable_to_non_nullable
-                as Set<SourceOpenType>,
-      ),
-    );
+  $Res call({
+    Object? sourcetypes = null,
+    Object? opentype = null,
+  }) {
+    return _then(_$ExtensionType_SourceProcessorImpl(
+      sourcetypes: null == sourcetypes
+          ? _value._sourcetypes
+          : sourcetypes // ignore: cast_nullable_to_non_nullable
+              as Set<SourceType>,
+      opentype: null == opentype
+          ? _value._opentype
+          : opentype // ignore: cast_nullable_to_non_nullable
+              as Set<SourceOpenType>,
+    ));
   }
 }
 
@@ -318,10 +313,10 @@ class __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>
 
 class _$ExtensionType_SourceProcessorImpl
     extends ExtensionType_SourceProcessor {
-  const _$ExtensionType_SourceProcessorImpl({
-    required final Set<SourceType> sourcetypes,
-    required final Set<SourceOpenType> opentype,
-  })  : _sourcetypes = sourcetypes,
+  const _$ExtensionType_SourceProcessorImpl(
+      {required final Set<SourceType> sourcetypes,
+      required final Set<SourceOpenType> opentype})
+      : _sourcetypes = sourcetypes,
         _opentype = opentype,
         super._();
 
@@ -351,19 +346,16 @@ class _$ExtensionType_SourceProcessorImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ExtensionType_SourceProcessorImpl &&
-            const DeepCollectionEquality().equals(
-              other._sourcetypes,
-              _sourcetypes,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._sourcetypes, _sourcetypes) &&
             const DeepCollectionEquality().equals(other._opentype, _opentype));
   }
 
   @override
   int get hashCode => Object.hash(
-        runtimeType,
-        const DeepCollectionEquality().hash(_sourcetypes),
-        const DeepCollectionEquality().hash(_opentype),
-      );
+      runtimeType,
+      const DeepCollectionEquality().hash(_sourcetypes),
+      const DeepCollectionEquality().hash(_opentype));
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
@@ -380,9 +372,8 @@ class _$ExtensionType_SourceProcessorImpl
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
     required TResult Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    ) sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
+        sourceProcessor,
     required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
@@ -395,9 +386,8 @@ class _$ExtensionType_SourceProcessorImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
     TResult? Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    )? sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
     TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
@@ -463,10 +453,10 @@ class _$ExtensionType_SourceProcessorImpl
 }
 
 abstract class ExtensionType_SourceProcessor extends ExtensionType {
-  const factory ExtensionType_SourceProcessor({
-    required final Set<SourceType> sourcetypes,
-    required final Set<SourceOpenType> opentype,
-  }) = _$ExtensionType_SourceProcessorImpl;
+  const factory ExtensionType_SourceProcessor(
+          {required final Set<SourceType> sourcetypes,
+          required final Set<SourceOpenType> opentype}) =
+      _$ExtensionType_SourceProcessorImpl;
   const ExtensionType_SourceProcessor._() : super._();
 
   Set<SourceType> get sourcetypes;
@@ -483,9 +473,9 @@ abstract class ExtensionType_SourceProcessor extends ExtensionType {
 /// @nodoc
 abstract class _$$ExtensionType_EntryProcessorImplCopyWith<$Res> {
   factory _$$ExtensionType_EntryProcessorImplCopyWith(
-    _$ExtensionType_EntryProcessorImpl value,
-    $Res Function(_$ExtensionType_EntryProcessorImpl) then,
-  ) = __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>;
+          _$ExtensionType_EntryProcessorImpl value,
+          $Res Function(_$ExtensionType_EntryProcessorImpl) then) =
+      __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool triggerMapEntry, bool triggerOnEntryActivity});
 }
@@ -496,9 +486,9 @@ class __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>
         _$ExtensionType_EntryProcessorImpl>
     implements _$$ExtensionType_EntryProcessorImplCopyWith<$Res> {
   __$$ExtensionType_EntryProcessorImplCopyWithImpl(
-    _$ExtensionType_EntryProcessorImpl _value,
-    $Res Function(_$ExtensionType_EntryProcessorImpl) _then,
-  ) : super(_value, _then);
+      _$ExtensionType_EntryProcessorImpl _value,
+      $Res Function(_$ExtensionType_EntryProcessorImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
@@ -508,28 +498,25 @@ class __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>
     Object? triggerMapEntry = null,
     Object? triggerOnEntryActivity = null,
   }) {
-    return _then(
-      _$ExtensionType_EntryProcessorImpl(
-        triggerMapEntry: null == triggerMapEntry
-            ? _value.triggerMapEntry
-            : triggerMapEntry // ignore: cast_nullable_to_non_nullable
-                as bool,
-        triggerOnEntryActivity: null == triggerOnEntryActivity
-            ? _value.triggerOnEntryActivity
-            : triggerOnEntryActivity // ignore: cast_nullable_to_non_nullable
-                as bool,
-      ),
-    );
+    return _then(_$ExtensionType_EntryProcessorImpl(
+      triggerMapEntry: null == triggerMapEntry
+          ? _value.triggerMapEntry
+          : triggerMapEntry // ignore: cast_nullable_to_non_nullable
+              as bool,
+      triggerOnEntryActivity: null == triggerOnEntryActivity
+          ? _value.triggerOnEntryActivity
+          : triggerOnEntryActivity // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 
 class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
-  const _$ExtensionType_EntryProcessorImpl({
-    required this.triggerMapEntry,
-    required this.triggerOnEntryActivity,
-  }) : super._();
+  const _$ExtensionType_EntryProcessorImpl(
+      {required this.triggerMapEntry, required this.triggerOnEntryActivity})
+      : super._();
 
   @override
   final bool triggerMapEntry;
@@ -571,9 +558,8 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
     required TResult Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    ) sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
+        sourceProcessor,
     required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
@@ -586,9 +572,8 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
     TResult? Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    )? sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
     TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
@@ -654,10 +639,10 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
 }
 
 abstract class ExtensionType_EntryProcessor extends ExtensionType {
-  const factory ExtensionType_EntryProcessor({
-    required final bool triggerMapEntry,
-    required final bool triggerOnEntryActivity,
-  }) = _$ExtensionType_EntryProcessorImpl;
+  const factory ExtensionType_EntryProcessor(
+          {required final bool triggerMapEntry,
+          required final bool triggerOnEntryActivity}) =
+      _$ExtensionType_EntryProcessorImpl;
   const ExtensionType_EntryProcessor._() : super._();
 
   bool get triggerMapEntry;
@@ -674,9 +659,9 @@ abstract class ExtensionType_EntryProcessor extends ExtensionType {
 /// @nodoc
 abstract class _$$ExtensionType_URLHandlerImplCopyWith<$Res> {
   factory _$$ExtensionType_URLHandlerImplCopyWith(
-    _$ExtensionType_URLHandlerImpl value,
-    $Res Function(_$ExtensionType_URLHandlerImpl) then,
-  ) = __$$ExtensionType_URLHandlerImplCopyWithImpl<$Res>;
+          _$ExtensionType_URLHandlerImpl value,
+          $Res Function(_$ExtensionType_URLHandlerImpl) then) =
+      __$$ExtensionType_URLHandlerImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<String> urlPatterns});
 }
@@ -686,32 +671,32 @@ class __$$ExtensionType_URLHandlerImplCopyWithImpl<$Res>
     extends _$ExtensionTypeCopyWithImpl<$Res, _$ExtensionType_URLHandlerImpl>
     implements _$$ExtensionType_URLHandlerImplCopyWith<$Res> {
   __$$ExtensionType_URLHandlerImplCopyWithImpl(
-    _$ExtensionType_URLHandlerImpl _value,
-    $Res Function(_$ExtensionType_URLHandlerImpl) _then,
-  ) : super(_value, _then);
+      _$ExtensionType_URLHandlerImpl _value,
+      $Res Function(_$ExtensionType_URLHandlerImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? urlPatterns = null}) {
-    return _then(
-      _$ExtensionType_URLHandlerImpl(
-        urlPatterns: null == urlPatterns
-            ? _value._urlPatterns
-            : urlPatterns // ignore: cast_nullable_to_non_nullable
-                as List<String>,
-      ),
-    );
+  $Res call({
+    Object? urlPatterns = null,
+  }) {
+    return _then(_$ExtensionType_URLHandlerImpl(
+      urlPatterns: null == urlPatterns
+          ? _value._urlPatterns
+          : urlPatterns // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
   }
 }
 
 /// @nodoc
 
 class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
-  const _$ExtensionType_URLHandlerImpl({
-    required final List<String> urlPatterns,
-  })  : _urlPatterns = urlPatterns,
+  const _$ExtensionType_URLHandlerImpl(
+      {required final List<String> urlPatterns})
+      : _urlPatterns = urlPatterns,
         super._();
 
   final List<String> _urlPatterns;
@@ -732,17 +717,13 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ExtensionType_URLHandlerImpl &&
-            const DeepCollectionEquality().equals(
-              other._urlPatterns,
-              _urlPatterns,
-            ));
+            const DeepCollectionEquality()
+                .equals(other._urlPatterns, _urlPatterns));
   }
 
   @override
   int get hashCode => Object.hash(
-        runtimeType,
-        const DeepCollectionEquality().hash(_urlPatterns),
-      );
+      runtimeType, const DeepCollectionEquality().hash(_urlPatterns));
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
@@ -758,9 +739,8 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasSearch) entryProvider,
     required TResult Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    ) sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
+        sourceProcessor,
     required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
     required TResult Function(List<String> urlPatterns) urlHandler,
@@ -773,9 +753,8 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasSearch)? entryProvider,
     TResult? Function(
-      Set<SourceType> sourcetypes,
-      Set<SourceOpenType> opentype,
-    )? sourceProcessor,
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
     TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
         entryProcessor,
     TResult? Function(List<String> urlPatterns)? urlHandler,
@@ -841,9 +820,9 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
 }
 
 abstract class ExtensionType_URLHandler extends ExtensionType {
-  const factory ExtensionType_URLHandler({
-    required final List<String> urlPatterns,
-  }) = _$ExtensionType_URLHandlerImpl;
+  const factory ExtensionType_URLHandler(
+          {required final List<String> urlPatterns}) =
+      _$ExtensionType_URLHandlerImpl;
   const ExtensionType_URLHandler._() : super._();
 
   List<String> get urlPatterns;

@@ -11,6 +11,7 @@
 		"./asserts": "./src/asserts.ts",
 		"./settings": "./src/settings.ts",
 		"./ui": "./src/ui.ts",
+		"./region": "./src/region.ts",
 		"./util": "./src/util.ts",
 		"./auth": "./src/auth.ts"
 	},

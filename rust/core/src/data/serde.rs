@@ -166,7 +166,7 @@ mod test {
                 data: "feed_data_2".to_string(),
                 page: 2,
             },
-            EventData::Action {
+            EventData::Trigger {
                 event: "action_event".to_string(),
                 data: "action_data".to_string(),
             },
@@ -349,11 +349,11 @@ mod test {
                 link: "https://another.com".to_string(),
                 label: Some("Click Here".to_string()),
             },
-            CustomUI::TimeStamp {
+            CustomUI::Timestamp {
                 timestamp: "1234567890".to_string(),
                 display: TimestampType::Relative,
             },
-            CustomUI::TimeStamp {
+            CustomUI::Timestamp {
                 timestamp: "0987654321".to_string(),
                 display: TimestampType::Absolute,
             },
@@ -365,6 +365,7 @@ mod test {
                 top: Box::new(generate_custom_ui_text()),
                 bottom: Box::new(generate_custom_ui_button()),
             },
+            CustomUI::Spinner,
             CustomUI::Feed {
                 event: "feed_event".to_string(),
                 data: "feed_data".to_string(),
@@ -399,6 +400,17 @@ mod test {
             CustomUI::Slot {
                 id: "slot_1".to_string(),
                 child: Box::new(generate_custom_ui_text()),
+                on_mount: None,
+            },
+            CustomUI::Slot {
+                id: "slot_2".to_string(),
+                child: Box::new(CustomUI::Spinner {}),
+                on_mount: Some(Box::new(UIAction::SwapContent {
+                    targetid: "slot_2".to_string(),
+                    event: "mount_event".to_string(),
+                    data: "mount_data".to_string(),
+                    placeholder: None,
+                })),
             },
             CustomUI::Column {
                 children: vec![generate_custom_ui_text(), generate_custom_ui_button()],

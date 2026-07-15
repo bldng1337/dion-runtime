@@ -33,8 +33,8 @@ export class DefaultExtension
 	}
 	async onEvent(data: EventData): Promise<EventResult | undefined> {
 		switch (data.type) {
-			case "Action":
-				return;
+		case "Trigger":
+			return;
 			case "FeedUpdate":
 				return {
 					type: data.type,

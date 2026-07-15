@@ -19,22 +19,29 @@ pub struct PopupAction {
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum Action {
+    // Opens the given URL in a browser or webview.
     OpenBrowser {
         url: String,
     },
+    // Opens a popup with the given title, content, and actions.
     Popup {
         title: String,
         content: Box<CustomUI>,
         actions: Vec<PopupAction>,
     },
+    // Navigates to a new view with the given title and content.
     Nav {
         title: String,
         content: Box<CustomUI>,
     },
+    // Pops the current view and returns to the previous one
+    PopView {},
+    // Triggers an event with the given name and data.
     TriggerEvent {
         event: String,
         data: String,
     },
+    // Navigates to a new view with the given entry.
     NavEntry {
         entry: Box<EntryDetailed>,
     },
@@ -49,6 +56,7 @@ pub enum UIAction {
     Action {
         action: Box<Action>,
     },
+    // Swaps the content of a Slot element with the given target ID, event name, and data.
     SwapContent {
         targetid: String,
         event: String,
@@ -74,10 +82,10 @@ pub enum EventData {
         data: String,
         page: i32,
     },
-    Action {
+    Trigger {
         event: String,
         data: String,
-    },
+    }
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -96,4 +104,8 @@ pub enum EventResult {
         #[cfg_attr(feature = "type", specta(optional))]
         length: Option<i32>,
     },
+    DoAction {
+        action: Box<Action>,
+    },
+    Return {},
 }

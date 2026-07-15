@@ -345,7 +345,7 @@ impl JSExecutor<Task> for ExtensionExecutor {
                     .context("Failed to convert Entry to js")?];
                     Self::exec(context, "onEvent", vals, token)
                         .await
-                        .context("Failed to call handleUrl")
+                        .context("Failed to call onEvent")
                 }
                 .await;
                 let _ = send.send(res);
