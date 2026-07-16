@@ -1,21 +1,19 @@
 ---
 name: create-extension
-description: Create and scaffold Dion runtime extensions — TypeScript/JavaScript modules that provide browseable/searchable media entries and playable sources for the Dion runtime. Use this when the user asks to create, scaffold, build, test, or structure a Dion extension, or to understand the Dion extension API (network, parse, settings, auth, permissions, proxy).
+description: Create and scaffold Dion runtime extensions — TypeScript/JavaScript modules that provide browseable/searchable media/sources, trackers, and other functionality for the Dion runtime. Use this when the user asks to create, scaffold, build, test, or structure a Dion extension, or to understand the Dion extension API.
 ---
-
 # Creating Dion Extensions
 
 A Dion **extension** is a bundled JavaScript module that plugs into the Dion runtime
-(a Rust host embedding the `boa_engine` JS VM). Extensions provide media content —
-"entries" (books, comics, videos, audio) and the "sources" to play/read them — from a website or API or give the ability to transform entries.
+(a Rust host embedding the `boa_engine` JS VM). Extensions provide media content
+"entries" (books, comics, videos, audio) and the "sources" to play/read them from a website or API or give the ability to transform entries.
 
 This skill tells you how to scaffold, implement, build, test, and package an extension.
 
 ## Mental model: how an extension runs
-
 1. Source lives in `src/main.ts` as an ES module with a **`default export` class**.
 2. `dion-bundle` (via `bun run build`) compiles `src/main.ts` into a single
-   `.dist/<name>.dion.js` file. The first line is a `//<metadata-json>` comment; the rest is the bundled code. The built-in modules (`network`, `parse`, `setting`, `auth`, `permission`, `convert`) are kept **external** (provided by the host at runtime), so the bundle is small and platform-independent.
+   `.dist/<name>.dion.js` file. The first line is a `//<metadata-json>` comment; the rest is the bundled code. The built-in modules (`network`, `parse`, `setting`, `auth`, `permission`, `convert`) are kept **external** (provided by the host at runtime), so the bundle is small.
 3. At runtime the host:
    - reads the metadata comment, checks `api_version` compatibility,
    - parses the module, instantiates the default-exported class,
@@ -52,7 +50,7 @@ Required Dion fields (validation fails without these):
 | `api_version` | string | **Semver requirement** matched against the host runtime version. Use `"*"` unless you need to pin a host range (e.g. `">=1.0.0"`). A mismatch marks the extension `compatible: false`. |
 | `nsfw` | boolean | Mark adult content. |
 | `media_type` | `MediaType[]` | Any of: `Video`, `Comic`, `Audio`, `Book`, `Unknown`. |
-| `extension_type` | `ExtensionType[]` | Declared capabilities. Depend on which interfaces you implement. See `@dion-js/runtime-types/gen/dion_runtime/generated_types.ts` |
+| `extension_type` | `ExtensionType[]` | Declared capabilities. **Hand-authored** — `dion-bundle` does not derive it from your code, it copies whatever you write here into the metadata. The app uses it to filter/show extensions; an empty array (`[]`, the scaffold default) is treated as "provides everything". Variants and how they map to interfaces are listed below. Full schema in `@dion-js/runtime-types/runtime`. |
 
 Optional Dion fields: `desc` (string), `authors` (string[]), `tags` (string[]),
 `lang` (string[]), `repo` (string — usually auto-filled from git), `settings`, `accounts`.
@@ -118,6 +116,24 @@ Method-name spellings matter exactly — the host dispatches by name
 (`browse`, `search`, `detail`, `source`, `mapEntry`, `onEntryActivity`, `mapSource`,
 `handleUrl`, `handleProxy`, `onEvent`, `validate`, `load`). Use the TypeScript interfaces to get the correct signatures.
 
+### Declaring `extension_type`
+`extension_type` is a tagged union discriminated by `type`. Declare the variants matching the interfaces you implement (you can list more than one). The host does **not** infer these from your methods, so an unlisted capability won't be exposed.
+
+| Variant | Fields | Declare when you implement |
+|---|---|---|
+| `EntryProvider` | `has_search: boolean` | `SourceProvider` (set `has_search` to whether search is meaningfully supported). |
+| `SourceProcessor` | `sourcetypes: SourceType[]`, `opentype: SourceOpenType[]` (`"Download"`/`"Stream"`); opentype handles if the extension gets called for streamed in sources or only applies to downloading jobs, use download for longer running jobs and stream for quicker things that the user wants to have in general | `SourceProcessorExtension` (`mapSource`). |
+| `EntryProcessor` | `trigger_map_entry: boolean`, `trigger_on_entry_activity: boolean`; these two denote if this extension 1. wants to rewrite EntryDetailed data of the Entries its attached to and for trigger_on_entry_activity if it wants to be notified if the user has read/watched/listened to an episode of this Entry (useful for tracking type extensions) | `EntryExtension` (`mapEntry` / `onEntryActivity`). |
+| `URLHandler` | `url_patterns: string[]`; url_patterns denotes on what url patterns the extension gets invoked | `handleUrl`. |
+
+Example: a `SourceProvider` with search and url-opening capabilities:
+```json
+"extension_type": [
+  { "type": "EntryProvider", "has_search": true },
+  { "type": "URLHandler", "url_patterns": ["https://example.com/entry/*"] }
+]
+```
+
 ### Lifecycle
 
 - `load()` — called once after construction, before any other method. Use it to register
@@ -130,7 +146,7 @@ Method-name spellings matter exactly — the host dispatches by name
 ## Built-in modules (provided by the host)
 
 These are **external** — import them, do not bundle them. Ambient types come from
-`@dion-js/extension-types`.
+`@dion-js/extension-types`; look there for full signatures and data types.
 
 - `network` — `fetch(url, options?)`, `getCookies()`, `getProxyAddress()`. `fetch` returns a
   `DionResponse` with `status`, `headers`, `body` (string), `json`, `ok`. Cookies are managed
@@ -152,51 +168,69 @@ These are **external** — import them, do not bundle them. Ambient types come f
 
 For full signatures and the data types they use look at `@dion-js/extension-types`.
 
+## Proxy handling
+The host runs an HTTP proxy and routes requests that target an extension's proxy path to its `handleProxy(request)`. Implement it only if you need to intercept/rewrite traffic. It **must** return a `ProxyResponse`: `{ type: "response", status, headers, body? }` to answer directly, or `{ type: "redirect", request: ProxyRequest }` to re-issue the request (optionally modified) — a `redirect` forwarding the original request is how you "pass through" unmodified. Get the address to send your own requests through via `network.getProxyAddress()`. `ProxyRequest`/`ProxyResponse` are defined in `@dion-js/runtime-types/extension`.
+
 ## Key data types (return these)
 
-All defined in `@dion-js/runtime-types/runtime`. Tagged unions use a `"type"` discriminant.
-
-- `Entry` — `{ id: { uid }, url, title, media_type, cover?, author?, rating?, views?, length? }`.
-  `id.uid` must uniquely identify the entry within this extension.
-- `EntryList` — `{ content: Entry[], hasnext?: boolean, length?: number }`.
-- `EntryDetailed` — full entry: `id, url, titles[], media_type, status, description, language,
-  episodes: Episode[], cover?, poster?, genres?, rating?, …`. `status` is `"Releasing" |
-  "Complete" | "Unknown"`.
-- `Episode` — `{ id: { uid }, name, url, description?, cover?, timestamp? }`.
-- `EntryDetailedResult` — `{ entry: EntryDetailed, settings: Record<string, Setting> }`.
-  Echo back the `settings` you received (or a transformed copy).
-- `Source` — discriminated by `type`: `Epub { link }`, `Pdf { link }`, `Imagelist { links,
-  audio? }`, `Video { sources: StreamSource[], sub: Subtitles[] }`, `Audio { sources }`,
-  `Paragraphlist { paragraphs: Paragraph[] }`.
-- `SourceResult` — `{ source: Source, settings: Record<string, Setting> }`.
-- `Link` — `{ url, header?: Record<string,string> }` (use `header` for auth/referer headers
-  the player must send).
-- `MediaType` — `"Video" | "Comic" | "Audio" | "Book" | "Unknown"`.
+All defined in `@dion-js/runtime-types/runtime` read the ts types to get the most up to date schema. Tagged unions use a `"type"` discriminant. Below are some notes to pay attention to when implementing your extension:
+- `Entry`: `id.uid` must uniquely identify the entry within this extension.
+- `EntryDetailed`: `id.uid` must match with the `Entry`.
+- `EntryDetailedResult`: Echo back the `settings` you received (or a transformed copy).
+- `Source`: discriminated by `type`: Epub, Pdf, Imagelist, Video, Audio, Paragraphlist
+- `SourceResult`: Echo back the `settings` you received (or a transformed copy). The host threads the **same** per-entry `settings` object from `detail` into `source`, so any change you return from `detail` is what `source` receives for that entry. Always echo `settings` back in both return values.
+- `Link`:use `header` for auth/referer headers the player must send.
 
 See `@dion-js/runtime-types/runtime`
 
 ## Settings & auth (use the `runtime-lib` helpers)
-
 Prefer declaring settings/auth on the `DionExtension` subclass rather than calling the raw
-`setting`/`auth` modules. From `@dion-js/runtime-lib`:
-
+`setting`/`auth` modules. From `@dion-js/runtime-lib` read the types to get the most up to date schema.
 - `ExtensionSetting<T>` — typed setting with a default, kind (`"Extension" | "Search"`),
   optional `UI` (`.setUI(new Slider(0,10,1))`, `new Checkbox()`, `new Dropdown([...])`,
   `new SettingCustomUI(ui)`), `.setVisible()`, `.setLabel()`. Register by listing it in
-  `this.settings`.
+  `this.settings`. `kind` denotes if the Setting is shown in the extension settings or in the search filter UI. e.g. for categories, use `"Search"`.
 - `AuthAccount` — `new AuthAccount(domain, authType, async validateFn)`; list in
-  `this.accounts`. `validateFn` returns `{ userName?, profilePic? }`.
+  `this.accounts`. `validateFn` returns `{ userName?, profilePic? }` and validates if the account is valid.
 - `SettingStore` — read/write the per-call `settings` record handed to `detail`/`source`.
+The Settings passed to `detail` and `source` are the same for each entry, they are for per entry settings. Always echo back the `settings` in your return values.
 
-UI builders (`@dion-js/runtime-lib`): `Text`, `Image`, `HyperLink`, `Timestamp`, `Column`,
-`Row`, `Card`, `EntryCard`, `Feed`, `Button`, `InlineSetting`, `Slot`, `If`.
-`log/logwarn/logerr` (JSON-stringified), `makeurl`, `makeFormdata`, `parseNumberwithSuffix`,
-`toStatus`, `encodeURL`, `deduplicate`.
+## Custom UI
+A `CustomUI` is a declarative, JSON-serializable UI tree that your extension returns for the app to render. You can attach a `CustomUI` anywhere the runtime accepts one. Common use cases include:
+- The `UI` field of an `ExtensionSetting`, for specialized setting controls that don’t fit the built-in options.
+- The `UI` field of an `EntryDetailed`, to display additional information from the source (such as recommended entries, characters, etc.).
+- Custom UI within a `ParagraphList` source.
+- Using `Popup` or `Nav` actions to display a custom UI in a modal or fullscreen view.
 
-Make sure that the settings are in the right scope: `"Extension"` is for general extension settings, `"Search"` is for per-search settings like categories. The Settings passed to `detail` and `source` are the same for each entry, they are for per entry settings. Always echo back the `settings` in your return values.
+The runtime renders the UI tree and routes any UI events back to the extension’s `onEvent` method.
+Build nodes with the helper functions from `@dion-js/runtime-lib/ui` rather than writing the raw objects — every helper returns the correct tagged-union shape. 
+Nodes split into:
+- **Leaf**: `Text`, `Timestamp`, `Image`, `Link`, `Spinner`, `EntryCard`,
+  `Card(image, top, bottom)`.
+- **Container**: `Column(...)`, `Row(...)` — both filter out `undefined`
+  children, so `cond ? node : undefined` is the idiomatic conditional.
+- **Interactive**: `Button(label, onClick)`, `InlineSetting(id, kind, onCommit)`,
+  `Feed(event, data)` (lazy-paginated list), and `Slot(id, child, onMount)`
+  (a swappable placeholder).
+
+Buttons carry a `UIAction` built either with `Do(action)` for a one-shot
+`Action` (`OpenBrowser`, `TriggerEvent`, `Nav`, `NavEntry`, `Popup`) or with
+`SwapContent(targetId, event, data)` to ask the runtime to replace a `Slot`'s
+contents. The runtime routes the resulting `EventData` back to the extension's
+`onEvent`, which `DionExtension` already implements: `SwapContent`/`FeedUpdate`
+events go to entries in `this.regions`, and everything else goes to
+`this.triggers`. Prefer the `runtime-lib` abstractions over hand-writing events:
+- `SwapRegion<E>` — binds a `Slot` id to a typed map of handlers; `.build()`
+  emits the slot (optionally auto-firing an event on mount), `.swap(event, data)`
+  returns a typed `UIAction` for buttons, and the handler's return value becomes
+  the slot's new content. Annotate handler parameters so TypeScript infers the
+  `EventMap`.
+- `FeedRegion<D>` — wraps a `Feed` with an `onPage(data, page)` handler that
+  returns `{ items, hasNext }`; the runtime requests pages as the user scrolls.
+- `Trigger<E>` — a standalone event handler listed in `this.triggers`; use its
+  `.trigger(data)` to produce the `EventData`/`UIAction` you attach to a button.
 
 ## Build, test, lint
-
 Run inside the extension directory:
 
 ```sh
@@ -212,11 +246,9 @@ The test loads the **built** extension through the real native runtime
 (`@dion-js/runtime`'s `Adapter` + a `MockManagerClient` from
 `@dion-js/extension-test-utils`), so always `bun run build` before `bun test`. The template
 `main.test.ts` exercises the full flow: enable → browse → search → detail → source, and
-validates shapes with `assertValidEntries` / `assertValidEntry` / `assertValidSource`
-(which also HEAD-check URLs).
+validates shapes with `assertValidEntries` / `assertValidEntry` / `assertValidSource`.
 
 ## Extension repositories
-
 An extension **repository** is a directory of built extensions plus a generated index. Repo
 layout (built from the repo root, not an individual extension):
 
@@ -236,30 +268,8 @@ fields, and `content: [{ path, extdata }]`). The repo `url` is read from the rep
 
 ## Worked example checklist
 
-When asked to create an extension end-to-end:
-
-1. Scaffold (`dion-create` or copy `templates/`), set `name`, `url`, `media_type`, `id`.
-2. In `src/main.ts`, subclass `DionExtension` and `implements SourceProvider`.
-3. Implement `browse`/`search` (return `EntryList`), `detail` (return `EntryDetailedResult`),
-   `source` (return `SourceResult`). Use `network.fetch` + `parse.parseHtml`.
-4. Add any settings as `ExtensionSetting<T>` entries in `this.settings`; declare
-   `api_version: "*"` unless pinning.
-5. Keep `id.uid` values stable and unique; echo `settings` back in results.
-6. `bun run build && bun test && bun run check-types && bun run lint`.
-7. If packaging a repo, drop the extension under `extensions/` and run `dion-build-index`.
-
-## Common pitfalls
-
-- **Wrong metadata field names.** Use `desc`/`authors`/`tags` (Dion), not
-  `description`/`author`/`keywords` (npm) — the latter are ignored for Dion metadata.
-- **Forgetting to `build` before `test`.** Tests load the `.dist` bundle.
-- **Importing built-in modules as packages.** They are external/ambient — just
-  `import { fetch } from "network";`. Make sure `@dion-js/extension-types` is in
-  `devDependencies` for the types.
-- **Methods not returning Promises.** The host awaits a `.then`-able; a sync return throws
-  "didn't return a Promise".
-- **Non-JSON-serialisable values in return data** (functions, symbols, circular refs) — they
-  cross the boundary as JSON.
-- **Unstable `id.uid`.** Changing it breaks users' saved libraries/progress.
-- **Dropping `settings` from a `*Result`.** Always include the `settings` map.
-- **Hardcoding secrets.** Use `auth`/`getAuthSecret`, never bake credentials into the bundle.
+When asked to create an extension for a site end-to-end:
+1. **Research**: Look at the site, use curl or browser devtools to see: the type of content, the URL patterns, the HTML structure or API endpoints, any auth requirements. Think about how to best expose the content as Extension as good as possible. Think about what settings (extension, entry, search), auth, and custom UI you might want to expose.
+2. **Scaffold**: Run `dion-create` to generate the extension skeleton.
+3. **Implement**: Fill in the `browse`, `search`, `detail`, and `source` methods, plus any settings/auth/custom UI. Use `network.fetch` and `parse.parseHtml` to get and parse the content. Use `this.settings` and `this.accounts` to register settings and auth. Use `DionExtension` helpers for settings/auth/custom UI.
+4. **Build & test**: Run `bun run build && bun test && bun run check-types && bun run lint`. Fix any errors. If you made any custom UI or special edgecases/functions, write tests for them in `src/main.test.ts`.
