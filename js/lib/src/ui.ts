@@ -35,11 +35,7 @@ export function Timestamp(
 	};
 }
 
-export function Image(
-	image: Link,
-	width?: number,
-	height?: number,
-): CustomUI {
+export function Image(image: Link, width?: number, height?: number): CustomUI {
 	return {
 		type: "Image",
 		image: image,
@@ -106,7 +102,10 @@ export function Feed(event: string, data = ""): CustomUI {
 	};
 }
 
-export function Button(label: string, onClick: UIAction | null = null): CustomUI {
+export function Button(
+	label: string,
+	onClick: UIAction | null = null,
+): CustomUI {
 	return {
 		type: "Button",
 		label: label,

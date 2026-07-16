@@ -18,8 +18,8 @@ type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably no
 export abstract class DionExtension implements Extension {
 	abstract settings: { [key: string]: ExtensionSetting<Settingvalues> };
 	abstract accounts: { [key: string]: AuthAccount };
-  regions: { [key: string]: Region } = {};
-  triggers: { [key: string]: BaseTrigger } = {};
+	regions: { [key: string]: Region } = {};
+	triggers: { [key: string]: BaseTrigger } = {};
 
 	async validate(acc: Account): Promise<Account | undefined> {
 		for (const account of Object.values(this.accounts)) {
@@ -61,12 +61,12 @@ export abstract class DionExtension implements Extension {
 			this.mapSource = (this.mapSource as bindable).bind(this);
 		await this.onload();
 	}
-  async onEvent(data: EventData): Promise<EventResult | undefined> {
-    if (data.type === "FeedUpdate" || data.type === "SwapContent") {
-      return await routeEvent(this.regions, data);
-    }
+	async onEvent(data: EventData): Promise<EventResult | undefined> {
+		if (data.type === "FeedUpdate" || data.type === "SwapContent") {
+			return await routeEvent(this.regions, data);
+		}
 		return await routeTrigger(this.triggers, data);
-  }
+	}
 
 	async handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;
 

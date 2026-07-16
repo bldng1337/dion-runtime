@@ -13,7 +13,6 @@ import {
 	SwapResult,
 } from "./ui.js";
 
-
 export abstract class Region {
 	/** Produce the declarative node placed in the UI tree. */
 	abstract build(): CustomUI;
@@ -41,7 +40,9 @@ export type EventMap = Record<string, unknown>;
 export class SwapRegion<E extends EventMap = EventMap> extends Region {
 	/** @internal emitted slot id */
 	readonly id: string;
-	private readonly handlers: { [K in keyof E]: (data: E[K]) => Promise<CustomUI> };
+	private readonly handlers: {
+		[K in keyof E]: (data: E[K]) => Promise<CustomUI>;
+	};
 	private readonly placeholder: CustomUI;
 
 	constructor(
@@ -55,7 +56,6 @@ export class SwapRegion<E extends EventMap = EventMap> extends Region {
 		this.placeholder = placeholder;
 	}
 
-
 	build(mount?: { event: keyof E; data: E[keyof E] }): CustomUI {
 		return Slot(
 			this.id,
@@ -64,16 +64,15 @@ export class SwapRegion<E extends EventMap = EventMap> extends Region {
 		);
 	}
 
-
 	swap<K extends keyof E>(event: K, data?: E[K]): UIAction {
 		return SwapContent(this.id, event as string, encode(data as E[K]));
 	}
 
 	async handle(ev: EventData): Promise<EventResult | undefined> {
 		if (ev.type !== "SwapContent" || ev.targetid !== this.id) return;
-		const h = (this.handlers as Record<string, (d: unknown) => Promise<CustomUI>>)[
-			ev.event
-		];
+		const h = (
+			this.handlers as Record<string, (d: unknown) => Promise<CustomUI>>
+		)[ev.event];
 		if (!h) return;
 		return SwapResult(await h(decode(ev.data)));
 	}

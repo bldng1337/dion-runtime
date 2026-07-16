@@ -72,18 +72,18 @@ export default class extends DionExtension {
 	regions = {
 		details,
 		chapters,
-  };
-  triggers = {
-    test: new Trigger("test", async (data: { message: string }) => {
-      return {
-        type: "SwapContent",
-        customui: Column(
-          Text(`Test trigger received: ${data.message}`),
-          Spinner(),
-        ),
-      };
-    }),
-  };
+	};
+	triggers = {
+		test: new Trigger("test", async (data: { message: string }) => {
+			return {
+				type: "SwapContent",
+				customui: Column(
+					Text(`Test trigger received: ${data.message}`),
+					Spinner(),
+				),
+			};
+		}),
+	};
 
 	async detail(entryId: { uid: string }) {
 		const entry = {
