@@ -35,7 +35,7 @@ pub enum Action {
         content: Box<CustomUI>,
     },
     // Pops the current view and returns to the previous one
-    PopView {},
+    PopView,
     // Triggers an event with the given name and data.
     TriggerEvent {
         event: String,
@@ -85,7 +85,7 @@ pub enum EventData {
     Trigger {
         event: String,
         data: String,
-    }
+    },
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -107,5 +107,5 @@ pub enum EventResult {
     DoAction {
         action: Box<Action>,
     },
-    Return {},
+    Return,
 }
