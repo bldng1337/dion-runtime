@@ -102,6 +102,10 @@ function assert(condition: boolean, message: string): asserts condition {
 	if (!condition) throw new Error(message);
 }
 
+function assertWarn(condition: boolean, message: string): asserts condition {
+  if (!condition) console.warn(message);
+}
+
 export async function assertValidM3U8(
 	link: Link,
 	options?: {
@@ -111,7 +115,7 @@ export async function assertValidM3U8(
 	console.log(`Checking ${link.url}`);
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assert(
+	assertWarn(
 		response.ok,
 		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
 	);
@@ -120,9 +124,9 @@ export async function assertValidM3U8(
 	});
 	parser.push(await response.text());
 	parser.end();
-	assert(
+	assertWarn(
 		parser.manifest.segments.length > 0,
-		`${options} ${link.url} is not a valid m3u8 url`,
+		`${options?.assertmsg} ${link.url} is not a valid m3u8 url`,
 	);
 }
 
@@ -134,11 +138,11 @@ export async function assertValidImageURL(
 ) {
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assert(
+	assertWarn(
 		response.ok,
 		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
 	);
-	assert(
+	assertWarn(
 		response.headers
 			.get("content-type")
 			?.toLocaleLowerCase()
@@ -155,7 +159,7 @@ export async function assertValidURL(
 ) {
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assert(
+	assertWarn(
 		response.ok,
 		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
 	);
