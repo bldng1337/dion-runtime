@@ -13,6 +13,7 @@ import type {
 
 export default class extends DionExtension implements SourceProvider {
 	settings = {};
+	accounts = {};
 	async onEvent(_data: EventData): Promise<EventResult | undefined> {
 		return undefined;
 	}
