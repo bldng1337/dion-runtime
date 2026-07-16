@@ -59,7 +59,7 @@ class RustProject extends Project {
 	}
 
 	async build(release: boolean) {
-		await $`cd ${this.path} && cargo build ${release ? "--release" : ""}`;
+		await $`cd ${this.path} && cargo build${release ? " --release" : ""}`;
 	}
 
 	async test() {
