@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -84116015;
+  int get rustContentHash => 1679058273;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -114,7 +114,8 @@ abstract class RustLibApi extends BaseApi {
       required FutureOr<bool> Function(Permission, String?) requestPermission,
       required FutureOr<String> Function() getPath,
       required FutureOr<void> Function(EntryId, String, SettingValue)
-          setEntrySetting});
+          setEntrySetting,
+      required FutureOr<void> Function(String, String) storeSet});
 
   Future<ManagerClient> crateApiClientManagerClientInit(
       {required FutureOr<String> Function() getPath,
@@ -295,6 +296,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault();
 
+  Future<ToastKind> dionRuntimeDataActionToastKindDefault();
+
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken;
 
@@ -460,7 +463,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       required FutureOr<bool> Function(Permission, String?) requestPermission,
       required FutureOr<String> Function() getPath,
       required FutureOr<void> Function(EntryId, String, SettingValue)
-          setEntrySetting}) {
+          setEntrySetting,
+      required FutureOr<void> Function(String, String) storeSet}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -480,6 +484,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             getPath, serializer);
         sse_encode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
             setEntrySetting, serializer);
+        sse_encode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
+            storeSet, serializer);
         final raw_ = serializer.intoRaw();
         return wire.wire__crate__api__client__ExtensionClient_init(
             port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
@@ -498,7 +504,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         doAction,
         requestPermission,
         getPath,
-        setEntrySetting
+        setEntrySetting,
+        storeSet
       ],
       apiImpl: this,
     ));
@@ -515,7 +522,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "doAction",
           "requestPermission",
           "getPath",
-          "setEntrySetting"
+          "setEntrySetting",
+          "storeSet"
         ],
       );
 
@@ -1987,6 +1995,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         argNames: [],
       );
 
+  @override
+  Future<ToastKind> dionRuntimeDataActionToastKindDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire.wire__dion_runtime__data__action__toast_kind_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_toast_kind,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataActionToastKindDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataActionToastKindDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "toast_kind_default",
+        argNames: [],
+      );
+
   Future<void> Function(int, dynamic)
       encode_DartFn_Inputs_String_Output_String_AnyhowException(
           FutureOr<String> Function(String) raw) {
@@ -2426,6 +2456,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String?> dco_decode_Map_String_opt_String_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(dco_decode_list_record_string_opt_string(raw)
+        .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_setting(raw)
@@ -2539,13 +2576,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         return const Action_PopView();
       case 4:
-        return Action_TriggerEvent(
-          event: dco_decode_String(raw[1]),
-          data: dco_decode_String(raw[2]),
-        );
-      case 5:
         return Action_NavEntry(
           entry: dco_decode_box_entry_detailed(raw[1]),
+        );
+      case 5:
+        return Action_ShowToast(
+          message: dco_decode_String(raw[1]),
+          kind: dco_decode_toast_kind(raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -2772,9 +2809,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  UIAction dco_decode_box_ui_action(dynamic raw) {
+  Interaction dco_decode_box_interaction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_ui_action(raw);
+    return dco_decode_interaction(raw);
   }
 
   @protected
@@ -2815,25 +2852,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return const CustomUI_Spinner();
       case 7:
         return CustomUI_Feed(
-          event: dco_decode_String(raw[1]),
+          handler: dco_decode_String(raw[1]),
           data: dco_decode_String(raw[2]),
         );
       case 8:
         return CustomUI_Button(
           label: dco_decode_String(raw[1]),
-          onClick: dco_decode_opt_box_ui_action(raw[2]),
+          onClick: dco_decode_opt_box_interaction(raw[2]),
         );
       case 9:
         return CustomUI_InlineSetting(
           settingId: dco_decode_String(raw[1]),
           settingKind: dco_decode_setting_kind(raw[2]),
-          onCommit: dco_decode_opt_box_ui_action(raw[3]),
+          onCommit: dco_decode_opt_box_interaction(raw[3]),
         );
       case 10:
         return CustomUI_Slot(
-          id: dco_decode_String(raw[1]),
+          handler: dco_decode_String(raw[1]),
           child: dco_decode_box_custom_ui(raw[2]),
-          onMount: dco_decode_opt_box_ui_action(raw[3]),
+          staticData: dco_decode_String(raw[3]),
+          subscriptions: dco_decode_list_subscription(raw[4]),
         );
       case 11:
         return CustomUI_Column(
@@ -2842,6 +2880,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 12:
         return CustomUI_Row(
           children: dco_decode_list_custom_ui(raw[1]),
+        );
+      case 13:
+        return CustomUI_TextInput(
+          onChange: dco_decode_opt_box_interaction(raw[1]),
+          debounceMs: dco_decode_opt_box_autoadd_i_32(raw[2]),
+          initial: dco_decode_opt_String(raw[3]),
+          onCommit: dco_decode_opt_box_interaction(raw[4]),
         );
       default:
         throw Exception("unreachable");
@@ -2989,21 +3034,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
       case 0:
-        return EventData_SwapContent(
-          event: dco_decode_String(raw[1]),
-          targetid: dco_decode_String(raw[2]),
-          data: dco_decode_String(raw[3]),
+        return EventData_LoadSlot(
+          handler: dco_decode_String(raw[1]),
+          staticData: dco_decode_String(raw[2]),
+          values: dco_decode_Map_String_opt_String_None(raw[3]),
         );
       case 1:
-        return EventData_FeedUpdate(
-          event: dco_decode_String(raw[1]),
+        return EventData_LoadPage(
+          handler: dco_decode_String(raw[1]),
           data: dco_decode_String(raw[2]),
           page: dco_decode_i_32(raw[3]),
         );
       case 2:
-        return EventData_Trigger(
-          event: dco_decode_String(raw[1]),
-          data: dco_decode_String(raw[2]),
+        return EventData_Invoke(
+          handler: dco_decode_String(raw[1]),
+          payload: dco_decode_String(raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -3015,21 +3060,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
       case 0:
-        return EventResult_SwapContent(
+        return EventResult_SlotContent(
           customui: dco_decode_box_autoadd_custom_ui(raw[1]),
         );
       case 1:
-        return EventResult_FeedUpdate(
-          customui: dco_decode_list_custom_ui(raw[1]),
-          hasnext: dco_decode_opt_box_autoadd_bool(raw[2]),
-          length: dco_decode_opt_box_autoadd_i_32(raw[3]),
+        return EventResult_FeedPage(
+          items: dco_decode_list_custom_ui(raw[1]),
+          hasMore: dco_decode_bool(raw[2]),
         );
-      case 2:
-        return EventResult_DoAction(
-          action: dco_decode_box_action(raw[1]),
-        );
-      case 3:
-        return const EventResult_Return();
       default:
         throw Exception("unreachable");
     }
@@ -3144,6 +3182,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       from: dco_decode_i_32(arr[1]),
       to: dco_decode_i_32(arr[2]),
     );
+  }
+
+  @protected
+  Interaction dco_decode_interaction(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return Interaction_Invoke(
+          handler: dco_decode_String(raw[1]),
+          payload: dco_decode_String(raw[2]),
+        );
+      case 1:
+        return Interaction_WriteKey(
+          key: dco_decode_String(raw[1]),
+          value: dco_decode_String(raw[2]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -3275,6 +3332,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, String?)> dco_decode_list_record_string_opt_string(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_opt_string)
+        .toList();
+  }
+
+  @protected
   List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
@@ -3316,6 +3382,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<StreamSource> dco_decode_list_stream_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_stream_source).toList();
+  }
+
+  @protected
+  List<Subscription> dco_decode_list_subscription(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_subscription).toList();
   }
 
   @protected
@@ -3442,15 +3514,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CustomUI? dco_decode_opt_box_custom_ui(dynamic raw) {
+  Interaction? dco_decode_opt_box_interaction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_custom_ui(raw);
-  }
-
-  @protected
-  UIAction? dco_decode_opt_box_ui_action(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_ui_action(raw);
+    return raw == null ? null : dco_decode_box_interaction(raw);
   }
 
   @protected
@@ -3535,6 +3601,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return (
       dco_decode_String(arr[0]),
       dco_decode_list_String(arr[1]),
+    );
+  }
+
+  @protected
+  (String, String?) dco_decode_record_string_opt_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_opt_String(arr[1]),
     );
   }
 
@@ -3759,6 +3838,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Subscription dco_decode_subscription(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return Subscription(
+      source: dco_decode_subscription_source(arr[0]),
+      key: dco_decode_String(arr[1]),
+      stateKey: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
+  SubscriptionSource dco_decode_subscription_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return const SubscriptionSource_Store();
+      case 1:
+        return SubscriptionSource_Setting(
+          kind: dco_decode_setting_kind(raw[1]),
+        );
+      case 2:
+        return const SubscriptionSource_EntrySetting();
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   Subtitles dco_decode_subtitles(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3795,6 +3904,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ToastKind dco_decode_toast_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ToastKind.values[raw as int];
+  }
+
+  @protected
   int dco_decode_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -3804,26 +3919,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
-  }
-
-  @protected
-  UIAction dco_decode_ui_action(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return UIAction_Action(
-          action: dco_decode_box_action(raw[1]),
-        );
-      case 1:
-        return UIAction_SwapContent(
-          targetid: dco_decode_String(raw[1]),
-          event: dco_decode_String(raw[2]),
-          data: dco_decode_String(raw[3]),
-          placeholder: dco_decode_opt_box_custom_ui(raw[4]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
   }
 
   @protected
@@ -3959,6 +4054,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String?> sse_decode_Map_String_opt_String_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_opt_string(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   Map<String, Setting> sse_decode_Map_String_setting_None(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4087,12 +4190,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         return const Action_PopView();
       case 4:
-        var var_event = sse_decode_String(deserializer);
-        var var_data = sse_decode_String(deserializer);
-        return Action_TriggerEvent(event: var_event, data: var_data);
-      case 5:
         var var_entry = sse_decode_box_entry_detailed(deserializer);
         return Action_NavEntry(entry: var_entry);
+      case 5:
+        var var_message = sse_decode_String(deserializer);
+        var var_kind = sse_decode_toast_kind(deserializer);
+        return Action_ShowToast(message: var_message, kind: var_kind);
       default:
         throw UnimplementedError('');
     }
@@ -4331,9 +4434,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  UIAction sse_decode_box_ui_action(SseDeserializer deserializer) {
+  Interaction sse_decode_box_interaction(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_ui_action(deserializer));
+    return (sse_decode_interaction(deserializer));
   }
 
   @protected
@@ -4372,33 +4475,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 6:
         return const CustomUI_Spinner();
       case 7:
-        var var_event = sse_decode_String(deserializer);
+        var var_handler = sse_decode_String(deserializer);
         var var_data = sse_decode_String(deserializer);
-        return CustomUI_Feed(event: var_event, data: var_data);
+        return CustomUI_Feed(handler: var_handler, data: var_data);
       case 8:
         var var_label = sse_decode_String(deserializer);
-        var var_onClick = sse_decode_opt_box_ui_action(deserializer);
+        var var_onClick = sse_decode_opt_box_interaction(deserializer);
         return CustomUI_Button(label: var_label, onClick: var_onClick);
       case 9:
         var var_settingId = sse_decode_String(deserializer);
         var var_settingKind = sse_decode_setting_kind(deserializer);
-        var var_onCommit = sse_decode_opt_box_ui_action(deserializer);
+        var var_onCommit = sse_decode_opt_box_interaction(deserializer);
         return CustomUI_InlineSetting(
             settingId: var_settingId,
             settingKind: var_settingKind,
             onCommit: var_onCommit);
       case 10:
-        var var_id = sse_decode_String(deserializer);
+        var var_handler = sse_decode_String(deserializer);
         var var_child = sse_decode_box_custom_ui(deserializer);
-        var var_onMount = sse_decode_opt_box_ui_action(deserializer);
+        var var_staticData = sse_decode_String(deserializer);
+        var var_subscriptions = sse_decode_list_subscription(deserializer);
         return CustomUI_Slot(
-            id: var_id, child: var_child, onMount: var_onMount);
+            handler: var_handler,
+            child: var_child,
+            staticData: var_staticData,
+            subscriptions: var_subscriptions);
       case 11:
         var var_children = sse_decode_list_custom_ui(deserializer);
         return CustomUI_Column(children: var_children);
       case 12:
         var var_children = sse_decode_list_custom_ui(deserializer);
         return CustomUI_Row(children: var_children);
+      case 13:
+        var var_onChange = sse_decode_opt_box_interaction(deserializer);
+        var var_debounceMs = sse_decode_opt_box_autoadd_i_32(deserializer);
+        var var_initial = sse_decode_opt_String(deserializer);
+        var var_onCommit = sse_decode_opt_box_interaction(deserializer);
+        return CustomUI_TextInput(
+            onChange: var_onChange,
+            debounceMs: var_debounceMs,
+            initial: var_initial,
+            onCommit: var_onCommit);
       default:
         throw UnimplementedError('');
     }
@@ -4550,21 +4667,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var tag_ = sse_decode_i_32(deserializer);
     switch (tag_) {
       case 0:
-        var var_event = sse_decode_String(deserializer);
-        var var_targetid = sse_decode_String(deserializer);
-        var var_data = sse_decode_String(deserializer);
-        return EventData_SwapContent(
-            event: var_event, targetid: var_targetid, data: var_data);
+        var var_handler = sse_decode_String(deserializer);
+        var var_staticData = sse_decode_String(deserializer);
+        var var_values = sse_decode_Map_String_opt_String_None(deserializer);
+        return EventData_LoadSlot(
+            handler: var_handler,
+            staticData: var_staticData,
+            values: var_values);
       case 1:
-        var var_event = sse_decode_String(deserializer);
+        var var_handler = sse_decode_String(deserializer);
         var var_data = sse_decode_String(deserializer);
         var var_page = sse_decode_i_32(deserializer);
-        return EventData_FeedUpdate(
-            event: var_event, data: var_data, page: var_page);
+        return EventData_LoadPage(
+            handler: var_handler, data: var_data, page: var_page);
       case 2:
-        var var_event = sse_decode_String(deserializer);
-        var var_data = sse_decode_String(deserializer);
-        return EventData_Trigger(event: var_event, data: var_data);
+        var var_handler = sse_decode_String(deserializer);
+        var var_payload = sse_decode_String(deserializer);
+        return EventData_Invoke(handler: var_handler, payload: var_payload);
       default:
         throw UnimplementedError('');
     }
@@ -4578,18 +4697,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_customui = sse_decode_box_autoadd_custom_ui(deserializer);
-        return EventResult_SwapContent(customui: var_customui);
+        return EventResult_SlotContent(customui: var_customui);
       case 1:
-        var var_customui = sse_decode_list_custom_ui(deserializer);
-        var var_hasnext = sse_decode_opt_box_autoadd_bool(deserializer);
-        var var_length = sse_decode_opt_box_autoadd_i_32(deserializer);
-        return EventResult_FeedUpdate(
-            customui: var_customui, hasnext: var_hasnext, length: var_length);
-      case 2:
-        var var_action = sse_decode_box_action(deserializer);
-        return EventResult_DoAction(action: var_action);
-      case 3:
-        return const EventResult_Return();
+        var var_items = sse_decode_list_custom_ui(deserializer);
+        var var_hasMore = sse_decode_bool(deserializer);
+        return EventResult_FeedPage(items: var_items, hasMore: var_hasMore);
       default:
         throw UnimplementedError('');
     }
@@ -4713,6 +4825,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_from = sse_decode_i_32(deserializer);
     var var_to = sse_decode_i_32(deserializer);
     return ImageListAudio(link: var_link, from: var_from, to: var_to);
+  }
+
+  @protected
+  Interaction sse_decode_interaction(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_handler = sse_decode_String(deserializer);
+        var var_payload = sse_decode_String(deserializer);
+        return Interaction_Invoke(handler: var_handler, payload: var_payload);
+      case 1:
+        var var_key = sse_decode_String(deserializer);
+        var var_value = sse_decode_String(deserializer);
+        return Interaction_WriteKey(key: var_key, value: var_value);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -4938,6 +5069,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, String?)> sse_decode_list_record_string_opt_string(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, String?)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_opt_string(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<(String, Setting)> sse_decode_list_record_string_setting(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5022,6 +5166,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <StreamSource>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_stream_source(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<Subscription> sse_decode_list_subscription(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Subscription>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_subscription(deserializer));
     }
     return ans_;
   }
@@ -5229,22 +5386,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CustomUI? sse_decode_opt_box_custom_ui(SseDeserializer deserializer) {
+  Interaction? sse_decode_opt_box_interaction(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_custom_ui(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  UIAction? sse_decode_opt_box_ui_action(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_ui_action(deserializer));
+      return (sse_decode_box_interaction(deserializer));
     } else {
       return null;
     }
@@ -5333,6 +5479,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_field0 = sse_decode_String(deserializer);
     var var_field1 = sse_decode_list_String(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (String, String?) sse_decode_record_string_opt_string(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_opt_String(deserializer);
     return (var_field0, var_field1);
   }
 
@@ -5535,6 +5690,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Subscription sse_decode_subscription(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_source = sse_decode_subscription_source(deserializer);
+    var var_key = sse_decode_String(deserializer);
+    var var_stateKey = sse_decode_String(deserializer);
+    return Subscription(
+        source: var_source, key: var_key, stateKey: var_stateKey);
+  }
+
+  @protected
+  SubscriptionSource sse_decode_subscription_source(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return const SubscriptionSource_Store();
+      case 1:
+        var var_kind = sse_decode_setting_kind(deserializer);
+        return SubscriptionSource_Setting(kind: var_kind);
+      case 2:
+        return const SubscriptionSource_EntrySetting();
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   Subtitles sse_decode_subtitles(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_title = sse_decode_String(deserializer);
@@ -5571,6 +5755,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ToastKind sse_decode_toast_kind(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ToastKind.values[inner];
+  }
+
+  @protected
   int sse_decode_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint32();
@@ -5580,30 +5771,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_u_8(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8();
-  }
-
-  @protected
-  UIAction sse_decode_ui_action(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_action = sse_decode_box_action(deserializer);
-        return UIAction_Action(action: var_action);
-      case 1:
-        var var_targetid = sse_decode_String(deserializer);
-        var var_event = sse_decode_String(deserializer);
-        var var_data = sse_decode_String(deserializer);
-        var var_placeholder = sse_decode_opt_box_custom_ui(deserializer);
-        return UIAction_SwapContent(
-            targetid: var_targetid,
-            event: var_event,
-            data: var_data,
-            placeholder: var_placeholder);
-      default:
-        throw UnimplementedError('');
-    }
   }
 
   @protected
@@ -5769,6 +5936,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   int cst_encode_timestamp_type(TimestampType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_toast_kind(ToastKind raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
   }
@@ -5994,6 +6167,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Map_String_opt_String_None(
+      Map<String, String?> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_opt_string(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
   void sse_encode_Map_String_setting_None(
       Map<String, Setting> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6116,13 +6297,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_custom_ui(content, serializer);
       case Action_PopView():
         sse_encode_i_32(3, serializer);
-      case Action_TriggerEvent(event: final event, data: final data):
-        sse_encode_i_32(4, serializer);
-        sse_encode_String(event, serializer);
-        sse_encode_String(data, serializer);
       case Action_NavEntry(entry: final entry):
-        sse_encode_i_32(5, serializer);
+        sse_encode_i_32(4, serializer);
         sse_encode_box_entry_detailed(entry, serializer);
+      case Action_ShowToast(message: final message, kind: final kind):
+        sse_encode_i_32(5, serializer);
+        sse_encode_String(message, serializer);
+        sse_encode_toast_kind(kind, serializer);
     }
   }
 
@@ -6365,9 +6546,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_ui_action(UIAction self, SseSerializer serializer) {
+  void sse_encode_box_interaction(Interaction self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_ui_action(self, serializer);
+    sse_encode_interaction(self, serializer);
   }
 
   @protected
@@ -6411,14 +6592,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_custom_ui(bottom, serializer);
       case CustomUI_Spinner():
         sse_encode_i_32(6, serializer);
-      case CustomUI_Feed(event: final event, data: final data):
+      case CustomUI_Feed(handler: final handler, data: final data):
         sse_encode_i_32(7, serializer);
-        sse_encode_String(event, serializer);
+        sse_encode_String(handler, serializer);
         sse_encode_String(data, serializer);
       case CustomUI_Button(label: final label, onClick: final onClick):
         sse_encode_i_32(8, serializer);
         sse_encode_String(label, serializer);
-        sse_encode_opt_box_ui_action(onClick, serializer);
+        sse_encode_opt_box_interaction(onClick, serializer);
       case CustomUI_InlineSetting(
           settingId: final settingId,
           settingKind: final settingKind,
@@ -6427,22 +6608,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(9, serializer);
         sse_encode_String(settingId, serializer);
         sse_encode_setting_kind(settingKind, serializer);
-        sse_encode_opt_box_ui_action(onCommit, serializer);
+        sse_encode_opt_box_interaction(onCommit, serializer);
       case CustomUI_Slot(
-          id: final id,
+          handler: final handler,
           child: final child,
-          onMount: final onMount
+          staticData: final staticData,
+          subscriptions: final subscriptions
         ):
         sse_encode_i_32(10, serializer);
-        sse_encode_String(id, serializer);
+        sse_encode_String(handler, serializer);
         sse_encode_box_custom_ui(child, serializer);
-        sse_encode_opt_box_ui_action(onMount, serializer);
+        sse_encode_String(staticData, serializer);
+        sse_encode_list_subscription(subscriptions, serializer);
       case CustomUI_Column(children: final children):
         sse_encode_i_32(11, serializer);
         sse_encode_list_custom_ui(children, serializer);
       case CustomUI_Row(children: final children):
         sse_encode_i_32(12, serializer);
         sse_encode_list_custom_ui(children, serializer);
+      case CustomUI_TextInput(
+          onChange: final onChange,
+          debounceMs: final debounceMs,
+          initial: final initial,
+          onCommit: final onCommit
+        ):
+        sse_encode_i_32(13, serializer);
+        sse_encode_opt_box_interaction(onChange, serializer);
+        sse_encode_opt_box_autoadd_i_32(debounceMs, serializer);
+        sse_encode_opt_String(initial, serializer);
+        sse_encode_opt_box_interaction(onCommit, serializer);
     }
   }
 
@@ -6545,28 +6739,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_event_data(EventData self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case EventData_SwapContent(
-          event: final event,
-          targetid: final targetid,
-          data: final data
+      case EventData_LoadSlot(
+          handler: final handler,
+          staticData: final staticData,
+          values: final values
         ):
         sse_encode_i_32(0, serializer);
-        sse_encode_String(event, serializer);
-        sse_encode_String(targetid, serializer);
-        sse_encode_String(data, serializer);
-      case EventData_FeedUpdate(
-          event: final event,
+        sse_encode_String(handler, serializer);
+        sse_encode_String(staticData, serializer);
+        sse_encode_Map_String_opt_String_None(values, serializer);
+      case EventData_LoadPage(
+          handler: final handler,
           data: final data,
           page: final page
         ):
         sse_encode_i_32(1, serializer);
-        sse_encode_String(event, serializer);
+        sse_encode_String(handler, serializer);
         sse_encode_String(data, serializer);
         sse_encode_i_32(page, serializer);
-      case EventData_Trigger(event: final event, data: final data):
+      case EventData_Invoke(handler: final handler, payload: final payload):
         sse_encode_i_32(2, serializer);
-        sse_encode_String(event, serializer);
-        sse_encode_String(data, serializer);
+        sse_encode_String(handler, serializer);
+        sse_encode_String(payload, serializer);
     }
   }
 
@@ -6574,23 +6768,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_event_result(EventResult self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case EventResult_SwapContent(customui: final customui):
+      case EventResult_SlotContent(customui: final customui):
         sse_encode_i_32(0, serializer);
         sse_encode_box_autoadd_custom_ui(customui, serializer);
-      case EventResult_FeedUpdate(
-          customui: final customui,
-          hasnext: final hasnext,
-          length: final length
-        ):
+      case EventResult_FeedPage(items: final items, hasMore: final hasMore):
         sse_encode_i_32(1, serializer);
-        sse_encode_list_custom_ui(customui, serializer);
-        sse_encode_opt_box_autoadd_bool(hasnext, serializer);
-        sse_encode_opt_box_autoadd_i_32(length, serializer);
-      case EventResult_DoAction(action: final action):
-        sse_encode_i_32(2, serializer);
-        sse_encode_box_action(action, serializer);
-      case EventResult_Return():
-        sse_encode_i_32(3, serializer);
+        sse_encode_list_custom_ui(items, serializer);
+        sse_encode_bool(hasMore, serializer);
     }
   }
 
@@ -6685,6 +6869,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_link(self.link, serializer);
     sse_encode_i_32(self.from, serializer);
     sse_encode_i_32(self.to, serializer);
+  }
+
+  @protected
+  void sse_encode_interaction(Interaction self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case Interaction_Invoke(handler: final handler, payload: final payload):
+        sse_encode_i_32(0, serializer);
+        sse_encode_String(handler, serializer);
+        sse_encode_String(payload, serializer);
+      case Interaction_WriteKey(key: final key, value: final value):
+        sse_encode_i_32(1, serializer);
+        sse_encode_String(key, serializer);
+        sse_encode_String(value, serializer);
+    }
   }
 
   @protected
@@ -6866,6 +7065,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_record_string_opt_string(
+      List<(String, String?)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_opt_string(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_record_string_setting(
       List<(String, Setting)> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6931,6 +7140,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_stream_source(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_subscription(
+      List<Subscription> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_subscription(item, serializer);
     }
   }
 
@@ -7118,22 +7337,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_box_custom_ui(CustomUI? self, SseSerializer serializer) {
+  void sse_encode_opt_box_interaction(
+      Interaction? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     sse_encode_bool(self != null, serializer);
     if (self != null) {
-      sse_encode_box_custom_ui(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_box_ui_action(UIAction? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_ui_action(self, serializer);
+      sse_encode_box_interaction(self, serializer);
     }
   }
 
@@ -7210,6 +7420,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_list_String(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_string_opt_string(
+      (String, String?) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_opt_String(self.$2, serializer);
   }
 
   @protected
@@ -7376,6 +7594,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_subscription(Subscription self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_subscription_source(self.source, serializer);
+    sse_encode_String(self.key, serializer);
+    sse_encode_String(self.stateKey, serializer);
+  }
+
+  @protected
+  void sse_encode_subscription_source(
+      SubscriptionSource self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case SubscriptionSource_Store():
+        sse_encode_i_32(0, serializer);
+      case SubscriptionSource_Setting(kind: final kind):
+        sse_encode_i_32(1, serializer);
+        sse_encode_setting_kind(kind, serializer);
+      case SubscriptionSource_EntrySetting():
+        sse_encode_i_32(2, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_subtitles(Subtitles self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.title, serializer);
@@ -7402,6 +7643,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_toast_kind(ToastKind self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint32(self);
@@ -7411,27 +7658,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
-  }
-
-  @protected
-  void sse_encode_ui_action(UIAction self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case UIAction_Action(action: final action):
-        sse_encode_i_32(0, serializer);
-        sse_encode_box_action(action, serializer);
-      case UIAction_SwapContent(
-          targetid: final targetid,
-          event: final event,
-          data: final data,
-          placeholder: final placeholder
-        ):
-        sse_encode_i_32(1, serializer);
-        sse_encode_String(targetid, serializer);
-        sse_encode_String(event, serializer);
-        sse_encode_String(data, serializer);
-        sse_encode_opt_box_custom_ui(placeholder, serializer);
-    }
   }
 
   @protected

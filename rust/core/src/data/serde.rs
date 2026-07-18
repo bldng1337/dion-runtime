@@ -3,10 +3,10 @@ mod test {
     use std::collections::{HashMap, HashSet};
 
     use crate::data::{
-        action::{Action, EventData, EventResult, PopupAction, UIAction},
+        action::{Action, EventData, EventResult, Interaction, PopupAction, ToastKind},
         activity::EntryActivity,
         auth::{Account, AuthCreds, AuthData},
-        custom_ui::{CustomUI, TimestampType},
+        custom_ui::{CustomUI, Subscription, SubscriptionSource, TimestampType},
         extension::{ExtensionData, ExtensionType, SourceOpenType},
         extension_manager::ExtensionManagerData,
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
@@ -54,10 +54,9 @@ mod test {
     fn generate_custom_ui_button() -> CustomUI {
         CustomUI::Button {
             label: "Test Button".to_string(),
-            on_click: Some(Box::new(UIAction::Action {
-                action: Box::new(Action::OpenBrowser {
-                    url: "https://example.com".to_string(),
-                }),
+            on_click: Some(Box::new(Interaction::Invoke {
+                handler: "button_trigger".to_string(),
+                payload: "{}".to_string(),
             })),
         }
     }
@@ -86,10 +85,10 @@ mod test {
                 }),
             },
             PopupAction {
-                label: "Trigger Event".to_string(),
-                onclick: Box::new(Action::TriggerEvent {
-                    event: "test_event".to_string(),
-                    data: "test_data".to_string(),
+                label: "Show Toast".to_string(),
+                onclick: Box::new(Action::ShowToast {
+                    message: "Hello".to_string(),
+                    kind: ToastKind::Info,
                 }),
             },
         ]
@@ -114,87 +113,76 @@ mod test {
                 title: "Test Nav".to_string(),
                 content: Box::new(generate_custom_ui_text()),
             },
-            Action::TriggerEvent {
-                event: "test_event".to_string(),
-                data: "test_data".to_string(),
+            Action::PopView,
+            Action::ShowToast {
+                message: "Hello".to_string(),
+                kind: ToastKind::Success,
             },
         ]
     }
 
-    fn generate_all_ui_actions() -> Vec<UIAction> {
+    fn generate_all_interactions() -> Vec<Interaction> {
         vec![
-            UIAction::Action {
-                action: Box::new(Action::OpenBrowser {
-                    url: "https://example.com".to_string(),
-                }),
+            Interaction::Invoke {
+                handler: "trigger_name".to_string(),
+                payload: "{}".to_string(),
             },
-            UIAction::Action {
-                action: Box::new(Action::TriggerEvent {
-                    event: "trigger_event".to_string(),
-                    data: "trigger_data".to_string(),
-                }),
-            },
-            UIAction::SwapContent {
-                targetid: "target_1".to_string(),
-                event: "swap_event".to_string(),
-                data: "swap_data".to_string(),
-                placeholder: None,
-            },
-            UIAction::SwapContent {
-                targetid: "target_2".to_string(),
-                event: "swap_event_2".to_string(),
-                data: "swap_data_2".to_string(),
-                placeholder: Some(Box::new(generate_custom_ui_text())),
+            Interaction::WriteKey {
+                key: "search_query".to_string(),
+                value: "hi".to_string(),
             },
         ]
     }
 
     fn generate_all_event_data() -> Vec<EventData> {
         vec![
-            EventData::SwapContent {
-                event: "swap_event".to_string(),
-                targetid: "target_1".to_string(),
-                data: "swap_data".to_string(),
+            EventData::LoadSlot {
+                handler: "slot_handler".to_string(),
+                static_data: "{}".to_string(),
+                values: HashMap::from([
+                    (
+                        "status".to_string(),
+                        Some(r#"{"state":"bound"}"#.to_string()),
+                    ),
+                    ("query".to_string(), None),
+                ]),
             },
-            EventData::FeedUpdate {
-                event: "feed_event".to_string(),
-                data: "feed_data".to_string(),
+            EventData::LoadPage {
+                handler: "feed_handler".to_string(),
+                data: "{}".to_string(),
+                page: 0,
+            },
+            EventData::LoadPage {
+                handler: "feed_handler".to_string(),
+                data: "{}".to_string(),
                 page: 1,
             },
-            EventData::FeedUpdate {
-                event: "feed_event_2".to_string(),
-                data: "feed_data_2".to_string(),
-                page: 2,
-            },
-            EventData::Trigger {
-                event: "action_event".to_string(),
-                data: "action_data".to_string(),
+            EventData::Invoke {
+                handler: "trigger_name".to_string(),
+                payload: "{}".to_string(),
             },
         ]
     }
 
     fn generate_all_event_results() -> Vec<EventResult> {
         vec![
-            EventResult::SwapContent {
+            EventResult::SlotContent {
                 customui: generate_custom_ui_text(),
             },
-            EventResult::SwapContent {
+            EventResult::SlotContent {
                 customui: generate_custom_ui_button(),
             },
-            EventResult::FeedUpdate {
-                customui: vec![generate_custom_ui_text()],
-                hasnext: Some(true),
-                length: Some(1),
+            EventResult::FeedPage {
+                items: vec![generate_custom_ui_text()],
+                has_more: true,
             },
-            EventResult::FeedUpdate {
-                customui: vec![generate_custom_ui_text(), generate_custom_ui_button()],
-                hasnext: Some(false),
-                length: Some(2),
+            EventResult::FeedPage {
+                items: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+                has_more: false,
             },
-            EventResult::FeedUpdate {
-                customui: vec![],
-                hasnext: None,
-                length: None,
+            EventResult::FeedPage {
+                items: vec![],
+                has_more: false,
             },
         ]
     }
@@ -318,6 +306,41 @@ mod test {
         vec![TimestampType::Relative, TimestampType::Absolute]
     }
 
+    fn generate_all_subscriptions() -> Vec<Subscription> {
+        vec![
+            Subscription {
+                source: SubscriptionSource::Store,
+                key: "search_query".to_string(),
+                state_key: "query".to_string(),
+            },
+            Subscription {
+                source: SubscriptionSource::Setting {
+                    kind: SettingKind::Extension,
+                },
+                key: "repeat".to_string(),
+                state_key: "repeat".to_string(),
+            },
+            Subscription {
+                source: SubscriptionSource::EntrySetting,
+                key: "entry-1:bind".to_string(),
+                state_key: "bound".to_string(),
+            },
+        ]
+    }
+
+    fn generate_all_subscription_sources() -> Vec<SubscriptionSource> {
+        vec![
+            SubscriptionSource::Store,
+            SubscriptionSource::Setting {
+                kind: SettingKind::Extension,
+            },
+            SubscriptionSource::Setting {
+                kind: SettingKind::Search,
+            },
+            SubscriptionSource::EntrySetting,
+        ]
+    }
+
     fn generate_all_custom_uis() -> Vec<CustomUI> {
         vec![
             CustomUI::Text {
@@ -367,7 +390,7 @@ mod test {
             },
             CustomUI::Spinner,
             CustomUI::Feed {
-                event: "feed_event".to_string(),
+                handler: "feed_handler".to_string(),
                 data: "feed_data".to_string(),
             },
             CustomUI::Button {
@@ -376,10 +399,9 @@ mod test {
             },
             CustomUI::Button {
                 label: "Open Link".to_string(),
-                on_click: Some(Box::new(UIAction::Action {
-                    action: Box::new(Action::OpenBrowser {
-                        url: "https://example.com".to_string(),
-                    }),
+                on_click: Some(Box::new(Interaction::Invoke {
+                    handler: "open_link".to_string(),
+                    payload: "{}".to_string(),
                 })),
             },
             CustomUI::InlineSetting {
@@ -390,27 +412,22 @@ mod test {
             CustomUI::InlineSetting {
                 setting_id: "setting_2".to_string(),
                 setting_kind: SettingKind::Search,
-                on_commit: Some(Box::new(UIAction::Action {
-                    action: Box::new(Action::TriggerEvent {
-                        event: "commit".to_string(),
-                        data: "data".to_string(),
-                    }),
+                on_commit: Some(Box::new(Interaction::WriteKey {
+                    key: "search_query".to_string(),
+                    value: "".to_string(),
                 })),
             },
             CustomUI::Slot {
-                id: "slot_1".to_string(),
+                handler: "slot_handler".to_string(),
                 child: Box::new(generate_custom_ui_text()),
-                on_mount: None,
+                static_data: "{}".to_string(),
+                subscriptions: vec![],
             },
             CustomUI::Slot {
-                id: "slot_2".to_string(),
-                child: Box::new(CustomUI::Spinner {}),
-                on_mount: Some(Box::new(UIAction::SwapContent {
-                    targetid: "slot_2".to_string(),
-                    event: "mount_event".to_string(),
-                    data: "mount_data".to_string(),
-                    placeholder: None,
-                })),
+                handler: "slot_with_subs".to_string(),
+                child: Box::new(CustomUI::Spinner),
+                static_data: "{\"entryId\":\"e1\"}".to_string(),
+                subscriptions: generate_all_subscriptions(),
             },
             CustomUI::Column {
                 children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
@@ -421,6 +438,24 @@ mod test {
             },
             CustomUI::Row {
                 children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+            },
+            CustomUI::TextInput {
+                on_change: Some(Box::new(Interaction::WriteKey {
+                    key: "search_query".to_string(),
+                    value: "".to_string(),
+                })),
+                debounce_ms: Some(250),
+                initial: Some("initial query".to_string()),
+                on_commit: None,
+            },
+            CustomUI::TextInput {
+                on_change: None,
+                debounce_ms: None,
+                initial: None,
+                on_commit: Some(Box::new(Interaction::Invoke {
+                    handler: "commit_handler".to_string(),
+                    payload: "{}".to_string(),
+                })),
             },
         ]
     }
@@ -1266,7 +1301,7 @@ mod test {
         // action.rs types
         write_json_array("PopupAction", &generate_all_popup_actions());
         write_json_array("Action", &generate_all_actions());
-        write_json_array("UIAction", &generate_all_ui_actions());
+        write_json_array("Interaction", &generate_all_interactions());
         write_json_array("EventData", &generate_all_event_data());
         write_json_array("EventResult", &generate_all_event_results());
 
@@ -1280,6 +1315,8 @@ mod test {
         // custom_ui.rs types
         write_json_array("TimestampType", &generate_all_timestamp_types());
         write_json_array("CustomUI", &generate_all_custom_uis());
+        write_json_array("SubscriptionSource", &generate_all_subscription_sources());
+        write_json_array("Subscription", &generate_all_subscriptions());
 
         // extension.rs types
         write_json_array("SourceOpenType", &generate_all_source_open_types());

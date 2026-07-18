@@ -1,6 +1,7 @@
 use std::fmt::Debug;
 
 use anyhow::Result;
+use serde_json::Value;
 
 use crate::data::{
     action::Action, extension::ExtensionData, permission::Permission, settings::SettingValue,
@@ -26,6 +27,8 @@ pub trait ExtensionClient: Send + Sync + Debug {
     async fn store_data_secure(&self, key: &str, data: String) -> Result<()>;
 
     async fn do_action(&self, action: &Action) -> Result<()>;
+
+    async fn store_set(&self, key: &str, value: Value) -> Result<()>;
 
     async fn set_entry_setting(
         &self,

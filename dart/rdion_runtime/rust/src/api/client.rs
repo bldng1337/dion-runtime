@@ -38,6 +38,7 @@ pub struct ExtensionClient {
     pub(super) cget_path: Arc<dyn Fn() -> DartFnFuture<String> + Send + Sync>,
     pub(super) cset_entry_setting:
         Arc<dyn Fn(EntryId, String, SettingValue) -> DartFnFuture<()> + Send + Sync>,
+    pub(super) cstore_set: Arc<dyn Fn(String, String) -> DartFnFuture<()> + Send + Sync>,
 }
 
 impl ExtensionClient {
@@ -58,6 +59,7 @@ impl ExtensionClient {
             + Send
             + Sync
             + 'static,
+        store_set: impl Fn(String, String) -> DartFnFuture<()> + Send + Sync + 'static,
     ) -> Self {
         Self {
             cload_data: Arc::new(load_data),
@@ -68,6 +70,7 @@ impl ExtensionClient {
             crequest_permission: Arc::new(request_permission),
             cget_path: Arc::new(get_path),
             cset_entry_setting: Arc::new(set_entry_setting),
+            cstore_set: Arc::new(store_set),
         }
     }
 }

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::data::{
-    action::UIAction,
+    action::Interaction,
     settings::SettingKind,
     source::{Entry, Link},
 };
@@ -16,6 +16,29 @@ pub enum TimestampType {
     #[default]
     Relative,
     Absolute,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+#[serde(tag = "type")]
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+pub enum SubscriptionSource {
+    Store,
+    Setting { kind: SettingKind },
+    EntrySetting,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct Subscription {
+    pub source: SubscriptionSource,
+    // Key to subscribe to.
+    pub key: String,
+    // Which field of the handler's state this value maps to.
+    pub state_key: String,
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -54,30 +77,41 @@ pub enum CustomUI {
     },
     Spinner,
     Feed {
-        event: String,
+        handler: String,
         data: String,
     },
     Button {
         label: String,
         #[cfg_attr(feature = "type", specta(optional))]
-        on_click: Option<Box<UIAction>>,
+        on_click: Option<Box<Interaction>>,
     },
     InlineSetting {
         setting_id: String,
         setting_kind: SettingKind,
         #[cfg_attr(feature = "type", specta(optional))]
-        on_commit: Option<Box<UIAction>>,
+        on_commit: Option<Box<Interaction>>,
     },
     Slot {
-        id: String,
+        handler: String,
         child: Box<CustomUI>,
-        #[cfg_attr(feature = "type", specta(optional))]
-        on_mount: Option<Box<UIAction>>,
+        // JSON blob of fields captured at build time (entryId, mediaType, ...).
+        static_data: String,
+        subscriptions: Vec<Subscription>,
     },
     Column {
         children: Vec<CustomUI>,
     },
     Row {
         children: Vec<CustomUI>,
+    },
+    TextInput {
+        #[cfg_attr(feature = "type", specta(optional))]
+        on_change: Option<Box<Interaction>>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        debounce_ms: Option<i32>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        initial: Option<String>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        on_commit: Option<Box<Interaction>>,
     },
 }

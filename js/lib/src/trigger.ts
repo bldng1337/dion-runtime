@@ -1,39 +1,41 @@
-import { EventData, EventResult } from "@dion-js/runtime-types/runtime";
+import type { EventData, Interaction } from "@dion-js/runtime-types/runtime";
 
-export abstract class BaseTrigger {
-	abstract handle(ev: EventData): Promise<EventResult | undefined>;
+function encode<T>(data: T): string {
+	return data === undefined || data === null ? "" : JSON.stringify(data);
 }
 
-export class Trigger<E> extends BaseTrigger {
-	id: string;
-	handler: (data: E) => Promise<EventResult>;
+export class Trigger<P = void> {
+	constructor(
+		public readonly name: string,
+		private readonly handler: (payload: P) => Promise<void>,
+	) {}
 
-	constructor(id: string, handler: (data: E) => Promise<EventResult>) {
-		super();
-		this.id = id;
-		this.handler = handler;
-	}
-
-	async handle(ev: EventData): Promise<EventResult | undefined> {
-		if (ev.type !== "Trigger" || ev.event !== this.id) return;
-		return await this.handler(JSON.parse(ev.data) as E);
-	}
-
-	trigger(data: E): EventData {
+	/**
+	 * Produce an `Interaction::Invoke` for use as a `Button.on_click` or a
+	 * `TextInput.on_commit`.
+	 */
+	invoke(payload: P): Interaction {
 		return {
-			type: "Trigger",
-			event: this.id,
-			data: JSON.stringify(data),
+			type: "Invoke",
+			handler: this.name,
+			payload: encode(payload),
 		};
 	}
+
+	/** Called by the runtime with the decoded payload. */
+	async run(payload: P): Promise<void> {
+		return this.handler(payload);
+	}
 }
 
-export async function routeTrigger(
-	triggers: Record<string, BaseTrigger>,
-	ev: EventData,
-): Promise<EventResult | undefined> {
-	for (const trigger of Object.values(triggers)) {
-		const result = await trigger.handle(ev);
-		if (result) return result;
-	}
+export function decodeTriggerPayload<P>(raw: string): P {
+	return raw === "" || raw === null ? (undefined as P) : (JSON.parse(raw) as P);
+}
+
+export function toInvokeEvent(trigger: Trigger, payload: unknown): EventData {
+	return {
+		type: "Invoke",
+		handler: trigger.name,
+		payload: encode(payload),
+	};
 }

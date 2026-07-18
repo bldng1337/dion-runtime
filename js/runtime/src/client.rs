@@ -24,6 +24,7 @@ struct ClientExtensionHandlerInner {
   get_path: ThreadsafeFunction<(), String>,
   set_entry_setting:
     ThreadsafeFunction<FnArgs<(serde_json::Value, serde_json::Value, serde_json::Value)>, ()>,
+  store_set: ThreadsafeFunction<FnArgs<(String, serde_json::Value)>, ()>,
 }
 
 impl Debug for ClientExtensionHandlerInner {
@@ -50,7 +51,7 @@ impl Clone for ClientExtensionHandler {
 impl ClientExtensionHandler {
   #[napi(
     constructor,
-    ts_args_type = "loadData: ((err: Error | null, key: string) => string), storeData: ((err: Error | null, key: string, value: string) => void), doAction: ((err: Error | null, action: Action) => void), requestPermission: ((err: Error | null, permission: Permission, msg?: string | undefined | null) => boolean), getPath: ((err: Error | null, ) => string)"
+    ts_args_type = "loadData: ((err: Error | null, key: string) => string), storeData: ((err: Error | null, key: string, value: string) => void), doAction: ((err: Error | null, action: Action) => void), requestPermission: ((err: Error | null, permission: Permission, msg?: string | undefined | null) => boolean), getPath: ((err: Error | null, ) => string), setEntrySetting: ((err: Error | null, entry: EntryId, key: string, value: SettingValue) => void), storeSet: ((err: Error | null, key: string, value: unknown) => void)"
   )]
   pub fn new(
     load_data: ThreadsafeFunction<String, String>,
@@ -62,6 +63,7 @@ impl ClientExtensionHandler {
       FnArgs<(serde_json::Value, serde_json::Value, serde_json::Value)>,
       (),
     >,
+    store_set: ThreadsafeFunction<FnArgs<(String, serde_json::Value)>, ()>,
   ) -> Self {
     Self {
       inner: Arc::new(ClientExtensionHandlerInner {
@@ -71,6 +73,7 @@ impl ClientExtensionHandler {
         request_permission,
         get_path,
         set_entry_setting,
+        store_set,
       }),
     }
   }
@@ -126,6 +129,15 @@ impl ExtensionClient for ClientExtensionHandler {
       .inner
       .do_action
       .call_async(Ok(serde_json::to_value(action)?))
+      .await?;
+    Ok(())
+  }
+
+  async fn store_set(&self, key: &str, value: serde_json::Value) -> Result<()> {
+    self
+      .inner
+      .store_set
+      .call_async(Ok((key.to_string(), value).into()))
       .await?;
     Ok(())
   }

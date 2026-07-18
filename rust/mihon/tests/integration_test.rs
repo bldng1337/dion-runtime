@@ -265,6 +265,10 @@ impl ExtensionClient for MockExtensionClient {
         Ok(())
     }
 
+    async fn store_set(&self, _key: &str, _value: serde_json::Value) -> anyhow::Result<()> {
+        Ok(())
+    }
+
     async fn set_entry_setting(
         &self,
         _entry: EntryId,
@@ -558,6 +562,7 @@ async fn run_extension_calls(
 }
 
 #[test]
+#[ignore = "Requires extension APKs in testdata/ - run manually with: cargo test -- --ignored test_full_extension_workflow"]
 #[cfg_attr(
     not(mihon_compat_jar_available),
     ignore = "mihon-compat.jar not built (Gradle unavailable); run: cd rust/mihon/compat && gradle shadowJar"

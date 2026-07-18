@@ -1,5 +1,7 @@
 import type {
 	CustomUI,
+	EntryDetailed,
+	EntryId,
 	Setting,
 	SettingKind,
 	SettingsUI,
@@ -7,6 +9,7 @@ import type {
 } from "@dion-js/runtime-types/runtime";
 import { getSetting, registerSetting } from "setting";
 import { assertDefined } from "./asserts.js";
+import type { SubRef } from "./signal.js";
 import { logerr } from "./util.js";
 
 export type Settingvalues = SettingValue extends { data: infer D } ? D : never;
@@ -280,7 +283,7 @@ export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 				return true;
 			case "Feed":
 				return (
-					ui.event === (other as typeof ui).event &&
+					ui.handler === (other as typeof ui).handler &&
 					ui.data === (other as typeof ui).data
 				);
 			case "Button":
@@ -298,10 +301,20 @@ export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 				);
 			case "Slot":
 				return (
-					ui.id === (other as typeof ui).id &&
+					ui.handler === (other as typeof ui).handler &&
 					this.compareCustomUI(ui.child, (other as typeof ui).child) &&
-					JSON.stringify(ui.on_mount) ===
-						JSON.stringify((other as typeof ui).on_mount)
+					ui.static_data === (other as typeof ui).static_data &&
+					JSON.stringify(ui.subscriptions) ===
+						JSON.stringify((other as typeof ui).subscriptions)
+				);
+			case "TextInput":
+				return (
+					JSON.stringify(ui.on_change) ===
+						JSON.stringify((other as typeof ui).on_change) &&
+					ui.debounce_ms === (other as typeof ui).debounce_ms &&
+					ui.initial === (other as typeof ui).initial &&
+					JSON.stringify(ui.on_commit) ===
+						JSON.stringify((other as typeof ui).on_commit)
 				);
 			case "Column":
 			case "Row": {
@@ -400,4 +413,162 @@ export class Dropdown extends UI<string> {
 		}
 		return true;
 	}
+}
+
+export class EntrySettingHandle<T extends Settingvalues> {
+	id: string;
+	visible = true;
+	label?: string;
+
+	constructor(id: string) {
+		this.id = id;
+	}
+
+	toSetting(
+		store: SettingStore,
+		defaultval: ExcludeLiteral<T>,
+		ui?: UI<ExcludeLiteral<T>>,
+		visible?: boolean,
+	): EntrySetting<T> {
+		if (!store.touched.includes(this.id)) {
+			store.touched.push(this.id);
+		}
+		const setting = store.settings[this.id];
+		if (setting === undefined) {
+			console.log("Setting not found, creating");
+			store.settings[this.id] = {
+				label: this.label ?? this.id,
+				visible: visible ?? this.visible,
+				default: toSettingValue(defaultval),
+				value: toSettingValue(defaultval),
+				ui: ui?.getDefinition() ?? null,
+			};
+			return new EntrySetting(this, store, defaultval);
+		}
+		if (typeof setting.default.data !== typeof defaultval) {
+			console.log("Setting type changed, overwriting");
+			console.log(`${typeof setting.default.data} !== ${typeof defaultval}`);
+			store.settings[this.id] = {
+				label: this.label ?? this.id,
+				visible: visible ?? this.visible,
+				default: toSettingValue(defaultval),
+				value: toSettingValue(defaultval),
+				ui: ui?.getDefinition() ?? null,
+			};
+			return new EntrySetting(this, store, defaultval);
+		}
+		setting.ui = ui?.getDefinition();
+		setting.visible = visible ?? this.visible;
+		setting.label = this.label ?? this.id;
+		setting.default = toSettingValue(defaultval);
+		store.settings[this.id] = setting;
+		return new EntrySetting(this, store, defaultval);
+	}
+
+	asSubRef(entryId: EntryId): SubRef<T> {
+		return {
+			kind: "entrySetting",
+			entryId,
+			settingId: this.id,
+		};
+	}
+}
+
+export class EntrySetting<T extends Settingvalues> {
+	handle: EntrySettingHandle<T>;
+	store: SettingStore;
+	defaultvalue: ExcludeLiteral<T>;
+	visible = true;
+	label?: string;
+
+	constructor(
+		handle: EntrySettingHandle<T>,
+		store: SettingStore,
+		defaultvalue: ExcludeLiteral<T>,
+	) {
+		this.handle = handle;
+		this.store = store;
+		this.defaultvalue = defaultvalue;
+	}
+
+	get<T extends Settingvalues>(id: string): ExcludeLiteral<T> {
+		assertDefined(
+			this.store.settings[id],
+			`[SettingStore.get] Setting not found: ${id}`,
+		);
+		return this.store.settings[id].value.data as ExcludeLiteral<T>;
+	}
+
+	tryGet<T extends Settingvalues>(id: string): ExcludeLiteral<T> | undefined {
+		return this.store.settings[id]?.value.data as ExcludeLiteral<T>;
+	}
+
+	asSubRef(entryId: EntryId): SubRef<T> {
+		return {
+			kind: "entrySetting",
+			entryId,
+			settingId: this.handle.id,
+		};
+	}
+}
+
+export function defineExtensionSetting<T extends Settingvalues>(
+	id: string,
+	options: {
+		label?: string;
+		default: ExcludeLiteral<T>;
+		visible?: boolean;
+		ui?: UI<ExcludeLiteral<T>>;
+	},
+): ExtensionSetting<T> {
+	const setting = new ExtensionSetting<T>(id, options.default, "Extension");
+	if (options.label) {
+		setting.setLabel(options.label);
+	}
+	if (options.visible !== undefined) {
+		setting.setVisible(options.visible);
+	}
+	if (options.ui) {
+		setting.setUI(options.ui);
+	}
+	return setting;
+}
+
+export function defineSearchSetting<T extends Settingvalues>(
+	id: string,
+	options: {
+		label?: string;
+		default: ExcludeLiteral<T>;
+		visible?: boolean;
+		ui?: UI<ExcludeLiteral<T>>;
+	},
+): ExtensionSetting<T> {
+	const setting = new ExtensionSetting<T>(id, options.default, "Search");
+	if (options.label) {
+		setting.setLabel(options.label);
+	}
+	if (options.visible !== undefined) {
+		setting.setVisible(options.visible);
+	}
+	if (options.ui) {
+		setting.setUI(options.ui);
+	}
+	return setting;
+}
+
+export function defineEntrySetting<T extends Settingvalues>(
+	id: string,
+	options: {
+		label?: string;
+		visible?: boolean;
+	},
+): EntrySettingHandle<T> {
+	const handle = new EntrySettingHandle<T>(id);
+	if (options.label) {
+		handle.label = options.label;
+	}
+	if (options.visible !== undefined) {
+		handle.visible = options.visible;
+	}
+	return handle;
 }

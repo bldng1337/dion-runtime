@@ -292,6 +292,10 @@ mod test {
             Ok(())
         }
 
+        async fn store_set(&self, _key: &str, _value: serde_json::Value) -> Result<()> {
+            Ok(())
+        }
+
         async fn request_permission(
             &self,
             permission: &Permission,

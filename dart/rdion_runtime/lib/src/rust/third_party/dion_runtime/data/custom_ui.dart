@@ -13,7 +13,7 @@ import 'settings.dart';
 import 'source.dart';
 part 'custom_ui.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`
 
 @freezed
 sealed class CustomUI with _$CustomUI {
@@ -45,22 +45,23 @@ sealed class CustomUI with _$CustomUI {
   }) = CustomUI_Card;
   const factory CustomUI.spinner() = CustomUI_Spinner;
   const factory CustomUI.feed({
-    required String event,
+    required String handler,
     required String data,
   }) = CustomUI_Feed;
   const factory CustomUI.button({
     required String label,
-    UIAction? onClick,
+    Interaction? onClick,
   }) = CustomUI_Button;
   const factory CustomUI.inlineSetting({
     required String settingId,
     required SettingKind settingKind,
-    UIAction? onCommit,
+    Interaction? onCommit,
   }) = CustomUI_InlineSetting;
   const factory CustomUI.slot({
-    required String id,
+    required String handler,
     required CustomUI child,
-    UIAction? onMount,
+    required String staticData,
+    required List<Subscription> subscriptions,
   }) = CustomUI_Slot;
   const factory CustomUI.column({
     required List<CustomUI> children,
@@ -68,6 +69,50 @@ sealed class CustomUI with _$CustomUI {
   const factory CustomUI.row({
     required List<CustomUI> children,
   }) = CustomUI_Row;
+  const factory CustomUI.textInput({
+    Interaction? onChange,
+    int? debounceMs,
+    String? initial,
+    Interaction? onCommit,
+  }) = CustomUI_TextInput;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class Subscription {
+  final SubscriptionSource source;
+  final String key;
+  final String stateKey;
+
+  const Subscription({
+    required this.source,
+    required this.key,
+    required this.stateKey,
+  });
+
+  @override
+  int get hashCode => source.hashCode ^ key.hashCode ^ stateKey.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Subscription &&
+          runtimeType == other.runtimeType &&
+          source == other.source &&
+          key == other.key &&
+          stateKey == other.stateKey;
+}
+
+@freezed
+sealed class SubscriptionSource with _$SubscriptionSource {
+  const SubscriptionSource._();
+
+  const factory SubscriptionSource.store() = SubscriptionSource_Store;
+  const factory SubscriptionSource.setting({
+    required SettingKind kind,
+  }) = SubscriptionSource_Setting;
+  const factory SubscriptionSource.entrySetting() =
+      SubscriptionSource_EntrySetting;
 }
 
 /// flutter_rust_bridge:non_opaque

@@ -63,6 +63,16 @@ declare module "setting" {
 	): Promise<void>;
 }
 
+declare module "action" {
+	import type { Action } from "@dion-js/runtime-types/runtime";
+
+	export function doAction(action: Action): Promise<void>;
+}
+
+declare module "store" {
+	export function set(key: string, value: unknown): Promise<void>;
+}
+
 declare module "auth" {
 	type Link = string;
 	import type { Account, AuthCreds } from "@dion-js/runtime-types/runtime";

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "type")]
 use specta::Type;
@@ -11,6 +13,18 @@ use crate::data::{custom_ui::CustomUI, source::EntryDetailed};
 pub struct PopupAction {
     pub label: String,
     pub onclick: Box<Action>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub enum ToastKind {
+    #[default]
+    Info,
+    Success,
+    Warning,
+    Error,
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -36,14 +50,14 @@ pub enum Action {
     },
     // Pops the current view and returns to the previous one
     PopView,
-    // Triggers an event with the given name and data.
-    TriggerEvent {
-        event: String,
-        data: String,
-    },
     // Navigates to a new view with the given entry.
     NavEntry {
         entry: Box<EntryDetailed>,
+    },
+    // Shows a transient toast message.
+    ShowToast {
+        message: String,
+        kind: ToastKind,
     },
 }
 
@@ -52,18 +66,9 @@ pub enum Action {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
-pub enum UIAction {
-    Action {
-        action: Box<Action>,
-    },
-    // Swaps the content of a Slot element with the given target ID, event name, and data.
-    SwapContent {
-        targetid: String,
-        event: String,
-        data: String,
-        #[cfg_attr(feature = "type", specta(optional))]
-        placeholder: Option<Box<CustomUI>>,
-    },
+pub enum Interaction {
+    Invoke { handler: String, payload: String },
+    WriteKey { key: String, value: String },
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -72,19 +77,19 @@ pub enum UIAction {
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum EventData {
-    SwapContent {
-        event: String,
-        targetid: String,
-        data: String,
+    LoadSlot {
+        handler: String,
+        static_data: String,
+        values: HashMap<String, Option<String>>,
     },
-    FeedUpdate {
-        event: String,
+    LoadPage {
+        handler: String,
         data: String,
         page: i32,
     },
-    Trigger {
-        event: String,
-        data: String,
+    Invoke {
+        handler: String,
+        payload: String,
     },
 }
 
@@ -94,18 +99,11 @@ pub enum EventData {
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum EventResult {
-    SwapContent {
+    SlotContent {
         customui: CustomUI,
     },
-    FeedUpdate {
-        customui: Vec<CustomUI>,
-        #[cfg_attr(feature = "type", specta(optional))]
-        hasnext: Option<bool>,
-        #[cfg_attr(feature = "type", specta(optional))]
-        length: Option<i32>,
+    FeedPage {
+        items: Vec<CustomUI>,
+        has_more: bool,
     },
-    DoAction {
-        action: Box<Action>,
-    },
-    Return,
 }

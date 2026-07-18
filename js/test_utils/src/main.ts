@@ -5,9 +5,11 @@ import type {
 	CustomUI,
 	Entry,
 	EntryDetailed,
+	EntryId,
 	ExtensionData,
 	Link,
 	Permission,
+	SettingValue,
 	Source,
 } from "@dion-js/runtime-types/runtime";
 import { Parser } from "m3u8-parser";
@@ -27,6 +29,15 @@ export class MockExtensionClient {
 		) => boolean
 	>;
 	getPath: Mock<(err: Error | null) => string>;
+	setEntrySetting: Mock<
+		(
+			err: Error | null,
+			entry: EntryId,
+			key: string,
+			value: SettingValue,
+		) => void
+	>;
+	storeSet: Mock<(err: Error | null, key: string, value: unknown) => void>;
 	constructor(extdata: ExtensionData, basepath: string) {
 		this.name = extdata.name;
 		this.loadData = mock((_err: Error | null, _arg: unknown) => "");
@@ -44,12 +55,29 @@ export class MockExtensionClient {
 		this.getPath = mock(() => {
 			return `${basepath}/${extdata.name}`;
 		});
+		this.setEntrySetting = mock(
+			(
+				_err: Error | null,
+				_entry: EntryId,
+				_key: string,
+				_value: SettingValue,
+			): void => {
+				// Empty mock implementation
+			},
+		);
+		this.storeSet = mock(
+			(_err: Error | null, _key: string, _value: unknown): void => {
+				// Empty mock implementation
+			},
+		);
 		this.client = new ExtensionClient(
 			this.loadData,
 			this.storeData,
 			this.doAction,
 			this.requestPermission,
 			this.getPath,
+			this.setEntrySetting,
+			this.storeSet,
 		);
 	}
 }
@@ -98,12 +126,12 @@ export async function ratelimit(ms: number) {
 
 const time = 50;
 
-function assert(condition: boolean, message: string): asserts condition {
+export function assert(condition: boolean, message: string): asserts condition {
 	if (!condition) throw new Error(message);
 }
 
 function assertWarn(condition: boolean, message: string): asserts condition {
-  if (!condition) console.warn(message);
+	if (!condition) console.warn(message);
 }
 
 export async function assertValidM3U8(

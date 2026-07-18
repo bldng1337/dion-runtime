@@ -11,7 +11,10 @@
 		"./asserts": "./src/asserts.ts",
 		"./settings": "./src/settings.ts",
 		"./ui": "./src/ui.ts",
-		"./region": "./src/region.ts",
+		"./signal": "./src/signal.ts",
+		"./component": "./src/component.ts",
+		"./feed": "./src/feed.ts",
+		"./trigger": "./src/trigger.ts",
 		"./util": "./src/util.ts",
 		"./auth": "./src/auth.ts"
 	},

@@ -3,13 +3,15 @@ import type {
 	CustomUI,
 	Entry,
 	EntryDetailed,
-	EventResult,
+	Interaction,
 	Link,
 	PopupAction,
 	SettingKind,
 	TimestampType,
-	UIAction,
+	ToastKind,
 } from "@dion-js/runtime-types/runtime";
+import { Trigger } from "./trigger.js";
+import { Signal, SubRef, isSubRef, toSubRef } from "./signal.js";
 
 type CustomUIMaybe = CustomUI | undefined;
 
@@ -75,7 +77,8 @@ export function Card(image: Link, top: CustomUI, bottom: CustomUI): CustomUI {
 }
 
 // ============================================================================
-// Container nodes ============================================================================
+// Container nodes
+// ============================================================================
 
 export function Column(...children: CustomUIMaybe[]): CustomUI {
 	return {
@@ -92,69 +95,136 @@ export function Row(...children: CustomUIMaybe[]): CustomUI {
 }
 
 // ============================================================================
-// Interactive nodes ============================================================================
+// Interactive nodes
+// ============================================================================
 
-export function Feed(event: string, data = ""): CustomUI {
-	return {
-		type: "Feed",
-		event: event,
-		data: data,
-	};
+/**
+ * Resolves a typed target (`Signal` or `Trigger`) into the right `Interaction`
+ * variant. `Signal` -> `WriteKey` (Dart-local, no round-trip).
+ * `Trigger` -> `Invoke` (extension round-trip).
+ */
+export function toInteraction(
+	target:
+		| Signal<unknown>
+		| SubRef<unknown>
+		// biome-ignore lint/suspicious/noExplicitAny: accepts any typed Trigger
+		| Trigger<any>
+		| Interaction,
+): Interaction {
+	if (target instanceof Trigger) {
+		// Bare Trigger is sugar for `trigger.invoke(undefined)`.
+		return target.invoke(undefined);
+	}
+	if (target instanceof Signal || isSubRef(target)) {
+		const ref = toSubRef(target as Signal<unknown> | SubRef<unknown>);
+		// WriteKey only makes sense for store keys. For setting refs the author
+		// should be using a Trigger to commit; fall back to a no-op key here.
+		const key = ref.kind === "store" ? ref.key : "";
+		return {
+			type: "WriteKey",
+			key,
+			value: "",
+		};
+	}
+	// Already an Interaction.
+	return target;
 }
 
+/**
+ * A Button. `onClick` may be:
+ *   - a `Trigger` (sugar for `trigger.invoke(undefined)`)
+ *   - a `Trigger.invoke(payload)` (`Interaction::Invoke` with a payload)
+ *   - a `Signal` (writes to the signal's key on click; rare)
+ *   - an `Interaction` (already-built wire value)
+ *   - undefined/null (no on_click)
+ */
 export function Button(
 	label: string,
-	onClick: UIAction | null = null,
+	onClick?:
+		| // biome-ignore lint/suspicious/noExplicitAny: accepts any typed Trigger
+		Trigger<any>
+		| Signal<unknown>
+		| SubRef<unknown>
+		| Interaction
+		| null,
 ): CustomUI {
+	const on_click = onClick ? toInteraction(onClick) : null;
 	return {
 		type: "Button",
-		label: label,
-		on_click: onClick,
+		label,
+		on_click,
 	};
 }
 
+/**
+ * An InlineSetting. Renders the host's native widget for the named setting
+ * and fires `onCommit` when the user changes it. `onCommit` follows the same
+ * rules as `Button`'s `onClick`.
+ */
 export function InlineSetting(
 	settingId: string,
 	settingKind: SettingKind,
-	onCommit: UIAction | null = null,
+	onCommit?:
+		| // biome-ignore lint/suspicious/noExplicitAny: accepts any typed Trigger
+		Trigger<any>
+		| Signal<unknown>
+		| SubRef<unknown>
+		| Interaction
+		| null,
 ): CustomUI {
+	const on_commit = onCommit ? toInteraction(onCommit) : null;
 	return {
 		type: "InlineSetting",
 		setting_id: settingId,
 		setting_kind: settingKind,
-		on_commit: onCommit,
+		on_commit,
 	};
 }
 
-export function Slot(
-	id: string,
-	child: CustomUI,
-	onMount?: UIAction,
-): CustomUI {
+export interface TextInputOpts {
+	/**
+	 * Fired (debounced) on each edit. A `Signal` becomes `WriteKey`
+	 * (Dart-local, no round-trip — ideal for feeding a subscribed Slot).
+	 * A `Trigger` becomes `Invoke` (round-trip).
+	 */
+	onChange?:
+		| // biome-ignore lint/suspicious/noExplicitAny: accepts any typed Trigger
+		Trigger<any>
+		| Signal<unknown>
+		| SubRef<unknown>
+		| Interaction;
+	debounceMs?: number;
+	initial?: string;
+	/** Fired on Enter / blur. Same target rules as `onChange`. */
+	onCommit?:
+		| // biome-ignore lint/suspicious/noExplicitAny: accepts any typed Trigger
+		Trigger<any>
+		| Signal<unknown>
+		| SubRef<unknown>
+		| Interaction;
+}
+
+export function TextInput(opts: TextInputOpts = {}): CustomUI {
 	return {
-		type: "Slot",
-		id: id,
-		child: child,
-		on_mount: onMount ?? null,
+		type: "TextInput",
+		on_change: opts.onChange ? toInteraction(opts.onChange) : null,
+		debounce_ms: opts.debounceMs ?? null,
+		initial: opts.initial ?? null,
+		on_commit: opts.onCommit ? toInteraction(opts.onCommit) : null,
 	};
 }
 
 // ============================================================================
 // Action builders
+//
+// These produce `Action` values, passed to `doAction` from the `action` host
+// module or used inside `Popup`'s `actions` array.
 // ============================================================================
 
 export function OpenBrowser(url: string): Action {
 	return {
 		type: "OpenBrowser",
 		url: url,
-	};
-}
-
-export function TriggerEvent(event: string, data = ""): Action {
-	return {
-		type: "TriggerEvent",
-		event: event,
-		data: data,
 	};
 }
 
@@ -173,6 +243,20 @@ export function NavEntry(entry: EntryDetailed): Action {
 	};
 }
 
+export function PopView(): Action {
+	return {
+		type: "PopView",
+	};
+}
+
+export function ShowToast(message: string, kind: ToastKind = "Info"): Action {
+	return {
+		type: "ShowToast",
+		message,
+		kind,
+	};
+}
+
 export function Popup(
 	title: string,
 	content: CustomUI,
@@ -183,53 +267,5 @@ export function Popup(
 		title: title,
 		content: content,
 		actions: actions,
-	};
-}
-
-// ============================================================================
-// UIAction builders
-// ============================================================================
-
-export function Do(action: Action): UIAction {
-	return {
-		type: "Action",
-		action: action,
-	};
-}
-
-export function SwapContent(
-	targetId: string,
-	event: string,
-	data = "",
-	placeholder?: CustomUI,
-): UIAction {
-	return {
-		type: "SwapContent",
-		targetid: targetId,
-		event: event,
-		data: data,
-		placeholder: placeholder ?? null,
-	};
-}
-
-// ============================================================================
-// EventResult builders ============================================================================
-
-export function SwapResult(customui: CustomUI): EventResult {
-	return {
-		type: "SwapContent",
-		customui: customui,
-	};
-}
-
-export function FeedResult(
-	items: CustomUI[],
-	opts: { hasNext?: boolean; length?: number } = {},
-): EventResult {
-	return {
-		type: "FeedUpdate",
-		customui: items,
-		hasnext: opts.hasNext ?? null,
-		length: opts.length ?? null,
 	};
 }

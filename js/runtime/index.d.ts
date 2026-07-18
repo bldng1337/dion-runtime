@@ -60,7 +60,7 @@ export declare class Extension {
 export type ExtensionProxy = Extension
 
 export declare class ExtensionClient {
-  constructor(loadData: ((err: Error | null, key: string) => string), storeData: ((err: Error | null, key: string, value: string) => void), doAction: ((err: Error | null, action: Action) => void), requestPermission: ((err: Error | null, permission: Permission, msg?: string | undefined | null) => boolean), getPath: ((err: Error | null, ) => string))
+  constructor(loadData: ((err: Error | null, key: string) => string), storeData: ((err: Error | null, key: string, value: string) => void), doAction: ((err: Error | null, action: Action) => void), requestPermission: ((err: Error | null, permission: Permission, msg?: string | undefined | null) => boolean), getPath: ((err: Error | null, ) => string), setEntrySetting: ((err: Error | null, entry: EntryId, key: string, value: SettingValue) => void), storeSet: ((err: Error | null, key: string, value: unknown) => void))
 }
 export type ClientExtensionHandler = ExtensionClient
 

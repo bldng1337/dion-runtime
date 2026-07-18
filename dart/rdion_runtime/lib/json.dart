@@ -52,14 +52,14 @@ extension JsonAction on Action {
             "content": content.toJson(),
           },
         Action_PopView() => {"type": "PopView"},
-        Action_TriggerEvent(:final event, :final data) => {
-            "type": "TriggerEvent",
-            "event": event,
-            "data": data,
-          },
         Action_NavEntry(:final entry) => {
             "type": "NavEntry",
             "entry": entry.toJson(),
+          },
+        Action_ShowToast(:final message, :final kind) => {
+            "type": "ShowToast",
+            "message": message,
+            "kind": kind.toJson(),
           },
       };
 
@@ -83,16 +83,36 @@ extension JsonAction on Action {
         );
       case "PopView":
         return const Action.popView();
-      case "TriggerEvent":
-        return Action.triggerEvent(event: value["event"], data: value["data"]);
       case "NavEntry":
         return Action.navEntry(
           entry: JsonEntryDetailed.fromJson(value["entry"]),
+        );
+      case "ShowToast":
+        return Action.showToast(
+          message: value["message"],
+          kind: JsonToastKind.fromJson(value["kind"]),
         );
       default:
         throw FormatException("Unknown Action type: $type");
     }
   }
+}
+
+extension JsonToastKind on ToastKind {
+  dynamic toJson() => switch (this) {
+        ToastKind.info => "Info",
+        ToastKind.success => "Success",
+        ToastKind.warning => "Warning",
+        ToastKind.error => "Error",
+      };
+
+  static ToastKind fromJson(dynamic value) => switch (value.toString()) {
+        "Info" => ToastKind.info,
+        "Success" => ToastKind.success,
+        "Warning" => ToastKind.warning,
+        "Error" => ToastKind.error,
+        _ => ToastKind.info,
+      };
 }
 
 extension JsonPopupAction on PopupAction {
@@ -104,85 +124,84 @@ extension JsonPopupAction on PopupAction {
       );
 }
 
-extension JsonUIAction on UIAction {
+extension JsonInteraction on Interaction {
   dynamic toJson() => switch (this) {
-        UIAction_Action(:final action) => {
-            "type": "Action",
-            "action": action.toJson(),
+        Interaction_Invoke(:final handler, :final payload) => {
+            "type": "Invoke",
+            "handler": handler,
+            "payload": payload,
           },
-        UIAction_SwapContent(
-          :final targetid,
-          :final event,
-          :final data,
-          :final placeholder,
-        ) =>
-          {
-            "type": "SwapContent",
-            "targetid": targetid,
-            "event": event,
-            "data": data,
-            if (placeholder != null) "placeholder": placeholder.toJson(),
+        Interaction_WriteKey(:final key, :final value) => {
+            "type": "WriteKey",
+            "key": key,
+            "value": value,
           },
       };
 
-  static UIAction fromJson(dynamic value) {
+  static Interaction fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
-      case "Action":
-        return UIAction.action(action: JsonAction.fromJson(value["action"]));
-      case "SwapContent":
-        return UIAction.swapContent(
-          targetid: value["targetid"],
-          event: value["event"],
-          data: value["data"],
-          placeholder: value["placeholder"] != null
-              ? JsonCustomUI.fromJson(value["placeholder"])
-              : null,
+      case "Invoke":
+        return Interaction.invoke(
+          handler: value["handler"],
+          payload: value["payload"],
         );
+      case "WriteKey":
+        return Interaction.writeKey(key: value["key"], value: value["value"]);
       default:
-        throw FormatException("Unknown UIAction type: $type");
+        throw FormatException("Unknown Interaction type: $type");
     }
   }
 }
 
 extension JsonEventData on EventData {
   dynamic toJson() => switch (this) {
-        EventData_SwapContent(:final event, :final targetid, :final data) => {
-            "type": "SwapContent",
-            "event": event,
-            "targetid": targetid,
-            "data": data,
+        EventData_LoadSlot(
+          :final handler,
+          :final staticData,
+          :final values,
+        ) =>
+          {
+            "type": "LoadSlot",
+            "handler": handler,
+            "static_data": staticData,
+            "values": values,
           },
-        EventData_FeedUpdate(:final event, :final data, :final page) => {
-            "type": "FeedUpdate",
-            "event": event,
+        EventData_LoadPage(:final handler, :final data, :final page) => {
+            "type": "LoadPage",
+            "handler": handler,
             "data": data,
             "page": page,
           },
-        EventData_Trigger(:final event, :final data) => {
-            "type": "Trigger",
-            "event": event,
-            "data": data,
+        EventData_Invoke(:final handler, :final payload) => {
+            "type": "Invoke",
+            "handler": handler,
+            "payload": payload,
           },
       };
 
   static EventData fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
-      case "SwapContent":
-        return EventData.swapContent(
-          event: value["event"],
-          targetid: value["targetid"],
-          data: value["data"],
+      case "LoadSlot":
+        return EventData.loadSlot(
+          handler: value["handler"],
+          staticData: value["static_data"],
+          values: (value["values"] as Map<String, dynamic>).map(
+            (k, v) => MapEntry(k, v as String?),
+          ),
         );
-      case "FeedUpdate":
-        return EventData.feedUpdate(
-          event: value["event"],
+      case "LoadPage":
+        return EventData.loadPage(
+          handler: value["handler"],
           data: value["data"],
           page: value["page"],
         );
-      case "Trigger":
-        return EventData.trigger(event: value["event"], data: value["data"]);
+      case "Invoke":
+        return EventData.invoke(
+          handler: value["handler"],
+          payload: value["payload"],
+        );
       default:
         throw FormatException("Unknown EventData type: $type");
     }
@@ -191,49 +210,31 @@ extension JsonEventData on EventData {
 
 extension JsonEventResult on EventResult {
   dynamic toJson() => switch (this) {
-        EventResult_SwapContent(:final customui) => {
-            "type": "SwapContent",
+        EventResult_SlotContent(:final customui) => {
+            "type": "SlotContent",
             "customui": customui.toJson(),
           },
-        EventResult_FeedUpdate(
-          :final customui,
-          :final hasnext,
-          :final length
-        ) =>
-          {
-            "type": "FeedUpdate",
-            "customui": customui.map((e) => e.toJson()).toList(),
-            if (hasnext != null) "hasnext": hasnext,
-            if (length != null) "length": length,
+        EventResult_FeedPage(:final items, :final hasMore) => {
+            "type": "FeedPage",
+            "items": items.map((e) => e.toJson()).toList(),
+            "has_more": hasMore,
           },
-        EventResult_DoAction(:final action) => {
-            "type": "DoAction",
-            "action": action.toJson(),
-          },
-        EventResult_Return() => {"type": "Return"},
       };
 
   static EventResult fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
-      case "SwapContent":
-        return EventResult.swapContent(
+      case "SlotContent":
+        return EventResult.slotContent(
           customui: JsonCustomUI.fromJson(value["customui"]),
         );
-      case "FeedUpdate":
-        return EventResult.feedUpdate(
-          customui: (value["customui"] as List)
+      case "FeedPage":
+        return EventResult.feedPage(
+          items: (value["items"] as List)
               .map((e) => JsonCustomUI.fromJson(e))
               .toList(),
-          hasnext: value["hasnext"],
-          length: value["length"],
+          hasMore: value["has_more"],
         );
-      case "DoAction":
-        return EventResult.doAction(
-          action: JsonAction.fromJson(value["action"]),
-        );
-      case "Return":
-        return const EventResult.return_();
       default:
         throw FormatException("Unknown EventResult type: $type");
     }
@@ -272,6 +273,47 @@ extension JsonTimestampType on TimestampType {
       };
 }
 
+extension JsonSubscriptionSource on SubscriptionSource {
+  dynamic toJson() => switch (this) {
+        SubscriptionSource_Store() => {"type": "Store"},
+        SubscriptionSource_Setting(:final kind) => {
+            "type": "Setting",
+            "kind": kind.toJson(),
+          },
+        SubscriptionSource_EntrySetting() => {"type": "EntrySetting"},
+      };
+
+  static SubscriptionSource fromJson(dynamic value) {
+    final type = value["type"] as String;
+    switch (type) {
+      case "Store":
+        return const SubscriptionSource.store();
+      case "Setting":
+        return SubscriptionSource.setting(
+          kind: JsonSettingKind.fromJson(value["kind"]),
+        );
+      case "EntrySetting":
+        return const SubscriptionSource.entrySetting();
+      default:
+        throw FormatException("Unknown SubscriptionSource type: $type");
+    }
+  }
+}
+
+extension JsonSubscription on Subscription {
+  dynamic toJson() => {
+        "source": source.toJson(),
+        "key": key,
+        "state_key": stateKey,
+      };
+
+  static Subscription fromJson(dynamic value) => Subscription(
+        source: JsonSubscriptionSource.fromJson(value["source"]),
+        key: value["key"],
+        stateKey: value["state_key"],
+      );
+}
+
 extension JsonCustomUI on CustomUI {
   dynamic toJson() => switch (this) {
         CustomUI_Text(:final text) => {"type": "Text", "text": text},
@@ -302,9 +344,9 @@ extension JsonCustomUI on CustomUI {
             "bottom": bottom.toJson(),
           },
         CustomUI_Spinner() => {"type": "Spinner"},
-        CustomUI_Feed(:final event, :final data) => {
+        CustomUI_Feed(:final handler, :final data) => {
             "type": "Feed",
-            "event": event,
+            "handler": handler,
             "data": data,
           },
         CustomUI_Button(:final label, :final onClick) => {
@@ -323,11 +365,18 @@ extension JsonCustomUI on CustomUI {
             "setting_kind": settingKind.toJson(),
             if (onCommit != null) "on_commit": onCommit.toJson(),
           },
-        CustomUI_Slot(:final id, :final child, :final onMount) => {
+        CustomUI_Slot(
+          :final handler,
+          :final child,
+          :final staticData,
+          :final subscriptions,
+        ) =>
+          {
             "type": "Slot",
-            "id": id,
+            "handler": handler,
             "child": child.toJson(),
-            if (onMount != null) "on_mount": onMount.toJson(),
+            "static_data": staticData,
+            "subscriptions": subscriptions.map((e) => e.toJson()).toList(),
           },
         CustomUI_Column(:final children) => {
             "type": "Column",
@@ -336,6 +385,19 @@ extension JsonCustomUI on CustomUI {
         CustomUI_Row(:final children) => {
             "type": "Row",
             "children": children.map((e) => e.toJson()).toList(),
+          },
+        CustomUI_TextInput(
+          :final onChange,
+          :final debounceMs,
+          :final initial,
+          :final onCommit,
+        ) =>
+          {
+            "type": "TextInput",
+            if (onChange != null) "on_change": onChange.toJson(),
+            if (debounceMs != null) "debounce_ms": debounceMs,
+            if (initial != null) "initial": initial,
+            if (onCommit != null) "on_commit": onCommit.toJson(),
           },
       };
 
@@ -368,12 +430,12 @@ extension JsonCustomUI on CustomUI {
       case "Spinner":
         return const CustomUI.spinner();
       case "Feed":
-        return CustomUI.feed(event: value["event"], data: value["data"]);
+        return CustomUI.feed(handler: value["handler"], data: value["data"]);
       case "Button":
         return CustomUI.button(
           label: value["label"],
           onClick: value["on_click"] != null
-              ? JsonUIAction.fromJson(value["on_click"])
+              ? JsonInteraction.fromJson(value["on_click"])
               : null,
         );
       case "InlineSetting":
@@ -381,16 +443,17 @@ extension JsonCustomUI on CustomUI {
           settingId: value["setting_id"],
           settingKind: JsonSettingKind.fromJson(value["setting_kind"]),
           onCommit: value["on_commit"] != null
-              ? JsonUIAction.fromJson(value["on_commit"])
+              ? JsonInteraction.fromJson(value["on_commit"])
               : null,
         );
       case "Slot":
         return CustomUI.slot(
-          id: value["id"],
+          handler: value["handler"],
           child: JsonCustomUI.fromJson(value["child"]),
-          onMount: value["on_mount"] != null
-              ? JsonUIAction.fromJson(value["on_mount"])
-              : null,
+          staticData: value["static_data"],
+          subscriptions: (value["subscriptions"] as List)
+              .map((e) => JsonSubscription.fromJson(e))
+              .toList(),
         );
       case "Column":
         return CustomUI.column(
@@ -403,6 +466,17 @@ extension JsonCustomUI on CustomUI {
           children: (value["children"] as List)
               .map((e) => JsonCustomUI.fromJson(e))
               .toList(),
+        );
+      case "TextInput":
+        return CustomUI.textInput(
+          onChange: value["on_change"] != null
+              ? JsonInteraction.fromJson(value["on_change"])
+              : null,
+          debounceMs: value["debounce_ms"],
+          initial: value["initial"],
+          onCommit: value["on_commit"] != null
+              ? JsonInteraction.fromJson(value["on_commit"])
+              : null,
         );
       default:
         throw FormatException("Unknown CustomUI type: $type");

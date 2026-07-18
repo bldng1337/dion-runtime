@@ -18,6 +18,7 @@ use dion_runtime::data::{
 use dion_runtime::extension::Adapter;
 
 use mihon_adapter::MihonAdapter;
+use serde_json::Value;
 
 const CALL_DELAY: Duration = Duration::from_millis(500);
 
@@ -84,6 +85,10 @@ impl ExtensionClient for MockExtensionClient {
     }
     async fn get_path(&self) -> anyhow::Result<String> {
         Ok(String::new())
+    }
+    async fn store_set(&self, key: &str, value: Value) -> anyhow::Result<()> {
+        println!("Mock store_set called with key: {}, value: {}", key, value);
+        Ok(())
     }
 }
 

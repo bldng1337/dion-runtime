@@ -24,12 +24,18 @@ impl Clone for ProxyExtensionClient {
             crequest_permission: self.crequest_permission.clone(),
             cget_path: self.cget_path.clone(),
             cset_entry_setting: self.cset_entry_setting.clone(),
+            cstore_set: self.cstore_set.clone(),
         }
     }
 }
 
 #[async_trait::async_trait]
 impl ExtensionClient for ProxyExtensionClient {
+    async fn store_set(&self, key: &str, value: serde_json::Value) -> Result<()> {
+        (self.cstore_set.as_ref())(key.to_string(), serde_json::to_string(&value)?).await;
+        Ok(())
+    }
+
     async fn set_entry_setting(
         &self,
         entry: EntryId,

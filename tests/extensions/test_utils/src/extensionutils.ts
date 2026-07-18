@@ -33,18 +33,17 @@ export class DefaultExtension
 	}
 	async onEvent(data: EventData): Promise<EventResult | undefined> {
 		switch (data.type) {
-			case "Trigger":
+			case "Invoke":
 				return;
-			case "FeedUpdate":
+			case "LoadPage":
 				return {
-					type: data.type,
-					customui: [],
-					hasnext: null,
-					length: null,
+					type: "FeedPage",
+					items: [],
+					has_more: false,
 				};
-			case "SwapContent":
+			case "LoadSlot":
 				return {
-					type: data.type,
+					type: "SlotContent",
 					customui: {
 						type: "Text",
 						text: "asd",

@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -84116015;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1679058273;
 
 // Section: executor
 
@@ -244,6 +244,9 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
                 decode_DartFn_Inputs_entry_id_String_setting_value_Output_unit_AnyhowException(
                     <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
                 );
+            let api_store_set = decode_DartFn_Inputs_String_String_Output_unit_AnyhowException(
+                <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
+            );
             deserializer.end();
             move |context| {
                 transform_result_sse::<_, ()>((move || {
@@ -257,6 +260,7 @@ fn wire__crate__api__client__ExtensionClient_init_impl(
                             api_request_permission,
                             api_get_path,
                             api_set_entry_setting,
+                            api_store_set,
                         ))?;
                     Ok(output_ok)
                 })())
@@ -2646,6 +2650,26 @@ fn wire__dion_runtime__data__custom_ui__timestamp_type_default_impl(
         },
     )
 }
+fn wire__dion_runtime__data__action__toast_kind_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "toast_kind_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::action::ToastKind::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 
 // Section: static_checks
 
@@ -2677,12 +2701,12 @@ const _: fn() = || {
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = content;
         }
         dion_runtime::data::action::Action::PopView => {}
-        dion_runtime::data::action::Action::TriggerEvent { event, data } => {
-            let _: String = event;
-            let _: String = data;
-        }
         dion_runtime::data::action::Action::NavEntry { entry } => {
             let _: Box<dion_runtime::data::source::EntryDetailed> = entry;
+        }
+        dion_runtime::data::action::Action::ShowToast { message, kind } => {
+            let _: String = message;
+            let _: dion_runtime::data::action::ToastKind = kind;
         }
     }
     match None::<dion_runtime::data::auth::AuthCreds>.unwrap() {
@@ -2760,13 +2784,13 @@ const _: fn() = || {
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = bottom;
         }
         dion_runtime::data::custom_ui::CustomUI::Spinner => {}
-        dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => {
-            let _: String = event;
+        dion_runtime::data::custom_ui::CustomUI::Feed { handler, data } => {
+            let _: String = handler;
             let _: String = data;
         }
         dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
             let _: String = label;
-            let _: Option<Box<dion_runtime::data::action::UIAction>> = on_click;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_click;
         }
         dion_runtime::data::custom_ui::CustomUI::InlineSetting {
             setting_id,
@@ -2775,22 +2799,35 @@ const _: fn() = || {
         } => {
             let _: String = setting_id;
             let _: dion_runtime::data::settings::SettingKind = setting_kind;
-            let _: Option<Box<dion_runtime::data::action::UIAction>> = on_commit;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_commit;
         }
         dion_runtime::data::custom_ui::CustomUI::Slot {
-            id,
+            handler,
             child,
-            on_mount,
+            static_data,
+            subscriptions,
         } => {
-            let _: String = id;
+            let _: String = handler;
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
-            let _: Option<Box<dion_runtime::data::action::UIAction>> = on_mount;
+            let _: String = static_data;
+            let _: Vec<dion_runtime::data::custom_ui::Subscription> = subscriptions;
         }
         dion_runtime::data::custom_ui::CustomUI::Column { children } => {
             let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
         }
         dion_runtime::data::custom_ui::CustomUI::Row { children } => {
             let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
+        }
+        dion_runtime::data::custom_ui::CustomUI::TextInput {
+            on_change,
+            debounce_ms,
+            initial,
+            on_commit,
+        } => {
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_change;
+            let _: Option<i32> = debounce_ms;
+            let _: Option<String> = initial;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_commit;
         }
     }
     {
@@ -2867,42 +2904,37 @@ const _: fn() = || {
         let _: Option<String> = EpisodeId.iddata;
     }
     match None::<dion_runtime::data::action::EventData>.unwrap() {
-        dion_runtime::data::action::EventData::SwapContent {
-            event,
-            targetid,
-            data,
+        dion_runtime::data::action::EventData::LoadSlot {
+            handler,
+            static_data,
+            values,
         } => {
-            let _: String = event;
-            let _: String = targetid;
-            let _: String = data;
+            let _: String = handler;
+            let _: String = static_data;
+            let _: std::collections::HashMap<String, Option<String>> = values;
         }
-        dion_runtime::data::action::EventData::FeedUpdate { event, data, page } => {
-            let _: String = event;
+        dion_runtime::data::action::EventData::LoadPage {
+            handler,
+            data,
+            page,
+        } => {
+            let _: String = handler;
             let _: String = data;
             let _: i32 = page;
         }
-        dion_runtime::data::action::EventData::Trigger { event, data } => {
-            let _: String = event;
-            let _: String = data;
+        dion_runtime::data::action::EventData::Invoke { handler, payload } => {
+            let _: String = handler;
+            let _: String = payload;
         }
     }
     match None::<dion_runtime::data::action::EventResult>.unwrap() {
-        dion_runtime::data::action::EventResult::SwapContent { customui } => {
+        dion_runtime::data::action::EventResult::SlotContent { customui } => {
             let _: dion_runtime::data::custom_ui::CustomUI = customui;
         }
-        dion_runtime::data::action::EventResult::FeedUpdate {
-            customui,
-            hasnext,
-            length,
-        } => {
-            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = customui;
-            let _: Option<bool> = hasnext;
-            let _: Option<i32> = length;
+        dion_runtime::data::action::EventResult::FeedPage { items, has_more } => {
+            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = items;
+            let _: bool = has_more;
         }
-        dion_runtime::data::action::EventResult::DoAction { action } => {
-            let _: Box<dion_runtime::data::action::Action> = action;
-        }
-        dion_runtime::data::action::EventResult::Return => {}
     }
     {
         let ExtensionData = None::<dion_runtime::data::extension::ExtensionData>.unwrap();
@@ -2967,6 +2999,16 @@ const _: fn() = || {
         let _: dion_runtime::data::source::Link = ImageListAudio.link;
         let _: i32 = ImageListAudio.from;
         let _: i32 = ImageListAudio.to;
+    }
+    match None::<dion_runtime::data::action::Interaction>.unwrap() {
+        dion_runtime::data::action::Interaction::Invoke { handler, payload } => {
+            let _: String = handler;
+            let _: String = payload;
+        }
+        dion_runtime::data::action::Interaction::WriteKey { key, value } => {
+            let _: String = key;
+            let _: String = value;
+        }
     }
     {
         let Link = None::<dion_runtime::data::source::Link>.unwrap();
@@ -3112,6 +3154,19 @@ const _: fn() = || {
         let _: dion_runtime::data::source::Link = StreamSource.url;
     }
     {
+        let Subscription = None::<dion_runtime::data::custom_ui::Subscription>.unwrap();
+        let _: dion_runtime::data::custom_ui::SubscriptionSource = Subscription.source;
+        let _: String = Subscription.key;
+        let _: String = Subscription.state_key;
+    }
+    match None::<dion_runtime::data::custom_ui::SubscriptionSource>.unwrap() {
+        dion_runtime::data::custom_ui::SubscriptionSource::Store => {}
+        dion_runtime::data::custom_ui::SubscriptionSource::Setting { kind } => {
+            let _: dion_runtime::data::settings::SettingKind = kind;
+        }
+        dion_runtime::data::custom_ui::SubscriptionSource::EntrySetting => {}
+    }
+    {
         let Subtitles = None::<dion_runtime::data::source::Subtitles>.unwrap();
         let _: String = Subtitles.title;
         let _: String = Subtitles.lang;
@@ -3126,22 +3181,6 @@ const _: fn() = || {
         let _: Option<bool> = TextStyle.code;
         let _: Option<String> = TextStyle.link;
         let _: Option<i32> = TextStyle.font_size;
-    }
-    match None::<dion_runtime::data::action::UIAction>.unwrap() {
-        dion_runtime::data::action::UIAction::Action { action } => {
-            let _: Box<dion_runtime::data::action::Action> = action;
-        }
-        dion_runtime::data::action::UIAction::SwapContent {
-            targetid,
-            event,
-            data,
-            placeholder,
-        } => {
-            let _: String = targetid;
-            let _: String = event;
-            let _: String = data;
-            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = placeholder;
-        }
     }
 };
 
@@ -3503,6 +3542,18 @@ impl CstDecode<dion_runtime::data::custom_ui::TimestampType> for i32 {
         }
     }
 }
+impl CstDecode<dion_runtime::data::action::ToastKind> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::action::ToastKind {
+        match self {
+            0 => dion_runtime::data::action::ToastKind::Info,
+            1 => dion_runtime::data::action::ToastKind::Success,
+            2 => dion_runtime::data::action::ToastKind::Warning,
+            3 => dion_runtime::data::action::ToastKind::Error,
+            _ => unreachable!("Invalid variant for ToastKind: {}", self),
+        }
+    }
+}
 impl CstDecode<u32> for u32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> u32 {
@@ -3599,6 +3650,14 @@ impl SseDecode for std::collections::HashMap<String, Vec<String>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<(String, Vec<String>)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode for std::collections::HashMap<String, Option<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(String, Option<String>)>>::sse_decode(deserializer);
         return inner.into_iter().collect();
     }
 }
@@ -3756,17 +3815,18 @@ impl SseDecode for dion_runtime::data::action::Action {
                 return dion_runtime::data::action::Action::PopView;
             }
             4 => {
-                let mut var_event = <String>::sse_decode(deserializer);
-                let mut var_data = <String>::sse_decode(deserializer);
-                return dion_runtime::data::action::Action::TriggerEvent {
-                    event: var_event,
-                    data: var_data,
-                };
-            }
-            5 => {
                 let mut var_entry =
                     <Box<dion_runtime::data::source::EntryDetailed>>::sse_decode(deserializer);
                 return dion_runtime::data::action::Action::NavEntry { entry: var_entry };
+            }
+            5 => {
+                let mut var_message = <String>::sse_decode(deserializer);
+                let mut var_kind =
+                    <dion_runtime::data::action::ToastKind>::sse_decode(deserializer);
+                return dion_runtime::data::action::Action::ShowToast {
+                    message: var_message,
+                    kind: var_kind,
+                };
             }
             _ => {
                 unimplemented!("");
@@ -3890,10 +3950,10 @@ impl SseDecode for Box<dion_runtime::data::source::EntryDetailed> {
     }
 }
 
-impl SseDecode for Box<dion_runtime::data::action::UIAction> {
+impl SseDecode for Box<dion_runtime::data::action::Interaction> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        return Box::new(<dion_runtime::data::action::UIAction>::sse_decode(
+        return Box::new(<dion_runtime::data::action::Interaction>::sse_decode(
             deserializer,
         ));
     }
@@ -3955,17 +4015,19 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                 return dion_runtime::data::custom_ui::CustomUI::Spinner;
             }
             7 => {
-                let mut var_event = <String>::sse_decode(deserializer);
+                let mut var_handler = <String>::sse_decode(deserializer);
                 let mut var_data = <String>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Feed {
-                    event: var_event,
+                    handler: var_handler,
                     data: var_data,
                 };
             }
             8 => {
                 let mut var_label = <String>::sse_decode(deserializer);
                 let mut var_onClick =
-                    <Option<Box<dion_runtime::data::action::UIAction>>>::sse_decode(deserializer);
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::data::custom_ui::CustomUI::Button {
                     label: var_label,
                     on_click: var_onClick,
@@ -3976,7 +4038,9 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                 let mut var_settingKind =
                     <dion_runtime::data::settings::SettingKind>::sse_decode(deserializer);
                 let mut var_onCommit =
-                    <Option<Box<dion_runtime::data::action::UIAction>>>::sse_decode(deserializer);
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::data::custom_ui::CustomUI::InlineSetting {
                     setting_id: var_settingId,
                     setting_kind: var_settingKind,
@@ -3984,15 +4048,17 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                 };
             }
             10 => {
-                let mut var_id = <String>::sse_decode(deserializer);
+                let mut var_handler = <String>::sse_decode(deserializer);
                 let mut var_child =
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
-                let mut var_onMount =
-                    <Option<Box<dion_runtime::data::action::UIAction>>>::sse_decode(deserializer);
+                let mut var_staticData = <String>::sse_decode(deserializer);
+                let mut var_subscriptions =
+                    <Vec<dion_runtime::data::custom_ui::Subscription>>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Slot {
-                    id: var_id,
+                    handler: var_handler,
                     child: var_child,
-                    on_mount: var_onMount,
+                    static_data: var_staticData,
+                    subscriptions: var_subscriptions,
                 };
             }
             11 => {
@@ -4007,6 +4073,24 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                     <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Row {
                     children: var_children,
+                };
+            }
+            13 => {
+                let mut var_onChange =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_debounceMs = <Option<i32>>::sse_decode(deserializer);
+                let mut var_initial = <Option<String>>::sse_decode(deserializer);
+                let mut var_onCommit =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::TextInput {
+                    on_change: var_onChange,
+                    debounce_ms: var_debounceMs,
+                    initial: var_initial,
+                    on_commit: var_onCommit,
                 };
             }
             _ => {
@@ -4195,31 +4279,32 @@ impl SseDecode for dion_runtime::data::action::EventData {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_event = <String>::sse_decode(deserializer);
-                let mut var_targetid = <String>::sse_decode(deserializer);
-                let mut var_data = <String>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventData::SwapContent {
-                    event: var_event,
-                    targetid: var_targetid,
-                    data: var_data,
+                let mut var_handler = <String>::sse_decode(deserializer);
+                let mut var_staticData = <String>::sse_decode(deserializer);
+                let mut var_values =
+                    <std::collections::HashMap<String, Option<String>>>::sse_decode(deserializer);
+                return dion_runtime::data::action::EventData::LoadSlot {
+                    handler: var_handler,
+                    static_data: var_staticData,
+                    values: var_values,
                 };
             }
             1 => {
-                let mut var_event = <String>::sse_decode(deserializer);
+                let mut var_handler = <String>::sse_decode(deserializer);
                 let mut var_data = <String>::sse_decode(deserializer);
                 let mut var_page = <i32>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventData::FeedUpdate {
-                    event: var_event,
+                return dion_runtime::data::action::EventData::LoadPage {
+                    handler: var_handler,
                     data: var_data,
                     page: var_page,
                 };
             }
             2 => {
-                let mut var_event = <String>::sse_decode(deserializer);
-                let mut var_data = <String>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventData::Trigger {
-                    event: var_event,
-                    data: var_data,
+                let mut var_handler = <String>::sse_decode(deserializer);
+                let mut var_payload = <String>::sse_decode(deserializer);
+                return dion_runtime::data::action::EventData::Invoke {
+                    handler: var_handler,
+                    payload: var_payload,
                 };
             }
             _ => {
@@ -4237,28 +4322,18 @@ impl SseDecode for dion_runtime::data::action::EventResult {
             0 => {
                 let mut var_customui =
                     <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventResult::SwapContent {
+                return dion_runtime::data::action::EventResult::SlotContent {
                     customui: var_customui,
                 };
             }
             1 => {
-                let mut var_customui =
+                let mut var_items =
                     <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
-                let mut var_hasnext = <Option<bool>>::sse_decode(deserializer);
-                let mut var_length = <Option<i32>>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventResult::FeedUpdate {
-                    customui: var_customui,
-                    hasnext: var_hasnext,
-                    length: var_length,
+                let mut var_hasMore = <bool>::sse_decode(deserializer);
+                return dion_runtime::data::action::EventResult::FeedPage {
+                    items: var_items,
+                    has_more: var_hasMore,
                 };
-            }
-            2 => {
-                let mut var_action =
-                    <Box<dion_runtime::data::action::Action>>::sse_decode(deserializer);
-                return dion_runtime::data::action::EventResult::DoAction { action: var_action };
-            }
-            3 => {
-                return dion_runtime::data::action::EventResult::Return;
             }
             _ => {
                 unimplemented!("");
@@ -4418,6 +4493,34 @@ impl SseDecode for dion_runtime::data::source::ImageListAudio {
             from: var_from,
             to: var_to,
         };
+    }
+}
+
+impl SseDecode for dion_runtime::data::action::Interaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_handler = <String>::sse_decode(deserializer);
+                let mut var_payload = <String>::sse_decode(deserializer);
+                return dion_runtime::data::action::Interaction::Invoke {
+                    handler: var_handler,
+                    payload: var_payload,
+                };
+            }
+            1 => {
+                let mut var_key = <String>::sse_decode(deserializer);
+                let mut var_value = <String>::sse_decode(deserializer);
+                return dion_runtime::data::action::Interaction::WriteKey {
+                    key: var_key,
+                    value: var_value,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -4669,6 +4772,18 @@ impl SseDecode for Vec<(String, Vec<String>)> {
     }
 }
 
+impl SseDecode for Vec<(String, Option<String>)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<(String, Option<String>)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4754,6 +4869,20 @@ impl SseDecode for Vec<dion_runtime::data::source::StreamSource> {
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<dion_runtime::data::source::StreamSource>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::custom_ui::Subscription> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::custom_ui::Subscription>::sse_decode(
                 deserializer,
             ));
         }
@@ -4991,24 +5120,11 @@ impl SseDecode for Option<u32> {
     }
 }
 
-impl SseDecode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+impl SseDecode for Option<Box<dion_runtime::data::action::Interaction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<Box<dion_runtime::data::action::UIAction>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<Box<dion_runtime::data::action::UIAction>>::sse_decode(
+            return Some(<Box<dion_runtime::data::action::Interaction>>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -5130,6 +5246,15 @@ impl SseDecode for (String, Vec<String>) {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_field0 = <String>::sse_decode(deserializer);
         let mut var_field1 = <Vec<String>>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode for (String, Option<String>) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <Option<String>>::sse_decode(deserializer);
         return (var_field0, var_field1);
     }
 }
@@ -5427,6 +5552,46 @@ impl SseDecode for dion_runtime::data::source::StreamSource {
     }
 }
 
+impl SseDecode for dion_runtime::data::custom_ui::Subscription {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_source =
+            <dion_runtime::data::custom_ui::SubscriptionSource>::sse_decode(deserializer);
+        let mut var_key = <String>::sse_decode(deserializer);
+        let mut var_stateKey = <String>::sse_decode(deserializer);
+        return dion_runtime::data::custom_ui::Subscription {
+            source: var_source,
+            key: var_key,
+            state_key: var_stateKey,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::SubscriptionSource {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                return dion_runtime::data::custom_ui::SubscriptionSource::Store;
+            }
+            1 => {
+                let mut var_kind =
+                    <dion_runtime::data::settings::SettingKind>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::SubscriptionSource::Setting {
+                    kind: var_kind,
+                };
+            }
+            2 => {
+                return dion_runtime::data::custom_ui::SubscriptionSource::EntrySetting;
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for dion_runtime::data::source::Subtitles {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5475,6 +5640,20 @@ impl SseDecode for dion_runtime::data::custom_ui::TimestampType {
     }
 }
 
+impl SseDecode for dion_runtime::data::action::ToastKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::action::ToastKind::Info,
+            1 => dion_runtime::data::action::ToastKind::Success,
+            2 => dion_runtime::data::action::ToastKind::Warning,
+            3 => dion_runtime::data::action::ToastKind::Error,
+            _ => unreachable!("Invalid variant for ToastKind: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for u32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5486,38 +5665,6 @@ impl SseDecode for u8 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u8().unwrap()
-    }
-}
-
-impl SseDecode for dion_runtime::data::action::UIAction {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut tag_ = <i32>::sse_decode(deserializer);
-        match tag_ {
-            0 => {
-                let mut var_action =
-                    <Box<dion_runtime::data::action::Action>>::sse_decode(deserializer);
-                return dion_runtime::data::action::UIAction::Action { action: var_action };
-            }
-            1 => {
-                let mut var_targetid = <String>::sse_decode(deserializer);
-                let mut var_event = <String>::sse_decode(deserializer);
-                let mut var_data = <String>::sse_decode(deserializer);
-                let mut var_placeholder =
-                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
-                        deserializer,
-                    );
-                return dion_runtime::data::action::UIAction::SwapContent {
-                    targetid: var_targetid,
-                    event: var_event,
-                    data: var_data,
-                    placeholder: var_placeholder,
-                };
-            }
-            _ => {
-                unimplemented!("");
-            }
-        }
     }
 }
 
@@ -5684,15 +5831,15 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::Ac
             ]
             .into_dart(),
             dion_runtime::data::action::Action::PopView => [3.into_dart()].into_dart(),
-            dion_runtime::data::action::Action::TriggerEvent { event, data } => [
-                4.into_dart(),
-                event.into_into_dart().into_dart(),
-                data.into_into_dart().into_dart(),
+            dion_runtime::data::action::Action::NavEntry { entry } => {
+                [4.into_dart(), entry.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::action::Action::ShowToast { message, kind } => [
+                5.into_dart(),
+                message.into_into_dart().into_dart(),
+                kind.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::action::Action::NavEntry { entry } => {
-                [5.into_dart(), entry.into_into_dart().into_dart()].into_dart()
-            }
             _ => {
                 unimplemented!("");
             }
@@ -5842,9 +5989,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
             ]
             .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::Spinner => [6.into_dart()].into_dart(),
-            dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => [
+            dion_runtime::data::custom_ui::CustomUI::Feed { handler, data } => [
                 7.into_dart(),
-                event.into_into_dart().into_dart(),
+                handler.into_into_dart().into_dart(),
                 data.into_into_dart().into_dart(),
             ]
             .into_dart(),
@@ -5866,14 +6013,16 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
             ]
             .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::Slot {
-                id,
+                handler,
                 child,
-                on_mount,
+                static_data,
+                subscriptions,
             } => [
                 10.into_dart(),
-                id.into_into_dart().into_dart(),
+                handler.into_into_dart().into_dart(),
                 child.into_into_dart().into_dart(),
-                on_mount.into_into_dart().into_dart(),
+                static_data.into_into_dart().into_dart(),
+                subscriptions.into_into_dart().into_dart(),
             ]
             .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::Column { children } => {
@@ -5882,6 +6031,19 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
             dion_runtime::data::custom_ui::CustomUI::Row { children } => {
                 [12.into_dart(), children.into_into_dart().into_dart()].into_dart()
             }
+            dion_runtime::data::custom_ui::CustomUI::TextInput {
+                on_change,
+                debounce_ms,
+                initial,
+                on_commit,
+            } => [
+                13.into_dart(),
+                on_change.into_into_dart().into_dart(),
+                debounce_ms.into_into_dart().into_dart(),
+                initial.into_into_dart().into_dart(),
+                on_commit.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -6122,28 +6284,32 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Ep
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::EventData> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::action::EventData::SwapContent {
-                event,
-                targetid,
-                data,
+            dion_runtime::data::action::EventData::LoadSlot {
+                handler,
+                static_data,
+                values,
             } => [
                 0.into_dart(),
-                event.into_into_dart().into_dart(),
-                targetid.into_into_dart().into_dart(),
-                data.into_into_dart().into_dart(),
+                handler.into_into_dart().into_dart(),
+                static_data.into_into_dart().into_dart(),
+                values.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::action::EventData::FeedUpdate { event, data, page } => [
+            dion_runtime::data::action::EventData::LoadPage {
+                handler,
+                data,
+                page,
+            } => [
                 1.into_dart(),
-                event.into_into_dart().into_dart(),
+                handler.into_into_dart().into_dart(),
                 data.into_into_dart().into_dart(),
                 page.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::action::EventData::Trigger { event, data } => [
+            dion_runtime::data::action::EventData::Invoke { handler, payload } => [
                 2.into_dart(),
-                event.into_into_dart().into_dart(),
-                data.into_into_dart().into_dart(),
+                handler.into_into_dart().into_dart(),
+                payload.into_into_dart().into_dart(),
             ]
             .into_dart(),
             _ => {
@@ -6167,24 +6333,15 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::Ev
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::EventResult> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::action::EventResult::SwapContent { customui } => {
+            dion_runtime::data::action::EventResult::SlotContent { customui } => {
                 [0.into_dart(), customui.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::action::EventResult::FeedUpdate {
-                customui,
-                hasnext,
-                length,
-            } => [
+            dion_runtime::data::action::EventResult::FeedPage { items, has_more } => [
                 1.into_dart(),
-                customui.into_into_dart().into_dart(),
-                hasnext.into_into_dart().into_dart(),
-                length.into_into_dart().into_dart(),
+                items.into_into_dart().into_dart(),
+                has_more.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::action::EventResult::DoAction { action } => {
-                [2.into_dart(), action.into_into_dart().into_dart()].into_dart()
-            }
-            dion_runtime::data::action::EventResult::Return => [3.into_dart()].into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -6355,6 +6512,39 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Im
     for dion_runtime::data::source::ImageListAudio
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::ImageListAudio> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::Interaction> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::action::Interaction::Invoke { handler, payload } => [
+                0.into_dart(),
+                handler.into_into_dart().into_dart(),
+                payload.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::action::Interaction::WriteKey { key, value } => [
+                1.into_dart(),
+                key.into_into_dart().into_dart(),
+                value.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::action::Interaction>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::Interaction>>
+    for dion_runtime::data::action::Interaction
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::Interaction> {
         self.into()
     }
 }
@@ -6875,6 +7065,59 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::St
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::Subscription> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.source.into_into_dart().into_dart(),
+            self.0.key.into_into_dart().into_dart(),
+            self.0.state_key.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::Subscription>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::Subscription>>
+    for dion_runtime::data::custom_ui::Subscription
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::Subscription> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::custom_ui::SubscriptionSource>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::SubscriptionSource::Store => [0.into_dart()].into_dart(),
+            dion_runtime::data::custom_ui::SubscriptionSource::Setting { kind } => {
+                [1.into_dart(), kind.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::custom_ui::SubscriptionSource::EntrySetting => {
+                [2.into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::SubscriptionSource>
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::SubscriptionSource>>
+    for dion_runtime::data::custom_ui::SubscriptionSource
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::SubscriptionSource> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Subtitles> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -6944,39 +7187,25 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui:
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::UIAction> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::action::ToastKind> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::action::UIAction::Action { action } => {
-                [0.into_dart(), action.into_into_dart().into_dart()].into_dart()
-            }
-            dion_runtime::data::action::UIAction::SwapContent {
-                targetid,
-                event,
-                data,
-                placeholder,
-            } => [
-                1.into_dart(),
-                targetid.into_into_dart().into_dart(),
-                event.into_into_dart().into_dart(),
-                data.into_into_dart().into_dart(),
-                placeholder.into_into_dart().into_dart(),
-            ]
-            .into_dart(),
-            _ => {
-                unimplemented!("");
-            }
+            dion_runtime::data::action::ToastKind::Info => 0.into_dart(),
+            dion_runtime::data::action::ToastKind::Success => 1.into_dart(),
+            dion_runtime::data::action::ToastKind::Warning => 2.into_dart(),
+            dion_runtime::data::action::ToastKind::Error => 3.into_dart(),
+            _ => unreachable!(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for FrbWrapper<dion_runtime::data::action::UIAction>
+    for FrbWrapper<dion_runtime::data::action::ToastKind>
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::UIAction>>
-    for dion_runtime::data::action::UIAction
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::ToastKind>>
+    for dion_runtime::data::action::ToastKind
 {
-    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::UIAction> {
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::ToastKind> {
         self.into()
     }
 }
@@ -7041,6 +7270,13 @@ impl SseEncode for std::collections::HashMap<String, Vec<String>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<(String, Vec<String>)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode for std::collections::HashMap<String, Option<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, Option<String>)>>::sse_encode(self.into_iter().collect(), serializer);
     }
 }
 
@@ -7193,14 +7429,14 @@ impl SseEncode for dion_runtime::data::action::Action {
             dion_runtime::data::action::Action::PopView => {
                 <i32>::sse_encode(3, serializer);
             }
-            dion_runtime::data::action::Action::TriggerEvent { event, data } => {
-                <i32>::sse_encode(4, serializer);
-                <String>::sse_encode(event, serializer);
-                <String>::sse_encode(data, serializer);
-            }
             dion_runtime::data::action::Action::NavEntry { entry } => {
-                <i32>::sse_encode(5, serializer);
+                <i32>::sse_encode(4, serializer);
                 <Box<dion_runtime::data::source::EntryDetailed>>::sse_encode(entry, serializer);
+            }
+            dion_runtime::data::action::Action::ShowToast { message, kind } => {
+                <i32>::sse_encode(5, serializer);
+                <String>::sse_encode(message, serializer);
+                <dion_runtime::data::action::ToastKind>::sse_encode(kind, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -7310,10 +7546,10 @@ impl SseEncode for Box<dion_runtime::data::source::EntryDetailed> {
     }
 }
 
-impl SseEncode for Box<dion_runtime::data::action::UIAction> {
+impl SseEncode for Box<dion_runtime::data::action::Interaction> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <dion_runtime::data::action::UIAction>::sse_encode(*self, serializer);
+        <dion_runtime::data::action::Interaction>::sse_encode(*self, serializer);
     }
 }
 
@@ -7358,15 +7594,15 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
             dion_runtime::data::custom_ui::CustomUI::Spinner => {
                 <i32>::sse_encode(6, serializer);
             }
-            dion_runtime::data::custom_ui::CustomUI::Feed { event, data } => {
+            dion_runtime::data::custom_ui::CustomUI::Feed { handler, data } => {
                 <i32>::sse_encode(7, serializer);
-                <String>::sse_encode(event, serializer);
+                <String>::sse_encode(handler, serializer);
                 <String>::sse_encode(data, serializer);
             }
             dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
                 <i32>::sse_encode(8, serializer);
                 <String>::sse_encode(label, serializer);
-                <Option<Box<dion_runtime::data::action::UIAction>>>::sse_encode(
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
                     on_click, serializer,
                 );
             }
@@ -7378,20 +7614,23 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
                 <i32>::sse_encode(9, serializer);
                 <String>::sse_encode(setting_id, serializer);
                 <dion_runtime::data::settings::SettingKind>::sse_encode(setting_kind, serializer);
-                <Option<Box<dion_runtime::data::action::UIAction>>>::sse_encode(
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
                     on_commit, serializer,
                 );
             }
             dion_runtime::data::custom_ui::CustomUI::Slot {
-                id,
+                handler,
                 child,
-                on_mount,
+                static_data,
+                subscriptions,
             } => {
                 <i32>::sse_encode(10, serializer);
-                <String>::sse_encode(id, serializer);
+                <String>::sse_encode(handler, serializer);
                 <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
-                <Option<Box<dion_runtime::data::action::UIAction>>>::sse_encode(
-                    on_mount, serializer,
+                <String>::sse_encode(static_data, serializer);
+                <Vec<dion_runtime::data::custom_ui::Subscription>>::sse_encode(
+                    subscriptions,
+                    serializer,
                 );
             }
             dion_runtime::data::custom_ui::CustomUI::Column { children } => {
@@ -7401,6 +7640,22 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
             dion_runtime::data::custom_ui::CustomUI::Row { children } => {
                 <i32>::sse_encode(12, serializer);
                 <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::TextInput {
+                on_change,
+                debounce_ms,
+                initial,
+                on_commit,
+            } => {
+                <i32>::sse_encode(13, serializer);
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_change, serializer,
+                );
+                <Option<i32>>::sse_encode(debounce_ms, serializer);
+                <Option<String>>::sse_encode(initial, serializer);
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_commit, serializer,
+                );
             }
             _ => {
                 unimplemented!("");
@@ -7522,26 +7777,30 @@ impl SseEncode for dion_runtime::data::action::EventData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::action::EventData::SwapContent {
-                event,
-                targetid,
-                data,
+            dion_runtime::data::action::EventData::LoadSlot {
+                handler,
+                static_data,
+                values,
             } => {
                 <i32>::sse_encode(0, serializer);
-                <String>::sse_encode(event, serializer);
-                <String>::sse_encode(targetid, serializer);
-                <String>::sse_encode(data, serializer);
+                <String>::sse_encode(handler, serializer);
+                <String>::sse_encode(static_data, serializer);
+                <std::collections::HashMap<String, Option<String>>>::sse_encode(values, serializer);
             }
-            dion_runtime::data::action::EventData::FeedUpdate { event, data, page } => {
+            dion_runtime::data::action::EventData::LoadPage {
+                handler,
+                data,
+                page,
+            } => {
                 <i32>::sse_encode(1, serializer);
-                <String>::sse_encode(event, serializer);
+                <String>::sse_encode(handler, serializer);
                 <String>::sse_encode(data, serializer);
                 <i32>::sse_encode(page, serializer);
             }
-            dion_runtime::data::action::EventData::Trigger { event, data } => {
+            dion_runtime::data::action::EventData::Invoke { handler, payload } => {
                 <i32>::sse_encode(2, serializer);
-                <String>::sse_encode(event, serializer);
-                <String>::sse_encode(data, serializer);
+                <String>::sse_encode(handler, serializer);
+                <String>::sse_encode(payload, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -7554,26 +7813,14 @@ impl SseEncode for dion_runtime::data::action::EventResult {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::action::EventResult::SwapContent { customui } => {
+            dion_runtime::data::action::EventResult::SlotContent { customui } => {
                 <i32>::sse_encode(0, serializer);
                 <dion_runtime::data::custom_ui::CustomUI>::sse_encode(customui, serializer);
             }
-            dion_runtime::data::action::EventResult::FeedUpdate {
-                customui,
-                hasnext,
-                length,
-            } => {
+            dion_runtime::data::action::EventResult::FeedPage { items, has_more } => {
                 <i32>::sse_encode(1, serializer);
-                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(customui, serializer);
-                <Option<bool>>::sse_encode(hasnext, serializer);
-                <Option<i32>>::sse_encode(length, serializer);
-            }
-            dion_runtime::data::action::EventResult::DoAction { action } => {
-                <i32>::sse_encode(2, serializer);
-                <Box<dion_runtime::data::action::Action>>::sse_encode(action, serializer);
-            }
-            dion_runtime::data::action::EventResult::Return => {
-                <i32>::sse_encode(3, serializer);
+                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(items, serializer);
+                <bool>::sse_encode(has_more, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -7694,6 +7941,27 @@ impl SseEncode for dion_runtime::data::source::ImageListAudio {
         <dion_runtime::data::source::Link>::sse_encode(self.link, serializer);
         <i32>::sse_encode(self.from, serializer);
         <i32>::sse_encode(self.to, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::action::Interaction {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::data::action::Interaction::Invoke { handler, payload } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(handler, serializer);
+                <String>::sse_encode(payload, serializer);
+            }
+            dion_runtime::data::action::Interaction::WriteKey { key, value } => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(key, serializer);
+                <String>::sse_encode(value, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -7885,6 +8153,16 @@ impl SseEncode for Vec<(String, Vec<String>)> {
     }
 }
 
+impl SseEncode for Vec<(String, Option<String>)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, Option<String>)>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<(String, dion_runtime::data::settings::Setting)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7951,6 +8229,16 @@ impl SseEncode for Vec<dion_runtime::data::source::StreamSource> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <dion_runtime::data::source::StreamSource>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::custom_ui::Subscription> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::custom_ui::Subscription>::sse_encode(item, serializer);
         }
     }
 }
@@ -8148,22 +8436,12 @@ impl SseEncode for Option<u32> {
     }
 }
 
-impl SseEncode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+impl SseEncode for Option<Box<dion_runtime::data::action::Interaction>> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<Box<dion_runtime::data::action::UIAction>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <Box<dion_runtime::data::action::UIAction>>::sse_encode(value, serializer);
+            <Box<dion_runtime::data::action::Interaction>>::sse_encode(value, serializer);
         }
     }
 }
@@ -8255,6 +8533,14 @@ impl SseEncode for (String, Vec<String>) {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.0, serializer);
         <Vec<String>>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode for (String, Option<String>) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.0, serializer);
+        <Option<String>>::sse_encode(self.1, serializer);
     }
 }
 
@@ -8508,6 +8794,36 @@ impl SseEncode for dion_runtime::data::source::StreamSource {
     }
 }
 
+impl SseEncode for dion_runtime::data::custom_ui::Subscription {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <dion_runtime::data::custom_ui::SubscriptionSource>::sse_encode(self.source, serializer);
+        <String>::sse_encode(self.key, serializer);
+        <String>::sse_encode(self.state_key, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::SubscriptionSource {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            dion_runtime::data::custom_ui::SubscriptionSource::Store => {
+                <i32>::sse_encode(0, serializer);
+            }
+            dion_runtime::data::custom_ui::SubscriptionSource::Setting { kind } => {
+                <i32>::sse_encode(1, serializer);
+                <dion_runtime::data::settings::SettingKind>::sse_encode(kind, serializer);
+            }
+            dion_runtime::data::custom_ui::SubscriptionSource::EntrySetting => {
+                <i32>::sse_encode(2, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for dion_runtime::data::source::Subtitles {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8546,6 +8862,24 @@ impl SseEncode for dion_runtime::data::custom_ui::TimestampType {
     }
 }
 
+impl SseEncode for dion_runtime::data::action::ToastKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::action::ToastKind::Info => 0,
+                dion_runtime::data::action::ToastKind::Success => 1,
+                dion_runtime::data::action::ToastKind::Warning => 2,
+                dion_runtime::data::action::ToastKind::Error => 3,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for u32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8557,36 +8891,6 @@ impl SseEncode for u8 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_u8(self).unwrap();
-    }
-}
-
-impl SseEncode for dion_runtime::data::action::UIAction {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        match self {
-            dion_runtime::data::action::UIAction::Action { action } => {
-                <i32>::sse_encode(0, serializer);
-                <Box<dion_runtime::data::action::Action>>::sse_encode(action, serializer);
-            }
-            dion_runtime::data::action::UIAction::SwapContent {
-                targetid,
-                event,
-                data,
-                placeholder,
-            } => {
-                <i32>::sse_encode(1, serializer);
-                <String>::sse_encode(targetid, serializer);
-                <String>::sse_encode(event, serializer);
-                <String>::sse_encode(data, serializer);
-                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
-                    placeholder,
-                    serializer,
-                );
-            }
-            _ => {
-                unimplemented!("");
-            }
-        }
     }
 }
 
@@ -8698,6 +9002,15 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> std::collections::HashMap<String, Vec<String>> {
             let vec: Vec<(String, Vec<String>)> = self.cst_decode();
+            vec.into_iter().collect()
+        }
+    }
+    impl CstDecode<std::collections::HashMap<String, Option<String>>>
+        for *mut wire_cst_list_record_string_opt_string
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> std::collections::HashMap<String, Option<String>> {
+            let vec: Vec<(String, Option<String>)> = self.cst_decode();
             vec.into_iter().collect()
         }
     }
@@ -8850,16 +9163,16 @@ mod io {
                 }
                 3 => dion_runtime::data::action::Action::PopView,
                 4 => {
-                    let ans = unsafe { self.kind.TriggerEvent };
-                    dion_runtime::data::action::Action::TriggerEvent {
-                        event: ans.event.cst_decode(),
-                        data: ans.data.cst_decode(),
-                    }
-                }
-                5 => {
                     let ans = unsafe { self.kind.NavEntry };
                     dion_runtime::data::action::Action::NavEntry {
                         entry: ans.entry.cst_decode(),
+                    }
+                }
+                5 => {
+                    let ans = unsafe { self.kind.ShowToast };
+                    dion_runtime::data::action::Action::ShowToast {
+                        message: ans.message.cst_decode(),
+                        kind: ans.kind.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -9036,11 +9349,11 @@ mod io {
             CstDecode::<dion_runtime::data::source::EntryDetailed>::cst_decode(*wrap).into()
         }
     }
-    impl CstDecode<Box<dion_runtime::data::action::UIAction>> for *mut wire_cst_ui_action {
+    impl CstDecode<Box<dion_runtime::data::action::Interaction>> for *mut wire_cst_interaction {
         // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> Box<dion_runtime::data::action::UIAction> {
+        fn cst_decode(self) -> Box<dion_runtime::data::action::Interaction> {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
-            CstDecode::<dion_runtime::data::action::UIAction>::cst_decode(*wrap).into()
+            CstDecode::<dion_runtime::data::action::Interaction>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::data::custom_ui::CustomUI> for wire_cst_custom_ui {
@@ -9093,7 +9406,7 @@ mod io {
                 7 => {
                     let ans = unsafe { self.kind.Feed };
                     dion_runtime::data::custom_ui::CustomUI::Feed {
-                        event: ans.event.cst_decode(),
+                        handler: ans.handler.cst_decode(),
                         data: ans.data.cst_decode(),
                     }
                 }
@@ -9115,9 +9428,10 @@ mod io {
                 10 => {
                     let ans = unsafe { self.kind.Slot };
                     dion_runtime::data::custom_ui::CustomUI::Slot {
-                        id: ans.id.cst_decode(),
+                        handler: ans.handler.cst_decode(),
                         child: ans.child.cst_decode(),
-                        on_mount: ans.on_mount.cst_decode(),
+                        static_data: ans.static_data.cst_decode(),
+                        subscriptions: ans.subscriptions.cst_decode(),
                     }
                 }
                 11 => {
@@ -9130,6 +9444,15 @@ mod io {
                     let ans = unsafe { self.kind.Row };
                     dion_runtime::data::custom_ui::CustomUI::Row {
                         children: ans.children.cst_decode(),
+                    }
+                }
+                13 => {
+                    let ans = unsafe { self.kind.TextInput };
+                    dion_runtime::data::custom_ui::CustomUI::TextInput {
+                        on_change: ans.on_change.cst_decode(),
+                        debounce_ms: ans.debounce_ms.cst_decode(),
+                        initial: ans.initial.cst_decode(),
+                        on_commit: ans.on_commit.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -9254,26 +9577,26 @@ mod io {
         fn cst_decode(self) -> dion_runtime::data::action::EventData {
             match self.tag {
                 0 => {
-                    let ans = unsafe { self.kind.SwapContent };
-                    dion_runtime::data::action::EventData::SwapContent {
-                        event: ans.event.cst_decode(),
-                        targetid: ans.targetid.cst_decode(),
-                        data: ans.data.cst_decode(),
+                    let ans = unsafe { self.kind.LoadSlot };
+                    dion_runtime::data::action::EventData::LoadSlot {
+                        handler: ans.handler.cst_decode(),
+                        static_data: ans.static_data.cst_decode(),
+                        values: ans.values.cst_decode(),
                     }
                 }
                 1 => {
-                    let ans = unsafe { self.kind.FeedUpdate };
-                    dion_runtime::data::action::EventData::FeedUpdate {
-                        event: ans.event.cst_decode(),
+                    let ans = unsafe { self.kind.LoadPage };
+                    dion_runtime::data::action::EventData::LoadPage {
+                        handler: ans.handler.cst_decode(),
                         data: ans.data.cst_decode(),
                         page: ans.page.cst_decode(),
                     }
                 }
                 2 => {
-                    let ans = unsafe { self.kind.Trigger };
-                    dion_runtime::data::action::EventData::Trigger {
-                        event: ans.event.cst_decode(),
-                        data: ans.data.cst_decode(),
+                    let ans = unsafe { self.kind.Invoke };
+                    dion_runtime::data::action::EventData::Invoke {
+                        handler: ans.handler.cst_decode(),
+                        payload: ans.payload.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -9285,26 +9608,18 @@ mod io {
         fn cst_decode(self) -> dion_runtime::data::action::EventResult {
             match self.tag {
                 0 => {
-                    let ans = unsafe { self.kind.SwapContent };
-                    dion_runtime::data::action::EventResult::SwapContent {
+                    let ans = unsafe { self.kind.SlotContent };
+                    dion_runtime::data::action::EventResult::SlotContent {
                         customui: ans.customui.cst_decode(),
                     }
                 }
                 1 => {
-                    let ans = unsafe { self.kind.FeedUpdate };
-                    dion_runtime::data::action::EventResult::FeedUpdate {
-                        customui: ans.customui.cst_decode(),
-                        hasnext: ans.hasnext.cst_decode(),
-                        length: ans.length.cst_decode(),
+                    let ans = unsafe { self.kind.FeedPage };
+                    dion_runtime::data::action::EventResult::FeedPage {
+                        items: ans.items.cst_decode(),
+                        has_more: ans.has_more.cst_decode(),
                     }
                 }
-                2 => {
-                    let ans = unsafe { self.kind.DoAction };
-                    dion_runtime::data::action::EventResult::DoAction {
-                        action: ans.action.cst_decode(),
-                    }
-                }
-                3 => dion_runtime::data::action::EventResult::Return,
                 _ => unreachable!(),
             }
         }
@@ -9396,6 +9711,28 @@ mod io {
                 link: self.link.cst_decode(),
                 from: self.from.cst_decode(),
                 to: self.to.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::action::Interaction> for wire_cst_interaction {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::action::Interaction {
+            match self.tag {
+                0 => {
+                    let ans = unsafe { self.kind.Invoke };
+                    dion_runtime::data::action::Interaction::Invoke {
+                        handler: ans.handler.cst_decode(),
+                        payload: ans.payload.cst_decode(),
+                    }
+                }
+                1 => {
+                    let ans = unsafe { self.kind.WriteKey };
+                    dion_runtime::data::action::Interaction::WriteKey {
+                        key: ans.key.cst_decode(),
+                        value: ans.value.cst_decode(),
+                    }
+                }
+                _ => unreachable!(),
             }
         }
     }
@@ -9563,6 +9900,16 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<(String, Option<String>)>> for *mut wire_cst_list_record_string_opt_string {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<(String, Option<String>)> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<(String, dion_runtime::data::settings::Setting)>>
         for *mut wire_cst_list_record_string_setting
     {
@@ -9632,6 +9979,18 @@ mod io {
     impl CstDecode<Vec<dion_runtime::data::source::StreamSource>> for *mut wire_cst_list_stream_source {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::StreamSource> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<dion_runtime::data::custom_ui::Subscription>>
+        for *mut wire_cst_list_subscription
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::custom_ui::Subscription> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -9744,6 +10103,12 @@ mod io {
     impl CstDecode<(String, Vec<String>)> for wire_cst_record_string_list_string {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> (String, Vec<String>) {
+            (self.field0.cst_decode(), self.field1.cst_decode())
+        }
+    }
+    impl CstDecode<(String, Option<String>)> for wire_cst_record_string_opt_string {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> (String, Option<String>) {
             (self.field0.cst_decode(), self.field1.cst_decode())
         }
     }
@@ -9937,6 +10302,32 @@ mod io {
             }
         }
     }
+    impl CstDecode<dion_runtime::data::custom_ui::Subscription> for wire_cst_subscription {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::Subscription {
+            dion_runtime::data::custom_ui::Subscription {
+                source: self.source.cst_decode(),
+                key: self.key.cst_decode(),
+                state_key: self.state_key.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::SubscriptionSource> for wire_cst_subscription_source {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::SubscriptionSource {
+            match self.tag {
+                0 => dion_runtime::data::custom_ui::SubscriptionSource::Store,
+                1 => {
+                    let ans = unsafe { self.kind.Setting };
+                    dion_runtime::data::custom_ui::SubscriptionSource::Setting {
+                        kind: ans.kind.cst_decode(),
+                    }
+                }
+                2 => dion_runtime::data::custom_ui::SubscriptionSource::EntrySetting,
+                _ => unreachable!(),
+            }
+        }
+    }
     impl CstDecode<dion_runtime::data::source::Subtitles> for wire_cst_subtitles {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::source::Subtitles {
@@ -9958,29 +10349,6 @@ mod io {
                 code: self.code.cst_decode(),
                 link: self.link.cst_decode(),
                 font_size: self.font_size.cst_decode(),
-            }
-        }
-    }
-    impl CstDecode<dion_runtime::data::action::UIAction> for wire_cst_ui_action {
-        // Codec=Cst (C-struct based), see doc to use other codecs
-        fn cst_decode(self) -> dion_runtime::data::action::UIAction {
-            match self.tag {
-                0 => {
-                    let ans = unsafe { self.kind.Action };
-                    dion_runtime::data::action::UIAction::Action {
-                        action: ans.action.cst_decode(),
-                    }
-                }
-                1 => {
-                    let ans = unsafe { self.kind.SwapContent };
-                    dion_runtime::data::action::UIAction::SwapContent {
-                        targetid: ans.targetid.cst_decode(),
-                        event: ans.event.cst_decode(),
-                        data: ans.data.cst_decode(),
-                        placeholder: ans.placeholder.cst_decode(),
-                    }
-                }
-                _ => unreachable!(),
             }
         }
     }
@@ -10305,6 +10673,19 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_interaction {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: InteractionKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_interaction {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_link {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -10379,6 +10760,19 @@ mod io {
         }
     }
     impl Default for wire_cst_record_string_list_string {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_record_string_opt_string {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                field0: core::ptr::null_mut(),
+                field1: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_record_string_opt_string {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -10535,6 +10929,33 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_subscription {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                source: Default::default(),
+                key: core::ptr::null_mut(),
+                state_key: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_subscription {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_subscription_source {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                tag: -1,
+                kind: SubscriptionSourceKind { nil__: () },
+            }
+        }
+    }
+    impl Default for wire_cst_subscription_source {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_subtitles {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -10563,19 +10984,6 @@ mod io {
         }
     }
     impl Default for wire_cst_text_style {
-        fn default() -> Self {
-            Self::new_with_null_ptr()
-        }
-    }
-    impl NewWithNullPtr for wire_cst_ui_action {
-        fn new_with_null_ptr() -> Self {
-            Self {
-                tag: -1,
-                kind: UIActionKind { nil__: () },
-            }
-        }
-    }
-    impl Default for wire_cst_ui_action {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -11168,6 +11576,13 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__action__toast_kind_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__action__toast_kind_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
         ptr: *const std::ffi::c_void,
     ) {
@@ -11356,8 +11771,10 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_ui_action() -> *mut wire_cst_ui_action {
-        flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_ui_action::new_with_null_ptr())
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_interaction() -> *mut wire_cst_interaction {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_interaction::new_with_null_ptr(),
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -11555,6 +11972,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_opt_string(
+        len: i32,
+    ) -> *mut wire_cst_list_record_string_opt_string {
+        let wrap = wire_cst_list_record_string_opt_string {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_record_string_opt_string>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_record_string_setting(
         len: i32,
     ) -> *mut wire_cst_list_record_string_setting {
@@ -11645,6 +12076,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_subscription(
+        len: i32,
+    ) -> *mut wire_cst_list_subscription {
+        let wrap = wire_cst_list_subscription {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_subscription>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_subtitles(
         len: i32,
     ) -> *mut wire_cst_list_subtitles {
@@ -11679,8 +12124,8 @@ mod io {
         OpenBrowser: wire_cst_Action_OpenBrowser,
         Popup: wire_cst_Action_Popup,
         Nav: wire_cst_Action_Nav,
-        TriggerEvent: wire_cst_Action_TriggerEvent,
         NavEntry: wire_cst_Action_NavEntry,
+        ShowToast: wire_cst_Action_ShowToast,
         nil__: (),
     }
     #[repr(C)]
@@ -11703,14 +12148,14 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_TriggerEvent {
-        event: *mut wire_cst_list_prim_u_8_strict,
-        data: *mut wire_cst_list_prim_u_8_strict,
+    pub struct wire_cst_Action_NavEntry {
+        entry: *mut wire_cst_entry_detailed,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_Action_NavEntry {
-        entry: *mut wire_cst_entry_detailed,
+    pub struct wire_cst_Action_ShowToast {
+        message: *mut wire_cst_list_prim_u_8_strict,
+        kind: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -11799,6 +12244,7 @@ mod io {
         Slot: wire_cst_CustomUI_Slot,
         Column: wire_cst_CustomUI_Column,
         Row: wire_cst_CustomUI_Row,
+        TextInput: wire_cst_CustomUI_TextInput,
         nil__: (),
     }
     #[repr(C)]
@@ -11840,28 +12286,29 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Feed {
-        event: *mut wire_cst_list_prim_u_8_strict,
+        handler: *mut wire_cst_list_prim_u_8_strict,
         data: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Button {
         label: *mut wire_cst_list_prim_u_8_strict,
-        on_click: *mut wire_cst_ui_action,
+        on_click: *mut wire_cst_interaction,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_InlineSetting {
         setting_id: *mut wire_cst_list_prim_u_8_strict,
         setting_kind: i32,
-        on_commit: *mut wire_cst_ui_action,
+        on_commit: *mut wire_cst_interaction,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Slot {
-        id: *mut wire_cst_list_prim_u_8_strict,
+        handler: *mut wire_cst_list_prim_u_8_strict,
         child: *mut wire_cst_custom_ui,
-        on_mount: *mut wire_cst_ui_action,
+        static_data: *mut wire_cst_list_prim_u_8_strict,
+        subscriptions: *mut wire_cst_list_subscription,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -11872,6 +12319,14 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Row {
         children: *mut wire_cst_list_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_TextInput {
+        on_change: *mut wire_cst_interaction,
+        debounce_ms: *mut i32,
+        initial: *mut wire_cst_list_prim_u_8_strict,
+        on_commit: *mut wire_cst_interaction,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -11974,30 +12429,30 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub union EventDataKind {
-        SwapContent: wire_cst_EventData_SwapContent,
-        FeedUpdate: wire_cst_EventData_FeedUpdate,
-        Trigger: wire_cst_EventData_Trigger,
+        LoadSlot: wire_cst_EventData_LoadSlot,
+        LoadPage: wire_cst_EventData_LoadPage,
+        Invoke: wire_cst_EventData_Invoke,
         nil__: (),
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_EventData_SwapContent {
-        event: *mut wire_cst_list_prim_u_8_strict,
-        targetid: *mut wire_cst_list_prim_u_8_strict,
-        data: *mut wire_cst_list_prim_u_8_strict,
+    pub struct wire_cst_EventData_LoadSlot {
+        handler: *mut wire_cst_list_prim_u_8_strict,
+        static_data: *mut wire_cst_list_prim_u_8_strict,
+        values: *mut wire_cst_list_record_string_opt_string,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_EventData_FeedUpdate {
-        event: *mut wire_cst_list_prim_u_8_strict,
+    pub struct wire_cst_EventData_LoadPage {
+        handler: *mut wire_cst_list_prim_u_8_strict,
         data: *mut wire_cst_list_prim_u_8_strict,
         page: i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_EventData_Trigger {
-        event: *mut wire_cst_list_prim_u_8_strict,
-        data: *mut wire_cst_list_prim_u_8_strict,
+    pub struct wire_cst_EventData_Invoke {
+        handler: *mut wire_cst_list_prim_u_8_strict,
+        payload: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12008,27 +12463,20 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub union EventResultKind {
-        SwapContent: wire_cst_EventResult_SwapContent,
-        FeedUpdate: wire_cst_EventResult_FeedUpdate,
-        DoAction: wire_cst_EventResult_DoAction,
+        SlotContent: wire_cst_EventResult_SlotContent,
+        FeedPage: wire_cst_EventResult_FeedPage,
         nil__: (),
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_EventResult_SwapContent {
+    pub struct wire_cst_EventResult_SlotContent {
         customui: *mut wire_cst_custom_ui,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
-    pub struct wire_cst_EventResult_FeedUpdate {
-        customui: *mut wire_cst_list_custom_ui,
-        hasnext: *mut bool,
-        length: *mut i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_EventResult_DoAction {
-        action: *mut wire_cst_action,
+    pub struct wire_cst_EventResult_FeedPage {
+        items: *mut wire_cst_list_custom_ui,
+        has_more: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12108,6 +12556,31 @@ mod io {
         link: wire_cst_link,
         from: i32,
         to: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_interaction {
+        tag: i32,
+        kind: InteractionKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union InteractionKind {
+        Invoke: wire_cst_Interaction_Invoke,
+        WriteKey: wire_cst_Interaction_WriteKey,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Interaction_Invoke {
+        handler: *mut wire_cst_list_prim_u_8_strict,
+        payload: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_Interaction_WriteKey {
+        key: *mut wire_cst_list_prim_u_8_strict,
+        value: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12208,6 +12681,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_record_string_opt_string {
+        ptr: *mut wire_cst_record_string_opt_string,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_record_string_setting {
         ptr: *mut wire_cst_record_string_setting,
         len: i32,
@@ -12246,6 +12725,12 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_stream_source {
         ptr: *mut wire_cst_stream_source,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_subscription {
+        ptr: *mut wire_cst_subscription,
         len: i32,
     }
     #[repr(C)]
@@ -12355,6 +12840,12 @@ mod io {
     pub struct wire_cst_record_string_list_string {
         field0: *mut wire_cst_list_prim_u_8_strict,
         field1: *mut wire_cst_list_String,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_record_string_opt_string {
+        field0: *mut wire_cst_list_prim_u_8_strict,
+        field1: *mut wire_cst_list_prim_u_8_strict,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12536,6 +13027,30 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_subscription {
+        source: wire_cst_subscription_source,
+        key: *mut wire_cst_list_prim_u_8_strict,
+        state_key: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_subscription_source {
+        tag: i32,
+        kind: SubscriptionSourceKind,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub union SubscriptionSourceKind {
+        Setting: wire_cst_SubscriptionSource_Setting,
+        nil__: (),
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SubscriptionSource_Setting {
+        kind: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_subtitles {
         title: *mut wire_cst_list_prim_u_8_strict,
         lang: *mut wire_cst_list_prim_u_8_strict,
@@ -12551,32 +13066,6 @@ mod io {
         code: *mut bool,
         link: *mut wire_cst_list_prim_u_8_strict,
         font_size: *mut i32,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_ui_action {
-        tag: i32,
-        kind: UIActionKind,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub union UIActionKind {
-        Action: wire_cst_UIAction_Action,
-        SwapContent: wire_cst_UIAction_SwapContent,
-        nil__: (),
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_UIAction_Action {
-        action: *mut wire_cst_action,
-    }
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct wire_cst_UIAction_SwapContent {
-        targetid: *mut wire_cst_list_prim_u_8_strict,
-        event: *mut wire_cst_list_prim_u_8_strict,
-        data: *mut wire_cst_list_prim_u_8_strict,
-        placeholder: *mut wire_cst_custom_ui,
     }
 }
 #[cfg(not(target_family = "wasm"))]

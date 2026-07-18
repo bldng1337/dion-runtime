@@ -2,11 +2,21 @@ targets:
   $default:
     sources:
       exclude:
-        - example/ios/.symlinks
-        - example/linux/.symlinks
-        - example/android/.symlinks
-        - example/windows/.symlinks
-        - example/linux/flutter/ephemeral/.plugin_symlinks
-        - example/android/flutter/ephemeral/.plugin_symlinks
-        - example/ios/flutter/ephemeral/.plugin_symlinks
-        - example/windows/flutter/ephemeral/.plugin_symlinks
+        # Old-style platform symlinks (CocoaPods, Gradle, etc.)
+        - example/ios/.symlinks/**
+        - example/linux/.symlinks/**
+        - example/android/.symlinks/**
+        - example/windows/.symlinks/**
+        - example/macos/.symlinks/**
+        # New-style Flutter ephemeral plugin symlinks. These point back to the
+        # plugin itself (path dependency), so without `**` here build_runner
+        # recursively scans the package's own rust/target/frb_dump output and
+        # fails on generated dump files (e.g. `@sealed` on CancelTokenImpl).
+        - example/ios/flutter/ephemeral/.plugin_symlinks/**
+        - example/android/flutter/ephemeral/.plugin_symlinks/**
+        - example/linux/flutter/ephemeral/.plugin_symlinks/**
+        - example/windows/flutter/ephemeral/.plugin_symlinks/**
+        - example/macos/flutter/ephemeral/.plugin_symlinks/**
+        # flutter_rust_bridge dump output (dump_all: true) is not meant to be
+        # compiled by json_serializable/freezed.
+        - rust/target/**

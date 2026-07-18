@@ -13,7 +13,7 @@ import 'settings.dart';
 import 'source.dart';
 part 'action.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
 @freezed
 sealed class Action with _$Action {
@@ -32,51 +32,60 @@ sealed class Action with _$Action {
     required CustomUI content,
   }) = Action_Nav;
   const factory Action.popView() = Action_PopView;
-  const factory Action.triggerEvent({
-    required String event,
-    required String data,
-  }) = Action_TriggerEvent;
   const factory Action.navEntry({
     required EntryDetailed entry,
   }) = Action_NavEntry;
+  const factory Action.showToast({
+    required String message,
+    required ToastKind kind,
+  }) = Action_ShowToast;
 }
 
 @freezed
 sealed class EventData with _$EventData {
   const EventData._();
 
-  const factory EventData.swapContent({
-    required String event,
-    required String targetid,
-    required String data,
-  }) = EventData_SwapContent;
-  const factory EventData.feedUpdate({
-    required String event,
+  const factory EventData.loadSlot({
+    required String handler,
+    required String staticData,
+    required Map<String, String?> values,
+  }) = EventData_LoadSlot;
+  const factory EventData.loadPage({
+    required String handler,
     required String data,
     required int page,
-  }) = EventData_FeedUpdate;
-  const factory EventData.trigger({
-    required String event,
-    required String data,
-  }) = EventData_Trigger;
+  }) = EventData_LoadPage;
+  const factory EventData.invoke({
+    required String handler,
+    required String payload,
+  }) = EventData_Invoke;
 }
 
 @freezed
 sealed class EventResult with _$EventResult {
   const EventResult._();
 
-  const factory EventResult.swapContent({
+  const factory EventResult.slotContent({
     required CustomUI customui,
-  }) = EventResult_SwapContent;
-  const factory EventResult.feedUpdate({
-    required List<CustomUI> customui,
-    bool? hasnext,
-    int? length,
-  }) = EventResult_FeedUpdate;
-  const factory EventResult.doAction({
-    required Action action,
-  }) = EventResult_DoAction;
-  const factory EventResult.return_() = EventResult_Return;
+  }) = EventResult_SlotContent;
+  const factory EventResult.feedPage({
+    required List<CustomUI> items,
+    required bool hasMore,
+  }) = EventResult_FeedPage;
+}
+
+@freezed
+sealed class Interaction with _$Interaction {
+  const Interaction._();
+
+  const factory Interaction.invoke({
+    required String handler,
+    required String payload,
+  }) = Interaction_Invoke;
+  const factory Interaction.writeKey({
+    required String key,
+    required String value,
+  }) = Interaction_WriteKey;
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -102,17 +111,15 @@ class PopupAction {
           onclick == other.onclick;
 }
 
-@freezed
-sealed class UIAction with _$UIAction {
-  const UIAction._();
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum ToastKind {
+  info,
+  success,
+  warning,
+  error,
+  ;
 
-  const factory UIAction.action({
-    required Action action,
-  }) = UIAction_Action;
-  const factory UIAction.swapContent({
-    required String targetid,
-    required String event,
-    required String data,
-    CustomUI? placeholder,
-  }) = UIAction_SwapContent;
+  static Future<ToastKind> default_() =>
+      RustLib.instance.api.dionRuntimeDataActionToastKindDefault();
 }

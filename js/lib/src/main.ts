@@ -1,25 +1,53 @@
 import type {
-	Extension,
-	ProxyRequest,
-	ProxyResponse,
-} from "@dion-js/runtime-types/extension";
-import type {
 	Account,
 	EventData,
 	EventResult,
 } from "@dion-js/runtime-types/runtime";
+import type {
+	Extension,
+	ProxyRequest,
+	ProxyResponse,
+} from "@dion-js/runtime-types/extension";
 import type { AuthAccount } from "./auth.ts";
-import type { Region } from "./region.js";
-import { routeEvent } from "./region.js";
-import type { ExtensionSetting, Settingvalues } from "./settings.js";
-import { BaseTrigger, routeTrigger, Trigger } from "./trigger.ts";
+import type { Component } from "./component.js";
+import type { FeedComponent } from "./feed.js";
+import type { Trigger } from "./trigger.js";
+import type {
+	EntrySettingHandle,
+	ExtensionSetting,
+	Settingvalues,
+} from "./settings.js";
 
 type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably not really better than casting to any
+
+function findByName<T>(
+	registry: Record<string, T>,
+	name: string,
+): T | undefined {
+	for (const v of Object.values(registry)) {
+		if (
+			v !== null &&
+			typeof v === "object" &&
+			(name as unknown) === (v as { name?: string }).name
+		) {
+			return v;
+		}
+	}
+	return undefined;
+}
+
 export abstract class DionExtension implements Extension {
 	abstract settings: { [key: string]: ExtensionSetting<Settingvalues> };
 	abstract accounts: { [key: string]: AuthAccount };
-	regions: { [key: string]: Region } = {};
-	triggers: { [key: string]: BaseTrigger } = {};
+	abstract entrySettings: { [key: string]: EntrySettingHandle<Settingvalues> };
+
+	signals: { [key: string]: unknown } = {};
+	// biome-ignore lint/suspicious/noExplicitAny: registry holds heterogeneous handlers
+	components: { [key: string]: Component<any> } = {};
+	// biome-ignore lint/suspicious/noExplicitAny: registry holds heterogeneous handlers
+	feeds: { [key: string]: FeedComponent<any> } = {};
+	// biome-ignore lint/suspicious/noExplicitAny: registry holds heterogeneous handlers
+	triggers: { [key: string]: Trigger<any> } = {};
 
 	async validate(acc: Account): Promise<Account | undefined> {
 		for (const account of Object.values(this.accounts)) {
@@ -39,6 +67,7 @@ export abstract class DionExtension implements Extension {
 			};
 		}
 	}
+
 	async load() {
 		for (const setting of Object.values(this.settings)) {
 			await setting.register();
@@ -61,11 +90,44 @@ export abstract class DionExtension implements Extension {
 			this.mapSource = (this.mapSource as bindable).bind(this);
 		await this.onload();
 	}
+
 	async onEvent(data: EventData): Promise<EventResult | undefined> {
-		if (data.type === "FeedUpdate" || data.type === "SwapContent") {
-			return await routeEvent(this.regions, data);
+		switch (data.type) {
+			case "LoadSlot": {
+				const component = findByName(this.components, data.handler);
+				if (!component) return undefined;
+				const values: Record<string, unknown> = {};
+				for (const [k, v] of Object.entries(data.values)) {
+					values[k] = v === null ? null : JSON.parse(v);
+				}
+				const customui = await component.run(data.static_data, values);
+				return { type: "SlotContent", customui };
+			}
+			case "LoadPage": {
+				const feed = findByName(this.feeds, data.handler);
+				if (!feed) return undefined;
+				const parsed =
+					data.data === "" || data.data === null
+						? undefined
+						: JSON.parse(data.data);
+				const res = await feed.run(parsed, data.page);
+				return {
+					type: "FeedPage",
+					items: res.items,
+					has_more: res.hasMore,
+				};
+			}
+			case "Invoke": {
+				const trigger = findByName(this.triggers, data.handler);
+				if (!trigger) return undefined;
+				const payload =
+					data.payload === "" || data.payload === null
+						? undefined
+						: JSON.parse(data.payload);
+				await trigger.run(payload);
+				return undefined;
+			}
 		}
-		return await routeTrigger(this.triggers, data);
 	}
 
 	async handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;

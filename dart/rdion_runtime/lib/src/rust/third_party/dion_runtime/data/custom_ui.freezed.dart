@@ -26,15 +26,19 @@ mixin _$CustomUI {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,14 +50,19 @@ mixin _$CustomUI {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,14 +74,19 @@ mixin _$CustomUI {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -91,6 +105,7 @@ mixin _$CustomUI {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -108,6 +123,7 @@ mixin _$CustomUI {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -125,6 +141,7 @@ mixin _$CustomUI {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -226,15 +243,19 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return text(this.text);
   }
@@ -249,14 +270,19 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return text?.call(this.text);
   }
@@ -271,14 +297,19 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -303,6 +334,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return text(this);
   }
@@ -323,6 +355,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return text?.call(this);
   }
@@ -343,6 +376,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -460,15 +494,19 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return image(this.image, width, height);
   }
@@ -483,14 +521,19 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return image?.call(this.image, width, height);
   }
@@ -505,14 +548,19 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (image != null) {
@@ -537,6 +585,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return image(this);
   }
@@ -557,6 +606,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return image?.call(this);
   }
@@ -577,6 +627,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (image != null) {
@@ -688,15 +739,19 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return link(this.link, label);
   }
@@ -711,14 +766,19 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return link?.call(this.link, label);
   }
@@ -733,14 +793,19 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (link != null) {
@@ -765,6 +830,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return link(this);
   }
@@ -785,6 +851,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return link?.call(this);
   }
@@ -805,6 +872,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (link != null) {
@@ -917,15 +985,19 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return timestamp(this.timestamp, display);
   }
@@ -940,14 +1012,19 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return timestamp?.call(this.timestamp, display);
   }
@@ -962,14 +1039,19 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (timestamp != null) {
@@ -994,6 +1076,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return timestamp(this);
   }
@@ -1014,6 +1097,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return timestamp?.call(this);
   }
@@ -1034,6 +1118,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (timestamp != null) {
@@ -1136,15 +1221,19 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return entryCard(entry);
   }
@@ -1159,14 +1248,19 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return entryCard?.call(entry);
   }
@@ -1181,14 +1275,19 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (entryCard != null) {
@@ -1213,6 +1312,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return entryCard(this);
   }
@@ -1233,6 +1333,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return entryCard?.call(this);
   }
@@ -1253,6 +1354,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (entryCard != null) {
@@ -1393,15 +1495,19 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return card(this.image, top, bottom);
   }
@@ -1416,14 +1522,19 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return card?.call(this.image, top, bottom);
   }
@@ -1438,14 +1549,19 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (card != null) {
@@ -1470,6 +1586,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return card(this);
   }
@@ -1490,6 +1607,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return card?.call(this);
   }
@@ -1510,6 +1628,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (card != null) {
@@ -1586,15 +1705,19 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return spinner();
   }
@@ -1609,14 +1732,19 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return spinner?.call();
   }
@@ -1631,14 +1759,19 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (spinner != null) {
@@ -1663,6 +1796,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return spinner(this);
   }
@@ -1683,6 +1817,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return spinner?.call(this);
   }
@@ -1703,6 +1838,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (spinner != null) {
@@ -1723,7 +1859,7 @@ abstract class _$$CustomUI_FeedImplCopyWith<$Res> {
           _$CustomUI_FeedImpl value, $Res Function(_$CustomUI_FeedImpl) then) =
       __$$CustomUI_FeedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String event, String data});
+  $Res call({String handler, String data});
 }
 
 /// @nodoc
@@ -1739,13 +1875,13 @@ class __$$CustomUI_FeedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? event = null,
+    Object? handler = null,
     Object? data = null,
   }) {
     return _then(_$CustomUI_FeedImpl(
-      event: null == event
-          ? _value.event
-          : event // ignore: cast_nullable_to_non_nullable
+      handler: null == handler
+          ? _value.handler
+          : handler // ignore: cast_nullable_to_non_nullable
               as String,
       data: null == data
           ? _value.data
@@ -1758,17 +1894,17 @@ class __$$CustomUI_FeedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CustomUI_FeedImpl extends CustomUI_Feed {
-  const _$CustomUI_FeedImpl({required this.event, required this.data})
+  const _$CustomUI_FeedImpl({required this.handler, required this.data})
       : super._();
 
   @override
-  final String event;
+  final String handler;
   @override
   final String data;
 
   @override
   String toString() {
-    return 'CustomUI.feed(event: $event, data: $data)';
+    return 'CustomUI.feed(handler: $handler, data: $data)';
   }
 
   @override
@@ -1776,12 +1912,12 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_FeedImpl &&
-            (identical(other.event, event) || other.event == event) &&
+            (identical(other.handler, handler) || other.handler == handler) &&
             (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, event, data);
+  int get hashCode => Object.hash(runtimeType, handler, data);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -1802,17 +1938,21 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
-    return feed(event, data);
+    return feed(handler, data);
   }
 
   @override
@@ -1825,16 +1965,21 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
-    return feed?.call(event, data);
+    return feed?.call(handler, data);
   }
 
   @override
@@ -1847,18 +1992,23 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (feed != null) {
-      return feed(event, data);
+      return feed(handler, data);
     }
     return orElse();
   }
@@ -1879,6 +2029,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return feed(this);
   }
@@ -1899,6 +2050,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return feed?.call(this);
   }
@@ -1919,6 +2071,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (feed != null) {
@@ -1930,11 +2083,11 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
 
 abstract class CustomUI_Feed extends CustomUI {
   const factory CustomUI_Feed(
-      {required final String event,
+      {required final String handler,
       required final String data}) = _$CustomUI_FeedImpl;
   const CustomUI_Feed._() : super._();
 
-  String get event;
+  String get handler;
   String get data;
 
   /// Create a copy of CustomUI
@@ -1950,9 +2103,9 @@ abstract class _$$CustomUI_ButtonImplCopyWith<$Res> {
           $Res Function(_$CustomUI_ButtonImpl) then) =
       __$$CustomUI_ButtonImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String label, UIAction? onClick});
+  $Res call({String label, Interaction? onClick});
 
-  $UIActionCopyWith<$Res>? get onClick;
+  $InteractionCopyWith<$Res>? get onClick;
 }
 
 /// @nodoc
@@ -1979,7 +2132,7 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
       onClick: freezed == onClick
           ? _value.onClick
           : onClick // ignore: cast_nullable_to_non_nullable
-              as UIAction?,
+              as Interaction?,
     ));
   }
 
@@ -1987,12 +2140,12 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UIActionCopyWith<$Res>? get onClick {
+  $InteractionCopyWith<$Res>? get onClick {
     if (_value.onClick == null) {
       return null;
     }
 
-    return $UIActionCopyWith<$Res>(_value.onClick!, (value) {
+    return $InteractionCopyWith<$Res>(_value.onClick!, (value) {
       return _then(_value.copyWith(onClick: value));
     });
   }
@@ -2006,7 +2159,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
   @override
   final String label;
   @override
-  final UIAction? onClick;
+  final Interaction? onClick;
 
   @override
   String toString() {
@@ -2045,15 +2198,19 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return button(label, onClick);
   }
@@ -2068,14 +2225,19 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return button?.call(label, onClick);
   }
@@ -2090,14 +2252,19 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (button != null) {
@@ -2122,6 +2289,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return button(this);
   }
@@ -2142,6 +2310,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return button?.call(this);
   }
@@ -2162,6 +2331,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (button != null) {
@@ -2174,11 +2344,11 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
 abstract class CustomUI_Button extends CustomUI {
   const factory CustomUI_Button(
       {required final String label,
-      final UIAction? onClick}) = _$CustomUI_ButtonImpl;
+      final Interaction? onClick}) = _$CustomUI_ButtonImpl;
   const CustomUI_Button._() : super._();
 
   String get label;
-  UIAction? get onClick;
+  Interaction? get onClick;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2194,9 +2364,9 @@ abstract class _$$CustomUI_InlineSettingImplCopyWith<$Res> {
           $Res Function(_$CustomUI_InlineSettingImpl) then) =
       __$$CustomUI_InlineSettingImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String settingId, SettingKind settingKind, UIAction? onCommit});
+  $Res call({String settingId, SettingKind settingKind, Interaction? onCommit});
 
-  $UIActionCopyWith<$Res>? get onCommit;
+  $InteractionCopyWith<$Res>? get onCommit;
 }
 
 /// @nodoc
@@ -2229,7 +2399,7 @@ class __$$CustomUI_InlineSettingImplCopyWithImpl<$Res>
       onCommit: freezed == onCommit
           ? _value.onCommit
           : onCommit // ignore: cast_nullable_to_non_nullable
-              as UIAction?,
+              as Interaction?,
     ));
   }
 
@@ -2237,12 +2407,12 @@ class __$$CustomUI_InlineSettingImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UIActionCopyWith<$Res>? get onCommit {
+  $InteractionCopyWith<$Res>? get onCommit {
     if (_value.onCommit == null) {
       return null;
     }
 
-    return $UIActionCopyWith<$Res>(_value.onCommit!, (value) {
+    return $InteractionCopyWith<$Res>(_value.onCommit!, (value) {
       return _then(_value.copyWith(onCommit: value));
     });
   }
@@ -2260,7 +2430,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
   @override
   final SettingKind settingKind;
   @override
-  final UIAction? onCommit;
+  final Interaction? onCommit;
 
   @override
   String toString() {
@@ -2304,15 +2474,19 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return inlineSetting(settingId, settingKind, onCommit);
   }
@@ -2327,14 +2501,19 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return inlineSetting?.call(settingId, settingKind, onCommit);
   }
@@ -2349,14 +2528,19 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (inlineSetting != null) {
@@ -2381,6 +2565,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return inlineSetting(this);
   }
@@ -2401,6 +2586,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return inlineSetting?.call(this);
   }
@@ -2421,6 +2607,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (inlineSetting != null) {
@@ -2434,12 +2621,12 @@ abstract class CustomUI_InlineSetting extends CustomUI {
   const factory CustomUI_InlineSetting(
       {required final String settingId,
       required final SettingKind settingKind,
-      final UIAction? onCommit}) = _$CustomUI_InlineSettingImpl;
+      final Interaction? onCommit}) = _$CustomUI_InlineSettingImpl;
   const CustomUI_InlineSetting._() : super._();
 
   String get settingId;
   SettingKind get settingKind;
-  UIAction? get onCommit;
+  Interaction? get onCommit;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2454,10 +2641,13 @@ abstract class _$$CustomUI_SlotImplCopyWith<$Res> {
           _$CustomUI_SlotImpl value, $Res Function(_$CustomUI_SlotImpl) then) =
       __$$CustomUI_SlotImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String id, CustomUI child, UIAction? onMount});
+  $Res call(
+      {String handler,
+      CustomUI child,
+      String staticData,
+      List<Subscription> subscriptions});
 
   $CustomUICopyWith<$Res> get child;
-  $UIActionCopyWith<$Res>? get onMount;
 }
 
 /// @nodoc
@@ -2473,23 +2663,28 @@ class __$$CustomUI_SlotImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? handler = null,
     Object? child = null,
-    Object? onMount = freezed,
+    Object? staticData = null,
+    Object? subscriptions = null,
   }) {
     return _then(_$CustomUI_SlotImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      handler: null == handler
+          ? _value.handler
+          : handler // ignore: cast_nullable_to_non_nullable
               as String,
       child: null == child
           ? _value.child
           : child // ignore: cast_nullable_to_non_nullable
               as CustomUI,
-      onMount: freezed == onMount
-          ? _value.onMount
-          : onMount // ignore: cast_nullable_to_non_nullable
-              as UIAction?,
+      staticData: null == staticData
+          ? _value.staticData
+          : staticData // ignore: cast_nullable_to_non_nullable
+              as String,
+      subscriptions: null == subscriptions
+          ? _value._subscriptions
+          : subscriptions // ignore: cast_nullable_to_non_nullable
+              as List<Subscription>,
     ));
   }
 
@@ -2502,39 +2697,36 @@ class __$$CustomUI_SlotImplCopyWithImpl<$Res>
       return _then(_value.copyWith(child: value));
     });
   }
-
-  /// Create a copy of CustomUI
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UIActionCopyWith<$Res>? get onMount {
-    if (_value.onMount == null) {
-      return null;
-    }
-
-    return $UIActionCopyWith<$Res>(_value.onMount!, (value) {
-      return _then(_value.copyWith(onMount: value));
-    });
-  }
 }
 
 /// @nodoc
 
 class _$CustomUI_SlotImpl extends CustomUI_Slot {
   const _$CustomUI_SlotImpl(
-      {required this.id, required this.child, this.onMount})
-      : super._();
+      {required this.handler,
+      required this.child,
+      required this.staticData,
+      required final List<Subscription> subscriptions})
+      : _subscriptions = subscriptions,
+        super._();
 
   @override
-  final String id;
+  final String handler;
   @override
   final CustomUI child;
   @override
-  final UIAction? onMount;
+  final String staticData;
+  final List<Subscription> _subscriptions;
+  @override
+  List<Subscription> get subscriptions {
+    if (_subscriptions is EqualUnmodifiableListView) return _subscriptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_subscriptions);
+  }
 
   @override
   String toString() {
-    return 'CustomUI.slot(id: $id, child: $child, onMount: $onMount)';
+    return 'CustomUI.slot(handler: $handler, child: $child, staticData: $staticData, subscriptions: $subscriptions)';
   }
 
   @override
@@ -2542,13 +2734,17 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_SlotImpl &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.handler, handler) || other.handler == handler) &&
             (identical(other.child, child) || other.child == child) &&
-            (identical(other.onMount, onMount) || other.onMount == onMount));
+            (identical(other.staticData, staticData) ||
+                other.staticData == staticData) &&
+            const DeepCollectionEquality()
+                .equals(other._subscriptions, _subscriptions));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, child, onMount);
+  int get hashCode => Object.hash(runtimeType, handler, child, staticData,
+      const DeepCollectionEquality().hash(_subscriptions));
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2569,17 +2765,21 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
-    return slot(id, child, onMount);
+    return slot(handler, child, staticData, subscriptions);
   }
 
   @override
@@ -2592,16 +2792,21 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
-    return slot?.call(id, child, onMount);
+    return slot?.call(handler, child, staticData, subscriptions);
   }
 
   @override
@@ -2614,18 +2819,23 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (slot != null) {
-      return slot(id, child, onMount);
+      return slot(handler, child, staticData, subscriptions);
     }
     return orElse();
   }
@@ -2646,6 +2856,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return slot(this);
   }
@@ -2666,6 +2877,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return slot?.call(this);
   }
@@ -2686,6 +2898,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (slot != null) {
@@ -2697,14 +2910,16 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
 
 abstract class CustomUI_Slot extends CustomUI {
   const factory CustomUI_Slot(
-      {required final String id,
+      {required final String handler,
       required final CustomUI child,
-      final UIAction? onMount}) = _$CustomUI_SlotImpl;
+      required final String staticData,
+      required final List<Subscription> subscriptions}) = _$CustomUI_SlotImpl;
   const CustomUI_Slot._() : super._();
 
-  String get id;
+  String get handler;
   CustomUI get child;
-  UIAction? get onMount;
+  String get staticData;
+  List<Subscription> get subscriptions;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2798,15 +3013,19 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return column(children);
   }
@@ -2821,14 +3040,19 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return column?.call(children);
   }
@@ -2843,14 +3067,19 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (column != null) {
@@ -2875,6 +3104,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return column(this);
   }
@@ -2895,6 +3125,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return column?.call(this);
   }
@@ -2915,6 +3146,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (column != null) {
@@ -3022,15 +3254,19 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     required TResult Function(Entry entry) entryCard,
     required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
     required TResult Function() spinner,
-    required TResult Function(String event, String data) feed,
-    required TResult Function(String label, UIAction? onClick) button,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
     required TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)
+            String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
-    required TResult Function(String id, CustomUI child, UIAction? onMount)
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
         slot,
     required TResult Function(List<CustomUI> children) column,
     required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
   }) {
     return row(children);
   }
@@ -3045,14 +3281,19 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult? Function()? spinner,
-    TResult? Function(String event, String data)? feed,
-    TResult? Function(String label, UIAction? onClick)? button,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
     TResult? Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult? Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult? Function(List<CustomUI> children)? column,
     TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
   }) {
     return row?.call(children);
   }
@@ -3067,14 +3308,19 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult Function(Entry entry)? entryCard,
     TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
     TResult Function()? spinner,
-    TResult Function(String event, String data)? feed,
-    TResult Function(String label, UIAction? onClick)? button,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
     TResult Function(
-            String settingId, SettingKind settingKind, UIAction? onCommit)?
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
-    TResult Function(String id, CustomUI child, UIAction? onMount)? slot,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
     TResult Function(List<CustomUI> children)? column,
     TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
     required TResult orElse(),
   }) {
     if (row != null) {
@@ -3099,6 +3345,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     required TResult Function(CustomUI_Slot value) slot,
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
   }) {
     return row(this);
   }
@@ -3119,6 +3366,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult? Function(CustomUI_Slot value)? slot,
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
   }) {
     return row?.call(this);
   }
@@ -3139,6 +3387,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult Function(CustomUI_Slot value)? slot,
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
     required TResult orElse(),
   }) {
     if (row != null) {
@@ -3160,4 +3409,768 @@ abstract class CustomUI_Row extends CustomUI {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomUI_RowImplCopyWith<_$CustomUI_RowImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_TextInputImplCopyWith<$Res> {
+  factory _$$CustomUI_TextInputImplCopyWith(_$CustomUI_TextInputImpl value,
+          $Res Function(_$CustomUI_TextInputImpl) then) =
+      __$$CustomUI_TextInputImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {Interaction? onChange,
+      int? debounceMs,
+      String? initial,
+      Interaction? onCommit});
+
+  $InteractionCopyWith<$Res>? get onChange;
+  $InteractionCopyWith<$Res>? get onCommit;
+}
+
+/// @nodoc
+class __$$CustomUI_TextInputImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_TextInputImpl>
+    implements _$$CustomUI_TextInputImplCopyWith<$Res> {
+  __$$CustomUI_TextInputImplCopyWithImpl(_$CustomUI_TextInputImpl _value,
+      $Res Function(_$CustomUI_TextInputImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? onChange = freezed,
+    Object? debounceMs = freezed,
+    Object? initial = freezed,
+    Object? onCommit = freezed,
+  }) {
+    return _then(_$CustomUI_TextInputImpl(
+      onChange: freezed == onChange
+          ? _value.onChange
+          : onChange // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+      debounceMs: freezed == debounceMs
+          ? _value.debounceMs
+          : debounceMs // ignore: cast_nullable_to_non_nullable
+              as int?,
+      initial: freezed == initial
+          ? _value.initial
+          : initial // ignore: cast_nullable_to_non_nullable
+              as String?,
+      onCommit: freezed == onCommit
+          ? _value.onCommit
+          : onCommit // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onChange {
+    if (_value.onChange == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onChange!, (value) {
+      return _then(_value.copyWith(onChange: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onCommit {
+    if (_value.onCommit == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onCommit!, (value) {
+      return _then(_value.copyWith(onCommit: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
+  const _$CustomUI_TextInputImpl(
+      {this.onChange, this.debounceMs, this.initial, this.onCommit})
+      : super._();
+
+  @override
+  final Interaction? onChange;
+  @override
+  final int? debounceMs;
+  @override
+  final String? initial;
+  @override
+  final Interaction? onCommit;
+
+  @override
+  String toString() {
+    return 'CustomUI.textInput(onChange: $onChange, debounceMs: $debounceMs, initial: $initial, onCommit: $onCommit)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_TextInputImpl &&
+            (identical(other.onChange, onChange) ||
+                other.onChange == onChange) &&
+            (identical(other.debounceMs, debounceMs) ||
+                other.debounceMs == debounceMs) &&
+            (identical(other.initial, initial) || other.initial == initial) &&
+            (identical(other.onCommit, onCommit) ||
+                other.onCommit == onCommit));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, onChange, debounceMs, initial, onCommit);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_TextInputImplCopyWith<_$CustomUI_TextInputImpl> get copyWith =>
+      __$$CustomUI_TextInputImplCopyWithImpl<_$CustomUI_TextInputImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(List<CustomUI> children) column,
+    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+  }) {
+    return textInput(onChange, debounceMs, initial, onCommit);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(List<CustomUI> children)? column,
+    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+  }) {
+    return textInput?.call(onChange, debounceMs, initial, onCommit);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(List<CustomUI> children)? column,
+    TResult Function(List<CustomUI> children)? row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    required TResult orElse(),
+  }) {
+    if (textInput != null) {
+      return textInput(onChange, debounceMs, initial, onCommit);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+  }) {
+    return textInput(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+  }) {
+    return textInput?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    required TResult orElse(),
+  }) {
+    if (textInput != null) {
+      return textInput(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_TextInput extends CustomUI {
+  const factory CustomUI_TextInput(
+      {final Interaction? onChange,
+      final int? debounceMs,
+      final String? initial,
+      final Interaction? onCommit}) = _$CustomUI_TextInputImpl;
+  const CustomUI_TextInput._() : super._();
+
+  Interaction? get onChange;
+  int? get debounceMs;
+  String? get initial;
+  Interaction? get onCommit;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_TextInputImplCopyWith<_$CustomUI_TextInputImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$SubscriptionSource {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() store,
+    required TResult Function(SettingKind kind) setting,
+    required TResult Function() entrySetting,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? store,
+    TResult? Function(SettingKind kind)? setting,
+    TResult? Function()? entrySetting,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? store,
+    TResult Function(SettingKind kind)? setting,
+    TResult Function()? entrySetting,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SubscriptionSource_Store value) store,
+    required TResult Function(SubscriptionSource_Setting value) setting,
+    required TResult Function(SubscriptionSource_EntrySetting value)
+        entrySetting,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SubscriptionSource_Store value)? store,
+    TResult? Function(SubscriptionSource_Setting value)? setting,
+    TResult? Function(SubscriptionSource_EntrySetting value)? entrySetting,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SubscriptionSource_Store value)? store,
+    TResult Function(SubscriptionSource_Setting value)? setting,
+    TResult Function(SubscriptionSource_EntrySetting value)? entrySetting,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SubscriptionSourceCopyWith<$Res> {
+  factory $SubscriptionSourceCopyWith(
+          SubscriptionSource value, $Res Function(SubscriptionSource) then) =
+      _$SubscriptionSourceCopyWithImpl<$Res, SubscriptionSource>;
+}
+
+/// @nodoc
+class _$SubscriptionSourceCopyWithImpl<$Res, $Val extends SubscriptionSource>
+    implements $SubscriptionSourceCopyWith<$Res> {
+  _$SubscriptionSourceCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$SubscriptionSource_StoreImplCopyWith<$Res> {
+  factory _$$SubscriptionSource_StoreImplCopyWith(
+          _$SubscriptionSource_StoreImpl value,
+          $Res Function(_$SubscriptionSource_StoreImpl) then) =
+      __$$SubscriptionSource_StoreImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SubscriptionSource_StoreImplCopyWithImpl<$Res>
+    extends _$SubscriptionSourceCopyWithImpl<$Res,
+        _$SubscriptionSource_StoreImpl>
+    implements _$$SubscriptionSource_StoreImplCopyWith<$Res> {
+  __$$SubscriptionSource_StoreImplCopyWithImpl(
+      _$SubscriptionSource_StoreImpl _value,
+      $Res Function(_$SubscriptionSource_StoreImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SubscriptionSource_StoreImpl extends SubscriptionSource_Store {
+  const _$SubscriptionSource_StoreImpl() : super._();
+
+  @override
+  String toString() {
+    return 'SubscriptionSource.store()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubscriptionSource_StoreImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() store,
+    required TResult Function(SettingKind kind) setting,
+    required TResult Function() entrySetting,
+  }) {
+    return store();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? store,
+    TResult? Function(SettingKind kind)? setting,
+    TResult? Function()? entrySetting,
+  }) {
+    return store?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? store,
+    TResult Function(SettingKind kind)? setting,
+    TResult Function()? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (store != null) {
+      return store();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SubscriptionSource_Store value) store,
+    required TResult Function(SubscriptionSource_Setting value) setting,
+    required TResult Function(SubscriptionSource_EntrySetting value)
+        entrySetting,
+  }) {
+    return store(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SubscriptionSource_Store value)? store,
+    TResult? Function(SubscriptionSource_Setting value)? setting,
+    TResult? Function(SubscriptionSource_EntrySetting value)? entrySetting,
+  }) {
+    return store?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SubscriptionSource_Store value)? store,
+    TResult Function(SubscriptionSource_Setting value)? setting,
+    TResult Function(SubscriptionSource_EntrySetting value)? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (store != null) {
+      return store(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SubscriptionSource_Store extends SubscriptionSource {
+  const factory SubscriptionSource_Store() = _$SubscriptionSource_StoreImpl;
+  const SubscriptionSource_Store._() : super._();
+}
+
+/// @nodoc
+abstract class _$$SubscriptionSource_SettingImplCopyWith<$Res> {
+  factory _$$SubscriptionSource_SettingImplCopyWith(
+          _$SubscriptionSource_SettingImpl value,
+          $Res Function(_$SubscriptionSource_SettingImpl) then) =
+      __$$SubscriptionSource_SettingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SettingKind kind});
+}
+
+/// @nodoc
+class __$$SubscriptionSource_SettingImplCopyWithImpl<$Res>
+    extends _$SubscriptionSourceCopyWithImpl<$Res,
+        _$SubscriptionSource_SettingImpl>
+    implements _$$SubscriptionSource_SettingImplCopyWith<$Res> {
+  __$$SubscriptionSource_SettingImplCopyWithImpl(
+      _$SubscriptionSource_SettingImpl _value,
+      $Res Function(_$SubscriptionSource_SettingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? kind = null,
+  }) {
+    return _then(_$SubscriptionSource_SettingImpl(
+      kind: null == kind
+          ? _value.kind
+          : kind // ignore: cast_nullable_to_non_nullable
+              as SettingKind,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SubscriptionSource_SettingImpl extends SubscriptionSource_Setting {
+  const _$SubscriptionSource_SettingImpl({required this.kind}) : super._();
+
+  @override
+  final SettingKind kind;
+
+  @override
+  String toString() {
+    return 'SubscriptionSource.setting(kind: $kind)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubscriptionSource_SettingImpl &&
+            (identical(other.kind, kind) || other.kind == kind));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, kind);
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SubscriptionSource_SettingImplCopyWith<_$SubscriptionSource_SettingImpl>
+      get copyWith => __$$SubscriptionSource_SettingImplCopyWithImpl<
+          _$SubscriptionSource_SettingImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() store,
+    required TResult Function(SettingKind kind) setting,
+    required TResult Function() entrySetting,
+  }) {
+    return setting(kind);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? store,
+    TResult? Function(SettingKind kind)? setting,
+    TResult? Function()? entrySetting,
+  }) {
+    return setting?.call(kind);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? store,
+    TResult Function(SettingKind kind)? setting,
+    TResult Function()? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (setting != null) {
+      return setting(kind);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SubscriptionSource_Store value) store,
+    required TResult Function(SubscriptionSource_Setting value) setting,
+    required TResult Function(SubscriptionSource_EntrySetting value)
+        entrySetting,
+  }) {
+    return setting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SubscriptionSource_Store value)? store,
+    TResult? Function(SubscriptionSource_Setting value)? setting,
+    TResult? Function(SubscriptionSource_EntrySetting value)? entrySetting,
+  }) {
+    return setting?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SubscriptionSource_Store value)? store,
+    TResult Function(SubscriptionSource_Setting value)? setting,
+    TResult Function(SubscriptionSource_EntrySetting value)? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (setting != null) {
+      return setting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SubscriptionSource_Setting extends SubscriptionSource {
+  const factory SubscriptionSource_Setting({required final SettingKind kind}) =
+      _$SubscriptionSource_SettingImpl;
+  const SubscriptionSource_Setting._() : super._();
+
+  SettingKind get kind;
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SubscriptionSource_SettingImplCopyWith<_$SubscriptionSource_SettingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SubscriptionSource_EntrySettingImplCopyWith<$Res> {
+  factory _$$SubscriptionSource_EntrySettingImplCopyWith(
+          _$SubscriptionSource_EntrySettingImpl value,
+          $Res Function(_$SubscriptionSource_EntrySettingImpl) then) =
+      __$$SubscriptionSource_EntrySettingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SubscriptionSource_EntrySettingImplCopyWithImpl<$Res>
+    extends _$SubscriptionSourceCopyWithImpl<$Res,
+        _$SubscriptionSource_EntrySettingImpl>
+    implements _$$SubscriptionSource_EntrySettingImplCopyWith<$Res> {
+  __$$SubscriptionSource_EntrySettingImplCopyWithImpl(
+      _$SubscriptionSource_EntrySettingImpl _value,
+      $Res Function(_$SubscriptionSource_EntrySettingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SubscriptionSource
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SubscriptionSource_EntrySettingImpl
+    extends SubscriptionSource_EntrySetting {
+  const _$SubscriptionSource_EntrySettingImpl() : super._();
+
+  @override
+  String toString() {
+    return 'SubscriptionSource.entrySetting()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubscriptionSource_EntrySettingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() store,
+    required TResult Function(SettingKind kind) setting,
+    required TResult Function() entrySetting,
+  }) {
+    return entrySetting();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? store,
+    TResult? Function(SettingKind kind)? setting,
+    TResult? Function()? entrySetting,
+  }) {
+    return entrySetting?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? store,
+    TResult Function(SettingKind kind)? setting,
+    TResult Function()? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (entrySetting != null) {
+      return entrySetting();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SubscriptionSource_Store value) store,
+    required TResult Function(SubscriptionSource_Setting value) setting,
+    required TResult Function(SubscriptionSource_EntrySetting value)
+        entrySetting,
+  }) {
+    return entrySetting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SubscriptionSource_Store value)? store,
+    TResult? Function(SubscriptionSource_Setting value)? setting,
+    TResult? Function(SubscriptionSource_EntrySetting value)? entrySetting,
+  }) {
+    return entrySetting?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SubscriptionSource_Store value)? store,
+    TResult Function(SubscriptionSource_Setting value)? setting,
+    TResult Function(SubscriptionSource_EntrySetting value)? entrySetting,
+    required TResult orElse(),
+  }) {
+    if (entrySetting != null) {
+      return entrySetting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SubscriptionSource_EntrySetting extends SubscriptionSource {
+  const factory SubscriptionSource_EntrySetting() =
+      _$SubscriptionSource_EntrySettingImpl;
+  const SubscriptionSource_EntrySetting._() : super._();
 }
