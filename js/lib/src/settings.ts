@@ -7,7 +7,7 @@ import type {
 	SettingsUI,
 	SettingValue,
 } from "@dion-js/runtime-types/runtime";
-import { getSetting, registerSetting } from "setting";
+import { getSetting, registerSetting, setEntrySetting } from "setting";
 import { assertDefined } from "./asserts.js";
 import type { SubRef } from "./signal.js";
 import { logerr } from "./util.js";
@@ -59,10 +59,10 @@ export class SettingStore {
 		ui,
 	}: {
 		id: string;
-		defaultval: T;
+		defaultval: ExcludeLiteral<T>;
 		label?: string;
 		visible?: boolean;
-		ui?: UI<ExcludeLiteral<T>>;
+		ui?: UI<T>;
 	}): ExcludeLiteral<T> {
 		if (!this.touched.includes(id)) {
 			this.touched.push(id);
@@ -463,7 +463,12 @@ export class EntrySettingHandle<T extends Settingvalues> {
 		setting.default = toSettingValue(defaultval);
 		store.settings[this.id] = setting;
 		return new EntrySetting(this, store, defaultval);
-	}
+  }
+
+
+  async setSetting(entry: EntryId, value: ExcludeLiteral<T>) {
+    await setEntrySetting(entry, this.id, toSettingValue(value));
+  }
 
 	asSubRef(entryId: EntryId): SubRef<T> {
 		return {
@@ -479,7 +484,8 @@ export class EntrySetting<T extends Settingvalues> {
 	store: SettingStore;
 	defaultvalue: ExcludeLiteral<T>;
 	visible = true;
-	label?: string;
+  label?: string;
+	ui?: UI<T>;
 
 	constructor(
 		handle: EntrySettingHandle<T>,
@@ -491,17 +497,38 @@ export class EntrySetting<T extends Settingvalues> {
 		this.defaultvalue = defaultvalue;
 	}
 
-	get<T extends Settingvalues>(id: string): ExcludeLiteral<T> {
+  get<T extends Settingvalues>(): ExcludeLiteral<T> {
+    const id = this.handle.id;
 		assertDefined(
 			this.store.settings[id],
 			`[SettingStore.get] Setting not found: ${id}`,
 		);
 		return this.store.settings[id].value.data as ExcludeLiteral<T>;
-	}
+  }
+
+  setUI(ui: UI<ExcludeLiteral<T>>): this {
+    const setting = this.store.settings[this.handle.id];
+    if (setting) {
+      setting.ui = ui.getDefinition();
+      this.store.settings[this.handle.id] = setting;
+    }
+    return this;
+  }
+
+  define():this {
+    this.store.getOrDefine({
+      id: this.handle.id,
+      defaultval: this.defaultvalue,
+      label: this.label,
+      visible: this.visible,
+      ui: this.ui,
+    });
+    return this;
+  }
 
 	tryGet<T extends Settingvalues>(id: string): ExcludeLiteral<T> | undefined {
 		return this.store.settings[id]?.value.data as ExcludeLiteral<T>;
-	}
+  }
 
 	asSubRef(entryId: EntryId): SubRef<T> {
 		return {
