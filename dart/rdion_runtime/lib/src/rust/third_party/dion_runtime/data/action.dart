@@ -13,7 +13,7 @@ import 'settings.dart';
 import 'source.dart';
 part 'action.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
 @freezed
 sealed class Action with _$Action {
@@ -48,7 +48,7 @@ sealed class EventData with _$EventData {
   const factory EventData.loadSlot({
     required String handler,
     required String staticData,
-    required Map<String, String?> values,
+    required Map<String, SlotValue> values,
   }) = EventData_LoadSlot;
   const factory EventData.loadPage({
     required String handler,
@@ -109,6 +109,19 @@ class PopupAction {
           runtimeType == other.runtimeType &&
           label == other.label &&
           onclick == other.onclick;
+}
+
+@freezed
+sealed class SlotValue with _$SlotValue {
+  const SlotValue._();
+
+  const factory SlotValue.setting({
+    required SettingValue value,
+  }) = SlotValue_Setting;
+  const factory SlotValue.store({
+    required String key,
+    required String value,
+  }) = SlotValue_Store;
 }
 
 /// flutter_rust_bridge:non_opaque

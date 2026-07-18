@@ -1181,7 +1181,7 @@ mixin _$EventData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String handler, String staticData, Map<String, String?> values)
+            String handler, String staticData, Map<String, SlotValue> values)
         loadSlot,
     required TResult Function(String handler, String data, int page) loadPage,
     required TResult Function(String handler, String payload) invoke,
@@ -1190,7 +1190,7 @@ mixin _$EventData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult? Function(String handler, String data, int page)? loadPage,
     TResult? Function(String handler, String payload)? invoke,
@@ -1199,7 +1199,7 @@ mixin _$EventData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult Function(String handler, String data, int page)? loadPage,
     TResult Function(String handler, String payload)? invoke,
@@ -1278,7 +1278,7 @@ abstract class _$$EventData_LoadSlotImplCopyWith<$Res>
       __$$EventData_LoadSlotImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String handler, String staticData, Map<String, String?> values});
+  $Res call({String handler, String staticData, Map<String, SlotValue> values});
 }
 
 /// @nodoc
@@ -1310,7 +1310,7 @@ class __$$EventData_LoadSlotImplCopyWithImpl<$Res>
       values: null == values
           ? _value._values
           : values // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
+              as Map<String, SlotValue>,
     ));
   }
 }
@@ -1321,7 +1321,7 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   const _$EventData_LoadSlotImpl(
       {required this.handler,
       required this.staticData,
-      required final Map<String, String?> values})
+      required final Map<String, SlotValue> values})
       : _values = values,
         super._();
 
@@ -1329,9 +1329,9 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   final String handler;
   @override
   final String staticData;
-  final Map<String, String?> _values;
+  final Map<String, SlotValue> _values;
   @override
-  Map<String, String?> get values {
+  Map<String, SlotValue> get values {
     if (_values is EqualUnmodifiableMapView) return _values;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_values);
@@ -1370,7 +1370,7 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String handler, String staticData, Map<String, String?> values)
+            String handler, String staticData, Map<String, SlotValue> values)
         loadSlot,
     required TResult Function(String handler, String data, int page) loadPage,
     required TResult Function(String handler, String payload) invoke,
@@ -1382,7 +1382,7 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult? Function(String handler, String data, int page)? loadPage,
     TResult? Function(String handler, String payload)? invoke,
@@ -1394,7 +1394,7 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult Function(String handler, String data, int page)? loadPage,
     TResult Function(String handler, String payload)? invoke,
@@ -1445,13 +1445,13 @@ abstract class EventData_LoadSlot extends EventData {
   const factory EventData_LoadSlot(
       {required final String handler,
       required final String staticData,
-      required final Map<String, String?> values}) = _$EventData_LoadSlotImpl;
+      required final Map<String, SlotValue> values}) = _$EventData_LoadSlotImpl;
   const EventData_LoadSlot._() : super._();
 
   @override
   String get handler;
   String get staticData;
-  Map<String, String?> get values;
+  Map<String, SlotValue> get values;
 
   /// Create a copy of EventData
   /// with the given fields replaced by the non-null parameter values.
@@ -1551,7 +1551,7 @@ class _$EventData_LoadPageImpl extends EventData_LoadPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String handler, String staticData, Map<String, String?> values)
+            String handler, String staticData, Map<String, SlotValue> values)
         loadSlot,
     required TResult Function(String handler, String data, int page) loadPage,
     required TResult Function(String handler, String payload) invoke,
@@ -1563,7 +1563,7 @@ class _$EventData_LoadPageImpl extends EventData_LoadPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult? Function(String handler, String data, int page)? loadPage,
     TResult? Function(String handler, String payload)? invoke,
@@ -1575,7 +1575,7 @@ class _$EventData_LoadPageImpl extends EventData_LoadPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult Function(String handler, String data, int page)? loadPage,
     TResult Function(String handler, String payload)? invoke,
@@ -1723,7 +1723,7 @@ class _$EventData_InvokeImpl extends EventData_Invoke {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            String handler, String staticData, Map<String, String?> values)
+            String handler, String staticData, Map<String, SlotValue> values)
         loadSlot,
     required TResult Function(String handler, String data, int page) loadPage,
     required TResult Function(String handler, String payload) invoke,
@@ -1735,7 +1735,7 @@ class _$EventData_InvokeImpl extends EventData_Invoke {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult? Function(String handler, String data, int page)? loadPage,
     TResult? Function(String handler, String payload)? invoke,
@@ -1747,7 +1747,7 @@ class _$EventData_InvokeImpl extends EventData_Invoke {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            String handler, String staticData, Map<String, String?> values)?
+            String handler, String staticData, Map<String, SlotValue> values)?
         loadSlot,
     TResult Function(String handler, String data, int page)? loadPage,
     TResult Function(String handler, String payload)? invoke,
@@ -2567,4 +2567,378 @@ abstract class Interaction_WriteKey extends Interaction {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Interaction_WriteKeyImplCopyWith<_$Interaction_WriteKeyImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$SlotValue {
+  Object get value => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SettingValue value) setting,
+    required TResult Function(String key, String value) store,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SettingValue value)? setting,
+    TResult? Function(String key, String value)? store,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SettingValue value)? setting,
+    TResult Function(String key, String value)? store,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SlotValue_Setting value) setting,
+    required TResult Function(SlotValue_Store value) store,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SlotValue_Setting value)? setting,
+    TResult? Function(SlotValue_Store value)? store,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SlotValue_Setting value)? setting,
+    TResult Function(SlotValue_Store value)? store,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SlotValueCopyWith<$Res> {
+  factory $SlotValueCopyWith(SlotValue value, $Res Function(SlotValue) then) =
+      _$SlotValueCopyWithImpl<$Res, SlotValue>;
+}
+
+/// @nodoc
+class _$SlotValueCopyWithImpl<$Res, $Val extends SlotValue>
+    implements $SlotValueCopyWith<$Res> {
+  _$SlotValueCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$SlotValue_SettingImplCopyWith<$Res> {
+  factory _$$SlotValue_SettingImplCopyWith(_$SlotValue_SettingImpl value,
+          $Res Function(_$SlotValue_SettingImpl) then) =
+      __$$SlotValue_SettingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SettingValue value});
+
+  $SettingValueCopyWith<$Res> get value;
+}
+
+/// @nodoc
+class __$$SlotValue_SettingImplCopyWithImpl<$Res>
+    extends _$SlotValueCopyWithImpl<$Res, _$SlotValue_SettingImpl>
+    implements _$$SlotValue_SettingImplCopyWith<$Res> {
+  __$$SlotValue_SettingImplCopyWithImpl(_$SlotValue_SettingImpl _value,
+      $Res Function(_$SlotValue_SettingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_$SlotValue_SettingImpl(
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as SettingValue,
+    ));
+  }
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SettingValueCopyWith<$Res> get value {
+    return $SettingValueCopyWith<$Res>(_value.value, (value) {
+      return _then(_value.copyWith(value: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$SlotValue_SettingImpl extends SlotValue_Setting {
+  const _$SlotValue_SettingImpl({required this.value}) : super._();
+
+  @override
+  final SettingValue value;
+
+  @override
+  String toString() {
+    return 'SlotValue.setting(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SlotValue_SettingImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SlotValue_SettingImplCopyWith<_$SlotValue_SettingImpl> get copyWith =>
+      __$$SlotValue_SettingImplCopyWithImpl<_$SlotValue_SettingImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SettingValue value) setting,
+    required TResult Function(String key, String value) store,
+  }) {
+    return setting(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SettingValue value)? setting,
+    TResult? Function(String key, String value)? store,
+  }) {
+    return setting?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SettingValue value)? setting,
+    TResult Function(String key, String value)? store,
+    required TResult orElse(),
+  }) {
+    if (setting != null) {
+      return setting(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SlotValue_Setting value) setting,
+    required TResult Function(SlotValue_Store value) store,
+  }) {
+    return setting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SlotValue_Setting value)? setting,
+    TResult? Function(SlotValue_Store value)? store,
+  }) {
+    return setting?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SlotValue_Setting value)? setting,
+    TResult Function(SlotValue_Store value)? store,
+    required TResult orElse(),
+  }) {
+    if (setting != null) {
+      return setting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SlotValue_Setting extends SlotValue {
+  const factory SlotValue_Setting({required final SettingValue value}) =
+      _$SlotValue_SettingImpl;
+  const SlotValue_Setting._() : super._();
+
+  @override
+  SettingValue get value;
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SlotValue_SettingImplCopyWith<_$SlotValue_SettingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SlotValue_StoreImplCopyWith<$Res> {
+  factory _$$SlotValue_StoreImplCopyWith(_$SlotValue_StoreImpl value,
+          $Res Function(_$SlotValue_StoreImpl) then) =
+      __$$SlotValue_StoreImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String key, String value});
+}
+
+/// @nodoc
+class __$$SlotValue_StoreImplCopyWithImpl<$Res>
+    extends _$SlotValueCopyWithImpl<$Res, _$SlotValue_StoreImpl>
+    implements _$$SlotValue_StoreImplCopyWith<$Res> {
+  __$$SlotValue_StoreImplCopyWithImpl(
+      _$SlotValue_StoreImpl _value, $Res Function(_$SlotValue_StoreImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? key = null,
+    Object? value = null,
+  }) {
+    return _then(_$SlotValue_StoreImpl(
+      key: null == key
+          ? _value.key
+          : key // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SlotValue_StoreImpl extends SlotValue_Store {
+  const _$SlotValue_StoreImpl({required this.key, required this.value})
+      : super._();
+
+  @override
+  final String key;
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'SlotValue.store(key: $key, value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SlotValue_StoreImpl &&
+            (identical(other.key, key) || other.key == key) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, key, value);
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SlotValue_StoreImplCopyWith<_$SlotValue_StoreImpl> get copyWith =>
+      __$$SlotValue_StoreImplCopyWithImpl<_$SlotValue_StoreImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SettingValue value) setting,
+    required TResult Function(String key, String value) store,
+  }) {
+    return store(key, value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SettingValue value)? setting,
+    TResult? Function(String key, String value)? store,
+  }) {
+    return store?.call(key, value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SettingValue value)? setting,
+    TResult Function(String key, String value)? store,
+    required TResult orElse(),
+  }) {
+    if (store != null) {
+      return store(key, value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SlotValue_Setting value) setting,
+    required TResult Function(SlotValue_Store value) store,
+  }) {
+    return store(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SlotValue_Setting value)? setting,
+    TResult? Function(SlotValue_Store value)? store,
+  }) {
+    return store?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SlotValue_Setting value)? setting,
+    TResult Function(SlotValue_Store value)? store,
+    required TResult orElse(),
+  }) {
+    if (store != null) {
+      return store(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SlotValue_Store extends SlotValue {
+  const factory SlotValue_Store(
+      {required final String key,
+      required final String value}) = _$SlotValue_StoreImpl;
+  const SlotValue_Store._() : super._();
+
+  String get key;
+  @override
+  String get value;
+
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SlotValue_StoreImplCopyWith<_$SlotValue_StoreImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

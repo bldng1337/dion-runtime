@@ -2456,16 +2456,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Map<String, String?> dco_decode_Map_String_opt_String_None(dynamic raw) {
+  Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(dco_decode_list_record_string_opt_string(raw)
+    return Map.fromEntries(dco_decode_list_record_string_setting(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
   }
 
   @protected
-  Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw) {
+  Map<String, SlotValue> dco_decode_Map_String_slot_value_None(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(dco_decode_list_record_string_setting(raw)
+    return Map.fromEntries(dco_decode_list_record_string_slot_value(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -3037,7 +3037,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return EventData_LoadSlot(
           handler: dco_decode_String(raw[1]),
           staticData: dco_decode_String(raw[2]),
-          values: dco_decode_Map_String_opt_String_None(raw[3]),
+          values: dco_decode_Map_String_slot_value_None(raw[3]),
         );
       case 1:
         return EventData_LoadPage(
@@ -3332,19 +3332,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, String?)> dco_decode_list_record_string_opt_string(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(dco_decode_record_string_opt_string)
-        .toList();
-  }
-
-  @protected
   List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
         .map(dco_decode_record_string_setting)
+        .toList();
+  }
+
+  @protected
+  List<(String, SlotValue)> dco_decode_list_record_string_slot_value(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_slot_value)
         .toList();
   }
 
@@ -3605,19 +3605,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, String?) dco_decode_record_string_opt_string(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2) {
-      throw Exception('Expected 2 elements, got ${arr.length}');
-    }
-    return (
-      dco_decode_String(arr[0]),
-      dco_decode_opt_String(arr[1]),
-    );
-  }
-
-  @protected
   (String, Setting) dco_decode_record_string_setting(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3627,6 +3614,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return (
       dco_decode_String(arr[0]),
       dco_decode_setting(arr[1]),
+    );
+  }
+
+  @protected
+  (String, SlotValue) dco_decode_record_string_slot_value(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_slot_value(arr[1]),
     );
   }
 
@@ -3759,6 +3759,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 4:
         return SettingsUI_CustomUI(
           ui: dco_decode_box_autoadd_custom_ui(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  SlotValue dco_decode_slot_value(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return SlotValue_Setting(
+          value: dco_decode_box_autoadd_setting_value(raw[1]),
+        );
+      case 1:
+        return SlotValue_Store(
+          key: dco_decode_String(raw[1]),
+          value: dco_decode_String(raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -4054,18 +4072,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Map<String, String?> sse_decode_Map_String_opt_String_None(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_list_record_string_opt_string(deserializer);
-    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
   Map<String, Setting> sse_decode_Map_String_setting_None(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_record_string_setting(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<String, SlotValue> sse_decode_Map_String_slot_value_None(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_slot_value(deserializer);
     return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -4669,7 +4687,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 0:
         var var_handler = sse_decode_String(deserializer);
         var var_staticData = sse_decode_String(deserializer);
-        var var_values = sse_decode_Map_String_opt_String_None(deserializer);
+        var var_values = sse_decode_Map_String_slot_value_None(deserializer);
         return EventData_LoadSlot(
             handler: var_handler,
             staticData: var_staticData,
@@ -5069,19 +5087,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, String?)> sse_decode_list_record_string_opt_string(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <(String, String?)>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_record_string_opt_string(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<(String, Setting)> sse_decode_list_record_string_setting(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5090,6 +5095,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <(String, Setting)>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_record_string_setting(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(String, SlotValue)> sse_decode_list_record_string_slot_value(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, SlotValue)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_slot_value(deserializer));
     }
     return ans_;
   }
@@ -5483,20 +5501,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, String?) sse_decode_record_string_opt_string(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_field0 = sse_decode_String(deserializer);
-    var var_field1 = sse_decode_opt_String(deserializer);
-    return (var_field0, var_field1);
-  }
-
-  @protected
   (String, Setting) sse_decode_record_string_setting(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_field0 = sse_decode_String(deserializer);
     var var_field1 = sse_decode_setting(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (String, SlotValue) sse_decode_record_string_slot_value(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_slot_value(deserializer);
     return (var_field0, var_field1);
   }
 
@@ -5622,6 +5640,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 4:
         var var_ui = sse_decode_box_autoadd_custom_ui(deserializer);
         return SettingsUI_CustomUI(ui: var_ui);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  SlotValue sse_decode_slot_value(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_value = sse_decode_box_autoadd_setting_value(deserializer);
+        return SlotValue_Setting(value: var_value);
+      case 1:
+        var var_key = sse_decode_String(deserializer);
+        var var_value = sse_decode_String(deserializer);
+        return SlotValue_Store(key: var_key, value: var_value);
       default:
         throw UnimplementedError('');
     }
@@ -6167,18 +6203,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_Map_String_opt_String_None(
-      Map<String, String?> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_record_string_opt_string(
-        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
-  }
-
-  @protected
   void sse_encode_Map_String_setting_None(
       Map<String, Setting> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_record_string_setting(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_String_slot_value_None(
+      Map<String, SlotValue> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_slot_value(
         self.entries.map((e) => (e.key, e.value)).toList(), serializer);
   }
 
@@ -6747,7 +6783,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
         sse_encode_String(handler, serializer);
         sse_encode_String(staticData, serializer);
-        sse_encode_Map_String_opt_String_None(values, serializer);
+        sse_encode_Map_String_slot_value_None(values, serializer);
       case EventData_LoadPage(
           handler: final handler,
           data: final data,
@@ -7065,22 +7101,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_record_string_opt_string(
-      List<(String, String?)> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_record_string_opt_string(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_record_string_setting(
       List<(String, Setting)> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_record_string_setting(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_string_slot_value(
+      List<(String, SlotValue)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_slot_value(item, serializer);
     }
   }
 
@@ -7423,19 +7459,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_record_string_opt_string(
-      (String, String?) self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.$1, serializer);
-    sse_encode_opt_String(self.$2, serializer);
-  }
-
-  @protected
   void sse_encode_record_string_setting(
       (String, Setting) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_setting(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_string_slot_value(
+      (String, SlotValue) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_slot_value(self.$2, serializer);
   }
 
   @protected
@@ -7535,6 +7571,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case SettingsUI_CustomUI(ui: final ui):
         sse_encode_i_32(4, serializer);
         sse_encode_box_autoadd_custom_ui(ui, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_slot_value(SlotValue self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case SlotValue_Setting(value: final value):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_setting_value(value, serializer);
+      case SlotValue_Store(key: final key, value: final value):
+        sse_encode_i_32(1, serializer);
+        sse_encode_String(key, serializer);
+        sse_encode_String(value, serializer);
     }
   }
 

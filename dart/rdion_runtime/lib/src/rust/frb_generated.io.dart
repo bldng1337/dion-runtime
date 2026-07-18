@@ -147,10 +147,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<String, List<String>> dco_decode_Map_String_list_String_None(dynamic raw);
 
   @protected
-  Map<String, String?> dco_decode_Map_String_opt_String_None(dynamic raw);
+  Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw);
 
   @protected
-  Map<String, Setting> dco_decode_Map_String_setting_None(dynamic raw);
+  Map<String, SlotValue> dco_decode_Map_String_slot_value_None(dynamic raw);
 
   @protected
   CancelToken
@@ -414,10 +414,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
-  List<(String, String?)> dco_decode_list_record_string_opt_string(dynamic raw);
+  List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw);
 
   @protected
-  List<(String, Setting)> dco_decode_list_record_string_setting(dynamic raw);
+  List<(String, SlotValue)> dco_decode_list_record_string_slot_value(
+      dynamic raw);
 
   @protected
   List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
@@ -515,10 +516,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, List<String>) dco_decode_record_string_list_string(dynamic raw);
 
   @protected
-  (String, String?) dco_decode_record_string_opt_string(dynamic raw);
+  (String, Setting) dco_decode_record_string_setting(dynamic raw);
 
   @protected
-  (String, Setting) dco_decode_record_string_setting(dynamic raw);
+  (String, SlotValue) dco_decode_record_string_slot_value(dynamic raw);
 
   @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
@@ -546,6 +547,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SettingsUI dco_decode_settings_ui(dynamic raw);
+
+  @protected
+  SlotValue dco_decode_slot_value(dynamic raw);
 
   @protected
   Source dco_decode_source(dynamic raw);
@@ -657,11 +661,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  Map<String, String?> sse_decode_Map_String_opt_String_None(
+  Map<String, Setting> sse_decode_Map_String_setting_None(
       SseDeserializer deserializer);
 
   @protected
-  Map<String, Setting> sse_decode_Map_String_setting_None(
+  Map<String, SlotValue> sse_decode_Map_String_slot_value_None(
       SseDeserializer deserializer);
 
   @protected
@@ -938,11 +942,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  List<(String, String?)> sse_decode_list_record_string_opt_string(
+  List<(String, Setting)> sse_decode_list_record_string_setting(
       SseDeserializer deserializer);
 
   @protected
-  List<(String, Setting)> sse_decode_list_record_string_setting(
+  List<(String, SlotValue)> sse_decode_list_record_string_slot_value(
       SseDeserializer deserializer);
 
   @protected
@@ -1052,11 +1056,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  (String, String?) sse_decode_record_string_opt_string(
+  (String, Setting) sse_decode_record_string_setting(
       SseDeserializer deserializer);
 
   @protected
-  (String, Setting) sse_decode_record_string_setting(
+  (String, SlotValue) sse_decode_record_string_slot_value(
       SseDeserializer deserializer);
 
   @protected
@@ -1087,6 +1091,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SettingsUI sse_decode_settings_ui(SseDeserializer deserializer);
+
+  @protected
+  SlotValue sse_decode_slot_value(SseDeserializer deserializer);
 
   @protected
   Source sse_decode_source(SseDeserializer deserializer);
@@ -1158,18 +1165,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_record_string_opt_string>
-      cst_encode_Map_String_opt_String_None(Map<String, String?> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    return cst_encode_list_record_string_opt_string(
-        raw.entries.map((e) => (e.key, e.value)).toList());
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_encode_Map_String_setting_None(Map<String, Setting> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_list_record_string_setting(
+        raw.entries.map((e) => (e.key, e.value)).toList());
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_record_string_slot_value>
+      cst_encode_Map_String_slot_value_None(Map<String, SlotValue> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_list_record_string_slot_value(
         raw.entries.map((e) => (e.key, e.value)).toList());
   }
 
@@ -1292,6 +1299,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_link();
     cst_api_fill_to_wire_link(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_setting_value> cst_encode_box_autoadd_setting_value(
+      SettingValue raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_setting_value();
+    cst_api_fill_to_wire_setting_value(raw, ptr.ref);
     return ptr;
   }
 
@@ -1513,23 +1529,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  ffi.Pointer<wire_cst_list_record_string_opt_string>
-      cst_encode_list_record_string_opt_string(List<(String, String?)> raw) {
-    // Codec=Cst (C-struct based), see doc to use other codecs
-    final ans = wire.cst_new_list_record_string_opt_string(raw.length);
-    for (var i = 0; i < raw.length; ++i) {
-      cst_api_fill_to_wire_record_string_opt_string(raw[i], ans.ref.ptr[i]);
-    }
-    return ans;
-  }
-
-  @protected
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_encode_list_record_string_setting(List<(String, Setting)> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ans = wire.cst_new_list_record_string_setting(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_record_string_setting(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_record_string_slot_value>
+      cst_encode_list_record_string_slot_value(List<(String, SlotValue)> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_record_string_slot_value(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_record_string_slot_value(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1899,6 +1915,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_box_autoadd_setting_value(
+      SettingValue apiObj, ffi.Pointer<wire_cst_setting_value> wireObj) {
+    cst_api_fill_to_wire_setting_value(apiObj, wireObj.ref);
+  }
+
+  @protected
   void cst_api_fill_to_wire_box_autoadd_settings_ui(
       SettingsUI apiObj, ffi.Pointer<wire_cst_settings_ui> wireObj) {
     cst_api_fill_to_wire_settings_ui(apiObj, wireObj.ref);
@@ -2146,7 +2168,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     if (apiObj is EventData_LoadSlot) {
       var pre_handler = cst_encode_String(apiObj.handler);
       var pre_static_data = cst_encode_String(apiObj.staticData);
-      var pre_values = cst_encode_Map_String_opt_String_None(apiObj.values);
+      var pre_values = cst_encode_Map_String_slot_value_None(apiObj.values);
       wireObj.tag = 0;
       wireObj.kind.LoadSlot.handler = pre_handler;
       wireObj.kind.LoadSlot.static_data = pre_static_data;
@@ -2400,17 +2422,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
-  void cst_api_fill_to_wire_record_string_opt_string(
-      (String, String?) apiObj, wire_cst_record_string_opt_string wireObj) {
-    wireObj.field0 = cst_encode_String(apiObj.$1);
-    wireObj.field1 = cst_encode_opt_String(apiObj.$2);
-  }
-
-  @protected
   void cst_api_fill_to_wire_record_string_setting(
       (String, Setting) apiObj, wire_cst_record_string_setting wireObj) {
     wireObj.field0 = cst_encode_String(apiObj.$1);
     cst_api_fill_to_wire_setting(apiObj.$2, wireObj.field1);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_record_string_slot_value(
+      (String, SlotValue) apiObj, wire_cst_record_string_slot_value wireObj) {
+    wireObj.field0 = cst_encode_String(apiObj.$1);
+    cst_api_fill_to_wire_slot_value(apiObj.$2, wireObj.field1);
   }
 
   @protected
@@ -2516,6 +2538,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       var pre_ui = cst_encode_box_autoadd_custom_ui(apiObj.ui);
       wireObj.tag = 4;
       wireObj.kind.CustomUI.ui = pre_ui;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_slot_value(
+      SlotValue apiObj, wire_cst_slot_value wireObj) {
+    if (apiObj is SlotValue_Setting) {
+      var pre_value = cst_encode_box_autoadd_setting_value(apiObj.value);
+      wireObj.tag = 0;
+      wireObj.kind.Setting.value = pre_value;
+      return;
+    }
+    if (apiObj is SlotValue_Store) {
+      var pre_key = cst_encode_String(apiObj.key);
+      var pre_value = cst_encode_String(apiObj.value);
+      wireObj.tag = 1;
+      wireObj.kind.Store.key = pre_key;
+      wireObj.kind.Store.value = pre_value;
       return;
     }
   }
@@ -2817,12 +2858,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Map<String, List<String>> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_Map_String_opt_String_None(
-      Map<String, String?> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_Map_String_setting_None(
       Map<String, Setting> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_String_slot_value_None(
+      Map<String, SlotValue> self, SseSerializer serializer);
 
   @protected
   void
@@ -3116,12 +3157,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<(String, List<String>)> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_record_string_opt_string(
-      List<(String, String?)> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_record_string_setting(
       List<(String, Setting)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_string_slot_value(
+      List<(String, SlotValue)> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_record_string_string(
@@ -3236,12 +3277,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       (String, List<String>) self, SseSerializer serializer);
 
   @protected
-  void sse_encode_record_string_opt_string(
-      (String, String?) self, SseSerializer serializer);
-
-  @protected
   void sse_encode_record_string_setting(
       (String, Setting) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_slot_value(
+      (String, SlotValue) self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_string(
@@ -3272,6 +3313,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_settings_ui(SettingsUI self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_slot_value(SlotValue self, SseSerializer serializer);
 
   @protected
   void sse_encode_source(Source self, SseSerializer serializer);
@@ -4889,6 +4933,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_link = _cst_new_box_autoadd_linkPtr
       .asFunction<ffi.Pointer<wire_cst_link> Function()>();
 
+  ffi.Pointer<wire_cst_setting_value> cst_new_box_autoadd_setting_value() {
+    return _cst_new_box_autoadd_setting_value();
+  }
+
+  late final _cst_new_box_autoadd_setting_valuePtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<wire_cst_setting_value> Function()>>(
+      'frbgen_rdion_runtime_cst_new_box_autoadd_setting_value');
+  late final _cst_new_box_autoadd_setting_value =
+      _cst_new_box_autoadd_setting_valuePtr
+          .asFunction<ffi.Pointer<wire_cst_setting_value> Function()>();
+
   ffi.Pointer<wire_cst_settings_ui> cst_new_box_autoadd_settings_ui() {
     return _cst_new_box_autoadd_settings_ui();
   }
@@ -5146,20 +5201,6 @@ class RustLibWire implements BaseWire {
       _cst_new_list_record_string_list_stringPtr.asFunction<
           ffi.Pointer<wire_cst_list_record_string_list_string> Function(int)>();
 
-  ffi.Pointer<wire_cst_list_record_string_opt_string>
-      cst_new_list_record_string_opt_string(int len) {
-    return _cst_new_list_record_string_opt_string(len);
-  }
-
-  late final _cst_new_list_record_string_opt_stringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<wire_cst_list_record_string_opt_string> Function(
-            ffi.Int32,
-          )>>('frbgen_rdion_runtime_cst_new_list_record_string_opt_string');
-  late final _cst_new_list_record_string_opt_string =
-      _cst_new_list_record_string_opt_stringPtr.asFunction<
-          ffi.Pointer<wire_cst_list_record_string_opt_string> Function(int)>();
-
   ffi.Pointer<wire_cst_list_record_string_setting>
       cst_new_list_record_string_setting(int len) {
     return _cst_new_list_record_string_setting(len);
@@ -5173,6 +5214,20 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_record_string_setting =
       _cst_new_list_record_string_settingPtr.asFunction<
           ffi.Pointer<wire_cst_list_record_string_setting> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_record_string_slot_value>
+      cst_new_list_record_string_slot_value(int len) {
+    return _cst_new_list_record_string_slot_value(len);
+  }
+
+  late final _cst_new_list_record_string_slot_valuePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_record_string_slot_value> Function(
+            ffi.Int32,
+          )>>('frbgen_rdion_runtime_cst_new_list_record_string_slot_value');
+  late final _cst_new_list_record_string_slot_value =
+      _cst_new_list_record_string_slot_valuePtr.asFunction<
+          ffi.Pointer<wire_cst_list_record_string_slot_value> Function(int)>();
 
   ffi.Pointer<wire_cst_list_record_string_string>
       cst_new_list_record_string_string(int len) {
@@ -5776,6 +5831,41 @@ final class wire_cst_Action_ShowToast extends ffi.Struct {
   external int kind;
 }
 
+final class wire_cst_SettingValue_String extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
+}
+
+final class wire_cst_SettingValue_Number extends ffi.Struct {
+  @ffi.Float()
+  external double data;
+}
+
+final class wire_cst_SettingValue_Boolean extends ffi.Struct {
+  @ffi.Bool()
+  external bool data;
+}
+
+final class wire_cst_SettingValue_StringList extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> data;
+}
+
+final class SettingValueKind extends ffi.Union {
+  external wire_cst_SettingValue_String String;
+
+  external wire_cst_SettingValue_Number Number;
+
+  external wire_cst_SettingValue_Boolean Boolean;
+
+  external wire_cst_SettingValue_StringList StringList;
+}
+
+final class wire_cst_setting_value extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external SettingValueKind kind;
+}
+
 final class wire_cst_SettingsUI_Slider extends ffi.Struct {
   @ffi.Double()
   external double min;
@@ -6041,54 +6131,6 @@ final class wire_cst_Paragraph_Table extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_row> columns;
 }
 
-final class wire_cst_record_string_opt_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field1;
-}
-
-final class wire_cst_list_record_string_opt_string extends ffi.Struct {
-  external ffi.Pointer<wire_cst_record_string_opt_string> ptr;
-
-  @ffi.Int32()
-  external int len;
-}
-
-final class wire_cst_SettingValue_String extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> data;
-}
-
-final class wire_cst_SettingValue_Number extends ffi.Struct {
-  @ffi.Float()
-  external double data;
-}
-
-final class wire_cst_SettingValue_Boolean extends ffi.Struct {
-  @ffi.Bool()
-  external bool data;
-}
-
-final class wire_cst_SettingValue_StringList extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_String> data;
-}
-
-final class SettingValueKind extends ffi.Union {
-  external wire_cst_SettingValue_String String;
-
-  external wire_cst_SettingValue_Number Number;
-
-  external wire_cst_SettingValue_Boolean Boolean;
-
-  external wire_cst_SettingValue_StringList StringList;
-}
-
-final class wire_cst_setting_value extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external SettingValueKind kind;
-}
-
 final class wire_cst_setting extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 
@@ -6110,6 +6152,42 @@ final class wire_cst_record_string_setting extends ffi.Struct {
 
 final class wire_cst_list_record_string_setting extends ffi.Struct {
   external ffi.Pointer<wire_cst_record_string_setting> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_SlotValue_Setting extends ffi.Struct {
+  external ffi.Pointer<wire_cst_setting_value> value;
+}
+
+final class wire_cst_SlotValue_Store extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+}
+
+final class SlotValueKind extends ffi.Union {
+  external wire_cst_SlotValue_Setting Setting;
+
+  external wire_cst_SlotValue_Store Store;
+}
+
+final class wire_cst_slot_value extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external SlotValueKind kind;
+}
+
+final class wire_cst_record_string_slot_value extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> field0;
+
+  external wire_cst_slot_value field1;
+}
+
+final class wire_cst_list_record_string_slot_value extends ffi.Struct {
+  external ffi.Pointer<wire_cst_record_string_slot_value> ptr;
 
   @ffi.Int32()
   external int len;
@@ -6204,7 +6282,7 @@ final class wire_cst_EventData_LoadSlot extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> static_data;
 
-  external ffi.Pointer<wire_cst_list_record_string_opt_string> values;
+  external ffi.Pointer<wire_cst_list_record_string_slot_value> values;
 }
 
 final class wire_cst_EventData_LoadPage extends ffi.Struct {

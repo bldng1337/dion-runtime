@@ -1,7 +1,7 @@
 {
 	"name": "@dion-js/extension-scripts",
 	"type": "module",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"bin": {
 		"dion-bundle": "./.dist/bundle.js",
 		"dion-build-index": "./.dist/index.js",

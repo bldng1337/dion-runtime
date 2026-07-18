@@ -3,7 +3,7 @@ mod test {
     use std::collections::{HashMap, HashSet};
 
     use crate::data::{
-        action::{Action, EventData, EventResult, Interaction, PopupAction, ToastKind},
+        action::{Action, EventData, EventResult, Interaction, PopupAction, SlotValue, ToastKind},
         activity::EntryActivity,
         auth::{Account, AuthCreds, AuthData},
         custom_ui::{CustomUI, Subscription, SubscriptionSource, TimestampType},
@@ -142,9 +142,19 @@ mod test {
                 values: HashMap::from([
                     (
                         "status".to_string(),
-                        Some(r#"{"state":"bound"}"#.to_string()),
+                        SlotValue::Setting {
+                            value: SettingValue::String {
+                                data: "active".to_string(),
+                            },
+                        },
                     ),
-                    ("query".to_string(), None),
+                    (
+                        "query".to_string(),
+                        SlotValue::Store {
+                            key: "search_query".to_string(),
+                            value: "test".to_string(),
+                        },
+                    ),
                 ]),
             },
             EventData::LoadPage {

@@ -17,8 +17,8 @@ if (!bundle.success) {
 	}
 	throw new AggregateError(bundle.logs);
 }
-for (const output of bundle.outputs) {
-	if (output?.path.endsWith(".js")) {
-		await $`chmod +x ${output.path}`;
-	}
-}
+// for (const output of bundle.outputs) {
+// 	if (output?.path.endsWith(".js")) {
+// 		await $`chmod +x ${output.path}`;
+// 	}
+// }

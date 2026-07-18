@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "type")]
 use specta::Type;
 
-use crate::data::{custom_ui::CustomUI, source::EntryDetailed};
+use crate::data::{custom_ui::CustomUI, settings::SettingValue, source::EntryDetailed};
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -76,11 +76,21 @@ pub enum Interaction {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
+pub enum SlotValue {
+    Setting { value: SettingValue },
+    Store { key: String, value: String },
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+#[serde(tag = "type")]
 pub enum EventData {
     LoadSlot {
         handler: String,
         static_data: String,
-        values: HashMap<String, Option<String>>,
+        values: HashMap<String, SlotValue>,
     },
     LoadPage {
         handler: String,

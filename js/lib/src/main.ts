@@ -98,7 +98,14 @@ export abstract class DionExtension implements Extension {
 				if (!component) return undefined;
 				const values: Record<string, unknown> = {};
 				for (const [k, v] of Object.entries(data.values)) {
-					values[k] = v === null ? null : JSON.parse(v);
+					switch (v.type) {
+						case "Setting":
+							values[k] = v.value.data;
+							break;
+						case "Store":
+							values[k] = v.value;
+							break;
+					}
 				}
 				const customui = await component.run(data.static_data, values);
 				return { type: "SlotContent", customui };

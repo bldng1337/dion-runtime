@@ -154,6 +154,33 @@ extension JsonInteraction on Interaction {
   }
 }
 
+extension JsonSlotValue on SlotValue {
+  dynamic toJson() => switch (this) {
+        SlotValue_Setting(:final value) => {
+            "type": "Setting",
+            "value": value.toJson(),
+          },
+        SlotValue_Store(:final key, :final value) => {
+            "type": "Store",
+            "key": key,
+            "value": value,
+          },
+      };
+
+  static SlotValue fromJson(dynamic value) {
+    final type = value["type"] as String;
+    switch (type) {
+      case "Setting":
+        return SlotValue.setting(
+            value: JsonSettingValue.fromJson(value["value"]));
+      case "Store":
+        return SlotValue.store(key: value["key"], value: value["value"]);
+      default:
+        throw FormatException("Unknown SlotValue type: $type");
+    }
+  }
+}
+
 extension JsonEventData on EventData {
   dynamic toJson() => switch (this) {
         EventData_LoadSlot(
@@ -188,7 +215,7 @@ extension JsonEventData on EventData {
           handler: value["handler"],
           staticData: value["static_data"],
           values: (value["values"] as Map<String, dynamic>).map(
-            (k, v) => MapEntry(k, v as String?),
+            (k, v) => MapEntry(k, JsonSlotValue.fromJson(v)),
           ),
         );
       case "LoadPage":
