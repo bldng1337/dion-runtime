@@ -13,7 +13,86 @@ import 'settings.dart';
 import 'source.dart';
 part 'custom_ui.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum Alignment {
+  center,
+  topLeft,
+  topCenter,
+  topRight,
+  centerLeft,
+  centerRight,
+  bottomLeft,
+  bottomCenter,
+  bottomRight,
+  ;
+
+  static Future<Alignment> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiAlignmentDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum ButtonType {
+  filled,
+  ghost,
+  elevated,
+  ;
+
+  static Future<ButtonType> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiButtonTypeDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum ColorToken {
+  primary,
+  onPrimary,
+  primaryContainer,
+  onPrimaryContainer,
+  secondary,
+  onSecondary,
+  surface,
+  onSurface,
+  surfaceContainer,
+  surfaceContainerHighest,
+  error,
+  onError,
+  disabled,
+  shadow,
+  ;
+
+  static Future<ColorToken> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiColorTokenDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum ContainerType {
+  ghost,
+  filled,
+  outlined,
+  ;
+
+  static Future<ContainerType> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiContainerTypeDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum CrossAxisAlignment {
+  start,
+  center,
+  end,
+  stretch,
+  baseline,
+  ;
+
+  static Future<CrossAxisAlignment> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiCrossAxisAlignmentDefault();
+}
 
 @freezed
 sealed class CustomUI with _$CustomUI {
@@ -21,6 +100,7 @@ sealed class CustomUI with _$CustomUI {
 
   const factory CustomUI.text({
     required String text,
+    TextStyle? style,
   }) = CustomUI_Text;
   const factory CustomUI.image({
     required Link image,
@@ -42,6 +122,7 @@ sealed class CustomUI with _$CustomUI {
     required Link image,
     required CustomUI top,
     required CustomUI bottom,
+    Interaction? onClick,
   }) = CustomUI_Card;
   const factory CustomUI.spinner() = CustomUI_Spinner;
   const factory CustomUI.feed({
@@ -51,6 +132,8 @@ sealed class CustomUI with _$CustomUI {
   const factory CustomUI.button({
     required String label,
     Interaction? onClick,
+    ButtonType? buttonType,
+    ColorToken? color,
   }) = CustomUI_Button;
   const factory CustomUI.inlineSetting({
     required String settingId,
@@ -65,9 +148,17 @@ sealed class CustomUI with _$CustomUI {
   }) = CustomUI_Slot;
   const factory CustomUI.column({
     required List<CustomUI> children,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
+    MainAxisSize? mainAxisSize,
+    required bool scrollable,
   }) = CustomUI_Column;
   const factory CustomUI.row({
     required List<CustomUI> children,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
+    MainAxisSize? mainAxisSize,
+    required bool scrollable,
   }) = CustomUI_Row;
   const factory CustomUI.textInput({
     Interaction? onChange,
@@ -75,6 +166,178 @@ sealed class CustomUI with _$CustomUI {
     String? initial,
     Interaction? onCommit,
   }) = CustomUI_TextInput;
+  const factory CustomUI.padding({
+    required EdgeInsets padding,
+    required CustomUI child,
+  }) = CustomUI_Padding;
+  const factory CustomUI.container({
+    required CustomUI child,
+    ContainerType? containerType,
+    ColorToken? color,
+    ColorToken? borderColor,
+    EdgeInsets? padding,
+    double? width,
+    double? height,
+    Alignment? alignment,
+    bool? emphasized,
+  }) = CustomUI_Container;
+  const factory CustomUI.clickable({
+    required CustomUI child,
+    Interaction? onClick,
+    Interaction? onLongClick,
+  }) = CustomUI_Clickable;
+  const factory CustomUI.expanded({
+    required CustomUI child,
+    required int flex,
+  }) = CustomUI_Expanded;
+  const factory CustomUI.sizedBox({
+    double? width,
+    double? height,
+    CustomUI? child,
+  }) = CustomUI_SizedBox;
+  const factory CustomUI.spacer({
+    required int flex,
+  }) = CustomUI_Spacer;
+  const factory CustomUI.wrap({
+    required List<CustomUI> children,
+    double? spacing,
+    double? runSpacing,
+    WrapAlignment? alignment,
+  }) = CustomUI_Wrap;
+  const factory CustomUI.center({
+    required CustomUI child,
+  }) = CustomUI_Center;
+  const factory CustomUI.align({
+    required Alignment alignment,
+    required CustomUI child,
+  }) = CustomUI_Align;
+  const factory CustomUI.stack({
+    required List<CustomUI> children,
+    Alignment? alignment,
+    StackFit? fit,
+  }) = CustomUI_Stack;
+  const factory CustomUI.divider() = CustomUI_Divider;
+  const factory CustomUI.listTile({
+    CustomUI? leading,
+    CustomUI? title,
+    CustomUI? subtitle,
+    CustomUI? trailing,
+    Interaction? onClick,
+    Interaction? onLongClick,
+  }) = CustomUI_ListTile;
+  const factory CustomUI.badge({
+    required CustomUI child,
+    ColorToken? color,
+  }) = CustomUI_Badge;
+  const factory CustomUI.foldableText({
+    required String text,
+    required int maxLines,
+    TextStyle? style,
+    required bool animate,
+  }) = CustomUI_FoldableText;
+  const factory CustomUI.starDisplay({
+    required double fill,
+    required int maxStars,
+  }) = CustomUI_StarDisplay;
+  const factory CustomUI.dropdown({
+    required List<DropdownItem> items,
+    String? initialValue,
+    Interaction? onChange,
+  }) = CustomUI_Dropdown;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class DropdownItem {
+  final String value;
+  final String label;
+
+  const DropdownItem({
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  int get hashCode => value.hashCode ^ label.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DropdownItem &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          label == other.label;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class EdgeInsets {
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+
+  const EdgeInsets({
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+  });
+
+  static Future<EdgeInsets> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiEdgeInsetsDefault();
+
+  @override
+  int get hashCode =>
+      left.hashCode ^ top.hashCode ^ right.hashCode ^ bottom.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EdgeInsets &&
+          runtimeType == other.runtimeType &&
+          left == other.left &&
+          top == other.top &&
+          right == other.right &&
+          bottom == other.bottom;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum MainAxisAlignment {
+  start,
+  center,
+  end,
+  spaceBetween,
+  spaceAround,
+  spaceEvenly,
+  ;
+
+  static Future<MainAxisAlignment> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiMainAxisAlignmentDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum MainAxisSize {
+  min,
+  max,
+  ;
+
+  static Future<MainAxisSize> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiMainAxisSizeDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum StackFit {
+  loose,
+  expand,
+  passthrough,
+  ;
+
+  static Future<StackFit> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiStackFitDefault();
 }
 
 /// flutter_rust_bridge:non_opaque
@@ -124,4 +387,19 @@ enum TimestampType {
 
   static Future<TimestampType> default_() =>
       RustLib.instance.api.dionRuntimeDataCustomUiTimestampTypeDefault();
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum WrapAlignment {
+  start,
+  center,
+  end,
+  spaceBetween,
+  spaceAround,
+  spaceEvenly,
+  ;
+
+  static Future<WrapAlignment> default_() =>
+      RustLib.instance.api.dionRuntimeDataCustomUiWrapAlignmentDefault();
 }

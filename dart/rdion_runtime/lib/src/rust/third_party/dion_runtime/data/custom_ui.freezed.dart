@@ -18,75 +18,242 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CustomUI {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -106,6 +273,22 @@ mixin _$CustomUI {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -124,6 +307,22 @@ mixin _$CustomUI {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -142,6 +341,22 @@ mixin _$CustomUI {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -173,7 +388,7 @@ abstract class _$$CustomUI_TextImplCopyWith<$Res> {
           _$CustomUI_TextImpl value, $Res Function(_$CustomUI_TextImpl) then) =
       __$$CustomUI_TextImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String text});
+  $Res call({String text, TextStyle? style});
 }
 
 /// @nodoc
@@ -190,12 +405,17 @@ class __$$CustomUI_TextImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? text = null,
+    Object? style = freezed,
   }) {
     return _then(_$CustomUI_TextImpl(
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      style: freezed == style
+          ? _value.style
+          : style // ignore: cast_nullable_to_non_nullable
+              as TextStyle?,
     ));
   }
 }
@@ -203,14 +423,16 @@ class __$$CustomUI_TextImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CustomUI_TextImpl extends CustomUI_Text {
-  const _$CustomUI_TextImpl({required this.text}) : super._();
+  const _$CustomUI_TextImpl({required this.text, this.style}) : super._();
 
   @override
   final String text;
+  @override
+  final TextStyle? style;
 
   @override
   String toString() {
-    return 'CustomUI.text(text: $text)';
+    return 'CustomUI.text(text: $text, style: $style)';
   }
 
   @override
@@ -218,11 +440,12 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_TextImpl &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.style, style) || other.style == style));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, text);
+  int get hashCode => Object.hash(runtimeType, text, style);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -235,85 +458,252 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
-    return text(this.text);
+    return text(this.text, style);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
-    return text?.call(this.text);
+    return text?.call(this.text, style);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (text != null) {
-      return text(this.text);
+      return text(this.text, style);
     }
     return orElse();
   }
@@ -335,6 +725,22 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return text(this);
   }
@@ -356,6 +762,22 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return text?.call(this);
   }
@@ -377,6 +799,22 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -387,11 +825,13 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
 }
 
 abstract class CustomUI_Text extends CustomUI {
-  const factory CustomUI_Text({required final String text}) =
-      _$CustomUI_TextImpl;
+  const factory CustomUI_Text(
+      {required final String text,
+      final TextStyle? style}) = _$CustomUI_TextImpl;
   const CustomUI_Text._() : super._();
 
   String get text;
+  TextStyle? get style;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -486,27 +926,87 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return image(this.image, width, height);
   }
@@ -514,26 +1014,80 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return image?.call(this.image, width, height);
   }
@@ -541,26 +1095,79 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (image != null) {
@@ -586,6 +1193,22 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return image(this);
   }
@@ -607,6 +1230,22 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return image?.call(this);
   }
@@ -628,6 +1267,22 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (image != null) {
@@ -731,27 +1386,87 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return link(this.link, label);
   }
@@ -759,26 +1474,80 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return link?.call(this.link, label);
   }
@@ -786,26 +1555,79 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (link != null) {
@@ -831,6 +1653,22 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return link(this);
   }
@@ -852,6 +1690,22 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return link?.call(this);
   }
@@ -873,6 +1727,22 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (link != null) {
@@ -977,27 +1847,87 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return timestamp(this.timestamp, display);
   }
@@ -1005,26 +1935,80 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return timestamp?.call(this.timestamp, display);
   }
@@ -1032,26 +2016,79 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (timestamp != null) {
@@ -1077,6 +2114,22 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return timestamp(this);
   }
@@ -1098,6 +2151,22 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return timestamp?.call(this);
   }
@@ -1119,6 +2188,22 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (timestamp != null) {
@@ -1213,27 +2298,87 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return entryCard(entry);
   }
@@ -1241,26 +2386,80 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return entryCard?.call(entry);
   }
@@ -1268,26 +2467,79 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (entryCard != null) {
@@ -1313,6 +2565,22 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return entryCard(this);
   }
@@ -1334,6 +2602,22 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return entryCard?.call(this);
   }
@@ -1355,6 +2639,22 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (entryCard != null) {
@@ -1384,10 +2684,11 @@ abstract class _$$CustomUI_CardImplCopyWith<$Res> {
           _$CustomUI_CardImpl value, $Res Function(_$CustomUI_CardImpl) then) =
       __$$CustomUI_CardImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Link image, CustomUI top, CustomUI bottom});
+  $Res call({Link image, CustomUI top, CustomUI bottom, Interaction? onClick});
 
   $CustomUICopyWith<$Res> get top;
   $CustomUICopyWith<$Res> get bottom;
+  $InteractionCopyWith<$Res>? get onClick;
 }
 
 /// @nodoc
@@ -1406,6 +2707,7 @@ class __$$CustomUI_CardImplCopyWithImpl<$Res>
     Object? image = null,
     Object? top = null,
     Object? bottom = null,
+    Object? onClick = freezed,
   }) {
     return _then(_$CustomUI_CardImpl(
       image: null == image
@@ -1420,6 +2722,10 @@ class __$$CustomUI_CardImplCopyWithImpl<$Res>
           ? _value.bottom
           : bottom // ignore: cast_nullable_to_non_nullable
               as CustomUI,
+      onClick: freezed == onClick
+          ? _value.onClick
+          : onClick // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
     ));
   }
 
@@ -1442,13 +2748,30 @@ class __$$CustomUI_CardImplCopyWithImpl<$Res>
       return _then(_value.copyWith(bottom: value));
     });
   }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onClick {
+    if (_value.onClick == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onClick!, (value) {
+      return _then(_value.copyWith(onClick: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$CustomUI_CardImpl extends CustomUI_Card {
   const _$CustomUI_CardImpl(
-      {required this.image, required this.top, required this.bottom})
+      {required this.image,
+      required this.top,
+      required this.bottom,
+      this.onClick})
       : super._();
 
   @override
@@ -1457,10 +2780,12 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
   final CustomUI top;
   @override
   final CustomUI bottom;
+  @override
+  final Interaction? onClick;
 
   @override
   String toString() {
-    return 'CustomUI.card(image: $image, top: $top, bottom: $bottom)';
+    return 'CustomUI.card(image: $image, top: $top, bottom: $bottom, onClick: $onClick)';
   }
 
   @override
@@ -1470,11 +2795,12 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
             other is _$CustomUI_CardImpl &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.top, top) || other.top == top) &&
-            (identical(other.bottom, bottom) || other.bottom == bottom));
+            (identical(other.bottom, bottom) || other.bottom == bottom) &&
+            (identical(other.onClick, onClick) || other.onClick == onClick));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, image, top, bottom);
+  int get hashCode => Object.hash(runtimeType, image, top, bottom, onClick);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -1487,85 +2813,252 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
-    return card(this.image, top, bottom);
+    return card(this.image, top, bottom, onClick);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
-    return card?.call(this.image, top, bottom);
+    return card?.call(this.image, top, bottom, onClick);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (card != null) {
-      return card(this.image, top, bottom);
+      return card(this.image, top, bottom, onClick);
     }
     return orElse();
   }
@@ -1587,6 +3080,22 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return card(this);
   }
@@ -1608,6 +3117,22 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return card?.call(this);
   }
@@ -1629,6 +3154,22 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (card != null) {
@@ -1642,12 +3183,14 @@ abstract class CustomUI_Card extends CustomUI {
   const factory CustomUI_Card(
       {required final Link image,
       required final CustomUI top,
-      required final CustomUI bottom}) = _$CustomUI_CardImpl;
+      required final CustomUI bottom,
+      final Interaction? onClick}) = _$CustomUI_CardImpl;
   const CustomUI_Card._() : super._();
 
   Link get image;
   CustomUI get top;
   CustomUI get bottom;
+  Interaction? get onClick;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -1697,27 +3240,87 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return spinner();
   }
@@ -1725,26 +3328,80 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return spinner?.call();
   }
@@ -1752,26 +3409,79 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (spinner != null) {
@@ -1797,6 +3507,22 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return spinner(this);
   }
@@ -1818,6 +3544,22 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return spinner?.call(this);
   }
@@ -1839,6 +3581,22 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (spinner != null) {
@@ -1930,27 +3688,87 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return feed(handler, data);
   }
@@ -1958,26 +3776,80 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return feed?.call(handler, data);
   }
@@ -1985,26 +3857,79 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (feed != null) {
@@ -2030,6 +3955,22 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return feed(this);
   }
@@ -2051,6 +3992,22 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return feed?.call(this);
   }
@@ -2072,6 +4029,22 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (feed != null) {
@@ -2103,7 +4076,11 @@ abstract class _$$CustomUI_ButtonImplCopyWith<$Res> {
           $Res Function(_$CustomUI_ButtonImpl) then) =
       __$$CustomUI_ButtonImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String label, Interaction? onClick});
+  $Res call(
+      {String label,
+      Interaction? onClick,
+      ButtonType? buttonType,
+      ColorToken? color});
 
   $InteractionCopyWith<$Res>? get onClick;
 }
@@ -2123,6 +4100,8 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
   $Res call({
     Object? label = null,
     Object? onClick = freezed,
+    Object? buttonType = freezed,
+    Object? color = freezed,
   }) {
     return _then(_$CustomUI_ButtonImpl(
       label: null == label
@@ -2133,6 +4112,14 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
           ? _value.onClick
           : onClick // ignore: cast_nullable_to_non_nullable
               as Interaction?,
+      buttonType: freezed == buttonType
+          ? _value.buttonType
+          : buttonType // ignore: cast_nullable_to_non_nullable
+              as ButtonType?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as ColorToken?,
     ));
   }
 
@@ -2154,16 +4141,22 @@ class __$$CustomUI_ButtonImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CustomUI_ButtonImpl extends CustomUI_Button {
-  const _$CustomUI_ButtonImpl({required this.label, this.onClick}) : super._();
+  const _$CustomUI_ButtonImpl(
+      {required this.label, this.onClick, this.buttonType, this.color})
+      : super._();
 
   @override
   final String label;
   @override
   final Interaction? onClick;
+  @override
+  final ButtonType? buttonType;
+  @override
+  final ColorToken? color;
 
   @override
   String toString() {
-    return 'CustomUI.button(label: $label, onClick: $onClick)';
+    return 'CustomUI.button(label: $label, onClick: $onClick, buttonType: $buttonType, color: $color)';
   }
 
   @override
@@ -2172,11 +4165,15 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_ButtonImpl &&
             (identical(other.label, label) || other.label == label) &&
-            (identical(other.onClick, onClick) || other.onClick == onClick));
+            (identical(other.onClick, onClick) || other.onClick == onClick) &&
+            (identical(other.buttonType, buttonType) ||
+                other.buttonType == buttonType) &&
+            (identical(other.color, color) || other.color == color));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, label, onClick);
+  int get hashCode =>
+      Object.hash(runtimeType, label, onClick, buttonType, color);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2190,85 +4187,252 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
-    return button(label, onClick);
+    return button(label, onClick, buttonType, color);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
-    return button?.call(label, onClick);
+    return button?.call(label, onClick, buttonType, color);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (button != null) {
-      return button(label, onClick);
+      return button(label, onClick, buttonType, color);
     }
     return orElse();
   }
@@ -2290,6 +4454,22 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return button(this);
   }
@@ -2311,6 +4491,22 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return button?.call(this);
   }
@@ -2332,6 +4528,22 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (button != null) {
@@ -2344,11 +4556,15 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
 abstract class CustomUI_Button extends CustomUI {
   const factory CustomUI_Button(
       {required final String label,
-      final Interaction? onClick}) = _$CustomUI_ButtonImpl;
+      final Interaction? onClick,
+      final ButtonType? buttonType,
+      final ColorToken? color}) = _$CustomUI_ButtonImpl;
   const CustomUI_Button._() : super._();
 
   String get label;
   Interaction? get onClick;
+  ButtonType? get buttonType;
+  ColorToken? get color;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -2466,27 +4682,87 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return inlineSetting(settingId, settingKind, onCommit);
   }
@@ -2494,26 +4770,80 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return inlineSetting?.call(settingId, settingKind, onCommit);
   }
@@ -2521,26 +4851,79 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (inlineSetting != null) {
@@ -2566,6 +4949,22 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return inlineSetting(this);
   }
@@ -2587,6 +4986,22 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return inlineSetting?.call(this);
   }
@@ -2608,6 +5023,22 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (inlineSetting != null) {
@@ -2757,27 +5188,87 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return slot(handler, child, staticData, subscriptions);
   }
@@ -2785,26 +5276,80 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return slot?.call(handler, child, staticData, subscriptions);
   }
@@ -2812,26 +5357,79 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (slot != null) {
@@ -2857,6 +5455,22 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return slot(this);
   }
@@ -2878,6 +5492,22 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return slot?.call(this);
   }
@@ -2899,6 +5529,22 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (slot != null) {
@@ -2934,7 +5580,12 @@ abstract class _$$CustomUI_ColumnImplCopyWith<$Res> {
           $Res Function(_$CustomUI_ColumnImpl) then) =
       __$$CustomUI_ColumnImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<CustomUI> children});
+  $Res call(
+      {List<CustomUI> children,
+      MainAxisAlignment? mainAxisAlignment,
+      CrossAxisAlignment? crossAxisAlignment,
+      MainAxisSize? mainAxisSize,
+      bool scrollable});
 }
 
 /// @nodoc
@@ -2951,12 +5602,32 @@ class __$$CustomUI_ColumnImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? children = null,
+    Object? mainAxisAlignment = freezed,
+    Object? crossAxisAlignment = freezed,
+    Object? mainAxisSize = freezed,
+    Object? scrollable = null,
   }) {
     return _then(_$CustomUI_ColumnImpl(
       children: null == children
           ? _value._children
           : children // ignore: cast_nullable_to_non_nullable
               as List<CustomUI>,
+      mainAxisAlignment: freezed == mainAxisAlignment
+          ? _value.mainAxisAlignment
+          : mainAxisAlignment // ignore: cast_nullable_to_non_nullable
+              as MainAxisAlignment?,
+      crossAxisAlignment: freezed == crossAxisAlignment
+          ? _value.crossAxisAlignment
+          : crossAxisAlignment // ignore: cast_nullable_to_non_nullable
+              as CrossAxisAlignment?,
+      mainAxisSize: freezed == mainAxisSize
+          ? _value.mainAxisSize
+          : mainAxisSize // ignore: cast_nullable_to_non_nullable
+              as MainAxisSize?,
+      scrollable: null == scrollable
+          ? _value.scrollable
+          : scrollable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2964,7 +5635,12 @@ class __$$CustomUI_ColumnImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CustomUI_ColumnImpl extends CustomUI_Column {
-  const _$CustomUI_ColumnImpl({required final List<CustomUI> children})
+  const _$CustomUI_ColumnImpl(
+      {required final List<CustomUI> children,
+      this.mainAxisAlignment,
+      this.crossAxisAlignment,
+      this.mainAxisSize,
+      required this.scrollable})
       : _children = children,
         super._();
 
@@ -2977,8 +5653,17 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
   }
 
   @override
+  final MainAxisAlignment? mainAxisAlignment;
+  @override
+  final CrossAxisAlignment? crossAxisAlignment;
+  @override
+  final MainAxisSize? mainAxisSize;
+  @override
+  final bool scrollable;
+
+  @override
   String toString() {
-    return 'CustomUI.column(children: $children)';
+    return 'CustomUI.column(children: $children, mainAxisAlignment: $mainAxisAlignment, crossAxisAlignment: $crossAxisAlignment, mainAxisSize: $mainAxisSize, scrollable: $scrollable)';
   }
 
   @override
@@ -2986,12 +5671,25 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_ColumnImpl &&
-            const DeepCollectionEquality().equals(other._children, _children));
+            const DeepCollectionEquality().equals(other._children, _children) &&
+            (identical(other.mainAxisAlignment, mainAxisAlignment) ||
+                other.mainAxisAlignment == mainAxisAlignment) &&
+            (identical(other.crossAxisAlignment, crossAxisAlignment) ||
+                other.crossAxisAlignment == crossAxisAlignment) &&
+            (identical(other.mainAxisSize, mainAxisSize) ||
+                other.mainAxisSize == mainAxisSize) &&
+            (identical(other.scrollable, scrollable) ||
+                other.scrollable == scrollable));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_children));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_children),
+      mainAxisAlignment,
+      crossAxisAlignment,
+      mainAxisSize,
+      scrollable);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -3005,85 +5703,255 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
-    return column(children);
+    return column(children, mainAxisAlignment, crossAxisAlignment, mainAxisSize,
+        scrollable);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
-    return column?.call(children);
+    return column?.call(children, mainAxisAlignment, crossAxisAlignment,
+        mainAxisSize, scrollable);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (column != null) {
-      return column(children);
+      return column(children, mainAxisAlignment, crossAxisAlignment,
+          mainAxisSize, scrollable);
     }
     return orElse();
   }
@@ -3105,6 +5973,22 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return column(this);
   }
@@ -3126,6 +6010,22 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return column?.call(this);
   }
@@ -3147,6 +6047,22 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (column != null) {
@@ -3157,11 +6073,19 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
 }
 
 abstract class CustomUI_Column extends CustomUI {
-  const factory CustomUI_Column({required final List<CustomUI> children}) =
-      _$CustomUI_ColumnImpl;
+  const factory CustomUI_Column(
+      {required final List<CustomUI> children,
+      final MainAxisAlignment? mainAxisAlignment,
+      final CrossAxisAlignment? crossAxisAlignment,
+      final MainAxisSize? mainAxisSize,
+      required final bool scrollable}) = _$CustomUI_ColumnImpl;
   const CustomUI_Column._() : super._();
 
   List<CustomUI> get children;
+  MainAxisAlignment? get mainAxisAlignment;
+  CrossAxisAlignment? get crossAxisAlignment;
+  MainAxisSize? get mainAxisSize;
+  bool get scrollable;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -3176,7 +6100,12 @@ abstract class _$$CustomUI_RowImplCopyWith<$Res> {
           _$CustomUI_RowImpl value, $Res Function(_$CustomUI_RowImpl) then) =
       __$$CustomUI_RowImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<CustomUI> children});
+  $Res call(
+      {List<CustomUI> children,
+      MainAxisAlignment? mainAxisAlignment,
+      CrossAxisAlignment? crossAxisAlignment,
+      MainAxisSize? mainAxisSize,
+      bool scrollable});
 }
 
 /// @nodoc
@@ -3193,12 +6122,32 @@ class __$$CustomUI_RowImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? children = null,
+    Object? mainAxisAlignment = freezed,
+    Object? crossAxisAlignment = freezed,
+    Object? mainAxisSize = freezed,
+    Object? scrollable = null,
   }) {
     return _then(_$CustomUI_RowImpl(
       children: null == children
           ? _value._children
           : children // ignore: cast_nullable_to_non_nullable
               as List<CustomUI>,
+      mainAxisAlignment: freezed == mainAxisAlignment
+          ? _value.mainAxisAlignment
+          : mainAxisAlignment // ignore: cast_nullable_to_non_nullable
+              as MainAxisAlignment?,
+      crossAxisAlignment: freezed == crossAxisAlignment
+          ? _value.crossAxisAlignment
+          : crossAxisAlignment // ignore: cast_nullable_to_non_nullable
+              as CrossAxisAlignment?,
+      mainAxisSize: freezed == mainAxisSize
+          ? _value.mainAxisSize
+          : mainAxisSize // ignore: cast_nullable_to_non_nullable
+              as MainAxisSize?,
+      scrollable: null == scrollable
+          ? _value.scrollable
+          : scrollable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -3206,7 +6155,12 @@ class __$$CustomUI_RowImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CustomUI_RowImpl extends CustomUI_Row {
-  const _$CustomUI_RowImpl({required final List<CustomUI> children})
+  const _$CustomUI_RowImpl(
+      {required final List<CustomUI> children,
+      this.mainAxisAlignment,
+      this.crossAxisAlignment,
+      this.mainAxisSize,
+      required this.scrollable})
       : _children = children,
         super._();
 
@@ -3219,8 +6173,17 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
   }
 
   @override
+  final MainAxisAlignment? mainAxisAlignment;
+  @override
+  final CrossAxisAlignment? crossAxisAlignment;
+  @override
+  final MainAxisSize? mainAxisSize;
+  @override
+  final bool scrollable;
+
+  @override
   String toString() {
-    return 'CustomUI.row(children: $children)';
+    return 'CustomUI.row(children: $children, mainAxisAlignment: $mainAxisAlignment, crossAxisAlignment: $crossAxisAlignment, mainAxisSize: $mainAxisSize, scrollable: $scrollable)';
   }
 
   @override
@@ -3228,12 +6191,25 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomUI_RowImpl &&
-            const DeepCollectionEquality().equals(other._children, _children));
+            const DeepCollectionEquality().equals(other._children, _children) &&
+            (identical(other.mainAxisAlignment, mainAxisAlignment) ||
+                other.mainAxisAlignment == mainAxisAlignment) &&
+            (identical(other.crossAxisAlignment, crossAxisAlignment) ||
+                other.crossAxisAlignment == crossAxisAlignment) &&
+            (identical(other.mainAxisSize, mainAxisSize) ||
+                other.mainAxisSize == mainAxisSize) &&
+            (identical(other.scrollable, scrollable) ||
+                other.scrollable == scrollable));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_children));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_children),
+      mainAxisAlignment,
+      crossAxisAlignment,
+      mainAxisSize,
+      scrollable);
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -3246,85 +6222,255 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
-    return row(children);
+    return row(children, mainAxisAlignment, crossAxisAlignment, mainAxisSize,
+        scrollable);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
-    return row?.call(children);
+    return row?.call(children, mainAxisAlignment, crossAxisAlignment,
+        mainAxisSize, scrollable);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (row != null) {
-      return row(children);
+      return row(children, mainAxisAlignment, crossAxisAlignment, mainAxisSize,
+          scrollable);
     }
     return orElse();
   }
@@ -3346,6 +6492,22 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return row(this);
   }
@@ -3367,6 +6529,22 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return row?.call(this);
   }
@@ -3388,6 +6566,22 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (row != null) {
@@ -3398,11 +6592,19 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
 }
 
 abstract class CustomUI_Row extends CustomUI {
-  const factory CustomUI_Row({required final List<CustomUI> children}) =
-      _$CustomUI_RowImpl;
+  const factory CustomUI_Row(
+      {required final List<CustomUI> children,
+      final MainAxisAlignment? mainAxisAlignment,
+      final CrossAxisAlignment? crossAxisAlignment,
+      final MainAxisSize? mainAxisSize,
+      required final bool scrollable}) = _$CustomUI_RowImpl;
   const CustomUI_Row._() : super._();
 
   List<CustomUI> get children;
+  MainAxisAlignment? get mainAxisAlignment;
+  CrossAxisAlignment? get crossAxisAlignment;
+  MainAxisSize? get mainAxisSize;
+  bool get scrollable;
 
   /// Create a copy of CustomUI
   /// with the given fields replaced by the non-null parameter values.
@@ -3545,27 +6747,87 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String text) text,
+    required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
     required TResult Function(String timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
-    required TResult Function(Link image, CustomUI top, CustomUI bottom) card,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
     required TResult Function() spinner,
     required TResult Function(String handler, String data) feed,
-    required TResult Function(String label, Interaction? onClick) button,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
     required TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)
         inlineSetting,
     required TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)
         slot,
-    required TResult Function(List<CustomUI> children) column,
-    required TResult Function(List<CustomUI> children) row,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
     required TResult Function(Interaction? onChange, int? debounceMs,
             String? initial, Interaction? onCommit)
         textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
   }) {
     return textInput(onChange, debounceMs, initial, onCommit);
   }
@@ -3573,26 +6835,80 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String text)? text,
+    TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
     TResult? Function(String timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
-    TResult? Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult? Function()? spinner,
     TResult? Function(String handler, String data)? feed,
-    TResult? Function(String label, Interaction? onClick)? button,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
     TResult? Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult? Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult? Function(List<CustomUI> children)? column,
-    TResult? Function(List<CustomUI> children)? row,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
   }) {
     return textInput?.call(onChange, debounceMs, initial, onCommit);
   }
@@ -3600,26 +6916,79 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String text)? text,
+    TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
     TResult Function(String timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
-    TResult Function(Link image, CustomUI top, CustomUI bottom)? card,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
     TResult Function()? spinner,
     TResult Function(String handler, String data)? feed,
-    TResult Function(String label, Interaction? onClick)? button,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
     TResult Function(
             String settingId, SettingKind settingKind, Interaction? onCommit)?
         inlineSetting,
     TResult Function(String handler, CustomUI child, String staticData,
             List<Subscription> subscriptions)?
         slot,
-    TResult Function(List<CustomUI> children)? column,
-    TResult Function(List<CustomUI> children)? row,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
     TResult Function(Interaction? onChange, int? debounceMs, String? initial,
             Interaction? onCommit)?
         textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
     required TResult orElse(),
   }) {
     if (textInput != null) {
@@ -3645,6 +7014,22 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     required TResult Function(CustomUI_Column value) column,
     required TResult Function(CustomUI_Row value) row,
     required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
   }) {
     return textInput(this);
   }
@@ -3666,6 +7051,22 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     TResult? Function(CustomUI_Column value)? column,
     TResult? Function(CustomUI_Row value)? row,
     TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
   }) {
     return textInput?.call(this);
   }
@@ -3687,6 +7088,22 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     TResult Function(CustomUI_Column value)? column,
     TResult Function(CustomUI_Row value)? row,
     TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
     required TResult orElse(),
   }) {
     if (textInput != null) {
@@ -3713,6 +7130,7821 @@ abstract class CustomUI_TextInput extends CustomUI {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomUI_TextInputImplCopyWith<_$CustomUI_TextInputImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_PaddingImplCopyWith<$Res> {
+  factory _$$CustomUI_PaddingImplCopyWith(_$CustomUI_PaddingImpl value,
+          $Res Function(_$CustomUI_PaddingImpl) then) =
+      __$$CustomUI_PaddingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({EdgeInsets padding, CustomUI child});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_PaddingImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_PaddingImpl>
+    implements _$$CustomUI_PaddingImplCopyWith<$Res> {
+  __$$CustomUI_PaddingImplCopyWithImpl(_$CustomUI_PaddingImpl _value,
+      $Res Function(_$CustomUI_PaddingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? padding = null,
+    Object? child = null,
+  }) {
+    return _then(_$CustomUI_PaddingImpl(
+      padding: null == padding
+          ? _value.padding
+          : padding // ignore: cast_nullable_to_non_nullable
+              as EdgeInsets,
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_PaddingImpl extends CustomUI_Padding {
+  const _$CustomUI_PaddingImpl({required this.padding, required this.child})
+      : super._();
+
+  @override
+  final EdgeInsets padding;
+  @override
+  final CustomUI child;
+
+  @override
+  String toString() {
+    return 'CustomUI.padding(padding: $padding, child: $child)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_PaddingImpl &&
+            (identical(other.padding, padding) || other.padding == padding) &&
+            (identical(other.child, child) || other.child == child));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, padding, child);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_PaddingImplCopyWith<_$CustomUI_PaddingImpl> get copyWith =>
+      __$$CustomUI_PaddingImplCopyWithImpl<_$CustomUI_PaddingImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return padding(this.padding, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return padding?.call(this.padding, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (padding != null) {
+      return padding(this.padding, child);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return padding(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return padding?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (padding != null) {
+      return padding(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Padding extends CustomUI {
+  const factory CustomUI_Padding(
+      {required final EdgeInsets padding,
+      required final CustomUI child}) = _$CustomUI_PaddingImpl;
+  const CustomUI_Padding._() : super._();
+
+  EdgeInsets get padding;
+  CustomUI get child;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_PaddingImplCopyWith<_$CustomUI_PaddingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_ContainerImplCopyWith<$Res> {
+  factory _$$CustomUI_ContainerImplCopyWith(_$CustomUI_ContainerImpl value,
+          $Res Function(_$CustomUI_ContainerImpl) then) =
+      __$$CustomUI_ContainerImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {CustomUI child,
+      ContainerType? containerType,
+      ColorToken? color,
+      ColorToken? borderColor,
+      EdgeInsets? padding,
+      double? width,
+      double? height,
+      Alignment? alignment,
+      bool? emphasized});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_ContainerImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_ContainerImpl>
+    implements _$$CustomUI_ContainerImplCopyWith<$Res> {
+  __$$CustomUI_ContainerImplCopyWithImpl(_$CustomUI_ContainerImpl _value,
+      $Res Function(_$CustomUI_ContainerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? child = null,
+    Object? containerType = freezed,
+    Object? color = freezed,
+    Object? borderColor = freezed,
+    Object? padding = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
+    Object? alignment = freezed,
+    Object? emphasized = freezed,
+  }) {
+    return _then(_$CustomUI_ContainerImpl(
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+      containerType: freezed == containerType
+          ? _value.containerType
+          : containerType // ignore: cast_nullable_to_non_nullable
+              as ContainerType?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as ColorToken?,
+      borderColor: freezed == borderColor
+          ? _value.borderColor
+          : borderColor // ignore: cast_nullable_to_non_nullable
+              as ColorToken?,
+      padding: freezed == padding
+          ? _value.padding
+          : padding // ignore: cast_nullable_to_non_nullable
+              as EdgeInsets?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      alignment: freezed == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as Alignment?,
+      emphasized: freezed == emphasized
+          ? _value.emphasized
+          : emphasized // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_ContainerImpl extends CustomUI_Container {
+  const _$CustomUI_ContainerImpl(
+      {required this.child,
+      this.containerType,
+      this.color,
+      this.borderColor,
+      this.padding,
+      this.width,
+      this.height,
+      this.alignment,
+      this.emphasized})
+      : super._();
+
+  @override
+  final CustomUI child;
+  @override
+  final ContainerType? containerType;
+  @override
+  final ColorToken? color;
+  @override
+  final ColorToken? borderColor;
+  @override
+  final EdgeInsets? padding;
+  @override
+  final double? width;
+  @override
+  final double? height;
+  @override
+  final Alignment? alignment;
+  @override
+  final bool? emphasized;
+
+  @override
+  String toString() {
+    return 'CustomUI.container(child: $child, containerType: $containerType, color: $color, borderColor: $borderColor, padding: $padding, width: $width, height: $height, alignment: $alignment, emphasized: $emphasized)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_ContainerImpl &&
+            (identical(other.child, child) || other.child == child) &&
+            (identical(other.containerType, containerType) ||
+                other.containerType == containerType) &&
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.borderColor, borderColor) ||
+                other.borderColor == borderColor) &&
+            (identical(other.padding, padding) || other.padding == padding) &&
+            (identical(other.width, width) || other.width == width) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment) &&
+            (identical(other.emphasized, emphasized) ||
+                other.emphasized == emphasized));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, child, containerType, color,
+      borderColor, padding, width, height, alignment, emphasized);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_ContainerImplCopyWith<_$CustomUI_ContainerImpl> get copyWith =>
+      __$$CustomUI_ContainerImplCopyWithImpl<_$CustomUI_ContainerImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return container(child, containerType, color, borderColor, this.padding,
+        width, height, alignment, emphasized);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return container?.call(child, containerType, color, borderColor,
+        this.padding, width, height, alignment, emphasized);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (container != null) {
+      return container(child, containerType, color, borderColor, this.padding,
+          width, height, alignment, emphasized);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return container(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return container?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (container != null) {
+      return container(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Container extends CustomUI {
+  const factory CustomUI_Container(
+      {required final CustomUI child,
+      final ContainerType? containerType,
+      final ColorToken? color,
+      final ColorToken? borderColor,
+      final EdgeInsets? padding,
+      final double? width,
+      final double? height,
+      final Alignment? alignment,
+      final bool? emphasized}) = _$CustomUI_ContainerImpl;
+  const CustomUI_Container._() : super._();
+
+  CustomUI get child;
+  ContainerType? get containerType;
+  ColorToken? get color;
+  ColorToken? get borderColor;
+  EdgeInsets? get padding;
+  double? get width;
+  double? get height;
+  Alignment? get alignment;
+  bool? get emphasized;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_ContainerImplCopyWith<_$CustomUI_ContainerImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_ClickableImplCopyWith<$Res> {
+  factory _$$CustomUI_ClickableImplCopyWith(_$CustomUI_ClickableImpl value,
+          $Res Function(_$CustomUI_ClickableImpl) then) =
+      __$$CustomUI_ClickableImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI child, Interaction? onClick, Interaction? onLongClick});
+
+  $CustomUICopyWith<$Res> get child;
+  $InteractionCopyWith<$Res>? get onClick;
+  $InteractionCopyWith<$Res>? get onLongClick;
+}
+
+/// @nodoc
+class __$$CustomUI_ClickableImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_ClickableImpl>
+    implements _$$CustomUI_ClickableImplCopyWith<$Res> {
+  __$$CustomUI_ClickableImplCopyWithImpl(_$CustomUI_ClickableImpl _value,
+      $Res Function(_$CustomUI_ClickableImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? child = null,
+    Object? onClick = freezed,
+    Object? onLongClick = freezed,
+  }) {
+    return _then(_$CustomUI_ClickableImpl(
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+      onClick: freezed == onClick
+          ? _value.onClick
+          : onClick // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+      onLongClick: freezed == onLongClick
+          ? _value.onLongClick
+          : onLongClick // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onClick {
+    if (_value.onClick == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onClick!, (value) {
+      return _then(_value.copyWith(onClick: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onLongClick {
+    if (_value.onLongClick == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onLongClick!, (value) {
+      return _then(_value.copyWith(onLongClick: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_ClickableImpl extends CustomUI_Clickable {
+  const _$CustomUI_ClickableImpl(
+      {required this.child, this.onClick, this.onLongClick})
+      : super._();
+
+  @override
+  final CustomUI child;
+  @override
+  final Interaction? onClick;
+  @override
+  final Interaction? onLongClick;
+
+  @override
+  String toString() {
+    return 'CustomUI.clickable(child: $child, onClick: $onClick, onLongClick: $onLongClick)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_ClickableImpl &&
+            (identical(other.child, child) || other.child == child) &&
+            (identical(other.onClick, onClick) || other.onClick == onClick) &&
+            (identical(other.onLongClick, onLongClick) ||
+                other.onLongClick == onLongClick));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, child, onClick, onLongClick);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_ClickableImplCopyWith<_$CustomUI_ClickableImpl> get copyWith =>
+      __$$CustomUI_ClickableImplCopyWithImpl<_$CustomUI_ClickableImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return clickable(child, onClick, onLongClick);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return clickable?.call(child, onClick, onLongClick);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (clickable != null) {
+      return clickable(child, onClick, onLongClick);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return clickable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return clickable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (clickable != null) {
+      return clickable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Clickable extends CustomUI {
+  const factory CustomUI_Clickable(
+      {required final CustomUI child,
+      final Interaction? onClick,
+      final Interaction? onLongClick}) = _$CustomUI_ClickableImpl;
+  const CustomUI_Clickable._() : super._();
+
+  CustomUI get child;
+  Interaction? get onClick;
+  Interaction? get onLongClick;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_ClickableImplCopyWith<_$CustomUI_ClickableImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_ExpandedImplCopyWith<$Res> {
+  factory _$$CustomUI_ExpandedImplCopyWith(_$CustomUI_ExpandedImpl value,
+          $Res Function(_$CustomUI_ExpandedImpl) then) =
+      __$$CustomUI_ExpandedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI child, int flex});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_ExpandedImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_ExpandedImpl>
+    implements _$$CustomUI_ExpandedImplCopyWith<$Res> {
+  __$$CustomUI_ExpandedImplCopyWithImpl(_$CustomUI_ExpandedImpl _value,
+      $Res Function(_$CustomUI_ExpandedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? child = null,
+    Object? flex = null,
+  }) {
+    return _then(_$CustomUI_ExpandedImpl(
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+      flex: null == flex
+          ? _value.flex
+          : flex // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_ExpandedImpl extends CustomUI_Expanded {
+  const _$CustomUI_ExpandedImpl({required this.child, required this.flex})
+      : super._();
+
+  @override
+  final CustomUI child;
+  @override
+  final int flex;
+
+  @override
+  String toString() {
+    return 'CustomUI.expanded(child: $child, flex: $flex)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_ExpandedImpl &&
+            (identical(other.child, child) || other.child == child) &&
+            (identical(other.flex, flex) || other.flex == flex));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, child, flex);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_ExpandedImplCopyWith<_$CustomUI_ExpandedImpl> get copyWith =>
+      __$$CustomUI_ExpandedImplCopyWithImpl<_$CustomUI_ExpandedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return expanded(child, flex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return expanded?.call(child, flex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (expanded != null) {
+      return expanded(child, flex);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return expanded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return expanded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (expanded != null) {
+      return expanded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Expanded extends CustomUI {
+  const factory CustomUI_Expanded(
+      {required final CustomUI child,
+      required final int flex}) = _$CustomUI_ExpandedImpl;
+  const CustomUI_Expanded._() : super._();
+
+  CustomUI get child;
+  int get flex;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_ExpandedImplCopyWith<_$CustomUI_ExpandedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_SizedBoxImplCopyWith<$Res> {
+  factory _$$CustomUI_SizedBoxImplCopyWith(_$CustomUI_SizedBoxImpl value,
+          $Res Function(_$CustomUI_SizedBoxImpl) then) =
+      __$$CustomUI_SizedBoxImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double? width, double? height, CustomUI? child});
+
+  $CustomUICopyWith<$Res>? get child;
+}
+
+/// @nodoc
+class __$$CustomUI_SizedBoxImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_SizedBoxImpl>
+    implements _$$CustomUI_SizedBoxImplCopyWith<$Res> {
+  __$$CustomUI_SizedBoxImplCopyWithImpl(_$CustomUI_SizedBoxImpl _value,
+      $Res Function(_$CustomUI_SizedBoxImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? width = freezed,
+    Object? height = freezed,
+    Object? child = freezed,
+  }) {
+    return _then(_$CustomUI_SizedBoxImpl(
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as double?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      child: freezed == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res>? get child {
+    if (_value.child == null) {
+      return null;
+    }
+
+    return $CustomUICopyWith<$Res>(_value.child!, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_SizedBoxImpl extends CustomUI_SizedBox {
+  const _$CustomUI_SizedBoxImpl({this.width, this.height, this.child})
+      : super._();
+
+  @override
+  final double? width;
+  @override
+  final double? height;
+  @override
+  final CustomUI? child;
+
+  @override
+  String toString() {
+    return 'CustomUI.sizedBox(width: $width, height: $height, child: $child)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_SizedBoxImpl &&
+            (identical(other.width, width) || other.width == width) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.child, child) || other.child == child));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, width, height, child);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_SizedBoxImplCopyWith<_$CustomUI_SizedBoxImpl> get copyWith =>
+      __$$CustomUI_SizedBoxImplCopyWithImpl<_$CustomUI_SizedBoxImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return sizedBox(width, height, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return sizedBox?.call(width, height, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (sizedBox != null) {
+      return sizedBox(width, height, child);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return sizedBox(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return sizedBox?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (sizedBox != null) {
+      return sizedBox(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_SizedBox extends CustomUI {
+  const factory CustomUI_SizedBox(
+      {final double? width,
+      final double? height,
+      final CustomUI? child}) = _$CustomUI_SizedBoxImpl;
+  const CustomUI_SizedBox._() : super._();
+
+  double? get width;
+  double? get height;
+  CustomUI? get child;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_SizedBoxImplCopyWith<_$CustomUI_SizedBoxImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_SpacerImplCopyWith<$Res> {
+  factory _$$CustomUI_SpacerImplCopyWith(_$CustomUI_SpacerImpl value,
+          $Res Function(_$CustomUI_SpacerImpl) then) =
+      __$$CustomUI_SpacerImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int flex});
+}
+
+/// @nodoc
+class __$$CustomUI_SpacerImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_SpacerImpl>
+    implements _$$CustomUI_SpacerImplCopyWith<$Res> {
+  __$$CustomUI_SpacerImplCopyWithImpl(
+      _$CustomUI_SpacerImpl _value, $Res Function(_$CustomUI_SpacerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? flex = null,
+  }) {
+    return _then(_$CustomUI_SpacerImpl(
+      flex: null == flex
+          ? _value.flex
+          : flex // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_SpacerImpl extends CustomUI_Spacer {
+  const _$CustomUI_SpacerImpl({required this.flex}) : super._();
+
+  @override
+  final int flex;
+
+  @override
+  String toString() {
+    return 'CustomUI.spacer(flex: $flex)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_SpacerImpl &&
+            (identical(other.flex, flex) || other.flex == flex));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, flex);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_SpacerImplCopyWith<_$CustomUI_SpacerImpl> get copyWith =>
+      __$$CustomUI_SpacerImplCopyWithImpl<_$CustomUI_SpacerImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return spacer(flex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return spacer?.call(flex);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (spacer != null) {
+      return spacer(flex);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return spacer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return spacer?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (spacer != null) {
+      return spacer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Spacer extends CustomUI {
+  const factory CustomUI_Spacer({required final int flex}) =
+      _$CustomUI_SpacerImpl;
+  const CustomUI_Spacer._() : super._();
+
+  int get flex;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_SpacerImplCopyWith<_$CustomUI_SpacerImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_WrapImplCopyWith<$Res> {
+  factory _$$CustomUI_WrapImplCopyWith(
+          _$CustomUI_WrapImpl value, $Res Function(_$CustomUI_WrapImpl) then) =
+      __$$CustomUI_WrapImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {List<CustomUI> children,
+      double? spacing,
+      double? runSpacing,
+      WrapAlignment? alignment});
+}
+
+/// @nodoc
+class __$$CustomUI_WrapImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_WrapImpl>
+    implements _$$CustomUI_WrapImplCopyWith<$Res> {
+  __$$CustomUI_WrapImplCopyWithImpl(
+      _$CustomUI_WrapImpl _value, $Res Function(_$CustomUI_WrapImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? children = null,
+    Object? spacing = freezed,
+    Object? runSpacing = freezed,
+    Object? alignment = freezed,
+  }) {
+    return _then(_$CustomUI_WrapImpl(
+      children: null == children
+          ? _value._children
+          : children // ignore: cast_nullable_to_non_nullable
+              as List<CustomUI>,
+      spacing: freezed == spacing
+          ? _value.spacing
+          : spacing // ignore: cast_nullable_to_non_nullable
+              as double?,
+      runSpacing: freezed == runSpacing
+          ? _value.runSpacing
+          : runSpacing // ignore: cast_nullable_to_non_nullable
+              as double?,
+      alignment: freezed == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as WrapAlignment?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_WrapImpl extends CustomUI_Wrap {
+  const _$CustomUI_WrapImpl(
+      {required final List<CustomUI> children,
+      this.spacing,
+      this.runSpacing,
+      this.alignment})
+      : _children = children,
+        super._();
+
+  final List<CustomUI> _children;
+  @override
+  List<CustomUI> get children {
+    if (_children is EqualUnmodifiableListView) return _children;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_children);
+  }
+
+  @override
+  final double? spacing;
+  @override
+  final double? runSpacing;
+  @override
+  final WrapAlignment? alignment;
+
+  @override
+  String toString() {
+    return 'CustomUI.wrap(children: $children, spacing: $spacing, runSpacing: $runSpacing, alignment: $alignment)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_WrapImpl &&
+            const DeepCollectionEquality().equals(other._children, _children) &&
+            (identical(other.spacing, spacing) || other.spacing == spacing) &&
+            (identical(other.runSpacing, runSpacing) ||
+                other.runSpacing == runSpacing) &&
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_children),
+      spacing,
+      runSpacing,
+      alignment);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_WrapImplCopyWith<_$CustomUI_WrapImpl> get copyWith =>
+      __$$CustomUI_WrapImplCopyWithImpl<_$CustomUI_WrapImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return wrap(children, spacing, runSpacing, alignment);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return wrap?.call(children, spacing, runSpacing, alignment);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (wrap != null) {
+      return wrap(children, spacing, runSpacing, alignment);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return wrap(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return wrap?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (wrap != null) {
+      return wrap(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Wrap extends CustomUI {
+  const factory CustomUI_Wrap(
+      {required final List<CustomUI> children,
+      final double? spacing,
+      final double? runSpacing,
+      final WrapAlignment? alignment}) = _$CustomUI_WrapImpl;
+  const CustomUI_Wrap._() : super._();
+
+  List<CustomUI> get children;
+  double? get spacing;
+  double? get runSpacing;
+  WrapAlignment? get alignment;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_WrapImplCopyWith<_$CustomUI_WrapImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_CenterImplCopyWith<$Res> {
+  factory _$$CustomUI_CenterImplCopyWith(_$CustomUI_CenterImpl value,
+          $Res Function(_$CustomUI_CenterImpl) then) =
+      __$$CustomUI_CenterImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI child});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_CenterImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_CenterImpl>
+    implements _$$CustomUI_CenterImplCopyWith<$Res> {
+  __$$CustomUI_CenterImplCopyWithImpl(
+      _$CustomUI_CenterImpl _value, $Res Function(_$CustomUI_CenterImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? child = null,
+  }) {
+    return _then(_$CustomUI_CenterImpl(
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_CenterImpl extends CustomUI_Center {
+  const _$CustomUI_CenterImpl({required this.child}) : super._();
+
+  @override
+  final CustomUI child;
+
+  @override
+  String toString() {
+    return 'CustomUI.center(child: $child)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_CenterImpl &&
+            (identical(other.child, child) || other.child == child));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, child);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_CenterImplCopyWith<_$CustomUI_CenterImpl> get copyWith =>
+      __$$CustomUI_CenterImplCopyWithImpl<_$CustomUI_CenterImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return center(child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return center?.call(child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (center != null) {
+      return center(child);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return center(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return center?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (center != null) {
+      return center(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Center extends CustomUI {
+  const factory CustomUI_Center({required final CustomUI child}) =
+      _$CustomUI_CenterImpl;
+  const CustomUI_Center._() : super._();
+
+  CustomUI get child;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_CenterImplCopyWith<_$CustomUI_CenterImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_AlignImplCopyWith<$Res> {
+  factory _$$CustomUI_AlignImplCopyWith(_$CustomUI_AlignImpl value,
+          $Res Function(_$CustomUI_AlignImpl) then) =
+      __$$CustomUI_AlignImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Alignment alignment, CustomUI child});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_AlignImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_AlignImpl>
+    implements _$$CustomUI_AlignImplCopyWith<$Res> {
+  __$$CustomUI_AlignImplCopyWithImpl(
+      _$CustomUI_AlignImpl _value, $Res Function(_$CustomUI_AlignImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? alignment = null,
+    Object? child = null,
+  }) {
+    return _then(_$CustomUI_AlignImpl(
+      alignment: null == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as Alignment,
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_AlignImpl extends CustomUI_Align {
+  const _$CustomUI_AlignImpl({required this.alignment, required this.child})
+      : super._();
+
+  @override
+  final Alignment alignment;
+  @override
+  final CustomUI child;
+
+  @override
+  String toString() {
+    return 'CustomUI.align(alignment: $alignment, child: $child)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_AlignImpl &&
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment) &&
+            (identical(other.child, child) || other.child == child));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, alignment, child);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_AlignImplCopyWith<_$CustomUI_AlignImpl> get copyWith =>
+      __$$CustomUI_AlignImplCopyWithImpl<_$CustomUI_AlignImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return align(alignment, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return align?.call(alignment, child);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (align != null) {
+      return align(alignment, child);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return align(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return align?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (align != null) {
+      return align(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Align extends CustomUI {
+  const factory CustomUI_Align(
+      {required final Alignment alignment,
+      required final CustomUI child}) = _$CustomUI_AlignImpl;
+  const CustomUI_Align._() : super._();
+
+  Alignment get alignment;
+  CustomUI get child;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_AlignImplCopyWith<_$CustomUI_AlignImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_StackImplCopyWith<$Res> {
+  factory _$$CustomUI_StackImplCopyWith(_$CustomUI_StackImpl value,
+          $Res Function(_$CustomUI_StackImpl) then) =
+      __$$CustomUI_StackImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<CustomUI> children, Alignment? alignment, StackFit? fit});
+}
+
+/// @nodoc
+class __$$CustomUI_StackImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_StackImpl>
+    implements _$$CustomUI_StackImplCopyWith<$Res> {
+  __$$CustomUI_StackImplCopyWithImpl(
+      _$CustomUI_StackImpl _value, $Res Function(_$CustomUI_StackImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? children = null,
+    Object? alignment = freezed,
+    Object? fit = freezed,
+  }) {
+    return _then(_$CustomUI_StackImpl(
+      children: null == children
+          ? _value._children
+          : children // ignore: cast_nullable_to_non_nullable
+              as List<CustomUI>,
+      alignment: freezed == alignment
+          ? _value.alignment
+          : alignment // ignore: cast_nullable_to_non_nullable
+              as Alignment?,
+      fit: freezed == fit
+          ? _value.fit
+          : fit // ignore: cast_nullable_to_non_nullable
+              as StackFit?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_StackImpl extends CustomUI_Stack {
+  const _$CustomUI_StackImpl(
+      {required final List<CustomUI> children, this.alignment, this.fit})
+      : _children = children,
+        super._();
+
+  final List<CustomUI> _children;
+  @override
+  List<CustomUI> get children {
+    if (_children is EqualUnmodifiableListView) return _children;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_children);
+  }
+
+  @override
+  final Alignment? alignment;
+  @override
+  final StackFit? fit;
+
+  @override
+  String toString() {
+    return 'CustomUI.stack(children: $children, alignment: $alignment, fit: $fit)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_StackImpl &&
+            const DeepCollectionEquality().equals(other._children, _children) &&
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment) &&
+            (identical(other.fit, fit) || other.fit == fit));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_children), alignment, fit);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_StackImplCopyWith<_$CustomUI_StackImpl> get copyWith =>
+      __$$CustomUI_StackImplCopyWithImpl<_$CustomUI_StackImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return stack(children, alignment, fit);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return stack?.call(children, alignment, fit);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (stack != null) {
+      return stack(children, alignment, fit);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return stack(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return stack?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (stack != null) {
+      return stack(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Stack extends CustomUI {
+  const factory CustomUI_Stack(
+      {required final List<CustomUI> children,
+      final Alignment? alignment,
+      final StackFit? fit}) = _$CustomUI_StackImpl;
+  const CustomUI_Stack._() : super._();
+
+  List<CustomUI> get children;
+  Alignment? get alignment;
+  StackFit? get fit;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_StackImplCopyWith<_$CustomUI_StackImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_DividerImplCopyWith<$Res> {
+  factory _$$CustomUI_DividerImplCopyWith(_$CustomUI_DividerImpl value,
+          $Res Function(_$CustomUI_DividerImpl) then) =
+      __$$CustomUI_DividerImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CustomUI_DividerImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_DividerImpl>
+    implements _$$CustomUI_DividerImplCopyWith<$Res> {
+  __$$CustomUI_DividerImplCopyWithImpl(_$CustomUI_DividerImpl _value,
+      $Res Function(_$CustomUI_DividerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CustomUI_DividerImpl extends CustomUI_Divider {
+  const _$CustomUI_DividerImpl() : super._();
+
+  @override
+  String toString() {
+    return 'CustomUI.divider()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$CustomUI_DividerImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return divider();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return divider?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (divider != null) {
+      return divider();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return divider(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return divider?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (divider != null) {
+      return divider(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Divider extends CustomUI {
+  const factory CustomUI_Divider() = _$CustomUI_DividerImpl;
+  const CustomUI_Divider._() : super._();
+}
+
+/// @nodoc
+abstract class _$$CustomUI_ListTileImplCopyWith<$Res> {
+  factory _$$CustomUI_ListTileImplCopyWith(_$CustomUI_ListTileImpl value,
+          $Res Function(_$CustomUI_ListTileImpl) then) =
+      __$$CustomUI_ListTileImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {CustomUI? leading,
+      CustomUI? title,
+      CustomUI? subtitle,
+      CustomUI? trailing,
+      Interaction? onClick,
+      Interaction? onLongClick});
+
+  $CustomUICopyWith<$Res>? get leading;
+  $CustomUICopyWith<$Res>? get title;
+  $CustomUICopyWith<$Res>? get subtitle;
+  $CustomUICopyWith<$Res>? get trailing;
+  $InteractionCopyWith<$Res>? get onClick;
+  $InteractionCopyWith<$Res>? get onLongClick;
+}
+
+/// @nodoc
+class __$$CustomUI_ListTileImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_ListTileImpl>
+    implements _$$CustomUI_ListTileImplCopyWith<$Res> {
+  __$$CustomUI_ListTileImplCopyWithImpl(_$CustomUI_ListTileImpl _value,
+      $Res Function(_$CustomUI_ListTileImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? leading = freezed,
+    Object? title = freezed,
+    Object? subtitle = freezed,
+    Object? trailing = freezed,
+    Object? onClick = freezed,
+    Object? onLongClick = freezed,
+  }) {
+    return _then(_$CustomUI_ListTileImpl(
+      leading: freezed == leading
+          ? _value.leading
+          : leading // ignore: cast_nullable_to_non_nullable
+              as CustomUI?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as CustomUI?,
+      subtitle: freezed == subtitle
+          ? _value.subtitle
+          : subtitle // ignore: cast_nullable_to_non_nullable
+              as CustomUI?,
+      trailing: freezed == trailing
+          ? _value.trailing
+          : trailing // ignore: cast_nullable_to_non_nullable
+              as CustomUI?,
+      onClick: freezed == onClick
+          ? _value.onClick
+          : onClick // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+      onLongClick: freezed == onLongClick
+          ? _value.onLongClick
+          : onLongClick // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res>? get leading {
+    if (_value.leading == null) {
+      return null;
+    }
+
+    return $CustomUICopyWith<$Res>(_value.leading!, (value) {
+      return _then(_value.copyWith(leading: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res>? get title {
+    if (_value.title == null) {
+      return null;
+    }
+
+    return $CustomUICopyWith<$Res>(_value.title!, (value) {
+      return _then(_value.copyWith(title: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res>? get subtitle {
+    if (_value.subtitle == null) {
+      return null;
+    }
+
+    return $CustomUICopyWith<$Res>(_value.subtitle!, (value) {
+      return _then(_value.copyWith(subtitle: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res>? get trailing {
+    if (_value.trailing == null) {
+      return null;
+    }
+
+    return $CustomUICopyWith<$Res>(_value.trailing!, (value) {
+      return _then(_value.copyWith(trailing: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onClick {
+    if (_value.onClick == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onClick!, (value) {
+      return _then(_value.copyWith(onClick: value));
+    });
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onLongClick {
+    if (_value.onLongClick == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onLongClick!, (value) {
+      return _then(_value.copyWith(onLongClick: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_ListTileImpl extends CustomUI_ListTile {
+  const _$CustomUI_ListTileImpl(
+      {this.leading,
+      this.title,
+      this.subtitle,
+      this.trailing,
+      this.onClick,
+      this.onLongClick})
+      : super._();
+
+  @override
+  final CustomUI? leading;
+  @override
+  final CustomUI? title;
+  @override
+  final CustomUI? subtitle;
+  @override
+  final CustomUI? trailing;
+  @override
+  final Interaction? onClick;
+  @override
+  final Interaction? onLongClick;
+
+  @override
+  String toString() {
+    return 'CustomUI.listTile(leading: $leading, title: $title, subtitle: $subtitle, trailing: $trailing, onClick: $onClick, onLongClick: $onLongClick)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_ListTileImpl &&
+            (identical(other.leading, leading) || other.leading == leading) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.subtitle, subtitle) ||
+                other.subtitle == subtitle) &&
+            (identical(other.trailing, trailing) ||
+                other.trailing == trailing) &&
+            (identical(other.onClick, onClick) || other.onClick == onClick) &&
+            (identical(other.onLongClick, onLongClick) ||
+                other.onLongClick == onLongClick));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, leading, title, subtitle, trailing, onClick, onLongClick);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_ListTileImplCopyWith<_$CustomUI_ListTileImpl> get copyWith =>
+      __$$CustomUI_ListTileImplCopyWithImpl<_$CustomUI_ListTileImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return listTile(leading, title, subtitle, trailing, onClick, onLongClick);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return listTile?.call(
+        leading, title, subtitle, trailing, onClick, onLongClick);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (listTile != null) {
+      return listTile(leading, title, subtitle, trailing, onClick, onLongClick);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return listTile(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return listTile?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (listTile != null) {
+      return listTile(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_ListTile extends CustomUI {
+  const factory CustomUI_ListTile(
+      {final CustomUI? leading,
+      final CustomUI? title,
+      final CustomUI? subtitle,
+      final CustomUI? trailing,
+      final Interaction? onClick,
+      final Interaction? onLongClick}) = _$CustomUI_ListTileImpl;
+  const CustomUI_ListTile._() : super._();
+
+  CustomUI? get leading;
+  CustomUI? get title;
+  CustomUI? get subtitle;
+  CustomUI? get trailing;
+  Interaction? get onClick;
+  Interaction? get onLongClick;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_ListTileImplCopyWith<_$CustomUI_ListTileImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_BadgeImplCopyWith<$Res> {
+  factory _$$CustomUI_BadgeImplCopyWith(_$CustomUI_BadgeImpl value,
+          $Res Function(_$CustomUI_BadgeImpl) then) =
+      __$$CustomUI_BadgeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CustomUI child, ColorToken? color});
+
+  $CustomUICopyWith<$Res> get child;
+}
+
+/// @nodoc
+class __$$CustomUI_BadgeImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_BadgeImpl>
+    implements _$$CustomUI_BadgeImplCopyWith<$Res> {
+  __$$CustomUI_BadgeImplCopyWithImpl(
+      _$CustomUI_BadgeImpl _value, $Res Function(_$CustomUI_BadgeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? child = null,
+    Object? color = freezed,
+  }) {
+    return _then(_$CustomUI_BadgeImpl(
+      child: null == child
+          ? _value.child
+          : child // ignore: cast_nullable_to_non_nullable
+              as CustomUI,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as ColorToken?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomUICopyWith<$Res> get child {
+    return $CustomUICopyWith<$Res>(_value.child, (value) {
+      return _then(_value.copyWith(child: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_BadgeImpl extends CustomUI_Badge {
+  const _$CustomUI_BadgeImpl({required this.child, this.color}) : super._();
+
+  @override
+  final CustomUI child;
+  @override
+  final ColorToken? color;
+
+  @override
+  String toString() {
+    return 'CustomUI.badge(child: $child, color: $color)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_BadgeImpl &&
+            (identical(other.child, child) || other.child == child) &&
+            (identical(other.color, color) || other.color == color));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, child, color);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_BadgeImplCopyWith<_$CustomUI_BadgeImpl> get copyWith =>
+      __$$CustomUI_BadgeImplCopyWithImpl<_$CustomUI_BadgeImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return badge(child, color);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return badge?.call(child, color);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (badge != null) {
+      return badge(child, color);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return badge(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return badge?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (badge != null) {
+      return badge(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Badge extends CustomUI {
+  const factory CustomUI_Badge(
+      {required final CustomUI child,
+      final ColorToken? color}) = _$CustomUI_BadgeImpl;
+  const CustomUI_Badge._() : super._();
+
+  CustomUI get child;
+  ColorToken? get color;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_BadgeImplCopyWith<_$CustomUI_BadgeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_FoldableTextImplCopyWith<$Res> {
+  factory _$$CustomUI_FoldableTextImplCopyWith(
+          _$CustomUI_FoldableTextImpl value,
+          $Res Function(_$CustomUI_FoldableTextImpl) then) =
+      __$$CustomUI_FoldableTextImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String text, int maxLines, TextStyle? style, bool animate});
+}
+
+/// @nodoc
+class __$$CustomUI_FoldableTextImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_FoldableTextImpl>
+    implements _$$CustomUI_FoldableTextImplCopyWith<$Res> {
+  __$$CustomUI_FoldableTextImplCopyWithImpl(_$CustomUI_FoldableTextImpl _value,
+      $Res Function(_$CustomUI_FoldableTextImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? text = null,
+    Object? maxLines = null,
+    Object? style = freezed,
+    Object? animate = null,
+  }) {
+    return _then(_$CustomUI_FoldableTextImpl(
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      maxLines: null == maxLines
+          ? _value.maxLines
+          : maxLines // ignore: cast_nullable_to_non_nullable
+              as int,
+      style: freezed == style
+          ? _value.style
+          : style // ignore: cast_nullable_to_non_nullable
+              as TextStyle?,
+      animate: null == animate
+          ? _value.animate
+          : animate // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_FoldableTextImpl extends CustomUI_FoldableText {
+  const _$CustomUI_FoldableTextImpl(
+      {required this.text,
+      required this.maxLines,
+      this.style,
+      required this.animate})
+      : super._();
+
+  @override
+  final String text;
+  @override
+  final int maxLines;
+  @override
+  final TextStyle? style;
+  @override
+  final bool animate;
+
+  @override
+  String toString() {
+    return 'CustomUI.foldableText(text: $text, maxLines: $maxLines, style: $style, animate: $animate)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_FoldableTextImpl &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.maxLines, maxLines) ||
+                other.maxLines == maxLines) &&
+            (identical(other.style, style) || other.style == style) &&
+            (identical(other.animate, animate) || other.animate == animate));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, text, maxLines, style, animate);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_FoldableTextImplCopyWith<_$CustomUI_FoldableTextImpl>
+      get copyWith => __$$CustomUI_FoldableTextImplCopyWithImpl<
+          _$CustomUI_FoldableTextImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return foldableText(this.text, maxLines, style, animate);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return foldableText?.call(this.text, maxLines, style, animate);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (foldableText != null) {
+      return foldableText(this.text, maxLines, style, animate);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return foldableText(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return foldableText?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (foldableText != null) {
+      return foldableText(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_FoldableText extends CustomUI {
+  const factory CustomUI_FoldableText(
+      {required final String text,
+      required final int maxLines,
+      final TextStyle? style,
+      required final bool animate}) = _$CustomUI_FoldableTextImpl;
+  const CustomUI_FoldableText._() : super._();
+
+  String get text;
+  int get maxLines;
+  TextStyle? get style;
+  bool get animate;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_FoldableTextImplCopyWith<_$CustomUI_FoldableTextImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_StarDisplayImplCopyWith<$Res> {
+  factory _$$CustomUI_StarDisplayImplCopyWith(_$CustomUI_StarDisplayImpl value,
+          $Res Function(_$CustomUI_StarDisplayImpl) then) =
+      __$$CustomUI_StarDisplayImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double fill, int maxStars});
+}
+
+/// @nodoc
+class __$$CustomUI_StarDisplayImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_StarDisplayImpl>
+    implements _$$CustomUI_StarDisplayImplCopyWith<$Res> {
+  __$$CustomUI_StarDisplayImplCopyWithImpl(_$CustomUI_StarDisplayImpl _value,
+      $Res Function(_$CustomUI_StarDisplayImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fill = null,
+    Object? maxStars = null,
+  }) {
+    return _then(_$CustomUI_StarDisplayImpl(
+      fill: null == fill
+          ? _value.fill
+          : fill // ignore: cast_nullable_to_non_nullable
+              as double,
+      maxStars: null == maxStars
+          ? _value.maxStars
+          : maxStars // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_StarDisplayImpl extends CustomUI_StarDisplay {
+  const _$CustomUI_StarDisplayImpl({required this.fill, required this.maxStars})
+      : super._();
+
+  @override
+  final double fill;
+  @override
+  final int maxStars;
+
+  @override
+  String toString() {
+    return 'CustomUI.starDisplay(fill: $fill, maxStars: $maxStars)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_StarDisplayImpl &&
+            (identical(other.fill, fill) || other.fill == fill) &&
+            (identical(other.maxStars, maxStars) ||
+                other.maxStars == maxStars));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, fill, maxStars);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_StarDisplayImplCopyWith<_$CustomUI_StarDisplayImpl>
+      get copyWith =>
+          __$$CustomUI_StarDisplayImplCopyWithImpl<_$CustomUI_StarDisplayImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return starDisplay(fill, maxStars);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return starDisplay?.call(fill, maxStars);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (starDisplay != null) {
+      return starDisplay(fill, maxStars);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return starDisplay(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return starDisplay?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (starDisplay != null) {
+      return starDisplay(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_StarDisplay extends CustomUI {
+  const factory CustomUI_StarDisplay(
+      {required final double fill,
+      required final int maxStars}) = _$CustomUI_StarDisplayImpl;
+  const CustomUI_StarDisplay._() : super._();
+
+  double get fill;
+  int get maxStars;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_StarDisplayImplCopyWith<_$CustomUI_StarDisplayImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomUI_DropdownImplCopyWith<$Res> {
+  factory _$$CustomUI_DropdownImplCopyWith(_$CustomUI_DropdownImpl value,
+          $Res Function(_$CustomUI_DropdownImpl) then) =
+      __$$CustomUI_DropdownImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {List<DropdownItem> items, String? initialValue, Interaction? onChange});
+
+  $InteractionCopyWith<$Res>? get onChange;
+}
+
+/// @nodoc
+class __$$CustomUI_DropdownImplCopyWithImpl<$Res>
+    extends _$CustomUICopyWithImpl<$Res, _$CustomUI_DropdownImpl>
+    implements _$$CustomUI_DropdownImplCopyWith<$Res> {
+  __$$CustomUI_DropdownImplCopyWithImpl(_$CustomUI_DropdownImpl _value,
+      $Res Function(_$CustomUI_DropdownImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? items = null,
+    Object? initialValue = freezed,
+    Object? onChange = freezed,
+  }) {
+    return _then(_$CustomUI_DropdownImpl(
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<DropdownItem>,
+      initialValue: freezed == initialValue
+          ? _value.initialValue
+          : initialValue // ignore: cast_nullable_to_non_nullable
+              as String?,
+      onChange: freezed == onChange
+          ? _value.onChange
+          : onChange // ignore: cast_nullable_to_non_nullable
+              as Interaction?,
+    ));
+  }
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InteractionCopyWith<$Res>? get onChange {
+    if (_value.onChange == null) {
+      return null;
+    }
+
+    return $InteractionCopyWith<$Res>(_value.onChange!, (value) {
+      return _then(_value.copyWith(onChange: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CustomUI_DropdownImpl extends CustomUI_Dropdown {
+  const _$CustomUI_DropdownImpl(
+      {required final List<DropdownItem> items,
+      this.initialValue,
+      this.onChange})
+      : _items = items,
+        super._();
+
+  final List<DropdownItem> _items;
+  @override
+  List<DropdownItem> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  final String? initialValue;
+  @override
+  final Interaction? onChange;
+
+  @override
+  String toString() {
+    return 'CustomUI.dropdown(items: $items, initialValue: $initialValue, onChange: $onChange)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomUI_DropdownImpl &&
+            const DeepCollectionEquality().equals(other._items, _items) &&
+            (identical(other.initialValue, initialValue) ||
+                other.initialValue == initialValue) &&
+            (identical(other.onChange, onChange) ||
+                other.onChange == onChange));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_items), initialValue, onChange);
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomUI_DropdownImplCopyWith<_$CustomUI_DropdownImpl> get copyWith =>
+      __$$CustomUI_DropdownImplCopyWithImpl<_$CustomUI_DropdownImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String text, TextStyle? style) text,
+    required TResult Function(Link image, int? width, int? height) image,
+    required TResult Function(String link, String? label) link,
+    required TResult Function(String timestamp, TimestampType display)
+        timestamp,
+    required TResult Function(Entry entry) entryCard,
+    required TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)
+        card,
+    required TResult Function() spinner,
+    required TResult Function(String handler, String data) feed,
+    required TResult Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)
+        button,
+    required TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)
+        inlineSetting,
+    required TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)
+        slot,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        column,
+    required TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)
+        row,
+    required TResult Function(Interaction? onChange, int? debounceMs,
+            String? initial, Interaction? onCommit)
+        textInput,
+    required TResult Function(EdgeInsets padding, CustomUI child) padding,
+    required TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)
+        container,
+    required TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)
+        clickable,
+    required TResult Function(CustomUI child, int flex) expanded,
+    required TResult Function(double? width, double? height, CustomUI? child)
+        sizedBox,
+    required TResult Function(int flex) spacer,
+    required TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)
+        wrap,
+    required TResult Function(CustomUI child) center,
+    required TResult Function(Alignment alignment, CustomUI child) align,
+    required TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)
+        stack,
+    required TResult Function() divider,
+    required TResult Function(
+            CustomUI? leading,
+            CustomUI? title,
+            CustomUI? subtitle,
+            CustomUI? trailing,
+            Interaction? onClick,
+            Interaction? onLongClick)
+        listTile,
+    required TResult Function(CustomUI child, ColorToken? color) badge,
+    required TResult Function(
+            String text, int maxLines, TextStyle? style, bool animate)
+        foldableText,
+    required TResult Function(double fill, int maxStars) starDisplay,
+    required TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)
+        dropdown,
+  }) {
+    return dropdown(items, initialValue, onChange);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String text, TextStyle? style)? text,
+    TResult? Function(Link image, int? width, int? height)? image,
+    TResult? Function(String link, String? label)? link,
+    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(Entry entry)? entryCard,
+    TResult? Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult? Function()? spinner,
+    TResult? Function(String handler, String data)? feed,
+    TResult? Function(String label, Interaction? onClick,
+            ButtonType? buttonType, ColorToken? color)?
+        button,
+    TResult? Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult? Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult? Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult? Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult? Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult? Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult? Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult? Function(CustomUI child, int flex)? expanded,
+    TResult? Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult? Function(int flex)? spacer,
+    TResult? Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult? Function(CustomUI child)? center,
+    TResult? Function(Alignment alignment, CustomUI child)? align,
+    TResult? Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult? Function()? divider,
+    TResult? Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult? Function(CustomUI child, ColorToken? color)? badge,
+    TResult? Function(
+            String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult? Function(double fill, int maxStars)? starDisplay,
+    TResult? Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+  }) {
+    return dropdown?.call(items, initialValue, onChange);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String text, TextStyle? style)? text,
+    TResult Function(Link image, int? width, int? height)? image,
+    TResult Function(String link, String? label)? link,
+    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(Entry entry)? entryCard,
+    TResult Function(
+            Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
+        card,
+    TResult Function()? spinner,
+    TResult Function(String handler, String data)? feed,
+    TResult Function(String label, Interaction? onClick, ButtonType? buttonType,
+            ColorToken? color)?
+        button,
+    TResult Function(
+            String settingId, SettingKind settingKind, Interaction? onCommit)?
+        inlineSetting,
+    TResult Function(String handler, CustomUI child, String staticData,
+            List<Subscription> subscriptions)?
+        slot,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        column,
+    TResult Function(
+            List<CustomUI> children,
+            MainAxisAlignment? mainAxisAlignment,
+            CrossAxisAlignment? crossAxisAlignment,
+            MainAxisSize? mainAxisSize,
+            bool scrollable)?
+        row,
+    TResult Function(Interaction? onChange, int? debounceMs, String? initial,
+            Interaction? onCommit)?
+        textInput,
+    TResult Function(EdgeInsets padding, CustomUI child)? padding,
+    TResult Function(
+            CustomUI child,
+            ContainerType? containerType,
+            ColorToken? color,
+            ColorToken? borderColor,
+            EdgeInsets? padding,
+            double? width,
+            double? height,
+            Alignment? alignment,
+            bool? emphasized)?
+        container,
+    TResult Function(
+            CustomUI child, Interaction? onClick, Interaction? onLongClick)?
+        clickable,
+    TResult Function(CustomUI child, int flex)? expanded,
+    TResult Function(double? width, double? height, CustomUI? child)? sizedBox,
+    TResult Function(int flex)? spacer,
+    TResult Function(List<CustomUI> children, double? spacing,
+            double? runSpacing, WrapAlignment? alignment)?
+        wrap,
+    TResult Function(CustomUI child)? center,
+    TResult Function(Alignment alignment, CustomUI child)? align,
+    TResult Function(
+            List<CustomUI> children, Alignment? alignment, StackFit? fit)?
+        stack,
+    TResult Function()? divider,
+    TResult Function(CustomUI? leading, CustomUI? title, CustomUI? subtitle,
+            CustomUI? trailing, Interaction? onClick, Interaction? onLongClick)?
+        listTile,
+    TResult Function(CustomUI child, ColorToken? color)? badge,
+    TResult Function(String text, int maxLines, TextStyle? style, bool animate)?
+        foldableText,
+    TResult Function(double fill, int maxStars)? starDisplay,
+    TResult Function(List<DropdownItem> items, String? initialValue,
+            Interaction? onChange)?
+        dropdown,
+    required TResult orElse(),
+  }) {
+    if (dropdown != null) {
+      return dropdown(items, initialValue, onChange);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CustomUI_Text value) text,
+    required TResult Function(CustomUI_Image value) image,
+    required TResult Function(CustomUI_Link value) link,
+    required TResult Function(CustomUI_Timestamp value) timestamp,
+    required TResult Function(CustomUI_EntryCard value) entryCard,
+    required TResult Function(CustomUI_Card value) card,
+    required TResult Function(CustomUI_Spinner value) spinner,
+    required TResult Function(CustomUI_Feed value) feed,
+    required TResult Function(CustomUI_Button value) button,
+    required TResult Function(CustomUI_InlineSetting value) inlineSetting,
+    required TResult Function(CustomUI_Slot value) slot,
+    required TResult Function(CustomUI_Column value) column,
+    required TResult Function(CustomUI_Row value) row,
+    required TResult Function(CustomUI_TextInput value) textInput,
+    required TResult Function(CustomUI_Padding value) padding,
+    required TResult Function(CustomUI_Container value) container,
+    required TResult Function(CustomUI_Clickable value) clickable,
+    required TResult Function(CustomUI_Expanded value) expanded,
+    required TResult Function(CustomUI_SizedBox value) sizedBox,
+    required TResult Function(CustomUI_Spacer value) spacer,
+    required TResult Function(CustomUI_Wrap value) wrap,
+    required TResult Function(CustomUI_Center value) center,
+    required TResult Function(CustomUI_Align value) align,
+    required TResult Function(CustomUI_Stack value) stack,
+    required TResult Function(CustomUI_Divider value) divider,
+    required TResult Function(CustomUI_ListTile value) listTile,
+    required TResult Function(CustomUI_Badge value) badge,
+    required TResult Function(CustomUI_FoldableText value) foldableText,
+    required TResult Function(CustomUI_StarDisplay value) starDisplay,
+    required TResult Function(CustomUI_Dropdown value) dropdown,
+  }) {
+    return dropdown(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI_Text value)? text,
+    TResult? Function(CustomUI_Image value)? image,
+    TResult? Function(CustomUI_Link value)? link,
+    TResult? Function(CustomUI_Timestamp value)? timestamp,
+    TResult? Function(CustomUI_EntryCard value)? entryCard,
+    TResult? Function(CustomUI_Card value)? card,
+    TResult? Function(CustomUI_Spinner value)? spinner,
+    TResult? Function(CustomUI_Feed value)? feed,
+    TResult? Function(CustomUI_Button value)? button,
+    TResult? Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult? Function(CustomUI_Slot value)? slot,
+    TResult? Function(CustomUI_Column value)? column,
+    TResult? Function(CustomUI_Row value)? row,
+    TResult? Function(CustomUI_TextInput value)? textInput,
+    TResult? Function(CustomUI_Padding value)? padding,
+    TResult? Function(CustomUI_Container value)? container,
+    TResult? Function(CustomUI_Clickable value)? clickable,
+    TResult? Function(CustomUI_Expanded value)? expanded,
+    TResult? Function(CustomUI_SizedBox value)? sizedBox,
+    TResult? Function(CustomUI_Spacer value)? spacer,
+    TResult? Function(CustomUI_Wrap value)? wrap,
+    TResult? Function(CustomUI_Center value)? center,
+    TResult? Function(CustomUI_Align value)? align,
+    TResult? Function(CustomUI_Stack value)? stack,
+    TResult? Function(CustomUI_Divider value)? divider,
+    TResult? Function(CustomUI_ListTile value)? listTile,
+    TResult? Function(CustomUI_Badge value)? badge,
+    TResult? Function(CustomUI_FoldableText value)? foldableText,
+    TResult? Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult? Function(CustomUI_Dropdown value)? dropdown,
+  }) {
+    return dropdown?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CustomUI_Text value)? text,
+    TResult Function(CustomUI_Image value)? image,
+    TResult Function(CustomUI_Link value)? link,
+    TResult Function(CustomUI_Timestamp value)? timestamp,
+    TResult Function(CustomUI_EntryCard value)? entryCard,
+    TResult Function(CustomUI_Card value)? card,
+    TResult Function(CustomUI_Spinner value)? spinner,
+    TResult Function(CustomUI_Feed value)? feed,
+    TResult Function(CustomUI_Button value)? button,
+    TResult Function(CustomUI_InlineSetting value)? inlineSetting,
+    TResult Function(CustomUI_Slot value)? slot,
+    TResult Function(CustomUI_Column value)? column,
+    TResult Function(CustomUI_Row value)? row,
+    TResult Function(CustomUI_TextInput value)? textInput,
+    TResult Function(CustomUI_Padding value)? padding,
+    TResult Function(CustomUI_Container value)? container,
+    TResult Function(CustomUI_Clickable value)? clickable,
+    TResult Function(CustomUI_Expanded value)? expanded,
+    TResult Function(CustomUI_SizedBox value)? sizedBox,
+    TResult Function(CustomUI_Spacer value)? spacer,
+    TResult Function(CustomUI_Wrap value)? wrap,
+    TResult Function(CustomUI_Center value)? center,
+    TResult Function(CustomUI_Align value)? align,
+    TResult Function(CustomUI_Stack value)? stack,
+    TResult Function(CustomUI_Divider value)? divider,
+    TResult Function(CustomUI_ListTile value)? listTile,
+    TResult Function(CustomUI_Badge value)? badge,
+    TResult Function(CustomUI_FoldableText value)? foldableText,
+    TResult Function(CustomUI_StarDisplay value)? starDisplay,
+    TResult Function(CustomUI_Dropdown value)? dropdown,
+    required TResult orElse(),
+  }) {
+    if (dropdown != null) {
+      return dropdown(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CustomUI_Dropdown extends CustomUI {
+  const factory CustomUI_Dropdown(
+      {required final List<DropdownItem> items,
+      final String? initialValue,
+      final Interaction? onChange}) = _$CustomUI_DropdownImpl;
+  const CustomUI_Dropdown._() : super._();
+
+  List<DropdownItem> get items;
+  String? get initialValue;
+  Interaction? get onChange;
+
+  /// Create a copy of CustomUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomUI_DropdownImplCopyWith<_$CustomUI_DropdownImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

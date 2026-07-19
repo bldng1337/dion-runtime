@@ -101,6 +101,8 @@ test("mapEntry() returns a CustomUI tree with the new model wired up", async () 
 				type: "Button";
 				label: string;
 				on_click: Interaction | null;
+				button_type: unknown;
+				color: unknown;
 		  }
 		| undefined;
 	expect(invokeButton).toBeDefined();

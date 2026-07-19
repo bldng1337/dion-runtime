@@ -199,6 +199,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Action dco_decode_action(dynamic raw);
 
   @protected
+  Alignment dco_decode_alignment(dynamic raw);
+
+  @protected
   AuthCreds dco_decode_auth_creds(dynamic raw);
 
   @protected
@@ -219,13 +222,31 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account dco_decode_box_autoadd_account(dynamic raw);
 
   @protected
+  Alignment dco_decode_box_autoadd_alignment(dynamic raw);
+
+  @protected
   AuthCreds dco_decode_box_autoadd_auth_creds(dynamic raw);
 
   @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
+  ButtonType dco_decode_box_autoadd_button_type(dynamic raw);
+
+  @protected
+  ColorToken dco_decode_box_autoadd_color_token(dynamic raw);
+
+  @protected
+  ContainerType dco_decode_box_autoadd_container_type(dynamic raw);
+
+  @protected
+  CrossAxisAlignment dco_decode_box_autoadd_cross_axis_alignment(dynamic raw);
+
+  @protected
   CustomUI dco_decode_box_autoadd_custom_ui(dynamic raw);
+
+  @protected
+  EdgeInsets dco_decode_box_autoadd_edge_insets(dynamic raw);
 
   @protected
   Entry dco_decode_box_autoadd_entry(dynamic raw);
@@ -261,6 +282,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Link dco_decode_box_autoadd_link(dynamic raw);
 
   @protected
+  MainAxisAlignment dco_decode_box_autoadd_main_axis_alignment(dynamic raw);
+
+  @protected
+  MainAxisSize dco_decode_box_autoadd_main_axis_size(dynamic raw);
+
+  @protected
   Permission dco_decode_box_autoadd_permission(dynamic raw);
 
   @protected
@@ -276,10 +303,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source dco_decode_box_autoadd_source(dynamic raw);
 
   @protected
+  StackFit dco_decode_box_autoadd_stack_fit(dynamic raw);
+
+  @protected
   TextStyle dco_decode_box_autoadd_text_style(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  WrapAlignment dco_decode_box_autoadd_wrap_alignment(dynamic raw);
 
   @protected
   CustomUI dco_decode_box_custom_ui(dynamic raw);
@@ -291,10 +324,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Interaction dco_decode_box_interaction(dynamic raw);
 
   @protected
+  ButtonType dco_decode_button_type(dynamic raw);
+
+  @protected
+  ColorToken dco_decode_color_token(dynamic raw);
+
+  @protected
+  ContainerType dco_decode_container_type(dynamic raw);
+
+  @protected
+  CrossAxisAlignment dco_decode_cross_axis_alignment(dynamic raw);
+
+  @protected
   CustomUI dco_decode_custom_ui(dynamic raw);
 
   @protected
+  DropdownItem dco_decode_dropdown_item(dynamic raw);
+
+  @protected
   DropdownOption dco_decode_dropdown_option(dynamic raw);
+
+  @protected
+  EdgeInsets dco_decode_edge_insets(dynamic raw);
 
   @protected
   Entry dco_decode_entry(dynamic raw);
@@ -374,6 +425,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw);
 
   @protected
+  List<DropdownItem> dco_decode_list_dropdown_item(dynamic raw);
+
+  @protected
   List<DropdownOption> dco_decode_list_dropdown_option(dynamic raw);
 
   @protected
@@ -445,6 +499,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Subtitles> dco_decode_list_subtitles(dynamic raw);
 
   @protected
+  MainAxisAlignment dco_decode_main_axis_alignment(dynamic raw);
+
+  @protected
+  MainAxisSize dco_decode_main_axis_size(dynamic raw);
+
+  @protected
   MediaType dco_decode_media_type(dynamic raw);
 
   @protected
@@ -465,13 +525,32 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account? dco_decode_opt_box_autoadd_account(dynamic raw);
 
   @protected
+  Alignment? dco_decode_opt_box_autoadd_alignment(dynamic raw);
+
+  @protected
   AuthCreds? dco_decode_opt_box_autoadd_auth_creds(dynamic raw);
 
   @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
 
   @protected
+  ButtonType? dco_decode_opt_box_autoadd_button_type(dynamic raw);
+
+  @protected
+  ColorToken? dco_decode_opt_box_autoadd_color_token(dynamic raw);
+
+  @protected
+  ContainerType? dco_decode_opt_box_autoadd_container_type(dynamic raw);
+
+  @protected
+  CrossAxisAlignment? dco_decode_opt_box_autoadd_cross_axis_alignment(
+      dynamic raw);
+
+  @protected
   CustomUI? dco_decode_opt_box_autoadd_custom_ui(dynamic raw);
+
+  @protected
+  EdgeInsets? dco_decode_opt_box_autoadd_edge_insets(dynamic raw);
 
   @protected
   EventResult? dco_decode_opt_box_autoadd_event_result(dynamic raw);
@@ -486,13 +565,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Link? dco_decode_opt_box_autoadd_link(dynamic raw);
 
   @protected
+  MainAxisAlignment? dco_decode_opt_box_autoadd_main_axis_alignment(
+      dynamic raw);
+
+  @protected
+  MainAxisSize? dco_decode_opt_box_autoadd_main_axis_size(dynamic raw);
+
+  @protected
   SettingsUI? dco_decode_opt_box_autoadd_settings_ui(dynamic raw);
+
+  @protected
+  StackFit? dco_decode_opt_box_autoadd_stack_fit(dynamic raw);
 
   @protected
   TextStyle? dco_decode_opt_box_autoadd_text_style(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  WrapAlignment? dco_decode_opt_box_autoadd_wrap_alignment(dynamic raw);
+
+  @protected
+  CustomUI? dco_decode_opt_box_custom_ui(dynamic raw);
 
   @protected
   Interaction? dco_decode_opt_box_interaction(dynamic raw);
@@ -564,6 +659,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SourceType dco_decode_source_type(dynamic raw);
 
   @protected
+  StackFit dco_decode_stack_fit(dynamic raw);
+
+  @protected
   StreamSource dco_decode_stream_source(dynamic raw);
 
   @protected
@@ -595,6 +693,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt dco_decode_usize(dynamic raw);
+
+  @protected
+  WrapAlignment dco_decode_wrap_alignment(dynamic raw);
 
   @protected
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
@@ -717,6 +818,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Action sse_decode_action(SseDeserializer deserializer);
 
   @protected
+  Alignment sse_decode_alignment(SseDeserializer deserializer);
+
+  @protected
   AuthCreds sse_decode_auth_creds(SseDeserializer deserializer);
 
   @protected
@@ -737,13 +841,33 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
 
   @protected
+  Alignment sse_decode_box_autoadd_alignment(SseDeserializer deserializer);
+
+  @protected
   AuthCreds sse_decode_box_autoadd_auth_creds(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
+  ButtonType sse_decode_box_autoadd_button_type(SseDeserializer deserializer);
+
+  @protected
+  ColorToken sse_decode_box_autoadd_color_token(SseDeserializer deserializer);
+
+  @protected
+  ContainerType sse_decode_box_autoadd_container_type(
+      SseDeserializer deserializer);
+
+  @protected
+  CrossAxisAlignment sse_decode_box_autoadd_cross_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
   CustomUI sse_decode_box_autoadd_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  EdgeInsets sse_decode_box_autoadd_edge_insets(SseDeserializer deserializer);
 
   @protected
   Entry sse_decode_box_autoadd_entry(SseDeserializer deserializer);
@@ -782,6 +906,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Link sse_decode_box_autoadd_link(SseDeserializer deserializer);
 
   @protected
+  MainAxisAlignment sse_decode_box_autoadd_main_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
+  MainAxisSize sse_decode_box_autoadd_main_axis_size(
+      SseDeserializer deserializer);
+
+  @protected
   Permission sse_decode_box_autoadd_permission(SseDeserializer deserializer);
 
   @protected
@@ -798,10 +930,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Source sse_decode_box_autoadd_source(SseDeserializer deserializer);
 
   @protected
+  StackFit sse_decode_box_autoadd_stack_fit(SseDeserializer deserializer);
+
+  @protected
   TextStyle sse_decode_box_autoadd_text_style(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  WrapAlignment sse_decode_box_autoadd_wrap_alignment(
+      SseDeserializer deserializer);
 
   @protected
   CustomUI sse_decode_box_custom_ui(SseDeserializer deserializer);
@@ -813,10 +952,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Interaction sse_decode_box_interaction(SseDeserializer deserializer);
 
   @protected
+  ButtonType sse_decode_button_type(SseDeserializer deserializer);
+
+  @protected
+  ColorToken sse_decode_color_token(SseDeserializer deserializer);
+
+  @protected
+  ContainerType sse_decode_container_type(SseDeserializer deserializer);
+
+  @protected
+  CrossAxisAlignment sse_decode_cross_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
   CustomUI sse_decode_custom_ui(SseDeserializer deserializer);
 
   @protected
+  DropdownItem sse_decode_dropdown_item(SseDeserializer deserializer);
+
+  @protected
   DropdownOption sse_decode_dropdown_option(SseDeserializer deserializer);
+
+  @protected
+  EdgeInsets sse_decode_edge_insets(SseDeserializer deserializer);
 
   @protected
   Entry sse_decode_entry(SseDeserializer deserializer);
@@ -896,6 +1054,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<CustomUI> sse_decode_list_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  List<DropdownItem> sse_decode_list_dropdown_item(
+      SseDeserializer deserializer);
 
   @protected
   List<DropdownOption> sse_decode_list_dropdown_option(
@@ -978,6 +1140,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Subtitles> sse_decode_list_subtitles(SseDeserializer deserializer);
 
   @protected
+  MainAxisAlignment sse_decode_main_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
+  MainAxisSize sse_decode_main_axis_size(SseDeserializer deserializer);
+
+  @protected
   MediaType sse_decode_media_type(SseDeserializer deserializer);
 
   @protected
@@ -999,6 +1168,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
 
   @protected
+  Alignment? sse_decode_opt_box_autoadd_alignment(SseDeserializer deserializer);
+
+  @protected
   AuthCreds? sse_decode_opt_box_autoadd_auth_creds(
       SseDeserializer deserializer);
 
@@ -1006,7 +1178,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
+  ButtonType? sse_decode_opt_box_autoadd_button_type(
+      SseDeserializer deserializer);
+
+  @protected
+  ColorToken? sse_decode_opt_box_autoadd_color_token(
+      SseDeserializer deserializer);
+
+  @protected
+  ContainerType? sse_decode_opt_box_autoadd_container_type(
+      SseDeserializer deserializer);
+
+  @protected
+  CrossAxisAlignment? sse_decode_opt_box_autoadd_cross_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
   CustomUI? sse_decode_opt_box_autoadd_custom_ui(SseDeserializer deserializer);
+
+  @protected
+  EdgeInsets? sse_decode_opt_box_autoadd_edge_insets(
+      SseDeserializer deserializer);
 
   @protected
   EventResult? sse_decode_opt_box_autoadd_event_result(
@@ -1022,8 +1214,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Link? sse_decode_opt_box_autoadd_link(SseDeserializer deserializer);
 
   @protected
+  MainAxisAlignment? sse_decode_opt_box_autoadd_main_axis_alignment(
+      SseDeserializer deserializer);
+
+  @protected
+  MainAxisSize? sse_decode_opt_box_autoadd_main_axis_size(
+      SseDeserializer deserializer);
+
+  @protected
   SettingsUI? sse_decode_opt_box_autoadd_settings_ui(
       SseDeserializer deserializer);
+
+  @protected
+  StackFit? sse_decode_opt_box_autoadd_stack_fit(SseDeserializer deserializer);
 
   @protected
   TextStyle? sse_decode_opt_box_autoadd_text_style(
@@ -1031,6 +1234,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  WrapAlignment? sse_decode_opt_box_autoadd_wrap_alignment(
+      SseDeserializer deserializer);
+
+  @protected
+  CustomUI? sse_decode_opt_box_custom_ui(SseDeserializer deserializer);
 
   @protected
   Interaction? sse_decode_opt_box_interaction(SseDeserializer deserializer);
@@ -1108,6 +1318,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SourceType sse_decode_source_type(SseDeserializer deserializer);
 
   @protected
+  StackFit sse_decode_stack_fit(SseDeserializer deserializer);
+
+  @protected
   StreamSource sse_decode_stream_source(SseDeserializer deserializer);
 
   @protected
@@ -1140,6 +1353,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt sse_decode_usize(SseDeserializer deserializer);
+
+  @protected
+  WrapAlignment sse_decode_wrap_alignment(SseDeserializer deserializer);
 
   @protected
   ffi.Pointer<wire_cst_list_prim_u_8_strict> cst_encode_AnyhowException(
@@ -1242,6 +1458,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_alignment(Alignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_alignment(cst_encode_alignment(raw));
+  }
+
+  @protected
   ffi.Pointer<wire_cst_auth_creds> cst_encode_box_autoadd_auth_creds(
       AuthCreds raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1257,11 +1479,48 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_button_type(ButtonType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_button_type(cst_encode_button_type(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_color_token(ColorToken raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_color_token(cst_encode_color_token(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_container_type(
+      ContainerType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire
+        .cst_new_box_autoadd_container_type(cst_encode_container_type(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_cross_axis_alignment(
+        cst_encode_cross_axis_alignment(raw));
+  }
+
+  @protected
   ffi.Pointer<wire_cst_custom_ui> cst_encode_box_autoadd_custom_ui(
       CustomUI raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     final ptr = wire.cst_new_box_autoadd_custom_ui();
     cst_api_fill_to_wire_custom_ui(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_edge_insets> cst_encode_box_autoadd_edge_insets(
+      EdgeInsets raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ptr = wire.cst_new_box_autoadd_edge_insets();
+    cst_api_fill_to_wire_edge_insets(raw, ptr.ref);
     return ptr;
   }
 
@@ -1303,6 +1562,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_main_axis_alignment(
+      MainAxisAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_main_axis_alignment(
+        cst_encode_main_axis_alignment(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_main_axis_size(
+      MainAxisSize raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire
+        .cst_new_box_autoadd_main_axis_size(cst_encode_main_axis_size(raw));
+  }
+
+  @protected
   ffi.Pointer<wire_cst_setting_value> cst_encode_box_autoadd_setting_value(
       SettingValue raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1321,6 +1596,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_stack_fit(StackFit raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_stack_fit(cst_encode_stack_fit(raw));
+  }
+
+  @protected
   ffi.Pointer<wire_cst_text_style> cst_encode_box_autoadd_text_style(
       TextStyle raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1333,6 +1614,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ffi.Pointer<ffi.Uint32> cst_encode_box_autoadd_u_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_u_32(cst_encode_u_32(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_wrap_alignment(
+      WrapAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire
+        .cst_new_box_autoadd_wrap_alignment(cst_encode_wrap_alignment(raw));
   }
 
   @protected
@@ -1395,6 +1684,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_custom_ui(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_custom_ui(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_dropdown_item> cst_encode_list_dropdown_item(
+      List<DropdownItem> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_dropdown_item(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_dropdown_item(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -1663,6 +1963,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_alignment(Alignment? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_alignment(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_auth_creds> cst_encode_opt_box_autoadd_auth_creds(
       AuthCreds? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -1676,10 +1982,49 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_button_type(
+      ButtonType? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_button_type(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_color_token(
+      ColorToken? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_color_token(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_container_type(
+      ContainerType? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_container_type(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_cross_axis_alignment(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_autoadd_custom_ui(
       CustomUI? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_custom_ui(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_edge_insets> cst_encode_opt_box_autoadd_edge_insets(
+      EdgeInsets? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_edge_insets(raw);
   }
 
   @protected
@@ -1701,10 +2046,34 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_main_axis_alignment(
+      MainAxisAlignment? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_main_axis_alignment(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_main_axis_size(
+      MainAxisSize? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_main_axis_size(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_cst_settings_ui> cst_encode_opt_box_autoadd_settings_ui(
       SettingsUI? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_settings_ui(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_stack_fit(StackFit? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_stack_fit(raw);
   }
 
   @protected
@@ -1718,6 +2087,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ffi.Pointer<ffi.Uint32> cst_encode_opt_box_autoadd_u_32(int? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_wrap_alignment(
+      WrapAlignment? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null
+        ? ffi.nullptr
+        : cst_encode_box_autoadd_wrap_alignment(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_custom_ui> cst_encode_opt_box_custom_ui(CustomUI? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_custom_ui(raw);
   }
 
   @protected
@@ -1897,6 +2281,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_box_autoadd_edge_insets(
+      EdgeInsets apiObj, ffi.Pointer<wire_cst_edge_insets> wireObj) {
+    cst_api_fill_to_wire_edge_insets(apiObj, wireObj.ref);
+  }
+
+  @protected
   void cst_api_fill_to_wire_box_autoadd_entry(
       Entry apiObj, ffi.Pointer<wire_cst_entry> wireObj) {
     cst_api_fill_to_wire_entry(apiObj, wireObj.ref);
@@ -1955,8 +2345,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       CustomUI apiObj, wire_cst_custom_ui wireObj) {
     if (apiObj is CustomUI_Text) {
       var pre_text = cst_encode_String(apiObj.text);
+      var pre_style = cst_encode_opt_box_autoadd_text_style(apiObj.style);
       wireObj.tag = 0;
       wireObj.kind.Text.text = pre_text;
+      wireObj.kind.Text.style = pre_style;
       return;
     }
     if (apiObj is CustomUI_Image) {
@@ -1995,10 +2387,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       var pre_image = cst_encode_box_autoadd_link(apiObj.image);
       var pre_top = cst_encode_box_custom_ui(apiObj.top);
       var pre_bottom = cst_encode_box_custom_ui(apiObj.bottom);
+      var pre_on_click = cst_encode_opt_box_interaction(apiObj.onClick);
       wireObj.tag = 5;
       wireObj.kind.Card.image = pre_image;
       wireObj.kind.Card.top = pre_top;
       wireObj.kind.Card.bottom = pre_bottom;
+      wireObj.kind.Card.on_click = pre_on_click;
       return;
     }
     if (apiObj is CustomUI_Spinner) {
@@ -2016,9 +2410,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     if (apiObj is CustomUI_Button) {
       var pre_label = cst_encode_String(apiObj.label);
       var pre_on_click = cst_encode_opt_box_interaction(apiObj.onClick);
+      var pre_button_type =
+          cst_encode_opt_box_autoadd_button_type(apiObj.buttonType);
+      var pre_color = cst_encode_opt_box_autoadd_color_token(apiObj.color);
       wireObj.tag = 8;
       wireObj.kind.Button.label = pre_label;
       wireObj.kind.Button.on_click = pre_on_click;
+      wireObj.kind.Button.button_type = pre_button_type;
+      wireObj.kind.Button.color = pre_color;
       return;
     }
     if (apiObj is CustomUI_InlineSetting) {
@@ -2046,14 +2445,40 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is CustomUI_Column) {
       var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      var pre_main_axis_alignment =
+          cst_encode_opt_box_autoadd_main_axis_alignment(
+              apiObj.mainAxisAlignment);
+      var pre_cross_axis_alignment =
+          cst_encode_opt_box_autoadd_cross_axis_alignment(
+              apiObj.crossAxisAlignment);
+      var pre_main_axis_size =
+          cst_encode_opt_box_autoadd_main_axis_size(apiObj.mainAxisSize);
+      var pre_scrollable = cst_encode_bool(apiObj.scrollable);
       wireObj.tag = 11;
       wireObj.kind.Column.children = pre_children;
+      wireObj.kind.Column.main_axis_alignment = pre_main_axis_alignment;
+      wireObj.kind.Column.cross_axis_alignment = pre_cross_axis_alignment;
+      wireObj.kind.Column.main_axis_size = pre_main_axis_size;
+      wireObj.kind.Column.scrollable = pre_scrollable;
       return;
     }
     if (apiObj is CustomUI_Row) {
       var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      var pre_main_axis_alignment =
+          cst_encode_opt_box_autoadd_main_axis_alignment(
+              apiObj.mainAxisAlignment);
+      var pre_cross_axis_alignment =
+          cst_encode_opt_box_autoadd_cross_axis_alignment(
+              apiObj.crossAxisAlignment);
+      var pre_main_axis_size =
+          cst_encode_opt_box_autoadd_main_axis_size(apiObj.mainAxisSize);
+      var pre_scrollable = cst_encode_bool(apiObj.scrollable);
       wireObj.tag = 12;
       wireObj.kind.Row.children = pre_children;
+      wireObj.kind.Row.main_axis_alignment = pre_main_axis_alignment;
+      wireObj.kind.Row.cross_axis_alignment = pre_cross_axis_alignment;
+      wireObj.kind.Row.main_axis_size = pre_main_axis_size;
+      wireObj.kind.Row.scrollable = pre_scrollable;
       return;
     }
     if (apiObj is CustomUI_TextInput) {
@@ -2068,6 +2493,178 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.TextInput.on_commit = pre_on_commit;
       return;
     }
+    if (apiObj is CustomUI_Padding) {
+      var pre_padding = cst_encode_box_autoadd_edge_insets(apiObj.padding);
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      wireObj.tag = 14;
+      wireObj.kind.Padding.padding = pre_padding;
+      wireObj.kind.Padding.child = pre_child;
+      return;
+    }
+    if (apiObj is CustomUI_Container) {
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      var pre_container_type =
+          cst_encode_opt_box_autoadd_container_type(apiObj.containerType);
+      var pre_color = cst_encode_opt_box_autoadd_color_token(apiObj.color);
+      var pre_border_color =
+          cst_encode_opt_box_autoadd_color_token(apiObj.borderColor);
+      var pre_padding = cst_encode_opt_box_autoadd_edge_insets(apiObj.padding);
+      var pre_width = cst_encode_opt_box_autoadd_f_32(apiObj.width);
+      var pre_height = cst_encode_opt_box_autoadd_f_32(apiObj.height);
+      var pre_alignment =
+          cst_encode_opt_box_autoadd_alignment(apiObj.alignment);
+      var pre_emphasized = cst_encode_opt_box_autoadd_bool(apiObj.emphasized);
+      wireObj.tag = 15;
+      wireObj.kind.Container.child = pre_child;
+      wireObj.kind.Container.container_type = pre_container_type;
+      wireObj.kind.Container.color = pre_color;
+      wireObj.kind.Container.border_color = pre_border_color;
+      wireObj.kind.Container.padding = pre_padding;
+      wireObj.kind.Container.width = pre_width;
+      wireObj.kind.Container.height = pre_height;
+      wireObj.kind.Container.alignment = pre_alignment;
+      wireObj.kind.Container.emphasized = pre_emphasized;
+      return;
+    }
+    if (apiObj is CustomUI_Clickable) {
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      var pre_on_click = cst_encode_opt_box_interaction(apiObj.onClick);
+      var pre_on_long_click =
+          cst_encode_opt_box_interaction(apiObj.onLongClick);
+      wireObj.tag = 16;
+      wireObj.kind.Clickable.child = pre_child;
+      wireObj.kind.Clickable.on_click = pre_on_click;
+      wireObj.kind.Clickable.on_long_click = pre_on_long_click;
+      return;
+    }
+    if (apiObj is CustomUI_Expanded) {
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      var pre_flex = cst_encode_i_32(apiObj.flex);
+      wireObj.tag = 17;
+      wireObj.kind.Expanded.child = pre_child;
+      wireObj.kind.Expanded.flex = pre_flex;
+      return;
+    }
+    if (apiObj is CustomUI_SizedBox) {
+      var pre_width = cst_encode_opt_box_autoadd_f_32(apiObj.width);
+      var pre_height = cst_encode_opt_box_autoadd_f_32(apiObj.height);
+      var pre_child = cst_encode_opt_box_custom_ui(apiObj.child);
+      wireObj.tag = 18;
+      wireObj.kind.SizedBox.width = pre_width;
+      wireObj.kind.SizedBox.height = pre_height;
+      wireObj.kind.SizedBox.child = pre_child;
+      return;
+    }
+    if (apiObj is CustomUI_Spacer) {
+      var pre_flex = cst_encode_i_32(apiObj.flex);
+      wireObj.tag = 19;
+      wireObj.kind.Spacer.flex = pre_flex;
+      return;
+    }
+    if (apiObj is CustomUI_Wrap) {
+      var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      var pre_spacing = cst_encode_opt_box_autoadd_f_32(apiObj.spacing);
+      var pre_run_spacing = cst_encode_opt_box_autoadd_f_32(apiObj.runSpacing);
+      var pre_alignment =
+          cst_encode_opt_box_autoadd_wrap_alignment(apiObj.alignment);
+      wireObj.tag = 20;
+      wireObj.kind.Wrap.children = pre_children;
+      wireObj.kind.Wrap.spacing = pre_spacing;
+      wireObj.kind.Wrap.run_spacing = pre_run_spacing;
+      wireObj.kind.Wrap.alignment = pre_alignment;
+      return;
+    }
+    if (apiObj is CustomUI_Center) {
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      wireObj.tag = 21;
+      wireObj.kind.Center.child = pre_child;
+      return;
+    }
+    if (apiObj is CustomUI_Align) {
+      var pre_alignment = cst_encode_alignment(apiObj.alignment);
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      wireObj.tag = 22;
+      wireObj.kind.Align.alignment = pre_alignment;
+      wireObj.kind.Align.child = pre_child;
+      return;
+    }
+    if (apiObj is CustomUI_Stack) {
+      var pre_children = cst_encode_list_custom_ui(apiObj.children);
+      var pre_alignment =
+          cst_encode_opt_box_autoadd_alignment(apiObj.alignment);
+      var pre_fit = cst_encode_opt_box_autoadd_stack_fit(apiObj.fit);
+      wireObj.tag = 23;
+      wireObj.kind.Stack.children = pre_children;
+      wireObj.kind.Stack.alignment = pre_alignment;
+      wireObj.kind.Stack.fit = pre_fit;
+      return;
+    }
+    if (apiObj is CustomUI_Divider) {
+      wireObj.tag = 24;
+      return;
+    }
+    if (apiObj is CustomUI_ListTile) {
+      var pre_leading = cst_encode_opt_box_custom_ui(apiObj.leading);
+      var pre_title = cst_encode_opt_box_custom_ui(apiObj.title);
+      var pre_subtitle = cst_encode_opt_box_custom_ui(apiObj.subtitle);
+      var pre_trailing = cst_encode_opt_box_custom_ui(apiObj.trailing);
+      var pre_on_click = cst_encode_opt_box_interaction(apiObj.onClick);
+      var pre_on_long_click =
+          cst_encode_opt_box_interaction(apiObj.onLongClick);
+      wireObj.tag = 25;
+      wireObj.kind.ListTile.leading = pre_leading;
+      wireObj.kind.ListTile.title = pre_title;
+      wireObj.kind.ListTile.subtitle = pre_subtitle;
+      wireObj.kind.ListTile.trailing = pre_trailing;
+      wireObj.kind.ListTile.on_click = pre_on_click;
+      wireObj.kind.ListTile.on_long_click = pre_on_long_click;
+      return;
+    }
+    if (apiObj is CustomUI_Badge) {
+      var pre_child = cst_encode_box_custom_ui(apiObj.child);
+      var pre_color = cst_encode_opt_box_autoadd_color_token(apiObj.color);
+      wireObj.tag = 26;
+      wireObj.kind.Badge.child = pre_child;
+      wireObj.kind.Badge.color = pre_color;
+      return;
+    }
+    if (apiObj is CustomUI_FoldableText) {
+      var pre_text = cst_encode_String(apiObj.text);
+      var pre_max_lines = cst_encode_i_32(apiObj.maxLines);
+      var pre_style = cst_encode_opt_box_autoadd_text_style(apiObj.style);
+      var pre_animate = cst_encode_bool(apiObj.animate);
+      wireObj.tag = 27;
+      wireObj.kind.FoldableText.text = pre_text;
+      wireObj.kind.FoldableText.max_lines = pre_max_lines;
+      wireObj.kind.FoldableText.style = pre_style;
+      wireObj.kind.FoldableText.animate = pre_animate;
+      return;
+    }
+    if (apiObj is CustomUI_StarDisplay) {
+      var pre_fill = cst_encode_f_32(apiObj.fill);
+      var pre_max_stars = cst_encode_i_32(apiObj.maxStars);
+      wireObj.tag = 28;
+      wireObj.kind.StarDisplay.fill = pre_fill;
+      wireObj.kind.StarDisplay.max_stars = pre_max_stars;
+      return;
+    }
+    if (apiObj is CustomUI_Dropdown) {
+      var pre_items = cst_encode_list_dropdown_item(apiObj.items);
+      var pre_initial_value = cst_encode_opt_String(apiObj.initialValue);
+      var pre_on_change = cst_encode_opt_box_interaction(apiObj.onChange);
+      wireObj.tag = 29;
+      wireObj.kind.Dropdown.items = pre_items;
+      wireObj.kind.Dropdown.initial_value = pre_initial_value;
+      wireObj.kind.Dropdown.on_change = pre_on_change;
+      return;
+    }
+  }
+
+  @protected
+  void cst_api_fill_to_wire_dropdown_item(
+      DropdownItem apiObj, wire_cst_dropdown_item wireObj) {
+    wireObj.value = cst_encode_String(apiObj.value);
+    wireObj.label = cst_encode_String(apiObj.label);
   }
 
   @protected
@@ -2075,6 +2672,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DropdownOption apiObj, wire_cst_dropdown_option wireObj) {
     wireObj.label = cst_encode_String(apiObj.label);
     wireObj.value = cst_encode_String(apiObj.value);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_edge_insets(
+      EdgeInsets apiObj, wire_cst_edge_insets wireObj) {
+    wireObj.left = cst_encode_opt_box_autoadd_f_32(apiObj.left);
+    wireObj.top = cst_encode_opt_box_autoadd_f_32(apiObj.top);
+    wireObj.right = cst_encode_opt_box_autoadd_f_32(apiObj.right);
+    wireObj.bottom = cst_encode_opt_box_autoadd_f_32(apiObj.bottom);
   }
 
   @protected
@@ -2717,7 +3323,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ProxyExtension raw);
 
   @protected
+  int cst_encode_alignment(Alignment raw);
+
+  @protected
   bool cst_encode_bool(bool raw);
+
+  @protected
+  int cst_encode_button_type(ButtonType raw);
+
+  @protected
+  int cst_encode_color_token(ColorToken raw);
+
+  @protected
+  int cst_encode_container_type(ContainerType raw);
+
+  @protected
+  int cst_encode_cross_axis_alignment(CrossAxisAlignment raw);
 
   @protected
   double cst_encode_f_32(double raw);
@@ -2727,6 +3348,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int cst_encode_i_32(int raw);
+
+  @protected
+  int cst_encode_main_axis_alignment(MainAxisAlignment raw);
+
+  @protected
+  int cst_encode_main_axis_size(MainAxisSize raw);
 
   @protected
   int cst_encode_media_type(MediaType raw);
@@ -2744,6 +3371,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int cst_encode_source_type(SourceType raw);
 
   @protected
+  int cst_encode_stack_fit(StackFit raw);
+
+  @protected
   int cst_encode_timestamp_type(TimestampType raw);
 
   @protected
@@ -2757,6 +3387,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void cst_encode_unit(void raw);
+
+  @protected
+  int cst_encode_wrap_alignment(WrapAlignment raw);
 
   @protected
   void sse_encode_AnyhowException(
@@ -2916,6 +3549,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_action(Action self, SseSerializer serializer);
 
   @protected
+  void sse_encode_alignment(Alignment self, SseSerializer serializer);
+
+  @protected
   void sse_encode_auth_creds(AuthCreds self, SseSerializer serializer);
 
   @protected
@@ -2936,6 +3572,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_alignment(
+      Alignment self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_auth_creds(
       AuthCreds self, SseSerializer serializer);
 
@@ -2943,8 +3583,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_button_type(
+      ButtonType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_color_token(
+      ColorToken self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_container_type(
+      ContainerType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_custom_ui(
       CustomUI self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_edge_insets(
+      EdgeInsets self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_entry(Entry self, SseSerializer serializer);
@@ -2986,6 +3646,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_link(Link self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_main_axis_alignment(
+      MainAxisAlignment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_main_axis_size(
+      MainAxisSize self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_permission(
       Permission self, SseSerializer serializer);
 
@@ -3004,11 +3672,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_source(Source self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_stack_fit(
+      StackFit self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_text_style(
       TextStyle self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_wrap_alignment(
+      WrapAlignment self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_custom_ui(CustomUI self, SseSerializer serializer);
@@ -3021,11 +3697,30 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_interaction(Interaction self, SseSerializer serializer);
 
   @protected
+  void sse_encode_button_type(ButtonType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_color_token(ColorToken self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_container_type(ContainerType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_cross_axis_alignment(
+      CrossAxisAlignment self, SseSerializer serializer);
+
+  @protected
   void sse_encode_custom_ui(CustomUI self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dropdown_item(DropdownItem self, SseSerializer serializer);
 
   @protected
   void sse_encode_dropdown_option(
       DropdownOption self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_edge_insets(EdgeInsets self, SseSerializer serializer);
 
   @protected
   void sse_encode_entry(Entry self, SseSerializer serializer);
@@ -3106,6 +3801,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_custom_ui(List<CustomUI> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_dropdown_item(
+      List<DropdownItem> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_dropdown_option(
@@ -3196,6 +3895,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<Subtitles> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_main_axis_alignment(
+      MainAxisAlignment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_main_axis_size(MainAxisSize self, SseSerializer serializer);
+
+  @protected
   void sse_encode_media_type(MediaType self, SseSerializer serializer);
 
   @protected
@@ -3218,6 +3924,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Account? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_alignment(
+      Alignment? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_auth_creds(
       AuthCreds? self, SseSerializer serializer);
 
@@ -3225,8 +3935,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_button_type(
+      ButtonType? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_color_token(
+      ColorToken? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_container_type(
+      ContainerType? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_custom_ui(
       CustomUI? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_edge_insets(
+      EdgeInsets? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_event_result(
@@ -3242,8 +3972,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_link(Link? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_main_axis_alignment(
+      MainAxisAlignment? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_main_axis_size(
+      MainAxisSize? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_settings_ui(
       SettingsUI? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_stack_fit(
+      StackFit? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_text_style(
@@ -3251,6 +3993,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_wrap_alignment(
+      WrapAlignment? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_custom_ui(CustomUI? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_interaction(
@@ -3331,6 +4080,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_source_type(SourceType self, SseSerializer serializer);
 
   @protected
+  void sse_encode_stack_fit(StackFit self, SseSerializer serializer);
+
+  @protected
   void sse_encode_stream_source(StreamSource self, SseSerializer serializer);
 
   @protected
@@ -3363,6 +4115,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_wrap_alignment(WrapAlignment self, SseSerializer serializer);
 }
 
 // Section: wire_class
@@ -4445,6 +5200,82 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_validatePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__dion_runtime__data__custom_ui__alignment_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__alignment_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__alignment_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__alignment_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__alignment_default =
+      _wire__dion_runtime__data__custom_ui__alignment_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__button_type_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__button_type_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__button_type_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__button_type_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__button_type_default =
+      _wire__dion_runtime__data__custom_ui__button_type_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__color_token_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__color_token_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__color_token_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__color_token_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__color_token_default =
+      _wire__dion_runtime__data__custom_ui__color_token_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__container_type_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__container_type_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__container_type_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__container_type_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__container_type_default =
+      _wire__dion_runtime__data__custom_ui__container_type_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__cross_axis_alignment_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__custom_ui__cross_axis_alignment_default(
+      port_,
+    );
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__cross_axis_alignment_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__cross_axis_alignment_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__cross_axis_alignment_default =
+      _wire__dion_runtime__data__custom_ui__cross_axis_alignment_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__edge_insets_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__edge_insets_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__edge_insets_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__edge_insets_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__edge_insets_default =
+      _wire__dion_runtime__data__custom_ui__edge_insets_defaultPtr
+          .asFunction<void Function(int)>();
+
   void wire__dion_runtime__data__source__entry_list_default(int port_) {
     return _wire__dion_runtime__data__source__entry_list_default(port_);
   }
@@ -4525,6 +5356,34 @@ class RustLibWire implements BaseWire {
       _wire__dion_runtime__data__source__link_defaultPtr
           .asFunction<void Function(int)>();
 
+  void wire__dion_runtime__data__custom_ui__main_axis_alignment_default(
+    int port_,
+  ) {
+    return _wire__dion_runtime__data__custom_ui__main_axis_alignment_default(
+      port_,
+    );
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__main_axis_alignment_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__main_axis_alignment_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__main_axis_alignment_default =
+      _wire__dion_runtime__data__custom_ui__main_axis_alignment_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__main_axis_size_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__main_axis_size_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__main_axis_size_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__main_axis_size_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__main_axis_size_default =
+      _wire__dion_runtime__data__custom_ui__main_axis_size_defaultPtr
+          .asFunction<void Function(int)>();
+
   void wire__dion_runtime__data__source__media_type_default(int port_) {
     return _wire__dion_runtime__data__source__media_type_default(port_);
   }
@@ -4598,6 +5457,18 @@ class RustLibWire implements BaseWire {
       _wire__dion_runtime__data__extension__source_open_type_defaultPtr
           .asFunction<void Function(int)>();
 
+  void wire__dion_runtime__data__custom_ui__stack_fit_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__stack_fit_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__stack_fit_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__stack_fit_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__stack_fit_default =
+      _wire__dion_runtime__data__custom_ui__stack_fit_defaultPtr
+          .asFunction<void Function(int)>();
+
   void wire__dion_runtime__data__source__text_style_default(int port_) {
     return _wire__dion_runtime__data__source__text_style_default(port_);
   }
@@ -4632,6 +5503,18 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__dion_runtime__data__action__toast_kind_default =
       _wire__dion_runtime__data__action__toast_kind_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__custom_ui__wrap_alignment_default(int port_) {
+    return _wire__dion_runtime__data__custom_ui__wrap_alignment_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__custom_ui__wrap_alignment_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__wrap_alignment_default',
+  );
+  late final _wire__dion_runtime__data__custom_ui__wrap_alignment_default =
+      _wire__dion_runtime__data__custom_ui__wrap_alignment_defaultPtr
           .asFunction<void Function(int)>();
 
   void
@@ -4844,6 +5727,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_account = _cst_new_box_autoadd_accountPtr
       .asFunction<ffi.Pointer<wire_cst_account> Function()>();
 
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_alignment(int value) {
+    return _cst_new_box_autoadd_alignment(value);
+  }
+
+  late final _cst_new_box_autoadd_alignmentPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_alignment',
+  );
+  late final _cst_new_box_autoadd_alignment = _cst_new_box_autoadd_alignmentPtr
+      .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
   ffi.Pointer<wire_cst_auth_creds> cst_new_box_autoadd_auth_creds() {
     return _cst_new_box_autoadd_auth_creds();
   }
@@ -4867,6 +5761,54 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_bool = _cst_new_box_autoadd_boolPtr
       .asFunction<ffi.Pointer<ffi.Bool> Function(bool)>();
 
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_button_type(int value) {
+    return _cst_new_box_autoadd_button_type(value);
+  }
+
+  late final _cst_new_box_autoadd_button_typePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_button_type',
+  );
+  late final _cst_new_box_autoadd_button_type =
+      _cst_new_box_autoadd_button_typePtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_color_token(int value) {
+    return _cst_new_box_autoadd_color_token(value);
+  }
+
+  late final _cst_new_box_autoadd_color_tokenPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_color_token',
+  );
+  late final _cst_new_box_autoadd_color_token =
+      _cst_new_box_autoadd_color_tokenPtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_container_type(int value) {
+    return _cst_new_box_autoadd_container_type(value);
+  }
+
+  late final _cst_new_box_autoadd_container_typePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_container_type',
+  );
+  late final _cst_new_box_autoadd_container_type =
+      _cst_new_box_autoadd_container_typePtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_cross_axis_alignment(int value) {
+    return _cst_new_box_autoadd_cross_axis_alignment(value);
+  }
+
+  late final _cst_new_box_autoadd_cross_axis_alignmentPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_cross_axis_alignment',
+  );
+  late final _cst_new_box_autoadd_cross_axis_alignment =
+      _cst_new_box_autoadd_cross_axis_alignmentPtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
   ffi.Pointer<wire_cst_custom_ui> cst_new_box_autoadd_custom_ui() {
     return _cst_new_box_autoadd_custom_ui();
   }
@@ -4877,6 +5819,18 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_custom_ui = _cst_new_box_autoadd_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_custom_ui> Function()>();
+
+  ffi.Pointer<wire_cst_edge_insets> cst_new_box_autoadd_edge_insets() {
+    return _cst_new_box_autoadd_edge_insets();
+  }
+
+  late final _cst_new_box_autoadd_edge_insetsPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_cst_edge_insets> Function()>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_edge_insets',
+  );
+  late final _cst_new_box_autoadd_edge_insets =
+      _cst_new_box_autoadd_edge_insetsPtr
+          .asFunction<ffi.Pointer<wire_cst_edge_insets> Function()>();
 
   ffi.Pointer<wire_cst_entry> cst_new_box_autoadd_entry() {
     return _cst_new_box_autoadd_entry();
@@ -4933,6 +5887,30 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_link = _cst_new_box_autoadd_linkPtr
       .asFunction<ffi.Pointer<wire_cst_link> Function()>();
 
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_main_axis_alignment(int value) {
+    return _cst_new_box_autoadd_main_axis_alignment(value);
+  }
+
+  late final _cst_new_box_autoadd_main_axis_alignmentPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_main_axis_alignment',
+  );
+  late final _cst_new_box_autoadd_main_axis_alignment =
+      _cst_new_box_autoadd_main_axis_alignmentPtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_main_axis_size(int value) {
+    return _cst_new_box_autoadd_main_axis_size(value);
+  }
+
+  late final _cst_new_box_autoadd_main_axis_sizePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_main_axis_size',
+  );
+  late final _cst_new_box_autoadd_main_axis_size =
+      _cst_new_box_autoadd_main_axis_sizePtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
   ffi.Pointer<wire_cst_setting_value> cst_new_box_autoadd_setting_value() {
     return _cst_new_box_autoadd_setting_value();
   }
@@ -4956,6 +5934,17 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_settings_uiPtr
           .asFunction<ffi.Pointer<wire_cst_settings_ui> Function()>();
 
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_stack_fit(int value) {
+    return _cst_new_box_autoadd_stack_fit(value);
+  }
+
+  late final _cst_new_box_autoadd_stack_fitPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_stack_fit',
+  );
+  late final _cst_new_box_autoadd_stack_fit = _cst_new_box_autoadd_stack_fitPtr
+      .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
   ffi.Pointer<wire_cst_text_style> cst_new_box_autoadd_text_style() {
     return _cst_new_box_autoadd_text_style();
   }
@@ -4978,6 +5967,18 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_u_32 = _cst_new_box_autoadd_u_32Ptr
       .asFunction<ffi.Pointer<ffi.Uint32> Function(int)>();
+
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_wrap_alignment(int value) {
+    return _cst_new_box_autoadd_wrap_alignment(value);
+  }
+
+  late final _cst_new_box_autoadd_wrap_alignmentPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_wrap_alignment',
+  );
+  late final _cst_new_box_autoadd_wrap_alignment =
+      _cst_new_box_autoadd_wrap_alignmentPtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
 
   ffi.Pointer<wire_cst_custom_ui> cst_new_box_custom_ui() {
     return _cst_new_box_custom_ui();
@@ -5057,6 +6058,17 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_custom_ui');
   late final _cst_new_list_custom_ui = _cst_new_list_custom_uiPtr
       .asFunction<ffi.Pointer<wire_cst_list_custom_ui> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_dropdown_item> cst_new_list_dropdown_item(int len) {
+    return _cst_new_list_dropdown_item(len);
+  }
+
+  late final _cst_new_list_dropdown_itemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_dropdown_item> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_dropdown_item');
+  late final _cst_new_list_dropdown_item = _cst_new_list_dropdown_itemPtr
+      .asFunction<ffi.Pointer<wire_cst_list_dropdown_item> Function(int)>();
 
   ffi.Pointer<wire_cst_list_dropdown_option> cst_new_list_dropdown_option(
     int len,
@@ -5479,8 +6491,26 @@ final class wire_cst_Action_OpenBrowser extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> url;
 }
 
+final class wire_cst_text_style extends ffi.Struct {
+  external ffi.Pointer<ffi.Bool> bold;
+
+  external ffi.Pointer<ffi.Bool> italic;
+
+  external ffi.Pointer<ffi.Bool> underline;
+
+  external ffi.Pointer<ffi.Bool> strikethrough;
+
+  external ffi.Pointer<ffi.Bool> code;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
+
+  external ffi.Pointer<ffi.Int32> font_size;
+}
+
 final class wire_cst_CustomUI_Text extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> text;
+
+  external ffi.Pointer<wire_cst_text_style> style;
 }
 
 final class wire_cst_record_string_string extends ffi.Struct {
@@ -5554,12 +6584,39 @@ final class wire_cst_CustomUI_EntryCard extends ffi.Struct {
   external ffi.Pointer<wire_cst_entry> entry;
 }
 
+final class wire_cst_Interaction_Invoke extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> handler;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> payload;
+}
+
+final class wire_cst_Interaction_WriteKey extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+}
+
+final class InteractionKind extends ffi.Union {
+  external wire_cst_Interaction_Invoke Invoke;
+
+  external wire_cst_Interaction_WriteKey WriteKey;
+}
+
+final class wire_cst_interaction extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external InteractionKind kind;
+}
+
 final class wire_cst_CustomUI_Card extends ffi.Struct {
   external ffi.Pointer<wire_cst_link> image;
 
   external ffi.Pointer<wire_cst_custom_ui> top;
 
   external ffi.Pointer<wire_cst_custom_ui> bottom;
+
+  external ffi.Pointer<wire_cst_interaction> on_click;
 }
 
 final class wire_cst_custom_ui extends ffi.Struct {
@@ -5595,6 +6652,36 @@ final class CustomUIKind extends ffi.Union {
   external wire_cst_CustomUI_Row Row;
 
   external wire_cst_CustomUI_TextInput TextInput;
+
+  external wire_cst_CustomUI_Padding Padding;
+
+  external wire_cst_CustomUI_Container Container;
+
+  external wire_cst_CustomUI_Clickable Clickable;
+
+  external wire_cst_CustomUI_Expanded Expanded;
+
+  external wire_cst_CustomUI_SizedBox SizedBox;
+
+  external wire_cst_CustomUI_Spacer Spacer;
+
+  external wire_cst_CustomUI_Wrap Wrap;
+
+  external wire_cst_CustomUI_Center Center;
+
+  external wire_cst_CustomUI_Align Align;
+
+  external wire_cst_CustomUI_Stack Stack;
+
+  external wire_cst_CustomUI_ListTile ListTile;
+
+  external wire_cst_CustomUI_Badge Badge;
+
+  external wire_cst_CustomUI_FoldableText FoldableText;
+
+  external wire_cst_CustomUI_StarDisplay StarDisplay;
+
+  external wire_cst_CustomUI_Dropdown Dropdown;
 }
 
 final class wire_cst_CustomUI_Feed extends ffi.Struct {
@@ -5607,31 +6694,10 @@ final class wire_cst_CustomUI_Button extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 
   external ffi.Pointer<wire_cst_interaction> on_click;
-}
 
-final class wire_cst_interaction extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
+  external ffi.Pointer<ffi.Int32> button_type;
 
-  external InteractionKind kind;
-}
-
-final class InteractionKind extends ffi.Union {
-  external wire_cst_Interaction_Invoke Invoke;
-
-  external wire_cst_Interaction_WriteKey WriteKey;
-}
-
-final class wire_cst_Interaction_Invoke extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> handler;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> payload;
-}
-
-final class wire_cst_Interaction_WriteKey extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> key;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+  external ffi.Pointer<ffi.Int32> color;
 }
 
 final class wire_cst_CustomUI_InlineSetting extends ffi.Struct {
@@ -5686,6 +6752,15 @@ final class wire_cst_SubscriptionSource_Setting extends ffi.Struct {
 
 final class wire_cst_CustomUI_Column extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_custom_ui> children;
+
+  external ffi.Pointer<ffi.Int32> main_axis_alignment;
+
+  external ffi.Pointer<ffi.Int32> cross_axis_alignment;
+
+  external ffi.Pointer<ffi.Int32> main_axis_size;
+
+  @ffi.Bool()
+  external bool scrollable;
 }
 
 final class wire_cst_list_custom_ui extends ffi.Struct {
@@ -5697,6 +6772,15 @@ final class wire_cst_list_custom_ui extends ffi.Struct {
 
 final class wire_cst_CustomUI_Row extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_custom_ui> children;
+
+  external ffi.Pointer<ffi.Int32> main_axis_alignment;
+
+  external ffi.Pointer<ffi.Int32> cross_axis_alignment;
+
+  external ffi.Pointer<ffi.Int32> main_axis_size;
+
+  @ffi.Bool()
+  external bool scrollable;
 }
 
 final class wire_cst_CustomUI_TextInput extends ffi.Struct {
@@ -5707,6 +6791,160 @@ final class wire_cst_CustomUI_TextInput extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> initial;
 
   external ffi.Pointer<wire_cst_interaction> on_commit;
+}
+
+final class wire_cst_CustomUI_Padding extends ffi.Struct {
+  external ffi.Pointer<wire_cst_edge_insets> padding;
+
+  external ffi.Pointer<wire_cst_custom_ui> child;
+}
+
+final class wire_cst_edge_insets extends ffi.Struct {
+  external ffi.Pointer<ffi.Float> left;
+
+  external ffi.Pointer<ffi.Float> top;
+
+  external ffi.Pointer<ffi.Float> right;
+
+  external ffi.Pointer<ffi.Float> bottom;
+}
+
+final class wire_cst_CustomUI_Container extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> child;
+
+  external ffi.Pointer<ffi.Int32> container_type;
+
+  external ffi.Pointer<ffi.Int32> color;
+
+  external ffi.Pointer<ffi.Int32> border_color;
+
+  external ffi.Pointer<wire_cst_edge_insets> padding;
+
+  external ffi.Pointer<ffi.Float> width;
+
+  external ffi.Pointer<ffi.Float> height;
+
+  external ffi.Pointer<ffi.Int32> alignment;
+
+  external ffi.Pointer<ffi.Bool> emphasized;
+}
+
+final class wire_cst_CustomUI_Clickable extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> child;
+
+  external ffi.Pointer<wire_cst_interaction> on_click;
+
+  external ffi.Pointer<wire_cst_interaction> on_long_click;
+}
+
+final class wire_cst_CustomUI_Expanded extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> child;
+
+  @ffi.Int32()
+  external int flex;
+}
+
+final class wire_cst_CustomUI_SizedBox extends ffi.Struct {
+  external ffi.Pointer<ffi.Float> width;
+
+  external ffi.Pointer<ffi.Float> height;
+
+  external ffi.Pointer<wire_cst_custom_ui> child;
+}
+
+final class wire_cst_CustomUI_Spacer extends ffi.Struct {
+  @ffi.Int32()
+  external int flex;
+}
+
+final class wire_cst_CustomUI_Wrap extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_custom_ui> children;
+
+  external ffi.Pointer<ffi.Float> spacing;
+
+  external ffi.Pointer<ffi.Float> run_spacing;
+
+  external ffi.Pointer<ffi.Int32> alignment;
+}
+
+final class wire_cst_CustomUI_Center extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> child;
+}
+
+final class wire_cst_CustomUI_Align extends ffi.Struct {
+  @ffi.Int32()
+  external int alignment;
+
+  external ffi.Pointer<wire_cst_custom_ui> child;
+}
+
+final class wire_cst_CustomUI_Stack extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_custom_ui> children;
+
+  external ffi.Pointer<ffi.Int32> alignment;
+
+  external ffi.Pointer<ffi.Int32> fit;
+}
+
+final class wire_cst_CustomUI_ListTile extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> leading;
+
+  external ffi.Pointer<wire_cst_custom_ui> title;
+
+  external ffi.Pointer<wire_cst_custom_ui> subtitle;
+
+  external ffi.Pointer<wire_cst_custom_ui> trailing;
+
+  external ffi.Pointer<wire_cst_interaction> on_click;
+
+  external ffi.Pointer<wire_cst_interaction> on_long_click;
+}
+
+final class wire_cst_CustomUI_Badge extends ffi.Struct {
+  external ffi.Pointer<wire_cst_custom_ui> child;
+
+  external ffi.Pointer<ffi.Int32> color;
+}
+
+final class wire_cst_CustomUI_FoldableText extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> text;
+
+  @ffi.Int32()
+  external int max_lines;
+
+  external ffi.Pointer<wire_cst_text_style> style;
+
+  @ffi.Bool()
+  external bool animate;
+}
+
+final class wire_cst_CustomUI_StarDisplay extends ffi.Struct {
+  @ffi.Float()
+  external double fill;
+
+  @ffi.Int32()
+  external int max_stars;
+}
+
+final class wire_cst_CustomUI_Dropdown extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_dropdown_item> items;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> initial_value;
+
+  external ffi.Pointer<wire_cst_interaction> on_change;
+}
+
+final class wire_cst_list_dropdown_item extends ffi.Struct {
+  external ffi.Pointer<wire_cst_dropdown_item> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
+final class wire_cst_dropdown_item extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> value;
+
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 }
 
 final class wire_cst_popup_action extends ffi.Struct {
@@ -5917,22 +7155,6 @@ final class wire_cst_settings_ui extends ffi.Struct {
   external int tag;
 
   external SettingsUIKind kind;
-}
-
-final class wire_cst_text_style extends ffi.Struct {
-  external ffi.Pointer<ffi.Bool> bold;
-
-  external ffi.Pointer<ffi.Bool> italic;
-
-  external ffi.Pointer<ffi.Bool> underline;
-
-  external ffi.Pointer<ffi.Bool> strikethrough;
-
-  external ffi.Pointer<ffi.Bool> code;
-
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> link;
-
-  external ffi.Pointer<ffi.Int32> font_size;
 }
 
 final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension

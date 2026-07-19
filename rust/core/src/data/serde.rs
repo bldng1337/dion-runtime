@@ -6,7 +6,10 @@ mod test {
         action::{Action, EventData, EventResult, Interaction, PopupAction, SlotValue, ToastKind},
         activity::EntryActivity,
         auth::{Account, AuthCreds, AuthData},
-        custom_ui::{CustomUI, Subscription, SubscriptionSource, TimestampType},
+        custom_ui::{
+            Alignment, ColorToken, ContainerType, CustomUI, DropdownItem, EdgeInsets, Subscription,
+            SubscriptionSource, TimestampType,
+        },
         extension::{ExtensionData, ExtensionType, SourceOpenType},
         extension_manager::ExtensionManagerData,
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
@@ -48,6 +51,7 @@ mod test {
     fn generate_custom_ui_text() -> CustomUI {
         CustomUI::Text {
             text: "Test text".to_string(),
+            style: None,
         }
     }
 
@@ -58,6 +62,8 @@ mod test {
                 handler: "button_trigger".to_string(),
                 payload: "{}".to_string(),
             })),
+            button_type: None,
+            color: None,
         }
     }
 
@@ -355,9 +361,11 @@ mod test {
         vec![
             CustomUI::Text {
                 text: "Test text".to_string(),
+                style: None,
             },
             CustomUI::Text {
                 text: "Another text".to_string(),
+                style: None,
             },
             CustomUI::Image {
                 image: generate_link(),
@@ -397,6 +405,7 @@ mod test {
                 image: generate_link(),
                 top: Box::new(generate_custom_ui_text()),
                 bottom: Box::new(generate_custom_ui_button()),
+                on_click: None,
             },
             CustomUI::Spinner,
             CustomUI::Feed {
@@ -406,6 +415,8 @@ mod test {
             CustomUI::Button {
                 label: "Click Me".to_string(),
                 on_click: None,
+                button_type: None,
+                color: None,
             },
             CustomUI::Button {
                 label: "Open Link".to_string(),
@@ -413,6 +424,8 @@ mod test {
                     handler: "open_link".to_string(),
                     payload: "{}".to_string(),
                 })),
+                button_type: None,
+                color: None,
             },
             CustomUI::InlineSetting {
                 setting_id: "setting_1".to_string(),
@@ -441,13 +454,31 @@ mod test {
             },
             CustomUI::Column {
                 children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+                main_axis_alignment: None,
+                cross_axis_alignment: None,
+                main_axis_size: None,
+                scrollable: true,
             },
-            CustomUI::Column { children: vec![] },
+            CustomUI::Column {
+                children: vec![],
+                main_axis_alignment: None,
+                cross_axis_alignment: None,
+                main_axis_size: None,
+                scrollable: true,
+            },
             CustomUI::Row {
                 children: vec![generate_custom_ui_text()],
+                main_axis_alignment: None,
+                cross_axis_alignment: None,
+                main_axis_size: None,
+                scrollable: true,
             },
             CustomUI::Row {
                 children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+                main_axis_alignment: None,
+                cross_axis_alignment: None,
+                main_axis_size: None,
+                scrollable: true,
             },
             CustomUI::TextInput {
                 on_change: Some(Box::new(Interaction::WriteKey {
@@ -464,6 +495,110 @@ mod test {
                 initial: None,
                 on_commit: Some(Box::new(Interaction::Invoke {
                     handler: "commit_handler".to_string(),
+                    payload: "{}".to_string(),
+                })),
+            },
+            // --- Layout primitives ---
+            CustomUI::Padding {
+                padding: EdgeInsets {
+                    left: Some(8.0),
+                    top: Some(4.0),
+                    right: Some(8.0),
+                    bottom: Some(4.0),
+                },
+                child: Box::new(generate_custom_ui_text()),
+            },
+            CustomUI::Container {
+                child: Box::new(generate_custom_ui_text()),
+                container_type: Some(ContainerType::Filled),
+                color: Some(ColorToken::SurfaceContainer),
+                border_color: None,
+                padding: Some(EdgeInsets {
+                    left: Some(12.0),
+                    top: Some(6.0),
+                    right: Some(12.0),
+                    bottom: Some(6.0),
+                }),
+                width: None,
+                height: None,
+                alignment: None,
+                emphasized: None,
+            },
+            CustomUI::Clickable {
+                child: Box::new(generate_custom_ui_text()),
+                on_click: Some(Box::new(Interaction::Invoke {
+                    handler: "click_handler".to_string(),
+                    payload: "{}".to_string(),
+                })),
+                on_long_click: None,
+            },
+            CustomUI::Expanded {
+                child: Box::new(generate_custom_ui_text()),
+                flex: 1,
+            },
+            CustomUI::SizedBox {
+                width: Some(16.0),
+                height: None,
+                child: None,
+            },
+            CustomUI::Spacer { flex: 1 },
+            CustomUI::Wrap {
+                children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+                spacing: Some(4.0),
+                run_spacing: Some(4.0),
+                alignment: None,
+            },
+            CustomUI::Center {
+                child: Box::new(generate_custom_ui_text()),
+            },
+            CustomUI::Align {
+                alignment: Alignment::CenterLeft,
+                child: Box::new(generate_custom_ui_text()),
+            },
+            CustomUI::Stack {
+                children: vec![generate_custom_ui_text(), generate_custom_ui_button()],
+                alignment: None,
+                fit: None,
+            },
+            CustomUI::Divider,
+            // --- Dion-themed container widgets ---
+            CustomUI::ListTile {
+                leading: None,
+                title: Some(Box::new(generate_custom_ui_text())),
+                subtitle: None,
+                trailing: None,
+                on_click: None,
+                on_long_click: None,
+            },
+            CustomUI::Badge {
+                child: Box::new(generate_custom_ui_text()),
+                color: None,
+            },
+            // --- Display primitives ---
+            CustomUI::FoldableText {
+                text: "A long body of text that may be collapsed.".to_string(),
+                max_lines: 3,
+                style: None,
+                animate: true,
+            },
+            CustomUI::StarDisplay {
+                fill: 0.75,
+                max_stars: 5,
+            },
+            CustomUI::Dropdown {
+                items: vec![
+                    DropdownItem {
+                        value: "one".to_string(),
+                        label: "One".to_string(),
+                    },
+                    DropdownItem {
+                        value: "two".to_string(),
+                        label: "Two".to_string(),
+                    },
+                ],
+                initial_value: Some("one".to_string()),
+                on_change: Some(Box::new(Interaction::Invoke {
+                    handler: "dropdown_change".to_string(),
                     payload: "{}".to_string(),
                 })),
             },

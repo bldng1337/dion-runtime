@@ -47,6 +47,7 @@ export class DefaultExtension
 					customui: {
 						type: "Text",
 						text: "asd",
+						style: null,
 					},
 				};
 		}

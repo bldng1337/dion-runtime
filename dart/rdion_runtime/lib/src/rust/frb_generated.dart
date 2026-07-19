@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1679058273;
+  int get rustContentHash => -161423037;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -268,6 +268,18 @@ abstract class RustLibApi extends BaseApi {
       required Account account,
       CancelToken? token});
 
+  Future<Alignment> dionRuntimeDataCustomUiAlignmentDefault();
+
+  Future<ButtonType> dionRuntimeDataCustomUiButtonTypeDefault();
+
+  Future<ColorToken> dionRuntimeDataCustomUiColorTokenDefault();
+
+  Future<ContainerType> dionRuntimeDataCustomUiContainerTypeDefault();
+
+  Future<CrossAxisAlignment> dionRuntimeDataCustomUiCrossAxisAlignmentDefault();
+
+  Future<EdgeInsets> dionRuntimeDataCustomUiEdgeInsetsDefault();
+
   Future<EntryList> dionRuntimeDataSourceEntryListDefault();
 
   Future<ExtensionData> dionRuntimeDataExtensionExtensionDataDefault();
@@ -281,6 +293,10 @@ abstract class RustLibApi extends BaseApi {
 
   Future<Link> dionRuntimeDataSourceLinkDefault();
 
+  Future<MainAxisAlignment> dionRuntimeDataCustomUiMainAxisAlignmentDefault();
+
+  Future<MainAxisSize> dionRuntimeDataCustomUiMainAxisSizeDefault();
+
   Future<MediaType> dionRuntimeDataSourceMediaTypeDefault();
 
   Future<ReleaseStatus> dionRuntimeDataSourceReleaseStatusDefault();
@@ -292,11 +308,15 @@ abstract class RustLibApi extends BaseApi {
 
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
 
+  Future<StackFit> dionRuntimeDataCustomUiStackFitDefault();
+
   Future<TextStyle> dionRuntimeDataSourceTextStyleDefault();
 
   Future<TimestampType> dionRuntimeDataCustomUiTimestampTypeDefault();
 
   Future<ToastKind> dionRuntimeDataActionToastKindDefault();
+
+  Future<WrapAlignment> dionRuntimeDataCustomUiWrapAlignmentDefault();
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_CancelToken;
@@ -1690,6 +1710,147 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<Alignment> dionRuntimeDataCustomUiAlignmentDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__alignment_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_alignment,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiAlignmentDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiAlignmentDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "alignment_default",
+        argNames: [],
+      );
+
+  @override
+  Future<ButtonType> dionRuntimeDataCustomUiButtonTypeDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__button_type_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_button_type,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiButtonTypeDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiButtonTypeDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "button_type_default",
+        argNames: [],
+      );
+
+  @override
+  Future<ColorToken> dionRuntimeDataCustomUiColorTokenDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__color_token_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_color_token,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiColorTokenDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiColorTokenDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "color_token_default",
+        argNames: [],
+      );
+
+  @override
+  Future<ContainerType> dionRuntimeDataCustomUiContainerTypeDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__container_type_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_container_type,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiContainerTypeDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiContainerTypeDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "container_type_default",
+        argNames: [],
+      );
+
+  @override
+  Future<CrossAxisAlignment>
+      dionRuntimeDataCustomUiCrossAxisAlignmentDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__cross_axis_alignment_default(
+                port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_cross_axis_alignment,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiCrossAxisAlignmentDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kDionRuntimeDataCustomUiCrossAxisAlignmentDefaultConstMeta =>
+          const TaskConstMeta(
+            debugName: "cross_axis_alignment_default",
+            argNames: [],
+          );
+
+  @override
+  Future<EdgeInsets> dionRuntimeDataCustomUiEdgeInsetsDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__edge_insets_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_edge_insets,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiEdgeInsetsDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiEdgeInsetsDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "edge_insets_default",
+        argNames: [],
+      );
+
+  @override
   Future<EntryList> dionRuntimeDataSourceEntryListDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1830,6 +1991,53 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<MainAxisAlignment> dionRuntimeDataCustomUiMainAxisAlignmentDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__main_axis_alignment_default(
+                port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_main_axis_alignment,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiMainAxisAlignmentDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiMainAxisAlignmentDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "main_axis_alignment_default",
+        argNames: [],
+      );
+
+  @override
+  Future<MainAxisSize> dionRuntimeDataCustomUiMainAxisSizeDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__main_axis_size_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_main_axis_size,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiMainAxisSizeDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiMainAxisSizeDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "main_axis_size_default",
+        argNames: [],
+      );
+
+  @override
   Future<MediaType> dionRuntimeDataSourceMediaTypeDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1951,6 +2159,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<StackFit> dionRuntimeDataCustomUiStackFitDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__stack_fit_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_stack_fit,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiStackFitDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiStackFitDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "stack_fit_default",
+        argNames: [],
+      );
+
+  @override
   Future<TextStyle> dionRuntimeDataSourceTextStyleDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -2014,6 +2245,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kDionRuntimeDataActionToastKindDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "toast_kind_default",
+        argNames: [],
+      );
+
+  @override
+  Future<WrapAlignment> dionRuntimeDataCustomUiWrapAlignmentDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__custom_ui__wrap_alignment_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_wrap_alignment,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataCustomUiWrapAlignmentDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataCustomUiWrapAlignmentDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "wrap_alignment_default",
         argNames: [],
       );
 
@@ -2590,6 +2844,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment dco_decode_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Alignment.values[raw as int];
+  }
+
+  @protected
   AuthCreds dco_decode_auth_creds(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
@@ -2671,6 +2931,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment dco_decode_box_autoadd_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_alignment(raw);
+  }
+
+  @protected
   AuthCreds dco_decode_box_autoadd_auth_creds(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_auth_creds(raw);
@@ -2683,9 +2949,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType dco_decode_box_autoadd_button_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_button_type(raw);
+  }
+
+  @protected
+  ColorToken dco_decode_box_autoadd_color_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_color_token(raw);
+  }
+
+  @protected
+  ContainerType dco_decode_box_autoadd_container_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_container_type(raw);
+  }
+
+  @protected
+  CrossAxisAlignment dco_decode_box_autoadd_cross_axis_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_cross_axis_alignment(raw);
+  }
+
+  @protected
   CustomUI dco_decode_box_autoadd_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_custom_ui(raw);
+  }
+
+  @protected
+  EdgeInsets dco_decode_box_autoadd_edge_insets(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_edge_insets(raw);
   }
 
   @protected
@@ -2755,6 +3051,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment dco_decode_box_autoadd_main_axis_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_main_axis_alignment(raw);
+  }
+
+  @protected
+  MainAxisSize dco_decode_box_autoadd_main_axis_size(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_main_axis_size(raw);
+  }
+
+  @protected
   Permission dco_decode_box_autoadd_permission(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_permission(raw);
@@ -2785,6 +3093,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  StackFit dco_decode_box_autoadd_stack_fit(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_stack_fit(raw);
+  }
+
+  @protected
   TextStyle dco_decode_box_autoadd_text_style(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_text_style(raw);
@@ -2794,6 +3108,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  WrapAlignment dco_decode_box_autoadd_wrap_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_wrap_alignment(raw);
   }
 
   @protected
@@ -2815,12 +3135,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType dco_decode_button_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ButtonType.values[raw as int];
+  }
+
+  @protected
+  ColorToken dco_decode_color_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ColorToken.values[raw as int];
+  }
+
+  @protected
+  ContainerType dco_decode_container_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ContainerType.values[raw as int];
+  }
+
+  @protected
+  CrossAxisAlignment dco_decode_cross_axis_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CrossAxisAlignment.values[raw as int];
+  }
+
+  @protected
   CustomUI dco_decode_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
       case 0:
         return CustomUI_Text(
           text: dco_decode_String(raw[1]),
+          style: dco_decode_opt_box_autoadd_text_style(raw[2]),
         );
       case 1:
         return CustomUI_Image(
@@ -2847,6 +3192,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           image: dco_decode_box_autoadd_link(raw[1]),
           top: dco_decode_box_custom_ui(raw[2]),
           bottom: dco_decode_box_custom_ui(raw[3]),
+          onClick: dco_decode_opt_box_interaction(raw[4]),
         );
       case 6:
         return const CustomUI_Spinner();
@@ -2859,6 +3205,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return CustomUI_Button(
           label: dco_decode_String(raw[1]),
           onClick: dco_decode_opt_box_interaction(raw[2]),
+          buttonType: dco_decode_opt_box_autoadd_button_type(raw[3]),
+          color: dco_decode_opt_box_autoadd_color_token(raw[4]),
         );
       case 9:
         return CustomUI_InlineSetting(
@@ -2876,10 +3224,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 11:
         return CustomUI_Column(
           children: dco_decode_list_custom_ui(raw[1]),
+          mainAxisAlignment:
+              dco_decode_opt_box_autoadd_main_axis_alignment(raw[2]),
+          crossAxisAlignment:
+              dco_decode_opt_box_autoadd_cross_axis_alignment(raw[3]),
+          mainAxisSize: dco_decode_opt_box_autoadd_main_axis_size(raw[4]),
+          scrollable: dco_decode_bool(raw[5]),
         );
       case 12:
         return CustomUI_Row(
           children: dco_decode_list_custom_ui(raw[1]),
+          mainAxisAlignment:
+              dco_decode_opt_box_autoadd_main_axis_alignment(raw[2]),
+          crossAxisAlignment:
+              dco_decode_opt_box_autoadd_cross_axis_alignment(raw[3]),
+          mainAxisSize: dco_decode_opt_box_autoadd_main_axis_size(raw[4]),
+          scrollable: dco_decode_bool(raw[5]),
         );
       case 13:
         return CustomUI_TextInput(
@@ -2888,9 +3248,115 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           initial: dco_decode_opt_String(raw[3]),
           onCommit: dco_decode_opt_box_interaction(raw[4]),
         );
+      case 14:
+        return CustomUI_Padding(
+          padding: dco_decode_box_autoadd_edge_insets(raw[1]),
+          child: dco_decode_box_custom_ui(raw[2]),
+        );
+      case 15:
+        return CustomUI_Container(
+          child: dco_decode_box_custom_ui(raw[1]),
+          containerType: dco_decode_opt_box_autoadd_container_type(raw[2]),
+          color: dco_decode_opt_box_autoadd_color_token(raw[3]),
+          borderColor: dco_decode_opt_box_autoadd_color_token(raw[4]),
+          padding: dco_decode_opt_box_autoadd_edge_insets(raw[5]),
+          width: dco_decode_opt_box_autoadd_f_32(raw[6]),
+          height: dco_decode_opt_box_autoadd_f_32(raw[7]),
+          alignment: dco_decode_opt_box_autoadd_alignment(raw[8]),
+          emphasized: dco_decode_opt_box_autoadd_bool(raw[9]),
+        );
+      case 16:
+        return CustomUI_Clickable(
+          child: dco_decode_box_custom_ui(raw[1]),
+          onClick: dco_decode_opt_box_interaction(raw[2]),
+          onLongClick: dco_decode_opt_box_interaction(raw[3]),
+        );
+      case 17:
+        return CustomUI_Expanded(
+          child: dco_decode_box_custom_ui(raw[1]),
+          flex: dco_decode_i_32(raw[2]),
+        );
+      case 18:
+        return CustomUI_SizedBox(
+          width: dco_decode_opt_box_autoadd_f_32(raw[1]),
+          height: dco_decode_opt_box_autoadd_f_32(raw[2]),
+          child: dco_decode_opt_box_custom_ui(raw[3]),
+        );
+      case 19:
+        return CustomUI_Spacer(
+          flex: dco_decode_i_32(raw[1]),
+        );
+      case 20:
+        return CustomUI_Wrap(
+          children: dco_decode_list_custom_ui(raw[1]),
+          spacing: dco_decode_opt_box_autoadd_f_32(raw[2]),
+          runSpacing: dco_decode_opt_box_autoadd_f_32(raw[3]),
+          alignment: dco_decode_opt_box_autoadd_wrap_alignment(raw[4]),
+        );
+      case 21:
+        return CustomUI_Center(
+          child: dco_decode_box_custom_ui(raw[1]),
+        );
+      case 22:
+        return CustomUI_Align(
+          alignment: dco_decode_alignment(raw[1]),
+          child: dco_decode_box_custom_ui(raw[2]),
+        );
+      case 23:
+        return CustomUI_Stack(
+          children: dco_decode_list_custom_ui(raw[1]),
+          alignment: dco_decode_opt_box_autoadd_alignment(raw[2]),
+          fit: dco_decode_opt_box_autoadd_stack_fit(raw[3]),
+        );
+      case 24:
+        return const CustomUI_Divider();
+      case 25:
+        return CustomUI_ListTile(
+          leading: dco_decode_opt_box_custom_ui(raw[1]),
+          title: dco_decode_opt_box_custom_ui(raw[2]),
+          subtitle: dco_decode_opt_box_custom_ui(raw[3]),
+          trailing: dco_decode_opt_box_custom_ui(raw[4]),
+          onClick: dco_decode_opt_box_interaction(raw[5]),
+          onLongClick: dco_decode_opt_box_interaction(raw[6]),
+        );
+      case 26:
+        return CustomUI_Badge(
+          child: dco_decode_box_custom_ui(raw[1]),
+          color: dco_decode_opt_box_autoadd_color_token(raw[2]),
+        );
+      case 27:
+        return CustomUI_FoldableText(
+          text: dco_decode_String(raw[1]),
+          maxLines: dco_decode_i_32(raw[2]),
+          style: dco_decode_opt_box_autoadd_text_style(raw[3]),
+          animate: dco_decode_bool(raw[4]),
+        );
+      case 28:
+        return CustomUI_StarDisplay(
+          fill: dco_decode_f_32(raw[1]),
+          maxStars: dco_decode_i_32(raw[2]),
+        );
+      case 29:
+        return CustomUI_Dropdown(
+          items: dco_decode_list_dropdown_item(raw[1]),
+          initialValue: dco_decode_opt_String(raw[2]),
+          onChange: dco_decode_opt_box_interaction(raw[3]),
+        );
       default:
         throw Exception("unreachable");
     }
+  }
+
+  @protected
+  DropdownItem dco_decode_dropdown_item(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return DropdownItem(
+      value: dco_decode_String(arr[0]),
+      label: dco_decode_String(arr[1]),
+    );
   }
 
   @protected
@@ -2902,6 +3368,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return DropdownOption(
       label: dco_decode_String(arr[0]),
       value: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  EdgeInsets dco_decode_edge_insets(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return EdgeInsets(
+      left: dco_decode_opt_box_autoadd_f_32(arr[0]),
+      top: dco_decode_opt_box_autoadd_f_32(arr[1]),
+      right: dco_decode_opt_box_autoadd_f_32(arr[2]),
+      bottom: dco_decode_opt_box_autoadd_f_32(arr[3]),
     );
   }
 
@@ -3251,6 +3731,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<DropdownItem> dco_decode_list_dropdown_item(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_dropdown_item).toList();
+  }
+
+  @protected
   List<DropdownOption> dco_decode_list_dropdown_option(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_dropdown_option).toList();
@@ -3397,6 +3883,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment dco_decode_main_axis_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MainAxisAlignment.values[raw as int];
+  }
+
+  @protected
+  MainAxisSize dco_decode_main_axis_size(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MainAxisSize.values[raw as int];
+  }
+
+  @protected
   MediaType dco_decode_media_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return MediaType.values[raw as int];
@@ -3454,6 +3952,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment? dco_decode_opt_box_autoadd_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_alignment(raw);
+  }
+
+  @protected
   AuthCreds? dco_decode_opt_box_autoadd_auth_creds(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_auth_creds(raw);
@@ -3466,9 +3970,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType? dco_decode_opt_box_autoadd_button_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_button_type(raw);
+  }
+
+  @protected
+  ColorToken? dco_decode_opt_box_autoadd_color_token(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_color_token(raw);
+  }
+
+  @protected
+  ContainerType? dco_decode_opt_box_autoadd_container_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_container_type(raw);
+  }
+
+  @protected
+  CrossAxisAlignment? dco_decode_opt_box_autoadd_cross_axis_alignment(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_cross_axis_alignment(raw);
+  }
+
+  @protected
   CustomUI? dco_decode_opt_box_autoadd_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_custom_ui(raw);
+  }
+
+  @protected
+  EdgeInsets? dco_decode_opt_box_autoadd_edge_insets(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_edge_insets(raw);
   }
 
   @protected
@@ -3496,9 +4033,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment? dco_decode_opt_box_autoadd_main_axis_alignment(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_main_axis_alignment(raw);
+  }
+
+  @protected
+  MainAxisSize? dco_decode_opt_box_autoadd_main_axis_size(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_main_axis_size(raw);
+  }
+
+  @protected
   SettingsUI? dco_decode_opt_box_autoadd_settings_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_settings_ui(raw);
+  }
+
+  @protected
+  StackFit? dco_decode_opt_box_autoadd_stack_fit(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_stack_fit(raw);
   }
 
   @protected
@@ -3511,6 +4067,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_32(raw);
+  }
+
+  @protected
+  WrapAlignment? dco_decode_opt_box_autoadd_wrap_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_wrap_alignment(raw);
+  }
+
+  @protected
+  CustomUI? dco_decode_opt_box_custom_ui(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_custom_ui(raw);
   }
 
   @protected
@@ -3843,6 +4411,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  StackFit dco_decode_stack_fit(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return StackFit.values[raw as int];
+  }
+
+  @protected
   StreamSource dco_decode_stream_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3949,6 +4523,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt dco_decode_usize(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dcoDecodeU64(raw);
+  }
+
+  @protected
+  WrapAlignment dco_decode_wrap_alignment(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return WrapAlignment.values[raw as int];
   }
 
   @protected
@@ -4220,6 +4800,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment sse_decode_alignment(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return Alignment.values[inner];
+  }
+
+  @protected
   AuthCreds sse_decode_auth_creds(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4309,6 +4896,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment sse_decode_box_autoadd_alignment(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_alignment(deserializer));
+  }
+
+  @protected
   AuthCreds sse_decode_box_autoadd_auth_creds(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_auth_creds(deserializer));
@@ -4321,9 +4914,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType sse_decode_box_autoadd_button_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_button_type(deserializer));
+  }
+
+  @protected
+  ColorToken sse_decode_box_autoadd_color_token(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_color_token(deserializer));
+  }
+
+  @protected
+  ContainerType sse_decode_box_autoadd_container_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_container_type(deserializer));
+  }
+
+  @protected
+  CrossAxisAlignment sse_decode_box_autoadd_cross_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_cross_axis_alignment(deserializer));
+  }
+
+  @protected
   CustomUI sse_decode_box_autoadd_custom_ui(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_custom_ui(deserializer));
+  }
+
+  @protected
+  EdgeInsets sse_decode_box_autoadd_edge_insets(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_edge_insets(deserializer));
   }
 
   @protected
@@ -4397,6 +5022,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment sse_decode_box_autoadd_main_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_main_axis_alignment(deserializer));
+  }
+
+  @protected
+  MainAxisSize sse_decode_box_autoadd_main_axis_size(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_main_axis_size(deserializer));
+  }
+
+  @protected
   Permission sse_decode_box_autoadd_permission(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_permission(deserializer));
@@ -4428,6 +5067,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  StackFit sse_decode_box_autoadd_stack_fit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_stack_fit(deserializer));
+  }
+
+  @protected
   TextStyle sse_decode_box_autoadd_text_style(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_text_style(deserializer));
@@ -4437,6 +5082,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_u_32(deserializer));
+  }
+
+  @protected
+  WrapAlignment sse_decode_box_autoadd_wrap_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_wrap_alignment(deserializer));
   }
 
   @protected
@@ -4458,6 +5110,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType sse_decode_button_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ButtonType.values[inner];
+  }
+
+  @protected
+  ColorToken sse_decode_color_token(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ColorToken.values[inner];
+  }
+
+  @protected
+  ContainerType sse_decode_container_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ContainerType.values[inner];
+  }
+
+  @protected
+  CrossAxisAlignment sse_decode_cross_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return CrossAxisAlignment.values[inner];
+  }
+
+  @protected
   CustomUI sse_decode_custom_ui(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4465,7 +5146,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_text = sse_decode_String(deserializer);
-        return CustomUI_Text(text: var_text);
+        var var_style = sse_decode_opt_box_autoadd_text_style(deserializer);
+        return CustomUI_Text(text: var_text, style: var_style);
       case 1:
         var var_image = sse_decode_box_autoadd_link(deserializer);
         var var_width = sse_decode_opt_box_autoadd_i_32(deserializer);
@@ -4488,8 +5170,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_image = sse_decode_box_autoadd_link(deserializer);
         var var_top = sse_decode_box_custom_ui(deserializer);
         var var_bottom = sse_decode_box_custom_ui(deserializer);
+        var var_onClick = sse_decode_opt_box_interaction(deserializer);
         return CustomUI_Card(
-            image: var_image, top: var_top, bottom: var_bottom);
+            image: var_image,
+            top: var_top,
+            bottom: var_bottom,
+            onClick: var_onClick);
       case 6:
         return const CustomUI_Spinner();
       case 7:
@@ -4499,7 +5185,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 8:
         var var_label = sse_decode_String(deserializer);
         var var_onClick = sse_decode_opt_box_interaction(deserializer);
-        return CustomUI_Button(label: var_label, onClick: var_onClick);
+        var var_buttonType =
+            sse_decode_opt_box_autoadd_button_type(deserializer);
+        var var_color = sse_decode_opt_box_autoadd_color_token(deserializer);
+        return CustomUI_Button(
+            label: var_label,
+            onClick: var_onClick,
+            buttonType: var_buttonType,
+            color: var_color);
       case 9:
         var var_settingId = sse_decode_String(deserializer);
         var var_settingKind = sse_decode_setting_kind(deserializer);
@@ -4520,10 +5213,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             subscriptions: var_subscriptions);
       case 11:
         var var_children = sse_decode_list_custom_ui(deserializer);
-        return CustomUI_Column(children: var_children);
+        var var_mainAxisAlignment =
+            sse_decode_opt_box_autoadd_main_axis_alignment(deserializer);
+        var var_crossAxisAlignment =
+            sse_decode_opt_box_autoadd_cross_axis_alignment(deserializer);
+        var var_mainAxisSize =
+            sse_decode_opt_box_autoadd_main_axis_size(deserializer);
+        var var_scrollable = sse_decode_bool(deserializer);
+        return CustomUI_Column(
+            children: var_children,
+            mainAxisAlignment: var_mainAxisAlignment,
+            crossAxisAlignment: var_crossAxisAlignment,
+            mainAxisSize: var_mainAxisSize,
+            scrollable: var_scrollable);
       case 12:
         var var_children = sse_decode_list_custom_ui(deserializer);
-        return CustomUI_Row(children: var_children);
+        var var_mainAxisAlignment =
+            sse_decode_opt_box_autoadd_main_axis_alignment(deserializer);
+        var var_crossAxisAlignment =
+            sse_decode_opt_box_autoadd_cross_axis_alignment(deserializer);
+        var var_mainAxisSize =
+            sse_decode_opt_box_autoadd_main_axis_size(deserializer);
+        var var_scrollable = sse_decode_bool(deserializer);
+        return CustomUI_Row(
+            children: var_children,
+            mainAxisAlignment: var_mainAxisAlignment,
+            crossAxisAlignment: var_crossAxisAlignment,
+            mainAxisSize: var_mainAxisSize,
+            scrollable: var_scrollable);
       case 13:
         var var_onChange = sse_decode_opt_box_interaction(deserializer);
         var var_debounceMs = sse_decode_opt_box_autoadd_i_32(deserializer);
@@ -4534,9 +5251,130 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             debounceMs: var_debounceMs,
             initial: var_initial,
             onCommit: var_onCommit);
+      case 14:
+        var var_padding = sse_decode_box_autoadd_edge_insets(deserializer);
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        return CustomUI_Padding(padding: var_padding, child: var_child);
+      case 15:
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        var var_containerType =
+            sse_decode_opt_box_autoadd_container_type(deserializer);
+        var var_color = sse_decode_opt_box_autoadd_color_token(deserializer);
+        var var_borderColor =
+            sse_decode_opt_box_autoadd_color_token(deserializer);
+        var var_padding = sse_decode_opt_box_autoadd_edge_insets(deserializer);
+        var var_width = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_height = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_alignment = sse_decode_opt_box_autoadd_alignment(deserializer);
+        var var_emphasized = sse_decode_opt_box_autoadd_bool(deserializer);
+        return CustomUI_Container(
+            child: var_child,
+            containerType: var_containerType,
+            color: var_color,
+            borderColor: var_borderColor,
+            padding: var_padding,
+            width: var_width,
+            height: var_height,
+            alignment: var_alignment,
+            emphasized: var_emphasized);
+      case 16:
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        var var_onClick = sse_decode_opt_box_interaction(deserializer);
+        var var_onLongClick = sse_decode_opt_box_interaction(deserializer);
+        return CustomUI_Clickable(
+            child: var_child,
+            onClick: var_onClick,
+            onLongClick: var_onLongClick);
+      case 17:
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        var var_flex = sse_decode_i_32(deserializer);
+        return CustomUI_Expanded(child: var_child, flex: var_flex);
+      case 18:
+        var var_width = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_height = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_child = sse_decode_opt_box_custom_ui(deserializer);
+        return CustomUI_SizedBox(
+            width: var_width, height: var_height, child: var_child);
+      case 19:
+        var var_flex = sse_decode_i_32(deserializer);
+        return CustomUI_Spacer(flex: var_flex);
+      case 20:
+        var var_children = sse_decode_list_custom_ui(deserializer);
+        var var_spacing = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_runSpacing = sse_decode_opt_box_autoadd_f_32(deserializer);
+        var var_alignment =
+            sse_decode_opt_box_autoadd_wrap_alignment(deserializer);
+        return CustomUI_Wrap(
+            children: var_children,
+            spacing: var_spacing,
+            runSpacing: var_runSpacing,
+            alignment: var_alignment);
+      case 21:
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        return CustomUI_Center(child: var_child);
+      case 22:
+        var var_alignment = sse_decode_alignment(deserializer);
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        return CustomUI_Align(alignment: var_alignment, child: var_child);
+      case 23:
+        var var_children = sse_decode_list_custom_ui(deserializer);
+        var var_alignment = sse_decode_opt_box_autoadd_alignment(deserializer);
+        var var_fit = sse_decode_opt_box_autoadd_stack_fit(deserializer);
+        return CustomUI_Stack(
+            children: var_children, alignment: var_alignment, fit: var_fit);
+      case 24:
+        return const CustomUI_Divider();
+      case 25:
+        var var_leading = sse_decode_opt_box_custom_ui(deserializer);
+        var var_title = sse_decode_opt_box_custom_ui(deserializer);
+        var var_subtitle = sse_decode_opt_box_custom_ui(deserializer);
+        var var_trailing = sse_decode_opt_box_custom_ui(deserializer);
+        var var_onClick = sse_decode_opt_box_interaction(deserializer);
+        var var_onLongClick = sse_decode_opt_box_interaction(deserializer);
+        return CustomUI_ListTile(
+            leading: var_leading,
+            title: var_title,
+            subtitle: var_subtitle,
+            trailing: var_trailing,
+            onClick: var_onClick,
+            onLongClick: var_onLongClick);
+      case 26:
+        var var_child = sse_decode_box_custom_ui(deserializer);
+        var var_color = sse_decode_opt_box_autoadd_color_token(deserializer);
+        return CustomUI_Badge(child: var_child, color: var_color);
+      case 27:
+        var var_text = sse_decode_String(deserializer);
+        var var_maxLines = sse_decode_i_32(deserializer);
+        var var_style = sse_decode_opt_box_autoadd_text_style(deserializer);
+        var var_animate = sse_decode_bool(deserializer);
+        return CustomUI_FoldableText(
+            text: var_text,
+            maxLines: var_maxLines,
+            style: var_style,
+            animate: var_animate);
+      case 28:
+        var var_fill = sse_decode_f_32(deserializer);
+        var var_maxStars = sse_decode_i_32(deserializer);
+        return CustomUI_StarDisplay(fill: var_fill, maxStars: var_maxStars);
+      case 29:
+        var var_items = sse_decode_list_dropdown_item(deserializer);
+        var var_initialValue = sse_decode_opt_String(deserializer);
+        var var_onChange = sse_decode_opt_box_interaction(deserializer);
+        return CustomUI_Dropdown(
+            items: var_items,
+            initialValue: var_initialValue,
+            onChange: var_onChange);
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  DropdownItem sse_decode_dropdown_item(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_value = sse_decode_String(deserializer);
+    var var_label = sse_decode_String(deserializer);
+    return DropdownItem(value: var_value, label: var_label);
   }
 
   @protected
@@ -4545,6 +5383,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_label = sse_decode_String(deserializer);
     var var_value = sse_decode_String(deserializer);
     return DropdownOption(label: var_label, value: var_value);
+  }
+
+  @protected
+  EdgeInsets sse_decode_edge_insets(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_left = sse_decode_opt_box_autoadd_f_32(deserializer);
+    var var_top = sse_decode_opt_box_autoadd_f_32(deserializer);
+    var var_right = sse_decode_opt_box_autoadd_f_32(deserializer);
+    var var_bottom = sse_decode_opt_box_autoadd_f_32(deserializer);
+    return EdgeInsets(
+        left: var_left, top: var_top, right: var_right, bottom: var_bottom);
   }
 
   @protected
@@ -4931,6 +5780,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<DropdownItem> sse_decode_list_dropdown_item(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <DropdownItem>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_dropdown_item(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<DropdownOption> sse_decode_list_dropdown_option(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5214,6 +6076,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment sse_decode_main_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return MainAxisAlignment.values[inner];
+  }
+
+  @protected
+  MainAxisSize sse_decode_main_axis_size(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return MainAxisSize.values[inner];
+  }
+
+  @protected
   MediaType sse_decode_media_type(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
@@ -5290,6 +6167,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Alignment? sse_decode_opt_box_autoadd_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_alignment(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   AuthCreds? sse_decode_opt_box_autoadd_auth_creds(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5313,11 +6202,71 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ButtonType? sse_decode_opt_box_autoadd_button_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_button_type(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  ColorToken? sse_decode_opt_box_autoadd_color_token(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_color_token(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  ContainerType? sse_decode_opt_box_autoadd_container_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_container_type(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  CrossAxisAlignment? sse_decode_opt_box_autoadd_cross_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_cross_axis_alignment(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   CustomUI? sse_decode_opt_box_autoadd_custom_ui(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_custom_ui(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  EdgeInsets? sse_decode_opt_box_autoadd_edge_insets(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_edge_insets(deserializer));
     } else {
       return null;
     }
@@ -5369,12 +6318,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MainAxisAlignment? sse_decode_opt_box_autoadd_main_axis_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_main_axis_alignment(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  MainAxisSize? sse_decode_opt_box_autoadd_main_axis_size(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_main_axis_size(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   SettingsUI? sse_decode_opt_box_autoadd_settings_ui(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_settings_ui(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  StackFit? sse_decode_opt_box_autoadd_stack_fit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_stack_fit(deserializer));
     } else {
       return null;
     }
@@ -5398,6 +6382,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_u_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  WrapAlignment? sse_decode_opt_box_autoadd_wrap_alignment(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_wrap_alignment(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  CustomUI? sse_decode_opt_box_custom_ui(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_custom_ui(deserializer));
     } else {
       return null;
     }
@@ -5717,6 +6724,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  StackFit sse_decode_stack_fit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return StackFit.values[inner];
+  }
+
+  @protected
   StreamSource sse_decode_stream_source(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
@@ -5821,6 +6835,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  WrapAlignment sse_decode_wrap_alignment(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return WrapAlignment.values[inner];
+  }
+
+  @protected
   int cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
       CancelToken raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -5917,9 +6938,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_alignment(Alignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
   bool cst_encode_bool(bool raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
+  }
+
+  @protected
+  int cst_encode_button_type(ButtonType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_color_token(ColorToken raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_container_type(ContainerType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_cross_axis_alignment(CrossAxisAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
   }
 
   @protected
@@ -5938,6 +6989,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int cst_encode_i_32(int raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
+  }
+
+  @protected
+  int cst_encode_main_axis_alignment(MainAxisAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_main_axis_size(MainAxisSize raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
   }
 
   @protected
@@ -5971,6 +7034,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int cst_encode_stack_fit(StackFit raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
   int cst_encode_timestamp_type(TimestampType raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
@@ -5998,6 +7067,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void cst_encode_unit(void raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw;
+  }
+
+  @protected
+  int cst_encode_wrap_alignment(WrapAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
   }
 
   @protected
@@ -6344,6 +7419,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_alignment(Alignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_auth_creds(AuthCreds self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
@@ -6431,6 +7512,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_alignment(
+      Alignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_alignment(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_auth_creds(
       AuthCreds self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6444,10 +7532,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_button_type(
+      ButtonType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_button_type(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_color_token(
+      ColorToken self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_color_token(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_container_type(
+      ContainerType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_container_type(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_cross_axis_alignment(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_custom_ui(
       CustomUI self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_custom_ui(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_edge_insets(
+      EdgeInsets self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_edge_insets(self, serializer);
   }
 
   @protected
@@ -6523,6 +7646,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_main_axis_alignment(
+      MainAxisAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_main_axis_alignment(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_main_axis_size(
+      MainAxisSize self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_main_axis_size(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_permission(
       Permission self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6556,6 +7693,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_stack_fit(
+      StackFit self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_stack_fit(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_text_style(
       TextStyle self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6566,6 +7710,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_wrap_alignment(
+      WrapAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_wrap_alignment(self, serializer);
   }
 
   @protected
@@ -6588,12 +7739,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_button_type(ButtonType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_color_token(ColorToken self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_container_type(ContainerType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_cross_axis_alignment(
+      CrossAxisAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_custom_ui(CustomUI self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case CustomUI_Text(text: final text):
+      case CustomUI_Text(text: final text, style: final style):
         sse_encode_i_32(0, serializer);
         sse_encode_String(text, serializer);
+        sse_encode_opt_box_autoadd_text_style(style, serializer);
       case CustomUI_Image(
           image: final image,
           width: final width,
@@ -6620,22 +7797,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case CustomUI_Card(
           image: final image,
           top: final top,
-          bottom: final bottom
+          bottom: final bottom,
+          onClick: final onClick
         ):
         sse_encode_i_32(5, serializer);
         sse_encode_box_autoadd_link(image, serializer);
         sse_encode_box_custom_ui(top, serializer);
         sse_encode_box_custom_ui(bottom, serializer);
+        sse_encode_opt_box_interaction(onClick, serializer);
       case CustomUI_Spinner():
         sse_encode_i_32(6, serializer);
       case CustomUI_Feed(handler: final handler, data: final data):
         sse_encode_i_32(7, serializer);
         sse_encode_String(handler, serializer);
         sse_encode_String(data, serializer);
-      case CustomUI_Button(label: final label, onClick: final onClick):
+      case CustomUI_Button(
+          label: final label,
+          onClick: final onClick,
+          buttonType: final buttonType,
+          color: final color
+        ):
         sse_encode_i_32(8, serializer);
         sse_encode_String(label, serializer);
         sse_encode_opt_box_interaction(onClick, serializer);
+        sse_encode_opt_box_autoadd_button_type(buttonType, serializer);
+        sse_encode_opt_box_autoadd_color_token(color, serializer);
       case CustomUI_InlineSetting(
           settingId: final settingId,
           settingKind: final settingKind,
@@ -6656,12 +7842,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_custom_ui(child, serializer);
         sse_encode_String(staticData, serializer);
         sse_encode_list_subscription(subscriptions, serializer);
-      case CustomUI_Column(children: final children):
+      case CustomUI_Column(
+          children: final children,
+          mainAxisAlignment: final mainAxisAlignment,
+          crossAxisAlignment: final crossAxisAlignment,
+          mainAxisSize: final mainAxisSize,
+          scrollable: final scrollable
+        ):
         sse_encode_i_32(11, serializer);
         sse_encode_list_custom_ui(children, serializer);
-      case CustomUI_Row(children: final children):
+        sse_encode_opt_box_autoadd_main_axis_alignment(
+            mainAxisAlignment, serializer);
+        sse_encode_opt_box_autoadd_cross_axis_alignment(
+            crossAxisAlignment, serializer);
+        sse_encode_opt_box_autoadd_main_axis_size(mainAxisSize, serializer);
+        sse_encode_bool(scrollable, serializer);
+      case CustomUI_Row(
+          children: final children,
+          mainAxisAlignment: final mainAxisAlignment,
+          crossAxisAlignment: final crossAxisAlignment,
+          mainAxisSize: final mainAxisSize,
+          scrollable: final scrollable
+        ):
         sse_encode_i_32(12, serializer);
         sse_encode_list_custom_ui(children, serializer);
+        sse_encode_opt_box_autoadd_main_axis_alignment(
+            mainAxisAlignment, serializer);
+        sse_encode_opt_box_autoadd_cross_axis_alignment(
+            crossAxisAlignment, serializer);
+        sse_encode_opt_box_autoadd_main_axis_size(mainAxisSize, serializer);
+        sse_encode_bool(scrollable, serializer);
       case CustomUI_TextInput(
           onChange: final onChange,
           debounceMs: final debounceMs,
@@ -6673,7 +7883,136 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_i_32(debounceMs, serializer);
         sse_encode_opt_String(initial, serializer);
         sse_encode_opt_box_interaction(onCommit, serializer);
+      case CustomUI_Padding(padding: final padding, child: final child):
+        sse_encode_i_32(14, serializer);
+        sse_encode_box_autoadd_edge_insets(padding, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+      case CustomUI_Container(
+          child: final child,
+          containerType: final containerType,
+          color: final color,
+          borderColor: final borderColor,
+          padding: final padding,
+          width: final width,
+          height: final height,
+          alignment: final alignment,
+          emphasized: final emphasized
+        ):
+        sse_encode_i_32(15, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+        sse_encode_opt_box_autoadd_container_type(containerType, serializer);
+        sse_encode_opt_box_autoadd_color_token(color, serializer);
+        sse_encode_opt_box_autoadd_color_token(borderColor, serializer);
+        sse_encode_opt_box_autoadd_edge_insets(padding, serializer);
+        sse_encode_opt_box_autoadd_f_32(width, serializer);
+        sse_encode_opt_box_autoadd_f_32(height, serializer);
+        sse_encode_opt_box_autoadd_alignment(alignment, serializer);
+        sse_encode_opt_box_autoadd_bool(emphasized, serializer);
+      case CustomUI_Clickable(
+          child: final child,
+          onClick: final onClick,
+          onLongClick: final onLongClick
+        ):
+        sse_encode_i_32(16, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+        sse_encode_opt_box_interaction(onClick, serializer);
+        sse_encode_opt_box_interaction(onLongClick, serializer);
+      case CustomUI_Expanded(child: final child, flex: final flex):
+        sse_encode_i_32(17, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+        sse_encode_i_32(flex, serializer);
+      case CustomUI_SizedBox(
+          width: final width,
+          height: final height,
+          child: final child
+        ):
+        sse_encode_i_32(18, serializer);
+        sse_encode_opt_box_autoadd_f_32(width, serializer);
+        sse_encode_opt_box_autoadd_f_32(height, serializer);
+        sse_encode_opt_box_custom_ui(child, serializer);
+      case CustomUI_Spacer(flex: final flex):
+        sse_encode_i_32(19, serializer);
+        sse_encode_i_32(flex, serializer);
+      case CustomUI_Wrap(
+          children: final children,
+          spacing: final spacing,
+          runSpacing: final runSpacing,
+          alignment: final alignment
+        ):
+        sse_encode_i_32(20, serializer);
+        sse_encode_list_custom_ui(children, serializer);
+        sse_encode_opt_box_autoadd_f_32(spacing, serializer);
+        sse_encode_opt_box_autoadd_f_32(runSpacing, serializer);
+        sse_encode_opt_box_autoadd_wrap_alignment(alignment, serializer);
+      case CustomUI_Center(child: final child):
+        sse_encode_i_32(21, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+      case CustomUI_Align(alignment: final alignment, child: final child):
+        sse_encode_i_32(22, serializer);
+        sse_encode_alignment(alignment, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+      case CustomUI_Stack(
+          children: final children,
+          alignment: final alignment,
+          fit: final fit
+        ):
+        sse_encode_i_32(23, serializer);
+        sse_encode_list_custom_ui(children, serializer);
+        sse_encode_opt_box_autoadd_alignment(alignment, serializer);
+        sse_encode_opt_box_autoadd_stack_fit(fit, serializer);
+      case CustomUI_Divider():
+        sse_encode_i_32(24, serializer);
+      case CustomUI_ListTile(
+          leading: final leading,
+          title: final title,
+          subtitle: final subtitle,
+          trailing: final trailing,
+          onClick: final onClick,
+          onLongClick: final onLongClick
+        ):
+        sse_encode_i_32(25, serializer);
+        sse_encode_opt_box_custom_ui(leading, serializer);
+        sse_encode_opt_box_custom_ui(title, serializer);
+        sse_encode_opt_box_custom_ui(subtitle, serializer);
+        sse_encode_opt_box_custom_ui(trailing, serializer);
+        sse_encode_opt_box_interaction(onClick, serializer);
+        sse_encode_opt_box_interaction(onLongClick, serializer);
+      case CustomUI_Badge(child: final child, color: final color):
+        sse_encode_i_32(26, serializer);
+        sse_encode_box_custom_ui(child, serializer);
+        sse_encode_opt_box_autoadd_color_token(color, serializer);
+      case CustomUI_FoldableText(
+          text: final text,
+          maxLines: final maxLines,
+          style: final style,
+          animate: final animate
+        ):
+        sse_encode_i_32(27, serializer);
+        sse_encode_String(text, serializer);
+        sse_encode_i_32(maxLines, serializer);
+        sse_encode_opt_box_autoadd_text_style(style, serializer);
+        sse_encode_bool(animate, serializer);
+      case CustomUI_StarDisplay(fill: final fill, maxStars: final maxStars):
+        sse_encode_i_32(28, serializer);
+        sse_encode_f_32(fill, serializer);
+        sse_encode_i_32(maxStars, serializer);
+      case CustomUI_Dropdown(
+          items: final items,
+          initialValue: final initialValue,
+          onChange: final onChange
+        ):
+        sse_encode_i_32(29, serializer);
+        sse_encode_list_dropdown_item(items, serializer);
+        sse_encode_opt_String(initialValue, serializer);
+        sse_encode_opt_box_interaction(onChange, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_dropdown_item(DropdownItem self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.value, serializer);
+    sse_encode_String(self.label, serializer);
   }
 
   @protected
@@ -6682,6 +8021,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.label, serializer);
     sse_encode_String(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_edge_insets(EdgeInsets self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_box_autoadd_f_32(self.left, serializer);
+    sse_encode_opt_box_autoadd_f_32(self.top, serializer);
+    sse_encode_opt_box_autoadd_f_32(self.right, serializer);
+    sse_encode_opt_box_autoadd_f_32(self.bottom, serializer);
   }
 
   @protected
@@ -6976,6 +8324,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_dropdown_item(
+      List<DropdownItem> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_dropdown_item(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_dropdown_option(
       List<DropdownOption> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7200,6 +8558,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_main_axis_alignment(
+      MainAxisAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_main_axis_size(MainAxisSize self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_media_type(MediaType self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
@@ -7268,6 +8639,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_alignment(
+      Alignment? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_alignment(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_auth_creds(
       AuthCreds? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7289,6 +8671,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_button_type(
+      ButtonType? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_button_type(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_color_token(
+      ColorToken? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_color_token(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_container_type(
+      ContainerType? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_container_type(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_cross_axis_alignment(
+      CrossAxisAlignment? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_cross_axis_alignment(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_custom_ui(
       CustomUI? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7296,6 +8722,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_custom_ui(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_edge_insets(
+      EdgeInsets? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_edge_insets(self, serializer);
     }
   }
 
@@ -7341,6 +8778,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_main_axis_alignment(
+      MainAxisAlignment? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_main_axis_alignment(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_main_axis_size(
+      MainAxisSize? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_main_axis_size(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_settings_ui(
       SettingsUI? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7348,6 +8807,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_settings_ui(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_stack_fit(
+      StackFit? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_stack_fit(self, serializer);
     }
   }
 
@@ -7369,6 +8839,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_u_32(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_wrap_alignment(
+      WrapAlignment? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_wrap_alignment(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_custom_ui(CustomUI? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_custom_ui(self, serializer);
     }
   }
 
@@ -7636,6 +9127,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_stack_fit(StackFit self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_stream_source(StreamSource self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
@@ -7719,6 +9216,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_usize(BigInt self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putBigUint64(self);
+  }
+
+  @protected
+  void sse_encode_wrap_alignment(WrapAlignment self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 }
 

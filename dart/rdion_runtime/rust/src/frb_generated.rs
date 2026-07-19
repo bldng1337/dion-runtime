@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1679058273;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -161423037;
 
 // Section: executor
 
@@ -2382,6 +2382,128 @@ fn wire__crate__api__extension__ProxyExtension_validate_impl(
         },
     )
 }
+fn wire__dion_runtime__data__custom_ui__alignment_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "alignment_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::custom_ui::Alignment::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__button_type_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "button_type_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::custom_ui::ButtonType::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__color_token_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "color_token_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::custom_ui::ColorToken::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__container_type_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "container_type_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::ContainerType::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__cross_axis_alignment_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "cross_axis_alignment_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::CrossAxisAlignment::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__edge_insets_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "edge_insets_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::custom_ui::EdgeInsets::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__dion_runtime__data__source__entry_list_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
@@ -2506,6 +2628,48 @@ fn wire__dion_runtime__data__source__link_default_impl(
         },
     )
 }
+fn wire__dion_runtime__data__custom_ui__main_axis_alignment_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "main_axis_alignment_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::MainAxisAlignment::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__main_axis_size_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "main_axis_size_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::MainAxisSize::default(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__dion_runtime__data__source__media_type_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
@@ -2609,6 +2773,26 @@ fn wire__dion_runtime__data__extension__source_open_type_default_impl(
         },
     )
 }
+fn wire__dion_runtime__data__custom_ui__stack_fit_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "stack_fit_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::custom_ui::StackFit::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__dion_runtime__data__source__text_style_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
@@ -2664,6 +2848,27 @@ fn wire__dion_runtime__data__action__toast_kind_default_impl(
                 transform_result_dco::<_, _, ()>((move || {
                     let output_ok =
                         Result::<_, ()>::Ok(dion_runtime::data::action::ToastKind::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__dion_runtime__data__custom_ui__wrap_alignment_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "wrap_alignment_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok(
+                        dion_runtime::data::custom_ui::WrapAlignment::default(),
+                    )?;
                     Ok(output_ok)
                 })())
             }
@@ -2755,8 +2960,9 @@ const _: fn() = || {
         }
     }
     match None::<dion_runtime::data::custom_ui::CustomUI>.unwrap() {
-        dion_runtime::data::custom_ui::CustomUI::Text { text } => {
+        dion_runtime::data::custom_ui::CustomUI::Text { text, style } => {
             let _: String = text;
+            let _: Option<dion_runtime::data::source::TextStyle> = style;
         }
         dion_runtime::data::custom_ui::CustomUI::Image {
             image,
@@ -2778,19 +2984,32 @@ const _: fn() = || {
         dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
             let _: dion_runtime::data::source::Entry = entry;
         }
-        dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => {
+        dion_runtime::data::custom_ui::CustomUI::Card {
+            image,
+            top,
+            bottom,
+            on_click,
+        } => {
             let _: dion_runtime::data::source::Link = image;
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = top;
             let _: Box<dion_runtime::data::custom_ui::CustomUI> = bottom;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_click;
         }
         dion_runtime::data::custom_ui::CustomUI::Spinner => {}
         dion_runtime::data::custom_ui::CustomUI::Feed { handler, data } => {
             let _: String = handler;
             let _: String = data;
         }
-        dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
+        dion_runtime::data::custom_ui::CustomUI::Button {
+            label,
+            on_click,
+            button_type,
+            color,
+        } => {
             let _: String = label;
             let _: Option<Box<dion_runtime::data::action::Interaction>> = on_click;
+            let _: Option<dion_runtime::data::custom_ui::ButtonType> = button_type;
+            let _: Option<dion_runtime::data::custom_ui::ColorToken> = color;
         }
         dion_runtime::data::custom_ui::CustomUI::InlineSetting {
             setting_id,
@@ -2812,11 +3031,31 @@ const _: fn() = || {
             let _: String = static_data;
             let _: Vec<dion_runtime::data::custom_ui::Subscription> = subscriptions;
         }
-        dion_runtime::data::custom_ui::CustomUI::Column { children } => {
+        dion_runtime::data::custom_ui::CustomUI::Column {
+            children,
+            main_axis_alignment,
+            cross_axis_alignment,
+            main_axis_size,
+            scrollable,
+        } => {
             let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
+            let _: Option<dion_runtime::data::custom_ui::MainAxisAlignment> = main_axis_alignment;
+            let _: Option<dion_runtime::data::custom_ui::CrossAxisAlignment> = cross_axis_alignment;
+            let _: Option<dion_runtime::data::custom_ui::MainAxisSize> = main_axis_size;
+            let _: bool = scrollable;
         }
-        dion_runtime::data::custom_ui::CustomUI::Row { children } => {
+        dion_runtime::data::custom_ui::CustomUI::Row {
+            children,
+            main_axis_alignment,
+            cross_axis_alignment,
+            main_axis_size,
+            scrollable,
+        } => {
             let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
+            let _: Option<dion_runtime::data::custom_ui::MainAxisAlignment> = main_axis_alignment;
+            let _: Option<dion_runtime::data::custom_ui::CrossAxisAlignment> = cross_axis_alignment;
+            let _: Option<dion_runtime::data::custom_ui::MainAxisSize> = main_axis_size;
+            let _: bool = scrollable;
         }
         dion_runtime::data::custom_ui::CustomUI::TextInput {
             on_change,
@@ -2829,11 +3068,144 @@ const _: fn() = || {
             let _: Option<String> = initial;
             let _: Option<Box<dion_runtime::data::action::Interaction>> = on_commit;
         }
+        dion_runtime::data::custom_ui::CustomUI::Padding { padding, child } => {
+            let _: dion_runtime::data::custom_ui::EdgeInsets = padding;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Container {
+            child,
+            container_type,
+            color,
+            border_color,
+            padding,
+            width,
+            height,
+            alignment,
+            emphasized,
+        } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+            let _: Option<dion_runtime::data::custom_ui::ContainerType> = container_type;
+            let _: Option<dion_runtime::data::custom_ui::ColorToken> = color;
+            let _: Option<dion_runtime::data::custom_ui::ColorToken> = border_color;
+            let _: Option<dion_runtime::data::custom_ui::EdgeInsets> = padding;
+            let _: Option<f32> = width;
+            let _: Option<f32> = height;
+            let _: Option<dion_runtime::data::custom_ui::Alignment> = alignment;
+            let _: Option<bool> = emphasized;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Clickable {
+            child,
+            on_click,
+            on_long_click,
+        } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_click;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_long_click;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Expanded { child, flex } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+            let _: i32 = flex;
+        }
+        dion_runtime::data::custom_ui::CustomUI::SizedBox {
+            width,
+            height,
+            child,
+        } => {
+            let _: Option<f32> = width;
+            let _: Option<f32> = height;
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = child;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Spacer { flex } => {
+            let _: i32 = flex;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Wrap {
+            children,
+            spacing,
+            run_spacing,
+            alignment,
+        } => {
+            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
+            let _: Option<f32> = spacing;
+            let _: Option<f32> = run_spacing;
+            let _: Option<dion_runtime::data::custom_ui::WrapAlignment> = alignment;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Center { child } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Align { alignment, child } => {
+            let _: dion_runtime::data::custom_ui::Alignment = alignment;
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Stack {
+            children,
+            alignment,
+            fit,
+        } => {
+            let _: Vec<dion_runtime::data::custom_ui::CustomUI> = children;
+            let _: Option<dion_runtime::data::custom_ui::Alignment> = alignment;
+            let _: Option<dion_runtime::data::custom_ui::StackFit> = fit;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Divider => {}
+        dion_runtime::data::custom_ui::CustomUI::ListTile {
+            leading,
+            title,
+            subtitle,
+            trailing,
+            on_click,
+            on_long_click,
+        } => {
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = leading;
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = title;
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = subtitle;
+            let _: Option<Box<dion_runtime::data::custom_ui::CustomUI>> = trailing;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_click;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_long_click;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Badge { child, color } => {
+            let _: Box<dion_runtime::data::custom_ui::CustomUI> = child;
+            let _: Option<dion_runtime::data::custom_ui::ColorToken> = color;
+        }
+        dion_runtime::data::custom_ui::CustomUI::FoldableText {
+            text,
+            max_lines,
+            style,
+            animate,
+        } => {
+            let _: String = text;
+            let _: i32 = max_lines;
+            let _: Option<dion_runtime::data::source::TextStyle> = style;
+            let _: bool = animate;
+        }
+        dion_runtime::data::custom_ui::CustomUI::StarDisplay { fill, max_stars } => {
+            let _: f32 = fill;
+            let _: i32 = max_stars;
+        }
+        dion_runtime::data::custom_ui::CustomUI::Dropdown {
+            items,
+            initial_value,
+            on_change,
+        } => {
+            let _: Vec<dion_runtime::data::custom_ui::DropdownItem> = items;
+            let _: Option<String> = initial_value;
+            let _: Option<Box<dion_runtime::data::action::Interaction>> = on_change;
+        }
+    }
+    {
+        let DropdownItem = None::<dion_runtime::data::custom_ui::DropdownItem>.unwrap();
+        let _: String = DropdownItem.value;
+        let _: String = DropdownItem.label;
     }
     {
         let DropdownOption = None::<dion_runtime::data::settings::DropdownOption>.unwrap();
         let _: String = DropdownOption.label;
         let _: String = DropdownOption.value;
+    }
+    {
+        let EdgeInsets = None::<dion_runtime::data::custom_ui::EdgeInsets>.unwrap();
+        let _: Option<f32> = EdgeInsets.left;
+        let _: Option<f32> = EdgeInsets.top;
+        let _: Option<f32> = EdgeInsets.right;
+        let _: Option<f32> = EdgeInsets.bottom;
     }
     {
         let Entry = None::<dion_runtime::data::source::Entry>.unwrap();
@@ -3460,10 +3832,84 @@ fn decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
 
 // Section: dart2rust
 
+impl CstDecode<dion_runtime::data::custom_ui::Alignment> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::Alignment {
+        match self {
+            0 => dion_runtime::data::custom_ui::Alignment::Center,
+            1 => dion_runtime::data::custom_ui::Alignment::TopLeft,
+            2 => dion_runtime::data::custom_ui::Alignment::TopCenter,
+            3 => dion_runtime::data::custom_ui::Alignment::TopRight,
+            4 => dion_runtime::data::custom_ui::Alignment::CenterLeft,
+            5 => dion_runtime::data::custom_ui::Alignment::CenterRight,
+            6 => dion_runtime::data::custom_ui::Alignment::BottomLeft,
+            7 => dion_runtime::data::custom_ui::Alignment::BottomCenter,
+            8 => dion_runtime::data::custom_ui::Alignment::BottomRight,
+            _ => unreachable!("Invalid variant for Alignment: {}", self),
+        }
+    }
+}
 impl CstDecode<bool> for bool {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> bool {
         self
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::ButtonType> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::ButtonType {
+        match self {
+            0 => dion_runtime::data::custom_ui::ButtonType::Filled,
+            1 => dion_runtime::data::custom_ui::ButtonType::Ghost,
+            2 => dion_runtime::data::custom_ui::ButtonType::Elevated,
+            _ => unreachable!("Invalid variant for ButtonType: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::ColorToken> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::ColorToken {
+        match self {
+            0 => dion_runtime::data::custom_ui::ColorToken::Primary,
+            1 => dion_runtime::data::custom_ui::ColorToken::OnPrimary,
+            2 => dion_runtime::data::custom_ui::ColorToken::PrimaryContainer,
+            3 => dion_runtime::data::custom_ui::ColorToken::OnPrimaryContainer,
+            4 => dion_runtime::data::custom_ui::ColorToken::Secondary,
+            5 => dion_runtime::data::custom_ui::ColorToken::OnSecondary,
+            6 => dion_runtime::data::custom_ui::ColorToken::Surface,
+            7 => dion_runtime::data::custom_ui::ColorToken::OnSurface,
+            8 => dion_runtime::data::custom_ui::ColorToken::SurfaceContainer,
+            9 => dion_runtime::data::custom_ui::ColorToken::SurfaceContainerHighest,
+            10 => dion_runtime::data::custom_ui::ColorToken::Error,
+            11 => dion_runtime::data::custom_ui::ColorToken::OnError,
+            12 => dion_runtime::data::custom_ui::ColorToken::Disabled,
+            13 => dion_runtime::data::custom_ui::ColorToken::Shadow,
+            _ => unreachable!("Invalid variant for ColorToken: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::ContainerType> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::ContainerType {
+        match self {
+            0 => dion_runtime::data::custom_ui::ContainerType::Ghost,
+            1 => dion_runtime::data::custom_ui::ContainerType::Filled,
+            2 => dion_runtime::data::custom_ui::ContainerType::Outlined,
+            _ => unreachable!("Invalid variant for ContainerType: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::CrossAxisAlignment> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::CrossAxisAlignment {
+        match self {
+            0 => dion_runtime::data::custom_ui::CrossAxisAlignment::Start,
+            1 => dion_runtime::data::custom_ui::CrossAxisAlignment::Center,
+            2 => dion_runtime::data::custom_ui::CrossAxisAlignment::End,
+            3 => dion_runtime::data::custom_ui::CrossAxisAlignment::Stretch,
+            4 => dion_runtime::data::custom_ui::CrossAxisAlignment::Baseline,
+            _ => unreachable!("Invalid variant for CrossAxisAlignment: {}", self),
+        }
     }
 }
 impl CstDecode<f32> for f32 {
@@ -3482,6 +3928,30 @@ impl CstDecode<i32> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> i32 {
         self
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::MainAxisAlignment> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::MainAxisAlignment {
+        match self {
+            0 => dion_runtime::data::custom_ui::MainAxisAlignment::Start,
+            1 => dion_runtime::data::custom_ui::MainAxisAlignment::Center,
+            2 => dion_runtime::data::custom_ui::MainAxisAlignment::End,
+            3 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceBetween,
+            4 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceAround,
+            5 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceEvenly,
+            _ => unreachable!("Invalid variant for MainAxisAlignment: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::MainAxisSize> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::MainAxisSize {
+        match self {
+            0 => dion_runtime::data::custom_ui::MainAxisSize::Min,
+            1 => dion_runtime::data::custom_ui::MainAxisSize::Max,
+            _ => unreachable!("Invalid variant for MainAxisSize: {}", self),
+        }
     }
 }
 impl CstDecode<dion_runtime::data::source::MediaType> for i32 {
@@ -3542,6 +4012,17 @@ impl CstDecode<dion_runtime::data::source::SourceType> for i32 {
         }
     }
 }
+impl CstDecode<dion_runtime::data::custom_ui::StackFit> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::StackFit {
+        match self {
+            0 => dion_runtime::data::custom_ui::StackFit::Loose,
+            1 => dion_runtime::data::custom_ui::StackFit::Expand,
+            2 => dion_runtime::data::custom_ui::StackFit::Passthrough,
+            _ => unreachable!("Invalid variant for StackFit: {}", self),
+        }
+    }
+}
 impl CstDecode<dion_runtime::data::custom_ui::TimestampType> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> dion_runtime::data::custom_ui::TimestampType {
@@ -3580,6 +4061,20 @@ impl CstDecode<usize> for usize {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> usize {
         self
+    }
+}
+impl CstDecode<dion_runtime::data::custom_ui::WrapAlignment> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::custom_ui::WrapAlignment {
+        match self {
+            0 => dion_runtime::data::custom_ui::WrapAlignment::Start,
+            1 => dion_runtime::data::custom_ui::WrapAlignment::Center,
+            2 => dion_runtime::data::custom_ui::WrapAlignment::End,
+            3 => dion_runtime::data::custom_ui::WrapAlignment::SpaceBetween,
+            4 => dion_runtime::data::custom_ui::WrapAlignment::SpaceAround,
+            5 => dion_runtime::data::custom_ui::WrapAlignment::SpaceEvenly,
+            _ => unreachable!("Invalid variant for WrapAlignment: {}", self),
+        }
     }
 }
 impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
@@ -3846,6 +4341,25 @@ impl SseDecode for dion_runtime::data::action::Action {
     }
 }
 
+impl SseDecode for dion_runtime::data::custom_ui::Alignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::Alignment::Center,
+            1 => dion_runtime::data::custom_ui::Alignment::TopLeft,
+            2 => dion_runtime::data::custom_ui::Alignment::TopCenter,
+            3 => dion_runtime::data::custom_ui::Alignment::TopRight,
+            4 => dion_runtime::data::custom_ui::Alignment::CenterLeft,
+            5 => dion_runtime::data::custom_ui::Alignment::CenterRight,
+            6 => dion_runtime::data::custom_ui::Alignment::BottomLeft,
+            7 => dion_runtime::data::custom_ui::Alignment::BottomCenter,
+            8 => dion_runtime::data::custom_ui::Alignment::BottomRight,
+            _ => unreachable!("Invalid variant for Alignment: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for dion_runtime::data::auth::AuthCreds {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3970,6 +4484,71 @@ impl SseDecode for Box<dion_runtime::data::action::Interaction> {
     }
 }
 
+impl SseDecode for dion_runtime::data::custom_ui::ButtonType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::ButtonType::Filled,
+            1 => dion_runtime::data::custom_ui::ButtonType::Ghost,
+            2 => dion_runtime::data::custom_ui::ButtonType::Elevated,
+            _ => unreachable!("Invalid variant for ButtonType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::ColorToken {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::ColorToken::Primary,
+            1 => dion_runtime::data::custom_ui::ColorToken::OnPrimary,
+            2 => dion_runtime::data::custom_ui::ColorToken::PrimaryContainer,
+            3 => dion_runtime::data::custom_ui::ColorToken::OnPrimaryContainer,
+            4 => dion_runtime::data::custom_ui::ColorToken::Secondary,
+            5 => dion_runtime::data::custom_ui::ColorToken::OnSecondary,
+            6 => dion_runtime::data::custom_ui::ColorToken::Surface,
+            7 => dion_runtime::data::custom_ui::ColorToken::OnSurface,
+            8 => dion_runtime::data::custom_ui::ColorToken::SurfaceContainer,
+            9 => dion_runtime::data::custom_ui::ColorToken::SurfaceContainerHighest,
+            10 => dion_runtime::data::custom_ui::ColorToken::Error,
+            11 => dion_runtime::data::custom_ui::ColorToken::OnError,
+            12 => dion_runtime::data::custom_ui::ColorToken::Disabled,
+            13 => dion_runtime::data::custom_ui::ColorToken::Shadow,
+            _ => unreachable!("Invalid variant for ColorToken: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::ContainerType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::ContainerType::Ghost,
+            1 => dion_runtime::data::custom_ui::ContainerType::Filled,
+            2 => dion_runtime::data::custom_ui::ContainerType::Outlined,
+            _ => unreachable!("Invalid variant for ContainerType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::CrossAxisAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::CrossAxisAlignment::Start,
+            1 => dion_runtime::data::custom_ui::CrossAxisAlignment::Center,
+            2 => dion_runtime::data::custom_ui::CrossAxisAlignment::End,
+            3 => dion_runtime::data::custom_ui::CrossAxisAlignment::Stretch,
+            4 => dion_runtime::data::custom_ui::CrossAxisAlignment::Baseline,
+            _ => unreachable!("Invalid variant for CrossAxisAlignment: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3977,7 +4556,12 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
         match tag_ {
             0 => {
                 let mut var_text = <String>::sse_decode(deserializer);
-                return dion_runtime::data::custom_ui::CustomUI::Text { text: var_text };
+                let mut var_style =
+                    <Option<dion_runtime::data::source::TextStyle>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Text {
+                    text: var_text,
+                    style: var_style,
+                };
             }
             1 => {
                 let mut var_image = <dion_runtime::data::source::Link>::sse_decode(deserializer);
@@ -4016,10 +4600,15 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
                 let mut var_bottom =
                     <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_onClick =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::data::custom_ui::CustomUI::Card {
                     image: var_image,
                     top: var_top,
                     bottom: var_bottom,
+                    on_click: var_onClick,
                 };
             }
             6 => {
@@ -4039,9 +4628,15 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                     <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
                         deserializer,
                     );
+                let mut var_buttonType =
+                    <Option<dion_runtime::data::custom_ui::ButtonType>>::sse_decode(deserializer);
+                let mut var_color =
+                    <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Button {
                     label: var_label,
                     on_click: var_onClick,
+                    button_type: var_buttonType,
+                    color: var_color,
                 };
             }
             9 => {
@@ -4075,15 +4670,41 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
             11 => {
                 let mut var_children =
                     <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_mainAxisAlignment = <Option<
+                    dion_runtime::data::custom_ui::MainAxisAlignment,
+                >>::sse_decode(deserializer);
+                let mut var_crossAxisAlignment = <Option<
+                    dion_runtime::data::custom_ui::CrossAxisAlignment,
+                >>::sse_decode(deserializer);
+                let mut var_mainAxisSize =
+                    <Option<dion_runtime::data::custom_ui::MainAxisSize>>::sse_decode(deserializer);
+                let mut var_scrollable = <bool>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Column {
                     children: var_children,
+                    main_axis_alignment: var_mainAxisAlignment,
+                    cross_axis_alignment: var_crossAxisAlignment,
+                    main_axis_size: var_mainAxisSize,
+                    scrollable: var_scrollable,
                 };
             }
             12 => {
                 let mut var_children =
                     <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_mainAxisAlignment = <Option<
+                    dion_runtime::data::custom_ui::MainAxisAlignment,
+                >>::sse_decode(deserializer);
+                let mut var_crossAxisAlignment = <Option<
+                    dion_runtime::data::custom_ui::CrossAxisAlignment,
+                >>::sse_decode(deserializer);
+                let mut var_mainAxisSize =
+                    <Option<dion_runtime::data::custom_ui::MainAxisSize>>::sse_decode(deserializer);
+                let mut var_scrollable = <bool>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Row {
                     children: var_children,
+                    main_axis_alignment: var_mainAxisAlignment,
+                    cross_axis_alignment: var_crossAxisAlignment,
+                    main_axis_size: var_mainAxisSize,
+                    scrollable: var_scrollable,
                 };
             }
             13 => {
@@ -4104,10 +4725,231 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                     on_commit: var_onCommit,
                 };
             }
+            14 => {
+                let mut var_padding =
+                    <dion_runtime::data::custom_ui::EdgeInsets>::sse_decode(deserializer);
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Padding {
+                    padding: var_padding,
+                    child: var_child,
+                };
+            }
+            15 => {
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_containerType =
+                    <Option<dion_runtime::data::custom_ui::ContainerType>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_color =
+                    <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_decode(deserializer);
+                let mut var_borderColor =
+                    <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_decode(deserializer);
+                let mut var_padding =
+                    <Option<dion_runtime::data::custom_ui::EdgeInsets>>::sse_decode(deserializer);
+                let mut var_width = <Option<f32>>::sse_decode(deserializer);
+                let mut var_height = <Option<f32>>::sse_decode(deserializer);
+                let mut var_alignment =
+                    <Option<dion_runtime::data::custom_ui::Alignment>>::sse_decode(deserializer);
+                let mut var_emphasized = <Option<bool>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Container {
+                    child: var_child,
+                    container_type: var_containerType,
+                    color: var_color,
+                    border_color: var_borderColor,
+                    padding: var_padding,
+                    width: var_width,
+                    height: var_height,
+                    alignment: var_alignment,
+                    emphasized: var_emphasized,
+                };
+            }
+            16 => {
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_onClick =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_onLongClick =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::Clickable {
+                    child: var_child,
+                    on_click: var_onClick,
+                    on_long_click: var_onLongClick,
+                };
+            }
+            17 => {
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_flex = <i32>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Expanded {
+                    child: var_child,
+                    flex: var_flex,
+                };
+            }
+            18 => {
+                let mut var_width = <Option<f32>>::sse_decode(deserializer);
+                let mut var_height = <Option<f32>>::sse_decode(deserializer);
+                let mut var_child =
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::SizedBox {
+                    width: var_width,
+                    height: var_height,
+                    child: var_child,
+                };
+            }
+            19 => {
+                let mut var_flex = <i32>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Spacer { flex: var_flex };
+            }
+            20 => {
+                let mut var_children =
+                    <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_spacing = <Option<f32>>::sse_decode(deserializer);
+                let mut var_runSpacing = <Option<f32>>::sse_decode(deserializer);
+                let mut var_alignment =
+                    <Option<dion_runtime::data::custom_ui::WrapAlignment>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::Wrap {
+                    children: var_children,
+                    spacing: var_spacing,
+                    run_spacing: var_runSpacing,
+                    alignment: var_alignment,
+                };
+            }
+            21 => {
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Center { child: var_child };
+            }
+            22 => {
+                let mut var_alignment =
+                    <dion_runtime::data::custom_ui::Alignment>::sse_decode(deserializer);
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Align {
+                    alignment: var_alignment,
+                    child: var_child,
+                };
+            }
+            23 => {
+                let mut var_children =
+                    <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_alignment =
+                    <Option<dion_runtime::data::custom_ui::Alignment>>::sse_decode(deserializer);
+                let mut var_fit =
+                    <Option<dion_runtime::data::custom_ui::StackFit>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Stack {
+                    children: var_children,
+                    alignment: var_alignment,
+                    fit: var_fit,
+                };
+            }
+            24 => {
+                return dion_runtime::data::custom_ui::CustomUI::Divider;
+            }
+            25 => {
+                let mut var_leading =
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_title =
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_subtitle =
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_trailing =
+                    <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_onClick =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                let mut var_onLongClick =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::ListTile {
+                    leading: var_leading,
+                    title: var_title,
+                    subtitle: var_subtitle,
+                    trailing: var_trailing,
+                    on_click: var_onClick,
+                    on_long_click: var_onLongClick,
+                };
+            }
+            26 => {
+                let mut var_child =
+                    <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(deserializer);
+                let mut var_color =
+                    <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::Badge {
+                    child: var_child,
+                    color: var_color,
+                };
+            }
+            27 => {
+                let mut var_text = <String>::sse_decode(deserializer);
+                let mut var_maxLines = <i32>::sse_decode(deserializer);
+                let mut var_style =
+                    <Option<dion_runtime::data::source::TextStyle>>::sse_decode(deserializer);
+                let mut var_animate = <bool>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::FoldableText {
+                    text: var_text,
+                    max_lines: var_maxLines,
+                    style: var_style,
+                    animate: var_animate,
+                };
+            }
+            28 => {
+                let mut var_fill = <f32>::sse_decode(deserializer);
+                let mut var_maxStars = <i32>::sse_decode(deserializer);
+                return dion_runtime::data::custom_ui::CustomUI::StarDisplay {
+                    fill: var_fill,
+                    max_stars: var_maxStars,
+                };
+            }
+            29 => {
+                let mut var_items =
+                    <Vec<dion_runtime::data::custom_ui::DropdownItem>>::sse_decode(deserializer);
+                let mut var_initialValue = <Option<String>>::sse_decode(deserializer);
+                let mut var_onChange =
+                    <Option<Box<dion_runtime::data::action::Interaction>>>::sse_decode(
+                        deserializer,
+                    );
+                return dion_runtime::data::custom_ui::CustomUI::Dropdown {
+                    items: var_items,
+                    initial_value: var_initialValue,
+                    on_change: var_onChange,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::DropdownItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_value = <String>::sse_decode(deserializer);
+        let mut var_label = <String>::sse_decode(deserializer);
+        return dion_runtime::data::custom_ui::DropdownItem {
+            value: var_value,
+            label: var_label,
+        };
     }
 }
 
@@ -4119,6 +4961,22 @@ impl SseDecode for dion_runtime::data::settings::DropdownOption {
         return dion_runtime::data::settings::DropdownOption {
             label: var_label,
             value: var_value,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::EdgeInsets {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_left = <Option<f32>>::sse_decode(deserializer);
+        let mut var_top = <Option<f32>>::sse_decode(deserializer);
+        let mut var_right = <Option<f32>>::sse_decode(deserializer);
+        let mut var_bottom = <Option<f32>>::sse_decode(deserializer);
+        return dion_runtime::data::custom_ui::EdgeInsets {
+            left: var_left,
+            top: var_top,
+            right: var_right,
+            bottom: var_bottom,
         };
     }
 }
@@ -4609,6 +5467,20 @@ impl SseDecode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::data::custom_ui::DropdownItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::custom_ui::DropdownItem>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::data::settings::DropdownOption> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4917,6 +5789,34 @@ impl SseDecode for Vec<dion_runtime::data::source::Subtitles> {
     }
 }
 
+impl SseDecode for dion_runtime::data::custom_ui::MainAxisAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::MainAxisAlignment::Start,
+            1 => dion_runtime::data::custom_ui::MainAxisAlignment::Center,
+            2 => dion_runtime::data::custom_ui::MainAxisAlignment::End,
+            3 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceBetween,
+            4 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceAround,
+            5 => dion_runtime::data::custom_ui::MainAxisAlignment::SpaceEvenly,
+            _ => unreachable!("Invalid variant for MainAxisAlignment: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::MainAxisSize {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::MainAxisSize::Min,
+            1 => dion_runtime::data::custom_ui::MainAxisSize::Max,
+            _ => unreachable!("Invalid variant for MainAxisSize: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for dion_runtime::data::source::MediaType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5013,6 +5913,19 @@ impl SseDecode for Option<dion_runtime::data::auth::Account> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::data::custom_ui::Alignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::Alignment>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<dion_runtime::data::auth::AuthCreds> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5037,11 +5950,76 @@ impl SseDecode for Option<bool> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::data::custom_ui::ButtonType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::ButtonType>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::ColorToken> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::ColorToken>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::ContainerType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::ContainerType>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::CrossAxisAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <dion_runtime::data::custom_ui::CrossAxisAlignment>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<dion_runtime::data::custom_ui::CustomUI>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::EdgeInsets> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::EdgeInsets>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -5096,11 +6074,50 @@ impl SseDecode for Option<dion_runtime::data::source::Link> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::data::custom_ui::MainAxisAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <dion_runtime::data::custom_ui::MainAxisAlignment>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::MainAxisSize> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::MainAxisSize>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<dion_runtime::data::settings::SettingsUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<dion_runtime::data::settings::SettingsUI>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::StackFit> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::StackFit>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -5127,6 +6144,32 @@ impl SseDecode for Option<u32> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<u32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<dion_runtime::data::custom_ui::WrapAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::custom_ui::WrapAlignment>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Box<dion_runtime::data::custom_ui::CustomUI>>::sse_decode(
+                deserializer,
+            ));
         } else {
             return None;
         }
@@ -5576,6 +6619,19 @@ impl SseDecode for dion_runtime::data::source::SourceType {
     }
 }
 
+impl SseDecode for dion_runtime::data::custom_ui::StackFit {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::StackFit::Loose,
+            1 => dion_runtime::data::custom_ui::StackFit::Expand,
+            2 => dion_runtime::data::custom_ui::StackFit::Passthrough,
+            _ => unreachable!("Invalid variant for StackFit: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for dion_runtime::data::source::StreamSource {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5715,6 +6771,22 @@ impl SseDecode for usize {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u64::<NativeEndian>().unwrap() as _
+    }
+}
+
+impl SseDecode for dion_runtime::data::custom_ui::WrapAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::custom_ui::WrapAlignment::Start,
+            1 => dion_runtime::data::custom_ui::WrapAlignment::Center,
+            2 => dion_runtime::data::custom_ui::WrapAlignment::End,
+            3 => dion_runtime::data::custom_ui::WrapAlignment::SpaceBetween,
+            4 => dion_runtime::data::custom_ui::WrapAlignment::SpaceAround,
+            5 => dion_runtime::data::custom_ui::WrapAlignment::SpaceEvenly,
+            _ => unreachable!("Invalid variant for WrapAlignment: {}", inner),
+        };
     }
 }
 
@@ -5896,6 +6968,34 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::Ac
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::Alignment> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::Alignment::Center => 0.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::TopLeft => 1.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::TopCenter => 2.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::TopRight => 3.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::CenterLeft => 4.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::CenterRight => 5.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::BottomLeft => 6.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::BottomCenter => 7.into_dart(),
+            dion_runtime::data::custom_ui::Alignment::BottomRight => 8.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::Alignment>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::Alignment>>
+    for dion_runtime::data::custom_ui::Alignment
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::Alignment> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::auth::AuthCreds> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
@@ -5987,12 +7087,119 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::auth::Auth
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::ButtonType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::ButtonType::Filled => 0.into_dart(),
+            dion_runtime::data::custom_ui::ButtonType::Ghost => 1.into_dart(),
+            dion_runtime::data::custom_ui::ButtonType::Elevated => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::ButtonType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::ButtonType>>
+    for dion_runtime::data::custom_ui::ButtonType
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::ButtonType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::ColorToken> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::ColorToken::Primary => 0.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::OnPrimary => 1.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::PrimaryContainer => 2.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::OnPrimaryContainer => 3.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::Secondary => 4.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::OnSecondary => 5.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::Surface => 6.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::OnSurface => 7.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::SurfaceContainer => 8.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::SurfaceContainerHighest => 9.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::Error => 10.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::OnError => 11.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::Disabled => 12.into_dart(),
+            dion_runtime::data::custom_ui::ColorToken::Shadow => 13.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::ColorToken>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::ColorToken>>
+    for dion_runtime::data::custom_ui::ColorToken
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::ColorToken> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::ContainerType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::ContainerType::Ghost => 0.into_dart(),
+            dion_runtime::data::custom_ui::ContainerType::Filled => 1.into_dart(),
+            dion_runtime::data::custom_ui::ContainerType::Outlined => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::ContainerType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::ContainerType>>
+    for dion_runtime::data::custom_ui::ContainerType
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::ContainerType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::custom_ui::CrossAxisAlignment>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::CrossAxisAlignment::Start => 0.into_dart(),
+            dion_runtime::data::custom_ui::CrossAxisAlignment::Center => 1.into_dart(),
+            dion_runtime::data::custom_ui::CrossAxisAlignment::End => 2.into_dart(),
+            dion_runtime::data::custom_ui::CrossAxisAlignment::Stretch => 3.into_dart(),
+            dion_runtime::data::custom_ui::CrossAxisAlignment::Baseline => 4.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::CrossAxisAlignment>
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::CrossAxisAlignment>>
+    for dion_runtime::data::custom_ui::CrossAxisAlignment
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::CrossAxisAlignment> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::CustomUI> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            dion_runtime::data::custom_ui::CustomUI::Text { text } => {
-                [0.into_dart(), text.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::custom_ui::CustomUI::Text { text, style } => [
+                0.into_dart(),
+                text.into_into_dart().into_dart(),
+                style.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::Image {
                 image,
                 width,
@@ -6019,11 +7226,17 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
             dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
                 [4.into_dart(), entry.into_into_dart().into_dart()].into_dart()
             }
-            dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => [
+            dion_runtime::data::custom_ui::CustomUI::Card {
+                image,
+                top,
+                bottom,
+                on_click,
+            } => [
                 5.into_dart(),
                 image.into_into_dart().into_dart(),
                 top.into_into_dart().into_dart(),
                 bottom.into_into_dart().into_dart(),
+                on_click.into_into_dart().into_dart(),
             ]
             .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::Spinner => [6.into_dart()].into_dart(),
@@ -6033,10 +7246,17 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
                 data.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => [
+            dion_runtime::data::custom_ui::CustomUI::Button {
+                label,
+                on_click,
+                button_type,
+                color,
+            } => [
                 8.into_dart(),
                 label.into_into_dart().into_dart(),
                 on_click.into_into_dart().into_dart(),
+                button_type.into_into_dart().into_dart(),
+                color.into_into_dart().into_dart(),
             ]
             .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::InlineSetting {
@@ -6063,12 +7283,36 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
                 subscriptions.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::custom_ui::CustomUI::Column { children } => {
-                [11.into_dart(), children.into_into_dart().into_dart()].into_dart()
-            }
-            dion_runtime::data::custom_ui::CustomUI::Row { children } => {
-                [12.into_dart(), children.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::custom_ui::CustomUI::Column {
+                children,
+                main_axis_alignment,
+                cross_axis_alignment,
+                main_axis_size,
+                scrollable,
+            } => [
+                11.into_dart(),
+                children.into_into_dart().into_dart(),
+                main_axis_alignment.into_into_dart().into_dart(),
+                cross_axis_alignment.into_into_dart().into_dart(),
+                main_axis_size.into_into_dart().into_dart(),
+                scrollable.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Row {
+                children,
+                main_axis_alignment,
+                cross_axis_alignment,
+                main_axis_size,
+                scrollable,
+            } => [
+                12.into_dart(),
+                children.into_into_dart().into_dart(),
+                main_axis_alignment.into_into_dart().into_dart(),
+                cross_axis_alignment.into_into_dart().into_dart(),
+                main_axis_size.into_into_dart().into_dart(),
+                scrollable.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             dion_runtime::data::custom_ui::CustomUI::TextInput {
                 on_change,
                 debounce_ms,
@@ -6080,6 +7324,153 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui:
                 debounce_ms.into_into_dart().into_dart(),
                 initial.into_into_dart().into_dart(),
                 on_commit.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Padding { padding, child } => [
+                14.into_dart(),
+                padding.into_into_dart().into_dart(),
+                child.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Container {
+                child,
+                container_type,
+                color,
+                border_color,
+                padding,
+                width,
+                height,
+                alignment,
+                emphasized,
+            } => [
+                15.into_dart(),
+                child.into_into_dart().into_dart(),
+                container_type.into_into_dart().into_dart(),
+                color.into_into_dart().into_dart(),
+                border_color.into_into_dart().into_dart(),
+                padding.into_into_dart().into_dart(),
+                width.into_into_dart().into_dart(),
+                height.into_into_dart().into_dart(),
+                alignment.into_into_dart().into_dart(),
+                emphasized.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Clickable {
+                child,
+                on_click,
+                on_long_click,
+            } => [
+                16.into_dart(),
+                child.into_into_dart().into_dart(),
+                on_click.into_into_dart().into_dart(),
+                on_long_click.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Expanded { child, flex } => [
+                17.into_dart(),
+                child.into_into_dart().into_dart(),
+                flex.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::SizedBox {
+                width,
+                height,
+                child,
+            } => [
+                18.into_dart(),
+                width.into_into_dart().into_dart(),
+                height.into_into_dart().into_dart(),
+                child.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Spacer { flex } => {
+                [19.into_dart(), flex.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::custom_ui::CustomUI::Wrap {
+                children,
+                spacing,
+                run_spacing,
+                alignment,
+            } => [
+                20.into_dart(),
+                children.into_into_dart().into_dart(),
+                spacing.into_into_dart().into_dart(),
+                run_spacing.into_into_dart().into_dart(),
+                alignment.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Center { child } => {
+                [21.into_dart(), child.into_into_dart().into_dart()].into_dart()
+            }
+            dion_runtime::data::custom_ui::CustomUI::Align { alignment, child } => [
+                22.into_dart(),
+                alignment.into_into_dart().into_dart(),
+                child.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Stack {
+                children,
+                alignment,
+                fit,
+            } => [
+                23.into_dart(),
+                children.into_into_dart().into_dart(),
+                alignment.into_into_dart().into_dart(),
+                fit.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Divider => [24.into_dart()].into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::ListTile {
+                leading,
+                title,
+                subtitle,
+                trailing,
+                on_click,
+                on_long_click,
+            } => [
+                25.into_dart(),
+                leading.into_into_dart().into_dart(),
+                title.into_into_dart().into_dart(),
+                subtitle.into_into_dart().into_dart(),
+                trailing.into_into_dart().into_dart(),
+                on_click.into_into_dart().into_dart(),
+                on_long_click.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Badge { child, color } => [
+                26.into_dart(),
+                child.into_into_dart().into_dart(),
+                color.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::FoldableText {
+                text,
+                max_lines,
+                style,
+                animate,
+            } => [
+                27.into_dart(),
+                text.into_into_dart().into_dart(),
+                max_lines.into_into_dart().into_dart(),
+                style.into_into_dart().into_dart(),
+                animate.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::StarDisplay { fill, max_stars } => [
+                28.into_dart(),
+                fill.into_into_dart().into_dart(),
+                max_stars.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            dion_runtime::data::custom_ui::CustomUI::Dropdown {
+                items,
+                initial_value,
+                on_change,
+            } => [
+                29.into_dart(),
+                items.into_into_dart().into_dart(),
+                initial_value.into_into_dart().into_dart(),
+                on_change.into_into_dart().into_dart(),
             ]
             .into_dart(),
             _ => {
@@ -6096,6 +7487,27 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui:
     for dion_runtime::data::custom_ui::CustomUI
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::CustomUI> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::DropdownItem> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.value.into_into_dart().into_dart(),
+            self.0.label.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::DropdownItem>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::DropdownItem>>
+    for dion_runtime::data::custom_ui::DropdownItem
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::DropdownItem> {
         self.into()
     }
 }
@@ -6117,6 +7529,29 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::settings::
     for dion_runtime::data::settings::DropdownOption
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::settings::DropdownOption> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::EdgeInsets> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.left.into_into_dart().into_dart(),
+            self.0.top.into_into_dart().into_dart(),
+            self.0.right.into_into_dart().into_dart(),
+            self.0.bottom.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::EdgeInsets>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::EdgeInsets>>
+    for dion_runtime::data::custom_ui::EdgeInsets
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::EdgeInsets> {
         self.into()
     }
 }
@@ -6604,6 +8039,54 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Li
     for dion_runtime::data::source::Link
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Link> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::custom_ui::MainAxisAlignment>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::MainAxisAlignment::Start => 0.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisAlignment::Center => 1.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisAlignment::End => 2.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisAlignment::SpaceBetween => 3.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisAlignment::SpaceAround => 4.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisAlignment::SpaceEvenly => 5.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::MainAxisAlignment>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::MainAxisAlignment>>
+    for dion_runtime::data::custom_ui::MainAxisAlignment
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::MainAxisAlignment> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::MainAxisSize> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::MainAxisSize::Min => 0.into_dart(),
+            dion_runtime::data::custom_ui::MainAxisSize::Max => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::MainAxisSize>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::MainAxisSize>>
+    for dion_runtime::data::custom_ui::MainAxisSize
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::MainAxisSize> {
         self.into()
     }
 }
@@ -7111,6 +8594,28 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::So
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::StackFit> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::StackFit::Loose => 0.into_dart(),
+            dion_runtime::data::custom_ui::StackFit::Expand => 1.into_dart(),
+            dion_runtime::data::custom_ui::StackFit::Passthrough => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::StackFit>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::StackFit>>
+    for dion_runtime::data::custom_ui::StackFit
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::StackFit> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::StreamSource> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -7274,6 +8779,31 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::action::To
     for dion_runtime::data::action::ToastKind
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::action::ToastKind> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::custom_ui::WrapAlignment> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::custom_ui::WrapAlignment::Start => 0.into_dart(),
+            dion_runtime::data::custom_ui::WrapAlignment::Center => 1.into_dart(),
+            dion_runtime::data::custom_ui::WrapAlignment::End => 2.into_dart(),
+            dion_runtime::data::custom_ui::WrapAlignment::SpaceBetween => 3.into_dart(),
+            dion_runtime::data::custom_ui::WrapAlignment::SpaceAround => 4.into_dart(),
+            dion_runtime::data::custom_ui::WrapAlignment::SpaceEvenly => 5.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::custom_ui::WrapAlignment>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui::WrapAlignment>>
+    for dion_runtime::data::custom_ui::WrapAlignment
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::WrapAlignment> {
         self.into()
     }
 }
@@ -7516,6 +9046,29 @@ impl SseEncode for dion_runtime::data::action::Action {
     }
 }
 
+impl SseEncode for dion_runtime::data::custom_ui::Alignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::Alignment::Center => 0,
+                dion_runtime::data::custom_ui::Alignment::TopLeft => 1,
+                dion_runtime::data::custom_ui::Alignment::TopCenter => 2,
+                dion_runtime::data::custom_ui::Alignment::TopRight => 3,
+                dion_runtime::data::custom_ui::Alignment::CenterLeft => 4,
+                dion_runtime::data::custom_ui::Alignment::CenterRight => 5,
+                dion_runtime::data::custom_ui::Alignment::BottomLeft => 6,
+                dion_runtime::data::custom_ui::Alignment::BottomCenter => 7,
+                dion_runtime::data::custom_ui::Alignment::BottomRight => 8,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for dion_runtime::data::auth::AuthCreds {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7624,13 +9177,95 @@ impl SseEncode for Box<dion_runtime::data::action::Interaction> {
     }
 }
 
+impl SseEncode for dion_runtime::data::custom_ui::ButtonType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::ButtonType::Filled => 0,
+                dion_runtime::data::custom_ui::ButtonType::Ghost => 1,
+                dion_runtime::data::custom_ui::ButtonType::Elevated => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::ColorToken {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::ColorToken::Primary => 0,
+                dion_runtime::data::custom_ui::ColorToken::OnPrimary => 1,
+                dion_runtime::data::custom_ui::ColorToken::PrimaryContainer => 2,
+                dion_runtime::data::custom_ui::ColorToken::OnPrimaryContainer => 3,
+                dion_runtime::data::custom_ui::ColorToken::Secondary => 4,
+                dion_runtime::data::custom_ui::ColorToken::OnSecondary => 5,
+                dion_runtime::data::custom_ui::ColorToken::Surface => 6,
+                dion_runtime::data::custom_ui::ColorToken::OnSurface => 7,
+                dion_runtime::data::custom_ui::ColorToken::SurfaceContainer => 8,
+                dion_runtime::data::custom_ui::ColorToken::SurfaceContainerHighest => 9,
+                dion_runtime::data::custom_ui::ColorToken::Error => 10,
+                dion_runtime::data::custom_ui::ColorToken::OnError => 11,
+                dion_runtime::data::custom_ui::ColorToken::Disabled => 12,
+                dion_runtime::data::custom_ui::ColorToken::Shadow => 13,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::ContainerType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::ContainerType::Ghost => 0,
+                dion_runtime::data::custom_ui::ContainerType::Filled => 1,
+                dion_runtime::data::custom_ui::ContainerType::Outlined => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::CrossAxisAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::CrossAxisAlignment::Start => 0,
+                dion_runtime::data::custom_ui::CrossAxisAlignment::Center => 1,
+                dion_runtime::data::custom_ui::CrossAxisAlignment::End => 2,
+                dion_runtime::data::custom_ui::CrossAxisAlignment::Stretch => 3,
+                dion_runtime::data::custom_ui::CrossAxisAlignment::Baseline => 4,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            dion_runtime::data::custom_ui::CustomUI::Text { text } => {
+            dion_runtime::data::custom_ui::CustomUI::Text { text, style } => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(text, serializer);
+                <Option<dion_runtime::data::source::TextStyle>>::sse_encode(style, serializer);
             }
             dion_runtime::data::custom_ui::CustomUI::Image {
                 image,
@@ -7656,11 +9291,19 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
                 <i32>::sse_encode(4, serializer);
                 <dion_runtime::data::source::Entry>::sse_encode(entry, serializer);
             }
-            dion_runtime::data::custom_ui::CustomUI::Card { image, top, bottom } => {
+            dion_runtime::data::custom_ui::CustomUI::Card {
+                image,
+                top,
+                bottom,
+                on_click,
+            } => {
                 <i32>::sse_encode(5, serializer);
                 <dion_runtime::data::source::Link>::sse_encode(image, serializer);
                 <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(top, serializer);
                 <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(bottom, serializer);
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_click, serializer,
+                );
             }
             dion_runtime::data::custom_ui::CustomUI::Spinner => {
                 <i32>::sse_encode(6, serializer);
@@ -7670,12 +9313,22 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
                 <String>::sse_encode(handler, serializer);
                 <String>::sse_encode(data, serializer);
             }
-            dion_runtime::data::custom_ui::CustomUI::Button { label, on_click } => {
+            dion_runtime::data::custom_ui::CustomUI::Button {
+                label,
+                on_click,
+                button_type,
+                color,
+            } => {
                 <i32>::sse_encode(8, serializer);
                 <String>::sse_encode(label, serializer);
                 <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
                     on_click, serializer,
                 );
+                <Option<dion_runtime::data::custom_ui::ButtonType>>::sse_encode(
+                    button_type,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_encode(color, serializer);
             }
             dion_runtime::data::custom_ui::CustomUI::InlineSetting {
                 setting_id,
@@ -7704,13 +9357,51 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
                     serializer,
                 );
             }
-            dion_runtime::data::custom_ui::CustomUI::Column { children } => {
+            dion_runtime::data::custom_ui::CustomUI::Column {
+                children,
+                main_axis_alignment,
+                cross_axis_alignment,
+                main_axis_size,
+                scrollable,
+            } => {
                 <i32>::sse_encode(11, serializer);
                 <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+                <Option<dion_runtime::data::custom_ui::MainAxisAlignment>>::sse_encode(
+                    main_axis_alignment,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::CrossAxisAlignment>>::sse_encode(
+                    cross_axis_alignment,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::MainAxisSize>>::sse_encode(
+                    main_axis_size,
+                    serializer,
+                );
+                <bool>::sse_encode(scrollable, serializer);
             }
-            dion_runtime::data::custom_ui::CustomUI::Row { children } => {
+            dion_runtime::data::custom_ui::CustomUI::Row {
+                children,
+                main_axis_alignment,
+                cross_axis_alignment,
+                main_axis_size,
+                scrollable,
+            } => {
                 <i32>::sse_encode(12, serializer);
                 <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+                <Option<dion_runtime::data::custom_ui::MainAxisAlignment>>::sse_encode(
+                    main_axis_alignment,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::CrossAxisAlignment>>::sse_encode(
+                    cross_axis_alignment,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::MainAxisSize>>::sse_encode(
+                    main_axis_size,
+                    serializer,
+                );
+                <bool>::sse_encode(scrollable, serializer);
             }
             dion_runtime::data::custom_ui::CustomUI::TextInput {
                 on_change,
@@ -7728,10 +9419,192 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
                     on_commit, serializer,
                 );
             }
+            dion_runtime::data::custom_ui::CustomUI::Padding { padding, child } => {
+                <i32>::sse_encode(14, serializer);
+                <dion_runtime::data::custom_ui::EdgeInsets>::sse_encode(padding, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Container {
+                child,
+                container_type,
+                color,
+                border_color,
+                padding,
+                width,
+                height,
+                alignment,
+                emphasized,
+            } => {
+                <i32>::sse_encode(15, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+                <Option<dion_runtime::data::custom_ui::ContainerType>>::sse_encode(
+                    container_type,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_encode(color, serializer);
+                <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_encode(
+                    border_color,
+                    serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::EdgeInsets>>::sse_encode(
+                    padding, serializer,
+                );
+                <Option<f32>>::sse_encode(width, serializer);
+                <Option<f32>>::sse_encode(height, serializer);
+                <Option<dion_runtime::data::custom_ui::Alignment>>::sse_encode(
+                    alignment, serializer,
+                );
+                <Option<bool>>::sse_encode(emphasized, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Clickable {
+                child,
+                on_click,
+                on_long_click,
+            } => {
+                <i32>::sse_encode(16, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_click, serializer,
+                );
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_long_click,
+                    serializer,
+                );
+            }
+            dion_runtime::data::custom_ui::CustomUI::Expanded { child, flex } => {
+                <i32>::sse_encode(17, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+                <i32>::sse_encode(flex, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::SizedBox {
+                width,
+                height,
+                child,
+            } => {
+                <i32>::sse_encode(18, serializer);
+                <Option<f32>>::sse_encode(width, serializer);
+                <Option<f32>>::sse_encode(height, serializer);
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
+                    child, serializer,
+                );
+            }
+            dion_runtime::data::custom_ui::CustomUI::Spacer { flex } => {
+                <i32>::sse_encode(19, serializer);
+                <i32>::sse_encode(flex, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Wrap {
+                children,
+                spacing,
+                run_spacing,
+                alignment,
+            } => {
+                <i32>::sse_encode(20, serializer);
+                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+                <Option<f32>>::sse_encode(spacing, serializer);
+                <Option<f32>>::sse_encode(run_spacing, serializer);
+                <Option<dion_runtime::data::custom_ui::WrapAlignment>>::sse_encode(
+                    alignment, serializer,
+                );
+            }
+            dion_runtime::data::custom_ui::CustomUI::Center { child } => {
+                <i32>::sse_encode(21, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Align { alignment, child } => {
+                <i32>::sse_encode(22, serializer);
+                <dion_runtime::data::custom_ui::Alignment>::sse_encode(alignment, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Stack {
+                children,
+                alignment,
+                fit,
+            } => {
+                <i32>::sse_encode(23, serializer);
+                <Vec<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(children, serializer);
+                <Option<dion_runtime::data::custom_ui::Alignment>>::sse_encode(
+                    alignment, serializer,
+                );
+                <Option<dion_runtime::data::custom_ui::StackFit>>::sse_encode(fit, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Divider => {
+                <i32>::sse_encode(24, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::ListTile {
+                leading,
+                title,
+                subtitle,
+                trailing,
+                on_click,
+                on_long_click,
+            } => {
+                <i32>::sse_encode(25, serializer);
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
+                    leading, serializer,
+                );
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
+                    title, serializer,
+                );
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
+                    subtitle, serializer,
+                );
+                <Option<Box<dion_runtime::data::custom_ui::CustomUI>>>::sse_encode(
+                    trailing, serializer,
+                );
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_click, serializer,
+                );
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_long_click,
+                    serializer,
+                );
+            }
+            dion_runtime::data::custom_ui::CustomUI::Badge { child, color } => {
+                <i32>::sse_encode(26, serializer);
+                <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(child, serializer);
+                <Option<dion_runtime::data::custom_ui::ColorToken>>::sse_encode(color, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::FoldableText {
+                text,
+                max_lines,
+                style,
+                animate,
+            } => {
+                <i32>::sse_encode(27, serializer);
+                <String>::sse_encode(text, serializer);
+                <i32>::sse_encode(max_lines, serializer);
+                <Option<dion_runtime::data::source::TextStyle>>::sse_encode(style, serializer);
+                <bool>::sse_encode(animate, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::StarDisplay { fill, max_stars } => {
+                <i32>::sse_encode(28, serializer);
+                <f32>::sse_encode(fill, serializer);
+                <i32>::sse_encode(max_stars, serializer);
+            }
+            dion_runtime::data::custom_ui::CustomUI::Dropdown {
+                items,
+                initial_value,
+                on_change,
+            } => {
+                <i32>::sse_encode(29, serializer);
+                <Vec<dion_runtime::data::custom_ui::DropdownItem>>::sse_encode(items, serializer);
+                <Option<String>>::sse_encode(initial_value, serializer);
+                <Option<Box<dion_runtime::data::action::Interaction>>>::sse_encode(
+                    on_change, serializer,
+                );
+            }
             _ => {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::DropdownItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.value, serializer);
+        <String>::sse_encode(self.label, serializer);
     }
 }
 
@@ -7740,6 +9613,16 @@ impl SseEncode for dion_runtime::data::settings::DropdownOption {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.label, serializer);
         <String>::sse_encode(self.value, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::EdgeInsets {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<f32>>::sse_encode(self.left, serializer);
+        <Option<f32>>::sse_encode(self.top, serializer);
+        <Option<f32>>::sse_encode(self.right, serializer);
+        <Option<f32>>::sse_encode(self.bottom, serializer);
     }
 }
 
@@ -8094,6 +9977,16 @@ impl SseEncode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::data::custom_ui::DropdownItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::custom_ui::DropdownItem>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::data::settings::DropdownOption> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8324,6 +10217,42 @@ impl SseEncode for Vec<dion_runtime::data::source::Subtitles> {
     }
 }
 
+impl SseEncode for dion_runtime::data::custom_ui::MainAxisAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::MainAxisAlignment::Start => 0,
+                dion_runtime::data::custom_ui::MainAxisAlignment::Center => 1,
+                dion_runtime::data::custom_ui::MainAxisAlignment::End => 2,
+                dion_runtime::data::custom_ui::MainAxisAlignment::SpaceBetween => 3,
+                dion_runtime::data::custom_ui::MainAxisAlignment::SpaceAround => 4,
+                dion_runtime::data::custom_ui::MainAxisAlignment::SpaceEvenly => 5,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::MainAxisSize {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::MainAxisSize::Min => 0,
+                dion_runtime::data::custom_ui::MainAxisSize::Max => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for dion_runtime::data::source::MediaType {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8407,6 +10336,16 @@ impl SseEncode for Option<dion_runtime::data::auth::Account> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::data::custom_ui::Alignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::Alignment>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<dion_runtime::data::auth::AuthCreds> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8427,12 +10366,62 @@ impl SseEncode for Option<bool> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::data::custom_ui::ButtonType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::ButtonType>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::ColorToken> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::ColorToken>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::ContainerType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::ContainerType>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::CrossAxisAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::CrossAxisAlignment>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <dion_runtime::data::custom_ui::CustomUI>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::EdgeInsets> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::EdgeInsets>::sse_encode(value, serializer);
         }
     }
 }
@@ -8477,12 +10466,42 @@ impl SseEncode for Option<dion_runtime::data::source::Link> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::data::custom_ui::MainAxisAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::MainAxisAlignment>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::MainAxisSize> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::MainAxisSize>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<dion_runtime::data::settings::SettingsUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <dion_runtime::data::settings::SettingsUI>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::StackFit> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::StackFit>::sse_encode(value, serializer);
         }
     }
 }
@@ -8503,6 +10522,26 @@ impl SseEncode for Option<u32> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <u32>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<dion_runtime::data::custom_ui::WrapAlignment> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::custom_ui::WrapAlignment>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Box<dion_runtime::data::custom_ui::CustomUI>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Box<dion_runtime::data::custom_ui::CustomUI>>::sse_encode(value, serializer);
         }
     }
 }
@@ -8876,6 +10915,23 @@ impl SseEncode for dion_runtime::data::source::SourceType {
     }
 }
 
+impl SseEncode for dion_runtime::data::custom_ui::StackFit {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::StackFit::Loose => 0,
+                dion_runtime::data::custom_ui::StackFit::Expand => 1,
+                dion_runtime::data::custom_ui::StackFit::Passthrough => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for dion_runtime::data::source::StreamSource {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8997,6 +11053,26 @@ impl SseEncode for usize {
             .cursor
             .write_u64::<NativeEndian>(self as _)
             .unwrap();
+    }
+}
+
+impl SseEncode for dion_runtime::data::custom_ui::WrapAlignment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::custom_ui::WrapAlignment::Start => 0,
+                dion_runtime::data::custom_ui::WrapAlignment::Center => 1,
+                dion_runtime::data::custom_ui::WrapAlignment::End => 2,
+                dion_runtime::data::custom_ui::WrapAlignment::SpaceBetween => 3,
+                dion_runtime::data::custom_ui::WrapAlignment::SpaceAround => 4,
+                dion_runtime::data::custom_ui::WrapAlignment::SpaceEvenly => 5,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 
@@ -9355,6 +11431,13 @@ mod io {
             CstDecode::<dion_runtime::data::auth::Account>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<dion_runtime::data::custom_ui::Alignment> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::Alignment {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::Alignment>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::data::auth::AuthCreds> for *mut wire_cst_auth_creds {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::auth::AuthCreds {
@@ -9368,11 +11451,46 @@ mod io {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
+    impl CstDecode<dion_runtime::data::custom_ui::ButtonType> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::ButtonType {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::ButtonType>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::ColorToken> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::ColorToken {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::ColorToken>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::ContainerType> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::ContainerType {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::ContainerType>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::CrossAxisAlignment> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::CrossAxisAlignment {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::CrossAxisAlignment>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::data::custom_ui::CustomUI> for *mut wire_cst_custom_ui {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::custom_ui::CustomUI {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::custom_ui::CustomUI>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::EdgeInsets> for *mut wire_cst_edge_insets {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::EdgeInsets {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::EdgeInsets>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::data::source::Entry> for *mut wire_cst_entry {
@@ -9408,6 +11526,20 @@ mod io {
             CstDecode::<dion_runtime::data::source::Link>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<dion_runtime::data::custom_ui::MainAxisAlignment> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::MainAxisAlignment {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::MainAxisAlignment>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::MainAxisSize> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::MainAxisSize {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::MainAxisSize>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::data::settings::SettingValue> for *mut wire_cst_setting_value {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::settings::SettingValue {
@@ -9422,6 +11554,13 @@ mod io {
             CstDecode::<dion_runtime::data::settings::SettingsUI>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<dion_runtime::data::custom_ui::StackFit> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::StackFit {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::StackFit>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::data::source::TextStyle> for *mut wire_cst_text_style {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::source::TextStyle {
@@ -9433,6 +11572,13 @@ mod io {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> u32 {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::WrapAlignment> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::WrapAlignment {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::custom_ui::WrapAlignment>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<Box<dion_runtime::data::custom_ui::CustomUI>> for *mut wire_cst_custom_ui {
@@ -9464,6 +11610,7 @@ mod io {
                     let ans = unsafe { self.kind.Text };
                     dion_runtime::data::custom_ui::CustomUI::Text {
                         text: ans.text.cst_decode(),
+                        style: ans.style.cst_decode(),
                     }
                 }
                 1 => {
@@ -9500,6 +11647,7 @@ mod io {
                         image: ans.image.cst_decode(),
                         top: ans.top.cst_decode(),
                         bottom: ans.bottom.cst_decode(),
+                        on_click: ans.on_click.cst_decode(),
                     }
                 }
                 6 => dion_runtime::data::custom_ui::CustomUI::Spinner,
@@ -9515,6 +11663,8 @@ mod io {
                     dion_runtime::data::custom_ui::CustomUI::Button {
                         label: ans.label.cst_decode(),
                         on_click: ans.on_click.cst_decode(),
+                        button_type: ans.button_type.cst_decode(),
+                        color: ans.color.cst_decode(),
                     }
                 }
                 9 => {
@@ -9538,12 +11688,20 @@ mod io {
                     let ans = unsafe { self.kind.Column };
                     dion_runtime::data::custom_ui::CustomUI::Column {
                         children: ans.children.cst_decode(),
+                        main_axis_alignment: ans.main_axis_alignment.cst_decode(),
+                        cross_axis_alignment: ans.cross_axis_alignment.cst_decode(),
+                        main_axis_size: ans.main_axis_size.cst_decode(),
+                        scrollable: ans.scrollable.cst_decode(),
                     }
                 }
                 12 => {
                     let ans = unsafe { self.kind.Row };
                     dion_runtime::data::custom_ui::CustomUI::Row {
                         children: ans.children.cst_decode(),
+                        main_axis_alignment: ans.main_axis_alignment.cst_decode(),
+                        cross_axis_alignment: ans.cross_axis_alignment.cst_decode(),
+                        main_axis_size: ans.main_axis_size.cst_decode(),
+                        scrollable: ans.scrollable.cst_decode(),
                     }
                 }
                 13 => {
@@ -9555,7 +11713,139 @@ mod io {
                         on_commit: ans.on_commit.cst_decode(),
                     }
                 }
+                14 => {
+                    let ans = unsafe { self.kind.Padding };
+                    dion_runtime::data::custom_ui::CustomUI::Padding {
+                        padding: ans.padding.cst_decode(),
+                        child: ans.child.cst_decode(),
+                    }
+                }
+                15 => {
+                    let ans = unsafe { self.kind.Container };
+                    dion_runtime::data::custom_ui::CustomUI::Container {
+                        child: ans.child.cst_decode(),
+                        container_type: ans.container_type.cst_decode(),
+                        color: ans.color.cst_decode(),
+                        border_color: ans.border_color.cst_decode(),
+                        padding: ans.padding.cst_decode(),
+                        width: ans.width.cst_decode(),
+                        height: ans.height.cst_decode(),
+                        alignment: ans.alignment.cst_decode(),
+                        emphasized: ans.emphasized.cst_decode(),
+                    }
+                }
+                16 => {
+                    let ans = unsafe { self.kind.Clickable };
+                    dion_runtime::data::custom_ui::CustomUI::Clickable {
+                        child: ans.child.cst_decode(),
+                        on_click: ans.on_click.cst_decode(),
+                        on_long_click: ans.on_long_click.cst_decode(),
+                    }
+                }
+                17 => {
+                    let ans = unsafe { self.kind.Expanded };
+                    dion_runtime::data::custom_ui::CustomUI::Expanded {
+                        child: ans.child.cst_decode(),
+                        flex: ans.flex.cst_decode(),
+                    }
+                }
+                18 => {
+                    let ans = unsafe { self.kind.SizedBox };
+                    dion_runtime::data::custom_ui::CustomUI::SizedBox {
+                        width: ans.width.cst_decode(),
+                        height: ans.height.cst_decode(),
+                        child: ans.child.cst_decode(),
+                    }
+                }
+                19 => {
+                    let ans = unsafe { self.kind.Spacer };
+                    dion_runtime::data::custom_ui::CustomUI::Spacer {
+                        flex: ans.flex.cst_decode(),
+                    }
+                }
+                20 => {
+                    let ans = unsafe { self.kind.Wrap };
+                    dion_runtime::data::custom_ui::CustomUI::Wrap {
+                        children: ans.children.cst_decode(),
+                        spacing: ans.spacing.cst_decode(),
+                        run_spacing: ans.run_spacing.cst_decode(),
+                        alignment: ans.alignment.cst_decode(),
+                    }
+                }
+                21 => {
+                    let ans = unsafe { self.kind.Center };
+                    dion_runtime::data::custom_ui::CustomUI::Center {
+                        child: ans.child.cst_decode(),
+                    }
+                }
+                22 => {
+                    let ans = unsafe { self.kind.Align };
+                    dion_runtime::data::custom_ui::CustomUI::Align {
+                        alignment: ans.alignment.cst_decode(),
+                        child: ans.child.cst_decode(),
+                    }
+                }
+                23 => {
+                    let ans = unsafe { self.kind.Stack };
+                    dion_runtime::data::custom_ui::CustomUI::Stack {
+                        children: ans.children.cst_decode(),
+                        alignment: ans.alignment.cst_decode(),
+                        fit: ans.fit.cst_decode(),
+                    }
+                }
+                24 => dion_runtime::data::custom_ui::CustomUI::Divider,
+                25 => {
+                    let ans = unsafe { self.kind.ListTile };
+                    dion_runtime::data::custom_ui::CustomUI::ListTile {
+                        leading: ans.leading.cst_decode(),
+                        title: ans.title.cst_decode(),
+                        subtitle: ans.subtitle.cst_decode(),
+                        trailing: ans.trailing.cst_decode(),
+                        on_click: ans.on_click.cst_decode(),
+                        on_long_click: ans.on_long_click.cst_decode(),
+                    }
+                }
+                26 => {
+                    let ans = unsafe { self.kind.Badge };
+                    dion_runtime::data::custom_ui::CustomUI::Badge {
+                        child: ans.child.cst_decode(),
+                        color: ans.color.cst_decode(),
+                    }
+                }
+                27 => {
+                    let ans = unsafe { self.kind.FoldableText };
+                    dion_runtime::data::custom_ui::CustomUI::FoldableText {
+                        text: ans.text.cst_decode(),
+                        max_lines: ans.max_lines.cst_decode(),
+                        style: ans.style.cst_decode(),
+                        animate: ans.animate.cst_decode(),
+                    }
+                }
+                28 => {
+                    let ans = unsafe { self.kind.StarDisplay };
+                    dion_runtime::data::custom_ui::CustomUI::StarDisplay {
+                        fill: ans.fill.cst_decode(),
+                        max_stars: ans.max_stars.cst_decode(),
+                    }
+                }
+                29 => {
+                    let ans = unsafe { self.kind.Dropdown };
+                    dion_runtime::data::custom_ui::CustomUI::Dropdown {
+                        items: ans.items.cst_decode(),
+                        initial_value: ans.initial_value.cst_decode(),
+                        on_change: ans.on_change.cst_decode(),
+                    }
+                }
                 _ => unreachable!(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::DropdownItem> for wire_cst_dropdown_item {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::DropdownItem {
+            dion_runtime::data::custom_ui::DropdownItem {
+                value: self.value.cst_decode(),
+                label: self.label.cst_decode(),
             }
         }
     }
@@ -9565,6 +11855,17 @@ mod io {
             dion_runtime::data::settings::DropdownOption {
                 label: self.label.cst_decode(),
                 value: self.value.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::custom_ui::EdgeInsets> for wire_cst_edge_insets {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::custom_ui::EdgeInsets {
+            dion_runtime::data::custom_ui::EdgeInsets {
+                left: self.left.cst_decode(),
+                top: self.top.cst_decode(),
+                right: self.right.cst_decode(),
+                bottom: self.bottom.cst_decode(),
             }
         }
     }
@@ -9868,6 +12169,18 @@ mod io {
     impl CstDecode<Vec<dion_runtime::data::custom_ui::CustomUI>> for *mut wire_cst_list_custom_ui {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::custom_ui::CustomUI> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<dion_runtime::data::custom_ui::DropdownItem>>
+        for *mut wire_cst_list_dropdown_item
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::custom_ui::DropdownItem> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -10545,6 +12858,19 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_dropdown_item {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                value: core::ptr::null_mut(),
+                label: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_dropdown_item {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_dropdown_option {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -10554,6 +12880,21 @@ mod io {
         }
     }
     impl Default for wire_cst_dropdown_option {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_edge_insets {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                left: core::ptr::null_mut(),
+                top: core::ptr::null_mut(),
+                right: core::ptr::null_mut(),
+                bottom: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_edge_insets {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -11625,6 +13966,48 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__alignment_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__alignment_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__button_type_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__button_type_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__color_token_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__color_token_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__container_type_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__container_type_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__cross_axis_alignment_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__cross_axis_alignment_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__edge_insets_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__edge_insets_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__entry_list_default(
         port_: i64,
     ) {
@@ -11665,6 +14048,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__main_axis_alignment_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__main_axis_alignment_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__main_axis_size_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__main_axis_size_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__media_type_default(
         port_: i64,
     ) {
@@ -11700,6 +14097,13 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__stack_fit_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__stack_fit_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__text_style_default(
         port_: i64,
     ) {
@@ -11718,6 +14122,13 @@ mod io {
         port_: i64,
     ) {
         wire__dion_runtime__data__action__toast_kind_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__custom_ui__wrap_alignment_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__custom_ui__wrap_alignment_default_impl(port_)
     }
 
     #[unsafe(no_mangle)]
@@ -11828,6 +14239,11 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_alignment(value: i32) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_auth_creds(
     ) -> *mut wire_cst_auth_creds {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
@@ -11841,9 +14257,41 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_button_type(value: i32) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_color_token(value: i32) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_container_type(
+        value: i32,
+    ) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_cross_axis_alignment(
+        value: i32,
+    ) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_custom_ui() -> *mut wire_cst_custom_ui
     {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(wire_cst_custom_ui::new_with_null_ptr())
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_edge_insets(
+    ) -> *mut wire_cst_edge_insets {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(
+            wire_cst_edge_insets::new_with_null_ptr(),
+        )
     }
 
     #[unsafe(no_mangle)]
@@ -11875,6 +14323,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_main_axis_alignment(
+        value: i32,
+    ) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_main_axis_size(
+        value: i32,
+    ) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_setting_value(
     ) -> *mut wire_cst_setting_value {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
@@ -11891,6 +14353,11 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_stack_fit(value: i32) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_text_style(
     ) -> *mut wire_cst_text_style {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(
@@ -11900,6 +14367,13 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_u_32(value: u32) -> *mut u32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_wrap_alignment(
+        value: i32,
+    ) -> *mut i32 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
@@ -11950,6 +14424,20 @@ mod io {
         let wrap = wire_cst_list_custom_ui {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
                 <wire_cst_custom_ui>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_dropdown_item(
+        len: i32,
+    ) -> *mut wire_cst_list_dropdown_item {
+        let wrap = wire_cst_list_dropdown_item {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_dropdown_item>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -12391,12 +14879,28 @@ mod io {
         Column: wire_cst_CustomUI_Column,
         Row: wire_cst_CustomUI_Row,
         TextInput: wire_cst_CustomUI_TextInput,
+        Padding: wire_cst_CustomUI_Padding,
+        Container: wire_cst_CustomUI_Container,
+        Clickable: wire_cst_CustomUI_Clickable,
+        Expanded: wire_cst_CustomUI_Expanded,
+        SizedBox: wire_cst_CustomUI_SizedBox,
+        Spacer: wire_cst_CustomUI_Spacer,
+        Wrap: wire_cst_CustomUI_Wrap,
+        Center: wire_cst_CustomUI_Center,
+        Align: wire_cst_CustomUI_Align,
+        Stack: wire_cst_CustomUI_Stack,
+        ListTile: wire_cst_CustomUI_ListTile,
+        Badge: wire_cst_CustomUI_Badge,
+        FoldableText: wire_cst_CustomUI_FoldableText,
+        StarDisplay: wire_cst_CustomUI_StarDisplay,
+        Dropdown: wire_cst_CustomUI_Dropdown,
         nil__: (),
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Text {
         text: *mut wire_cst_list_prim_u_8_strict,
+        style: *mut wire_cst_text_style,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12428,6 +14932,7 @@ mod io {
         image: *mut wire_cst_link,
         top: *mut wire_cst_custom_ui,
         bottom: *mut wire_cst_custom_ui,
+        on_click: *mut wire_cst_interaction,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12440,6 +14945,8 @@ mod io {
     pub struct wire_cst_CustomUI_Button {
         label: *mut wire_cst_list_prim_u_8_strict,
         on_click: *mut wire_cst_interaction,
+        button_type: *mut i32,
+        color: *mut i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12460,11 +14967,19 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Column {
         children: *mut wire_cst_list_custom_ui,
+        main_axis_alignment: *mut i32,
+        cross_axis_alignment: *mut i32,
+        main_axis_size: *mut i32,
+        scrollable: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Row {
         children: *mut wire_cst_list_custom_ui,
+        main_axis_alignment: *mut i32,
+        cross_axis_alignment: *mut i32,
+        main_axis_size: *mut i32,
+        scrollable: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12476,9 +14991,130 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Padding {
+        padding: *mut wire_cst_edge_insets,
+        child: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Container {
+        child: *mut wire_cst_custom_ui,
+        container_type: *mut i32,
+        color: *mut i32,
+        border_color: *mut i32,
+        padding: *mut wire_cst_edge_insets,
+        width: *mut f32,
+        height: *mut f32,
+        alignment: *mut i32,
+        emphasized: *mut bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Clickable {
+        child: *mut wire_cst_custom_ui,
+        on_click: *mut wire_cst_interaction,
+        on_long_click: *mut wire_cst_interaction,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Expanded {
+        child: *mut wire_cst_custom_ui,
+        flex: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_SizedBox {
+        width: *mut f32,
+        height: *mut f32,
+        child: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Spacer {
+        flex: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Wrap {
+        children: *mut wire_cst_list_custom_ui,
+        spacing: *mut f32,
+        run_spacing: *mut f32,
+        alignment: *mut i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Center {
+        child: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Align {
+        alignment: i32,
+        child: *mut wire_cst_custom_ui,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Stack {
+        children: *mut wire_cst_list_custom_ui,
+        alignment: *mut i32,
+        fit: *mut i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_ListTile {
+        leading: *mut wire_cst_custom_ui,
+        title: *mut wire_cst_custom_ui,
+        subtitle: *mut wire_cst_custom_ui,
+        trailing: *mut wire_cst_custom_ui,
+        on_click: *mut wire_cst_interaction,
+        on_long_click: *mut wire_cst_interaction,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Badge {
+        child: *mut wire_cst_custom_ui,
+        color: *mut i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_FoldableText {
+        text: *mut wire_cst_list_prim_u_8_strict,
+        max_lines: i32,
+        style: *mut wire_cst_text_style,
+        animate: bool,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_StarDisplay {
+        fill: f32,
+        max_stars: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_CustomUI_Dropdown {
+        items: *mut wire_cst_list_dropdown_item,
+        initial_value: *mut wire_cst_list_prim_u_8_strict,
+        on_change: *mut wire_cst_interaction,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_dropdown_item {
+        value: *mut wire_cst_list_prim_u_8_strict,
+        label: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_dropdown_option {
         label: *mut wire_cst_list_prim_u_8_strict,
         value: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_edge_insets {
+        left: *mut f32,
+        top: *mut f32,
+        right: *mut f32,
+        bottom: *mut f32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -12751,6 +15387,12 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_custom_ui {
         ptr: *mut wire_cst_custom_ui,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_dropdown_item {
+        ptr: *mut wire_cst_dropdown_item,
         len: i32,
     }
     #[repr(C)]

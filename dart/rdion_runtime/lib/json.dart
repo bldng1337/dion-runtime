@@ -341,9 +341,245 @@ extension JsonSubscription on Subscription {
       );
 }
 
+extension JsonTextStyle on TextStyle {
+  dynamic toJson() => {
+        if (bold != null) "bold": bold,
+        if (italic != null) "italic": italic,
+        if (underline != null) "underline": underline,
+        if (strikethrough != null) "strikethrough": strikethrough,
+        if (code != null) "code": code,
+        if (link != null) "link": link,
+        if (fontSize != null) "font_size": fontSize,
+      };
+
+  static TextStyle fromJson(dynamic value) => TextStyle(
+        bold: value["bold"],
+        italic: value["italic"],
+        underline: value["underline"],
+        strikethrough: value["strikethrough"],
+        code: value["code"],
+        link: value["link"],
+        fontSize: value["font_size"],
+      );
+}
+
+extension JsonEdgeInsets on EdgeInsets {
+  dynamic toJson() => {
+        if (left != null) "left": left,
+        if (top != null) "top": top,
+        if (right != null) "right": right,
+        if (bottom != null) "bottom": bottom,
+      };
+
+  static EdgeInsets fromJson(dynamic value) => EdgeInsets(
+        left: (value["left"] as num?)?.toDouble(),
+        top: (value["top"] as num?)?.toDouble(),
+        right: (value["right"] as num?)?.toDouble(),
+        bottom: (value["bottom"] as num?)?.toDouble(),
+      );
+}
+
+extension JsonColorToken on ColorToken {
+  dynamic toJson() => switch (this) {
+        ColorToken.primary => "Primary",
+        ColorToken.onPrimary => "OnPrimary",
+        ColorToken.primaryContainer => "PrimaryContainer",
+        ColorToken.onPrimaryContainer => "OnPrimaryContainer",
+        ColorToken.secondary => "Secondary",
+        ColorToken.onSecondary => "OnSecondary",
+        ColorToken.surface => "Surface",
+        ColorToken.onSurface => "OnSurface",
+        ColorToken.surfaceContainer => "SurfaceContainer",
+        ColorToken.surfaceContainerHighest => "SurfaceContainerHighest",
+        ColorToken.error => "Error",
+        ColorToken.onError => "OnError",
+        ColorToken.disabled => "Disabled",
+        ColorToken.shadow => "Shadow",
+      };
+
+  static ColorToken fromJson(dynamic value) => switch (value.toString()) {
+        "Primary" => ColorToken.primary,
+        "OnPrimary" => ColorToken.onPrimary,
+        "PrimaryContainer" => ColorToken.primaryContainer,
+        "OnPrimaryContainer" => ColorToken.onPrimaryContainer,
+        "Secondary" => ColorToken.secondary,
+        "OnSecondary" => ColorToken.onSecondary,
+        "Surface" => ColorToken.surface,
+        "OnSurface" => ColorToken.onSurface,
+        "SurfaceContainer" => ColorToken.surfaceContainer,
+        "SurfaceContainerHighest" => ColorToken.surfaceContainerHighest,
+        "Error" => ColorToken.error,
+        "OnError" => ColorToken.onError,
+        "Disabled" => ColorToken.disabled,
+        "Shadow" => ColorToken.shadow,
+        _ => ColorToken.primary,
+      };
+}
+
+extension JsonContainerType on ContainerType {
+  dynamic toJson() => switch (this) {
+        ContainerType.ghost => "Ghost",
+        ContainerType.filled => "Filled",
+        ContainerType.outlined => "Outlined",
+      };
+
+  static ContainerType fromJson(dynamic value) => switch (value.toString()) {
+        "Ghost" => ContainerType.ghost,
+        "Filled" => ContainerType.filled,
+        "Outlined" => ContainerType.outlined,
+        _ => ContainerType.ghost,
+      };
+}
+
+extension JsonButtonType on ButtonType {
+  dynamic toJson() => switch (this) {
+        ButtonType.filled => "Filled",
+        ButtonType.ghost => "Ghost",
+        ButtonType.elevated => "Elevated",
+      };
+
+  static ButtonType fromJson(dynamic value) => switch (value.toString()) {
+        "Filled" => ButtonType.filled,
+        "Ghost" => ButtonType.ghost,
+        "Elevated" => ButtonType.elevated,
+        _ => ButtonType.filled,
+      };
+}
+
+extension JsonMainAxisAlignment on MainAxisAlignment {
+  dynamic toJson() => switch (this) {
+        MainAxisAlignment.start => "Start",
+        MainAxisAlignment.center => "Center",
+        MainAxisAlignment.end => "End",
+        MainAxisAlignment.spaceBetween => "SpaceBetween",
+        MainAxisAlignment.spaceAround => "SpaceAround",
+        MainAxisAlignment.spaceEvenly => "SpaceEvenly",
+      };
+
+  static MainAxisAlignment fromJson(dynamic value) =>
+      switch (value.toString()) {
+        "Start" => MainAxisAlignment.start,
+        "Center" => MainAxisAlignment.center,
+        "End" => MainAxisAlignment.end,
+        "SpaceBetween" => MainAxisAlignment.spaceBetween,
+        "SpaceAround" => MainAxisAlignment.spaceAround,
+        "SpaceEvenly" => MainAxisAlignment.spaceEvenly,
+        _ => MainAxisAlignment.start,
+      };
+}
+
+extension JsonCrossAxisAlignment on CrossAxisAlignment {
+  dynamic toJson() => switch (this) {
+        CrossAxisAlignment.start => "Start",
+        CrossAxisAlignment.center => "Center",
+        CrossAxisAlignment.end => "End",
+        CrossAxisAlignment.stretch => "Stretch",
+        CrossAxisAlignment.baseline => "Baseline",
+      };
+
+  static CrossAxisAlignment fromJson(dynamic value) =>
+      switch (value.toString()) {
+        "Start" => CrossAxisAlignment.start,
+        "Center" => CrossAxisAlignment.center,
+        "End" => CrossAxisAlignment.end,
+        "Stretch" => CrossAxisAlignment.stretch,
+        "Baseline" => CrossAxisAlignment.baseline,
+        _ => CrossAxisAlignment.start,
+      };
+}
+
+extension JsonMainAxisSize on MainAxisSize {
+  dynamic toJson() => switch (this) {
+        MainAxisSize.min => "Min",
+        MainAxisSize.max => "Max",
+      };
+
+  static MainAxisSize fromJson(dynamic value) => switch (value.toString()) {
+        "Min" => MainAxisSize.min,
+        "Max" => MainAxisSize.max,
+        _ => MainAxisSize.min,
+      };
+}
+
+extension JsonWrapAlignment on WrapAlignment {
+  dynamic toJson() => switch (this) {
+        WrapAlignment.start => "Start",
+        WrapAlignment.center => "Center",
+        WrapAlignment.end => "End",
+        WrapAlignment.spaceBetween => "SpaceBetween",
+        WrapAlignment.spaceAround => "SpaceAround",
+        WrapAlignment.spaceEvenly => "SpaceEvenly",
+      };
+
+  static WrapAlignment fromJson(dynamic value) => switch (value.toString()) {
+        "Start" => WrapAlignment.start,
+        "Center" => WrapAlignment.center,
+        "End" => WrapAlignment.end,
+        "SpaceBetween" => WrapAlignment.spaceBetween,
+        "SpaceAround" => WrapAlignment.spaceAround,
+        "SpaceEvenly" => WrapAlignment.spaceEvenly,
+        _ => WrapAlignment.start,
+      };
+}
+
+extension JsonStackFit on StackFit {
+  dynamic toJson() => switch (this) {
+        StackFit.loose => "Loose",
+        StackFit.expand => "Expand",
+        StackFit.passthrough => "Passthrough",
+      };
+
+  static StackFit fromJson(dynamic value) => switch (value.toString()) {
+        "Loose" => StackFit.loose,
+        "Expand" => StackFit.expand,
+        "Passthrough" => StackFit.passthrough,
+        _ => StackFit.loose,
+      };
+}
+
+extension JsonAlignment on Alignment {
+  dynamic toJson() => switch (this) {
+        Alignment.center => "Center",
+        Alignment.topLeft => "TopLeft",
+        Alignment.topCenter => "TopCenter",
+        Alignment.topRight => "TopRight",
+        Alignment.centerLeft => "CenterLeft",
+        Alignment.centerRight => "CenterRight",
+        Alignment.bottomLeft => "BottomLeft",
+        Alignment.bottomCenter => "BottomCenter",
+        Alignment.bottomRight => "BottomRight",
+      };
+
+  static Alignment fromJson(dynamic value) => switch (value.toString()) {
+        "Center" => Alignment.center,
+        "TopLeft" => Alignment.topLeft,
+        "TopCenter" => Alignment.topCenter,
+        "TopRight" => Alignment.topRight,
+        "CenterLeft" => Alignment.centerLeft,
+        "CenterRight" => Alignment.centerRight,
+        "BottomLeft" => Alignment.bottomLeft,
+        "BottomCenter" => Alignment.bottomCenter,
+        "BottomRight" => Alignment.bottomRight,
+        _ => Alignment.center,
+      };
+}
+
+extension JsonDropdownItem on DropdownItem {
+  dynamic toJson() => {"value": value, "label": label};
+
+  static DropdownItem fromJson(dynamic value) => DropdownItem(
+        value: value["value"],
+        label: value["label"],
+      );
+}
+
 extension JsonCustomUI on CustomUI {
   dynamic toJson() => switch (this) {
-        CustomUI_Text(:final text) => {"type": "Text", "text": text},
+        CustomUI_Text(:final text, :final style) => {
+            "type": "Text",
+            "text": text,
+            if (style != null) "style": style.toJson(),
+          },
         CustomUI_Image(:final image, :final width, :final height) => {
             "type": "Image",
             "image": image.toJson(),
@@ -364,11 +600,18 @@ extension JsonCustomUI on CustomUI {
             "type": "EntryCard",
             "entry": entry.toJson(),
           },
-        CustomUI_Card(:final image, :final top, :final bottom) => {
+        CustomUI_Card(
+          :final image,
+          :final top,
+          :final bottom,
+          :final onClick
+        ) =>
+          {
             "type": "Card",
             "image": image.toJson(),
             "top": top.toJson(),
             "bottom": bottom.toJson(),
+            if (onClick != null) "on_click": onClick.toJson(),
           },
         CustomUI_Spinner() => {"type": "Spinner"},
         CustomUI_Feed(:final handler, :final data) => {
@@ -376,10 +619,18 @@ extension JsonCustomUI on CustomUI {
             "handler": handler,
             "data": data,
           },
-        CustomUI_Button(:final label, :final onClick) => {
+        CustomUI_Button(
+          :final label,
+          :final onClick,
+          :final buttonType,
+          :final color,
+        ) =>
+          {
             "type": "Button",
             "label": label,
             if (onClick != null) "on_click": onClick.toJson(),
+            if (buttonType != null) "button_type": buttonType.toJson(),
+            if (color != null) "color": color.toJson(),
           },
         CustomUI_InlineSetting(
           :final settingId,
@@ -405,13 +656,39 @@ extension JsonCustomUI on CustomUI {
             "static_data": staticData,
             "subscriptions": subscriptions.map((e) => e.toJson()).toList(),
           },
-        CustomUI_Column(:final children) => {
+        CustomUI_Column(
+          :final children,
+          :final mainAxisAlignment,
+          :final crossAxisAlignment,
+          :final mainAxisSize,
+          :final scrollable,
+        ) =>
+          {
             "type": "Column",
             "children": children.map((e) => e.toJson()).toList(),
+            if (mainAxisAlignment != null)
+              "main_axis_alignment": mainAxisAlignment.toJson(),
+            if (crossAxisAlignment != null)
+              "cross_axis_alignment": crossAxisAlignment.toJson(),
+            if (mainAxisSize != null) "main_axis_size": mainAxisSize.toJson(),
+            "scrollable": scrollable,
           },
-        CustomUI_Row(:final children) => {
+        CustomUI_Row(
+          :final children,
+          :final mainAxisAlignment,
+          :final crossAxisAlignment,
+          :final mainAxisSize,
+          :final scrollable,
+        ) =>
+          {
             "type": "Row",
             "children": children.map((e) => e.toJson()).toList(),
+            if (mainAxisAlignment != null)
+              "main_axis_alignment": mainAxisAlignment.toJson(),
+            if (crossAxisAlignment != null)
+              "cross_axis_alignment": crossAxisAlignment.toJson(),
+            if (mainAxisSize != null) "main_axis_size": mainAxisSize.toJson(),
+            "scrollable": scrollable,
           },
         CustomUI_TextInput(
           :final onChange,
@@ -426,13 +703,152 @@ extension JsonCustomUI on CustomUI {
             if (initial != null) "initial": initial,
             if (onCommit != null) "on_commit": onCommit.toJson(),
           },
+        // --- Layout primitives ---
+        CustomUI_Padding(:final padding, :final child) => {
+            "type": "Padding",
+            "padding": padding.toJson(),
+            "child": child.toJson(),
+          },
+        CustomUI_Container(
+          :final child,
+          :final containerType,
+          :final color,
+          :final borderColor,
+          :final padding,
+          :final width,
+          :final height,
+          :final alignment,
+          :final emphasized,
+        ) =>
+          {
+            "type": "Container",
+            "child": child.toJson(),
+            if (containerType != null) "container_type": containerType.toJson(),
+            if (color != null) "color": color.toJson(),
+            if (borderColor != null) "border_color": borderColor.toJson(),
+            if (padding != null) "padding": padding.toJson(),
+            if (width != null) "width": width,
+            if (height != null) "height": height,
+            if (alignment != null) "alignment": alignment.toJson(),
+            if (emphasized != null) "emphasized": emphasized,
+          },
+        CustomUI_Clickable(
+          :final child,
+          :final onClick,
+          :final onLongClick,
+        ) =>
+          {
+            "type": "Clickable",
+            "child": child.toJson(),
+            if (onClick != null) "on_click": onClick.toJson(),
+            if (onLongClick != null) "on_long_click": onLongClick.toJson(),
+          },
+        CustomUI_Expanded(:final child, :final flex) => {
+            "type": "Expanded",
+            "child": child.toJson(),
+            "flex": flex,
+          },
+        CustomUI_SizedBox(:final width, :final height, :final child) => {
+            "type": "SizedBox",
+            if (width != null) "width": width,
+            if (height != null) "height": height,
+            if (child != null) "child": child.toJson(),
+          },
+        CustomUI_Spacer(:final flex) => {"type": "Spacer", "flex": flex},
+        CustomUI_Wrap(
+          :final children,
+          :final spacing,
+          :final runSpacing,
+          :final alignment,
+        ) =>
+          {
+            "type": "Wrap",
+            "children": children.map((e) => e.toJson()).toList(),
+            if (spacing != null) "spacing": spacing,
+            if (runSpacing != null) "run_spacing": runSpacing,
+            if (alignment != null) "alignment": alignment.toJson(),
+          },
+        CustomUI_Center(:final child) => {
+            "type": "Center",
+            "child": child.toJson(),
+          },
+        CustomUI_Align(:final alignment, :final child) => {
+            "type": "Align",
+            "alignment": alignment.toJson(),
+            "child": child.toJson(),
+          },
+        CustomUI_Stack(:final children, :final alignment, :final fit) => {
+            "type": "Stack",
+            "children": children.map((e) => e.toJson()).toList(),
+            if (alignment != null) "alignment": alignment.toJson(),
+            if (fit != null) "fit": fit.toJson(),
+          },
+        CustomUI_Divider() => {"type": "Divider"},
+        // --- Dion-themed container widgets ---
+        CustomUI_ListTile(
+          :final leading,
+          :final title,
+          :final subtitle,
+          :final trailing,
+          :final onClick,
+          :final onLongClick,
+        ) =>
+          {
+            "type": "ListTile",
+            if (leading != null) "leading": leading.toJson(),
+            if (title != null) "title": title.toJson(),
+            if (subtitle != null) "subtitle": subtitle.toJson(),
+            if (trailing != null) "trailing": trailing.toJson(),
+            if (onClick != null) "on_click": onClick.toJson(),
+            if (onLongClick != null) "on_long_click": onLongClick.toJson(),
+          },
+        CustomUI_Badge(:final child, :final color) => {
+            "type": "Badge",
+            "child": child.toJson(),
+            if (color != null) "color": color.toJson(),
+          },
+        // --- Display primitives ---
+        CustomUI_FoldableText(
+          :final text,
+          :final maxLines,
+          :final style,
+          :final animate,
+        ) =>
+          {
+            "type": "FoldableText",
+            "text": text,
+            "max_lines": maxLines,
+            if (style != null) "style": style.toJson(),
+            "animate": animate,
+          },
+        CustomUI_StarDisplay(:final fill, :final maxStars) => {
+            "type": "StarDisplay",
+            "fill": fill,
+            "max_stars": maxStars,
+          },
+        CustomUI_Dropdown(
+          :final items,
+          :final initialValue,
+          :final onChange,
+        ) =>
+          {
+            "type": "Dropdown",
+            "items": items.map((e) => e.toJson()).toList(),
+            if (initialValue != null) "initial_value": initialValue,
+            if (onChange != null) "on_change": onChange.toJson(),
+          },
       };
 
   static CustomUI fromJson(dynamic value) {
     final type = value["type"] as String;
     switch (type) {
       case "Text":
-        return CustomUI.text(text: value["text"]);
+        return CustomUI.text(
+          text: value["text"],
+          style: value["style"] != null
+              ? JsonTextStyle.fromJson(value["style"])
+              : null,
+        );
       case "Image":
         return CustomUI.image(
           image: JsonLink.fromJson(value["image"]),
@@ -453,6 +869,9 @@ extension JsonCustomUI on CustomUI {
           image: JsonLink.fromJson(value["image"]),
           top: JsonCustomUI.fromJson(value["top"]),
           bottom: JsonCustomUI.fromJson(value["bottom"]),
+          onClick: value["on_click"] != null
+              ? JsonInteraction.fromJson(value["on_click"])
+              : null,
         );
       case "Spinner":
         return const CustomUI.spinner();
@@ -463,6 +882,12 @@ extension JsonCustomUI on CustomUI {
           label: value["label"],
           onClick: value["on_click"] != null
               ? JsonInteraction.fromJson(value["on_click"])
+              : null,
+          buttonType: value["button_type"] != null
+              ? JsonButtonType.fromJson(value["button_type"])
+              : null,
+          color: value["color"] != null
+              ? JsonColorToken.fromJson(value["color"])
               : null,
         );
       case "InlineSetting":
@@ -487,12 +912,32 @@ extension JsonCustomUI on CustomUI {
           children: (value["children"] as List)
               .map((e) => JsonCustomUI.fromJson(e))
               .toList(),
+          mainAxisAlignment: value["main_axis_alignment"] != null
+              ? JsonMainAxisAlignment.fromJson(value["main_axis_alignment"])
+              : null,
+          crossAxisAlignment: value["cross_axis_alignment"] != null
+              ? JsonCrossAxisAlignment.fromJson(value["cross_axis_alignment"])
+              : null,
+          mainAxisSize: value["main_axis_size"] != null
+              ? JsonMainAxisSize.fromJson(value["main_axis_size"])
+              : null,
+          scrollable: value["scrollable"] ?? true,
         );
       case "Row":
         return CustomUI.row(
           children: (value["children"] as List)
               .map((e) => JsonCustomUI.fromJson(e))
               .toList(),
+          mainAxisAlignment: value["main_axis_alignment"] != null
+              ? JsonMainAxisAlignment.fromJson(value["main_axis_alignment"])
+              : null,
+          crossAxisAlignment: value["cross_axis_alignment"] != null
+              ? JsonCrossAxisAlignment.fromJson(value["cross_axis_alignment"])
+              : null,
+          mainAxisSize: value["main_axis_size"] != null
+              ? JsonMainAxisSize.fromJson(value["main_axis_size"])
+              : null,
+          scrollable: value["scrollable"] ?? true,
         );
       case "TextInput":
         return CustomUI.textInput(
@@ -503,6 +948,144 @@ extension JsonCustomUI on CustomUI {
           initial: value["initial"],
           onCommit: value["on_commit"] != null
               ? JsonInteraction.fromJson(value["on_commit"])
+              : null,
+        );
+      // --- Layout primitives ---
+      case "Padding":
+        return CustomUI.padding(
+          padding: JsonEdgeInsets.fromJson(value["padding"]),
+          child: JsonCustomUI.fromJson(value["child"]),
+        );
+      case "Container":
+        return CustomUI.container(
+          child: JsonCustomUI.fromJson(value["child"]),
+          containerType: value["container_type"] != null
+              ? JsonContainerType.fromJson(value["container_type"])
+              : null,
+          color: value["color"] != null
+              ? JsonColorToken.fromJson(value["color"])
+              : null,
+          borderColor: value["border_color"] != null
+              ? JsonColorToken.fromJson(value["border_color"])
+              : null,
+          padding: value["padding"] != null
+              ? JsonEdgeInsets.fromJson(value["padding"])
+              : null,
+          width: (value["width"] as num?)?.toDouble(),
+          height: (value["height"] as num?)?.toDouble(),
+          alignment: value["alignment"] != null
+              ? JsonAlignment.fromJson(value["alignment"])
+              : null,
+          emphasized: value["emphasized"],
+        );
+      case "Clickable":
+        return CustomUI.clickable(
+          child: JsonCustomUI.fromJson(value["child"]),
+          onClick: value["on_click"] != null
+              ? JsonInteraction.fromJson(value["on_click"])
+              : null,
+          onLongClick: value["on_long_click"] != null
+              ? JsonInteraction.fromJson(value["on_long_click"])
+              : null,
+        );
+      case "Expanded":
+        return CustomUI.expanded(
+          child: JsonCustomUI.fromJson(value["child"]),
+          flex: value["flex"] ?? 1,
+        );
+      case "SizedBox":
+        return CustomUI.sizedBox(
+          width: (value["width"] as num?)?.toDouble(),
+          height: (value["height"] as num?)?.toDouble(),
+          child: value["child"] != null
+              ? JsonCustomUI.fromJson(value["child"])
+              : null,
+        );
+      case "Spacer":
+        return CustomUI.spacer(flex: value["flex"] ?? 1);
+      case "Wrap":
+        return CustomUI.wrap(
+          children: (value["children"] as List)
+              .map((e) => JsonCustomUI.fromJson(e))
+              .toList(),
+          spacing: (value["spacing"] as num?)?.toDouble(),
+          runSpacing: (value["run_spacing"] as num?)?.toDouble(),
+          alignment: value["alignment"] != null
+              ? JsonWrapAlignment.fromJson(value["alignment"])
+              : null,
+        );
+      case "Center":
+        return CustomUI.center(child: JsonCustomUI.fromJson(value["child"]));
+      case "Align":
+        return CustomUI.align(
+          alignment: JsonAlignment.fromJson(value["alignment"]),
+          child: JsonCustomUI.fromJson(value["child"]),
+        );
+      case "Stack":
+        return CustomUI.stack(
+          children: (value["children"] as List)
+              .map((e) => JsonCustomUI.fromJson(e))
+              .toList(),
+          alignment: value["alignment"] != null
+              ? JsonAlignment.fromJson(value["alignment"])
+              : null,
+          fit:
+              value["fit"] != null ? JsonStackFit.fromJson(value["fit"]) : null,
+        );
+      case "Divider":
+        return const CustomUI.divider();
+      // --- Dion-themed container widgets ---
+      case "ListTile":
+        return CustomUI.listTile(
+          leading: value["leading"] != null
+              ? JsonCustomUI.fromJson(value["leading"])
+              : null,
+          title: value["title"] != null
+              ? JsonCustomUI.fromJson(value["title"])
+              : null,
+          subtitle: value["subtitle"] != null
+              ? JsonCustomUI.fromJson(value["subtitle"])
+              : null,
+          trailing: value["trailing"] != null
+              ? JsonCustomUI.fromJson(value["trailing"])
+              : null,
+          onClick: value["on_click"] != null
+              ? JsonInteraction.fromJson(value["on_click"])
+              : null,
+          onLongClick: value["on_long_click"] != null
+              ? JsonInteraction.fromJson(value["on_long_click"])
+              : null,
+        );
+      case "Badge":
+        return CustomUI.badge(
+          child: JsonCustomUI.fromJson(value["child"]),
+          color: value["color"] != null
+              ? JsonColorToken.fromJson(value["color"])
+              : null,
+        );
+      // --- Display primitives ---
+      case "FoldableText":
+        return CustomUI.foldableText(
+          text: value["text"],
+          maxLines: value["max_lines"] ?? 3,
+          style: value["style"] != null
+              ? JsonTextStyle.fromJson(value["style"])
+              : null,
+          animate: value["animate"] ?? true,
+        );
+      case "StarDisplay":
+        return CustomUI.starDisplay(
+          fill: (value["fill"] as num).toDouble(),
+          maxStars: value["max_stars"] ?? 5,
+        );
+      case "Dropdown":
+        return CustomUI.dropdown(
+          items: (value["items"] as List)
+              .map((e) => JsonDropdownItem.fromJson(e))
+              .toList(),
+          initialValue: value["initial_value"],
+          onChange: value["on_change"] != null
+              ? JsonInteraction.fromJson(value["on_change"])
               : null,
         );
       default:
