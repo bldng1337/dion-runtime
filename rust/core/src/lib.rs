@@ -33,7 +33,7 @@ mod test {
         },
     };
 
-    use anyhow::{bail, Result};
+    use anyhow::Result;
     use tokio::sync::RwLock;
     use tokio_util::sync::CancellationToken;
 
@@ -264,7 +264,7 @@ mod test {
     #[async_trait::async_trait()]
     impl ExtensionClient for TestClientExtensionData {
         async fn load_data(&self, key: &str) -> Result<String> {
-            bail!("No loading implemented")
+            Ok(String::new())
         }
 
         async fn store_data(&self, key: &str, data: String) -> Result<()> {
@@ -281,7 +281,7 @@ mod test {
         }
 
         async fn load_data_secure(&self, key: &str) -> Result<String> {
-            bail!("No loading implemented")
+            Ok(String::new())
         }
 
         async fn store_data_secure(&self, key: &str, data: String) -> Result<()> {

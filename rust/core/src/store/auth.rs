@@ -17,7 +17,11 @@ impl AuthStore {
     }
 
     async fn load_data(&mut self, client: &dyn ExtensionClient) -> Result<()> {
-        self.accounts = serde_json::from_str(&client.load_data_secure("auth").await?)?;
+        let data = client.load_data_secure("auth").await?;
+        if data.trim().is_empty() {
+            return Ok(());
+        }
+        self.accounts = serde_json::from_str(&data)?;
         Ok(())
     }
 
@@ -41,14 +45,17 @@ impl AuthStore {
             .filter(|acc| acc.domain == account.domain)
             .for_each(|acc| {
                 if acc.auth != account.auth {
+                    let preserved_creds = account.creds.clone().or_else(|| acc.creds.clone());
                     *acc = account.clone();
-                } else {
-                    if account.cover.is_some() {
-                        acc.cover = account.cover.clone();
-                    }
-                    if account.user_name.is_some() {
-                        acc.user_name = account.user_name.clone();
-                    }
+                    acc.creds = preserved_creds;
+                } else if account.creds.is_some() {
+                    acc.creds = account.creds.clone();
+                }
+                if account.cover.is_some() {
+                    acc.cover = account.cover.clone();
+                }
+                if account.user_name.is_some() {
+                    acc.user_name = account.user_name.clone();
                 }
             });
     }

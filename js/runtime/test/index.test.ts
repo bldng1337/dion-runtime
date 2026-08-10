@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { afterAll, expect, test } from "bun:test";
 import { join } from "node:path";
 import type {
 	Entry,
@@ -142,4 +142,8 @@ test("DionExtensionManager", async () => {
 			{},
 		);
 	}
+});
+
+afterAll(() => {
+	server.stop();
 });

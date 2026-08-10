@@ -129,8 +129,7 @@ impl BinaryXmlParser {
             offsets.push(cursor.read_u32::<LittleEndian>()?);
         }
 
-        // Read strings
-        let strings_abs_start = chunk_start + 8 + strings_start as u64;
+        let strings_abs_start = chunk_start + strings_start as u64;
 
         for offset in offsets {
             cursor.seek(SeekFrom::Start(strings_abs_start + offset as u64))?;
@@ -148,22 +147,19 @@ impl BinaryXmlParser {
     }
 
     fn read_utf8_string(&self, cursor: &mut Cursor<&[u8]>) -> Result<String> {
-        // UTF-8 length encoding
-        let char_len = cursor.read_u8()? as usize;
-        let _char_len = if char_len > 0x7F {
-            let second = cursor.read_u8()? as usize;
-            ((char_len & 0x7F) << 8) | second
-        } else {
-            char_len
+        let decode_u8_len = |cursor: &mut Cursor<&[u8]>| -> Result<usize> {
+            let first = cursor.read_u8()? as usize;
+            Ok(if first > 0x7F {
+                let second = cursor.read_u8()? as usize;
+                ((first & 0x7F) << 8) | second
+            } else {
+                first
+            })
         };
 
-        let byte_len = cursor.read_u8()? as usize;
-        let byte_len = if byte_len > 0x7F {
-            let second = cursor.read_u8()? as usize;
-            ((byte_len & 0x7F) << 8) | second
-        } else {
-            byte_len
-        };
+        // Number of UTF-8 code points (ignored — we read by byte length below).
+        let _char_len = decode_u8_len(cursor)?;
+        let byte_len = decode_u8_len(cursor)?;
 
         let mut buf = vec![0u8; byte_len];
         cursor.read_exact(&mut buf)?;

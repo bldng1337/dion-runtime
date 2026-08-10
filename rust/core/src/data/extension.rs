@@ -49,7 +49,7 @@ pub enum SourceOpenType {
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum ExtensionType {
@@ -68,6 +68,14 @@ pub enum ExtensionType {
         url_patterns: Vec<String>,
     },
 }
+
+impl PartialEq for ExtensionType {
+    fn eq(&self, other: &Self) -> bool {
+        core::mem::discriminant(self) == core::mem::discriminant(other)
+    }
+}
+
+impl Eq for ExtensionType {}
 
 impl Hash for ExtensionType {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {

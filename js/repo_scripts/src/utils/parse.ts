@@ -8,6 +8,13 @@ import * as v from "valibot";
 export async function tryFetchGitUrl(options?: {
 	repoIndexPath?: string;
 }): Promise<string | undefined> {
+	const repo = v.parse(
+		v.omit(vs.DionRepoIndex, ["repo_index_version", "content"]),
+		await file(options?.repoIndexPath ?? `../../package.json`).json(),
+	);
+	if (repo.url !== undefined) {
+		return repo.url;
+	}
 	let command_res: string | undefined;
 	let command_error: unknown | undefined;
 	try {
@@ -15,13 +22,6 @@ export async function tryFetchGitUrl(options?: {
 		command_res = res.stdout.toString().trim();
 	} catch (error) {
 		command_error = error;
-	}
-	const repo = v.parse(
-		v.omit(vs.DionRepoIndex, ["repo_index_version", "content"]),
-		await file(options?.repoIndexPath ?? `../../package.json`).json(),
-	);
-	if (repo.url !== undefined) {
-		return repo.url;
 	}
 	if (command_error !== undefined) {
 		console.error(`Failed to get Repo URL from git config: ${command_error}`);

@@ -52,6 +52,13 @@ impl SettingValue {
                 *overwritten = *overwrite;
                 Ok(())
             }
+            (
+                SettingValue::StringList { data: overwritten },
+                SettingValue::StringList { data: overwrite },
+            ) => {
+                overwritten.clone_from(overwrite);
+                Ok(())
+            }
             (val, other) => Err(anyhow!(
                 "Wrong Settingtype {} and {}",
                 val.get_type_name(),

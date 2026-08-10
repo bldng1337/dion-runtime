@@ -13,6 +13,7 @@ export function makeFormdata(
 	seperator: string = "&",
 ) {
 	return Object.keys(data)
+		.filter((key) => data[key] !== undefined)
 		.map((key) => stringifypair(key, `${data[key]}`))
 		.filter((e) => e !== "")
 		.join(seperator);
@@ -98,7 +99,7 @@ export function parseNumberwithSuffix(
 		s = s.replaceAll("T", "");
 	}
 
-	const num = Number(s.replaceAll(",", "").replaceAll(".", ""));
+	const num = Number(s.replaceAll(",", ""));
 	if (Number.isNaN(num)) {
 		return def;
 	}

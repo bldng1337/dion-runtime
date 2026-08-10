@@ -42,8 +42,9 @@ impl Permission {
                     domains: self_domain,
                 },
                 Permission::Network { domains },
-            ) => self_domain == domains,
+            ) => domains.iter().all(|d| self_domain.contains(d)),
             (Permission::ActionPopup, Permission::ActionPopup) => true,
+            (Permission::ArbitraryNetwork, Permission::Network { .. }) => true,
             (Permission::ArbitraryNetwork, Permission::ArbitraryNetwork) => true,
             _ => false,
         }

@@ -23,9 +23,14 @@ impl SettingStore {
     }
 
     async fn load_state(&mut self, client: &dyn ExtensionClient) -> Result<()> {
-        self.extension_setting =
-            serde_json::from_str(&client.load_data("extension_settings").await?)?;
-        self.search_setting = serde_json::from_str(&client.load_data("search_settings").await?)?;
+        let extension_data = client.load_data("extension_settings").await?;
+        if !extension_data.trim().is_empty() {
+            self.extension_setting = serde_json::from_str(&extension_data)?;
+        }
+        let search_data = client.load_data("search_settings").await?;
+        if !search_data.trim().is_empty() {
+            self.search_setting = serde_json::from_str(&search_data)?;
+        }
         Ok(())
     }
 
@@ -96,7 +101,8 @@ impl SettingStore {
         }
         let map = self.get_settings_mut(kind);
         if let Some(current) = map.get(&id) {
-            let _ = definition.value.overwrite(&current.value);
+            // Try to carry the value over if the type is the same, otherwise ignore it
+            let _= definition.value.overwrite(&current.value);
         }
         map.insert(id, definition);
         Ok(())

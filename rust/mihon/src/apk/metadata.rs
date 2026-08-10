@@ -17,7 +17,11 @@ pub struct MihonExtensionMetadata {
     pub version_name: String,
 
     /// Version code (e.g., 60)
-    pub version_code: u32,
+    ///
+    /// Android `versionCode` is a signed integer in the manifest, so this is
+    /// `i32` to match the JNI/bridge DTO (`ExtensionMetadataDto.version_code`)
+    /// and avoid a `u32`/`i32` mismatch between the two code paths.
+    pub version_code: i32,
 
     /// Display label (e.g., "Tachiyomi: Bato.to")
     pub label: String,
@@ -74,7 +78,7 @@ impl MihonExtensionMetadata {
         let version_code = root
             .attributes
             .get("versionCode")
-            .map(|s| s.parse::<u32>().unwrap_or(0))
+            .map(|s| s.parse::<i32>().unwrap_or(0))
             .unwrap_or(0);
 
         let version_name = root

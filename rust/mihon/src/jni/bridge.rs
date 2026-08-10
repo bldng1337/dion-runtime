@@ -56,6 +56,55 @@ impl MihonBridge {
         }
     }
 
+    /// Call a static bridge method that returns a `String`, and extract it.
+    ///
+    /// This centralizes two things every call site previously got wrong:
+    ///
+    /// 1. **Pending-exception checks.** `JNIEnv::call_static_method` returns
+    ///    `Ok` even when a Java exception is *pending* (it only errors if the
+    ///    call fails at the JNI level). Without an explicit `exception_check`,
+    ///    an `Error`/`ExceptionInInitializerError` that escapes the Kotlin
+    ///    `try/catch` is silently swallowed and surfaces later as a confusing
+    ///    `get_string` failure. Here we detect it, describe it (to stderr for
+    ///    diagnostics), clear it so the JVM stays usable, and return the error.
+    /// 2. **Local-reference leaks.** `JObject`/`JString` do not auto-release.
+    ///    Building argument strings and reading the result accumulates local
+    ///    refs; across many extensions this can overflow the JVM local-ref
+    ///    table and abort the process. Running the call inside a fresh local
+    ///    frame reclaims every local ref it created on return.
+    fn call_static_string<F>(&self, method: &str, f: F) -> Result<String>
+    where
+        F: for<'new_local> FnOnce(
+            &mut jni::JNIEnv<'new_local>,
+            &jni::objects::JClass<'new_local>,
+        ) -> anyhow::Result<jni::objects::JObject<'new_local>>,
+    {
+        let mut env = self.jvm.attach_current_thread()?;
+
+        // Run the call in a fresh local frame. The closure resolves the bridge
+        // class *inside* the frame (so its local ref is reclaimed too) and
+        // returns the result object, which is promoted out of the frame. All
+        // other local refs created in the frame (argument strings, etc.) are
+        // freed automatically on return.
+        let result_obj = env.with_local_frame_returning_local::<_, anyhow::Error>(8, |env| {
+            let class = Self::get_bridge_class(env)
+                .context(format!("Failed to get bridge class for method {method}"))?;
+            f(env, &class)
+        })?;
+
+        // Check for a pending exception that escaped the Kotlin try/catch.
+        if env.exception_check()? {
+            env.exception_describe()?;
+            env.exception_clear()?;
+            bail!("Java exception thrown while calling bridge method {method}");
+        }
+
+        let jstring = JString::from(result_obj);
+        let rust_string: String = env.get_string(&jstring)?.into();
+        env.delete_local_ref(jstring)?;
+        Ok(rust_string)
+    }
+
     /// On Android, set the Android Context before calling initialize.
     /// This calls `AndroidMihonBridge.setContext(context)` with the Context
     /// obtained from the `GlobalRef` cache populated during `JNI_OnLoad`.
@@ -82,6 +131,15 @@ impl MihonBridge {
             &[JValue::Object(context.as_obj())],
         )
         .context("Failed to call AndroidMihonBridge.setContext()")?;
+
+        // call_static_method returns Ok even when a Java exception is pending.
+        // Check and surface it so a failing setContext isn't silently ignored
+        // before initialize() runs.
+        if env.exception_check()? {
+            env.exception_describe()?;
+            env.exception_clear()?;
+            bail!("Java exception thrown while calling setContext");
+        }
 
         log::info!("Android context set successfully");
         Ok(())
@@ -196,19 +254,13 @@ impl MihonBridge {
         query: &str,
         filters_json: &str,
     ) -> Result<MangasPageDto> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let query_str = env.new_string(query)?;
-        let filters_str = env.new_string(filters_json)?;
-
-        let query_obj: JObject = query_str.into();
-        let filters_obj: JObject = filters_str.into();
-
-        let result = env
-            .call_static_method(
-                &class,
+        let rust_string = self.call_static_string("search", |env, class| {
+            let query_str = env.new_string(query)?;
+            let filters_str = env.new_string(filters_json)?;
+            let query_obj: JObject = query_str.into();
+            let filters_obj: JObject = filters_str.into();
+            env.call_static_method(
+                class,
                 "search",
                 "(JILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
                 &[
@@ -218,10 +270,9 @@ impl MihonBridge {
                     JValue::Object(&filters_obj),
                 ],
             )
-            .context("Failed to call search")?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
+            .and_then(|r| r.l())
+            .map_err(|e| anyhow::Error::from(e).context("Failed to call search"))
+        })?;
 
         self.parse_result(&rust_string)
     }
@@ -343,19 +394,13 @@ impl MihonBridge {
         query: &str,
         filters_json: &str,
     ) -> Result<MangasPageDto> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let query_str = env.new_string(query)?;
-        let filters_str = env.new_string(filters_json)?;
-
-        let query_obj: JObject = query_str.into();
-        let filters_obj: JObject = filters_str.into();
-
-        let result = env
-            .call_static_method(
-                &class,
+        let rust_string = self.call_static_string("searchAnime", |env, class| {
+            let query_str = env.new_string(query)?;
+            let filters_str = env.new_string(filters_json)?;
+            let query_obj: JObject = query_str.into();
+            let filters_obj: JObject = filters_str.into();
+            env.call_static_method(
+                class,
                 "searchAnime",
                 "(JILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
                 &[
@@ -365,10 +410,9 @@ impl MihonBridge {
                     JValue::Object(&filters_obj),
                 ],
             )
-            .context("Failed to call searchAnime")?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
+            .and_then(|r| r.l())
+            .map_err(|e| anyhow::Error::from(e).context("Failed to call searchAnime"))
+        })?;
 
         self.parse_result(&rust_string)
     }
@@ -411,36 +455,25 @@ impl MihonBridge {
     // ========== Helper Methods ==========
 
     fn call_bridge_method_no_args(&self, method: &str, sig: &str) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let result = env
-            .call_static_method(&class, method, sig, &[])
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+        self.call_static_string(method, |env, class| {
+            env.call_static_method(class, method, sig, &[])
+                .and_then(|r| r.l())
+                .map_err(|e| {
+                    anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+                })
+        })
     }
 
     fn call_bridge_method_one_string(&self, method: &str, sig: &str, arg: &str) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let jstring = env.new_string(arg)?;
-        let obj: JObject = jstring.into();
-
-        let result = env
-            .call_static_method(&class, method, sig, &[JValue::Object(&obj)])
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+        self.call_static_string(method, |env, class| {
+            let jstring = env.new_string(arg)?;
+            let obj: JObject = jstring.into();
+            env.call_static_method(class, method, sig, &[JValue::Object(&obj)])
+                .and_then(|r| r.l())
+                .map_err(|e| {
+                    anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+                })
+        })
     }
 
     fn call_bridge_method_two_strings(
@@ -450,44 +483,32 @@ impl MihonBridge {
         arg1: &str,
         arg2: &str,
     ) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let jstring1 = env.new_string(arg1)?;
-        let jstring2 = env.new_string(arg2)?;
-
-        let obj1: JObject = jstring1.into();
-        let obj2: JObject = jstring2.into();
-
-        let result = env
-            .call_static_method(
-                &class,
+        self.call_static_string(method, |env, class| {
+            let jstring1 = env.new_string(arg1)?;
+            let jstring2 = env.new_string(arg2)?;
+            let obj1: JObject = jstring1.into();
+            let obj2: JObject = jstring2.into();
+            env.call_static_method(
+                class,
                 method,
                 sig,
                 &[JValue::Object(&obj1), JValue::Object(&obj2)],
             )
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+            .and_then(|r| r.l())
+            .map_err(|e| {
+                anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+            })
+        })
     }
 
     fn call_bridge_method_long(&self, method: &str, sig: &str, arg: i64) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let result = env
-            .call_static_method(&class, method, sig, &[JValue::Long(arg)])
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+        self.call_static_string(method, |env, class| {
+            env.call_static_method(class, method, sig, &[JValue::Long(arg)])
+                .and_then(|r| r.l())
+                .map_err(|e| {
+                    anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+                })
+        })
     }
 
     fn call_bridge_method_long_int(
@@ -497,23 +518,13 @@ impl MihonBridge {
         arg1: i64,
         arg2: i32,
     ) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let result = env
-            .call_static_method(
-                &class,
-                method,
-                sig,
-                &[JValue::Long(arg1), JValue::Int(arg2)],
-            )
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+        self.call_static_string(method, |env, class| {
+            env.call_static_method(class, method, sig, &[JValue::Long(arg1), JValue::Int(arg2)])
+                .and_then(|r| r.l())
+                .map_err(|e| {
+                    anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+                })
+        })
     }
 
     fn call_bridge_method_long_string(
@@ -523,26 +534,20 @@ impl MihonBridge {
         arg1: i64,
         arg2: &str,
     ) -> Result<String> {
-        let mut env = self.jvm.attach_current_thread()?;
-
-        let class = Self::get_bridge_class(&mut env)?;
-
-        let jstring_arg = env.new_string(arg2)?;
-        let obj: JObject = jstring_arg.into();
-
-        let result = env
-            .call_static_method(
-                &class,
+        self.call_static_string(method, |env, class| {
+            let jstring_arg = env.new_string(arg2)?;
+            let obj: JObject = jstring_arg.into();
+            env.call_static_method(
+                class,
                 method,
                 sig,
                 &[JValue::Long(arg1), JValue::Object(&obj)],
             )
-            .context(format!("Failed to call bridge method {}", method))?;
-
-        let jstring = JString::from(result.l()?);
-        let rust_string: String = env.get_string(&jstring)?.into();
-
-        Ok(rust_string)
+            .and_then(|r| r.l())
+            .map_err(|e| {
+                anyhow::Error::from(e).context(format!("Failed to call bridge method {method}"))
+            })
+        })
     }
 
     fn parse_result<T: serde::de::DeserializeOwned>(&self, json: &str) -> Result<T> {

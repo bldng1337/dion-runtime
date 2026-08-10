@@ -8,6 +8,7 @@ import type {
 	EntryId,
 	ExtensionData,
 	Link,
+	Paragraph,
 	Permission,
 	SettingValue,
 	Source,
@@ -118,10 +119,16 @@ export async function wait(ms: number): Promise<void> {
 	});
 }
 
-let lock: Promise<void> | undefined;
+let lock: Promise<void> = Promise.resolve();
 export async function ratelimit(ms: number) {
-	if (lock !== undefined) await lock;
-	lock = wait(ms);
+	const previous = lock;
+	let release!: () => void;
+	lock = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	await previous;
+	await wait(ms);
+	release();
 }
 
 const time = 50;
@@ -231,27 +238,41 @@ export async function assertValidEntry(entry: Entry | EntryDetailed) {
 		}
 	}
 	if ("ui" in entry && entry.ui !== undefined && entry.ui !== null) {
-		assertValidUI(entry.ui);
+		await assertValidUI(entry.ui);
 	}
 }
 
-function assertValidUI(ui: CustomUI) {
+async function assertValidUI(ui: CustomUI) {
 	if ("children" in ui && ui.children !== undefined && ui.children !== null) {
 		for (const child of ui.children) {
-			assertValidUI(child);
+			await assertValidUI(child);
+		}
+	}
+	if ("child" in ui && ui.child !== undefined && ui.child !== null) {
+		await assertValidUI(ui.child);
+	}
+	if (ui.type === "Card") {
+		if (ui.top !== undefined && ui.top !== null) await assertValidUI(ui.top);
+		if (ui.bottom !== undefined && ui.bottom !== null) {
+			await assertValidUI(ui.bottom);
+		}
+	}
+	if (ui.type === "ListTile") {
+		for (const slot of [ui.leading, ui.title, ui.subtitle, ui.trailing]) {
+			if (slot !== undefined && slot !== null) await assertValidUI(slot);
 		}
 	}
 	switch (ui.type) {
 		case "EntryCard":
-			assertValidEntry(ui.entry);
+			await assertValidEntry(ui.entry);
 			break;
 		case "Image":
-			assertValidImageURL(ui.image, {
+			await assertValidImageURL(ui.image, {
 				assertmsg: `CustomUI has an invalid image url ${ui.image}`,
 			});
 			break;
 		case "Link":
-			assertValidURL(
+			await assertValidURL(
 				{ url: ui.link },
 				{
 					assertmsg: `CustomUI has an invalid link ${ui.link}`,
@@ -304,6 +325,26 @@ export async function assertValidSource(source: Source) {
 				await assertValidURL(subtitle.url, {
 					assertmsg: `Source ${source.type} has an invalid ${subtitle.title} subtitle link ${subtitle.url}`,
 				});
+			}
+			break;
+		case "Paragraphlist":
+			for (const paragraph of sample(source.paragraphs, 5)) {
+				await assertValidParagraph(paragraph);
+			}
+			break;
+	}
+}
+
+async function assertValidParagraph(paragraph: Paragraph) {
+	switch (paragraph.type) {
+		case "CustomUI":
+			await assertValidUI(paragraph.ui);
+			break;
+		case "Table":
+			for (const row of paragraph.columns) {
+				for (const cell of sample(row.cells, 5)) {
+					await assertValidParagraph(cell);
+				}
 			}
 			break;
 	}

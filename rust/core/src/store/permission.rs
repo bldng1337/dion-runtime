@@ -17,7 +17,11 @@ impl PermissionStore {
     }
 
     async fn load_data(&mut self, client: &dyn ExtensionClient) -> Result<()> {
-        self.permissions = serde_json::from_str(&client.load_data_secure("permission").await?)?;
+        let data = client.load_data_secure("permission").await?;
+        if data.trim().is_empty() {
+            return Ok(());
+        }
+        self.permissions = serde_json::from_str(&data)?;
         Ok(())
     }
 
@@ -50,7 +54,7 @@ impl PermissionStore {
     pub fn remove_permission(&mut self, permission: Permission) {
         self.permissions = self
             .permissions
-            .extract_if(0.., |item| item.allows(&permission))
+            .extract_if(0.., |item| permission.allows(item))
             .collect()
     }
 

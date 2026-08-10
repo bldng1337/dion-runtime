@@ -79,9 +79,11 @@ export class SettingStore {
 			};
 			return defaultval as ExcludeLiteral<T>;
 		}
-		if (typeof setting.default.data !== typeof defaultval) {
+		if (setting.default.type !== toSettingValue(defaultval).type) {
 			console.log("Setting type changed, overwriting");
-			console.log(`${typeof setting.default.data} !== ${typeof defaultval}`);
+			console.log(
+				`${setting.default.type} !== ${toSettingValue(defaultval).type}`,
+			);
 			this.settings[id] = {
 				label: label ?? id,
 				visible: visible,
@@ -104,13 +106,12 @@ export class SettingStore {
 	): Promise<ExcludeLiteral<T>> {
 		const setting = this.settings[extension_setting.id];
 		const new_setting = extension_setting.getDefinition();
-		new_setting.value =
-			toSettingValue(await extension_setting.get()) ?? new_setting.value;
+		new_setting.value = toSettingValue(await extension_setting.get());
 		if (setting === undefined) {
 			this.settings[extension_setting.id] = new_setting;
 			return new_setting.value.data as ExcludeLiteral<T>;
 		}
-		if (typeof setting.default.data !== typeof new_setting.default.data) {
+		if (setting.default.type !== new_setting.default.type) {
 			this.settings[extension_setting.id] = new_setting;
 			return new_setting.value.data as ExcludeLiteral<T>;
 		}
@@ -146,7 +147,7 @@ export class SettingStore {
 			);
 			map[key] = this.settings[key];
 		}
-		return this.settings;
+		return map;
 	}
 }
 
