@@ -1,6 +1,6 @@
 //! MihonExtension - Implements the Extension trait for a single Mihon source
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use async_trait::async_trait;
 use dion_runtime::{
     client_data::ExtensionClient,
@@ -95,6 +95,21 @@ impl MihonExtension {
         })
     }
 
+    /// Run a blocking JNI bridge call on tokio's blocking pool so the async
+    /// executor thread is never stalled by JVM work (the bridge performs
+    /// network I/O inside the JVM). The bridge attaches the calling thread to
+    /// the JVM as needed, so any blocking-pool thread works.
+    async fn blocking_bridge<T, F>(&self, f: F) -> Result<T>
+    where
+        T: Send + 'static,
+        F: FnOnce(&MihonBridge) -> Result<T> + Send + 'static,
+    {
+        let bridge = self.bridge.clone();
+        tokio::task::spawn_blocking(move || f(&bridge))
+            .await
+            .context("Bridge call task panicked")?
+    }
+
     /// Push the source's configurable preferences to the JVM.
     ///
     /// The values applied are the union of the stored `Extension` settings and
@@ -141,7 +156,11 @@ impl MihonExtension {
 
         match json {
             Some(json) => {
-                if let Err(e) = self.bridge.apply_preferences(self.source_id, &json) {
+                let source_id = self.source_id;
+                if let Err(e) = self
+                    .blocking_bridge(move |bridge| bridge.apply_preferences(source_id, &json))
+                    .await
+                {
                     log::warn!("Failed to apply preferences: {e:#}");
                 }
             }
@@ -176,14 +195,18 @@ impl Extension for MihonExtension {
         // values via `set_setting()`; `search()` then forwards the stored
         // search values to the bridge, and preferences are pushed back to the
         // JVM before content operations.
-        let filters = self
-            .bridge
-            .get_filter_list(self.source_id)
-            .unwrap_or_default();
-        let preferences = self
-            .bridge
-            .get_preference_list(self.source_id)
-            .unwrap_or_default();
+        let (filters, preferences) = {
+            let bridge = self.bridge.clone();
+            let source_id = self.source_id;
+            let res = tokio::task::spawn_blocking(move || {
+                let filters = bridge.get_filter_list(source_id).unwrap_or_default();
+                let preferences = bridge.get_preference_list(source_id).unwrap_or_default();
+                (filters, preferences)
+            })
+            .await
+            .context("Bridge call task panicked")?;
+            res
+        };
 
         {
             let mut store = self.store.write().await;
@@ -219,12 +242,16 @@ impl Extension for MihonExtension {
     async fn browse(&self, page: i32, _token: Option<CancellationToken>) -> Result<EntryList> {
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
-        let result = match self.source_type {
-            MihonSourceType::Manga | MihonSourceType::Novel => {
-                self.bridge.get_popular(self.source_id, mihon_page)?
-            }
-            MihonSourceType::Anime => self.bridge.get_popular_anime(self.source_id, mihon_page)?,
-        };
+        let source_type = self.source_type;
+        let source_id = self.source_id;
+        let result = self
+            .blocking_bridge(move |bridge| match source_type {
+                MihonSourceType::Manga | MihonSourceType::Novel => {
+                    bridge.get_popular(source_id, mihon_page)
+                }
+                MihonSourceType::Anime => bridge.get_popular_anime(source_id, mihon_page),
+            })
+            .await?;
 
         Ok(result.into_entry_list(self.source_type))
     }
@@ -251,16 +278,18 @@ impl Extension for MihonExtension {
 
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
-        let result = match self.source_type {
-            MihonSourceType::Manga | MihonSourceType::Novel => {
-                self.bridge
-                    .search(self.source_id, mihon_page, &query, &filters_json)?
-            }
-            MihonSourceType::Anime => {
-                self.bridge
-                    .search_anime(self.source_id, mihon_page, &query, &filters_json)?
-            }
-        };
+        let source_type = self.source_type;
+        let source_id = self.source_id;
+        let result = self
+            .blocking_bridge(move |bridge| match source_type {
+                MihonSourceType::Manga | MihonSourceType::Novel => {
+                    bridge.search(source_id, mihon_page, &query, &filters_json)
+                }
+                MihonSourceType::Anime => {
+                    bridge.search_anime(source_id, mihon_page, &query, &filters_json)
+                }
+            })
+            .await?;
 
         Ok(result.into_entry_list(self.source_type))
     }
@@ -284,11 +313,18 @@ impl Extension for MihonExtension {
         self.apply_preferences(&settings).await;
 
         let entry_json = serde_json::to_string(&MangaDto::from_entry_id(&entryid))?;
+        let source_type = self.source_type;
+        let source_id = self.source_id;
 
-        match self.source_type {
+        match source_type {
             MihonSourceType::Manga | MihonSourceType::Novel => {
-                let details = self.bridge.get_details(self.source_id, &entry_json)?;
-                let mut chapters = self.bridge.get_chapter_list(self.source_id, &entry_json)?;
+                let (details, mut chapters) = self
+                    .blocking_bridge(move |bridge| {
+                        let details = bridge.get_details(source_id, &entry_json)?;
+                        let chapters = bridge.get_chapter_list(source_id, &entry_json)?;
+                        Ok((details, chapters))
+                    })
+                    .await?;
                 chapters.reverse();
                 let media_type = match self.source_type {
                     MihonSourceType::Novel => MediaType::Book,
@@ -301,8 +337,13 @@ impl Extension for MihonExtension {
                 })
             }
             MihonSourceType::Anime => {
-                let details = self.bridge.get_anime_details(self.source_id, &entry_json)?;
-                let mut episodes = self.bridge.get_episode_list(self.source_id, &entry_json)?;
+                let (details, mut episodes) = self
+                    .blocking_bridge(move |bridge| {
+                        let details = bridge.get_anime_details(source_id, &entry_json)?;
+                        let episodes = bridge.get_episode_list(source_id, &entry_json)?;
+                        Ok((details, episodes))
+                    })
+                    .await?;
                 episodes.reverse();
 
                 // Anime episodes share the same JSON shape as manga chapters
@@ -343,7 +384,10 @@ impl Extension for MihonExtension {
         match self.source_type {
             MihonSourceType::Manga => {
                 let chapter_json = serde_json::to_string(&ChapterDto::from_episode_id(&epid))?;
-                let pages = self.bridge.get_page_list(self.source_id, &chapter_json)?;
+                let source_id = self.source_id;
+                let pages = self
+                    .blocking_bridge(move |bridge| bridge.get_page_list(source_id, &chapter_json))
+                    .await?;
                 Ok(SourceResult {
                     source: pages_to_source(pages),
                     settings,
@@ -353,7 +397,10 @@ impl Extension for MihonExtension {
                 // A novel chapter is a single text page. Fetch its text via the
                 // source's `fetchPageText` and surface it as a Paragraphlist.
                 let chapter_json = serde_json::to_string(&ChapterDto::from_episode_id(&epid))?;
-                let page_text = self.bridge.get_page_text(self.source_id, &chapter_json)?;
+                let source_id = self.source_id;
+                let page_text = self
+                    .blocking_bridge(move |bridge| bridge.get_page_text(source_id, &chapter_json))
+                    .await?;
                 Ok(SourceResult {
                     source: text_to_paragraph_source(page_text.text),
                     settings,
@@ -361,7 +408,10 @@ impl Extension for MihonExtension {
             }
             MihonSourceType::Anime => {
                 let episode_json = serde_json::to_string(&EpisodeDto::from_episode_id(&epid))?;
-                let videos = self.bridge.get_video_list(self.source_id, &episode_json)?;
+                let source_id = self.source_id;
+                let videos = self
+                    .blocking_bridge(move |bridge| bridge.get_video_list(source_id, &episode_json))
+                    .await?;
                 Ok(SourceResult {
                     source: videos_to_source(videos),
                     settings,
