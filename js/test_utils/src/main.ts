@@ -126,9 +126,12 @@ export async function ratelimit(ms: number) {
 	lock = new Promise<void>((resolve) => {
 		release = resolve;
 	});
-	await previous;
-	await wait(ms);
-	release();
+	try {
+		await previous;
+		await wait(ms);
+	} finally {
+		release();
+	}
 }
 
 const time = 50;
