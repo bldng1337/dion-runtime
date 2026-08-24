@@ -1,12 +1,15 @@
 {
 	"name": "repotest",
 	"scripts": {
-		"build": "cd ../.. && bunx dion-build-index"
+		"build": "cd ../.. && bunx dion-build-index",
+		"test": "bun test"
 	},
 	"dependencies": {
 		"arguments": "workspace:*",
 		"auth": "workspace:*",
+		"customui": "workspace:*",
 		"decode": "workspace:*",
+		"fetch": "workspace:*",
 		"html": "workspace:*",
 		"native": "workspace:*",
 		"permissions": "workspace:*",
