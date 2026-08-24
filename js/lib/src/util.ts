@@ -33,8 +33,8 @@ export function trywrap<T>(a: () => T): T | undefined {
 }
 
 function stringifypair(a: string, b: string) {
-	if (b.length === 0) return "";
-	return `${a}=${b}`;
+  if (b.length === 0 || a.length === 0) return "";
+	return `${encodeURL(a)}=${encodeURL(b)}`;
 }
 
 export function makeurl(
@@ -99,7 +99,9 @@ export function parseNumberwithSuffix(
 		s = s.replaceAll("T", "");
 	}
 
-	const num = Number(s.replaceAll(",", ""));
+	const cleaned = s.replaceAll(",", "").trim();
+	if (cleaned === "") return def;
+	const num = Number(cleaned);
 	if (Number.isNaN(num)) {
 		return def;
 	}
