@@ -6,7 +6,7 @@ use crate::{
 };
 use anyhow::{anyhow, bail, Result};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SettingStore {
     extension_setting: HashMap<String, Setting>,
     search_setting: HashMap<String, Setting>,
@@ -18,6 +18,11 @@ impl SettingStore {
             extension_setting: Default::default(),
             search_setting: Default::default(),
         };
+        // A failed load must not abort startup: the extension stays usable and
+        // the persisted state is kept for a later successful load. Starting
+        // empty here means the next save overwrites persisted settings, but
+        // failing would leave the user without a working extension AND without
+        // their data.
         let _ = ret.load_state(client).await;
         ret
     }
@@ -102,7 +107,7 @@ impl SettingStore {
         let map = self.get_settings_mut(kind);
         if let Some(current) = map.get(&id) {
             // Try to carry the value over if the type is the same, otherwise ignore it
-            let _= definition.value.overwrite(&current.value);
+            let _ = definition.value.overwrite(&current.value);
         }
         map.insert(id, definition);
         Ok(())

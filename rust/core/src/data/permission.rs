@@ -6,7 +6,7 @@ use specta::Type;
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "type", derive(Type))]
 #[serde(tag = "type")]
 pub enum Permission {

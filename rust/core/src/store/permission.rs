@@ -2,7 +2,7 @@ use anyhow::Result;
 
 use crate::{client_data::ExtensionClient, data::permission::Permission};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PermissionStore {
     permissions: Vec<Permission>,
 }
@@ -12,6 +12,11 @@ impl PermissionStore {
         let mut ret = Self {
             permissions: Default::default(),
         };
+        // A failed load must not abort startup: the extension stays usable and
+        // the persisted state is kept for a later successful load. Starting
+        // empty here means the next save overwrites persisted permissions, but
+        // failing would leave the user without a working extension AND without
+        // their data.
         let _ = ret.load_data(client).await;
         ret
     }
@@ -51,10 +56,20 @@ impl PermissionStore {
         Ok(false)
     }
 
+    /// Record a granted permission without any host round-trip. Used by
+    /// callers that perform the permission prompt themselves (without holding
+    /// the store lock across the potentially re-entrant host call).
+    pub fn grant(&mut self, permission: Permission) {
+        if !self.has_permission(&permission) {
+            self.permissions.push(permission);
+        }
+    }
+
+    /// Remove exactly the stored permission equal to `permission`.
     pub fn remove_permission(&mut self, permission: Permission) {
         self.permissions = self
             .permissions
-            .extract_if(0.., |item| permission.allows(item))
+            .extract_if(0.., |item| *item == permission)
             .collect()
     }
 

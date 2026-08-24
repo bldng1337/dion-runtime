@@ -2,7 +2,7 @@ use anyhow::Result;
 
 use crate::{client_data::ExtensionClient, data::auth::Account};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AuthStore {
     accounts: Vec<Account>,
 }
@@ -12,6 +12,11 @@ impl AuthStore {
         let mut ret = Self {
             accounts: Default::default(),
         };
+        // A failed load must not abort startup: the extension stays usable and
+        // the persisted state is kept for a later successful load. Starting
+        // empty here means the next save overwrites persisted credentials, but
+        // failing would leave the user without a working extension AND without
+        // their data.
         let _ = ret.load_data(client).await;
         ret
     }
