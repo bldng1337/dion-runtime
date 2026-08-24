@@ -211,6 +211,15 @@ impl JobExecutor for Queue {
 
     // While the sync flavor of `run_jobs` will block the current thread until all the jobs have finished...
     fn run_jobs(self: Rc<Self>, context: &mut Context) -> JsResult<()> {
+        // The executor must run on its own dedicated thread (the JS engine
+        // uses thread-local state), so this sync flavor must never be reached
+        // from inside a tokio runtime — building a nested runtime here would
+        // panic with a confusing message.
+        assert!(
+            tokio::runtime::Handle::try_current().is_err(),
+            "run_jobs() called from within an async context; the sync executor \
+             must run on its own dedicated thread — use run_jobs_async() instead"
+        );
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_time()
             .build()

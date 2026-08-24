@@ -62,13 +62,28 @@ mod permission {
                                 .with_message("Network container has been dropped"),
                         ));
                     };
-                    let mut ext_store = runtime_data.store.write().await;
-
-                    let res = ext_store
-                        .permission
-                        .request_permission(runtime_data.client.as_ref(), permission, Some(msg))
-                        .await
-                        .map_err(|e| JsError::from_rust(&*e))?;
+                    // Fast path: already granted, no host round-trip needed.
+                    let granted = {
+                        let ext_store = runtime_data.store.read().await;
+                        ext_store.permission.has_permission(&permission)
+                    };
+                    let res = if granted {
+                        true
+                    } else {
+                        // Prompt WITHOUT holding the store lock: the host
+                        // prompt may re-enter the runtime and would deadlock
+                        // on the RwLock. Grant under a fresh lock on success.
+                        let granted = runtime_data
+                            .client
+                            .request_permission(&permission, Some(msg))
+                            .await
+                            .map_err(|e| JsError::from_rust(&*e))?;
+                        if granted {
+                            let mut ext_store = runtime_data.store.write().await;
+                            ext_store.permission.grant(permission);
+                        }
+                        granted
+                    };
                     Ok(res.into())
                 }
                 .await as JsResult<JsValue>

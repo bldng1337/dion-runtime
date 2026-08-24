@@ -59,19 +59,29 @@ mod network {
                         };
                         let options = options?.unwrap_or(Value::Null);
                         let options = options.as_object().cloned();
+                        // TODO: enforce the Network/ArbitraryNetwork permission
+                        // model here once extensions actually declare static
+                        // permissions; until then fetch is unrestricted.
                         let method = match &options {
                             Some(options) => {
                                 if options.contains_key("method") {
                                     match options["method"].as_str() {
-                                        Some("GET") => Method::GET,
-                                        Some("HEAD") => Method::HEAD,
-                                        Some("POST") => Method::POST,
-                                        Some("PUT") => Method::PUT,
-                                        Some("DELETE") => Method::DELETE,
-                                        Some("CONNECT") => Method::CONNECT,
-                                        Some("TRACE") => Method::TRACE,
-                                        Some("PATCH") => Method::PATCH,
-                                        _ => Method::GET, //Maybe we should explicitly fail here
+                                        Some(m) => Method::from_bytes(m.as_bytes()).map_err(
+                                            |_| {
+                                                JsError::from_native(
+                                                    JsNativeError::error().with_message(format!(
+                                                        "Invalid HTTP method: {m}"
+                                                    )),
+                                                )
+                                            },
+                                        )?,
+                                        None => {
+                                            return Err(JsError::from_native(
+                                                JsNativeError::error().with_message(
+                                                    "Expected method to be a String",
+                                                ),
+                                            ))
+                                        }
                                     }
                                 } else {
                                     Method::GET
@@ -111,6 +121,9 @@ mod network {
                             header: response.headers().clone(),
                             content: response.text().await.map_err(JsError::from_rust)?,
                         };
+                        // The request above may have updated the cookie jar;
+                        // persist it (debounced) so logins survive restarts.
+                        networkcontainer.network.save_cookies_debounced();
                         let res=Class::from_data(res, &mut context.borrow_mut())?;
                         Ok(res.into())
                     }.await as JsResult<JsValue>
@@ -145,11 +158,14 @@ mod network {
                 JsNativeError::error().with_message("Network container has been dropped"),
             ));
         };
-        let cookies = network
-            .network
-            .cookies
-            .lock()
-            .expect("CookieLock is Poisoned");
+        // A poisoned lock means another thread panicked while holding it;
+        // surface that as a JS error instead of taking down this thread (a
+        // panic here would permanently kill the extension's JS runtime).
+        let cookies = network.network.cookies.lock().map_err(|_| {
+            JsError::from_native(
+                JsNativeError::error().with_message("Cookie store lock is poisoned"),
+            )
+        })?;
         let array = JsArray::new(context);
         for cookie in cookies.iter_unexpired() {
             let obj = js_object!({

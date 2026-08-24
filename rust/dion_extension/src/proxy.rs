@@ -309,7 +309,16 @@ impl Proxy {
                     )
                     .unwrap());
             };
-            match proxy.read().await.handle(client_ip, req).await {
+            // Snapshot what request handling needs (http client + registered
+            // extensions) under a short-lived read guard. Holding the guard
+            // for the whole request — including the outbound redirect fetch
+            // and the extension JS round-trip — would block extension
+            // (un)registration behind slow requests.
+            let (client, extensions) = {
+                let proxy = proxy.read().await;
+                (proxy.client.clone(), proxy.get_active_extensions().await)
+            };
+            match Proxy::handle_request(&client, &extensions, client_ip, req).await {
                 Ok(response) => Ok(response),
                 Err(err) => Ok(Response::builder()
                     .status(StatusCode::INTERNAL_SERVER_ERROR)
@@ -373,28 +382,31 @@ impl Proxy {
             "http://{}:{}{}",
             addr.ip(),
             addr.port(),
-            self.get_extension_path(data)
+            Self::extension_path(data)
         ))
     }
 
-    fn get_extension_path(&self, data: &ExtensionData) -> String {
+    fn extension_path(data: &ExtensionData) -> String {
         format!("/extproxy/{}", data.id)
     }
 
-    async fn handle(
-        &self,
+    /// Handle a proxied request against a snapshot of the proxy state. Must
+    /// not be called while holding the proxy RwLock (see `handle` above).
+    async fn handle_request(
+        client: &Client<HttpsConnector<HttpConnector>, BoxBody<Bytes, hyper::Error>>,
+        extensions: &[Arc<ProxyExtensionRef>],
         _client_ip: IpAddr,
         req: Request<Incoming>,
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>> {
         let req = convert_request_to_string(req).await?;
-        for extension in self.get_active_extensions().await {
+        for extension in extensions {
             let extension = match extension.runtime.upgrade() {
                 Some(ext) => ext,
                 None => continue,
             };
             let ext_path = {
                 let store = extension.store.read().await;
-                self.get_extension_path(&store.data)
+                Self::extension_path(&store.data)
             };
             if !req.uri().path().starts_with(ext_path.as_str()) {
                 continue;
@@ -433,7 +445,7 @@ impl Proxy {
                             .map_err(|never| match never {})
                             .boxed()
                     });
-                    let response = self.client.request(request_with_body).await?;
+                    let response = client.request(request_with_body).await?;
                     let (parts, body) = response.into_parts();
                     let boxed_body = body.map_err(Into::into).boxed();
                     return Ok(Response::from_parts(parts, boxed_body));

@@ -49,12 +49,16 @@ mod auth {
                                 .with_message("Runtime container has been dropped"),
                         ));
                     };
-                    let mut ext_store = runtime_data.store.write().await;
+                    // Mutate under the lock, then persist from a snapshot so
+                    // the write guard is never held across the JS round-trip
+                    // (re-entrant host calls would deadlock on the store).
+                    let auth = {
+                        let mut ext_store = runtime_data.store.write().await;
+                        ext_store.auth.merge_auth(&account);
+                        ext_store.auth.clone()
+                    };
 
-                    ext_store.auth.merge_auth(&account);
-                    ext_store
-                        .auth
-                        .save_state(runtime_data.client.as_ref())
+                    auth.save_state(runtime_data.client.as_ref())
                         .await
                         .map_err(|e| JsError::from_rust(&*e))?;
 
@@ -149,12 +153,16 @@ mod auth {
                                     .with_message("Runtime container has been dropped"),
                             ));
                         };
-                        let mut ext_store = runtime_data.store.write().await;
+                        // Same lock discipline as merge_auth above: mutate under
+                        // the guard, persist from a snapshot without holding it
+                        // across the JS round-trip.
+                        let auth = {
+                            let mut ext_store = runtime_data.store.write().await;
+                            ext_store.auth.invalidate(&domain);
+                            ext_store.auth.clone()
+                        };
 
-                        ext_store.auth.invalidate(&domain);
-                        ext_store
-                            .auth
-                            .save_state(runtime_data.client.as_ref())
+                        auth.save_state(runtime_data.client.as_ref())
                             .await
                             .map_err(|e| JsError::from_rust(&*e))?;
 

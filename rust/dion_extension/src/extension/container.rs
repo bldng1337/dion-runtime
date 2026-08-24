@@ -59,6 +59,16 @@ impl DionExtension {
             .get_extension_client(extdata.clone().into_extension_data())
             .await
             .context("Failed to get Extension Client Data")?;
+        // Each extension gets its own network manager so cookie jars (and the
+        // http cache) live in the per-extension data location the host picked:
+        // the extension's client reports it via get_path. A shared jar would
+        // let one extension's site credentials leak into another extension's
+        // requests, so hosts should return a per-extension path here.
+        let data_dir = client
+            .get_path()
+            .await
+            .context("Failed to get extension data path")?;
+        let network = DionNetworkManager::new(PathBuf::from(data_dir))?;
         let ext = ExtensionStore {
             data: extdata.clone().into_extension_data(),
             permission: PermissionStore::new(client.as_ref()).await,
@@ -68,7 +78,7 @@ impl DionExtension {
         let data = Arc::new(InnerExtension {
             client,
             proxy: manager.proxy.clone(),
-            network: manager.network.clone(),
+            network,
             store: RwLock::new(ext),
             context: ArcSwapOption::from(None),
         });
@@ -166,17 +176,24 @@ impl Extension for DionExtension {
         account: Account,
         token: Option<CancellationToken>,
     ) -> Result<Option<Account>> {
-        let mut store = self.data.store.write().await;
-        let store_account = store
-            .auth
-            .get_mut(&account.domain)
-            .ok_or(anyhow!("Couldnt find the account"))?;
-        // TODO: Potentially we could use less clones here but this is simpler for now
-        let old = store_account.clone();
+        let old = {
+            let mut store = self.data.store.write().await;
+            let store_account = store
+                .auth
+                .get_mut(&account.domain)
+                .ok_or(anyhow!("Couldnt find the account"))?;
+            // TODO: Potentially we could use less clones here but this is simpler for now
+            let old = store_account.clone();
+            // Extensions typically read the new credentials from the store
+            // during validation (getAuthSecret), so the candidate account must
+            // be visible in the store for the JS round-trip below. `old` is
+            // restored on EVERY failure path so failed validations never
+            // leave unvalidated credentials persisted.
+            *store_account = account.clone();
+            old
+        };
         let auth_creds = account.creds.clone();
-        *store_account = account.clone();
-        drop(store);
-        match &*self.data.context.load() {
+        let res: Result<Option<Account>> = match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Validate {
@@ -184,30 +201,38 @@ impl Extension for DionExtension {
                     token,
                     send,
                 };
-                context
+                match context
                     .send(task)
-                    .context("Failed to send message to Extension Thread")?;
-                let res = response.await??.map(|acc| Account {
-                    creds: auth_creds,
-                    ..acc
-                });
-                let mut store = self.data.store.write().await;
-                let store_account = store
-                    .auth
-                    .get_mut(&old.domain)
-                    .ok_or(anyhow!("Couldnt find the account"))?;
-                match &res {
-                    Some(acc) => {
-                        *store_account = acc.clone();
-                    }
-                    None => {
-                        *store_account = old;
-                    }
+                    .context("Failed to send message to Extension Thread")
+                {
+                    Ok(()) => match response.await {
+                        Ok(inner) => inner.map(|opt| {
+                            opt.map(|acc| Account {
+                                creds: auth_creds,
+                                ..acc
+                            })
+                        }),
+                        Err(e) => Err(anyhow!("Extension validate task was dropped: {e}")),
+                    },
+                    Err(e) => Err(e),
                 }
-                Ok(res)
             }
-            None => bail!("Extension is not enabled"),
+            None => Err(anyhow!("Extension is not enabled")),
+        };
+        let mut store = self.data.store.write().await;
+        let store_account = store
+            .auth
+            .get_mut(&old.domain)
+            .ok_or(anyhow!("Couldnt find the account"))?;
+        match &res {
+            Ok(Some(acc)) => {
+                *store_account = acc.clone();
+            }
+            _ => {
+                *store_account = old;
+            }
         }
+        res
     }
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
