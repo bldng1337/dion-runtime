@@ -110,12 +110,12 @@ class FlutterRustProject extends Project {
 	}
 
 	async format() {
-		await $`cd ${this.path} && cd rust && cargo clean`;
+		await $`cd ${this.path} && cd rust && cargo fmt`;
 		await $`cd ${this.path} && dart format lib -o write`;
 	}
 
 	async clean() {
-		await $`cd ${this.path} && cd rust && cargo fmt`;
+		await $`cd ${this.path} && cd rust && cargo clean`;
 		await $`cd ${this.path} && flutter clean`;
 	}
 }
@@ -156,8 +156,11 @@ export const projects = [
 	...jsPath.map((path) => new JSProject(path)),
 ];
 
+let failed = false;
+
 function exitPrematurely(message: string) {
 	console.error(message);
+	failed = true;
 	if (!values.tryall) {
 		process.exit(1);
 	}
@@ -213,4 +216,8 @@ for (const action of positionals.slice(2)) {
 				exitPrematurely(`Unknown action: ${action}`);
 		}
 	}
+}
+
+if (failed) {
+	process.exit(1);
 }
