@@ -21,8 +21,8 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("MediaType[$i]", item, encoded),
       );
-      // expect(redecoded, equals(mediaType),
-      //     reason: "Object equality check failed for MediaType at index $i");
+      expect(redecoded, equals(mediaType),
+          reason: "Object equality check failed for MediaType at index $i");
     }
   });
 
@@ -36,8 +36,9 @@ void main() {
       final redecoded = JsonStreamSource.fromJson(encoded);
 
       _deepEquals(encoded, item, "StreamSource[$i]");
+      // Object equality not asserted: StreamSource.== compares its `url` Link via Link.==, which compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(streamSource),
-      //     reason: "Object equality check failed for StreamSource at index $i");
+      // reason: "Object equality check failed for StreamSource at index $i");
     }
   });
 
@@ -51,8 +52,9 @@ void main() {
       final redecoded = JsonLink.fromJson(encoded);
 
       _deepEquals(encoded, item, "Link[$i]");
+      // Object equality not asserted: Link.== compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(link),
-      //     reason: "Object equality check failed for Link at index $i");
+      // reason: "Object equality check failed for Link at index $i");
     }
   });
 
@@ -66,8 +68,8 @@ void main() {
       final redecoded = JsonAction.fromJson(encoded);
 
       _deepEquals(encoded, item, "Action[$i]");
-      // expect(redecoded, equals(action),
-      //     reason: "Object equality check failed for Action at index $i");
+      expect(redecoded, equals(action),
+          reason: "Object equality check failed for Action at index $i");
     }
   });
 
@@ -81,8 +83,8 @@ void main() {
       final redecoded = JsonPopupAction.fromJson(encoded);
 
       _deepEquals(encoded, item, "PopupAction[$i]");
-      // expect(redecoded, equals(popupAction),
-      //     reason: "Object equality check failed for PopupAction at index $i");
+      expect(redecoded, equals(popupAction),
+          reason: "Object equality check failed for PopupAction at index $i");
     }
   });
 
@@ -96,8 +98,8 @@ void main() {
       final redecoded = JsonUIAction.fromJson(encoded);
 
       _deepEquals(encoded, item, "UIAction[$i]");
-      // expect(redecoded, equals(uiAction),
-      //     reason: "Object equality check failed for UIAction at index $i");
+      expect(redecoded, equals(uiAction),
+          reason: "Object equality check failed for UIAction at index $i");
     }
   });
 
@@ -111,8 +113,8 @@ void main() {
       final redecoded = JsonEventData.fromJson(encoded);
 
       _deepEquals(encoded, item, "EventData[$i]");
-      // expect(redecoded, equals(eventData),
-      //     reason: "Object equality check failed for EventData at index $i");
+      expect(redecoded, equals(eventData),
+          reason: "Object equality check failed for EventData at index $i");
     }
   });
 
@@ -126,8 +128,8 @@ void main() {
       final redecoded = JsonEventResult.fromJson(encoded);
 
       _deepEquals(encoded, item, "EventResult[$i]");
-      // expect(redecoded, equals(eventResult),
-      //     reason: "Object equality check failed for EventResult at index $i");
+      expect(redecoded, equals(eventResult),
+          reason: "Object equality check failed for EventResult at index $i");
     }
   });
 
@@ -141,8 +143,8 @@ void main() {
       final redecoded = JsonEntryActivity.fromJson(encoded);
 
       _deepEquals(encoded, item, "EntryActivity[$i]");
-      // expect(redecoded, equals(entryActivity),
-      //     reason: "Object equality check failed for EntryActivity at index $i");
+      expect(redecoded, equals(entryActivity),
+          reason: "Object equality check failed for EntryActivity at index $i");
     }
   });
 
@@ -160,8 +162,8 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("TimestampType[$i]", item, encoded),
       );
-      // expect(redecoded, equals(timestampType),
-      //     reason: "Object equality check failed for TimestampType at index $i");
+      expect(redecoded, equals(timestampType),
+          reason: "Object equality check failed for TimestampType at index $i");
     }
   });
 
@@ -175,8 +177,9 @@ void main() {
       final redecoded = JsonCustomUI.fromJson(encoded);
 
       _deepEquals(encoded, item, "CustomUI[$i]");
+      // Object equality not asserted: variants containing a Link (Image/EntryCard/Card) fail because Link.== compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(customUI),
-      //     reason: "Object equality check failed for CustomUI at index $i");
+      // reason: "Object equality check failed for CustomUI at index $i");
     }
   });
 
@@ -190,8 +193,9 @@ void main() {
       final redecoded = JsonExtensionData.fromJson(encoded);
 
       _deepEquals(encoded, item, "ExtensionData[$i]");
+      // Object equality not asserted: ExtensionData.== compares its author/tags/lang Lists and mediaType/extensionType Sets by identity - Dart collections have no value equality.
       // expect(redecoded, equals(extensionData),
-      //     reason: "Object equality check failed for ExtensionData at index $i");
+      // reason: "Object equality check failed for ExtensionData at index $i");
     }
   });
 
@@ -209,9 +213,9 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("SourceOpenType[$i]", item, encoded),
       );
-      // expect(redecoded, equals(sourceOpenType),
-      //     reason:
-      //         "Object equality check failed for SourceOpenType at index $i");
+      expect(redecoded, equals(sourceOpenType),
+          reason:
+              "Object equality check failed for SourceOpenType at index $i");
     }
   });
 
@@ -225,8 +229,8 @@ void main() {
       final redecoded = JsonExtensionType.fromJson(encoded);
 
       _deepEquals(encoded, item, "ExtensionType[$i]");
-      // expect(redecoded, equals(extensionType),
-      //     reason: "Object equality check failed for ExtensionType at index $i");
+      expect(redecoded, equals(extensionType),
+          reason: "Object equality check failed for ExtensionType at index $i");
     }
   });
 
@@ -240,9 +244,9 @@ void main() {
       final redecoded = JsonExtensionManagerData.fromJson(encoded);
 
       _deepEquals(encoded, item, "ExtensionManagerData[$i]");
-      // expect(redecoded, equals(extensionManagerData),
-      //     reason:
-      //         "Object equality check failed for ExtensionManagerData at index $i");
+      expect(redecoded, equals(extensionManagerData),
+          reason:
+              "Object equality check failed for ExtensionManagerData at index $i");
     }
   });
 
@@ -256,8 +260,8 @@ void main() {
       final redecoded = JsonExtensionRepo.fromJson(encoded);
 
       _deepEquals(encoded, item, "ExtensionRepo[$i]");
-      // expect(redecoded, equals(extensionRepo),
-      //     reason: "Object equality check failed for ExtensionRepo at index $i");
+      expect(redecoded, equals(extensionRepo),
+          reason: "Object equality check failed for ExtensionRepo at index $i");
     }
   });
 
@@ -271,9 +275,10 @@ void main() {
       final redecoded = JsonRemoteExtension.fromJson(encoded);
 
       _deepEquals(encoded, item, "RemoteExtension[$i]");
+      // Object equality not asserted: RemoteExtension.== compares its `cover` Link via Link.==, which compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(remoteExtension),
-      //     reason:
-      //         "Object equality check failed for RemoteExtension at index $i");
+      // reason:
+      // "Object equality check failed for RemoteExtension at index $i");
     }
   });
 
@@ -287,9 +292,10 @@ void main() {
       final redecoded = JsonRemoteExtensionResult.fromJson(encoded);
 
       _deepEquals(encoded, item, "RemoteExtensionResult[$i]");
+      // Object equality not asserted: RemoteExtensionResult.== compares its `content` List by identity - Dart Lists have no value equality.
       // expect(redecoded, equals(remoteExtensionResult),
-      //     reason:
-      //         "Object equality check failed for RemoteExtensionResult at index $i");
+      // reason:
+      // "Object equality check failed for RemoteExtensionResult at index $i");
     }
   });
 
@@ -303,8 +309,8 @@ void main() {
       final redecoded = JsonPermission.fromJson(encoded);
 
       _deepEquals(encoded, item, "Permission[$i]");
-      // expect(redecoded, equals(permission),
-      //     reason: "Object equality check failed for Permission at index $i");
+      expect(redecoded, equals(permission),
+          reason: "Object equality check failed for Permission at index $i");
     }
   });
 
@@ -322,8 +328,8 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("SettingKind[$i]", item, encoded),
       );
-      // expect(redecoded, equals(settingKind),
-      //     reason: "Object equality check failed for SettingKind at index $i");
+      expect(redecoded, equals(settingKind),
+          reason: "Object equality check failed for SettingKind at index $i");
     }
   });
 
@@ -338,9 +344,9 @@ void main() {
       final redecoded = JsonDropdownOption.fromJson(encoded);
 
       _deepEquals(encoded, item, "DropdownOption[$i]");
-      // expect(redecoded, equals(dropdownOption),
-      //     reason:
-      //         "Object equality check failed for DropdownOption at index $i");
+      expect(redecoded, equals(dropdownOption),
+          reason:
+              "Object equality check failed for DropdownOption at index $i");
     }
   });
 
@@ -354,8 +360,9 @@ void main() {
       final redecoded = JsonEntry.fromJson(encoded);
 
       _deepEquals(encoded, item, "Entry[$i]");
+      // Object equality not asserted: Entry.== compares its `author` List and `cover` Link (header Map) by identity - Dart collections have no value equality.
       // expect(redecoded, equals(entry),
-      //     reason: "Object equality check failed for Entry at index $i");
+      // reason: "Object equality check failed for Entry at index $i");
     }
   });
 
@@ -369,8 +376,9 @@ void main() {
       final redecoded = JsonEntryDetailed.fromJson(encoded);
 
       _deepEquals(encoded, item, "EntryDetailed[$i]");
+      // Object equality not asserted: EntryDetailed.== compares its titles/author/episodes/genres Lists, `meta` Map and Link fields by identity - Dart collections have no value equality.
       // expect(redecoded, equals(entryDetailed),
-      //     reason: "Object equality check failed for EntryDetailed at index $i");
+      // reason: "Object equality check failed for EntryDetailed at index $i");
     }
   });
 
@@ -384,9 +392,10 @@ void main() {
       final redecoded = JsonEntryDetailedResult.fromJson(encoded);
 
       _deepEquals(encoded, item, "EntryDetailedResult[$i]");
+      // Object equality not asserted: EntryDetailedResult.== compares its `settings` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(entryDetailedResult),
-      //     reason:
-      //         "Object equality check failed for EntryDetailedResult at index $i");
+      // reason:
+      // "Object equality check failed for EntryDetailedResult at index $i");
     }
   });
 
@@ -400,8 +409,8 @@ void main() {
       final redecoded = JsonEntryId.fromJson(encoded);
 
       _deepEquals(encoded, item, "EntryId[$i]");
-      // expect(redecoded, equals(entryId),
-      //     reason: "Object equality check failed for EntryId at index $i");
+      expect(redecoded, equals(entryId),
+          reason: "Object equality check failed for EntryId at index $i");
     }
   });
 
@@ -415,8 +424,9 @@ void main() {
       final redecoded = JsonEntryList.fromJson(encoded);
 
       _deepEquals(encoded, item, "EntryList[$i]");
+      // Object equality not asserted: EntryList.== compares its `content` List by identity - Dart Lists have no value equality.
       // expect(redecoded, equals(entryList),
-      //     reason: "Object equality check failed for EntryList at index $i");
+      // reason: "Object equality check failed for EntryList at index $i");
     }
   });
 
@@ -430,8 +440,9 @@ void main() {
       final redecoded = JsonEpisode.fromJson(encoded);
 
       _deepEquals(encoded, item, "Episode[$i]");
+      // Object equality not asserted: Episode.== compares its `cover` Link via Link.==, which compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(episode),
-      //     reason: "Object equality check failed for Episode at index $i");
+      // reason: "Object equality check failed for Episode at index $i");
     }
   });
 
@@ -445,8 +456,8 @@ void main() {
       final redecoded = JsonEpisodeId.fromJson(encoded);
 
       _deepEquals(encoded, item, "EpisodeId[$i]");
-      // expect(redecoded, equals(episodeId),
-      //     reason: "Object equality check failed for EpisodeId at index $i");
+      expect(redecoded, equals(episodeId),
+          reason: "Object equality check failed for EpisodeId at index $i");
     }
   });
 
@@ -460,9 +471,10 @@ void main() {
       final redecoded = JsonImageListAudio.fromJson(encoded);
 
       _deepEquals(encoded, item, "ImageListAudio[$i]");
+      // Object equality not asserted: ImageListAudio.== compares its `link` Link via Link.==, which compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(imageListAudio),
-      //     reason:
-      //         "Object equality check failed for ImageListAudio at index $i");
+      // reason:
+      // "Object equality check failed for ImageListAudio at index $i");
     }
   });
 
@@ -476,8 +488,9 @@ void main() {
       final redecoded = JsonParagraph.fromJson(encoded);
 
       _deepEquals(encoded, item, "Paragraph[$i]");
+      // Object equality not asserted: the Table variant nests Row, and Row.== compares its `cells` List by identity - Dart Lists have no value equality.
       // expect(redecoded, equals(paragraph),
-      //     reason: "Object equality check failed for Paragraph at index $i");
+      // reason: "Object equality check failed for Paragraph at index $i");
     }
   });
 
@@ -495,8 +508,8 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("ReleaseStatus[$i]", item, encoded),
       );
-      // expect(redecoded, equals(releaseStatus),
-      //     reason: "Object equality check failed for ReleaseStatus at index $i");
+      expect(redecoded, equals(releaseStatus),
+          reason: "Object equality check failed for ReleaseStatus at index $i");
     }
   });
 
@@ -510,8 +523,8 @@ void main() {
       final redecoded = JsonSetting.fromJson(encoded);
 
       _deepEquals(encoded, item, "Setting[$i]");
-      // expect(redecoded, equals(setting),
-      //     reason: "Object equality check failed for Setting at index $i");
+      expect(redecoded, equals(setting),
+          reason: "Object equality check failed for Setting at index $i");
     }
   });
 
@@ -525,8 +538,8 @@ void main() {
       final redecoded = JsonSettingsUI.fromJson(encoded);
 
       _deepEquals(encoded, item, "SettingsUI[$i]");
-      // expect(redecoded, equals(settingsUI),
-      //     reason: "Object equality check failed for SettingsUI at index $i");
+      expect(redecoded, equals(settingsUI),
+          reason: "Object equality check failed for SettingsUI at index $i");
     }
   });
 
@@ -540,8 +553,8 @@ void main() {
       final redecoded = JsonSettingValue.fromJson(encoded);
 
       _deepEquals(encoded, item, "SettingValue[$i]");
-      // expect(redecoded, equals(settingValue),
-      //     reason: "Object equality check failed for SettingValue at index $i");
+      expect(redecoded, equals(settingValue),
+          reason: "Object equality check failed for SettingValue at index $i");
     }
   });
 
@@ -555,8 +568,9 @@ void main() {
       final redecoded = JsonSource.fromJson(encoded);
 
       _deepEquals(encoded, item, "Source[$i]");
+      // Object equality not asserted: Source variants nest Link/StreamSource/Subtitles, whose == compares `header` Maps by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(source),
-      //     reason: "Object equality check failed for Source at index $i");
+      // reason: "Object equality check failed for Source at index $i");
     }
   });
 
@@ -570,8 +584,9 @@ void main() {
       final redecoded = JsonSourceResult.fromJson(encoded);
 
       _deepEquals(encoded, item, "SourceResult[$i]");
+      // Object equality not asserted: SourceResult.== compares its `settings` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(sourceResult),
-      //     reason: "Object equality check failed for SourceResult at index $i");
+      // reason: "Object equality check failed for SourceResult at index $i");
     }
   });
 
@@ -589,8 +604,8 @@ void main() {
         equals(item),
         reason: _buildJsonEqualityError("SourceType[$i]", item, encoded),
       );
-      // expect(redecoded, equals(sourceType),
-      //     reason: "Object equality check failed for SourceType at index $i");
+      expect(redecoded, equals(sourceType),
+          reason: "Object equality check failed for SourceType at index $i");
     }
   });
 
@@ -604,8 +619,9 @@ void main() {
       final redecoded = JsonSubtitles.fromJson(encoded);
 
       _deepEquals(encoded, item, "Subtitles[$i]");
+      // Object equality not asserted: Subtitles.== compares its `url` Link via Link.==, which compares its `header` Map by identity - Dart Maps have no value equality.
       // expect(redecoded, equals(subtitles),
-      //     reason: "Object equality check failed for Subtitles at index $i");
+      // reason: "Object equality check failed for Subtitles at index $i");
     }
   });
 
@@ -619,23 +635,8 @@ void main() {
       final redecoded = JsonAuthData.fromJson(encoded);
 
       _deepEquals(encoded, item, "AuthData[$i]");
-      // expect(redecoded, equals(authData),
-      //     reason: "Object equality check failed for AuthData at index $i");
-    }
-  });
-
-  test("Paragraph", () {
-    final data = File("$path/Paragraph.json").readAsStringSync();
-    final json = jsonDecode(data) as List;
-    for (int i = 0; i < json.length; i++) {
-      final item = json[i];
-      final paragraph = JsonParagraph.fromJson(item);
-      final encoded = paragraph.toJson();
-      final redecoded = JsonParagraph.fromJson(encoded);
-
-      _deepEquals(encoded, item, "Paragraph[$i]");
-      // expect(redecoded, equals(paragraph),
-      //     reason: "Object equality check failed for Paragraph at index $i");
+      expect(redecoded, equals(authData),
+          reason: "Object equality check failed for AuthData at index $i");
     }
   });
 }
