@@ -248,9 +248,17 @@ impl ExtensionProxy {
   #[napi]
   pub async fn save(&self) -> Result<(), napi::Error> {
     let client = self.extension.get_client();
-    let extdata = self.extension.get_data().read().await;
-    extdata.settings.save_state(client).await.map_to_node()?;
-    extdata.permission.save_state(client).await.map_to_node()?;
+    // Snapshot the stores instead of holding the read guard across the
+    // store_data round-trip into JS: the host callback may re-enter any of
+    // these napi methods, which would deadlock on the store RwLock. A
+    // concurrent writer winning between snapshot and save is accepted
+    // (last-writer-wins).
+    let (settings, permission) = {
+      let extdata = self.extension.get_data().read().await;
+      (extdata.settings.clone(), extdata.permission.clone())
+    };
+    settings.save_state(client).await.map_to_node()?;
+    permission.save_state(client).await.map_to_node()?;
     Ok(())
   }
 
@@ -276,12 +284,23 @@ impl ExtensionProxy {
   ) -> Result<bool, napi::Error> {
     let permission: Permission = serde_json::from_value(permission).map_to_node()?;
     let client = self.extension.get_client();
-    let mut extdata = self.extension.get_data().write().await;
-    extdata
-      .permission
-      .request_permission(client, permission, msg)
+    {
+      let extdata = self.extension.get_data().read().await;
+      if extdata.permission.has_permission(&permission) {
+        return Ok(true);
+      }
+    }
+    // Prompt without holding the store lock: the host prompt may run JS (or
+    // re-enter these napi methods) and would deadlock on the RwLock above.
+    let granted = client
+      .request_permission(&permission, msg)
       .await
-      .map_to_node()
+      .map_to_node()?;
+    if granted {
+      let mut extdata = self.extension.get_data().write().await;
+      extdata.permission.grant(permission);
+    }
+    Ok(granted)
   }
 
   #[napi(ts_args_type = "permission: Permission")]
@@ -412,9 +431,15 @@ impl ExtensionProxy {
   pub async fn merge_auth(&self, account: serde_json::Value) -> Result<(), napi::Error> {
     let account: Account = serde_json::from_value(account).map_to_node()?;
     let client = self.extension.get_client();
-    let mut extdata = self.extension.get_data().write().await;
-    extdata.auth.merge_auth(&account);
-    extdata.auth.save_state(client).await.map_to_node()
+    // Mutate under the lock, then persist from a snapshot so the write guard
+    // is never held across the JS round-trip (re-entrant host calls would
+    // deadlock). Last-writer-wins on concurrent merges.
+    let auth = {
+      let mut extdata = self.extension.get_data().write().await;
+      extdata.auth.merge_auth(&account);
+      extdata.auth.clone()
+    };
+    auth.save_state(client).await.map_to_node()
   }
 
   #[napi(ts_args_type = "domain: string")]
@@ -426,9 +451,14 @@ impl ExtensionProxy {
   #[napi(ts_args_type = "domain: string")]
   pub async fn invalidate(&self, domain: String) -> Result<(), napi::Error> {
     let client = self.extension.get_client();
-    let mut extdata = self.extension.get_data().write().await;
-    extdata.auth.invalidate(&domain);
-    extdata.auth.save_state(client).await.map_to_node()
+    // Same lock discipline as merge_auth: mutate under the guard, persist from
+    // a snapshot without holding it across the JS round-trip.
+    let auth = {
+      let mut extdata = self.extension.get_data().write().await;
+      extdata.auth.invalidate(&domain);
+      extdata.auth.clone()
+    };
+    auth.save_state(client).await.map_to_node()
   }
 
   #[napi(ts_return_type = "Promise<AuthCreds>", ts_args_type = "domain: string")]

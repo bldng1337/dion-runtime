@@ -84,6 +84,8 @@ test("DionExtensionManager", async () => {
 					() => {
 						return managerpath;
 					},
+					(_err, _entry, _key, _value) => {},
+					(_err, _key, _value) => {},
 				);
 			},
 			(_err) => {
