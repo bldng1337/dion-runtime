@@ -72,6 +72,16 @@ impl BinaryXmlParser {
             let _header_size = cursor.read_u16::<LittleEndian>()?;
             let chunk_size = cursor.read_u32::<LittleEndian>()?;
 
+            // A zero-sized chunk never advances the cursor, so without this guard a
+            // corrupt/hostile AndroidManifest.xml would loop forever below.
+            if chunk_size == 0 {
+                // If there's remaining data it's malformed; stop rather than spin.
+                if cursor.position() < data.len() as u64 {
+                    bail!("Invalid AXML chunk with size 0");
+                }
+                break;
+            }
+
             match chunk_type {
                 CHUNK_STRING_POOL => {
                     self.parse_string_pool(&mut cursor, chunk_start, chunk_size)?;
