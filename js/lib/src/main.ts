@@ -20,6 +20,18 @@ import type {
 
 type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably not really better than casting to any
 
+// Store slot values cross the FFI boundary as JSON text. Parse them back to the
+// original value shape (signals may carry objects/arrays/numbers). Fall back to
+// the raw string when it isn't valid JSON so plain-string signals keep working.
+function parseStoreValue(v: string): unknown {
+	if (v === "") return v;
+	try {
+		return JSON.parse(v);
+	} catch {
+		return v;
+	}
+}
+
 function findByName<T>(
 	registry: Record<string, T>,
 	name: string,
@@ -98,14 +110,14 @@ export abstract class DionExtension implements Extension {
 				if (!component) return undefined;
 				const values: Record<string, unknown> = {};
 				for (const [k, v] of Object.entries(data.values)) {
-					switch (v.type) {
-						case "Setting":
-							values[k] = v.value.data;
-							break;
-						case "Store":
-							values[k] = v.value;
-							break;
-					}
+switch (v.type) {
+					case "Setting":
+						values[k] = v.value.data;
+						break;
+					case "Store":
+						values[k] = parseStoreValue(v.value);
+						break;
+				}
 				}
 				const customui = await component.run(data.static_data, values);
 				return { type: "SlotContent", customui };
