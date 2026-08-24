@@ -18,6 +18,20 @@ use dion_runtime::{
 };
 use log::error;
 use semver::{Version, VersionReq};
+
+fn validate_id(id: &str) -> Result<()> {
+    if id.is_empty()
+        || id == "."
+        || id == ".."
+        || id.contains("..")
+        || id.contains('/')
+        || id.contains('\\')
+        || id.contains(':')
+    {
+        bail!("Unsafe extension id: {id:?}");
+    }
+    Ok(())
+}
 use tokio::{
     fs::{self, copy, read_dir, remove_file, write},
     sync::RwLock,
@@ -243,6 +257,7 @@ impl Adapter for DionExtensionAdapter {
                 let res = self.network.nclient.get(location).send().await?;
                 let body = res.text().await?;
                 let manifest = peek_manifest_string(&body)?;
+                validate_id(&manifest.id)?;
                 let extpath = path.join(format!("{}.dion.js", manifest.id));
                 write(extpath.clone(), body).await?;
                 let ext = create_extension(extpath.clone(), self).await;
@@ -266,6 +281,7 @@ impl Adapter for DionExtensionAdapter {
                     )
                 }
                 let manifest = peek_manifest(&path).await?;
+                validate_id(&manifest.id)?;
                 let extpath = PathBuf::from(
                     self.client
                         .get_path()
@@ -295,6 +311,7 @@ impl Adapter for DionExtensionAdapter {
     async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()> {
         let data = ext.get_data().read().await;
         let id = &data.data.id;
+        validate_id(id)?;
         let path = self
             .client
             .get_path()
