@@ -41,6 +41,12 @@ function toSettingValue(val: Settingvalues): SettingValue {
 			data: val,
 		};
 	}
+	if (Array.isArray(val) && val.every((e) => typeof e === "string")) {
+		return {
+			type: "StringList",
+			data: val,
+		};
+	}
 	throw new Error("Invalid setting type");
 }
 
@@ -115,7 +121,10 @@ export class SettingStore {
 			this.settings[extension_setting.id] = new_setting;
 			return new_setting.value.data as ExcludeLiteral<T>;
 		}
-		if (setting.default.data === setting.value.data) {
+		if (
+			JSON.stringify(setting.default.data) ===
+			JSON.stringify(setting.value.data)
+		) {
 			setting.value = new_setting.value;
 		}
 		setting.default = new_setting.default;
@@ -446,9 +455,11 @@ export class EntrySettingHandle<T extends Settingvalues> {
 			};
 			return new EntrySetting(this, store, defaultval);
 		}
-		if (typeof setting.default.data !== typeof defaultval) {
+		if (setting.default.type !== toSettingValue(defaultval).type) {
 			console.log("Setting type changed, overwriting");
-			console.log(`${typeof setting.default.data} !== ${typeof defaultval}`);
+			console.log(
+				`${setting.default.type} !== ${toSettingValue(defaultval).type}`,
+			);
 			store.settings[this.id] = {
 				label: this.label ?? this.id,
 				visible: visible ?? this.visible,

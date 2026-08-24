@@ -184,12 +184,14 @@ export function toInteraction(target: InteractionTarget): Interaction {
 	}
 	if (target instanceof Signal || isSubRef(target)) {
 		const ref = toSubRef(target as Signal<unknown> | SubRef<unknown>);
-		// WriteKey only makes sense for store keys. For setting refs the author
-		// should be using a Trigger to commit; fall back to a no-op key here.
-		const key = ref.kind === "store" ? ref.key : "";
+		if (ref.kind !== "store") {
+			throw new Error(
+				`Only Signal/store targets can be used as interactions, got a "${ref.kind}" ref (setting id: ${"settingId" in ref ? ref.settingId : "?"}) — use a Trigger instead`,
+			);
+		}
 		return {
 			type: "WriteKey",
-			key,
+			key: ref.key,
 			value: "",
 		};
 	}

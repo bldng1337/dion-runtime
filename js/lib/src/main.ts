@@ -62,22 +62,17 @@ export abstract class DionExtension implements Extension {
 	triggers: { [key: string]: Trigger<any> } = {};
 
 	async validate(acc: Account): Promise<Account | undefined> {
-		for (const account of Object.values(this.accounts)) {
-			if (
-				!(
-					account.domain === acc.domain &&
-					account.authType.type === acc.auth.type
-				)
-			) {
-				continue;
-			}
-			const data = await account.validate(account);
-			return {
-				...account.getDefinition(),
-				user_name: data?.userName,
-				cover: data?.profilePic,
-			};
-		}
+		const account = Object.values(this.accounts).find(
+			(a) => a.domain === acc.domain && a.authType.type === acc.auth.type,
+		);
+		if (!account) return undefined;
+		const data = await account.validate(account);
+		if (data === undefined || data === null) return undefined;
+		return {
+			...account.getDefinition(),
+			user_name: data.userName,
+			cover: data.profilePic,
+		};
 	}
 
 	async load() {
@@ -110,14 +105,14 @@ export abstract class DionExtension implements Extension {
 				if (!component) return undefined;
 				const values: Record<string, unknown> = {};
 				for (const [k, v] of Object.entries(data.values)) {
-switch (v.type) {
-					case "Setting":
-						values[k] = v.value.data;
-						break;
-					case "Store":
-						values[k] = parseStoreValue(v.value);
-						break;
-				}
+					switch (v.type) {
+						case "Setting":
+							values[k] = v.value.data;
+							break;
+						case "Store":
+							values[k] = parseStoreValue(v.value);
+							break;
+					}
 				}
 				const customui = await component.run(data.static_data, values);
 				return { type: "SlotContent", customui };

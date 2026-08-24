@@ -33,7 +33,7 @@ export function trywrap<T>(a: () => T): T | undefined {
 }
 
 function stringifypair(a: string, b: string) {
-  if (b.length === 0 || a.length === 0) return "";
+	if (b.length === 0 || a.length === 0) return "";
 	return `${encodeURL(a)}=${encodeURL(b)}`;
 }
 
