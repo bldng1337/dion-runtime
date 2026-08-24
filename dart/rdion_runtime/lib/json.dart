@@ -192,7 +192,7 @@ extension JsonEventData on EventData {
             "type": "LoadSlot",
             "handler": handler,
             "static_data": staticData,
-            "values": values,
+            "values": values.map((k, v) => MapEntry(k, v.toJson())),
           },
         EventData_LoadPage(:final handler, :final data, :final page) => {
             "type": "LoadPage",
