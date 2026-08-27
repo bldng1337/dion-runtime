@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'permission.dart';
 import 'source.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
@@ -55,6 +56,8 @@ class RemoteExtension {
   final String version;
   final bool compatible;
 
+  final List<Permission>? permissions;
+
   const RemoteExtension({
     required this.remoteId,
     required this.id,
@@ -63,6 +66,7 @@ class RemoteExtension {
     this.cover,
     required this.version,
     required this.compatible,
+    this.permissions,
   });
 
   static Future<RemoteExtension> default_() =>
@@ -76,7 +80,8 @@ class RemoteExtension {
       url.hashCode ^
       cover.hashCode ^
       version.hashCode ^
-      compatible.hashCode;
+      compatible.hashCode ^
+      permissions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -89,7 +94,8 @@ class RemoteExtension {
           url == other.url &&
           cover == other.cover &&
           version == other.version &&
-          compatible == other.compatible;
+          compatible == other.compatible &&
+          permissions == other.permissions;
 }
 
 /// flutter_rust_bridge:non_opaque

@@ -11,6 +11,7 @@ use dion_runtime::{
         auth::Account,
         extension::{ExtensionData, ExtensionType},
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+        permission::Permission,
         settings::{Setting, SettingKind},
         source::{Link, MediaType},
     },
@@ -73,6 +74,8 @@ pub struct ExtensionMetadata {
     pub settings: HashMap<SettingKind, HashMap<String, Setting>>,
     #[serde(default)]
     pub accounts: Vec<Account>,
+    #[serde(default)]
+    pub permissions: Vec<Permission>,
 }
 
 impl ExtensionMetadata {
@@ -104,6 +107,11 @@ impl ExtensionMetadata {
             version: self.version,
             license: self.license,
             compatible,
+            permissions: if self.permissions.is_empty() {
+                None
+            } else {
+                Some(self.permissions.clone())
+            },
         }
     }
 }
@@ -155,6 +163,11 @@ impl DionRepoIndex {
                     }),
                     version: ext.extdata.version.clone(),
                     compatible: ext.extdata.is_compatible(),
+                    permissions: if ext.extdata.permissions.is_empty() {
+                        None
+                    } else {
+                        Some(ext.extdata.permissions.clone())
+                    },
                 });
             }
         }

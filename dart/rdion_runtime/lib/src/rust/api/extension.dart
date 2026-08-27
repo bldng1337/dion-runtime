@@ -64,6 +64,8 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<Map<String, Setting>> getSettings({required SettingKind kind});
 
+  Future<void> grantPermissions({required List<Permission> permissions});
+
   Future<bool> handleUrl({required String url, CancelToken? token});
 
   Future<bool> hasPermission({required Permission permission});

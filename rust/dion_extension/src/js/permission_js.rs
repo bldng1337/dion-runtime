@@ -79,8 +79,26 @@ mod permission {
                             .await
                             .map_err(|e| JsError::from_rust(&*e))?;
                         if granted {
-                            let mut ext_store = runtime_data.store.write().await;
-                            ext_store.permission.grant(permission);
+                            {
+                                let mut ext_store = runtime_data.store.write().await;
+                                ext_store.permission.grant(permission);
+                            }
+                            let snapshot = runtime_data
+                                .store
+                                .read()
+                                .await
+                                .permission
+                                .get_permissions()
+                                .clone();
+                            if let Err(err) =
+                                dion_runtime::store::permission::PermissionStore::persist(
+                                    &snapshot,
+                                    runtime_data.client.as_ref(),
+                                )
+                                .await
+                            {
+                                log::warn!("Failed to persist granted permissions: {err:?}");
+                            }
                         }
                         granted
                     };

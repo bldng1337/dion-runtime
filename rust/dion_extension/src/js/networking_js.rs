@@ -59,9 +59,27 @@ mod network {
                         };
                         let options = options?.unwrap_or(Value::Null);
                         let options = options.as_object().cloned();
-                        // TODO: enforce the Network/ArbitraryNetwork permission
-                        // model here once extensions actually declare static
-                        // permissions; until then fetch is unrestricted.
+                        let url: reqwest::Url = resource.parse().map_err(|_| {
+                            JsError::from_native(
+                                JsNativeError::error()
+                                    .with_message(format!("Invalid URL: {resource}")),
+                            )
+                        })?;
+                        if matches!(url.scheme(), "http" | "https")
+                            && let Some(host) = url.host_str()
+                        {
+                            let granted = networkcontainer
+                                .ensure_network_permission(host)
+                                .await
+                                .map_err(|e| JsError::from_rust(&*e))?;
+                            if !granted {
+                                return Err(JsError::from_native(
+                                    JsNativeError::error().with_message(format!(
+                                        "Network permission for {host} was denied"
+                                    )),
+                                ));
+                            }
+                        }
                         let method = match &options {
                             Some(options) => {
                                 if options.contains_key("method") {
@@ -89,7 +107,8 @@ mod network {
                             }
                             None => Method::GET,
                         };
-                        let mut rbuild = networkcontainer.network.nclient.request(method, resource);
+                        let mut rbuild =
+                            networkcontainer.network.nclient.request(method, url.clone());
                         if let Some(options) = &options && options.contains_key("body") {
                             rbuild = rbuild.body(
                                 options["body"]

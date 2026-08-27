@@ -2,6 +2,8 @@ use anyhow::Result;
 
 use crate::{client_data::ExtensionClient, data::permission::Permission};
 
+pub const PERMISSION_STORAGE_KEY: &str = "permission";
+
 #[derive(Debug, Clone)]
 pub struct PermissionStore {
     permissions: Vec<Permission>,
@@ -22,7 +24,7 @@ impl PermissionStore {
     }
 
     async fn load_data(&mut self, client: &dyn ExtensionClient) -> Result<()> {
-        let data = client.load_data_secure("permission").await?;
+        let data = client.load_data_secure(PERMISSION_STORAGE_KEY).await?;
         if data.trim().is_empty() {
             return Ok(());
         }
@@ -31,8 +33,12 @@ impl PermissionStore {
     }
 
     pub async fn save_state(&self, client: &dyn ExtensionClient) -> Result<()> {
+        Self::persist(&self.permissions, client).await
+    }
+
+    pub async fn persist(permissions: &[Permission], client: &dyn ExtensionClient) -> Result<()> {
         client
-            .store_data_secure("permission", serde_json::to_string(&self.permissions)?)
+            .store_data_secure(PERMISSION_STORAGE_KEY, serde_json::to_string(permissions)?)
             .await
     }
 

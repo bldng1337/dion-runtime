@@ -377,6 +377,7 @@ impl MihonAdapter {
                     .unwrap_or_else(|| "1.0.0".to_string()),
                 license: String::new(),
                 compatible: true,
+                permissions: None,
             };
 
             // Get ExtensionClient from host

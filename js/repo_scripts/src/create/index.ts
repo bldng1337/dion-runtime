@@ -11,13 +11,24 @@ function prompt(question: string, def?: string): Promise<string> {
 		process.stdout.write(`${question}${def ? ` (${def})` : ""}: `);
 		const chunks: Buffer[] = [];
 		process.stdin.resume();
-		process.stdin.once("data", (data) => {
-			chunks.push(data as Buffer);
+		process.stdin.on("data", (data) => {
+			const buf = data as Buffer;
+			const nl = buf.indexOf(0x0a);
+			if (nl === -1) {
+				chunks.push(buf);
+				return;
+			}
+			chunks.push(buf.subarray(0, nl));
 			process.stdin.pause();
 			const ans = Buffer.concat(chunks).toString().trim();
 			resolve(ans.length ? ans : (def ?? ""));
 		});
 	});
+}
+
+// Extract the value portion of a --flag=value token without truncating at =
+function flagValue(token: string): string {
+	return token.slice(token.indexOf("=") + 1);
 }
 
 function toSlug(name: string): string {
@@ -82,37 +93,37 @@ function parseArgs(args: string[]): CliOptions {
 			const n = it.next();
 			if (!n.done) out.description = n.value as string;
 		} else if (token.startsWith("--description=")) {
-			out.description = token.split("=", 2)[1] ?? "";
+			out.description = flagValue(token);
 		} else if (token === "--url") {
 			const n = it.next();
 			if (!n.done) out.url = n.value as string;
 		} else if (token.startsWith("--url=")) {
-			out.url = token.split("=", 2)[1] ?? "";
+			out.url = flagValue(token);
 		} else if (token === "--author") {
 			const n = it.next();
 			if (!n.done) out.author = n.value as string;
 		} else if (token.startsWith("--author=")) {
-			out.author = token.split("=", 2)[1] ?? "";
+			out.author = flagValue(token);
 		} else if (token === "--icon") {
 			const n = it.next();
 			if (!n.done) out.icon = n.value as string;
 		} else if (token.startsWith("--icon=")) {
-			out.icon = token.split("=", 2)[1] ?? "";
+			out.icon = flagValue(token);
 		} else if (token === "--keywords") {
 			const n = it.next();
 			if (!n.done) out.keywords = n.value as string;
 		} else if (token.startsWith("--keywords=")) {
-			out.keywords = token.split("=", 2)[1] ?? "";
+			out.keywords = flagValue(token);
 		} else if (token === "--media") {
 			const n = it.next();
 			if (!n.done) out.media = n.value as string;
 		} else if (token.startsWith("--media=")) {
-			out.media = token.split("=", 2)[1] ?? "";
+			out.media = flagValue(token);
 		} else if (token === "--name" || token === "-n") {
 			const n = it.next();
 			if (!n.done) out.name = n.value as string;
 		} else if (token.startsWith("--name=")) {
-			out.name = token.split("=", 2)[1] ?? "";
+			out.name = flagValue(token);
 		} else if (!token.startsWith("-")) {
 			// collect positional args; first is treated as target path, second (if present) as name
 			positional.push(token);

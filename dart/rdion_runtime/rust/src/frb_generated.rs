@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -161423037;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1781149062;
 
 // Section: executor
 
@@ -1176,6 +1176,67 @@ fn wire__crate__api__extension__ProxyExtension_get_settings_impl(
                         let output_ok = crate::api::extension::ProxyExtension::get_settings(
                             &*api_that_guard,
                             api_kind,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_grant_permissions_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_grant_permissions",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
+            >>::sse_decode(&mut deserializer);
+            let api_permissions =
+                <Vec<dion_runtime::data::permission::Permission>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::extension::ProxyExtension::grant_permissions(
+                            &*api_that_guard,
+                            api_permissions,
                         )
                         .await?;
                         Ok(output_ok)
@@ -3328,6 +3389,7 @@ const _: fn() = || {
         let _: String = ExtensionData.version;
         let _: String = ExtensionData.license;
         let _: bool = ExtensionData.compatible;
+        let _: Option<Vec<dion_runtime::data::permission::Permission>> = ExtensionData.permissions;
     }
     {
         let ExtensionManagerData =
@@ -3440,6 +3502,8 @@ const _: fn() = || {
         let _: Option<dion_runtime::data::source::Link> = RemoteExtension.cover;
         let _: String = RemoteExtension.version;
         let _: bool = RemoteExtension.compatible;
+        let _: Option<Vec<dion_runtime::data::permission::Permission>> =
+            RemoteExtension.permissions;
     }
     {
         let RemoteExtensionResult =
@@ -5236,6 +5300,8 @@ impl SseDecode for dion_runtime::data::extension::ExtensionData {
         let mut var_version = <String>::sse_decode(deserializer);
         let mut var_license = <String>::sse_decode(deserializer);
         let mut var_compatible = <bool>::sse_decode(deserializer);
+        let mut var_permissions =
+            <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_decode(deserializer);
         return dion_runtime::data::extension::ExtensionData {
             id: var_id,
             name: var_name,
@@ -5252,6 +5318,7 @@ impl SseDecode for dion_runtime::data::extension::ExtensionData {
             version: var_version,
             license: var_license,
             compatible: var_compatible,
+            permissions: var_permissions,
         };
     }
 }
@@ -6213,6 +6280,19 @@ impl SseDecode for Option<Vec<dion_runtime::data::source::ImageListAudio>> {
     }
 }
 
+impl SseDecode for Option<Vec<dion_runtime::data::permission::Permission>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <Vec<dion_runtime::data::permission::Permission>>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for dion_runtime::data::source::Paragraph {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -6356,6 +6436,8 @@ impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
         let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_version = <String>::sse_decode(deserializer);
         let mut var_compatible = <bool>::sse_decode(deserializer);
+        let mut var_permissions =
+            <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_decode(deserializer);
         return dion_runtime::data::extension_repo::RemoteExtension {
             remote_id: var_remoteId,
             id: var_id,
@@ -6364,6 +6446,7 @@ impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
             cover: var_cover,
             version: var_version,
             compatible: var_compatible,
+            permissions: var_permissions,
         };
     }
 }
@@ -7851,6 +7934,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::extension:
             self.0.version.into_into_dart().into_dart(),
             self.0.license.into_into_dart().into_dart(),
             self.0.compatible.into_into_dart().into_dart(),
+            self.0.permissions.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -8273,6 +8357,7 @@ impl flutter_rust_bridge::IntoDart
             self.0.cover.into_into_dart().into_dart(),
             self.0.version.into_into_dart().into_dart(),
             self.0.compatible.into_into_dart().into_dart(),
+            self.0.permissions.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -9807,6 +9892,10 @@ impl SseEncode for dion_runtime::data::extension::ExtensionData {
         <String>::sse_encode(self.version, serializer);
         <String>::sse_encode(self.license, serializer);
         <bool>::sse_encode(self.compatible, serializer);
+        <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_encode(
+            self.permissions,
+            serializer,
+        );
     }
 }
 
@@ -10576,6 +10665,16 @@ impl SseEncode for Option<Vec<dion_runtime::data::source::ImageListAudio>> {
     }
 }
 
+impl SseEncode for Option<Vec<dion_runtime::data::permission::Permission>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<dion_runtime::data::permission::Permission>>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for dion_runtime::data::source::Paragraph {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10697,6 +10796,10 @@ impl SseEncode for dion_runtime::data::extension_repo::RemoteExtension {
         <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
         <String>::sse_encode(self.version, serializer);
         <bool>::sse_encode(self.compatible, serializer);
+        <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_encode(
+            self.permissions,
+            serializer,
+        );
     }
 }
 
@@ -12044,6 +12147,7 @@ mod io {
                 version: self.version.cst_decode(),
                 license: self.license.cst_decode(),
                 compatible: self.compatible.cst_decode(),
+                permissions: self.permissions.cst_decode(),
             }
         }
     }
@@ -12277,6 +12381,16 @@ mod io {
     impl CstDecode<Vec<dion_runtime::data::source::Paragraph>> for *mut wire_cst_list_paragraph {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<dion_runtime::data::source::Paragraph> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<dion_runtime::data::permission::Permission>> for *mut wire_cst_list_permission {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::permission::Permission> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -12552,6 +12666,7 @@ mod io {
                 cover: self.cover.cst_decode(),
                 version: self.version.cst_decode(),
                 compatible: self.compatible.cst_decode(),
+                permissions: self.permissions.cst_decode(),
             }
         }
     }
@@ -13074,6 +13189,7 @@ mod io {
                 version: core::ptr::null_mut(),
                 license: core::ptr::null_mut(),
                 compatible: Default::default(),
+                permissions: core::ptr::null_mut(),
             }
         }
     }
@@ -13279,6 +13395,7 @@ mod io {
                 cover: core::ptr::null_mut(),
                 version: core::ptr::null_mut(),
                 compatible: Default::default(),
+                permissions: core::ptr::null_mut(),
             }
         }
     }
@@ -13707,6 +13824,21 @@ mod io {
         data_len_: i32,
     ) {
         wire__crate__api__extension__ProxyExtension_get_settings_impl(
+            port_,
+            ptr_,
+            rust_vec_len_,
+            data_len_,
+        )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_grant_permissions(
+        port_: i64,
+        ptr_: *mut u8,
+        rust_vec_len_: i32,
+        data_len_: i32,
+    ) {
+        wire__crate__api__extension__ProxyExtension_grant_permissions_impl(
             port_,
             ptr_,
             rust_vec_len_,
@@ -14567,6 +14699,20 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_permission(
+        len: i32,
+    ) -> *mut wire_cst_list_permission {
+        let wrap = wire_cst_list_permission {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_permission>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_popup_action(
         len: i32,
     ) -> *mut wire_cst_list_popup_action {
@@ -15278,6 +15424,7 @@ mod io {
         version: *mut wire_cst_list_prim_u_8_strict,
         license: *mut wire_cst_list_prim_u_8_strict,
         compatible: bool,
+        permissions: *mut wire_cst_list_permission,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -15447,6 +15594,12 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_list_paragraph {
         ptr: *mut wire_cst_paragraph,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_list_permission {
+        ptr: *mut wire_cst_permission,
         len: i32,
     }
     #[repr(C)]
@@ -15657,6 +15810,7 @@ mod io {
         cover: *mut wire_cst_link,
         version: *mut wire_cst_list_prim_u_8_strict,
         compatible: bool,
+        permissions: *mut wire_cst_list_permission,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

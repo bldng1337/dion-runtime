@@ -162,6 +162,7 @@ impl RepoExtension {
             // MihonExtensionMetadata::is_compatible() which treats a missing
             // lib_version as compatible.
             compatible: true,
+            permissions: None,
         }
     }
 }

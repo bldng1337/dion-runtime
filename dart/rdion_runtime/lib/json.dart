@@ -1111,6 +1111,8 @@ extension JsonExtensionData on ExtensionData {
         "version": version,
         "license": license,
         "compatible": compatible,
+        if (permissions != null)
+          "permissions": permissions!.map((e) => e.toJson()).toList(),
       };
 
   static ExtensionData fromJson(dynamic value) => ExtensionData(
@@ -1133,6 +1135,11 @@ extension JsonExtensionData on ExtensionData {
         version: value["version"],
         license: value["license"],
         compatible: value["compatible"],
+        permissions: value["permissions"] != null
+            ? (value["permissions"] as List)
+                  .map((e) => JsonPermission.fromJson(e))
+                  .toList()
+            : null,
       );
 }
 
@@ -1245,6 +1252,8 @@ extension JsonRemoteExtension on RemoteExtension {
         if (cover != null) "cover": cover!.toJson(),
         "version": version,
         "compatible": compatible,
+        if (permissions != null)
+          "permissions": permissions!.map((e) => e.toJson()).toList(),
       };
 
   static RemoteExtension fromJson(dynamic value) => RemoteExtension(
@@ -1256,6 +1265,11 @@ extension JsonRemoteExtension on RemoteExtension {
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
         version: value["version"],
         compatible: value["compatible"],
+        permissions: value["permissions"] != null
+            ? (value["permissions"] as List)
+                  .map((e) => JsonPermission.fromJson(e))
+                  .toList()
+            : null,
       );
 }
 

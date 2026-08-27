@@ -8,10 +8,11 @@ import 'dart:convert';
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
+import 'permission.dart';
 import 'source.dart';
 part 'extension.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -32,6 +33,8 @@ class ExtensionData {
   final String license;
   final bool compatible;
 
+  final List<Permission>? permissions;
+
   const ExtensionData({
     required this.id,
     required this.name,
@@ -48,6 +51,7 @@ class ExtensionData {
     required this.version,
     required this.license,
     required this.compatible,
+    this.permissions,
   });
 
   static Future<ExtensionData> default_() =>
@@ -69,7 +73,8 @@ class ExtensionData {
       repo.hashCode ^
       version.hashCode ^
       license.hashCode ^
-      compatible.hashCode;
+      compatible.hashCode ^
+      permissions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -90,7 +95,8 @@ class ExtensionData {
           repo == other.repo &&
           version == other.version &&
           license == other.license &&
-          compatible == other.compatible;
+          compatible == other.compatible &&
+          permissions == other.permissions;
 }
 
 @freezed

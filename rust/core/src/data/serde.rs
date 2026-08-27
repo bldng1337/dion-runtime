@@ -688,6 +688,7 @@ mod test {
                 version: "1.0".to_string(),
                 license: "MIT".to_string(),
                 compatible: true,
+                permissions: None,
             },
             ExtensionData {
                 id: "test_id_2".to_string(),
@@ -708,6 +709,15 @@ mod test {
                 version: "2.0".to_string(),
                 license: "Apache-2.0".to_string(),
                 compatible: true,
+                permissions: Some(vec![
+                    Permission::Network {
+                        domains: vec!["example.com".to_string(), "cdn.example.com".to_string()],
+                    },
+                    Permission::Storage {
+                        path: "/downloads".to_string(),
+                        write: true,
+                    },
+                ]),
             },
             ExtensionData {
                 id: "test_id_3".to_string(),
@@ -725,6 +735,7 @@ mod test {
                 version: "1.5".to_string(),
                 license: "GPL-3.0".to_string(),
                 compatible: false,
+                permissions: None,
             },
         ]
     }
@@ -770,6 +781,7 @@ mod test {
                 cover: None,
                 version: "1.0".to_string(),
                 compatible: true,
+                permissions: None,
             },
             RemoteExtension {
                 remote_id: "remote_id_2".to_string(),
@@ -785,6 +797,9 @@ mod test {
                 }),
                 version: "2.0".to_string(),
                 compatible: true,
+                permissions: Some(vec![Permission::Network {
+                    domains: vec!["example.com".to_string()],
+                }]),
             },
             RemoteExtension {
                 remote_id: "remote_id_3".to_string(),
@@ -794,6 +809,7 @@ mod test {
                 cover: None,
                 version: "0.5".to_string(),
                 compatible: false,
+                permissions: None,
             },
         ]
     }

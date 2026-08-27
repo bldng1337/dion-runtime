@@ -147,6 +147,28 @@ impl ProxyExtension {
     }
 
     #[frb(serialize)]
+    pub async fn grant_permissions(&self, permissions: Vec<Permission>) -> Result<()> {
+        {
+            let mut store = self.inner.inner.get_data().write().await;
+            for permission in permissions {
+                store.permission.grant(permission);
+            }
+        }
+        let snapshot = self
+            .inner
+            .inner
+            .get_data()
+            .read()
+            .await
+            .permission
+            .get_permissions()
+            .clone();
+        let client = self.inner.inner.get_client();
+        dion_runtime::store::permission::PermissionStore::persist(&snapshot, client).await?;
+        Ok(())
+    }
+
+    #[frb(serialize)]
     pub async fn event(
         &self,
         event: EventData,

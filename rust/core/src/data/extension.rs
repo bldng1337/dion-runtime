@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "type")]
 use specta::Type;
 
+use crate::data::permission::Permission;
 use crate::data::source::{MediaType, SourceType};
 
 /// flutter_rust_bridge:non_opaque
@@ -35,6 +36,9 @@ pub struct ExtensionData {
     pub version: String,
     pub license: String,
     pub compatible: bool,
+    #[cfg_attr(feature = "type", specta(optional))]
+    #[serde(default)]
+    pub permissions: Option<Vec<Permission>>,
 }
 
 /// flutter_rust_bridge:non_opaque

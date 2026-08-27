@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -161423037;
+  int get rustContentHash => 1781149062;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -177,6 +177,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<Map<String, Setting>> crateApiExtensionProxyExtensionGetSettings(
       {required ProxyExtension that, required SettingKind kind});
+
+  Future<void> crateApiExtensionProxyExtensionGrantPermissions(
+      {required ProxyExtension that, required List<Permission> permissions});
 
   Future<bool> crateApiExtensionProxyExtensionHandleUrl(
       {required ProxyExtension that, required String url, CancelToken? token});
@@ -1053,6 +1056,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_get_settings",
         argNames: ["that", "kind"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionGrantPermissions(
+      {required ProxyExtension that, required List<Permission> permissions}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            that, serializer);
+        sse_encode_list_permission(permissions, serializer);
+        final raw_ = serializer.intoRaw();
+        return wire
+            .wire__crate__api__extension__ProxyExtension_grant_permissions(
+                port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionGrantPermissionsConstMeta,
+      argValues: [that, permissions],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionGrantPermissionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_grant_permissions",
+        argNames: ["that", "permissions"],
       );
 
   @override
@@ -3557,8 +3590,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ExtensionData dco_decode_extension_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 15)
-      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    if (arr.length != 16)
+      throw Exception('unexpected arr length: expect 16 but see ${arr.length}');
     return ExtensionData(
       id: dco_decode_String(arr[0]),
       name: dco_decode_String(arr[1]),
@@ -3575,6 +3608,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       version: dco_decode_String(arr[12]),
       license: dco_decode_String(arr[13]),
       compatible: dco_decode_bool(arr[14]),
+      permissions: dco_decode_opt_list_permission(arr[15]),
     );
   }
 
@@ -4100,6 +4134,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Permission>? dco_decode_opt_list_permission(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_permission(raw);
+  }
+
+  @protected
   Paragraph dco_decode_paragraph(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
@@ -4221,8 +4261,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RemoteExtension dco_decode_remote_extension(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return RemoteExtension(
       remoteId: dco_decode_String(arr[0]),
       id: dco_decode_String(arr[1]),
@@ -4231,6 +4271,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       cover: dco_decode_opt_box_autoadd_link(arr[4]),
       version: dco_decode_String(arr[5]),
       compatible: dco_decode_bool(arr[6]),
+      permissions: dco_decode_opt_list_permission(arr[7]),
     );
   }
 
@@ -5592,6 +5633,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_version = sse_decode_String(deserializer);
     var var_license = sse_decode_String(deserializer);
     var var_compatible = sse_decode_bool(deserializer);
+    var var_permissions = sse_decode_opt_list_permission(deserializer);
     return ExtensionData(
         id: var_id,
         name: var_name,
@@ -5607,7 +5649,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         repo: var_repo,
         version: var_version,
         license: var_license,
-        compatible: var_compatible);
+        compatible: var_compatible,
+        permissions: var_permissions);
   }
 
   @protected
@@ -6445,6 +6488,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Permission>? sse_decode_opt_list_permission(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_permission(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   Paragraph sse_decode_paragraph(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -6551,6 +6606,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_cover = sse_decode_opt_box_autoadd_link(deserializer);
     var var_version = sse_decode_String(deserializer);
     var var_compatible = sse_decode_bool(deserializer);
+    var var_permissions = sse_decode_opt_list_permission(deserializer);
     return RemoteExtension(
         remoteId: var_remoteId,
         id: var_id,
@@ -6558,7 +6614,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         url: var_url,
         cover: var_cover,
         version: var_version,
-        compatible: var_compatible);
+        compatible: var_compatible,
+        permissions: var_permissions);
   }
 
   @protected
@@ -8180,6 +8237,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.version, serializer);
     sse_encode_String(self.license, serializer);
     sse_encode_bool(self.compatible, serializer);
+    sse_encode_opt_list_permission(self.permissions, serializer);
   }
 
   @protected
@@ -8897,6 +8955,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_list_permission(
+      List<Permission>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_permission(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_paragraph(Paragraph self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
@@ -8990,6 +9059,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_box_autoadd_link(self.cover, serializer);
     sse_encode_String(self.version, serializer);
     sse_encode_bool(self.compatible, serializer);
+    sse_encode_opt_list_permission(self.permissions, serializer);
   }
 
   @protected
@@ -9399,6 +9469,12 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
   Future<Map<String, Setting>> getSettings({required SettingKind kind}) =>
       RustLib.instance.api
           .crateApiExtensionProxyExtensionGetSettings(that: this, kind: kind);
+
+  /// Grant permissions without a host prompt (e.g. the install-time consent
+  /// for manifest-declared permissions). Merges into the store and persists.
+  Future<void> grantPermissions({required List<Permission> permissions}) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionGrantPermissions(
+          that: this, permissions: permissions);
 
   Future<bool> handleUrl({required String url, CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionHandleUrl(

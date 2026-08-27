@@ -53,7 +53,22 @@ Required Dion fields (validation fails without these):
 | `extension_type` | `ExtensionType[]` | Declared capabilities. **Hand-authored** — `dion-bundle` does not derive it from your code, it copies whatever you write here into the metadata. The app uses it to filter/show extensions; an empty array (`[]`, the scaffold default) is treated as "provides everything". Variants and how they map to interfaces are listed below. Full schema in `@dion-js/runtime-types/runtime`. |
 
 Optional Dion fields: `desc` (string), `authors` (string[]), `tags` (string[]),
-`lang` (string[]), `repo` (string — usually auto-filled from git), `settings`, `accounts`.
+`lang` (string[]), `repo` (string — usually auto-filled from git), `settings`, `accounts`,
+`permissions` (`Permission[]`).
+
+`permissions` declares what the extension needs up front, e.g. the hosts it will fetch from:
+
+```json
+"permissions": [
+  { "type": "Network", "domains": ["example.com", "cdn.example.com", "api.example.com"] }
+]
+```
+
+Hosts grant declared permissions at install time. A fetch to an undeclared host
+prompts the user once per host; a denied host fails the fetch with a JS error
+until granted. List every host you fetch from, including image/CDN hosts.
+Other permission types (`Storage`, `ArbitraryNetwork`, `ActionPopup`) exist for
+future host-side enforcement.
 
 Also required by the tooling: `"type": "module"`, `"private": true`, and the standard `scripts` block:
 

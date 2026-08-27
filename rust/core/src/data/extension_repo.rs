@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "type")]
 use specta::Type;
 
+use crate::data::permission::Permission;
 use crate::data::source::Link;
 
 /// flutter_rust_bridge:non_opaque
@@ -16,6 +17,9 @@ pub struct RemoteExtension {
     pub cover: Option<Link>,
     pub version: String,
     pub compatible: bool,
+    #[cfg_attr(feature = "type", specta(optional))]
+    #[serde(default)]
+    pub permissions: Option<Vec<Permission>>,
 }
 
 /// flutter_rust_bridge:non_opaque

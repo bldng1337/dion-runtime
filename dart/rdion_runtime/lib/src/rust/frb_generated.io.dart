@@ -599,6 +599,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<ImageListAudio>? dco_decode_opt_list_image_list_audio(dynamic raw);
 
   @protected
+  List<Permission>? dco_decode_opt_list_permission(dynamic raw);
+
+  @protected
   Paragraph dco_decode_paragraph(dynamic raw);
 
   @protected
@@ -1253,6 +1256,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<Permission>? sse_decode_opt_list_permission(
+      SseDeserializer deserializer);
+
+  @protected
   Paragraph sse_decode_paragraph(SseDeserializer deserializer);
 
   @protected
@@ -1797,6 +1804,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<wire_cst_list_permission> cst_encode_list_permission(
+      List<Permission> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_permission(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_permission(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
   ffi.Pointer<wire_cst_list_popup_action> cst_encode_list_popup_action(
       List<PopupAction> raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2123,6 +2141,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       cst_encode_opt_list_image_list_audio(List<ImageListAudio>? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_list_image_list_audio(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_permission> cst_encode_opt_list_permission(
+      List<Permission>? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_list_permission(raw);
   }
 
   @protected
@@ -2839,6 +2864,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.version = cst_encode_String(apiObj.version);
     wireObj.license = cst_encode_String(apiObj.license);
     wireObj.compatible = cst_encode_bool(apiObj.compatible);
+    wireObj.permissions = cst_encode_opt_list_permission(apiObj.permissions);
   }
 
   @protected
@@ -3058,6 +3084,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
     wireObj.version = cst_encode_String(apiObj.version);
     wireObj.compatible = cst_encode_bool(apiObj.compatible);
+    wireObj.permissions = cst_encode_opt_list_permission(apiObj.permissions);
   }
 
   @protected
@@ -4013,6 +4040,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<ImageListAudio>? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_list_permission(
+      List<Permission>? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_paragraph(Paragraph self, SseSerializer serializer);
 
   @protected
@@ -4665,6 +4696,35 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__crate__api__extension__ProxyExtension_get_settings =
       _wire__crate__api__extension__ProxyExtension_get_settingsPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_grant_permissions(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_grant_permissions(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_grant_permissionsPtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<ffi.Uint8>,
+                ffi.Int32,
+                ffi.Int32,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_grant_permissions',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_grant_permissions =
+      _wire__crate__api__extension__ProxyExtension_grant_permissionsPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
   void wire__crate__api__extension__ProxyExtension_handle_url(
@@ -6175,6 +6235,17 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_paragraph = _cst_new_list_paragraphPtr
       .asFunction<ffi.Pointer<wire_cst_list_paragraph> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_permission> cst_new_list_permission(int len) {
+    return _cst_new_list_permission(len);
+  }
+
+  late final _cst_new_list_permissionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_permission> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_permission');
+  late final _cst_new_list_permission = _cst_new_list_permissionPtr
+      .asFunction<ffi.Pointer<wire_cst_list_permission> Function(int)>();
+
   ffi.Pointer<wire_cst_list_popup_action> cst_new_list_popup_action(int len) {
     return _cst_new_list_popup_action(len);
   }
@@ -7353,6 +7424,37 @@ final class wire_cst_Paragraph_Table extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_row> columns;
 }
 
+final class wire_cst_Permission_Storage extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> path;
+
+  @ffi.Bool()
+  external bool write;
+}
+
+final class wire_cst_Permission_Network extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_String> domains;
+}
+
+final class PermissionKind extends ffi.Union {
+  external wire_cst_Permission_Storage Storage;
+
+  external wire_cst_Permission_Network Network;
+}
+
+final class wire_cst_permission extends ffi.Struct {
+  @ffi.Int32()
+  external int tag;
+
+  external PermissionKind kind;
+}
+
+final class wire_cst_list_permission extends ffi.Struct {
+  external ffi.Pointer<wire_cst_permission> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_setting extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> label;
 
@@ -7430,6 +7532,8 @@ final class wire_cst_remote_extension extends ffi.Struct {
 
   @ffi.Bool()
   external bool compatible;
+
+  external ffi.Pointer<wire_cst_list_permission> permissions;
 }
 
 final class wire_cst_list_remote_extension extends ffi.Struct {
@@ -7593,6 +7697,8 @@ final class wire_cst_extension_data extends ffi.Struct {
 
   @ffi.Bool()
   external bool compatible;
+
+  external ffi.Pointer<wire_cst_list_permission> permissions;
 }
 
 final class wire_cst_extension_manager_data extends ffi.Struct {
@@ -7604,30 +7710,6 @@ final class wire_cst_extension_manager_data extends ffi.Struct {
 
   @ffi.Uint32()
   external int api_version;
-}
-
-final class wire_cst_Permission_Storage extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> path;
-
-  @ffi.Bool()
-  external bool write;
-}
-
-final class wire_cst_Permission_Network extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_String> domains;
-}
-
-final class PermissionKind extends ffi.Union {
-  external wire_cst_Permission_Storage Storage;
-
-  external wire_cst_Permission_Network Network;
-}
-
-final class wire_cst_permission extends ffi.Struct {
-  @ffi.Int32()
-  external int tag;
-
-  external PermissionKind kind;
 }
 
 final class wire_cst_remote_extension_result extends ffi.Struct {

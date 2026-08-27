@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::path::PathBuf;
 use std::sync::Arc;
 
@@ -9,6 +10,7 @@ use dion_runtime::data::action::EventData;
 use dion_runtime::data::action::EventResult;
 use dion_runtime::data::activity::EntryActivity;
 use dion_runtime::data::auth::Account;
+use dion_runtime::data::permission::Permission;
 use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::EntryDetailed;
 use dion_runtime::data::source::EntryDetailedResult;
@@ -23,6 +25,7 @@ use dion_runtime::store::auth::AuthStore;
 use dion_runtime::store::permission::PermissionStore;
 use dion_runtime::store::settings::SettingStore;
 use tokio::fs;
+use tokio::sync::Notify;
 use tokio::sync::RwLock;
 use tokio::sync::oneshot;
 use tokio_util::sync::CancellationToken;
@@ -41,6 +44,103 @@ pub struct InnerExtension {
     pub(crate) network: DionNetworkManager,
     pub(crate) context: ArcSwapOption<ThreadedJSContext<Task>>,
     pub(crate) proxy: Arc<RwLock<Proxy>>,
+    pub(crate) network_permissions: tokio::sync::Mutex<NetworkPermissionCache>,
+}
+
+#[derive(Debug, Default)]
+pub(crate) struct NetworkPermissionCache {
+    inflight: HashMap<String, Arc<Notify>>,
+    denied: HashSet<String>,
+}
+
+impl InnerExtension {
+    pub(crate) async fn ensure_network_permission(&self, host: &str) -> Result<bool> {
+        let permission = Permission::Network {
+            domains: vec![host.to_string()],
+        };
+        if self
+            .store
+            .read()
+            .await
+            .permission
+            .has_permission(&permission)
+        {
+            return Ok(true);
+        }
+        let mut cache = self.network_permissions.lock().await;
+        // Re-check: a prompt may have completed while we waited for the cache.
+        if self
+            .store
+            .read()
+            .await
+            .permission
+            .has_permission(&permission)
+        {
+            return Ok(true);
+        }
+        if cache.denied.contains(host) {
+            return Ok(false);
+        }
+        if let Some(notify) = cache.inflight.get(host).cloned() {
+            // Another fetch is already prompting for this host; wait for it.
+            // The `notified()` future must be created before dropping the
+            // cache lock so the promoter's `notify_waiters` wakes us.
+            let notified = notify.notified();
+            drop(cache);
+            notified.await;
+            return Ok(self
+                .store
+                .read()
+                .await
+                .permission
+                .has_permission(&permission));
+        }
+        let notify = Arc::new(Notify::new());
+        cache.inflight.insert(host.to_string(), notify.clone());
+        drop(cache);
+        let ext_name = self.store.read().await.data.name.clone();
+        let prompt = self
+            .client
+            .request_permission(
+                &permission,
+                Some(format!("Extension \"{ext_name}\" wants to access {host}")),
+            )
+            .await;
+        let granted = match prompt {
+            Ok(granted) => granted,
+            Err(err) => {
+                // Clean up so waiters and future fetches are not stuck on a
+                // dead prompt.
+                let mut cache = self.network_permissions.lock().await;
+                cache.inflight.remove(host);
+                drop(cache);
+                notify.notify_waiters();
+                return Err(err);
+            }
+        };
+        if granted {
+            {
+                let mut store = self.store.write().await;
+                store.permission.grant(permission);
+            }
+            // Persist via a snapshot, without holding the store lock: the
+            // host round-trip may re-enter the runtime.
+            let snapshot = self.store.read().await.permission.get_permissions().clone();
+            if let Err(err) = PermissionStore::persist(&snapshot, self.client.as_ref()).await {
+                log::warn!("Failed to persist granted permissions: {err:?}");
+            }
+        }
+        let mut cache = self.network_permissions.lock().await;
+        cache.inflight.remove(host);
+        if granted {
+            cache.denied.remove(host);
+        } else {
+            cache.denied.insert(host.to_string());
+        }
+        drop(cache);
+        notify.notify_waiters();
+        Ok(granted)
+    }
 }
 
 #[derive(Debug)]
@@ -81,6 +181,7 @@ impl DionExtension {
             network,
             store: RwLock::new(ext),
             context: ArcSwapOption::from(None),
+            network_permissions: Default::default(),
         });
         let proxy = manager.proxy.clone();
         let proxy_ref = ProxyExtensionRef::new(&proxy, Arc::downgrade(&data)).await;

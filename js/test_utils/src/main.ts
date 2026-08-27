@@ -51,7 +51,7 @@ export class MockExtensionClient {
 			// Empty mock implementation
 		});
 		this.requestPermission = mock((_err: Error | null, _asd: Permission) => {
-			return false;
+			return true;
 		});
 		this.getPath = mock(() => {
 			return `${basepath}/${extdata.name}`;
