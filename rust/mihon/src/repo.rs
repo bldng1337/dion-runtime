@@ -246,12 +246,14 @@ pub(crate) async fn fetch_repo(index_url: &str) -> Result<RepoIndex> {
     Ok(RepoIndex { store, extensions })
 }
 
-/// The outcome of parsing a store payload: either a resolved store, or a URL
-/// to follow instead (legacy array → sibling `repo.json`, or `repo.json`
-/// pointing at its `index_v2` store).
+/// The outcome of parsing a store payload: either a resolved store, or a
+/// legacy repo to resolve further (upgrading to its `index_v2` store when
+/// its `repo.json` points at one).
 enum StoreResolution {
     Store(RepoStore),
-    Redirect(String),
+    /// The parsed `repo.json`, when the payload was one. `None` for a plain
+    /// legacy extension array.
+    Legacy(Option<LegacyRepoJson>),
 }
 
 /// Boxed so the `index_v2` redirect can recurse.
@@ -266,8 +268,68 @@ async fn fetch_store_inner(index_url: String, depth: usize) -> Result<RepoStore>
     let body = get_bytes(&index_url).await?;
     match parse_store_payload(&index_url, &body)? {
         StoreResolution::Store(store) => Ok(store),
-        StoreResolution::Redirect(next) => Box::pin(fetch_store_inner(next, depth + 1)).await,
+        StoreResolution::Legacy(repo_json) => {
+            resolve_legacy_store(index_url, repo_json, depth).await
+        }
     }
+}
+
+/// Resolve a legacy repo to a store.
+///
+/// Newer repos publish a `repo.json` pointing at a new-style store
+/// (`index_v2`); older ones only serve the plain JSON array, possibly with
+/// no `repo.json` at all. Prefer the pointed-at store when it exists, but
+/// always degrade to the plain legacy index rather than failing the repo.
+async fn resolve_legacy_store(
+    index_url: String,
+    repo_json: Option<LegacyRepoJson>,
+    depth: usize,
+) -> Result<RepoStore> {
+    // When we only saw the extension array, opportunistically fetch the
+    // sibling `repo.json`.
+    let repo_json = match repo_json {
+        Some(repo) => Some(repo),
+        None => {
+            let url = format!("{}/repo.json", repo_base_url(&index_url));
+            match get_bytes(&url).await {
+                Ok(body) => serde_json::from_slice::<LegacyRepoJson>(&body).ok(),
+                // No repo.json — a repo that never migrated past the bare
+                // legacy index.
+                Err(_) => None,
+            }
+        }
+    };
+
+    if let Some(v2) = repo_json
+        .as_ref()
+        .and_then(|r| r.index_v2.as_deref())
+        .filter(|v| !v.is_empty())
+    {
+        match Box::pin(fetch_store_inner(v2.to_string(), depth + 1)).await {
+            Ok(store) => return Ok(store),
+            Err(err) => log::warn!(
+                "index_v2 store {v2} is unavailable, falling back to the legacy index: {err:#}"
+            ),
+        }
+    }
+
+    let (name, badge_label, signing_key) = match repo_json {
+        Some(repo) => (
+            repo.meta.name,
+            repo.meta.short_name.unwrap_or_default(),
+            repo.meta.signing_key_fingerprint,
+        ),
+        // No metadata available; the adapter falls back to a URL-derived name.
+        None => (String::new(), String::new(), String::new()),
+    };
+    Ok(RepoStore {
+        index_url,
+        name,
+        badge_label,
+        signing_key,
+        is_legacy: true,
+        extension_list_url: None,
+    })
 }
 
 /// Parse a store payload, detecting the format by its first byte (after
@@ -275,25 +337,12 @@ async fn fetch_store_inner(index_url: String, depth: usize) -> Result<RepoStore>
 fn parse_store_payload(index_url: &str, body: &[u8]) -> Result<StoreResolution> {
     let body = decompress_if_gzipped(body);
     match body.first() {
-        // Legacy JSON array: metadata lives in the sibling repo.json.
-        Some(b'[') => Ok(StoreResolution::Redirect(format!(
-            "{}/repo.json",
-            repo_base_url(index_url)
-        ))),
+        // Legacy JSON array of extensions.
+        Some(b'[') => Ok(StoreResolution::Legacy(None)),
         // JSON: either legacy repo metadata (`repo.json`) or a JSON-encoded
         // store (protobuf's canonical JSON mapping).
         Some(b'{') => match serde_json::from_slice::<LegacyRepoJson>(&body) {
-            Ok(repo) => match repo.index_v2.filter(|v| !v.is_empty()) {
-                Some(v2) => Ok(StoreResolution::Redirect(v2)),
-                None => Ok(StoreResolution::Store(RepoStore {
-                    index_url: index_url.to_string(),
-                    name: repo.meta.name,
-                    badge_label: repo.meta.short_name.unwrap_or_default(),
-                    signing_key: repo.meta.signing_key_fingerprint,
-                    is_legacy: true,
-                    extension_list_url: None,
-                })),
-            },
+            Ok(repo) => Ok(StoreResolution::Legacy(Some(repo))),
             Err(_) => {
                 let store: StoreJson =
                     serde_json::from_slice(&body).context("invalid extension store JSON")?;
@@ -313,13 +362,14 @@ fn parse_store_payload(index_url: &str, body: &[u8]) -> Result<StoreResolution> 
 /// Fetch the extension list for a resolved store.
 async fn fetch_extensions(store: &RepoStore) -> Result<Vec<RepoExtension>> {
     if store.is_legacy {
-        // Legacy stores keep serving the plain JSON array; `index_url`
-        // points at its `repo.json`.
-        let index_url = store
-            .index_url
-            .strip_suffix("/repo.json")
-            .unwrap_or(&store.index_url);
-        let base = repo_base_url(index_url);
+        // Legacy stores keep serving the plain JSON array. `index_url` is
+        // either the repo's `repo.json` (already the full path minus the
+        // file name once stripped) or the index file itself — both reduce
+        // to the repo directory here.
+        let base = match store.index_url.strip_suffix("/repo.json") {
+            Some(dir) => dir.to_string(),
+            None => repo_base_url(&store.index_url),
+        };
         let body = get_bytes(&format!("{}/index.min.json", base)).await?;
         let list: Vec<LegacyExtensionJson> =
             serde_json::from_slice(&body).context("invalid legacy index JSON")?;
@@ -552,11 +602,15 @@ fn repo_extension_from_legacy(ext: &LegacyExtensionJson, base: &str) -> RepoExte
         version: ext.version.clone(),
         nsfw: ext.nsfw == 1,
         // The legacy index has no lib field; tsundoku approximates it from
-        // the version string ("1.4.3" → 1.4).
+        // the version string ("1.4.3" → 1.4). Anime repos use a different
+        // versioning scheme ("14.10") where this yields nonsense like 14.0,
+        // so only trust the estimate when it lands in the plausible 1.x lib
+        // range; anything else means "unknown".
         lib_version: ext
             .version
             .rsplit_once('.')
-            .and_then(|(major_minor, _)| major_minor.parse().ok()),
+            .and_then(|(major_minor, _)| major_minor.parse().ok())
+            .filter(|v| (1.0..2.0).contains(v)),
         sources,
         // Legacy index carries no novel flag; novel extensions use the
         // novelextension package prefix.
@@ -906,19 +960,22 @@ mod tests {
     }
 
     #[test]
-    fn parses_repo_json_fixture_redirecting_to_index_v2() {
+    fn parses_repo_json_fixture_with_index_v2() {
         // NovelSourcery's repo.json points at the new-style index.pb.
         let body = fixture("novelsourcery_repo.json");
         let resolution =
             parse_store_payload("https://example.com/repo/repo.json", &body).unwrap();
-        let StoreResolution::Redirect(next) = resolution else {
-            panic!("expected redirect, got store");
+        let StoreResolution::Legacy(Some(repo)) = resolution else {
+            panic!("expected legacy repo, got something else");
         };
-        assert_eq!(next, "https://github.com/NovelSourcery/extensions/raw/repo/index.pb");
+        assert_eq!(
+            repo.index_v2.as_deref(),
+            Some("https://github.com/NovelSourcery/extensions/raw/repo/index.pb")
+        );
     }
 
     #[test]
-    fn parses_repo_json_without_index_v2_as_legacy_store() {
+    fn resolves_repo_json_without_index_v2_as_legacy_store() {
         let body = br#"{
             "meta": {
                 "name": "Legacy Repo",
@@ -929,9 +986,17 @@ mod tests {
         }"#;
         let resolution =
             parse_store_payload("https://example.com/repo/repo.json", body).unwrap();
-        let StoreResolution::Store(store) = resolution else {
-            panic!("expected store, got redirect");
+        let StoreResolution::Legacy(repo_json) = resolution else {
+            panic!("expected legacy repo, got something else");
         };
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let store = rt
+            .block_on(resolve_legacy_store(
+                "https://example.com/repo/repo.json".to_string(),
+                repo_json,
+                0,
+            ))
+            .unwrap();
         assert!(store.is_legacy);
         assert_eq!(store.name, "Legacy Repo");
         assert_eq!(store.badge_label, "LR");
@@ -940,17 +1005,90 @@ mod tests {
     }
 
     #[test]
-    fn legacy_array_redirects_to_sibling_repo_json() {
+    fn resolves_bare_legacy_store_without_repo_json() {
+        // A plain `[`-array payload with no reachable repo.json (connection
+        // refused on the loopback discard port) degrades to a bare legacy
+        // store instead of failing the repo.
+        let resolution = parse_store_payload(
+            "http://127.0.0.1:9/repo/index.min.json",
+            br#"[{"name":"X","pkg":"p.x","apk":"x.apk"}]"#,
+        )
+        .unwrap();
+        let StoreResolution::Legacy(repo_json) = resolution else {
+            panic!("expected legacy repo, got something else");
+        };
+        assert!(repo_json.is_none());
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let store = rt
+            .block_on(resolve_legacy_store(
+                "http://127.0.0.1:9/repo/index.min.json".to_string(),
+                repo_json,
+                0,
+            ))
+            .unwrap();
+        assert!(store.is_legacy);
+        assert_eq!(store.name, "");
+        assert_eq!(store.index_url, "http://127.0.0.1:9/repo/index.min.json");
+    }
+
+    #[test]
+    fn legacy_array_parses_as_legacy_resolution() {
         let body = fixture("novelsourcery_index.min.json");
         let url = "https://raw.githubusercontent.com/NovelSourcery/extensions/repo/index.min.json";
         let resolution = parse_store_payload(url, &body).unwrap();
-        let StoreResolution::Redirect(next) = resolution else {
-            panic!("expected redirect, got store");
+        assert!(matches!(resolution, StoreResolution::Legacy(None)));
+    }
+
+    #[test]
+    fn legacy_extension_base_derivation_skips_double_strip() {
+        // Regression: for a store resolved from `…/repo/repo.json`, the
+        // legacy branch used to strip "/repo.json" and then strip the "repo"
+        // directory too, fetching `…/index.min.json` instead of
+        // `…/repo/index.min.json`.
+        let store = RepoStore {
+            index_url: "https://example.com/anime-repo/repo/repo.json".to_string(),
+            name: "Y".to_string(),
+            badge_label: String::new(),
+            signing_key: String::new(),
+            is_legacy: true,
+            extension_list_url: None,
         };
-        assert_eq!(
-            next,
-            "https://raw.githubusercontent.com/NovelSourcery/extensions/repo/repo.json"
-        );
+        let base = match store.index_url.strip_suffix("/repo.json") {
+            Some(dir) => dir.to_string(),
+            None => repo_base_url(&store.index_url),
+        };
+        assert_eq!(base, "https://example.com/anime-repo/repo");
+
+        // A store resolved straight from the index file keeps working too.
+        let store = RepoStore {
+            index_url: "https://example.com/anime-repo/repo/index.min.json".to_string(),
+            ..store
+        };
+        let base = match store.index_url.strip_suffix("/repo.json") {
+            Some(dir) => dir.to_string(),
+            None => repo_base_url(&store.index_url),
+        };
+        assert_eq!(base, "https://example.com/anime-repo/repo");
+    }
+
+    #[test]
+    fn anime_versioning_does_not_implicate_lib_version() {
+        // Anime repos version extensions "14.10"; the version-derived lib
+        // estimate must stay None (→ compatible) outside the 1.x range.
+        let json = r#"{
+            "name": "Aniyomi: AnimeOnsen",
+            "pkg": "eu.kanade.tachiyomi.animeextension.all.animeonsen",
+            "apk": "aniyomi-all.animeonsen-v14.10.apk",
+            "lang": "all",
+            "code": 10,
+            "version": "14.10",
+            "nsfw": 0,
+            "sources": [{"name": "AnimeOnsen", "lang": "all", "id": "8542735178285060053", "baseUrl": "https://www.animeonsen.xyz"}]
+        }"#;
+        let ext: LegacyExtensionJson = serde_json::from_str(json).unwrap();
+        let mapped = repo_extension_from_legacy(&ext, "https://example.com/repo");
+        assert_eq!(mapped.lib_version, None);
+        assert!(mapped.to_remote().compatible);
     }
 
     #[test]
@@ -1256,5 +1394,25 @@ mod tests {
             .find(|e| e.pkg.contains("calibre"))
             .expect("calibre missing");
         assert!(calibre.to_remote().compatible);
+    }
+
+    #[test]
+    #[ignore = "hits the live yuzono anime repo"]
+    fn fetches_live_yuzono_legacy_anime_repo() {
+        // Legacy repo with a repo.json that has NO index_v2: must resolve to
+        // a legacy store serving the plain JSON array.
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let index = rt
+            .block_on(fetch_repo(
+                "https://raw.githubusercontent.com/yuzono/anime-repo/repo/index.min.json",
+            ))
+            .unwrap();
+        assert!(index.store.is_legacy);
+        assert_eq!(index.store.name, "Yūzōnō");
+        assert!(!index.extensions.is_empty());
+        let remote = index.extensions[0].to_remote();
+        assert_eq!(remote.id, "mihon:8542735178285060053");
+        assert!(remote.remote_id.ends_with(".apk"));
+        assert!(remote.compatible);
     }
 }
