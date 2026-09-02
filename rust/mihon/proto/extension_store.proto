@@ -1,0 +1,64 @@
+// Canonical wire schema for Mihon/Tsundoku extension store indexes (`index.pb`).
+//
+// Mirrors the kotlinx-serialization models in mihon/tsundoku:
+//   data/src/main/java/mihon/data/extension/model/NetworkExtensionStore.kt
+// Field numbers there are declared with @ProtoNumber annotations; this file is
+// the equivalent .proto used to generate Rust decode types via prost.
+//
+// The `is_novel` field uses a tsundoku fork field number in the reserved
+// 8000+ block so it can never collide with new upstream fields.
+syntax = "proto3";
+
+package mihon.extension;
+
+enum ContentWarning {
+  CONTENT_WARNING_UNSPECIFIED = 0;
+  CONTENT_WARNING_SAFE = 1;
+  CONTENT_WARNING_MIXED = 2;
+  CONTENT_WARNING_NSFW = 3;
+}
+
+message NetworkExtensionStore {
+  message Contact {
+    string website = 1;
+    optional string discord = 2;
+  }
+
+  message Resources {
+    string apk_url = 1;
+    string icon_url = 2;
+  }
+
+  message Source {
+    int64 id = 1;
+    string name = 2;
+    string language = 3;
+    string home_url = 4;
+    repeated string mirror_urls = 5;
+    optional string message = 7;
+  }
+
+  message Extension {
+    string name = 1;
+    string package_name = 2;
+    Resources resources = 3;
+    string extension_lib = 4;
+    int64 version_code = 5;
+    string version_name = 6;
+    ContentWarning content_warning = 7;
+    repeated Source sources = 8;
+    // Tsundoku fork field (reserved 8000+ block upstream).
+    bool is_novel = 8000;
+  }
+
+  message ExtensionList {
+    repeated Extension extensions = 1;
+  }
+
+  string name = 1;
+  string badge_label = 2;
+  string signing_key = 3;
+  Contact contact = 4;
+  ExtensionList extension_list = 101;
+  optional string extension_list_url = 102;
+}

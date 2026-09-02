@@ -7,6 +7,10 @@ use zip::ZipArchive;
 
 use super::manifest::BinaryXmlParser;
 
+/// Extension API versions accepted by mihon/tsundoku, mirroring
+/// `ExtensionLoader.SUPPORTED_LIB_VERSIONS` (an exact set, not a range).
+pub(crate) const SUPPORTED_LIB_VERSIONS: [f64; 2] = [1.4, 1.6];
+
 /// Metadata extracted from a Mihon/Tachiyomi extension APK
 #[derive(Debug, Clone)]
 pub struct MihonExtensionMetadata {
@@ -168,10 +172,8 @@ impl MihonExtensionMetadata {
 
     /// Validate extension is compatible with our runtime
     pub fn is_compatible(&self) -> bool {
-        // Check lib_version is within supported range
-        // Suwayomi uses: LIB_VERSION_MIN = 1.3, LIB_VERSION_MAX = 1.5
         match self.lib_version {
-            Some(v) => (1.3..=1.5).contains(&v),
+            Some(v) => SUPPORTED_LIB_VERSIONS.contains(&v),
             None => true, // Assume compatible if not specified
         }
     }

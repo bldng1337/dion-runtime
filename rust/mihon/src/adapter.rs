@@ -69,9 +69,9 @@ pub struct MihonAdapter {
     base_path: PathBuf,
 
     /// In-memory cache for fetched repo indexes, keyed by index URL.
-    /// Avoids re-downloading the (potentially large) `index.min.json` on
-    /// every `browse_repo` / `get_remote_extension` call.
-    repo_index_cache: RwLock<HashMap<String, Arc<Vec<repo::RepoExtension>>>>,
+    /// Avoids re-downloading the (potentially large) `index.pb` / legacy
+    /// `index.min.json` on every `browse_repo` / `get_remote_extension` call.
+    repo_index_cache: RwLock<HashMap<String, Arc<repo::RepoIndex>>>,
 }
 
 impl MihonAdapter {
@@ -275,33 +275,24 @@ impl MihonAdapter {
         Ok(())
     }
 
-    /// Fetch and parse a Mihon repo index (`index.min.json`), caching the
-    /// result in memory so repeated calls (pagination, lookups) don't
-    /// re-download the potentially large file.
-    async fn fetch_repo_index(&self, index_url: &str) -> Result<Arc<Vec<repo::RepoExtension>>> {
+    /// Fetch a Mihon extension repo index and resolve it to its store and
+    /// extension list, caching the result in memory so repeated calls
+    /// (pagination, lookups) don't re-download the potentially large file.
+    ///
+    /// Mirrors tsundoku's `ExtensionStoreService`: the payload format
+    /// (protobuf store, JSON store, `repo.json`, or legacy `index.min.json`)
+    /// is sniffed from the response, following redirects to `repo.json` /
+    /// `index_v2` as needed.
+    async fn fetch_repo_index(&self, index_url: &str) -> Result<Arc<repo::RepoIndex>> {
         // Fast path: already cached.
         if let Some(cached) = self.repo_index_cache.read().await.get(index_url) {
             return Ok(cached.clone());
         }
 
         // Slow path: download + parse.
-        let response = reqwest::get(index_url)
-            .await
-            .with_context(|| format!("Failed to fetch repo index from {}", index_url))?;
-        let status = response.status();
-        if !status.is_success() {
-            bail!(
-                "Failed to fetch repo index: HTTP {} from {}",
-                status,
-                index_url
-            );
-        }
-        let index: Vec<repo::RepoExtension> = response
-            .json()
-            .await
-            .with_context(|| format!("Failed to parse repo index from {}", index_url))?;
-
-        let index = Arc::new(index);
+        let index = Arc::new(repo::fetch_repo(index_url).await.with_context(|| {
+            format!("Failed to fetch/parse repo index from {index_url}")
+        })?);
         self.repo_index_cache
             .write()
             .await
@@ -738,18 +729,18 @@ impl Adapter for MihonAdapter {
 
     /// Get extension repository metadata.
     ///
-    /// Mihon repo indexes carry no top-level repo metadata, so the
-    /// [`ExtensionRepo`] is built from the URL. The index is still fetched
-    /// to validate the URL and warm the cache for subsequent `browse_repo`
-    /// / `get_remote_extension` calls.
+    /// The repo name comes from the store payload (`index.pb` store name or
+    /// legacy `repo.json` meta). The index is still fetched to validate the
+    /// URL and warm the cache for subsequent `browse_repo` /
+    /// `get_remote_extension` calls.
     ///
     /// Accepts either a bare repo URL (`…/repo`) or a full index URL
-    /// (`…/repo/index.min.json`).
+    /// (`…/repo/index.min.json`, `…/repo/repo.json`, `…/repo/index.pb`).
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
         let index_url = repo::normalize_index_url(url);
         // Fetch to validate the URL and prime the cache.
-        self.fetch_repo_index(&index_url).await?;
-        Ok(repo::build_extension_repo(&index_url))
+        let index = self.fetch_repo_index(&index_url).await?;
+        Ok(repo::build_extension_repo(&index_url, &index.store))
     }
 
     /// Get a specific remote extension by id.
@@ -764,8 +755,8 @@ impl Adapter for MihonAdapter {
         extension_id: String,
     ) -> Result<Option<RemoteExtension>> {
         let index = self.fetch_repo_index(&repo.remote_id).await?;
-        let base_url = repo::repo_base_url(&repo.remote_id);
         Ok(index
+            .extensions
             .iter()
             .find(|e| {
                 e.sources
@@ -773,7 +764,7 @@ impl Adapter for MihonAdapter {
                     .is_some_and(|s| format!("mihon:{}", s.id) == extension_id)
                     || e.pkg == extension_id
             })
-            .map(|e| e.to_remote(&base_url)))
+            .map(|e| e.to_remote()))
     }
 
     /// Browse all extensions in a repository.
@@ -784,7 +775,6 @@ impl Adapter for MihonAdapter {
     /// client-side pagination is left to the host application.
     async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
         let index = self.fetch_repo_index(&repo.remote_id).await?;
-        let base_url = repo::repo_base_url(&repo.remote_id);
-        Ok(repo::index_to_result(&index, &base_url))
+        Ok(repo::index_to_result(&index.extensions))
     }
 }

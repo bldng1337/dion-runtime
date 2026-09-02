@@ -25,6 +25,20 @@ fn main() {
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set");
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap_or_default();
 
+    // Compile the extension-store protobuf schema with protox (pure Rust, no
+    // protoc install needed). prost generates decode types into OUT_DIR,
+    // included by `src/repo.rs`. Runs on every target, including Android.
+    let proto_dir = Path::new(&manifest_dir).join("proto");
+    let fds = protox::compile(
+        [proto_dir.join("extension_store.proto")],
+        [proto_dir.clone()],
+    )
+    .expect("failed to compile extension_store.proto");
+    prost_build::Config::new()
+        .compile_fds(fds)
+        .expect("prost failed to generate extension store types");
+    println!("cargo:rerun-if-changed=proto/extension_store.proto");
+
     let output_jar = Path::new(&out_dir).join("mihon-compat.jar");
 
     // On Android, the compat JAR is not needed — native Android class loading is used
