@@ -241,8 +241,30 @@ fun Page.toDto(headers: Map<String, String>? = null): PageDto = PageDto(
     headers = headers
 )
 
+/**
+ * Derive the wire type tag for a filter from its runtime type.
+ *
+ * This deliberately does NOT use `this::class.simpleName`: extensions subclass
+ * the base filter types (e.g. `class GenreFilter : AnimeFilter.Select<String>`),
+ * and release APKs are minified, so the simple name is the extension's
+ * (frequently obfuscated) subclass name — never "Select"/"Text"/etc. The host
+ * maps settings by these canonical tags, so a subclass name would surface the
+ * filter as a plain text field instead of its real UI kind (e.g. a dropdown).
+ */
+fun Filter<*>.filterTypeTag(): String = when (this) {
+    is Filter.Header -> "Header"
+    is Filter.Separator -> "Separator"
+    is Filter.Select<*> -> "Select"
+    is Filter.Text -> "Text"
+    is Filter.CheckBox -> "CheckBox"
+    is Filter.TriState -> "TriState"
+    is Filter.Sort -> "Sort"
+    is Filter.Group<*> -> "Group"
+    else -> "Unknown"
+}
+
 fun Filter<*>.toDto(): FilterDto = FilterDto(
-    type = this::class.simpleName ?: "Unknown",
+    type = filterTypeTag(),
     name = name,
     state = when (this) {
         is Filter.Header -> ""
@@ -258,8 +280,27 @@ fun Filter<*>.toDto(): FilterDto = FilterDto(
 
         is Filter.Group<*> -> ""
         else -> ""
+    },
+    values = when (this) {
+        is Filter.Select<*> -> values.map { it.toString() }
+        is Filter.Sort -> values.toList()
+        else -> null
     }
 )
+
+/**
+ * Serialize a filter into the flat DTO list the host consumes.
+ *
+ * [Filter.Group] filters (e.g. a "Genres" group of per-genre checkboxes) hold
+ * their sub-filters in `state`, so they are flattened: every sub-filter is
+ * emitted as its own top-level [FilterDto] and matched back by name in
+ * `applyFilterStates`. Without flattening, grouped filters would be invisible
+ * to the host's search settings.
+ */
+fun Filter<*>.flattenDtos(): List<FilterDto> = when (this) {
+    is Filter.Group<*> -> state.filterIsInstance<Filter<*>>().flatMap { it.flattenDtos() }
+    else -> listOf(toDto())
+}
 
 // ========== Anime Conversions ==========
 
@@ -322,8 +363,20 @@ fun Track.toDto(): SubtitleTrackDto = SubtitleTrackDto(
     lang = lang
 )
 
+fun AnimeFilter<*>.filterTypeTag(): String = when (this) {
+    is AnimeFilter.Header -> "Header"
+    is AnimeFilter.Separator -> "Separator"
+    is AnimeFilter.Select<*> -> "Select"
+    is AnimeFilter.Text -> "Text"
+    is AnimeFilter.CheckBox -> "CheckBox"
+    is AnimeFilter.TriState -> "TriState"
+    is AnimeFilter.Sort -> "Sort"
+    is AnimeFilter.Group<*> -> "Group"
+    else -> "Unknown"
+}
+
 fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
-    type = this::class.simpleName ?: "Unknown",
+    type = filterTypeTag(),
     name = name,
     state = when (this) {
         is AnimeFilter.Header -> ""
@@ -339,5 +392,19 @@ fun AnimeFilter<*>.toDto(): FilterDto = FilterDto(
 
         is AnimeFilter.Group<*> -> ""
         else -> ""
+    },
+    values = when (this) {
+        is AnimeFilter.Select<*> -> values.map { it.toString() }
+        is AnimeFilter.Sort -> values.toList()
+        else -> null
     }
 )
+
+/**
+ * Anime counterpart of [Filter.flattenDtos]: flattens [AnimeFilter.Group]
+ * sub-filters into top-level DTOs so grouped filters are visible to the host.
+ */
+fun AnimeFilter<*>.flattenDtos(): List<FilterDto> = when (this) {
+    is AnimeFilter.Group<*> -> state.filterIsInstance<AnimeFilter<*>>().flatMap { it.flattenDtos() }
+    else -> listOf(toDto())
+}

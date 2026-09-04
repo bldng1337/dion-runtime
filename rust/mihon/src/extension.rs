@@ -212,18 +212,28 @@ impl Extension for MihonExtension {
             let mut store = self.store.write().await;
             for filter in filters {
                 if let Some((id, setting)) = filter_to_setting(&filter) {
-                    store
-                        .settings
-                        .merge_setting_definition(id, &SettingKind::Search, setting)?;
+                    // A single definition that can't be merged (e.g. a filter
+                    // name containing '/', which the store forbids in ids) is
+                    // logged and skipped so the remaining filters still become
+                    // visible instead of aborting the whole reload.
+                    if let Err(e) = store.settings.merge_setting_definition(
+                        id.clone(),
+                        &SettingKind::Search,
+                        setting,
+                    ) {
+                        log::warn!("Skipping search setting {id:?}: {e:#}");
+                    }
                 }
             }
             for pref in preferences {
                 if let Some((id, setting)) = preference_to_setting(&pref) {
-                    store.settings.merge_setting_definition(
-                        id,
+                    if let Err(e) = store.settings.merge_setting_definition(
+                        id.clone(),
                         &SettingKind::Extension,
                         setting,
-                    )?;
+                    ) {
+                        log::warn!("Skipping extension setting {id:?}: {e:#}");
+                    }
                 }
             }
         }
@@ -622,8 +632,10 @@ fn filter_to_setting(filter: &FilterDto) -> Option<(String, Setting)> {
             )
         }
 
-        // Unknown filter types (e.g. Group) → expose as a plain text field so
-        // the state is still visible/editable rather than silently dropped.
+        // Unknown filter types → expose as a plain text field so the state is
+        // still visible/editable rather than silently dropped. Note that the
+        // bridge flattens Group filters into their sub-filters before they get
+        // here, so grouped filters arrive as the types above.
         _ => (
             SettingValue::String {
                 data: state.clone(),

@@ -26,18 +26,37 @@ import java.io.File
  * Apply filter states from a list of [FilterDto] to a live filter list obtained from a source.
  *
  * Filters are matched by [name] (the stable identifier). The [state] string is parsed
- * back into the concrete type expected by each filter.
+ * back into the concrete type expected by each filter. [Filter.Group] sub-filters
+ * participate too: the DTO list is flat (see [Filter.flattenDtos]), so group
+ * sub-filters are matched by name like top-level filters.
  */
 private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<FilterDto>) {
     val stateMap = filterStates.associateBy { it.name }
     for (filter in filters) {
-        val dto = stateMap[filter.name] ?: continue
         try {
             when (filter) {
-                is Filter.Text -> filter.state = dto.state
-                is Filter.CheckBox -> filter.state = dto.state.toBooleanStrictOrNull() ?: false
-                is Filter.TriState -> filter.state = dto.state.toIntOrNull() ?: 0
+                is Filter.Group<*> -> {
+                    // Recurse into the group's sub-filters (they live in `state`).
+                    applyFilterStates(filter.state.filterIsInstance<Filter<*>>(), filterStates)
+                }
+
+                is Filter.Text -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state
+                }
+
+                is Filter.CheckBox -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state.toBooleanStrictOrNull() ?: false
+                }
+
+                is Filter.TriState -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state.toIntOrNull() ?: 0
+                }
+
                 is Filter.Select<*> -> {
+                    val dto = stateMap[filter.name] ?: continue
                     val idx = dto.state.toIntOrNull() ?: 0
                     if (idx in 0 until filter.values.size) {
                         filter.state = idx
@@ -45,6 +64,7 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
                 }
 
                 is Filter.Sort -> {
+                    val dto = stateMap[filter.name] ?: continue
                     val parts = dto.state.split(";")
                     val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
                     val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
@@ -53,7 +73,7 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
 
                 is Filter.Header -> Unit
                 is Filter.Separator -> Unit
-                is Filter.Group<*> -> Unit
+                else -> Unit
             }
         } catch (_: Exception) {
             // Silently skip malformed filter state; the search will proceed with defaults
@@ -66,17 +86,35 @@ private fun applyFilterStates(filters: List<Filter<*>>, filterStates: List<Filte
  *
  * Anime equivalent of [applyFilterStates]; filters are matched by [name] and
  * their [FilterDto.state] string is parsed back into the concrete type.
+ * [AnimeFilter.Group] sub-filters are matched by name like top-level filters.
  */
 fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<FilterDto>) {
     val stateMap = filterStates.associateBy { it.name }
     for (filter in filters) {
-        val dto = stateMap[filter.name] ?: continue
         try {
             when (filter) {
-                is AnimeFilter.Text -> filter.state = dto.state
-                is AnimeFilter.CheckBox -> filter.state = dto.state.toBooleanStrictOrNull() ?: false
-                is AnimeFilter.TriState -> filter.state = dto.state.toIntOrNull() ?: 0
+                is AnimeFilter.Group<*> -> {
+                    // Recurse into the group's sub-filters (they live in `state`).
+                    applyAnimeFilterStates(filter.state.filterIsInstance<AnimeFilter<*>>(), filterStates)
+                }
+
+                is AnimeFilter.Text -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state
+                }
+
+                is AnimeFilter.CheckBox -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state.toBooleanStrictOrNull() ?: false
+                }
+
+                is AnimeFilter.TriState -> {
+                    val dto = stateMap[filter.name] ?: continue
+                    filter.state = dto.state.toIntOrNull() ?: 0
+                }
+
                 is AnimeFilter.Select<*> -> {
+                    val dto = stateMap[filter.name] ?: continue
                     val idx = dto.state.toIntOrNull() ?: 0
                     if (idx in 0 until filter.values.size) {
                         filter.state = idx
@@ -84,6 +122,7 @@ fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<Fil
                 }
 
                 is AnimeFilter.Sort -> {
+                    val dto = stateMap[filter.name] ?: continue
                     val parts = dto.state.split(";")
                     val idx = parts.getOrNull(0)?.toIntOrNull() ?: 0
                     val asc = parts.getOrNull(1)?.toBooleanStrictOrNull() ?: true
@@ -92,7 +131,7 @@ fun applyAnimeFilterStates(filters: List<AnimeFilter<*>>, filterStates: List<Fil
 
                 is AnimeFilter.Header -> Unit
                 is AnimeFilter.Separator -> Unit
-                is AnimeFilter.Group<*> -> Unit
+                else -> Unit
             }
         } catch (_: Exception) {
             // Silently skip malformed filter state; the search will proceed with defaults
@@ -767,14 +806,26 @@ object AndroidMihonBridge {
 
     /**
      * Get filter list for source.
+     *
+     * Dispatches on the source's concrete catalogue type: anime sources
+     * ([AnimeCatalogueSource]) and manga/novel sources ([CatalogueSource]) each
+     * have their own filter hierarchy, so casting to only one of them would
+     * fail for the other. Group filters are flattened so every sub-filter is
+     * surfaced (see [Filter.flattenDtos]).
+     *
      * @return JSON: List<FilterDto>
      */
     @JvmStatic
     fun getFilterList(sourceId: Long): String {
         return try {
-            val source = sourceManager.getCatalogue(sourceId)
-            val filters = source.getFilterList()
-            json.encodeToString(filters.map { it.toDto() })
+            val source = sourceManager.get(sourceId)
+                ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
+            val filters = when (source) {
+                is AnimeCatalogueSource -> source.getFilterList().flatMap { it.flattenDtos() }
+                is CatalogueSource -> source.getFilterList().flatMap { it.flattenDtos() }
+                else -> return json.encodeToString(ErrorResult("Source is not a catalogue source: $sourceId"))
+            }
+            json.encodeToString(filters)
         } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }

@@ -230,14 +230,26 @@ object MihonBridge {
 
     /**
      * Get filter list for source
+     *
+     * Dispatches on the source's concrete catalogue type: anime sources
+     * ([AnimeCatalogueSource]) and manga/novel sources ([CatalogueSource]) each
+     * have their own filter hierarchy, so casting to only one of them would
+     * fail for the other. Group filters are flattened so every sub-filter is
+     * surfaced (see [Filter.flattenDtos]).
+     *
      * @return JSON: List<FilterDto>
      */
     @JvmStatic
     fun getFilterList(sourceId: Long): String {
         return try {
-            val source = sourceManager.getCatalogue(sourceId)
-            val filters = source.getFilterList()
-            json.encodeToString(filters.map { it.toDto() })
+            val source = sourceManager.get(sourceId)
+                ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
+            val filters = when (source) {
+                is AnimeCatalogueSource -> source.getFilterList().flatMap { it.flattenDtos() }
+                is CatalogueSource -> source.getFilterList().flatMap { it.flattenDtos() }
+                else -> return json.encodeToString(ErrorResult("Source is not a catalogue source: $sourceId"))
+            }
+            json.encodeToString(filters)
         } catch (e: Throwable) {
             json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
