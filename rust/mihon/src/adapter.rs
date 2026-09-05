@@ -379,7 +379,7 @@ impl MihonAdapter {
                 .context("Failed to get ExtensionClient")?;
 
             // Create MihonExtension
-            let ext = MihonExtension::new(
+            let mut ext = MihonExtension::new(
                 source_id,
                 &source_type,
                 ext_data,
@@ -387,6 +387,20 @@ impl MihonAdapter {
                 self.bridge.clone(),
             )
             .await?;
+
+            // Populate the settings store (search filters + configurable
+            // preferences) right away. Hosts read the definitions back via
+            // get_settings/get_setting_ids when listing an extension's
+            // settings — none of them call Extension::reload themselves, so
+            // without this the source's filters would never be visible in the
+            // UI. A failure here only means missing settings; the extension
+            // stays usable.
+            if let Err(e) = ext.reload().await {
+                log::warn!(
+                    "Failed to load filters/preferences for source {}: {e:#}",
+                    source_id
+                );
+            }
 
             // Track extension -> jar_path mapping for cleanup during uninstall
             self.extension_jar_paths
