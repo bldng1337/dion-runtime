@@ -1,8 +1,0 @@
-- Implement Fine-Grained Permissions
-- Implement Hot-Reloading
-- Address `TODOs`
-- Document Public APIs
-- Code Signing
-- Logging
-- https://crates.io/crates/cglue
-- https://nx.dev/
