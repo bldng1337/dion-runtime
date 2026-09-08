@@ -10,15 +10,17 @@
 		"access": "public"
 	},
 	"bin": {
-		"dion-bundle": "./.dist/bundle.js",
-		"dion-build-index": "./.dist/index.js",
-		"dion-create": "./.dist/create.js"
+		"dion-bundle": "./bin/bundle.ts",
+		"dion-build-index": "./bin/index.ts",
+		"dion-create": "./bin/create.ts"
 	},
 	"exports": {
 		"./*": "./.dist/*"
 	},
 	"files": [
-		".dist"
+		".dist",
+		"bin",
+		"build.ts"
 	],
 	"scripts": {
 		"check-types": "bunx tsc -p tsconfig.json",

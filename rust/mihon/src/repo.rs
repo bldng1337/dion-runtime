@@ -23,10 +23,10 @@ use std::future::Future;
 use std::io::Read;
 use std::pin::Pin;
 
-use anyhow::{Context, Result, bail};
+use anyhow::{bail, Context, Result};
 use flate2::read::GzDecoder;
 use prost::Message;
-use serde::{Deserialize, Deserializer, de};
+use serde::{de, Deserialize, Deserializer};
 
 use dion_runtime::data::{
     extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
@@ -411,9 +411,11 @@ fn store_extension_list_from_payload(
             .ok()?
             .extension_list
             .map(ExtensionListJson::into_proto),
-        Some(_) => proto::NetworkExtensionStore::decode(&body[..])
-            .ok()?
-            .extension_list,
+        Some(_) => {
+            proto::NetworkExtensionStore::decode(&body[..])
+                .ok()?
+                .extension_list
+        }
         None => None,
     }
 }
@@ -696,7 +698,11 @@ struct ExtensionListJson {
 impl ExtensionListJson {
     fn into_proto(self) -> proto::network_extension_store::ExtensionList {
         proto::network_extension_store::ExtensionList {
-            extensions: self.extensions.into_iter().map(|e| e.into_proto()).collect(),
+            extensions: self
+                .extensions
+                .into_iter()
+                .map(|e| e.into_proto())
+                .collect(),
         }
     }
 }
@@ -963,8 +969,7 @@ mod tests {
     fn parses_repo_json_fixture_with_index_v2() {
         // NovelSourcery's repo.json points at the new-style index.pb.
         let body = fixture("novelsourcery_repo.json");
-        let resolution =
-            parse_store_payload("https://example.com/repo/repo.json", &body).unwrap();
+        let resolution = parse_store_payload("https://example.com/repo/repo.json", &body).unwrap();
         let StoreResolution::Legacy(Some(repo)) = resolution else {
             panic!("expected legacy repo, got something else");
         };
@@ -984,8 +989,7 @@ mod tests {
                 "signingKeyFingerprint": "aabbcc"
             }
         }"#;
-        let resolution =
-            parse_store_payload("https://example.com/repo/repo.json", body).unwrap();
+        let resolution = parse_store_payload("https://example.com/repo/repo.json", body).unwrap();
         let StoreResolution::Legacy(repo_json) = resolution else {
             panic!("expected legacy repo, got something else");
         };
@@ -1274,7 +1278,10 @@ mod tests {
         };
         let remote = ext.to_remote();
         assert_eq!(remote.id, "eu.kanade.test");
-        assert_eq!(remote.remote_id, "https://example.com/repo/apk/test-v1.0.apk");
+        assert_eq!(
+            remote.remote_id,
+            "https://example.com/repo/apk/test-v1.0.apk"
+        );
     }
 
     #[test]

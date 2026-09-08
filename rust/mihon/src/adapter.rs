@@ -290,9 +290,11 @@ impl MihonAdapter {
         }
 
         // Slow path: download + parse.
-        let index = Arc::new(repo::fetch_repo(index_url).await.with_context(|| {
-            format!("Failed to fetch/parse repo index from {index_url}")
-        })?);
+        let index = Arc::new(
+            repo::fetch_repo(index_url)
+                .await
+                .with_context(|| format!("Failed to fetch/parse repo index from {index_url}"))?,
+        );
         self.repo_index_cache
             .write()
             .await

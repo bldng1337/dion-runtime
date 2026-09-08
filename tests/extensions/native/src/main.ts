@@ -39,7 +39,7 @@ function urlGlobals() {
 	assert(!URL.canParse("ht tp://bad"));
 
 	const abs = URL.parse("/x", "https://example.org/");
-	assert(abs !== undefined, "URL.parse should succeed");
+	assert(abs !== null, "URL.parse should succeed");
 	assertDeepEqual("/x", abs.pathname);
 }
 

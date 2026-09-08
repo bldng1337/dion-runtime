@@ -1,8 +1,18 @@
 import { $ } from "bun";
-await $`rm -rf .dist && mkdir .dist`;
+
+// Anchor every path to this directory so the build also works when it is
+// triggered from elsewhere (the bin launchers import this file with the
+// caller's working directory).
+const root = import.meta.dir;
+
+await $`rm -rf ${root}/.dist`;
 const bundle = await Bun.build({
-	entrypoints: ["src/bundle.ts", "src/create.ts", "src/index.ts"],
-	outdir: ".dist",
+	entrypoints: [
+		`${root}/src/bundle.ts`,
+		`${root}/src/create.ts`,
+		`${root}/src/index.ts`,
+	],
+	outdir: `${root}/.dist`,
 	target: "bun",
 	packages: "external",
 	minify: true,
@@ -11,7 +21,7 @@ const bundle = await Bun.build({
 });
 if (!bundle.success) {
 	try {
-		await $`rm -rf .dist`;
+		await $`rm -rf ${root}/.dist`;
 	} catch (e) {
 		console.error("Failed to remove .dist directory:", e);
 	}

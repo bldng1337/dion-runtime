@@ -1,8 +1,8 @@
 {
-  "index_v2": "https://github.com/NovelSourcery/extensions/raw/repo/index.pb",
-  "meta": {
-    "name": "NovelSourcery",
-    "website": "https://novelsourcery.github.io",
-    "signingKeyFingerprint": "4281820d4866bb71bed3dec5224aad9cf4633d44a113682cfb0c3b1cfd71702d"
-  }
+	"index_v2": "https://github.com/NovelSourcery/extensions/raw/repo/index.pb",
+	"meta": {
+		"name": "NovelSourcery",
+		"website": "https://novelsourcery.github.io",
+		"signingKeyFingerprint": "4281820d4866bb71bed3dec5224aad9cf4633d44a113682cfb0c3b1cfd71702d"
+	}
 }

@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -23,7 +23,7 @@ jobs:
           components: rustfmt, clippy
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.19
 
@@ -34,7 +34,7 @@ jobs:
           cache: true
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
@@ -43,19 +43,19 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev
 
       - name: Cache Cargo registry
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache Cargo index
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache Cargo build
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: target
           # Include gradle files in the key so changes to the JAR build (wrapper,
@@ -64,13 +64,13 @@ jobs:
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('rust/mihon/compat/**') }}
 
       - name: Cache Bun install
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: |
             dart/rdion_runtime/.dart_tool
@@ -82,7 +82,7 @@ jobs:
             ${{ runner.os }}-flutter-
 
       - name: Cache Gradle dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
