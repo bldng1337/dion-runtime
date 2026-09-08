@@ -167,6 +167,38 @@ impl MihonExtension {
             None => log::warn!("Failed to serialize preferences"),
         }
     }
+
+    /// Return the stored search-filter JSON if the user has customized any
+    /// search setting away from its default.
+    ///
+    /// This mirrors Mihon's browse-source behavior (external/mihon-upstream
+    /// `BrowseSourceScreen`/`GetRemoteManga`): the listing is "Popular" until
+    /// the user applies filters, after which it becomes a blank-query search
+    /// with those filters — the only path that filter-only sources (e.g. a
+    /// genre Select that ignores filters when a query is present) respond to.
+    async fn customized_search_filters(&self) -> Option<String> {
+        let store = self.store.read().await;
+        let settings = store.settings.get_settings(&SettingKind::Search);
+        let customized = settings
+            .iter()
+            .any(|(_, setting)| !setting_value_matches_default(&setting.value, &setting.default));
+        if !customized {
+            return None;
+        }
+        let json = settings_to_filter_json(settings);
+        (!json.is_empty()).then_some(json)
+    }
+}
+
+/// Structural equality for setting values (`SettingValue` does not implement
+/// `PartialEq` in the core crate, so compare serialized forms).
+fn setting_value_matches_default(value: &SettingValue, default: &SettingValue) -> bool {
+    match (serde_json::to_string(value), serde_json::to_string(default)) {
+        (Ok(a), Ok(b)) => a == b,
+        // A value that cannot be serialized is treated as "not customized"
+        // so it never silently switches browse away from Popular.
+        _ => true,
+    }
 }
 
 #[async_trait]
@@ -254,6 +286,26 @@ impl Extension for MihonExtension {
         let mihon_page = page + 1;
         let source_type = self.source_type;
         let source_id = self.source_id;
+
+        // Mirror Mihon's browse-source behavior: with default filters the
+        // listing is "Popular"; once the user applies any filter, the listing
+        // becomes a blank-query search with the stored filters (see
+        // `customized_search_filters`). Filter-only sources like AnimeOnsen
+        // only honor their genre/filter on that path.
+        if let Some(filters_json) = self.customized_search_filters().await {
+            let result = self
+                .blocking_bridge(move |bridge| match source_type {
+                    MihonSourceType::Manga | MihonSourceType::Novel => {
+                        bridge.search(source_id, mihon_page, "", &filters_json)
+                    }
+                    MihonSourceType::Anime => {
+                        bridge.search_anime(source_id, mihon_page, "", &filters_json)
+                    }
+                })
+                .await?;
+            return Ok(result.into_entry_list(self.source_type));
+        }
+
         let result = self
             .blocking_bridge(move |bridge| match source_type {
                 MihonSourceType::Manga | MihonSourceType::Novel => {
@@ -1008,5 +1060,26 @@ mod tests {
         check(SettingValue::StringList {
             data: vec!["x".into(), "y".into()],
         });
+    }
+
+    #[test]
+    fn setting_value_matches_default_detects_customization() {
+        let default = SettingValue::String { data: "0".into() };
+        // Unchanged value → matches default (stay on Popular).
+        assert!(setting_value_matches_default(
+            &SettingValue::String { data: "0".into() },
+            &default
+        ));
+        // Customized value → differs (switch to filtered search).
+        assert!(!setting_value_matches_default(
+            &SettingValue::String { data: "17".into() },
+            &default
+        ));
+        // Different types never match (unless both fail to serialize, which
+        // cannot happen for real values).
+        assert!(!setting_value_matches_default(
+            &SettingValue::Boolean { data: true },
+            &default
+        ));
     }
 }
