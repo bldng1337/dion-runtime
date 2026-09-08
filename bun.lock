@@ -20,7 +20,7 @@
     },
     "js/extension_types": {
       "name": "@dion-js/extension-types",
-      "version": "0.8.0",
+      "version": "0.12.0",
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",
         "valibot": "catalog:",
@@ -28,7 +28,7 @@
     },
     "js/lib": {
       "name": "@dion-js/runtime-lib",
-      "version": "0.5.0",
+      "version": "0.11.0",
       "devDependencies": {
         "@biomejs/biome": "catalog:",
         "@dion-js/config": "workspace:*",
@@ -38,11 +38,11 @@
     },
     "js/repo_scripts": {
       "name": "@dion-js/extension-scripts",
-      "version": "0.2.0",
+      "version": "0.5.0",
       "bin": {
-        "dion-bundle": "./.dist/bundle.js",
-        "dion-build-index": "./.dist/index.js",
-        "dion-create": "./.dist/create.js",
+        "dion-bundle": "./bin/bundle.ts",
+        "dion-build-index": "./bin/index.ts",
+        "dion-create": "./bin/create.ts",
       },
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",
@@ -58,7 +58,7 @@
     },
     "js/runtime": {
       "name": "@dion-js/runtime",
-      "version": "1.6.0",
+      "version": "1.13.0",
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",
       },
@@ -73,14 +73,14 @@
     },
     "js/runtime_types": {
       "name": "@dion-js/runtime-types",
-      "version": "0.5.0",
+      "version": "0.12.0",
       "devDependencies": {
         "@js-temporal/polyfill": "^0.5.1",
       },
     },
     "js/test_utils": {
       "name": "@dion-js/extension-test-utils",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "dependencies": {
         "@dion-js/extension-types": "workspace:*",
         "@dion-js/runtime-types": "workspace:*",
@@ -283,7 +283,9 @@
         "@dion-js/runtime": "workspace:*",
         "arguments": "workspace:*",
         "auth": "workspace:*",
+        "customui": "workspace:*",
         "decode": "workspace:*",
+        "fetch": "workspace:*",
         "html": "workspace:*",
         "native": "workspace:*",
         "permissions": "workspace:*",
