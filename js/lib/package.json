@@ -2,6 +2,13 @@
 	"name": "@dion-js/runtime-lib",
 	"version": "0.9.0",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bldng1337/dion-runtime.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"files": [
 		"src/"
 	],
@@ -16,6 +23,8 @@
 		"./feed": "./src/feed.ts",
 		"./trigger": "./src/trigger.ts",
 		"./util": "./src/util.ts",
+		"./net": "./src/net.ts",
+		"./html": "./src/html.ts",
 		"./auth": "./src/auth.ts"
 	},
 	"dependencies": {},

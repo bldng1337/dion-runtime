@@ -1,0 +1,302 @@
+name: Publish
+
+# Runs after the CI workflow (name "CI" in ci.yml) completes for a push to
+# master, and publishes only if that run succeeded. If CI is renamed, the
+# `workflows:` entry below must be updated to match.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+
+# id-token is required for npm trusted publishing (OIDC): `npm publish`
+# mints its token from the GitHub Actions identity. Never add an npm token
+# to this workflow; publishes are authorized by the trusted publisher
+# registration (bldng1337/dion-runtime + .github/workflows/publish.yml).
+permissions:
+  id-token: write
+  contents: read
+
+# Queue publishes instead of cancelling them, so a run is never interrupted
+# halfway through the package list.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    name: Publish
+    # Only publish for successful CI runs of pushes to master (workflow_run
+    # also fires for pull requests and failures, which must not publish).
+    # workflow_dispatch bypasses the CI gate on purpose, as an escape hatch
+    # for e.g. finishing a partially failed publish.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'master' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    # The @dion-js/runtime package ships its native binding as a single
+    # win32-x64-msvc .node file inside the tarball (there are no
+    # platform-specific companion packages), so the release binary must be
+    # built on Windows to keep the published package working for existing
+    # consumers.
+    runs-on: windows-latest
+
+    steps:
+      # Publish exactly the commit that CI tested, not the branch head.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.2.19
+
+      # npm trusted publishing requires node >= 22.14 and npm >= 11.5.1.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Cargo build
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Bun install
+        uses: actions/cache@v3
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      # @dion-js/runtime is built separately below with a release profile;
+      # every other package builds through turbo as usual.
+      - name: Build JS packages
+        run: bunx turbo build --filter='!@dion-js/runtime'
+
+      - name: Build @dion-js/runtime release binary and test it
+        working-directory: js/runtime
+        run: |
+          bun run build:release
+          bun test
+
+      # Publishes every non-private package under js/* whose package.json
+      # version does not exist on the npm registry yet. This is the only
+      # "should we publish?" check: bump a version in package.json and push
+      # to master to release. The packages use bun's workspace:/catalog:
+      # protocols, which npm cannot resolve, so dependency ranges are
+      # rewritten to concrete semver before publishing.
+      - name: Publish packages with a new version
+        run: |
+          node <<'EOF'
+          const { execSync } = require("node:child_process");
+          const fs = require("node:fs");
+          const path = require("node:path");
+
+          const rootPkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+          const catalog = rootPkg.catalog ?? {};
+          const dryRun = process.env.DRY_RUN === "1";
+
+          const dirs = fs
+            .readdirSync("js", { withFileTypes: true })
+            .filter((entry) => entry.isDirectory())
+            .map((entry) => path.join("js", entry.name))
+            .filter((dir) => fs.existsSync(path.join(dir, "package.json")));
+
+          const packages = dirs
+            .map((dir) => ({
+              dir,
+              pkg: JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8")),
+            }))
+            .filter(({ pkg }) => !pkg.private);
+
+          const localVersions = new Map(packages.map(({ pkg }) => [pkg.name, pkg.version]));
+
+          // npm package names are limited to a shell-safe character grammar.
+          // Names are the only repo-controlled string that reaches a shell
+          // command line below, and anything outside this grammar is
+          // rejected before it gets there, which makes shell injection
+          // structurally impossible. (execFileSync cannot be used here: on
+          // Windows npm is a .cmd shim, which Node refuses to spawn without
+          // a shell.)
+          const NAME_PATTERN = /^(?:@[A-Za-z0-9-~][A-Za-z0-9-._~]*\/)?[A-Za-z0-9-~][A-Za-z0-9-._~]*$/;
+
+          function requireValidName(name) {
+            if (!NAME_PATTERN.test(name)) {
+              throw new Error(`refusing to process invalid package name: ${JSON.stringify(name)}`);
+            }
+          }
+
+          // bun's workspace:/catalog: protocols cannot be resolved by npm,
+          // so every dependency range is rewritten to concrete semver before
+          // publishing. devDependencies are included because npm ships them
+          // in the published manifest.
+          function resolveRange(depName, range) {
+            if (range.startsWith("workspace:")) {
+              const spec = range.slice("workspace:".length);
+              const version = localVersions.get(depName);
+              if (!version) {
+                throw new Error(`workspace dependency ${depName} not found in js/*`);
+              }
+              if (spec === "*") return version;
+              if (spec === "^" || spec === "~") return spec + version;
+              return spec;
+            }
+            if (range === "catalog:" || range === "catalog:default") {
+              const resolved = catalog[depName];
+              if (!resolved) {
+                throw new Error(`no catalog entry for ${depName} in the root package.json`);
+              }
+              // A catalog entry may itself point at a workspace package.
+              if (resolved.startsWith("workspace:")) {
+                return resolveRange(depName, resolved);
+              }
+              return resolved;
+            }
+            if (range.startsWith("catalog:")) {
+              throw new Error(`named catalogs are not supported for publishing (${depName}: ${range})`);
+            }
+            return range;
+          }
+
+          function publishedVersions(name) {
+            requireValidName(name);
+            try {
+              const out = execSync(`npm view ${name} versions --json`, {
+                stdio: ["ignore", "pipe", "pipe"],
+                encoding: "utf8",
+              });
+              return JSON.parse(out.trim() || "[]");
+            } catch (error) {
+              const stderr = String(error.stderr ?? "");
+              if (stderr.includes("E404")) return []; // package never published
+              throw error; // registry/network problem: fail instead of guessing
+            }
+          }
+
+          // Topological order over runtime dependency edges between the
+          // published packages: npm does not check that a dependency version
+          // exists at publish time, so a package must never be published
+          // while a sibling it references is still missing from the
+          // registry. devDependencies are excluded from the graph (they are
+          // not installed by consumers and easily form cycles) but are still
+          // rewritten below. Ties break alphabetically for a deterministic
+          // order.
+          const byName = new Map(packages.map((entry) => [entry.pkg.name, entry]));
+          const inDegree = new Map(packages.map(({ pkg }) => [pkg.name, 0]));
+          const dependents = new Map(packages.map(({ pkg }) => [pkg.name, []]));
+          for (const { pkg } of packages) {
+            for (const field of ["dependencies", "optionalDependencies", "peerDependencies"]) {
+              for (const depName of Object.keys(pkg[field] ?? {})) {
+                if (depName === pkg.name || !byName.has(depName)) continue;
+                inDegree.set(pkg.name, inDegree.get(pkg.name) + 1);
+                dependents.get(depName).push(pkg.name);
+              }
+            }
+          }
+
+          const ordered = [];
+          const ready = packages
+            .filter(({ pkg }) => inDegree.get(pkg.name) === 0)
+            .map(({ pkg }) => pkg.name)
+            .sort();
+          while (ready.length > 0) {
+            const name = ready.shift();
+            ordered.push(byName.get(name));
+            for (const dependent of dependents.get(name)) {
+              const remaining = inDegree.get(dependent) - 1;
+              inDegree.set(dependent, remaining);
+              if (remaining === 0) {
+                ready.push(dependent);
+                ready.sort();
+              }
+            }
+          }
+          if (ordered.length < packages.length) {
+            const seen = new Set(ordered.map((entry) => entry.pkg.name));
+            const cyclic = packages.filter(({ pkg }) => !seen.has(pkg.name));
+            console.warn(
+              `dependency cycle between ${cyclic.map(({ pkg }) => pkg.name).join(", ")}; ` +
+                "publishing them in directory order",
+            );
+            ordered.push(...cyclic);
+          }
+
+          const published = [];
+          for (const { dir, pkg } of ordered) {
+            if (!pkg.version) {
+              throw new Error(`${pkg.name} has no version field`);
+            }
+            if (publishedVersions(pkg.name).includes(pkg.version)) {
+              console.log(`=  ${pkg.name}@${pkg.version} is already on npm, skipping`);
+              continue;
+            }
+
+            for (const field of [
+              "dependencies",
+              "optionalDependencies",
+              "peerDependencies",
+              "devDependencies",
+            ]) {
+              if (!pkg[field]) continue;
+              for (const [depName, range] of Object.entries(pkg[field])) {
+                pkg[field][depName] = resolveRange(depName, range);
+              }
+            }
+
+            if (dryRun) {
+              console.log(`DRY RUN: would publish ${pkg.name}@${pkg.version}`);
+              continue;
+            }
+
+            fs.writeFileSync(
+              path.join(dir, "package.json"),
+              `${JSON.stringify(pkg, null, "\t")}\n`,
+            );
+            console.log(`-> publishing ${pkg.name}@${pkg.version}`);
+            execSync("npm publish --provenance --access public", {
+              cwd: dir,
+              stdio: "inherit",
+            });
+            published.push(`${pkg.name}@${pkg.version}`);
+          }
+
+          if (published.length === 0) {
+            console.log("No version changes, nothing published.");
+          } else {
+            console.log(`Published: ${published.join(", ")}`);
+          }
+          EOF
+        env:
+          # Set the PUBLISH_DRY_RUN repository variable to 1 to rehearse a
+          # publish without touching the registry.
+          DRY_RUN: ${{ vars.PUBLISH_DRY_RUN || '0' }}

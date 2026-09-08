@@ -107,6 +107,7 @@ declare module "parse" {
 	import type { Paragraph } from "@dion-js/runtime-types/runtime";
 	export function parseHtml(input: string): DionElement;
 	export function parseHtmlFragment(input: string): DionElement;
+	export function parseXml(input: string): DionElement;
 	export interface DionElement {
 		attr(name: string): string;
 		select(selector: CSSSelector): DionElementArray;
@@ -153,3 +154,50 @@ declare const appdata: {
 	version: string;
 	platform: string;
 };
+
+declare class URLSearchParams {
+	constructor(
+		init?: string | Record<string, string> | Iterable<[string, string]>,
+	);
+	append(name: string, value: string): void;
+	delete(name: string, value?: string): void;
+	get(name: string): string | undefined;
+	getAll(name: string): string[];
+	has(name: string, value?: string): boolean;
+	set(name: string, value: string): void;
+	sort(): void;
+	forEach(
+		callback: (
+			value: string,
+			name: string,
+			searchParams: URLSearchParams,
+		) => void,
+		thisArg?: unknown,
+	): void;
+	entries(): IterableIterator<[string, string]>;
+	keys(): IterableIterator<string>;
+	values(): IterableIterator<string>;
+	[Symbol.iterator](): IterableIterator<[string, string]>;
+	readonly size: number;
+	toString(): string;
+}
+
+declare class URL {
+	constructor(input: string, base?: string);
+	static canParse(input: string, base?: string): boolean;
+	static parse(input: string, base?: string): URL | null;
+	hash: string;
+	host: string;
+	hostname: string;
+	href: string;
+	readonly origin: string;
+	password: string;
+	pathname: string;
+	port: string;
+	protocol: string;
+	search: string;
+	readonly searchParams: URLSearchParams;
+	username: string;
+	toString(): string;
+	toJSON(): string;
+}
