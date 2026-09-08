@@ -91,6 +91,35 @@ export default class extends DefaultExtension {
 		return super.onEntryActivity(activity, entry, settings);
 	}
 
+	refresh(
+		entry: EntryDetailed,
+		settings: Record<string, Setting>,
+	): Promise<EntryDetailedResult> {
+		assert(
+			typeof entry === "object" && entry !== null,
+			"Argument entry of refresh is not an object",
+		);
+		assert(
+			typeof entry.id === "object" && typeof entry.id.uid === "string",
+			"Argument entry of refresh has no id.uid",
+		);
+		assert(
+			Array.isArray(entry.titles),
+			"Argument entry of refresh has no titles array",
+		);
+		assert(
+			typeof settings === "object" && settings !== null,
+			"Argument settings of refresh is not an object",
+		);
+		return Promise.resolve({
+			entry: {
+				...entry,
+				titles: [...entry.titles, "refreshed by refresh"],
+			},
+			settings,
+		});
+	}
+
 	search(page: number, filter: string): Promise<EntryList> {
 		assert(typeof page === "number", "Argument page of search is not a number");
 		assert(

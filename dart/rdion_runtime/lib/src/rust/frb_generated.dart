@@ -83,7 +83,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1781149062;
+  int get rustContentHash => -898945943;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -221,6 +221,12 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiExtensionProxyExtensionOnEntryActivity(
       {required ProxyExtension that,
       required EntryActivity activity,
+      required EntryDetailed entry,
+      required Map<String, Setting> settings,
+      CancelToken? token});
+
+  Future<EntryDetailedResult> crateApiExtensionProxyExtensionRefresh(
+      {required ProxyExtension that,
       required EntryDetailed entry,
       required Map<String, Setting> settings,
       CancelToken? token});
@@ -1404,6 +1410,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_on_entry_activity",
         argNames: ["that", "activity", "entry", "settings", "token"],
+      );
+
+  @override
+  Future<EntryDetailedResult> crateApiExtensionProxyExtensionRefresh(
+      {required ProxyExtension that,
+      required EntryDetailed entry,
+      required Map<String, Setting> settings,
+      CancelToken? token}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            that, serializer);
+        sse_encode_box_autoadd_entry_detailed(entry, serializer);
+        sse_encode_Map_String_setting_None(settings, serializer);
+        sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
+            token, serializer);
+        final raw_ = serializer.intoRaw();
+        return wire.wire__crate__api__extension__ProxyExtension_refresh(
+            port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_entry_detailed_result,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionRefreshConstMeta,
+      argValues: [that, entry, settings, token],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionRefreshConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_refresh",
+        argNames: ["that", "entry", "settings", "token"],
       );
 
   @override
@@ -9470,8 +9511,6 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
       RustLib.instance.api
           .crateApiExtensionProxyExtensionGetSettings(that: this, kind: kind);
 
-  /// Grant permissions without a host prompt (e.g. the install-time consent
-  /// for manifest-declared permissions). Merges into the store and persists.
   Future<void> grantPermissions({required List<Permission> permissions}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionGrantPermissions(
           that: this, permissions: permissions);
@@ -9536,6 +9575,13 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           entry: entry,
           settings: settings,
           token: token);
+
+  Future<EntryDetailedResult> refresh(
+          {required EntryDetailed entry,
+          required Map<String, Setting> settings,
+          CancelToken? token}) =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionRefresh(
+          that: this, entry: entry, settings: settings, token: token);
 
   Future<void> reload() =>
       RustLib.instance.api.crateApiExtensionProxyExtensionReload(

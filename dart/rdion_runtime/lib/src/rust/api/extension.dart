@@ -100,6 +100,11 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       required Map<String, Setting> settings,
       CancelToken? token});
 
+  Future<EntryDetailedResult> refresh(
+      {required EntryDetailed entry,
+      required Map<String, Setting> settings,
+      CancelToken? token});
+
   Future<void> reload();
 
   Future<void> removePermission({required Permission permission});

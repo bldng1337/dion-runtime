@@ -35,6 +35,7 @@ export declare class Extension {
   search(page: number, filter: string, token?: CancelToken | undefined | null): Promise<EntryList>
   fromurl(url: string, token?: CancelToken | undefined | null): Promise<boolean>
   detail(entryid: EntryId, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>
+  refresh(entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>
   source(epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken): Promise<SourceResult>
   mapEntry(entry:EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>
   onEntryActivity(activity: EntryActivity, entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<void>

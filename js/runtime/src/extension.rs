@@ -130,6 +130,31 @@ impl ExtensionProxy {
   }
 
   #[napi(
+    ts_args_type = "entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken",
+    ts_return_type = "Promise<EntryDetailedResult>"
+  )]
+  pub async fn refresh(
+    &self,
+    entry: serde_json::Value,
+    settings: HashMap<String, serde_json::Value>,
+    token: Option<&CancelTokenProxy>,
+  ) -> Result<serde_json::Value, napi::Error> {
+    let token = token.map(|v| v.take_token());
+    let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
+    let entry: EntryDetailed = serde_json::from_value(entry).map_to_node()?;
+    for (key, value) in settings.into_iter() {
+      let value = serde_json::from_value(value).map_to_node()?;
+      mapsettings.insert(key, value);
+    }
+    let inner = self
+      .extension
+      .refresh(entry, mapsettings, token)
+      .await
+      .map_to_node()?;
+    serde_json::to_value(inner).map_to_node()
+  }
+
+  #[napi(
     ts_args_type = "epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken",
     ts_return_type = "Promise<SourceResult>"
   )]

@@ -456,6 +456,30 @@ impl Extension for DionExtension {
         }
     }
 
+    async fn refresh(
+        &self,
+        entry: EntryDetailed,
+        settings: HashMap<String, Setting>,
+        token: Option<CancellationToken>,
+    ) -> Result<EntryDetailedResult> {
+        match &*self.data.context.load() {
+            Some(context) => {
+                let (send, response) = oneshot::channel();
+                let task = Task::Refresh {
+                    entry,
+                    settings,
+                    token,
+                    send,
+                };
+                context
+                    .send(task)
+                    .context("Failed to send message to Extension Thread")?;
+                response.await?
+            }
+            None => bail!("Extension is not enabled"),
+        }
+    }
+
     async fn source(
         &self,
         epid: EpisodeId,

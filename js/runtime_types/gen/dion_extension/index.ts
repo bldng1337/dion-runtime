@@ -28,6 +28,16 @@ export interface SourceProvider {
 		entryid: EntryId,
 		settings: Record<string, Setting>,
 	): Promise<EntryDetailedResult>;
+	/**
+	 * Updates an entry the host already holds. Receives the host's current
+	 * (cached) entry, so implementations can check what changed and fetch only
+	 * what they need; return the complete updated entry. Optional: when not
+	 * implemented the host falls back to a full `detail` fetch.
+	 */
+	refresh?(
+		entry: EntryDetailed,
+		settings: Record<string, Setting>,
+	): Promise<EntryDetailedResult>;
 	source(
 		epid: EpisodeId,
 		settings: Record<string, Setting>,

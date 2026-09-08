@@ -123,12 +123,12 @@ export default class extends DionExtension implements SourceProvider {
 | Interface | Methods | Purpose |
 |---|---|---|
 | `Extension` (base, always) | `onEvent`, `validate`, optional `handleProxy` | Lifecycle, auth validation, HTTP proxy interception. |
-| `SourceProvider` | `browse`, `search`, `detail`, `source`, optional `handleUrl` | The common case: provide entries + sources from a site. |
+| `SourceProvider` | `browse`, `search`, `detail`, `source`, optional `refresh`, optional `handleUrl` | The common case: provide entries + sources from a site. |
 | `EntryExtension` | optional `mapEntry`, `onEntryActivity` | Post-process/transform entries another provider returned. |
 | `SourceProcessorExtension` | `mapSource` | Transform/rewrite a source another provider returned. |
 
 Method-name spellings matter exactly — the host dispatches by name
-(`browse`, `search`, `detail`, `source`, `mapEntry`, `onEntryActivity`, `mapSource`,
+(`browse`, `search`, `detail`, `refresh`, `source`, `mapEntry`, `onEntryActivity`, `mapSource`,
 `handleUrl`, `handleProxy`, `onEvent`, `validate`, `load`). Use the TypeScript interfaces to get the correct signatures.
 
 ### Declaring `extension_type`
@@ -192,6 +192,11 @@ All defined in `@dion-js/runtime-types/runtime` read the ts types to get the mos
 - `Entry`: `id.uid` must uniquely identify the entry within this extension.
 - `EntryDetailed`: `id.uid` must match with the `Entry`.
 - `EntryDetailedResult`: Echo back the `settings` you received (or a transformed copy).
+- `refresh` (optional on `SourceProvider`): like `detail`, but receives the host's current
+  (cached) `EntryDetailed` for the entry, so you can check what changed (e.g. compare episode
+  lists or a site timestamp) and fetch only what you need. Return the **complete** updated
+  `EntryDetailedResult` — the host replaces its stored entry with it. If you don't implement
+  `refresh`, the host falls back to a full `detail` fetch, so it is purely an optimization.
 - `Source`: discriminated by `type`: Epub, Pdf, Imagelist, Video, Audio, Paragraphlist
 - `SourceResult`: Echo back the `settings` you received (or a transformed copy). The host threads the **same** per-entry `settings` object from `detail` into `source`, so any change you return from `detail` is what `source` receives for that entry. Always echo `settings` back in both return values.
 - `Link`:use `header` for auth/referer headers the player must send.

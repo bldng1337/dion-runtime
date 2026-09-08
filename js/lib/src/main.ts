@@ -86,6 +86,7 @@ export abstract class DionExtension implements Extension {
 		if ("browse" in this) this.browse = (this.browse as bindable).bind(this);
 		if ("search" in this) this.search = (this.search as bindable).bind(this);
 		if ("detail" in this) this.detail = (this.detail as bindable).bind(this);
+		if ("refresh" in this) this.refresh = (this.refresh as bindable).bind(this);
 		if ("source" in this) this.source = (this.source as bindable).bind(this);
 		if ("handleUrl" in this)
 			this.handleUrl = (this.handleUrl as bindable).bind(this);

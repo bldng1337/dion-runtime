@@ -32,7 +32,6 @@ class ExtensionData {
   final String version;
   final String license;
   final bool compatible;
-
   final List<Permission>? permissions;
 
   const ExtensionData({

@@ -78,6 +78,13 @@ pub(crate) enum Task {
         token: Option<CancellationToken>,
         send: Sender<Result<EntryDetailedResult>>,
     },
+    Refresh {
+        entry: EntryDetailed,
+        settings: HashMap<String, Setting>,
+
+        token: Option<CancellationToken>,
+        send: Sender<Result<EntryDetailedResult>>,
+    },
     MapEntry {
         entry: EntryDetailed,
         settings: HashMap<String, Setting>,
@@ -376,6 +383,61 @@ impl JSExecutor<Task> for ExtensionExecutor {
                     Self::exec(context, "detail", vals, token)
                         .await
                         .context("Failed to call detail")
+                }
+                .await;
+                let _ = send.send(res);
+            }
+            Task::Refresh {
+                entry,
+                settings,
+                token,
+                send,
+            } => {
+                let res = async {
+                    let settings_val = JsValue::from_json(
+                        &serde_json::to_value(settings)
+                            .context("Failed to convert Settings to serde Value")?,
+                        context,
+                    )
+                    .map_anyhow_ctx(context)
+                    .context("Failed to convert Settings to js")?;
+                    let plugin = Self::get_plugin(context).await?;
+                    if plugin
+                        .has_property(js_string!("refresh"), context)
+                        .map_anyhow_ctx(context)
+                        .context("Failed to check for refresh function")?
+                    {
+                        let vals = &[
+                            JsValue::from_json(
+                                &serde_json::to_value(entry)
+                                    .context("Failed to convert Entry to serde Value")?,
+                                context,
+                            )
+                            .map_anyhow_ctx(context)
+                            .context("Failed to convert Entry to js")?,
+                            settings_val,
+                        ];
+                        Self::exec::<EntryDetailedResult>(context, "refresh", vals, token)
+                            .await
+                            .context("Failed to call refresh")
+                    } else {
+                        // No incremental refresh on the extension: fall back to
+                        // a plain detail fetch of the stored entry's id so
+                        // callers can always use refresh with cached entries.
+                        let vals = &[
+                            JsValue::from_json(
+                                &serde_json::to_value(entry.id)
+                                    .context("Failed to convert EntryId to serde Value")?,
+                                context,
+                            )
+                            .map_anyhow_ctx(context)
+                            .context("Failed to convert EntryId to js")?,
+                            settings_val,
+                        ];
+                        Self::exec::<EntryDetailedResult>(context, "detail", vals, token)
+                            .await
+                            .context("Failed to call detail")
+                    }
                 }
                 .await;
                 let _ = send.send(res);

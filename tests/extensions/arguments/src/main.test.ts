@@ -34,6 +34,9 @@ test("test arguments", async () => {
 		{},
 	);
 	await ext.fromurl("");
+	const refreshed = await ext.refresh(entry.entry, {});
+	expect(refreshed.entry.titles).toContain("refreshed by refresh");
+	expect(refreshed.entry.id).toEqual(entry.entry.id);
 	await ext.mapEntry(entry.entry, {});
 	await ext.onEntryActivity(
 		{

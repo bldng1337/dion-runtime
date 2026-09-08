@@ -5001,6 +5001,34 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_on_entry_activityPtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__crate__api__extension__ProxyExtension_refresh(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_refresh(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_refreshPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Int32,
+            ffi.Int32,
+          )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_refresh',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_refresh =
+      _wire__crate__api__extension__ProxyExtension_refreshPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
   void wire__crate__api__extension__ProxyExtension_reload(int port_, int that) {
     return _wire__crate__api__extension__ProxyExtension_reload(port_, that);
   }

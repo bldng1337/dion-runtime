@@ -55,7 +55,6 @@ class RemoteExtension {
   final Link? cover;
   final String version;
   final bool compatible;
-
   final List<Permission>? permissions;
 
   const RemoteExtension({

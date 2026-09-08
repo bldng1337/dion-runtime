@@ -1137,8 +1137,8 @@ extension JsonExtensionData on ExtensionData {
         compatible: value["compatible"],
         permissions: value["permissions"] != null
             ? (value["permissions"] as List)
-                  .map((e) => JsonPermission.fromJson(e))
-                  .toList()
+                .map((e) => JsonPermission.fromJson(e))
+                .toList()
             : null,
       );
 }
@@ -1267,8 +1267,8 @@ extension JsonRemoteExtension on RemoteExtension {
         compatible: value["compatible"],
         permissions: value["permissions"] != null
             ? (value["permissions"] as List)
-                  .map((e) => JsonPermission.fromJson(e))
-                  .toList()
+                .map((e) => JsonPermission.fromJson(e))
+                .toList()
             : null,
       );
 }

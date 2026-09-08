@@ -73,6 +73,15 @@ pub trait Extension: Send + Sync {
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult>;
 
+    async fn refresh(
+        &self,
+        entry: EntryDetailed,
+        settings: HashMap<String, Setting>,
+        token: Option<CancellationToken>,
+    ) -> Result<EntryDetailedResult> {
+        self.detail(entry.id, settings, token).await
+    }
+
     async fn source(
         &self,
         epid: EpisodeId,

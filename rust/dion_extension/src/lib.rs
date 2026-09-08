@@ -207,6 +207,7 @@ mod tests {
     }
 
     const EXTENSION_PATH: &str = r#"../../tests/extensions/native/.dist"#;
+    const ARGUMENTS_EXTENSION_PATH: &str = r#"../../tests/extensions/arguments/.dist"#;
 
     #[tokio::test]
     async fn browse() -> Result<()> {
@@ -250,6 +251,59 @@ mod tests {
                 None,
             )
             .await?;
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn refresh_fallback() -> Result<()> {
+        // simple_logger::SimpleLogger::new().env().init().unwrap();
+        let server = setup_mock_server();
+        let extension = setup_extension(EXTENSION_PATH, &server).await?;
+        let detail = extension
+            .detail(
+                EntryId {
+                    uid: "Some".to_string(),
+                    iddata: Default::default(),
+                },
+                Default::default(),
+                None,
+            )
+            .await?;
+        // The native test extension exports no refresh, so this must fall
+        // back to a plain detail fetch of the stored entry's id.
+        let refreshed = extension
+            .refresh(detail.entry, Default::default(), None)
+            .await?;
+        assert_eq!(refreshed.entry.id.uid, "Some");
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn refresh() -> Result<()> {
+        // simple_logger::SimpleLogger::new().env().init().unwrap();
+        let server = setup_mock_server();
+        let extension = setup_extension(ARGUMENTS_EXTENSION_PATH, &server).await?;
+        let detail = extension
+            .detail(
+                EntryId {
+                    uid: "Some".to_string(),
+                    iddata: Default::default(),
+                },
+                Default::default(),
+                None,
+            )
+            .await?;
+        // The arguments test extension refreshes by echoing the received
+        // entry with an extra title, proving the stored entry reached JS.
+        let refreshed = extension
+            .refresh(detail.entry, Default::default(), None)
+            .await?;
+        assert!(
+            refreshed
+                .entry
+                .titles
+                .contains(&"refreshed by refresh".to_string())
+        );
         Ok(())
     }
 

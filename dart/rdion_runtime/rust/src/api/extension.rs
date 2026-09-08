@@ -235,6 +235,19 @@ impl ProxyExtension {
     }
 
     #[frb(serialize)]
+    pub async fn refresh(
+        &self,
+        entry: EntryDetailed,
+        settings: HashMap<String, Setting>,
+        token: Option<CancelToken>,
+    ) -> Result<EntryDetailedResult> {
+        self.inner
+            .inner
+            .refresh(entry, settings, token.map(|token| token.into()))
+            .await
+    }
+
+    #[frb(serialize)]
     pub async fn source(
         &self,
         epid: EpisodeId,
