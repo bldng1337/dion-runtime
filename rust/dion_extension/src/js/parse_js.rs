@@ -4,8 +4,14 @@ use boa_engine::{
 };
 use boa_gc::{Finalize, Trace};
 use dion_runtime::data::source::{MixedContent, Paragraph, Row, TextStyle};
-use ego_tree::NodeId;
-use scraper::{ElementRef, Html, Node, Selector};
+use ego_tree::{NodeId, Tree};
+use html5ever::{Attribute, LocalName, Namespace, QualName};
+use quick_xml::events::{BytesStart, Event};
+use quick_xml::reader::Reader;
+use scraper::{
+    ElementRef, Html, Node, Selector,
+    node::{Element as ScraperElement, Text as ScrapedText},
+};
 use std::rc::Rc;
 
 use boa_engine::boa_class;
@@ -357,13 +363,17 @@ fn element_to_paragraph_list(element: ElementRef, doc: &Html) -> Vec<Paragraph> 
 
 #[boa_module]
 mod parse {
-    use super::Element;
+    use super::{Element, looks_like_xml, parse_xml_document};
     use scraper::Html;
     use std::rc::Rc;
 
     #[boa(rename = "parseHtml")]
     fn parse_html(html: String) -> Element {
-        let doc = Html::parse_document(&html);
+        let doc = if looks_like_xml(&html) {
+            parse_xml_document(&html).unwrap_or_else(|| Html::parse_document(&html))
+        } else {
+            Html::parse_document(&html)
+        };
         let node = doc.root_element().id();
         Element {
             doc: Rc::new(doc),
@@ -380,6 +390,138 @@ mod parse {
             node,
         }
     }
+
+    #[boa(rename = "parseXml")]
+    fn parse_xml(xml: String) -> Element {
+        let doc = parse_xml_document(&xml).unwrap_or_else(|| Html::parse_document(&xml));
+        let node = doc.root_element().id();
+        Element {
+            doc: Rc::new(doc),
+            node,
+        }
+    }
+}
+
+fn looks_like_xml(body: &str) -> bool {
+    body.trim_start().starts_with("<?xml")
+}
+
+fn parse_xml_document(body: &str) -> Option<Html> {
+    let mut reader = Reader::from_str(body);
+    let config = reader.config_mut();
+    config.expand_empty_elements = true;
+    config.check_end_names = false;
+    config.allow_unmatched_ends = true;
+    config.allow_dangling_amp = true;
+
+    let mut tree: Tree<Node> = Tree::new(Node::Document);
+    let root = tree.root().id();
+    // (tag name, node id) of every open element; mirrors the XML nesting.
+    let mut open: Vec<(String, NodeId)> = Vec::new();
+    let mut has_root_element = false;
+
+    loop {
+        match reader.read_event() {
+            Ok(Event::Start(start)) => {
+                let name = element_name(&start);
+                let parent = open.last().map_or(root, |(_, id)| *id);
+                let id = append_node(
+                    &mut tree,
+                    parent,
+                    Node::Element(element_from_start(&start, &name)),
+                );
+                has_root_element |= open.is_empty();
+                open.push((name, id));
+            }
+            Ok(Event::Empty(start)) => {
+                let name = element_name(&start);
+                let parent = open.last().map_or(root, |(_, id)| *id);
+                append_node(
+                    &mut tree,
+                    parent,
+                    Node::Element(element_from_start(&start, &name)),
+                );
+                has_root_element |= open.is_empty();
+            }
+            Ok(Event::End(end)) => {
+                let name = String::from_utf8_lossy(end.name().as_ref()).into_owned();
+                // Close the nearest matching open element; anything still
+                // nested inside it is closed implicitly (lenient misnesting).
+                if let Some(pos) = open.iter().rposition(|(n, _)| *n == name) {
+                    open.truncate(pos);
+                }
+            }
+            Ok(Event::Text(text)) => {
+                if let Ok(text) = text.decode() {
+                    append_text(&mut tree, &open, root, text.as_ref());
+                }
+            }
+            Ok(Event::GeneralRef(reference)) => {
+                // General entity references arrive as standalone events; wrap
+                // them back into `&name;` form and reuse the escape resolver.
+                if let Ok(name) = reference.decode()
+                    && let Ok(resolved) = quick_xml::escape::unescape(&format!("&{name};"))
+                {
+                    append_text(&mut tree, &open, root, resolved.as_ref());
+                }
+            }
+            Ok(Event::CData(cdata)) => {
+                if let Ok(text) = cdata.decode() {
+                    append_text(&mut tree, &open, root, text.as_ref());
+                }
+            }
+            Ok(Event::Eof) => break,
+            // Comments, declarations, processing instructions and malformed
+            // chunks are skipped; the tree built so far is kept.
+            Ok(_) => {}
+            Err(_) => break,
+        }
+    }
+
+    if !has_root_element {
+        return None;
+    }
+    let mut doc = Html::new_document();
+    doc.tree = tree;
+    Some(doc)
+}
+
+fn append_text(tree: &mut Tree<Node>, open: &[(String, NodeId)], root: NodeId, text: &str) {
+    let parent = open.last().map_or(root, |(_, id)| *id);
+    append_node(
+        tree,
+        parent,
+        Node::Text(ScrapedText {
+            text: scraper::StrTendril::from(text),
+        }),
+    );
+}
+
+fn append_node(tree: &mut Tree<Node>, parent: NodeId, node: Node) -> NodeId {
+    tree.get_mut(parent).unwrap().append(node).id()
+}
+
+fn element_name(start: &BytesStart) -> String {
+    String::from_utf8_lossy(start.name().as_ref()).into_owned()
+}
+
+fn element_from_start(start: &BytesStart, name: &str) -> ScraperElement {
+    let qualified = |raw: &str| QualName {
+        prefix: None,
+        ns: Namespace::from(""),
+        local: LocalName::from(raw.to_string()),
+    };
+    let attrs: Vec<Attribute> = start
+        .attributes()
+        .filter_map(|attr| {
+            let attr = attr.ok()?;
+            Some(Attribute {
+                name: qualified(&String::from_utf8_lossy(attr.key.as_ref())),
+                value: scraper::StrTendril::from(attr.unescape_value().ok()?.as_ref()),
+            })
+        })
+        .collect();
+    ScraperElement::new(qualified(name), attrs)
 }
 
 #[derive(Debug, Trace, Finalize, JsData, Clone)]
@@ -746,5 +888,116 @@ impl CSSSelector {
                 JsNativeError::error().with_message("Failed to parse CSS Selector")
             })?,
         }) //TODO: Improve Error Feedback
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn select_all(doc: &Html, selector: &str) -> Vec<String> {
+        let sel = Selector::parse(selector).unwrap();
+        doc.root_element()
+            .select(&sel)
+            .map(|el| el.value().name().to_string())
+            .collect()
+    }
+
+    #[test]
+    fn xml_keeps_repeated_sibling_elements() {
+        // Regression: the HTML5 tree builder leaves self-closed non-void
+        // elements open, which nested every following <link> inside the first
+        // <category>. The XML parser must keep them as siblings.
+        let doc = parse_xml_document(
+            r#"<?xml version="1.0"?><feed><entry><category term="a"/>
+                <link href="1"/><link href="2"/><link href="3"/></entry></feed>"#,
+        )
+        .unwrap();
+        let entry = doc
+            .root_element()
+            .select(&Selector::parse("entry").unwrap())
+            .next()
+            .unwrap();
+        assert_eq!(entry.select(&Selector::parse("link").unwrap()).count(), 3);
+        // Self-closed elements are real closed elements: the entry's element
+        // children are category + 3 links, all direct children.
+        assert_eq!(
+            entry
+                .children()
+                .filter_map(ElementRef::wrap)
+                .map(|el| el.value().name().to_string())
+                .collect::<Vec<_>>(),
+            vec!["category", "link", "link", "link"]
+        );
+    }
+
+    #[test]
+    fn xml_child_combinator_finds_links() {
+        let doc = parse_xml_document(
+            r#"<?xml version="1.0"?><feed><entry>
+                <category term="a"/>
+                <link href="1"/><link href="2"/></entry></feed>"#,
+        )
+        .unwrap();
+        assert_eq!(select_all(&doc, "entry > link").len(), 2);
+    }
+
+    #[test]
+    fn xml_keeps_namespace_prefixes_and_attributes() {
+        let doc = parse_xml_document(
+            r#"<?xml version="1.0"?><feed xmlns:dcterms="http://purl.org/dc/terms/">
+                <dcterms:language>en</dcterms:language>
+                <link title="EPUB (no images)" href="/a.epub"/></feed>"#,
+        )
+        .unwrap();
+        // Escaped selectors can address prefixed names directly.
+        assert_eq!(select_all(&doc, r"dcterms\:language").len(), 1);
+        let root = doc.root_element();
+        let names: Vec<String> = root
+            .children()
+            .filter_map(ElementRef::wrap)
+            .map(|el| el.value().name().to_string())
+            .collect();
+        assert!(names.contains(&"dcterms:language".to_string()));
+        let link = ElementRef::wrap(
+            root.children()
+                .find(|c| ElementRef::wrap(*c).is_some_and(|el| el.value().name() == "link"))
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(link.attr("title").unwrap(), "EPUB (no images)");
+    }
+
+    #[test]
+    fn xml_decodes_entities_and_cdata() {
+        let doc = parse_xml_document(
+            r#"<?xml version="1.0"?><entry><title>A &amp; B</title>
+                <desc><![CDATA[<p>raw</p> x & y]]></desc></entry>"#,
+        )
+        .unwrap();
+        let root = doc.root_element();
+        let title = root
+            .select(&Selector::parse("title").unwrap())
+            .next()
+            .unwrap();
+        assert_eq!(title.text().collect::<String>(), "A & B");
+        let desc = root
+            .select(&Selector::parse("desc").unwrap())
+            .next()
+            .unwrap();
+        assert_eq!(desc.text().collect::<String>(), "<p>raw</p> x & y");
+    }
+
+    #[test]
+    fn xml_without_elements_falls_back() {
+        assert!(parse_xml_document("just text").is_none());
+    }
+
+    #[test]
+    fn looks_like_xml_detection() {
+        assert!(looks_like_xml("<?xml version=\"1.0\"?><feed/>"));
+        assert!(looks_like_xml("  <?xml version=\"1.0\"?>\n<feed/>"));
+        assert!(!looks_like_xml("<!DOCTYPE html><html></html>"));
+        assert!(!looks_like_xml("<feed></feed>"));
     }
 }

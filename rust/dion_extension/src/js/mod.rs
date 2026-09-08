@@ -14,8 +14,10 @@ mod permission_js;
 mod setting_js;
 mod specta;
 mod store_js;
+mod url_js;
 
 pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
+    url_js::declare(context).context("Failed to declare url lib")?;
     parse_js::declare(context, loader).context("Failed to declare parse lib")?;
     convert_js::declare(context, loader).context("Failed to declare convert lib")?;
     networking_js::declare(context, loader).context("Failed to declare networking lib")?;
