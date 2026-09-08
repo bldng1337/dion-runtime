@@ -1,0 +1,15 @@
+# Store all text as LF and check it out as LF on every platform, so the
+# working tree is identical on Linux CI, GitHub's Windows runners (whose git
+# defaults to core.autocrlf=true), and local clones. Biome enforces LF; a
+# CRLF checkout makes `biome check` fail.
+* text=auto eol=lf
+
+# Windows-native scripts run under cmd.exe; keep CRLF on checkout.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binaries: never normalize.
+*.png binary
+*.ico binary
+*.jar binary
