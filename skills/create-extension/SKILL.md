@@ -131,6 +131,16 @@ Method-name spellings matter exactly — the host dispatches by name
 (`browse`, `search`, `detail`, `refresh`, `source`, `mapEntry`, `onEntryActivity`, `mapSource`,
 `handleUrl`, `handleProxy`, `onEvent`, `validate`, `load`). Use the TypeScript interfaces to get the correct signatures.
 
+#### `mapEntry` conventions
+
+- **`meta` keys are namespaced per extension.** All entry processors share the
+  entry's one `meta` map. Only write keys prefixed with your own extension id or some other unique namespace (`"<your-extension-id>:<key>"`, e.g. `my-tracker:mediaId`); reading any key (including other extensions') is fine.
+- **`ui` is per-owner.** The host hands `mapEntry` an entry whose `ui` is
+  cleared; whatever `ui` you return is rendered as *your* extension's section,
+  stacked after the source extension's UI. You cannot read or splice into the
+  source UI from `mapEntry`. Return the entry with `ui` unset if you don't
+  want a UI section.
+
 ### Declaring `extension_type`
 `extension_type` is a tagged union discriminated by `type`. Declare the variants matching the interfaces you implement (you can list more than one). The host does **not** infer these from your methods, so an unlisted capability won't be exposed.
 
