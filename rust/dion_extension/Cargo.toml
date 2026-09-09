@@ -17,13 +17,17 @@ http-body-util = "0.1"
 arc-swap = "1.7.1"
 
 lazy_static = { version = "1.5.0" }
-boa_engine = { version="0.21.0", features = [
+# boa 0.22 enables `temporal` by default; it stays off here (as in 0.21), so the
+# other defaults are re-enabled manually via default-features = false.
+boa_engine = { version="0.22.0", default-features = false, features = [
     "jsvalue-enum",
+    "float16",
+    "xsum",
     # "temporal",
 ] }
 semver = "1.0.27"
-boa_runtime = { version="0.21.0" }
-boa_gc = { version="0.21.0" }
+boa_runtime = { version="0.22.0" }
+boa_gc = { version="0.22.0" }
 #6570619729faae32c49deec59a6d65f01e639bde
 
 #735cd3ece395f3ebe04258284dd561511b22d183

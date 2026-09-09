@@ -104,7 +104,7 @@ mod tests {
         }))
         .await?;
         let exts = manager.get_extensions().await?;
-        for mut extension in exts.into_iter() {
+        if let Some(mut extension) = exts.into_iter().next() {
             extension
                 .get_data()
                 .write()
@@ -129,11 +129,9 @@ mod tests {
             return Ok(extension);
         }
         if let Ok(read_dir) = std::fs::read_dir(path) {
-            for entry in read_dir {
-                if let Ok(entry) = entry {
-                    let path = entry.path();
-                    println!("{:?}", path);
-                }
+            for entry in read_dir.flatten() {
+                let path = entry.path();
+                println!("{:?}", path);
             }
         }
         panic!("No Extension found")

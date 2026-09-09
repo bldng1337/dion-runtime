@@ -156,7 +156,7 @@ mod network {
                             let mut context = context.borrow_mut();
                             resolve.reject.call(
                                 &promise.into(),
-                                &[err.to_opaque(&mut context)],
+                                &[crate::utils::error_to_reject_value(err, &mut context)],
                                 &mut context,
                             )?
                         },
@@ -185,7 +185,7 @@ mod network {
                 JsNativeError::error().with_message("Cookie store lock is poisoned"),
             )
         })?;
-        let array = JsArray::new(context);
+        let array = JsArray::new(context)?;
         for cookie in cookies.iter_unexpired() {
             let obj = js_object!({
                 "httpOnly": cookie.http_only().unwrap_or_default(),
@@ -307,7 +307,7 @@ mod network {
                         let mut context = context.borrow_mut();
                         resolve.reject.call(
                             &promise.into(),
-                            &[err.to_opaque(&mut context)],
+                            &[crate::utils::error_to_reject_value(err, &mut context)],
                             &mut context,
                         )?
                     }

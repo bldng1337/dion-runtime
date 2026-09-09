@@ -19,10 +19,15 @@ use tokio::task::{self, JoinHandle};
 
 use boa_engine::Finalize;
 use boa_engine::JsData;
-use boa_engine::module::{ModuleLoader, Referrer};
-use boa_engine::{JsError, JsString, Module, Trace};
+use boa_engine::module::{ModuleLoader, ModuleRequest, Referrer};
+use boa_engine::{JsError, Module, Trace, js_string};
 
 use anyhow::{Result, anyhow};
+
+pub(crate) fn error_to_reject_value(err: JsError, context: &mut Context) -> JsValue {
+    err.into_opaque(context)
+        .unwrap_or_else(|err| JsValue::from(js_string!(err.to_string())))
+}
 
 pub(crate) trait Abortable {
     fn abort(&self);
@@ -137,9 +142,10 @@ impl ModuleLoader for VirtualModuleLoader {
     async fn load_imported_module(
         self: Rc<Self>,
         _referrer: Referrer,
-        specifier: JsString,
+        request: ModuleRequest,
         _context: &RefCell<&mut Context>,
     ) -> JsResult<Module> {
+        let specifier = request.specifier();
         let short_path = specifier.to_std_string_escaped();
         if let Some(module) = self.get(&short_path) {
             return Ok(module);
@@ -271,7 +277,7 @@ impl<T> MapJsResult<T> for JsResult<T> {
             Err(jserr) => match jserr.try_native(context) {
                 Ok(err) => Err(anyhow!(
                     "Error executing JS[{}]: {}",
-                    err.kind,
+                    err.kind(),
                     err.message()
                 )),
                 Err(err) => Err(anyhow!(
@@ -289,7 +295,7 @@ impl<T> MapJsResult<T> for JsResult<T> {
             Err(jserr) => match jserr.as_native() {
                 Some(err) => Err(anyhow!(
                     "Error executing JS[{}]: {}",
-                    err.kind,
+                    err.kind(),
                     err.message()
                 )),
                 None => Err(anyhow!("Error executing JS: {}", jserr)),

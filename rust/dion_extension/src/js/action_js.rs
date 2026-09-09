@@ -70,7 +70,7 @@ mod action {
                             let mut context = context.borrow_mut();
                             resolve.reject.call(
                                 &promise.into(),
-                                &[err.to_opaque(&mut context)],
+                                &[crate::utils::error_to_reject_value(err, &mut context)],
                                 &mut context,
                             )?
                         }
