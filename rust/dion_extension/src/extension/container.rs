@@ -42,6 +42,13 @@ pub struct InnerExtension {
     pub(crate) store: RwLock<ExtensionStore>,
     pub(crate) client: Box<dyn ExtensionClient>,
     pub(crate) network: DionNetworkManager,
+    /// The extension's private data directory (host-chosen via
+    /// `ExtensionClient::get_path`), lexically normalized and canonicalized
+    /// when possible. The `filesystem` module grants unrestricted access
+    /// below this directory; everything else needs a Storage permission.
+    pub(crate) data_dir: PathBuf,
+    /// Backs the JS `cache` module; caches live in `<data_dir>/cache`.
+    pub(crate) cache: crate::cache::CacheManager,
     pub(crate) context: ArcSwapOption<ThreadedJSContext<Task>>,
     pub(crate) proxy: Arc<RwLock<Proxy>>,
     pub(crate) network_permissions: tokio::sync::Mutex<NetworkPermissionCache>,
@@ -168,7 +175,14 @@ impl DionExtension {
             .get_path()
             .await
             .context("Failed to get extension data path")?;
-        let network = DionNetworkManager::new(PathBuf::from(data_dir))?;
+        let data_dir = crate::filesystem::normalize_path(&data_dir);
+        let network = DionNetworkManager::new(data_dir.clone())?;
+        // The network manager just created the directory; canonicalize so a
+        // symlinked data dir (e.g. /tmp on macOS) still matches the resolved
+        // paths checked by the filesystem module.
+        let data_dir = tokio::fs::canonicalize(&data_dir)
+            .await
+            .map_or(data_dir, crate::filesystem::strip_verbatim);
         let ext = ExtensionStore {
             data: extdata.clone().into_extension_data(),
             permission: PermissionStore::new(client.as_ref()).await,
@@ -179,6 +193,8 @@ impl DionExtension {
             client,
             proxy: manager.proxy.clone(),
             network,
+            data_dir: data_dir.clone(),
+            cache: crate::cache::CacheManager::new(data_dir),
             store: RwLock::new(ext),
             context: ArcSwapOption::from(None),
             network_permissions: Default::default(),

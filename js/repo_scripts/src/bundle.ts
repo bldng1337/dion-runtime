@@ -23,6 +23,8 @@ async function build(): Promise<string> {
 			"auth",
 			"action",
 			"store",
+			"cache",
+			"filesystem",
 		],
 		format: "esm",
 	});

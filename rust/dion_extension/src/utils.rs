@@ -29,6 +29,58 @@ pub(crate) fn error_to_reject_value(err: JsError, context: &mut Context) -> JsVa
         .unwrap_or_else(|err| JsValue::from(js_string!(err.to_string())))
 }
 
+/// Boilerplate shared by the JS modules that need to await Rust async work
+/// (permission prompts, file IO, ...) before resolving: enqueues a
+/// `NativeAsyncJob` whose future runs `work` with the live
+/// `InnerExtension`, then converts the Rust result to a `JsValue` with the
+/// context borrowed back, resolving/rejecting the returned promise.
+pub(crate) fn enqueue_job<T, WF, F, C>(
+    context: &mut Context,
+    work: WF,
+    convert: C,
+) -> JsResult<JsValue>
+where
+    T: 'static,
+    WF: FnOnce(std::sync::Arc<crate::extension::container::InnerExtension>) -> F + 'static,
+    F: Future<Output = anyhow::Result<T>> + 'static,
+    C: FnOnce(T, &mut Context) -> JsResult<JsValue> + 'static,
+{
+    let runtime: Option<crate::extension::executor::ExtensionRuntimeDataContainer> =
+        context.get_data().cloned();
+    let runtime = runtime.ok_or(JsError::from_native(
+        JsNativeError::error().with_message("Failed to get runtime data"),
+    ))?;
+    let Some(inner) = runtime.inner.upgrade() else {
+        return Err(JsError::from_native(
+            JsNativeError::error().with_message("Runtime container has been dropped"),
+        ));
+    };
+    let (promise, resolve) = JsPromise::new_pending(context);
+    let ret = promise.clone();
+    context.enqueue_job(<Job>::from(NativeAsyncJob::with_realm(
+        async move |context: &RefCell<&mut Context>| {
+            let result = work(inner).await;
+            let mut guard = context.borrow_mut();
+            let ctx: &mut Context = &mut guard;
+            match result {
+                Ok(value) => {
+                    let val = convert(value, ctx)?;
+                    resolve.resolve.call(&promise.into(), &[val], ctx)?
+                }
+                Err(err) => {
+                    let err = JsError::from_rust(&*err);
+                    resolve
+                        .reject
+                        .call(&promise.into(), &[error_to_reject_value(err, ctx)], ctx)?
+                }
+            };
+            Ok(JsValue::undefined())
+        },
+        context.realm().clone(),
+    )));
+    Ok(ret.into())
+}
+
 pub(crate) trait Abortable {
     fn abort(&self);
 }

@@ -1397,6 +1397,10 @@ extension JsonSettingsUI on SettingsUI {
             "type": "Dropdown",
             "options": options.map((e) => e.toJson()).toList(),
           },
+        SettingsUI_Directory(:final write) => {
+            "type": "Directory",
+            "write": write,
+          },
       };
 
   static SettingsUI fromJson(dynamic value) {
@@ -1424,6 +1428,8 @@ extension JsonSettingsUI on SettingsUI {
               .map((e) => JsonDropdownOption.fromJson(e))
               .toList(),
         );
+      case "Directory":
+        return SettingsUI.directory(write: value["write"] ?? false);
       default:
         throw FormatException("Unknown SettingsUI type: $type");
     }

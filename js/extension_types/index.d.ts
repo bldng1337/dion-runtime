@@ -73,6 +73,118 @@ declare module "store" {
 	export function set(key: string, value: unknown): Promise<void>;
 }
 
+declare module "cache" {
+	/**
+	 * Opens (or attaches to) a persistent KV cache.
+	 * Values may be any JSON value or a Uint8Array (stored as raw bytes).
+	 * `defaultTtl` (seconds) applies to every `set` without an explicit ttl.
+	 */
+	export function openKvCache(
+		name: string,
+		options?: { defaultTtl?: number },
+	): Cache;
+
+	/**
+	 * Opens (or attaches to) a persistent LRU cache. The least recently
+	 * used entries are evicted when `maxEntries` or `maxBytes` is exceeded.
+	 */
+	export function openLruCache(
+		name: string,
+		options?: {
+			maxEntries?: number;
+			maxBytes?: number;
+			defaultTtl?: number;
+		},
+	): Cache;
+
+	export interface Cache {
+		/** Returns the value, or undefined when missing/expired. Refreshes LRU recency. */
+		get(key: string): Promise<unknown>;
+		/** Reads without refreshing LRU recency. */
+		peek(key: string): Promise<unknown>;
+		set(key: string, value: unknown, ttlSeconds?: number): Promise<void>;
+		has(key: string): Promise<boolean>;
+		delete(key: string): Promise<void>;
+		keys(): Promise<string[]>;
+		size(): Promise<number>;
+		clear(): Promise<void>;
+	}
+}
+
+declare module "filesystem" {
+	export interface WriteOptions {
+		/** Append to the file instead of replacing it. */
+		append?: boolean;
+		/** Create missing parent directories. */
+		createParents?: boolean;
+	}
+
+	export interface DirOptions {
+		/** Create/remove all missing parent directories / contained files. */
+		recursive?: boolean;
+	}
+
+	export interface FileStat {
+		size: number;
+		isDir: boolean;
+		isFile: boolean;
+		modifiedMs: number | undefined;
+		createdMs: number | undefined;
+	}
+
+	export interface DirEntry {
+		name: string;
+		path: string;
+		isDir: boolean;
+		isFile: boolean;
+	}
+
+	/**
+	 * Reads a file as UTF-8 text. Paths inside the extension's private data
+	 * directory need no permission; anything else requires a granted
+	 * `Permission::Storage` (the user is prompted once per directory).
+	 */
+	export function readTextFile(path: string): Promise<string>;
+
+	/** Reads a file as raw bytes. */
+	export function readFile(path: string): Promise<Uint8Array>;
+
+	export function writeTextFile(
+		path: string,
+		contents: string,
+		options?: WriteOptions,
+	): Promise<void>;
+
+	export function writeFile(
+		path: string,
+		data: Uint8Array | string,
+		options?: WriteOptions,
+	): Promise<void>;
+
+	export function deleteFile(path: string): Promise<void>;
+
+	/** Whether the path exists (follows symlinks). */
+	export function exists(path: string): Promise<boolean>;
+
+	export function stat(path: string): Promise<FileStat>;
+
+	export function createDir(path: string, options?: DirOptions): Promise<void>;
+
+	export function removeDir(path: string, options?: DirOptions): Promise<void>;
+
+	export function readDir(path: string): Promise<DirEntry[]>;
+
+	/**
+	 * The extension's private data directory; reading and writing below it
+	 * never requires a Storage permission. On Android this is an
+	 * app-private directory that is always writable.
+	 */
+	export function getDataDir(): string;
+
+	/** Joins path fragments and normalizes the result (resolving `.`/`..`). */
+	export function joinPaths(parts: string[]): string;
+}
+
 declare module "auth" {
 	type Link = string;
 	import type { Account, AuthCreds } from "@dion-js/runtime-types/runtime";

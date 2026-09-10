@@ -118,6 +118,17 @@ sealed class SettingsUI with _$SettingsUI {
   const factory SettingsUI.multiDropdown({
     required List<DropdownOption> options,
   }) = SettingsUI_MultiDropdown;
+
+  /// Lets the user pick a directory with the host's system directory
+  /// picker (ACTION_OPEN_DOCUMENT_TREE style on Android). The picked
+  /// directory is stored as the setting's String value; `write` signals
+  /// that the extension intends to write, so hosts can require a
+  /// writable tree. Extensions should pair this with the `filesystem`
+  /// module's Storage permission flow to get runtime access to the
+  /// directory.
+  const factory SettingsUI.directory({
+    required bool write,
+  }) = SettingsUI_Directory;
   const factory SettingsUI.customUi({
     required CustomUI ui,
   }) = SettingsUI_CustomUI;

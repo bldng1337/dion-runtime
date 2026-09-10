@@ -4407,6 +4407,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           options: dco_decode_list_dropdown_option(raw[1]),
         );
       case 4:
+        return SettingsUI_Directory(
+          write: dco_decode_bool(raw[1]),
+        );
+      case 5:
         return SettingsUI_CustomUI(
           ui: dco_decode_box_autoadd_custom_ui(raw[1]),
         );
@@ -6743,6 +6747,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_options = sse_decode_list_dropdown_option(deserializer);
         return SettingsUI_MultiDropdown(options: var_options);
       case 4:
+        var var_write = sse_decode_bool(deserializer);
+        return SettingsUI_Directory(write: var_write);
+      case 5:
         var var_ui = sse_decode_box_autoadd_custom_ui(deserializer);
         return SettingsUI_CustomUI(ui: var_ui);
       default:
@@ -9170,8 +9177,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case SettingsUI_MultiDropdown(options: final options):
         sse_encode_i_32(3, serializer);
         sse_encode_list_dropdown_option(options, serializer);
-      case SettingsUI_CustomUI(ui: final ui):
+      case SettingsUI_Directory(write: final write):
         sse_encode_i_32(4, serializer);
+        sse_encode_bool(write, serializer);
+      case SettingsUI_CustomUI(ui: final ui):
+        sse_encode_i_32(5, serializer);
         sse_encode_box_autoadd_custom_ui(ui, serializer);
     }
   }

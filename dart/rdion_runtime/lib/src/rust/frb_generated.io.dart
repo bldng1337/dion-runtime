@@ -3167,9 +3167,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       wireObj.kind.MultiDropdown.options = pre_options;
       return;
     }
+    if (apiObj is SettingsUI_Directory) {
+      var pre_write = cst_encode_bool(apiObj.write);
+      wireObj.tag = 4;
+      wireObj.kind.Directory.write = pre_write;
+      return;
+    }
     if (apiObj is SettingsUI_CustomUI) {
       var pre_ui = cst_encode_box_autoadd_custom_ui(apiObj.ui);
-      wireObj.tag = 4;
+      wireObj.tag = 5;
       wireObj.kind.CustomUI.ui = pre_ui;
       return;
     }
@@ -6461,9 +6467,13 @@ class RustLibWire implements BaseWire {
 typedef DartPostCObjectFnType
     = ffi.Pointer<ffi.NativeFunction<DartPostCObjectFnTypeFunction>>;
 typedef DartPostCObjectFnTypeFunction = ffi.Bool Function(
-    DartPort port_id, ffi.Pointer<ffi.Void> message);
+  DartPort port_id,
+  ffi.Pointer<ffi.Void> message,
+);
 typedef DartDartPostCObjectFnTypeFunction = bool Function(
-    DartDartPort port_id, ffi.Pointer<ffi.Void> message);
+  DartDartPort port_id,
+  ffi.Pointer<ffi.Void> message,
+);
 typedef DartPort = ffi.Int64;
 typedef DartDartPort = int;
 
@@ -7235,6 +7245,11 @@ final class wire_cst_SettingsUI_MultiDropdown extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_dropdown_option> options;
 }
 
+final class wire_cst_SettingsUI_Directory extends ffi.Struct {
+  @ffi.Bool()
+  external bool write;
+}
+
 final class wire_cst_SettingsUI_CustomUI extends ffi.Struct {
   external ffi.Pointer<wire_cst_custom_ui> ui;
 }
@@ -7245,6 +7260,8 @@ final class SettingsUIKind extends ffi.Union {
   external wire_cst_SettingsUI_Dropdown Dropdown;
 
   external wire_cst_SettingsUI_MultiDropdown MultiDropdown;
+
+  external wire_cst_SettingsUI_Directory Directory;
 
   external wire_cst_SettingsUI_CustomUI CustomUI;
 }

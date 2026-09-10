@@ -2,6 +2,10 @@ targets:
   $default:
     sources:
       exclude:
+        # The example app is a separate package with its own committed
+        # generated parts; the pinned analyzer cannot summarize it under
+        # newer SDKs (dot-shorthand AST nodes), which aborts freezed runs.
+        - example/**
         # Old-style platform symlinks (CocoaPods, Gradle, etc.)
         - example/ios/.symlinks/**
         - example/linux/.symlinks/**

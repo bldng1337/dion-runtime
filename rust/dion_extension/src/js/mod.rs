@@ -7,7 +7,9 @@ use crate::utils::VirtualModuleLoader;
 
 mod action_js;
 mod auth_js;
+mod cache_js;
 mod convert_js;
+mod filesystem_js;
 mod networking_js;
 mod parse_js;
 mod permission_js;
@@ -26,5 +28,7 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
     setting_js::declare(context, loader).context("Failed to declare setting lib")?;
     action_js::declare(context, loader).context("Failed to declare action lib")?;
     store_js::declare(context, loader).context("Failed to declare store lib")?;
+    cache_js::declare(context, loader).context("Failed to declare cache lib")?;
+    filesystem_js::declare(context, loader).context("Failed to declare filesystem lib")?;
     Ok(())
 }

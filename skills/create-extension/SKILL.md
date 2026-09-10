@@ -176,12 +176,29 @@ These are **external** — import them, do not bundle them. Ambient types come f
 - `network` — `fetch(url, options?)`, `getCookies()`, `getProxyAddress()`. `fetch` returns a
   `DionResponse` with `status`, `headers`, `body` (string), `json`, `ok`. Cookies are managed
   automatically by the host's cookie jar.
+- `cache` — persistent, per-extension caches living below the extension data dir (they survive
+  restarts). `openKvCache(name, { defaultTtl? })` for KV caches with optional TTL (seconds;
+  per-`set` override: `set(key, value, ttlSeconds)`), `openLruCache(name, { maxEntries?, maxBytes?,
+  defaultTtl? })` for LRU caches that evict the least recently used entry when a limit is exceeded.
+  Both return a `Cache` with `get/peek/set/has/delete/keys/size/clear` (all async except opening).
+  Values may be any JSON value or a `Uint8Array` (stored/restored as raw bytes); expired or evicted
+  entries read back as `undefined`.
+- `filesystem` — permission-gated file access. `getDataDir()` returns the extension's private
+  directory (no permission needed below it — also where you should put large scratch data);
+  `readTextFile`/`readFile`/`writeTextFile`/`writeFile`/`deleteFile`/`exists`/`stat`/`createDir`/
+  `removeDir`/`readDir`/`joinPaths`. Anything outside the data dir requires a
+  `{ type: "Storage", path, write }` permission: the runtime prompts the user once per directory
+  (write ops need `write: true`). Ask up front via `permission.requestPermission` for a user-picked
+  directory (see the `DirectoryPicker` setting UI) so later file ops never prompt.
 - `parse` — `parseHtml(input)`, `parseHtmlFragment(input)`. Returns a `DionElement` tree
   with jQuery-like `select(new CSSSelector("div.foo"))`, `attr`, `children`, `text`,
   `paragraphs`. `DionElementArray` supports `map/filter/get/first/length`.
 - `setting` — `getSetting(id, kind)`, `registerSetting(id, setting, kind)`,
   `setEntrySetting(entry, key, value)`. `kind` is `"Extension" | "Search"`. Prefer the typed
-  helpers in `@dion-js/runtime-lib` (`ExtensionSetting`, `SettingStore`).
+  helpers in `@dion-js/runtime-lib` (`ExtensionSetting`, `SettingStore`). A setting with the
+  `Directory` UI (`new DirectoryPicker(write?)` from `runtime-lib/settings`) is rendered by the
+  host as a system directory picker; its string value is the picked directory's filesystem path —
+  use it with the `filesystem` module (grant Storage permission once, then read/write below it).
 - `auth` — `mergeAuth(account)`, `isLoggedIn(domain)`, `invalidate(domain)`,
   `getAuthSecret(domain)`. Prefer `AuthAccount` from `runtime-lib`.
 - `permission` — `requestPermission(permission, msg?)`, `hasPermission(permission)`.

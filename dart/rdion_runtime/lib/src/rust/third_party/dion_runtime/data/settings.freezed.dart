@@ -733,6 +733,7 @@ mixin _$SettingsUI {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) =>
       throw _privateConstructorUsedError;
@@ -742,6 +743,7 @@ mixin _$SettingsUI {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) =>
       throw _privateConstructorUsedError;
@@ -751,6 +753,7 @@ mixin _$SettingsUI {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) =>
@@ -761,6 +764,7 @@ mixin _$SettingsUI {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) =>
       throw _privateConstructorUsedError;
@@ -770,6 +774,7 @@ mixin _$SettingsUI {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) =>
       throw _privateConstructorUsedError;
@@ -779,6 +784,7 @@ mixin _$SettingsUI {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) =>
@@ -852,6 +858,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) {
     return checkBox();
@@ -864,6 +871,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) {
     return checkBox?.call();
@@ -876,6 +884,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
@@ -892,6 +901,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return checkBox(this);
@@ -904,6 +914,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return checkBox?.call(this);
@@ -916,6 +927,7 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
@@ -1022,6 +1034,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) {
     return slider(min, max, step);
@@ -1034,6 +1047,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) {
     return slider?.call(min, max, step);
@@ -1046,6 +1060,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
@@ -1062,6 +1077,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return slider(this);
@@ -1074,6 +1090,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return slider?.call(this);
@@ -1086,6 +1103,7 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
@@ -1195,6 +1213,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) {
     return dropdown(options);
@@ -1207,6 +1226,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) {
     return dropdown?.call(options);
@@ -1219,6 +1239,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
@@ -1235,6 +1256,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return dropdown(this);
@@ -1247,6 +1269,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return dropdown?.call(this);
@@ -1259,6 +1282,7 @@ class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
@@ -1368,6 +1392,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) {
     return multiDropdown(options);
@@ -1380,6 +1405,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) {
     return multiDropdown?.call(options);
@@ -1392,6 +1418,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
@@ -1408,6 +1435,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return multiDropdown(this);
@@ -1420,6 +1448,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return multiDropdown?.call(this);
@@ -1432,6 +1461,7 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
@@ -1454,6 +1484,174 @@ abstract class SettingsUI_MultiDropdown extends SettingsUI {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SettingsUI_DirectoryImplCopyWith<$Res> {
+  factory _$$SettingsUI_DirectoryImplCopyWith(_$SettingsUI_DirectoryImpl value,
+          $Res Function(_$SettingsUI_DirectoryImpl) then) =
+      __$$SettingsUI_DirectoryImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool write});
+}
+
+/// @nodoc
+class __$$SettingsUI_DirectoryImplCopyWithImpl<$Res>
+    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_DirectoryImpl>
+    implements _$$SettingsUI_DirectoryImplCopyWith<$Res> {
+  __$$SettingsUI_DirectoryImplCopyWithImpl(_$SettingsUI_DirectoryImpl _value,
+      $Res Function(_$SettingsUI_DirectoryImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? write = null,
+  }) {
+    return _then(_$SettingsUI_DirectoryImpl(
+      write: null == write
+          ? _value.write
+          : write // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SettingsUI_DirectoryImpl extends SettingsUI_Directory {
+  const _$SettingsUI_DirectoryImpl({required this.write}) : super._();
+
+  @override
+  final bool write;
+
+  @override
+  String toString() {
+    return 'SettingsUI.directory(write: $write)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SettingsUI_DirectoryImpl &&
+            (identical(other.write, write) || other.write == write));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, write);
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SettingsUI_DirectoryImplCopyWith<_$SettingsUI_DirectoryImpl>
+      get copyWith =>
+          __$$SettingsUI_DirectoryImplCopyWithImpl<_$SettingsUI_DirectoryImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkBox,
+    required TResult Function(double min, double max, int step) slider,
+    required TResult Function(List<DropdownOption> options) dropdown,
+    required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
+    required TResult Function(CustomUI ui) customUi,
+  }) {
+    return directory(write);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkBox,
+    TResult? Function(double min, double max, int step)? slider,
+    TResult? Function(List<DropdownOption> options)? dropdown,
+    TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
+    TResult? Function(CustomUI ui)? customUi,
+  }) {
+    return directory?.call(write);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkBox,
+    TResult Function(double min, double max, int step)? slider,
+    TResult Function(List<DropdownOption> options)? dropdown,
+    TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
+    TResult Function(CustomUI ui)? customUi,
+    required TResult orElse(),
+  }) {
+    if (directory != null) {
+      return directory(write);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SettingsUI_CheckBox value) checkBox,
+    required TResult Function(SettingsUI_Slider value) slider,
+    required TResult Function(SettingsUI_Dropdown value) dropdown,
+    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
+  }) {
+    return directory(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SettingsUI_CheckBox value)? checkBox,
+    TResult? Function(SettingsUI_Slider value)? slider,
+    TResult? Function(SettingsUI_Dropdown value)? dropdown,
+    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
+  }) {
+    return directory?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SettingsUI_CheckBox value)? checkBox,
+    TResult Function(SettingsUI_Slider value)? slider,
+    TResult Function(SettingsUI_Dropdown value)? dropdown,
+    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
+    TResult Function(SettingsUI_CustomUI value)? customUi,
+    required TResult orElse(),
+  }) {
+    if (directory != null) {
+      return directory(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SettingsUI_Directory extends SettingsUI {
+  const factory SettingsUI_Directory({required final bool write}) =
+      _$SettingsUI_DirectoryImpl;
+  const SettingsUI_Directory._() : super._();
+
+  bool get write;
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SettingsUI_DirectoryImplCopyWith<_$SettingsUI_DirectoryImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1542,6 +1740,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     required TResult Function(double min, double max, int step) slider,
     required TResult Function(List<DropdownOption> options) dropdown,
     required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
     required TResult Function(CustomUI ui) customUi,
   }) {
     return customUi(ui);
@@ -1554,6 +1753,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     TResult? Function(double min, double max, int step)? slider,
     TResult? Function(List<DropdownOption> options)? dropdown,
     TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
     TResult? Function(CustomUI ui)? customUi,
   }) {
     return customUi?.call(ui);
@@ -1566,6 +1766,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     TResult Function(double min, double max, int step)? slider,
     TResult Function(List<DropdownOption> options)? dropdown,
     TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
     TResult Function(CustomUI ui)? customUi,
     required TResult orElse(),
   }) {
@@ -1582,6 +1783,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     required TResult Function(SettingsUI_Slider value) slider,
     required TResult Function(SettingsUI_Dropdown value) dropdown,
     required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
     required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
     return customUi(this);
@@ -1594,6 +1796,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     TResult? Function(SettingsUI_Slider value)? slider,
     TResult? Function(SettingsUI_Dropdown value)? dropdown,
     TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
     TResult? Function(SettingsUI_CustomUI value)? customUi,
   }) {
     return customUi?.call(this);
@@ -1606,6 +1809,7 @@ class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
     TResult Function(SettingsUI_Slider value)? slider,
     TResult Function(SettingsUI_Dropdown value)? dropdown,
     TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult Function(SettingsUI_Directory value)? directory,
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {

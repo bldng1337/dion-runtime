@@ -3620,6 +3620,9 @@ const _: fn() = || {
         dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
             let _: Vec<dion_runtime::data::settings::DropdownOption> = options;
         }
+        dion_runtime::data::settings::SettingsUI::Directory { write } => {
+            let _: bool = write;
+        }
         dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
             let _: dion_runtime::data::custom_ui::CustomUI = ui;
         }
@@ -6635,6 +6638,10 @@ impl SseDecode for dion_runtime::data::settings::SettingsUI {
                 };
             }
             4 => {
+                let mut var_write = <bool>::sse_decode(deserializer);
+                return dion_runtime::data::settings::SettingsUI::Directory { write: var_write };
+            }
+            5 => {
                 let mut var_ui =
                     <dion_runtime::data::custom_ui::CustomUI>::sse_decode(deserializer);
                 return dion_runtime::data::settings::SettingsUI::CustomUI { ui: var_ui };
@@ -8584,8 +8591,11 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::settings::
             dion_runtime::data::settings::SettingsUI::MultiDropdown { options } => {
                 [3.into_dart(), options.into_into_dart().into_dart()].into_dart()
             }
+            dion_runtime::data::settings::SettingsUI::Directory { write } => {
+                [4.into_dart(), write.into_into_dart().into_dart()].into_dart()
+            }
             dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
-                [4.into_dart(), ui.into_into_dart().into_dart()].into_dart()
+                [5.into_dart(), ui.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -10969,8 +10979,12 @@ impl SseEncode for dion_runtime::data::settings::SettingsUI {
                     options, serializer,
                 );
             }
-            dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
+            dion_runtime::data::settings::SettingsUI::Directory { write } => {
                 <i32>::sse_encode(4, serializer);
+                <bool>::sse_encode(write, serializer);
+            }
+            dion_runtime::data::settings::SettingsUI::CustomUI { ui } => {
+                <i32>::sse_encode(5, serializer);
                 <dion_runtime::data::custom_ui::CustomUI>::sse_encode(ui, serializer);
             }
             _ => {
@@ -12828,6 +12842,12 @@ mod io {
                     }
                 }
                 4 => {
+                    let ans = unsafe { self.kind.Directory };
+                    dion_runtime::data::settings::SettingsUI::Directory {
+                        write: ans.write.cst_decode(),
+                    }
+                }
+                5 => {
                     let ans = unsafe { self.kind.CustomUI };
                     dion_runtime::data::settings::SettingsUI::CustomUI {
                         ui: ans.ui.cst_decode(),
@@ -15963,6 +15983,7 @@ mod io {
         Slider: wire_cst_SettingsUI_Slider,
         Dropdown: wire_cst_SettingsUI_Dropdown,
         MultiDropdown: wire_cst_SettingsUI_MultiDropdown,
+        Directory: wire_cst_SettingsUI_Directory,
         CustomUI: wire_cst_SettingsUI_CustomUI,
         nil__: (),
     }
@@ -15982,6 +16003,11 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_SettingsUI_MultiDropdown {
         options: *mut wire_cst_list_dropdown_option,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_SettingsUI_Directory {
+        write: bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

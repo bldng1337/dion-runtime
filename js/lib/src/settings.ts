@@ -223,23 +223,31 @@ export abstract class UI<T extends Settingvalues> {
 	}
 }
 
-//TODO: Implement on rust side
-// export class PathSelection extends UI<string> {
-// 	picktype: "folder" | "file";
-// 	label: string;
-// 	constructor(label: string, picktype: "folder" | "file" = "folder") {
-// 		super();
-// 		this.label = label;
-// 		this.picktype = picktype;
-// 	}
-// 	getDefinition(): SettingUI {
-// 		return {
-// 			label: this.label,
-// 			type: "PathSelection",
-// 			pickfolder: this.picktype === "folder",
-// 		};
-// 	}
-// }
+/**
+ * A setting rendered as the host's system directory picker. The value is
+ * the picked directory's filesystem path (a string). Pair it with the
+ * `filesystem` module: the first access below the picked directory prompts
+ * the user for a Storage permission once, or grant it up front with
+ * `permission.requestPermission({ type: "Storage", path, write })`.
+ * Pass `write = true` when the extension will create files there so hosts
+ * can require a writable tree (relevant for Android document trees).
+ */
+export class DirectoryPicker extends UI<string> {
+	write: boolean;
+	constructor(write = false) {
+		super();
+		this.write = write;
+	}
+	getDefinition(): SettingsUI {
+		return {
+			type: "Directory",
+			write: this.write,
+		};
+	}
+	fitsDefinition(ui: SettingsUI): boolean {
+		return ui.type === "Directory" && ui.write === this.write;
+	}
+}
 
 export class SettingCustomUI<T extends Settingvalues> extends UI<T> {
 	ui: CustomUI;

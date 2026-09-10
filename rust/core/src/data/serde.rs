@@ -941,6 +941,8 @@ mod test {
                 options: generate_all_dropdown_options(),
             },
             SettingsUI::Dropdown { options: vec![] },
+            SettingsUI::Directory { write: false },
+            SettingsUI::Directory { write: true },
         ]
     }
 

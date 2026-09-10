@@ -93,10 +93,24 @@ pub struct DropdownOption {
 #[serde(tag = "type")]
 pub enum SettingsUI {
     CheckBox,
-    Slider { min: f64, max: f64, step: i32 },
-    Dropdown { options: Vec<DropdownOption> },
-    MultiDropdown { options: Vec<DropdownOption> },
-    CustomUI { ui: CustomUI },
+    Slider {
+        min: f64,
+        max: f64,
+        step: i32,
+    },
+    Dropdown {
+        options: Vec<DropdownOption>,
+    },
+    MultiDropdown {
+        options: Vec<DropdownOption>,
+    },
+    Directory {
+        #[serde(default)]
+        write: bool,
+    },
+    CustomUI {
+        ui: CustomUI,
+    },
 }
 
 /// flutter_rust_bridge:non_opaque

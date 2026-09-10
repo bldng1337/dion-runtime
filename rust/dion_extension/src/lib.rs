@@ -1,6 +1,8 @@
+pub mod cache;
 pub(crate) mod extension;
 mod extension_executor;
 pub mod extension_manager;
+mod filesystem;
 mod js;
 mod network;
 mod proxy;
