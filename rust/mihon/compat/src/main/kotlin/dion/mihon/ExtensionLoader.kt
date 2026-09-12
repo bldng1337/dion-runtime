@@ -214,10 +214,14 @@ class ExtensionLoader(
         val apkBytes = Files.readAllBytes(File(apkPath).toPath())
         val reader = MultiDexFileReader.open(apkBytes)
 
+        // Repair R8's inlined-constructor pattern before conversion (no-op
+        // for dex files that do not use it).
+        val effectiveReader = InlinedConstructorFixer.fix(reader)
+
         val handler = BaksmaliBaseDexExceptionHandler()
 
         Dex2jar
-            .from(reader)
+            .from(effectiveReader)
             .withExceptionHandler(handler)
             .reUseReg(false)
             .topoLogicalSort()

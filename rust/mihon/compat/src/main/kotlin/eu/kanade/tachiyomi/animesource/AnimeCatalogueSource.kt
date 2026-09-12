@@ -13,7 +13,7 @@ interface AnimeCatalogueSource : AnimeSource {
     /**
      * Whether the source supports latest updates.
      */
-    val supportsLatest: Boolean
+    override val supportsLatest: Boolean
 
     /**
      * Returns a page with a list of popular anime.

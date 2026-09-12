@@ -107,7 +107,17 @@ object MihonBridge {
         }
         Injekt.addSingleton(extensionJson)
 
-        logger.info { "Injekt initialized with FakeApplication, NetworkHelper, and Json (dataDir: $dataDir)" }
+        // Register ProtoBuf for extensions that Injekt.get<ProtoBuf>() (e.g.
+        // MANGA Plus decodes its filter data as protobuf).
+        // Note the explicit type argument: `ProtoBuf` is an abstract class
+        // whose companion is named Default, so without it the singleton would
+        // be registered under ProtoBuf.Default while extensions look up
+        // Injekt.get<ProtoBuf>().
+        Injekt.addSingleton<kotlinx.serialization.protobuf.ProtoBuf>(
+            kotlinx.serialization.protobuf.ProtoBuf,
+        )
+
+        logger.info { "Injekt initialized with FakeApplication, NetworkHelper, Json, and ProtoBuf (dataDir: $dataDir)" }
     }
 
     private fun getLoader(): ExtensionLoader {

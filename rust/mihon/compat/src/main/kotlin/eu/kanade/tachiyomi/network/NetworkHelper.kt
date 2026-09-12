@@ -1,6 +1,9 @@
 package eu.kanade.tachiyomi.network
 
 import android.content.Context
+import eu.kanade.tachiyomi.network.interceptor.CloudflareInterceptor
+import eu.kanade.tachiyomi.network.interceptor.UncaughtExceptionInterceptor
+import eu.kanade.tachiyomi.network.interceptor.UserAgentInterceptor
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -84,13 +87,12 @@ class NetworkHelper(
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .callTimeout(2, TimeUnit.MINUTES)
-            .addInterceptor { chain ->
-                val originalRequest = chain.request()
-                val newRequest = originalRequest.newBuilder()
-                    .header("User-Agent", DEFAULT_USER_AGENT)
-                    .build()
-                chain.proceed(newRequest)
-            }
+            // Mirrors the app's default client. The interceptor stack (by
+            // class simple name) is part of the contract newer keiyoushi
+            // extensions check before building their source client.
+            .addInterceptor(UncaughtExceptionInterceptor())
+            .addInterceptor(UserAgentInterceptor { DEFAULT_USER_AGENT })
+            .addInterceptor(CloudflareInterceptor())
 
     /**
      * The main HTTP client for extensions.

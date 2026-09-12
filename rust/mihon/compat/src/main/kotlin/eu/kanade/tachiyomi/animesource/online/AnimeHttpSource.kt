@@ -194,6 +194,45 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
 
     protected abstract fun videoListParse(response: Response): List<Video>
 
+    // ========== Hoster List (Anikku/yuzono extensions-lib 16 API) ==========
+    //
+    // Sources built against the Anikku source-api return the list of hosters
+    // for an episode and resolve videos per hoster. The parse/request hooks
+    // default to "not implemented" instead of being abstract so extensions
+    // compiled against the older Aniyomi API keep loading unchanged.
+
+    @Suppress("DEPRECATION")
+    open suspend fun getHosterList(episode: SEpisode): List<Hoster> {
+        return client.newCall(hosterListRequest(episode))
+            .asObservableSuccess()
+            .map { response -> hosterListParse(response) }
+            .awaitSingle()
+    }
+
+    protected open fun hosterListRequest(episode: SEpisode): Request {
+        return GET(baseUrl + episode.url, headers)
+    }
+
+    protected open fun hosterListParse(response: Response): List<Hoster> {
+        throw UnsupportedOperationException("Not implemented")
+    }
+
+    @Suppress("DEPRECATION")
+    open suspend fun getVideoList(hoster: Hoster): List<Video> {
+        return client.newCall(videoListRequest(hoster))
+            .asObservableSuccess()
+            .map { response -> videoListParse(response, hoster) }
+            .awaitSingle()
+    }
+
+    protected open fun videoListRequest(hoster: Hoster): Request {
+        return GET(hoster.hosterUrl, headers)
+    }
+
+    protected open fun videoListParse(response: Response, hoster: Hoster): List<Video> {
+        throw UnsupportedOperationException("Not implemented")
+    }
+
     // ========== Video URL ==========
 
     @Deprecated("Use the non-RxJava API instead", replaceWith = ReplaceWith("getVideoUrl"))

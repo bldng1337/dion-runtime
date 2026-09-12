@@ -23,6 +23,16 @@ interface Source {
         get() = ""
 
     /**
+     * Whether the source has support for latest updates.
+     *
+     * Defaulted (not abstract) so extensions compiled against an older
+     * source-api — where this property did not exist — don't crash with
+     * AbstractMethodError.
+     */
+    val supportsLatest: Boolean
+        get() = false
+
+    /**
      * Whether this source provides novel (text-based) content instead of manga
      * (image-based). Novel sources return text content via [fetchPageText].
      *

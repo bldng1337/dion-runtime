@@ -17,7 +17,10 @@ dependencies {
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.20")
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.20")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    // Dispatchers.Main is provided by our own DesktopMainDispatcherFactory
+    // (a dedicated thread) — the Swing provider would need AWT natives, which
+    // are unavailable in the embedded JVM runtime.
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     // JSON parsing directly from Okio sources (used by some extensions in mangaDetailsParse)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.7.3")
@@ -30,12 +33,20 @@ dependencies {
     // DEX to JAR conversion (for loading Android extensions)
     implementation("de.femtopedia.dex2jar:dex-translator:2.4.34")
     implementation("de.femtopedia.dex2jar:dex-tools:2.4.34")
+    // Structured dex node/writer API used by InlinedConstructorFixer
+    implementation("de.femtopedia.dex2jar:dex-reader-api:2.4.34")
+    implementation("de.femtopedia.dex2jar:dex-writer:2.4.34")
 
     // ASM for bytecode manipulation (required by dex2jar)
     implementation("org.ow2.asm:asm:9.7")
 
-    // HTTP client (OkHttp - required by Mihon extensions)
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    // HTTP client (OkHttp - required by Mihon extensions).
+    // 5.x stable line: current keiyoushi extensions reference OkHttp 5
+    // compression classes (okhttp3.CompressionInterceptor, Gzip,
+    // brotli.Brotli, zstd.Zstd) from the host classloader.
+    implementation("com.squareup.okhttp3:okhttp:5.5.0")
+    implementation("com.squareup.okhttp3:okhttp-brotli:5.5.0")
+    implementation("com.squareup.okhttp3:okhttp-zstd:5.5.0")
     implementation("com.squareup.okio:okio:3.9.0")
 
     // HTML parsing (JSoup - required by most extensions)

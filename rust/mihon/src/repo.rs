@@ -70,7 +70,7 @@ pub(crate) fn normalize_index_url(url: &str) -> String {
 /// path segment. Used to locate sibling payloads (`repo.json`,
 /// `index.min.json`) and to build `apk/` and `icon/` download URLs for
 /// legacy repos.
-pub(crate) fn repo_base_url(index_url: &str) -> String {
+pub fn repo_base_url(index_url: &str) -> String {
     match index_url.rfind('/') {
         Some(pos) => index_url[..pos].to_string(),
         None => index_url.to_string(),
@@ -81,7 +81,7 @@ pub(crate) fn repo_base_url(index_url: &str) -> String {
 ///
 /// For GitHub raw URLs this yields `owner/repo`; otherwise the hostname. Used
 /// as a fallback when a store payload carries no name.
-pub(crate) fn derive_repo_name(url: &str) -> String {
+pub fn derive_repo_name(url: &str) -> String {
     let stripped = url
         .strip_prefix("https://")
         .or_else(|| url.strip_prefix("http://"))
@@ -105,13 +105,11 @@ pub(crate) fn derive_repo_name(url: &str) -> String {
 // ---------------------------------------------------------------------------
 
 /// Resolved repo metadata, mirroring tsudoku's `ExtensionStore` domain model.
-pub(crate) struct RepoStore {
+pub struct RepoStore {
     /// URL the store payload itself was fetched from (after any redirects).
     pub index_url: String,
     pub name: String,
-    #[allow(dead_code)] // wire-format fields kept for future use
     pub badge_label: String,
-    #[allow(dead_code)] // kept for future extension signature verification
     pub signing_key: String,
     /// True for old `index.min.json`-era repos (metadata from `repo.json`).
     pub is_legacy: bool,
@@ -120,7 +118,7 @@ pub(crate) struct RepoStore {
 }
 
 /// A fully resolved repo: store metadata plus its parsed extension list.
-pub(crate) struct RepoIndex {
+pub struct RepoIndex {
     pub store: RepoStore,
     pub extensions: Vec<RepoExtension>,
 }
@@ -128,7 +126,7 @@ pub(crate) struct RepoIndex {
 /// One extension entry, normalized across the legacy and store formats.
 /// APK/icon URLs are already absolute.
 #[derive(Debug, Clone)]
-pub(crate) struct RepoExtension {
+pub struct RepoExtension {
     pub name: String,
     /// Package name (e.g. `"eu.kanade.tachiyomi.extension.all.ahottie"`).
     pub pkg: String,
@@ -136,28 +134,22 @@ pub(crate) struct RepoExtension {
     pub apk_url: String,
     /// Absolute icon URL.
     pub icon_url: String,
-    #[allow(dead_code)] // wire-format field kept for future lang filtering
     pub lang: String,
-    #[allow(dead_code)] // wire-format field kept for future use
     pub code: i64,
     pub version: String,
-    #[allow(dead_code)] // kept for future nsfw filtering
     pub nsfw: bool,
     /// Extension API lib version (e.g. `1.6`), when the index carries one.
     pub lib_version: Option<f64>,
     pub sources: Vec<RepoSource>,
-    #[allow(dead_code)] // kept for future novel/manga filtering
     pub is_novel: bool,
 }
 
 /// A source listed inside a [`RepoExtension`].
 #[derive(Debug, Clone)]
-pub(crate) struct RepoSource {
+pub struct RepoSource {
     /// Mihon source id.
     pub id: i64,
-    #[allow(dead_code)] // wire-format fields kept for future use
     pub name: String,
-    #[allow(dead_code)] // wire-format fields kept for future use
     pub lang: String,
     /// Source home page.
     pub base_url: String,
@@ -240,7 +232,11 @@ pub(crate) fn build_extension_repo(index_url: &str, store: &RepoStore) -> Extens
 // ---------------------------------------------------------------------------
 
 /// Fetch a repo index and resolve it to a store plus its extension list.
-pub(crate) async fn fetch_repo(index_url: &str) -> Result<RepoIndex> {
+///
+/// Public so the repo-suite integration test can resolve live indexes through
+/// the same code path the adapter uses at runtime (legacy JSON arrays,
+/// `repo.json` → `index_v2` redirects, gzipped protobuf stores).
+pub async fn fetch_repo(index_url: &str) -> Result<RepoIndex> {
     let store = fetch_store(index_url.to_string()).await?;
     let extensions = fetch_extensions(&store).await?;
     Ok(RepoIndex { store, extensions })

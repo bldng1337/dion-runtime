@@ -32,17 +32,83 @@ object BytecodeEditor {
     fun fixAndroidClasses(jarFile: Path) {
         try {
             FileSystems.newFileSystem(jarFile, null as ClassLoader?)?.use { fs ->
-                Files
+                val entries = Files
                     .walk(fs.getPath("/"))
                     .asSequence()
                     .filterNotNull()
                     .filterNot(Files::isDirectory)
                     .mapNotNull(::getClassBytes)
-                    .map(::transform)
-                    .forEach(::write)
+                    .toList()
+
+                val invokeFix = InvokeKindFix(entries)
+
+                entries
+                    .map { transform(it, invokeFix) }
+                    .forEach { write(it) }
             }
         } catch (e: Exception) {
             logger.error(e) { "Error fixing Android classes in: $jarFile" }
+        }
+    }
+
+    /**
+     * Repairs invoke opcodes whose owner kind (class vs interface) does not
+     * match the instruction kind.
+     *
+     * R8 emits `invoke-super` calls to interface default methods and other
+     * class/interface-merging artifacts; dex2jar translates them with a plain
+     * method reference (`itf = false`), which the JVM rejects at execution
+     * with `IncompatibleClassChangeError: Method '…' must be InterfaceMethodref
+     * constant`. Owners are classified either from the converted jar itself
+     * (when the class is jar-local) or from the runtime classpath.
+     */
+    private class InvokeKindFix(entries: List<Pair<Path, ByteArray>>) {
+        private val interfaces: Set<String> = buildSet {
+            for ((_, bytes) in entries) {
+                val cr = ClassReader(bytes)
+                if (cr.access and Opcodes.ACC_INTERFACE != 0) add(cr.className)
+            }
+        }
+        private val classes: Set<String> = buildSet {
+            for ((_, bytes) in entries) {
+                val cr = ClassReader(bytes)
+                if (cr.access and Opcodes.ACC_INTERFACE == 0) add(cr.className)
+            }
+        }
+
+        private val externalKinds = HashMap<String, Boolean?>()
+
+        /** True when `owner` names an interface, false when a class, null when unknown. */
+        private fun isInterface(owner: String): Boolean? {
+            if (owner in interfaces) return true
+            if (owner in classes) return false
+            if (externalKinds.containsKey(owner)) return externalKinds[owner]
+            // External owner: consult the runtime classpath without initializing.
+            val kind = try {
+                Class.forName(owner.replace('/', '.'), false, BytecodeEditor::class.java.classLoader)
+                    .isInterface
+            } catch (_: Throwable) {
+                null
+            }
+            externalKinds[owner] = kind
+            return kind
+        }
+
+        /** Returns adjusted (opcode, itf) for a method call on `owner`. */
+        fun fix(opcode: Int, owner: String?, itf: Boolean): Pair<Int, Boolean> {
+            if (owner == null) return opcode to itf
+            return when (isInterface(owner)) {
+                true -> when (opcode) {
+                    Opcodes.INVOKEINTERFACE -> opcode to true
+                    Opcodes.INVOKEVIRTUAL -> Opcodes.INVOKEINTERFACE to true
+                    else -> opcode to true // invokespecial/invokestatic on an interface method
+                }
+                false -> when (opcode) {
+                    Opcodes.INVOKEINTERFACE -> Opcodes.INVOKEVIRTUAL to false
+                    else -> opcode to false
+                }
+                null -> opcode to itf // unknown owner: leave untouched
+            }
         }
     }
 
@@ -114,7 +180,7 @@ object BytecodeEditor {
     /**
      * Transform a class by replacing Android-incompatible references
      */
-    private fun transform(pair: Pair<Path, ByteArray>): Pair<Path, ByteArray> {
+    private fun transform(pair: Pair<Path, ByteArray>, invokeFix: InvokeKindFix): Pair<Path, ByteArray> {
         val cr = ClassReader(pair.second)
         val cw = ClassWriter(cr, 0)
         
@@ -155,12 +221,13 @@ object BytecodeEditor {
                         desc: String?,
                         itf: Boolean
                     ) {
+                        val (fixedOpcode, fixedItf) = invokeFix.fix(opcode, owner, itf)
                         super.visitMethodInsn(
-                            opcode,
+                            fixedOpcode,
                             owner.replaceDirectly(),
                             name,
                             desc.replaceIndirectly(),
-                            itf
+                            fixedItf
                         )
                     }
 
