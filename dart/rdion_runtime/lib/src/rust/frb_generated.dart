@@ -3559,8 +3559,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Episode dco_decode_episode(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return Episode(
       id: dco_decode_episode_id(arr[0]),
       name: dco_decode_String(arr[1]),
@@ -3568,6 +3568,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       url: dco_decode_String(arr[3]),
       cover: dco_decode_opt_box_autoadd_link(arr[4]),
       timestamp: dco_decode_opt_String(arr[5]),
+      announced: dco_decode_opt_box_autoadd_bool(arr[6]),
     );
   }
 
@@ -5596,13 +5597,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_url = sse_decode_String(deserializer);
     var var_cover = sse_decode_opt_box_autoadd_link(deserializer);
     var var_timestamp = sse_decode_opt_String(deserializer);
+    var var_announced = sse_decode_opt_box_autoadd_bool(deserializer);
     return Episode(
         id: var_id,
         name: var_name,
         description: var_description,
         url: var_url,
         cover: var_cover,
-        timestamp: var_timestamp);
+        timestamp: var_timestamp,
+        announced: var_announced);
   }
 
   @protected
@@ -8215,6 +8218,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.url, serializer);
     sse_encode_opt_box_autoadd_link(self.cover, serializer);
     sse_encode_opt_String(self.timestamp, serializer);
+    sse_encode_opt_box_autoadd_bool(self.announced, serializer);
   }
 
   @protected

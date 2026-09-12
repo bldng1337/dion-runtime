@@ -95,6 +95,8 @@ pub struct Episode {
 
     #[cfg_attr(feature = "type", specta(optional))]
     pub timestamp: Option<String>,
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub announced: Option<bool>,
 }
 
 /// flutter_rust_bridge:non_opaque

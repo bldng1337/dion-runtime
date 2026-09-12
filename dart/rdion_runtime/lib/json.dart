@@ -1572,6 +1572,7 @@ extension JsonEpisode on Episode {
         "url": url,
         if (cover != null) "cover": cover!.toJson(),
         if (timestamp != null) "timestamp": timestamp,
+        if (announced != null) "announced": announced,
       };
 
   static Episode fromJson(dynamic value) => Episode(
@@ -1582,6 +1583,7 @@ extension JsonEpisode on Episode {
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
         timestamp: value["timestamp"],
+        announced: value["announced"],
       );
 }
 

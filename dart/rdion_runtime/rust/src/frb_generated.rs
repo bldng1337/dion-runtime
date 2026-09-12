@@ -3398,6 +3398,7 @@ const _: fn() = || {
         let _: String = Episode.url;
         let _: Option<dion_runtime::data::source::Link> = Episode.cover;
         let _: Option<String> = Episode.timestamp;
+        let _: Option<bool> = Episode.announced;
     }
     {
         let EpisodeId = None::<dion_runtime::data::source::EpisodeId>.unwrap();
@@ -5254,6 +5255,7 @@ impl SseDecode for dion_runtime::data::source::Episode {
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
         let mut var_timestamp = <Option<String>>::sse_decode(deserializer);
+        let mut var_announced = <Option<bool>>::sse_decode(deserializer);
         return dion_runtime::data::source::Episode {
             id: var_id,
             name: var_name,
@@ -5261,6 +5263,7 @@ impl SseDecode for dion_runtime::data::source::Episode {
             url: var_url,
             cover: var_cover,
             timestamp: var_timestamp,
+            announced: var_announced,
         };
     }
 }
@@ -7875,6 +7878,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Ep
             self.0.url.into_into_dart().into_dart(),
             self.0.cover.into_into_dart().into_dart(),
             self.0.timestamp.into_into_dart().into_dart(),
+            self.0.announced.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -9879,6 +9883,7 @@ impl SseEncode for dion_runtime::data::source::Episode {
         <String>::sse_encode(self.url, serializer);
         <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
         <Option<String>>::sse_encode(self.timestamp, serializer);
+        <Option<bool>>::sse_encode(self.announced, serializer);
     }
 }
 
@@ -12146,6 +12151,7 @@ mod io {
                 url: self.url.cst_decode(),
                 cover: self.cover.cst_decode(),
                 timestamp: self.timestamp.cst_decode(),
+                announced: self.announced.cst_decode(),
             }
         }
     }
@@ -13212,6 +13218,7 @@ mod io {
                 url: core::ptr::null_mut(),
                 cover: core::ptr::null_mut(),
                 timestamp: core::ptr::null_mut(),
+                announced: core::ptr::null_mut(),
             }
         }
     }
@@ -15444,6 +15451,7 @@ mod io {
         url: *mut wire_cst_list_prim_u_8_strict,
         cover: *mut wire_cst_link,
         timestamp: *mut wire_cst_list_prim_u_8_strict,
+        announced: *mut bool,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

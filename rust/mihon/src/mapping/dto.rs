@@ -368,6 +368,11 @@ impl ChapterDto {
             } else {
                 None
             },
+            announced: if self.date_upload > epoch_millis_now() {
+                Some(true)
+            } else {
+                None
+            },
         }
     }
 
@@ -556,6 +561,11 @@ impl EpisodeDto {
             } else {
                 None
             },
+            announced: if self.date_upload > epoch_millis_now() {
+                Some(true)
+            } else {
+                None
+            },
         }
     }
 
@@ -570,6 +580,13 @@ impl EpisodeDto {
             scanlator: None,
         }
     }
+}
+
+fn epoch_millis_now() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as i64)
+        .unwrap_or(i64::MAX)
 }
 
 impl VideoDto {

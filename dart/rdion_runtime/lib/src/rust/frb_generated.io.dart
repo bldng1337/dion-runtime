@@ -2784,6 +2784,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
     wireObj.timestamp = cst_encode_opt_String(apiObj.timestamp);
+    wireObj.announced = cst_encode_opt_box_autoadd_bool(apiObj.announced);
   }
 
   @protected
@@ -7163,6 +7164,8 @@ final class wire_cst_episode extends ffi.Struct {
   external ffi.Pointer<wire_cst_link> cover;
 
   external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+
+  external ffi.Pointer<ffi.Bool> announced;
 }
 
 final class wire_cst_episode_id extends ffi.Struct {

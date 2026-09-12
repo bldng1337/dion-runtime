@@ -1131,6 +1131,7 @@ mod test {
                 url: "https://episode1.com".to_string(),
                 cover: None,
                 timestamp: None,
+                announced: None,
             },
             Episode {
                 id: generate_all_episode_ids()[1].clone(),
@@ -1139,6 +1140,7 @@ mod test {
                 url: "https://episode2.com".to_string(),
                 cover: Some(links[0].clone()),
                 timestamp: Some("1234567890".to_string()),
+                announced: None,
             },
             Episode {
                 id: generate_all_episode_ids()[0].clone(),
@@ -1147,6 +1149,7 @@ mod test {
                 url: "https://episode3.com".to_string(),
                 cover: Some(links[1].clone()),
                 timestamp: Some("0987654321".to_string()),
+                announced: Some(true),
             },
         ]
     }
