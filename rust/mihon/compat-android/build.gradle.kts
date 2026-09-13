@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library") version "8.7.3"
-    kotlin("android") version "1.9.24"
-    kotlin("plugin.serialization") version "1.9.24"
+    kotlin("android") version "2.1.20"
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 group = "dion.mihon"
@@ -38,11 +38,26 @@ kotlin {
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
 
-    // HTTP client (OkHttp - required by Mihon extensions)
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    // HTTP client (OkHttp - required by Mihon extensions).
+    // 5.x stable line: current keiyoushi extensions reference OkHttp 5
+    // compression classes (okhttp3.CompressionInterceptor, Gzip,
+    // brotli.Brotli, zstd.Zstd) from the host classloader. The plain JVM jars
+    // are used instead of the `okhttp` module's `okhttp-android` AAR variant,
+    // whose AAR metadata demands compileSdk 37 (this module compiles against
+    // 35); they run fine on ART.
+    implementation("com.squareup.okhttp3:okhttp-jvm:5.5.0")
+    // brotli/zstd's Gradle module metadata still depend on the `okhttp`
+    // module (whose Android variant is rejected above); exclude it so only
+    // okhttp-jvm is resolved.
+    implementation("com.squareup.okhttp3:okhttp-brotli:5.5.0") {
+        exclude(group = "com.squareup.okhttp3", module = "okhttp")
+    }
+    implementation("com.squareup.okhttp3:okhttp-zstd:5.5.0") {
+        exclude(group = "com.squareup.okhttp3", module = "okhttp")
+    }
 
     // HTML parsing (JSoup - required by most extensions)
     implementation("org.jsoup:jsoup:1.17.2")

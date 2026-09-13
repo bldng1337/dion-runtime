@@ -212,6 +212,7 @@ class _PlaygroundState extends State<Playground> {
         getClient: (data) async {
           return await rdion.ExtensionClient.init(
             setEntrySetting: (id, key, value) async {},
+            storeSet: (key, value) {},
             loadDataSecure: (key) => "",
             storeDataSecure: (key, value) {},
             loadData: (key) => "",

@@ -88,14 +88,14 @@ void main() {
     }
   });
 
-  test("JsonUIAction", () {
+  test("JsonAction", () {
     final data = File("$path/UIAction.json").readAsStringSync();
     final json = jsonDecode(data) as List;
     for (int i = 0; i < json.length; i++) {
       final item = json[i];
-      final uiAction = JsonUIAction.fromJson(item);
+      final uiAction = JsonAction.fromJson(item);
       final encoded = uiAction.toJson();
-      final redecoded = JsonUIAction.fromJson(encoded);
+      final redecoded = JsonAction.fromJson(encoded);
 
       _deepEquals(encoded, item, "UIAction[$i]");
       expect(redecoded, equals(uiAction),

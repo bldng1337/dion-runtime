@@ -6,6 +6,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.RefreshContext
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
+import eu.kanade.tachiyomi.source.model.SMangaUpdate
 
 /**
  * A source that has a catalogue of manga.
@@ -63,4 +64,21 @@ interface CatalogueSource : Source {
      * in the expected order; the index is ignored.
      */
     suspend fun getPageList(chapter: SChapter): List<Page>
+
+    /**
+     * Combined update of an entry and its chapter/episode list, matching the
+     * upstream source-api. Newer keiyoushi template sources override this
+     * instead of the deprecated per-call parse helpers, so hosts must route
+     * detail/chapter refreshes through it.
+     */
+    suspend fun getMangaUpdate(
+        manga: SManga,
+        chapters: List<SChapter>,
+        fetchDetails: Boolean,
+        fetchChapters: Boolean,
+    ): SMangaUpdate {
+        val updatedManga = if (fetchDetails) getMangaDetails(manga) else null
+        val updatedChapters = if (fetchChapters) getChapterList(manga) else null
+        return SMangaUpdate(updatedManga ?: manga, updatedChapters ?: chapters)
+    }
 }

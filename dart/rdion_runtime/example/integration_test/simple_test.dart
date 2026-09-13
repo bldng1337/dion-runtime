@@ -62,6 +62,7 @@ void main() {
       getClient: (data) async {
         return await ExtensionClient.init(
           setEntrySetting: (id, key, value) async {},
+          storeSet: (key, value) {},
           loadDataSecure: (key) {
             return "";
           },

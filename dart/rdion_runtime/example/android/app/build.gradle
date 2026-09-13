@@ -37,6 +37,14 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    packagingOptions {
+        resources {
+            // OkHttp 5.x jars (and jspecify) ship duplicate OSGI metadata that
+            // the merge step refuses to deduplicate.
+            excludes += ['META-INF/versions/9/OSGI-INF/MANIFEST.MF']
+        }
+    }
 }
 
 flutter {

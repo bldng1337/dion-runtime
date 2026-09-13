@@ -72,7 +72,14 @@ pub fn classify_extension_error(context: &str, error: anyhow::Error) -> ErrorKin
     // extension that requires settings (server URL, library selection, …) or
     // credentials (login) fails the same way on every platform and is not a
     // compat bug.
-    let config_required_indicators: &[&str] = &["extension settings", "failed to log in"];
+    let config_required_indicators: &[&str] = &[
+        "extension settings",
+        "failed to log in",
+        // Comikey-style flows: the chapter content is gated behind a token
+        // that only a WebView visit obtains. Deterministic without user
+        // interaction on every platform, so tolerated like the above.
+        "token not found",
+    ];
     if config_required_indicators
         .iter()
         .any(|p| error_lower.contains(p))
@@ -101,6 +108,7 @@ pub fn classify_extension_error(context: &str, error: anyhow::Error) -> ErrorKin
         "classcastexception",
         "nosuchmethoderror",
         "nosuchfielderror",
+        "abstractmethoderror",
         "illegalaccesserror",
         "incompatibleclasschangeerror",
         "linkageerror",

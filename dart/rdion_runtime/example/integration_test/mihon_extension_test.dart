@@ -289,6 +289,7 @@ Future<rdion.ManagerClient> _createMockManagerClient({
         requestPermission: (permission, msg) => false,
         getPath: () => clientDir,
         setEntrySetting: (id, key, value) {},
+        storeSet: (key, value) {},
       );
     },
   );

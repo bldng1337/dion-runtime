@@ -107,12 +107,12 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Returns the request for the popular manga given the page.
      */
-    protected abstract fun popularMangaRequest(page: Int): Request
+    protected open fun popularMangaRequest(page: Int): Request = throw UnsupportedOperationException()
 
     /**
      * Parses the response from the site and returns a [MangasPage] object.
      */
-    protected abstract fun popularMangaParse(response: Response): MangasPage
+    protected open fun popularMangaParse(response: Response): MangasPage = throw UnsupportedOperationException()
 
     // ========== Search Manga ==========
 
@@ -146,12 +146,12 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Returns the request for the search manga given the page.
      */
-    protected abstract fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request
+    protected open fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request = throw UnsupportedOperationException()
 
     /**
      * Parses the response from the site and returns a [MangasPage] object.
      */
-    protected abstract fun searchMangaParse(response: Response): MangasPage
+    protected open fun searchMangaParse(response: Response): MangasPage = throw UnsupportedOperationException()
 
     // ========== Latest Updates ==========
 
@@ -179,12 +179,12 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Returns the request for latest manga given the page.
      */
-    protected abstract fun latestUpdatesRequest(page: Int): Request
+    protected open fun latestUpdatesRequest(page: Int): Request = throw UnsupportedOperationException()
 
     /**
      * Parses the response from the site and returns a [MangasPage] object.
      */
-    protected abstract fun latestUpdatesParse(response: Response): MangasPage
+    protected open fun latestUpdatesParse(response: Response): MangasPage = throw UnsupportedOperationException()
 
     // ========== Manga Details ==========
 
@@ -219,7 +219,7 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Parses the response from the site and returns the details of a manga.
      */
-    protected abstract fun mangaDetailsParse(response: Response): SManga
+    protected open fun mangaDetailsParse(response: Response): SManga = throw UnsupportedOperationException()
 
     // ========== Chapter List ==========
 
@@ -247,15 +247,19 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Get all the available chapters for a manga with a refresh context.
      *
-     * Novel (tsundoku) sources override this 2-arg overload — their
+     * Novel (tsundoku) sources override this 2-arg overload directly — their
      * `getChapterList` short-circuits early based on the `existingChapters`
-     * count in [RefreshContext] to avoid re-fetching. The context is ignored
-     * here and the call delegates to the plain [getChapterList]; subclasses
-     * (novel sources) override this method directly. Routing chapter fetches
-     * through this overload is what makes a novel source's override dispatch.
+     * count in [RefreshContext] to avoid re-fetching, so their override keeps
+     * dispatching as before.
      */
     override suspend fun getChapterList(manga: SManga, context: RefreshContext): List<SChapter> {
-        return getChapterList(manga)
+        // Route through the combined update API: sources built on the newer
+        // keiyoushi template implement getMangaUpdate and never the deprecated
+        // chapterListParse helper. The default getMangaUpdate falls back to
+        // the plain getChapterList (old fetch path), so pre-template sources
+        // behave exactly as before. `context` only carries novel-source
+        // refresh hints, which do not apply to manga HTTP sources.
+        return getMangaUpdate(manga, emptyList(), fetchDetails = false, fetchChapters = true).chapters
     }
 
     /**
@@ -268,7 +272,7 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Parses the response from the site and returns a list of chapters.
      */
-    protected abstract fun chapterListParse(response: Response): List<SChapter>
+    protected open fun chapterListParse(response: Response): List<SChapter> = throw UnsupportedOperationException()
 
     // ========== Page List ==========
 
@@ -311,7 +315,7 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Parses the response from the site and returns a list of pages.
      */
-    protected abstract fun pageListParse(response: Response): List<Page>
+    protected open fun pageListParse(response: Response): List<Page> = throw UnsupportedOperationException()
 
     // ========== Image URL ==========
 

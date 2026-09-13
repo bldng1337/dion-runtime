@@ -9,8 +9,11 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.7.3'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0'
-        classpath 'org.jetbrains.kotlin:kotlin-serialization:2.1.0'
+        // 2.2.x is required to consume kotlinx-serialization 1.11 / stdlib
+        // 2.3.x (used by newer keiyoushi extensions' host classpath): their
+        // Kotlin metadata is 2.3.0, which the 2.1.0 compiler cannot read.
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20'
+        classpath 'org.jetbrains.kotlin:kotlin-serialization:2.2.20'
     }
 }
 
@@ -69,17 +72,46 @@ dependencies {
     // is allowed) to provide kotlin.time.Instant, added to the stdlib in 2.1.20
     // and used by some extensions (e.g. komiic).
     implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.20"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+    // 1.10+ is required by newer keiyoushi extensions: they are compiled
+    // against `BuildersKt.runBlockingK` (the bytecode name `runBlocking` got
+    // in 1.10.0) and fail with NoSuchMethodError on older coroutines.
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0"
+    // kotlinx-serialization: match Mihon upstream. Extensions compiled with
+    // the serialization plugin 1.8+ generate serializers that no longer
+    // implement `GeneratedSerializer.typeParametersSerializers()`; a host
+    // runtime older than that calls it and fails with AbstractMethodError
+    // (surfaced by the Android repo-suite harness on browse/search).
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0"
     // JSON parsing directly from Okio sources (kotlinx.serialization.json.okio.
     // OkioStreamsKt) — used by many extensions in mangaDetailsParse etc. Without
     // this the class is absent and those sources throw NoClassDefFoundError.
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.7.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.11.0"
     // Protobuf serialization (used by a few extensions for binary API payloads)
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.7.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.11.0"
 
-    // HTTP client (OkHttp - required by Mihon extensions)
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.14"
+    // HTTP client (OkHttp - required by Mihon extensions).
+    // 5.x stable line: current keiyoushi extensions reference OkHttp 5
+    // compression classes (okhttp3.CompressionInterceptor, Gzip,
+    // brotli.Brotli, zstd.Zstd) from the host classloader; 5.0.0-alpha.14 has
+    // no okhttp3.CompressionInterceptor and fails those extensions with
+    // NoClassDefFoundError.
+    //
+    // The plain JVM jars are used instead of the `okhttp` module's
+    // `okhttp-android` AAR variant, whose AAR metadata demands compileSdk 37
+    // (this plugin compiles against 36). The JVM artifacts run fine on ART —
+    // that is what OkHttp shipped for Android before the dedicated variant
+    // existed, and the desktop compat layer runs extensions against the same
+    // jars.
+    implementation "com.squareup.okhttp3:okhttp-jvm:5.5.0"
+    // brotli/zstd's Gradle module metadata still depend on the `okhttp`
+    // module (whose Android variant is rejected above); exclude it so only
+    // okhttp-jvm is resolved.
+    implementation("com.squareup.okhttp3:okhttp-brotli:5.5.0") {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    implementation("com.squareup.okhttp3:okhttp-zstd:5.5.0") {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
 
     // HTML parsing (JSoup - required by most extensions). Pinned to 1.22.2 to
     // match the desktop compat layer and include newer APIs some extensions use

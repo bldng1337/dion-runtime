@@ -27,6 +27,18 @@ import java.io.File
 object MihonBridge {
     private val logger = KotlinLogging.logger {}
 
+    /**
+     * Chapter memo round-trip cache, keyed by chapter url.
+     *
+     * The Rust adapter only carries the chapter url across the language
+     * boundary ([ChapterDto] has no memo field), so memos captured while the
+     * chapter list was fetched are re-attached here when a chapter is rebuilt
+     * for getPageList/getPageText. Newer keiyoushi template sources stash
+     * per-chapter state (e.g. "mangaPath") in SChapter.memo and fail with
+     * IllegalStateException("Refresh the chapter list.") when it is missing.
+     */
+    private val chapterMemos = java.util.concurrent.ConcurrentHashMap<String, kotlinx.serialization.json.JsonObject>()
+
     private val json = Json {
         ignoreUnknownKeys = true
         encodeDefaults = true
@@ -430,7 +442,14 @@ object MihonBridge {
                 if (source is HttpSource) {
                     val thumbnailHeaders =
                         source.headers.toMultimap().mapValues { (_, values) -> values.lastOrNull().orEmpty() }
-                    source.getMangaDetails(manga).toDto(thumbnailHeaders)
+                    // Route through the combined update API: sources built on
+                    // the newer keiyoushi template implement getMangaUpdate and
+                    // never the deprecated mangaDetailsParse helper. The
+                    // default getMangaUpdate falls back to getMangaDetails (the
+                    // old fetch path), so pre-template sources behave exactly
+                    // as before.
+                    source.getMangaUpdate(manga, emptyList(), fetchDetails = true, fetchChapters = false)
+                        .manga.toDto(thumbnailHeaders)
                 } else {
                     mangaDto
                 }
@@ -467,7 +486,10 @@ object MihonBridge {
                     lastFetchTime = 0L,
                     forceRefresh = true,
                 )
-                source.getChapterList(manga, context).map { it.toDto() }
+                source.getChapterList(manga, context).map {
+                    if (!it.memo.isEmpty()) chapterMemos[it.url] = it.memo
+                    it.toDto()
+                }
             }
             json.encodeToString(ChapterListResult(result))
         } catch (e: Throwable) {
@@ -486,6 +508,7 @@ object MihonBridge {
             val source = sourceManager.getCatalogue(sourceId)
             val chapterDto = json.decodeFromString<ChapterDto>(chapterJson)
             val chapter = chapterDto.toSChapter()
+            chapterMemos[chapter.url]?.let { chapter.memo = it }
             val result = runBlocking {
                 if (source is HttpSource) {
                     source.getPageList(chapter).map { page ->
@@ -529,6 +552,27 @@ object MihonBridge {
             json.encodeToString(ErrorResult(formatError(e), e.stackTraceToString()))
         }
     }
+
+
+    /**
+     * Whether this source's runtime class overrides the Anikku/yuzono
+     * extensions-lib 16 hoster API. Checked via declaring-class so legacy
+     * Aniyomi sources keep using the plain video-list path without firing
+     * the hoster request hooks.
+     */
+    private fun AnimeHttpSource.overridesHosterApi(): Boolean = runCatching {
+        this.javaClass.getMethod(
+            "getHosterList",
+            eu.kanade.tachiyomi.animesource.model.SEpisode::class.java,
+            kotlin.coroutines.Continuation::class.java,
+        ).declaringClass != AnimeHttpSource::class.java
+    }.getOrDefault(false)
+
+    /** Flatten a hoster list into plain videos, resolving per-hoster lists on demand. */
+    private suspend fun AnimeHttpSource.resolveVideos(
+        hosterList: List<eu.kanade.tachiyomi.animesource.model.Hoster>,
+    ): List<eu.kanade.tachiyomi.animesource.model.Video> =
+        hosterList.flatMap { hoster -> hoster.videoList ?: getVideoList(hoster) }
 
     // ========== Anime Source Methods ==========
 
@@ -677,7 +721,14 @@ object MihonBridge {
             val episode = episodeDto.toSEpisode()
             val result = runBlocking {
                 if (source is AnimeHttpSource) {
-                    source.getVideoList(episode).map { it.toDto() }
+                    // Sources overriding the extensions-lib 16 hoster API
+                    // resolve videos per hoster; legacy sources keep using
+                    // the plain episode video list.
+                    if (source.overridesHosterApi()) {
+                        source.resolveVideos(source.getHosterList(episode))
+                    } else {
+                        source.getVideoList(episode)
+                    }.map { it.toDto() }
                 } else {
                     emptyList()
                 }
