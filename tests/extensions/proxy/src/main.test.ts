@@ -235,7 +235,7 @@ test("test handleProxy", async () => {
 		headers: {},
 	});
 	if (!httpsRes.ok) {
-		console.error(`Failed with body:\n ${await headerTestRes.text()}`);
+		console.error(`Failed with body:\n ${await httpsRes.text()}`);
 	}
 	expect(httpsRes.status).toBe(200);
 
