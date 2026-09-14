@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { file } from "bun";
 import { expect, test } from "bun:test";
-import { buildSite } from "../src/site.ts";
+import { buildSite } from "../src/site/build.ts";
 
 function extdata(overrides: Record<string, unknown> = {}) {
 	return {
