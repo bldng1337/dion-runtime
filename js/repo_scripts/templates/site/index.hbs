@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{repo.name}} — dion extensions</title>
+<meta name="description" content="{{repo.description}}">
+<meta property="og:title" content="{{repo.name}} — dion extensions">
+<meta property="og:description" content="{{repo.description}}">
+<meta property="og:type" content="website">
+{{#if repo.icon}}<meta property="og:image" content="{{repo.icon}}">
+<link rel="icon" href="{{repo.icon}}">{{/if}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+	--primary: #6BA368;
+	--primary-dark: #4A8347;
+	--primary-fill: rgba(107, 163, 104, 0.15);
+	--text: #1A1A1A;
+	--text-2: #5C5C5C;
+	--text-3: #8C8C8C;
+	--surface: #FAFAFA;
+	--card: #FFFFFF;
+	--surface-muted: #F5F5F5;
+	--border: #E8E8E8;
+	--warning: #FF9800;
+	--radius-card: 6px;
+	--radius-btn: 4px;
+	--radius-badge: 3px;
+	color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+	margin: 0;
+	background: var(--surface);
+	color: var(--text);
+	font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+}
+a { color: var(--primary-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- top bar ---------- */
+.topbar {
+	border-bottom: 1px solid var(--border);
+	background: var(--surface);
+}
+.topbar-inner {
+	max-width: 880px;
+	margin: 0 auto;
+	padding: 0 20px;
+	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: -0.3px;
+	color: var(--text);
+}
+.brand:hover { text-decoration: none; }
+.brand-mark {
+	width: 24px;
+	height: 24px;
+	border-radius: var(--radius-badge);
+	background: var(--primary);
+	color: #fff;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 24px;
+	text-align: center;
+}
+.topbar .meta {
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.1px;
+	color: var(--text-2);
+}
+
+/* ---------- hero ---------- */
+main { max-width: 880px; margin: 0 auto; padding: 0 20px 56px; }
+.hero { padding: 36px 0 24px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+.hero-icon {
+	width: 56px;
+	height: 56px;
+	border-radius: var(--radius-card);
+	border: 1px solid var(--border);
+	background: var(--card);
+	object-fit: cover;
+	flex: none;
+}
+.hero-body { flex: 1; min-width: 260px; }
+.eyebrow {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	color: var(--primary-dark);
+	margin: 0 0 6px;
+}
+.hero h1 {
+	margin: 0 0 4px;
+	font-size: 32px;
+	font-weight: 600;
+	letter-spacing: -0.5px;
+	line-height: 1.2;
+}
+.hero .desc { margin: 0 0 6px; font-size: 16px; color: var(--text-2); max-width: 62ch; }
+.hero .stats { margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.1px; color: var(--text-3); }
+.hero-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* ---------- buttons ---------- */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	height: 38px;
+	padding: 0 18px;
+	border-radius: var(--radius-btn);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.1px;
+	cursor: pointer;
+	border: none;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+	white-space: nowrap;
+}
+.btn:hover { text-decoration: none; }
+.btn-primary {
+	background: var(--primary);
+	color: #fff;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-outline {
+	background: transparent;
+	color: var(--primary-dark);
+	border: 1px solid rgba(107, 163, 104, 0.5);
+}
+.btn-outline:hover { background: var(--primary-fill); }
+.btn-sm { height: 32px; padding: 0 14px; font-size: 13px; }
+.btn:focus-visible, .chip:focus-visible, input:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 1px;
+}
+
+/* ---------- toolbar ---------- */
+.toolbar {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background: var(--surface);
+	border-bottom: 1px solid var(--border);
+	padding: 12px 0 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.toolbar-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+#search {
+	flex: 1;
+	min-width: 200px;
+	height: 38px;
+	padding: 0 14px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-btn);
+	background: var(--card);
+	font: inherit;
+	color: var(--text);
+}
+#search::placeholder { color: var(--text-3); }
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 32px;
+	padding: 0 12px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-btn);
+	background: transparent;
+	color: var(--text-2);
+	font: inherit;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.1px;
+	cursor: pointer;
+	transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.chip:hover { background: var(--surface-muted); }
+.chip[aria-pressed="true"], .chip[aria-selected="true"] {
+	background: var(--primary-fill);
+	border-color: rgba(107, 163, 104, 0.5);
+	color: var(--primary-dark);
+}
+.chip-nsfw[aria-pressed="true"] {
+	background: rgba(255, 152, 0, 0.12);
+	border-color: rgba(255, 152, 0, 0.5);
+	color: #B26A00;
+}
+
+/* ---------- extension rows ---------- */
+.list { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.ext-row {
+	display: flex;
+	gap: 14px;
+	align-items: flex-start;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-card);
+	padding: 14px 16px;
+	animation: rise 0.35s ease both;
+	animation-delay: calc(min(var(--i), 20) * 25ms);
+}
+.ext-icon {
+	position: relative;
+	width: 40px;
+	height: 40px;
+	flex: none;
+	border-radius: var(--radius-badge);
+	border: 1px solid var(--border);
+	background: var(--card);
+	overflow: hidden;
+}
+.ext-icon img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
+.ext-icon .letter {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--primary-fill);
+	color: var(--primary-dark);
+	font-size: 17px;
+	font-weight: 600;
+}
+.ext-main { flex: 1; min-width: 0; }
+.ext-title {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 2px;
+}
+.ext-title h3 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: -0.2px;
+	line-height: 1.4;
+	color: var(--primary-dark);
+	word-break: break-word;
+}
+.ext-title .ver {
+	font-size: 12px;
+	color: var(--text-3);
+	font-weight: 400;
+}
+.ext-desc {
+	margin: 0 0 8px;
+	color: var(--text-2);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.ext-desc:empty { display: none; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.badge {
+	display: inline-flex;
+	align-items: center;
+	height: 20px;
+	padding: 0 7px;
+	border-radius: var(--radius-badge);
+	background: var(--surface-muted);
+	border: 1px solid var(--border);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.2px;
+	color: var(--text-2);
+}
+.badge-nsfw {
+	background: rgba(255, 152, 0, 0.08);
+	border-color: rgba(255, 152, 0, 0.45);
+	color: #B26A00;
+}
+.ext-tags { margin: 6px 0 0; font-size: 12px; color: var(--text-3); overflow-wrap: anywhere; }
+.ext-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	flex: none;
+	align-self: center;
+}
+
+/* ---------- misc ---------- */
+#empty {
+	border: 1px dashed var(--border);
+	border-radius: var(--radius-card);
+	padding: 40px 20px;
+	text-align: center;
+	color: var(--text-3);
+	margin-top: 18px;
+}
+footer {
+	max-width: 880px;
+	margin: 0 auto;
+	padding: 18px 20px 36px;
+	border-top: 1px solid var(--border);
+	font-size: 12px;
+	color: var(--text-3);
+	display: flex;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+dialog#dl-modal {
+	border: none;
+	border-radius: var(--radius-card);
+	background: #1F1F1F;
+	color: #F0F0F0;
+	max-width: 440px;
+	width: calc(100vw - 48px);
+	padding: 22px 24px;
+}
+dialog#dl-modal::backdrop { background: rgba(0, 0, 0, 0.45); }
+dialog#dl-modal h4 { margin: 0 0 8px; font-size: 16px; font-weight: 500; }
+dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-height: 1.5; }
+#dl-link {
+	display: block;
+	font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+	font-size: 12px;
+	color: #8FBF8C;
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: var(--radius-badge);
+	padding: 10px 12px;
+	margin: 0 0 16px;
+	overflow-wrap: anywhere;
+}
+.dl-modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-dark {
+	background: transparent;
+	color: #F0F0F0;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.btn-dark:hover { background: rgba(255, 255, 255, 0.08); }
+.btn-dark-primary { background: var(--primary); color: #fff; }
+.btn-dark-primary:hover { background: var(--primary-dark); }
+
+@keyframes rise {
+	from { opacity: 0; transform: translateY(6px); }
+	to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.ext-row { animation: none; }
+	.btn, .chip { transition: none; }
+}
+@media (max-width: 600px) {
+	.hero { padding-top: 26px; }
+	.hero h1 { font-size: 26px; }
+	.ext-row { flex-wrap: wrap; }
+	.ext-actions { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+	<div class="topbar-inner">
+		<a class="brand" href="." ><span class="brand-mark">d</span><span>dion</span></a>
+		<span class="meta">{{count}} extension{{#unless isSingle}}s{{/unless}}</span>
+	</div>
+</header>
+
+<main>
+	<section class="hero">
+		{{#if repo.icon}}<img class="hero-icon" src="{{repo.icon}}" alt="" onerror="this.style.display='none'">{{/if}}
+		<div class="hero-body">
+			<p class="eyebrow">Extension repository</p>
+			<h1>{{repo.name}}</h1>
+			{{#if repo.description}}<p class="desc">{{repo.description}}</p>{{/if}}
+			<p class="stats">Updated {{generatedAt}}</p>
+		</div>
+		<div class="hero-actions">
+			<a class="btn btn-primary" href="{{{addRepoLink}}}" data-deeplink="{{{addRepoLink}}}">Add repository to dion</a>
+			{{#if repo.githubUrl}}<a class="btn btn-outline" href="{{repo.githubUrl}}">View on GitHub</a>{{/if}}
+		</div>
+	</section>
+
+	<section class="toolbar" aria-label="Filter extensions">
+		<div class="toolbar-row">
+			<input id="search" type="search" placeholder="Search extensions, tags, languages…" autocomplete="off">
+			{{#if hasNsfw}}
+			<button type="button" class="chip chip-nsfw" id="nsfw-toggle" aria-pressed="false" title="Show extensions flagged as NSFW">NSFW</button>
+			{{/if}}
+		</div>
+		<div class="toolbar-row" role="group" aria-label="Filter by media type">
+			<button type="button" class="chip" data-media="all" aria-selected="true">All</button>
+			{{#each mediaTypes}}
+			<button type="button" class="chip" data-media="{{value}}" aria-selected="false">{{label}}</button>
+			{{/each}}
+		</div>
+	</section>
+
+	<section class="list" id="ext-list">
+		{{#each extensions}}
+		<article class="ext-row" style="--i: {{@index}}"
+			data-search="{{search}}"
+			data-media="{{mediaAttr}}"
+			data-nsfw="{{nsfw}}">
+			<div class="ext-icon">
+				<span class="letter"{{#if icon}} aria-hidden="true"{{/if}}>{{initial}}</span>
+				{{#if icon}}<img src="{{icon}}" alt="" loading="lazy" onerror="this.style.display='none'">{{/if}}
+			</div>
+			<div class="ext-main">
+				<div class="ext-title">
+					<h3>{{name}}</h3>
+					<span class="ver">v{{version}}</span>
+				</div>
+				{{#if desc}}<p class="ext-desc">{{desc}}</p>{{/if}}
+				<div class="badges">
+					{{#each media}}<span class="badge">{{this}}</span>{{/each}}
+					{{#if langAttr}}<span class="badge">{{langAttr}}</span>{{/if}}
+					{{#if nsfw}}<span class="badge badge-nsfw">NSFW</span>{{/if}}
+					{{#if authorsAttr}}<span class="badge">{{authorsAttr}}</span>{{/if}}
+				</div>
+				{{#if tagsAttr}}<p class="ext-tags">{{tagsAttr}}</p>{{/if}}
+			</div>
+			<div class="ext-actions">
+				<a class="btn btn-primary btn-sm" href="{{{installLink}}}" data-deeplink="{{{installLink}}}">Install</a>
+				<a class="btn btn-outline btn-sm" href="{{fileUrl}}" title="Download bundle" download>Download</a>
+			</div>
+		</article>
+		{{/each}}
+	</section>
+
+	<div id="empty" hidden>
+		No extensions match your filters.
+	</div>
+</main>
+
+<footer>
+	<span>Generated by dion-build-site</span>
+	<a href="index.repo.json" download>index.repo.json</a>
+	{{#if repo.githubUrl}}<a href="{{repo.githubUrl}}">Source</a>{{/if}}
+</footer>
+
+<dialog id="dl-modal">
+	<h4>dion could not be opened</h4>
+	<p>The dion app does not appear to be installed on this device, or the link was blocked. Copy the link below and open it from the app's <em>Add from link</em> action, or install dion first.</p>
+	<span id="dl-link"></span>
+	<div class="dl-modal-actions">
+		<button type="button" class="btn btn-sm btn-dark" id="dl-close">Close</button>
+		<button type="button" class="btn btn-sm btn-dark-primary" id="dl-copy">Copy link</button>
+	</div>
+</dialog>
+
+<script>
+(function () {
+	"use strict";
+	var cards = Array.prototype.slice.call(document.querySelectorAll(".ext-row"));
+	var empty = document.getElementById("empty");
+	var search = document.getElementById("search");
+	var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-media]"));
+	var nsfwToggle = document.getElementById("nsfw-toggle");
+	var modal = document.getElementById("dl-modal");
+	var modalLink = document.getElementById("dl-link");
+	var copyBtn = document.getElementById("dl-copy");
+	var state = { q: "", media: "all", nsfw: false };
+
+	function apply() {
+		var q = state.q.toLowerCase();
+		var visible = 0;
+		for (var i = 0; i < cards.length; i++) {
+			var card = cards[i];
+			var okQ = !q || card.getAttribute("data-search").indexOf(q) !== -1;
+			var okM = state.media === "all" || card.getAttribute("data-media").indexOf(state.media) !== -1;
+			var okN = state.nsfw || card.getAttribute("data-nsfw") !== "true";
+			var show = okQ && okM && okN;
+			card.hidden = !show;
+			if (show) visible++;
+		}
+		empty.hidden = visible !== 0;
+	}
+
+	search.addEventListener("input", function () {
+		state.q = search.value.trim();
+		apply();
+	});
+
+	chips.forEach(function (chip) {
+		chip.addEventListener("click", function () {
+			chips.forEach(function (c) { c.setAttribute("aria-selected", "false"); });
+			chip.setAttribute("aria-selected", "true");
+			state.media = chip.getAttribute("data-media");
+			apply();
+		});
+	});
+
+	if (nsfwToggle) {
+		nsfwToggle.addEventListener("click", function () {
+			state.nsfw = !state.nsfw;
+			nsfwToggle.setAttribute("aria-pressed", state.nsfw ? "true" : "false");
+			apply();
+		});
+	}
+
+	var timer = null;
+	function clearTimer() {
+		if (timer) { clearTimeout(timer); timer = null; }
+	}
+	document.addEventListener("pagehide", clearTimer);
+	document.addEventListener("visibilitychange", function () {
+		if (document.hidden) clearTimer();
+	});
+
+	document.addEventListener("click", function (e) {
+		var a = e.target && e.target.closest ? e.target.closest("a[data-deeplink]") : null;
+		if (!a) return;
+		e.preventDefault();
+		var link = a.getAttribute("data-deeplink");
+		clearTimer();
+		window.location.href = link;
+		timer = setTimeout(function () {
+			if (!document.hidden && typeof modal.showModal === "function") {
+				modalLink.textContent = link;
+				copyBtn.textContent = "Copy link";
+				modal.showModal();
+			}
+		}, 2000);
+	});
+
+	document.getElementById("dl-close").addEventListener("click", function () {
+		modal.close();
+	});
+	copyBtn.addEventListener("click", function () {
+		navigator.clipboard.writeText(modalLink.textContent).then(function () {
+			copyBtn.textContent = "Copied";
+		});
+	});
+})();
+</script>
+
+</body>
+</html>

@@ -38,11 +38,12 @@
     },
     "js/repo_scripts": {
       "name": "@dion-js/extension-scripts",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "bin": {
         "dion-bundle": "./bin/bundle.ts",
         "dion-build-index": "./bin/index.ts",
         "dion-create": "./bin/create.ts",
+        "dion-build-site": "./bin/site.ts",
       },
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",

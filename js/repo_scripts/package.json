@@ -1,7 +1,7 @@
 {
 	"name": "@dion-js/extension-scripts",
 	"type": "module",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/bldng1337/dion-runtime.git"
@@ -12,7 +12,8 @@
 	"bin": {
 		"dion-bundle": "./bin/bundle.ts",
 		"dion-build-index": "./bin/index.ts",
-		"dion-create": "./bin/create.ts"
+		"dion-create": "./bin/create.ts",
+		"dion-build-site": "./bin/site.ts"
 	},
 	"exports": {
 		"./*": "./.dist/*"
@@ -25,6 +26,7 @@
 	"scripts": {
 		"check-types": "bunx tsc -p tsconfig.json",
 		"build": "bun run ./build.ts",
+		"test": "bun test",
 		"lint": "bunx biome check",
 		"format": "bunx biome format --write"
 	},

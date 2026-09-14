@@ -313,6 +313,28 @@ writes `.index/index.repo.json` (schema `DionRepoIndex`: `repo_index_version: 1`
 fields, and `content: [{ path, extdata }]`). The repo `url` is read from the repo
 `package.json` (falling back to `git remote get-url origin`).
 
+## Repository website
+`dion-build-site` (run from the repo root, after `dion-build-index`) generates a static
+website from `.index/` into `.site/` — a single self-contained `index.html` (search,
+media-type filters, NSFW toggle) plus the copied bundles and index, ready for GitHub
+Pages. It embeds deep links for the dion app:
+
+- **Add repository**: `dion://repo/add?url=<encoded index.repo.json URL>`
+- **Install extension**: `dion://extension/install?url=<encoded .dion.js URL>`
+
+By default the links target the GitHub release asset hosting
+(`https://github.com/<owner>/<repo>/releases/download/<tag>/index.repo.json`, tag
+defaults to `extensions`), derived from the repo `url` or git remote. Override with
+`--index-url <url>` (e.g. when serving `.index/` from Pages or another host); install
+URLs are resolved relative to the index URL, exactly like the runtime does. If the app
+is not installed, the site shows a fallback dialog with a copyable link.
+
+One-time setup in a repository: `dion-build-site --init` writes
+`.github/workflows/site.yml` (build → index → site → deploy to GitHub Pages on push) and
+a `build-site` npm script. Enable GitHub Pages with source "GitHub Actions" once in the
+repo settings. Useful flags: `--source <dir>`, `--out <dir>`, `--release-tag <tag>`,
+`--force`.
+
 ## Worked example checklist
 
 When asked to create an extension for a site end-to-end:

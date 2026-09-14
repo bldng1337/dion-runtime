@@ -11,6 +11,7 @@ const bundle = await Bun.build({
 		`${root}/src/bundle.ts`,
 		`${root}/src/create.ts`,
 		`${root}/src/index.ts`,
+		`${root}/src/site.ts`,
 	],
 	outdir: `${root}/.dist`,
 	target: "bun",

@@ -8,7 +8,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 // back to fetching a (nonexistent) `dion-bundle` package from the registry.
 // The bin entrypoints therefore live in this committed directory, load the
 // real CLI from .dist, and build .dist on demand when it is missing.
-export async function run(name: "bundle" | "create" | "index"): Promise<void> {
+export async function run(
+	name: "bundle" | "create" | "index" | "site",
+): Promise<void> {
 	const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 	const entry = join(root, ".dist", `${name}.js`);
 	if (!existsSync(entry)) {
