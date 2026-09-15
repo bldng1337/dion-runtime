@@ -150,6 +150,28 @@ async function initWorkflow(
 	);
 }
 
+/** ExtensionType variant names, in stable display order. */
+const KIND_ORDER: readonly string[] = [
+	"EntryProvider",
+	"SourceProcessor",
+	"EntryProcessor",
+	"URLHandler",
+];
+const KIND_LABELS: Record<string, string> = {
+	EntryProvider: "Entry providers",
+	SourceProcessor: "Source processors",
+	EntryProcessor: "Entry processors",
+	URLHandler: "URL handlers",
+};
+
+/** Return the input set ordered by `order`, unknown values sorted last. */
+function orderedBy(items: Set<string>, order: readonly string[]): string[] {
+	return [
+		...order.filter((o) => items.has(o)),
+		...[...items].filter((x) => !order.includes(x)).sort(),
+	];
+}
+
 export async function buildSite(options: SiteOptions = {}): Promise<void> {
 	const cwd = options.cwd ?? process.cwd();
 	const source = join(cwd, options.source ?? DEFAULT_SOURCE);
@@ -188,6 +210,11 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 		const e = entry.extdata;
 		const fileUrl = `${baseDir}/${entry.path}`;
 		const media = [...e.media_type].filter((m) => m !== "Unknown");
+		const langs = [...new Set((e.lang ?? []).map((l) => l.toUpperCase()))];
+		const kinds = orderedBy(
+			new Set<string>((e.extension_type ?? []).map((t) => t.type)),
+			KIND_ORDER,
+		);
 		return {
 			name: e.name,
 			version: e.version,
@@ -195,10 +222,12 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 			icon: e.icon?.trim() ? e.icon : "",
 			initial: (e.name?.[0] ?? "?").toUpperCase(),
 			authorsAttr: e.authors?.length ? e.authors.join(", ") : "",
-			langAttr: (e.lang ?? []).join(", "),
+			langs,
 			tagsAttr: (e.tags ?? []).map((t) => `#${t}`).join(" "),
 			media,
 			mediaAttr: media.map((m) => m.toLowerCase()).join(" "),
+			kinds,
+			kindsAttr: kinds.map((k) => k.toLowerCase()).join(" "),
 			nsfw: e.nsfw,
 			installLink: `dion://extension/install?url=${encodeURIComponent(fileUrl)}`,
 			fileUrl,
@@ -221,6 +250,11 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 		...[...present].filter((m) => !mediaOrder.includes(m)).sort(),
 	].map((m) => ({ value: m.toLowerCase(), label: m }));
 
+	const extensionKinds = orderedBy(
+		new Set<string>(extensions.flatMap((e) => e.kinds)),
+		KIND_ORDER,
+	).map((k) => ({ value: k.toLowerCase(), label: KIND_LABELS[k] ?? k }));
+
 	const template = Handlebars.compile(await loadTemplate("site/index"));
 	const html = template({
 		repo: {
@@ -239,6 +273,8 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 		isSingle: extensions.length === 1,
 		hasNsfw: extensions.some((e) => e.nsfw),
 		mediaTypes,
+		extensionKinds,
+		hasKinds: extensionKinds.length > 1,
 		extensions,
 	});
 

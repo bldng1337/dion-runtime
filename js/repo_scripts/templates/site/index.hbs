@@ -32,6 +32,9 @@
 	color-scheme: light;
 }
 * { box-sizing: border-box; }
+/* Author display rules beat the UA's [hidden]{display:none}, so filtering
+   needs this to actually hide rows. */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
 	margin: 0;
@@ -264,6 +267,11 @@ main { max-width: 880px; margin: 0 auto; padding: 0 20px 56px; }
 	color: var(--text-3);
 	font-weight: 400;
 }
+.byline {
+	margin: 0 0 6px;
+	font-size: 12px;
+	color: var(--text-3);
+}
 .ext-desc {
 	margin: 0 0 8px;
 	color: var(--text-2);
@@ -408,6 +416,14 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 			<button type="button" class="chip" data-media="{{value}}" aria-selected="false">{{label}}</button>
 			{{/each}}
 		</div>
+		{{#if hasKinds}}
+		<div class="toolbar-row" role="group" aria-label="Filter by extension type">
+			<button type="button" class="chip" data-kind="all" aria-selected="true">All</button>
+			{{#each extensionKinds}}
+			<button type="button" class="chip" data-kind="{{value}}" aria-selected="false">{{label}}</button>
+			{{/each}}
+		</div>
+		{{/if}}
 	</section>
 
 	<section class="list" id="ext-list">
@@ -415,6 +431,7 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 		<article class="ext-row" style="--i: {{@index}}"
 			data-search="{{search}}"
 			data-media="{{mediaAttr}}"
+			data-kinds="{{kindsAttr}}"
 			data-nsfw="{{nsfw}}">
 			<div class="ext-icon">
 				<span class="letter"{{#if icon}} aria-hidden="true"{{/if}}>{{initial}}</span>
@@ -425,12 +442,12 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 					<h3>{{name}}</h3>
 					<span class="ver">v{{version}}</span>
 				</div>
+				{{#if authorsAttr}}<p class="byline">by {{authorsAttr}}</p>{{/if}}
 				{{#if desc}}<p class="ext-desc">{{desc}}</p>{{/if}}
 				<div class="badges">
 					{{#each media}}<span class="badge">{{this}}</span>{{/each}}
-					{{#if langAttr}}<span class="badge">{{langAttr}}</span>{{/if}}
+					{{#each langs}}<span class="badge">{{this}}</span>{{/each}}
 					{{#if nsfw}}<span class="badge badge-nsfw">NSFW</span>{{/if}}
-					{{#if authorsAttr}}<span class="badge">{{authorsAttr}}</span>{{/if}}
 				</div>
 				{{#if tagsAttr}}<p class="ext-tags">{{tagsAttr}}</p>{{/if}}
 			</div>
@@ -454,8 +471,8 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 </footer>
 
 <dialog id="dl-modal">
-	<h4>dion could not be opened</h4>
-	<p>The dion app does not appear to be installed on this device, or the link was blocked. Copy the link below and open it from the app's <em>Add from link</em> action, or install dion first.</p>
+	<h4>Couldn't open dion?</h4>
+	<p>If nothing happened, dion may not be installed on this device, or the link was blocked. Copy the link below and open it from the app's <em>Add from link</em> action, or install dion first.</p>
 	<span id="dl-link"></span>
 	<div class="dl-modal-actions">
 		<button type="button" class="btn btn-sm btn-dark" id="dl-close">Close</button>
@@ -470,11 +487,16 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 	var empty = document.getElementById("empty");
 	var search = document.getElementById("search");
 	var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-media]"));
+	var kindChips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-kind]"));
 	var nsfwToggle = document.getElementById("nsfw-toggle");
 	var modal = document.getElementById("dl-modal");
 	var modalLink = document.getElementById("dl-link");
 	var copyBtn = document.getElementById("dl-copy");
-	var state = { q: "", media: "all", nsfw: false };
+	var state = { q: "", media: "all", kind: "all", nsfw: false };
+
+	function hasToken(value, token) {
+		return (" " + value + " ").indexOf(" " + token + " ") !== -1;
+	}
 
 	function apply() {
 		var q = state.q.toLowerCase();
@@ -482,9 +504,10 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 		for (var i = 0; i < cards.length; i++) {
 			var card = cards[i];
 			var okQ = !q || card.getAttribute("data-search").indexOf(q) !== -1;
-			var okM = state.media === "all" || card.getAttribute("data-media").indexOf(state.media) !== -1;
+			var okM = state.media === "all" || hasToken(card.getAttribute("data-media"), state.media);
+			var okK = state.kind === "all" || hasToken(card.getAttribute("data-kinds"), state.kind);
 			var okN = state.nsfw || card.getAttribute("data-nsfw") !== "true";
-			var show = okQ && okM && okN;
+			var show = okQ && okM && okK && okN;
 			card.hidden = !show;
 			if (show) visible++;
 		}
@@ -496,14 +519,18 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 		apply();
 	});
 
-	chips.forEach(function (chip) {
-		chip.addEventListener("click", function () {
-			chips.forEach(function (c) { c.setAttribute("aria-selected", "false"); });
-			chip.setAttribute("aria-selected", "true");
-			state.media = chip.getAttribute("data-media");
-			apply();
+	function bindChips(chipList, key) {
+		chipList.forEach(function (chip) {
+			chip.addEventListener("click", function () {
+				chipList.forEach(function (c) { c.setAttribute("aria-selected", "false"); });
+				chip.setAttribute("aria-selected", "true");
+				state[key] = chip.getAttribute(key === "media" ? "data-media" : "data-kind");
+				apply();
+			});
 		});
-	});
+	}
+	bindChips(chips, "media");
+	bindChips(kindChips, "kind");
 
 	if (nsfwToggle) {
 		nsfwToggle.addEventListener("click", function () {
@@ -517,7 +544,10 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 	function clearTimer() {
 		if (timer) { clearTimeout(timer); timer = null; }
 	}
+	// Losing focus or hiding the page means the deep link was handed off,
+	// so a still-focused page at timeout is the only real failure signal.
 	document.addEventListener("pagehide", clearTimer);
+	window.addEventListener("blur", clearTimer);
 	document.addEventListener("visibilitychange", function () {
 		if (document.hidden) clearTimer();
 	});
@@ -530,7 +560,7 @@ dialog#dl-modal p { margin: 0 0 14px; font-size: 13px; color: #B0B0B0; line-heig
 		clearTimer();
 		window.location.href = link;
 		timer = setTimeout(function () {
-			if (!document.hidden && typeof modal.showModal === "function") {
+			if (!document.hidden && document.hasFocus() && typeof modal.showModal === "function") {
 				modalLink.textContent = link;
 				copyBtn.textContent = "Copy link";
 				modal.showModal();

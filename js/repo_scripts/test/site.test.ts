@@ -41,6 +41,10 @@ async function makeFixtureRepo(): Promise<string> {
 					name: "bar",
 					nsfw: true,
 					media_type: ["Video"],
+					extension_type: [
+						{ type: "EntryProvider", has_search: true },
+						{ type: "URLHandler", url_patterns: [] },
+					],
 				}),
 			},
 		],
@@ -70,6 +74,18 @@ test("buildSite derives release index url and embeds deep links", async () => {
 	expect(html).toContain('id="nsfw-toggle"');
 	// media chips use lowercase values matching the row data attributes
 	expect(html).toContain('data-media="video"');
+	// rows must actually hide when filtered: author display rules would
+	// otherwise override the UA's [hidden]{display:none}
+	expect(html).toContain("[hidden] { display: none !important; }");
+	// one pill per language, uppercased
+	expect(html).toContain('<span class="badge">EN</span>');
+	// authors render as a byline, not a pill
+	expect(html).toContain("by someone");
+	// kind filter row appears when more than one kind is present
+	expect(html).toContain('data-kind="entryprovider"');
+	expect(html).toContain('data-kind="urlhandler"');
+	// deep-link fallback only fires on a still-focused page
+	expect(html).toContain("document.hasFocus()");
 	// bundles and index are copied alongside the site
 	const outFiles = await readdir(join(dir, ".site"));
 	expect(outFiles).toContain("index.html");
