@@ -10,7 +10,7 @@ use dion_runtime::{
     data::{
         auth::Account,
         extension::{ExtensionData, ExtensionType},
-        extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+        extension_repo::{ExtensionKind, ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         permission::Permission,
         settings::{Setting, SettingKind},
         source::{Link, MediaType},
@@ -148,6 +148,20 @@ impl DionRepoIndex {
         let mut content: Vec<dion_runtime::data::extension_repo::RemoteExtension> = Vec::new();
         if let Some(exts) = self.content {
             for ext in exts {
+                let extension_kinds: Vec<ExtensionKind> =
+                    ext.extdata.extension_type.iter().map(Into::into).collect();
+                // Only providers and source processors deal in media; other
+                // kinds get an empty set (see RemoteExtension::media_type).
+                let media_type = if extension_kinds.iter().any(|kind| {
+                    matches!(
+                        kind,
+                        ExtensionKind::EntryProvider | ExtensionKind::SourceProcessor
+                    )
+                }) {
+                    ext.extdata.media_type.clone()
+                } else {
+                    HashSet::new()
+                };
                 content.push(dion_runtime::data::extension_repo::RemoteExtension {
                     id: ext.extdata.id.clone(),
                     remote_id: format!(
@@ -168,6 +182,12 @@ impl DionRepoIndex {
                     } else {
                         Some(ext.extdata.permissions.clone())
                     },
+                    authors: ext.extdata.authors.clone(),
+                    lang: ext.extdata.lang.clone(),
+                    tags: ext.extdata.tags.clone(),
+                    nsfw: ext.extdata.nsfw,
+                    media_type,
+                    extension_kinds,
                 });
             }
         }

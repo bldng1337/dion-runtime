@@ -10,7 +10,18 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'permission.dart';
 import 'source.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `hash`
+
+/// Payload-free listing type mirroring the variants of [`ExtensionType`].
+/// Store/browse UIs filter by what an extension does without needing the
+/// per-variant configuration (url patterns, source types, ...).
+enum ExtensionKind {
+  entryProvider,
+  sourceProcessor,
+  entryProcessor,
+  urlHandler,
+  ;
+}
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -56,6 +67,16 @@ class RemoteExtension {
   final String version;
   final bool compatible;
   final List<Permission>? permissions;
+  final List<String> authors;
+  final List<String> lang;
+  final List<String> tags;
+  final bool nsfw;
+
+  /// Media the extension deals with. Only entry providers and source
+  /// processors declare it; pure entry processors / URL handlers leave it
+  /// empty rather than inheriting a misleading default.
+  final Set<MediaType> mediaType;
+  final List<ExtensionKind> extensionKinds;
 
   const RemoteExtension({
     required this.remoteId,
@@ -66,6 +87,12 @@ class RemoteExtension {
     required this.version,
     required this.compatible,
     this.permissions,
+    required this.authors,
+    required this.lang,
+    required this.tags,
+    required this.nsfw,
+    required this.mediaType,
+    required this.extensionKinds,
   });
 
   static Future<RemoteExtension> default_() =>
@@ -80,7 +107,13 @@ class RemoteExtension {
       cover.hashCode ^
       version.hashCode ^
       compatible.hashCode ^
-      permissions.hashCode;
+      permissions.hashCode ^
+      authors.hashCode ^
+      lang.hashCode ^
+      tags.hashCode ^
+      nsfw.hashCode ^
+      mediaType.hashCode ^
+      extensionKinds.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -94,7 +127,13 @@ class RemoteExtension {
           cover == other.cover &&
           version == other.version &&
           compatible == other.compatible &&
-          permissions == other.permissions;
+          permissions == other.permissions &&
+          authors == other.authors &&
+          lang == other.lang &&
+          tags == other.tags &&
+          nsfw == other.nsfw &&
+          mediaType == other.mediaType &&
+          extensionKinds == other.extensionKinds;
 }
 
 /// flutter_rust_bridge:non_opaque

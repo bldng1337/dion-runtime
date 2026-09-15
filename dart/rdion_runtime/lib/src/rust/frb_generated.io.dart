@@ -381,6 +381,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionData dco_decode_extension_data(dynamic raw);
 
   @protected
+  ExtensionKind dco_decode_extension_kind(dynamic raw);
+
+  @protected
   ExtensionManagerData dco_decode_extension_manager_data(dynamic raw);
 
   @protected
@@ -435,6 +438,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Episode> dco_decode_list_episode(dynamic raw);
+
+  @protected
+  List<ExtensionKind> dco_decode_list_extension_kind(dynamic raw);
 
   @protected
   List<ExtensionType> dco_decode_list_extension_type(dynamic raw);
@@ -1014,6 +1020,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionData sse_decode_extension_data(SseDeserializer deserializer);
 
   @protected
+  ExtensionKind sse_decode_extension_kind(SseDeserializer deserializer);
+
+  @protected
   ExtensionManagerData sse_decode_extension_manager_data(
       SseDeserializer deserializer);
 
@@ -1071,6 +1080,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Episode> sse_decode_list_episode(SseDeserializer deserializer);
+
+  @protected
+  List<ExtensionKind> sse_decode_list_extension_kind(
+      SseDeserializer deserializer);
 
   @protected
   List<ExtensionType> sse_decode_list_extension_type(
@@ -1734,6 +1747,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_episode(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       cst_api_fill_to_wire_episode(raw[i], ans.ref.ptr[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_extension_kind> cst_encode_list_extension_kind(
+      List<ExtensionKind> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_extension_kind(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      ans.ref.ptr[i] = cst_encode_extension_kind(raw[i]);
     }
     return ans;
   }
@@ -3086,6 +3110,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.version = cst_encode_String(apiObj.version);
     wireObj.compatible = cst_encode_bool(apiObj.compatible);
     wireObj.permissions = cst_encode_opt_list_permission(apiObj.permissions);
+    wireObj.authors = cst_encode_list_String(apiObj.authors);
+    wireObj.lang = cst_encode_list_String(apiObj.lang);
+    wireObj.tags = cst_encode_list_String(apiObj.tags);
+    wireObj.nsfw = cst_encode_bool(apiObj.nsfw);
+    wireObj.media_type = cst_encode_Set_media_type_None(apiObj.mediaType);
+    wireObj.extension_kinds =
+        cst_encode_list_extension_kind(apiObj.extensionKinds);
   }
 
   @protected
@@ -3373,6 +3404,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int cst_encode_cross_axis_alignment(CrossAxisAlignment raw);
+
+  @protected
+  int cst_encode_extension_kind(ExtensionKind raw);
 
   @protected
   double cst_encode_f_32(double raw);
@@ -3791,6 +3825,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_extension_data(ExtensionData self, SseSerializer serializer);
 
   @protected
+  void sse_encode_extension_kind(ExtensionKind self, SseSerializer serializer);
+
+  @protected
   void sse_encode_extension_manager_data(
       ExtensionManagerData self, SseSerializer serializer);
 
@@ -3849,6 +3886,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_episode(List<Episode> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_extension_kind(
+      List<ExtensionKind> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_extension_type(
@@ -6200,6 +6241,19 @@ class RustLibWire implements BaseWire {
   late final _cst_new_list_episode = _cst_new_list_episodePtr
       .asFunction<ffi.Pointer<wire_cst_list_episode> Function(int)>();
 
+  ffi.Pointer<wire_cst_list_extension_kind> cst_new_list_extension_kind(
+    int len,
+  ) {
+    return _cst_new_list_extension_kind(len);
+  }
+
+  late final _cst_new_list_extension_kindPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_extension_kind> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_extension_kind');
+  late final _cst_new_list_extension_kind = _cst_new_list_extension_kindPtr
+      .asFunction<ffi.Pointer<wire_cst_list_extension_kind> Function(int)>();
+
   ffi.Pointer<wire_cst_list_extension_type> cst_new_list_extension_type(
     int len,
   ) {
@@ -7291,6 +7345,13 @@ final class wire_cst_list_entry extends ffi.Struct {
   external int len;
 }
 
+final class wire_cst_list_extension_kind extends ffi.Struct {
+  external ffi.Pointer<ffi.Int32> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_ExtensionType_EntryProvider extends ffi.Struct {
   @ffi.Bool()
   external bool has_search;
@@ -7582,6 +7643,19 @@ final class wire_cst_remote_extension extends ffi.Struct {
   external bool compatible;
 
   external ffi.Pointer<wire_cst_list_permission> permissions;
+
+  external ffi.Pointer<wire_cst_list_String> authors;
+
+  external ffi.Pointer<wire_cst_list_String> lang;
+
+  external ffi.Pointer<wire_cst_list_String> tags;
+
+  @ffi.Bool()
+  external bool nsfw;
+
+  external ffi.Pointer<wire_cst_list_media_type> media_type;
+
+  external ffi.Pointer<wire_cst_list_extension_kind> extension_kinds;
 }
 
 final class wire_cst_list_remote_extension extends ffi.Struct {

@@ -12,7 +12,7 @@ mod test {
         },
         extension::{ExtensionData, ExtensionType, SourceOpenType},
         extension_manager::ExtensionManagerData,
-        extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+        extension_repo::{ExtensionKind, ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         permission::Permission,
         settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI},
         source::{
@@ -782,6 +782,12 @@ mod test {
                 version: "1.0".to_string(),
                 compatible: true,
                 permissions: None,
+                authors: vec!["Author One".to_string()],
+                lang: vec!["en".to_string()],
+                tags: vec!["tag1".to_string()],
+                nsfw: false,
+                media_type: HashSet::from([MediaType::Book]),
+                extension_kinds: vec![ExtensionKind::EntryProvider],
             },
             RemoteExtension {
                 remote_id: "remote_id_2".to_string(),
@@ -800,6 +806,12 @@ mod test {
                 permissions: Some(vec![Permission::Network {
                     domains: vec!["example.com".to_string()],
                 }]),
+                authors: vec!["Author Two".to_string(), "Author Three".to_string()],
+                lang: vec!["en".to_string(), "ja".to_string()],
+                tags: vec![],
+                nsfw: true,
+                media_type: HashSet::from([MediaType::Comic, MediaType::Video]),
+                extension_kinds: vec![ExtensionKind::EntryProvider, ExtensionKind::SourceProcessor],
             },
             RemoteExtension {
                 remote_id: "remote_id_3".to_string(),
@@ -810,7 +822,23 @@ mod test {
                 version: "0.5".to_string(),
                 compatible: false,
                 permissions: None,
+                authors: vec![],
+                lang: vec!["ja".to_string()],
+                tags: vec![],
+                nsfw: false,
+                // Processors/handlers don't declare media.
+                media_type: HashSet::new(),
+                extension_kinds: vec![ExtensionKind::EntryProcessor, ExtensionKind::UrlHandler],
             },
+        ]
+    }
+
+    fn generate_all_extension_kinds() -> Vec<ExtensionKind> {
+        vec![
+            ExtensionKind::EntryProvider,
+            ExtensionKind::SourceProcessor,
+            ExtensionKind::EntryProcessor,
+            ExtensionKind::UrlHandler,
         ]
     }
 
@@ -1502,6 +1530,7 @@ mod test {
             &generate_all_remote_extension_results(),
         );
         write_json_array("ExtensionRepo", &generate_all_extension_repos());
+        write_json_array("ExtensionKind", &generate_all_extension_kinds());
 
         // permission.rs types
         write_json_array("Permission", &generate_all_permissions());

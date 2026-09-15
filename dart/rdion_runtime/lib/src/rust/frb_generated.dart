@@ -3655,6 +3655,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ExtensionKind dco_decode_extension_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ExtensionKind.values[raw as int];
+  }
+
+  @protected
   ExtensionManagerData dco_decode_extension_manager_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3828,6 +3834,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<Episode> dco_decode_list_episode(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_episode).toList();
+  }
+
+  @protected
+  List<ExtensionKind> dco_decode_list_extension_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_extension_kind).toList();
   }
 
   @protected
@@ -4303,8 +4315,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RemoteExtension dco_decode_remote_extension(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 14)
+      throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
     return RemoteExtension(
       remoteId: dco_decode_String(arr[0]),
       id: dco_decode_String(arr[1]),
@@ -4314,6 +4326,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       version: dco_decode_String(arr[5]),
       compatible: dco_decode_bool(arr[6]),
       permissions: dco_decode_opt_list_permission(arr[7]),
+      authors: dco_decode_list_String(arr[8]),
+      lang: dco_decode_list_String(arr[9]),
+      tags: dco_decode_list_String(arr[10]),
+      nsfw: dco_decode_bool(arr[11]),
+      mediaType: dco_decode_Set_media_type_None(arr[12]),
+      extensionKinds: dco_decode_list_extension_kind(arr[13]),
     );
   }
 
@@ -5702,6 +5720,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ExtensionKind sse_decode_extension_kind(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ExtensionKind.values[inner];
+  }
+
+  @protected
   ExtensionManagerData sse_decode_extension_manager_data(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5916,6 +5941,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <Episode>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_episode(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<ExtensionKind> sse_decode_list_extension_kind(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <ExtensionKind>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_extension_kind(deserializer));
     }
     return ans_;
   }
@@ -6655,6 +6693,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_version = sse_decode_String(deserializer);
     var var_compatible = sse_decode_bool(deserializer);
     var var_permissions = sse_decode_opt_list_permission(deserializer);
+    var var_authors = sse_decode_list_String(deserializer);
+    var var_lang = sse_decode_list_String(deserializer);
+    var var_tags = sse_decode_list_String(deserializer);
+    var var_nsfw = sse_decode_bool(deserializer);
+    var var_mediaType = sse_decode_Set_media_type_None(deserializer);
+    var var_extensionKinds = sse_decode_list_extension_kind(deserializer);
     return RemoteExtension(
         remoteId: var_remoteId,
         id: var_id,
@@ -6663,7 +6707,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         cover: var_cover,
         version: var_version,
         compatible: var_compatible,
-        permissions: var_permissions);
+        permissions: var_permissions,
+        authors: var_authors,
+        lang: var_lang,
+        tags: var_tags,
+        nsfw: var_nsfw,
+        mediaType: var_mediaType,
+        extensionKinds: var_extensionKinds);
   }
 
   @protected
@@ -7077,6 +7127,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   int cst_encode_cross_axis_alignment(CrossAxisAlignment raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_extension_kind(ExtensionKind raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
   }
@@ -8293,6 +8349,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_extension_kind(ExtensionKind self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_extension_manager_data(
       ExtensionManagerData self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8468,6 +8530,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_episode(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_extension_kind(
+      List<ExtensionKind> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_extension_kind(item, serializer);
     }
   }
 
@@ -9112,6 +9184,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.version, serializer);
     sse_encode_bool(self.compatible, serializer);
     sse_encode_opt_list_permission(self.permissions, serializer);
+    sse_encode_list_String(self.authors, serializer);
+    sse_encode_list_String(self.lang, serializer);
+    sse_encode_list_String(self.tags, serializer);
+    sse_encode_bool(self.nsfw, serializer);
+    sse_encode_Set_media_type_None(self.mediaType, serializer);
+    sse_encode_list_extension_kind(self.extensionKinds, serializer);
   }
 
   @protected

@@ -3573,6 +3573,14 @@ const _: fn() = || {
         let _: bool = RemoteExtension.compatible;
         let _: Option<Vec<dion_runtime::data::permission::Permission>> =
             RemoteExtension.permissions;
+        let _: Vec<String> = RemoteExtension.authors;
+        let _: Vec<String> = RemoteExtension.lang;
+        let _: Vec<String> = RemoteExtension.tags;
+        let _: bool = RemoteExtension.nsfw;
+        let _: std::collections::HashSet<dion_runtime::data::source::MediaType> =
+            RemoteExtension.media_type;
+        let _: Vec<dion_runtime::data::extension_repo::ExtensionKind> =
+            RemoteExtension.extension_kinds;
     }
     {
         let RemoteExtensionResult =
@@ -4045,6 +4053,18 @@ impl CstDecode<dion_runtime::data::custom_ui::CrossAxisAlignment> for i32 {
             3 => dion_runtime::data::custom_ui::CrossAxisAlignment::Stretch,
             4 => dion_runtime::data::custom_ui::CrossAxisAlignment::Baseline,
             _ => unreachable!("Invalid variant for CrossAxisAlignment: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::extension_repo::ExtensionKind> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::extension_repo::ExtensionKind {
+        match self {
+            0 => dion_runtime::data::extension_repo::ExtensionKind::EntryProvider,
+            1 => dion_runtime::data::extension_repo::ExtensionKind::SourceProcessor,
+            2 => dion_runtime::data::extension_repo::ExtensionKind::EntryProcessor,
+            3 => dion_runtime::data::extension_repo::ExtensionKind::UrlHandler,
+            _ => unreachable!("Invalid variant for ExtensionKind: {}", self),
         }
     }
 }
@@ -5397,6 +5417,20 @@ impl SseDecode for dion_runtime::data::extension::ExtensionData {
     }
 }
 
+impl SseDecode for dion_runtime::data::extension_repo::ExtensionKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::extension_repo::ExtensionKind::EntryProvider,
+            1 => dion_runtime::data::extension_repo::ExtensionKind::SourceProcessor,
+            2 => dion_runtime::data::extension_repo::ExtensionKind::EntryProcessor,
+            3 => dion_runtime::data::extension_repo::ExtensionKind::UrlHandler,
+            _ => unreachable!("Invalid variant for ExtensionKind: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for dion_runtime::data::extension_manager::ExtensionManagerData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -5659,6 +5693,20 @@ impl SseDecode for Vec<dion_runtime::data::source::Episode> {
             ans_.push(<dion_runtime::data::source::Episode>::sse_decode(
                 deserializer,
             ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<dion_runtime::data::extension_repo::ExtensionKind> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(
+                <dion_runtime::data::extension_repo::ExtensionKind>::sse_decode(deserializer),
+            );
         }
         return ans_;
     }
@@ -6512,6 +6560,16 @@ impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
         let mut var_compatible = <bool>::sse_decode(deserializer);
         let mut var_permissions =
             <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_decode(deserializer);
+        let mut var_authors = <Vec<String>>::sse_decode(deserializer);
+        let mut var_lang = <Vec<String>>::sse_decode(deserializer);
+        let mut var_tags = <Vec<String>>::sse_decode(deserializer);
+        let mut var_nsfw = <bool>::sse_decode(deserializer);
+        let mut var_mediaType =
+            <std::collections::HashSet<dion_runtime::data::source::MediaType>>::sse_decode(
+                deserializer,
+            );
+        let mut var_extensionKinds =
+            <Vec<dion_runtime::data::extension_repo::ExtensionKind>>::sse_decode(deserializer);
         return dion_runtime::data::extension_repo::RemoteExtension {
             remote_id: var_remoteId,
             id: var_id,
@@ -6521,6 +6579,12 @@ impl SseDecode for dion_runtime::data::extension_repo::RemoteExtension {
             version: var_version,
             compatible: var_compatible,
             permissions: var_permissions,
+            authors: var_authors,
+            lang: var_lang,
+            tags: var_tags,
+            nsfw: var_nsfw,
+            media_type: var_mediaType,
+            extension_kinds: var_extensionKinds,
         };
     }
 }
@@ -8031,6 +8095,32 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension:
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart
+    for FrbWrapper<dion_runtime::data::extension_repo::ExtensionKind>
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::extension_repo::ExtensionKind::EntryProvider => 0.into_dart(),
+            dion_runtime::data::extension_repo::ExtensionKind::SourceProcessor => 1.into_dart(),
+            dion_runtime::data::extension_repo::ExtensionKind::EntryProcessor => 2.into_dart(),
+            dion_runtime::data::extension_repo::ExtensionKind::UrlHandler => 3.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::extension_repo::ExtensionKind>
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::extension_repo::ExtensionKind>>
+    for dion_runtime::data::extension_repo::ExtensionKind
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::extension_repo::ExtensionKind> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
     for FrbWrapper<dion_runtime::data::extension_manager::ExtensionManagerData>
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -8437,6 +8527,12 @@ impl flutter_rust_bridge::IntoDart
             self.0.version.into_into_dart().into_dart(),
             self.0.compatible.into_into_dart().into_dart(),
             self.0.permissions.into_into_dart().into_dart(),
+            self.0.authors.into_into_dart().into_dart(),
+            self.0.lang.into_into_dart().into_dart(),
+            self.0.tags.into_into_dart().into_dart(),
+            self.0.nsfw.into_into_dart().into_dart(),
+            self.0.media_type.into_into_dart().into_dart(),
+            self.0.extension_kinds.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -9982,6 +10078,24 @@ impl SseEncode for dion_runtime::data::extension::ExtensionData {
     }
 }
 
+impl SseEncode for dion_runtime::data::extension_repo::ExtensionKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::extension_repo::ExtensionKind::EntryProvider => 0,
+                dion_runtime::data::extension_repo::ExtensionKind::SourceProcessor => 1,
+                dion_runtime::data::extension_repo::ExtensionKind::EntryProcessor => 2,
+                dion_runtime::data::extension_repo::ExtensionKind::UrlHandler => 3,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for dion_runtime::data::extension_manager::ExtensionManagerData {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10185,6 +10299,16 @@ impl SseEncode for Vec<dion_runtime::data::source::Episode> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <dion_runtime::data::source::Episode>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<dion_runtime::data::extension_repo::ExtensionKind> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::extension_repo::ExtensionKind>::sse_encode(item, serializer);
         }
     }
 }
@@ -10881,6 +11005,18 @@ impl SseEncode for dion_runtime::data::extension_repo::RemoteExtension {
         <bool>::sse_encode(self.compatible, serializer);
         <Option<Vec<dion_runtime::data::permission::Permission>>>::sse_encode(
             self.permissions,
+            serializer,
+        );
+        <Vec<String>>::sse_encode(self.authors, serializer);
+        <Vec<String>>::sse_encode(self.lang, serializer);
+        <Vec<String>>::sse_encode(self.tags, serializer);
+        <bool>::sse_encode(self.nsfw, serializer);
+        <std::collections::HashSet<dion_runtime::data::source::MediaType>>::sse_encode(
+            self.media_type,
+            serializer,
+        );
+        <Vec<dion_runtime::data::extension_repo::ExtensionKind>>::sse_encode(
+            self.extension_kinds,
             serializer,
         );
     }
@@ -12412,6 +12548,18 @@ mod io {
             vec.into_iter().map(CstDecode::cst_decode).collect()
         }
     }
+    impl CstDecode<Vec<dion_runtime::data::extension_repo::ExtensionKind>>
+        for *mut wire_cst_list_extension_kind
+    {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::extension_repo::ExtensionKind> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
     impl CstDecode<Vec<dion_runtime::data::extension::ExtensionType>>
         for *mut wire_cst_list_extension_type
     {
@@ -12755,6 +12903,12 @@ mod io {
                 version: self.version.cst_decode(),
                 compatible: self.compatible.cst_decode(),
                 permissions: self.permissions.cst_decode(),
+                authors: self.authors.cst_decode(),
+                lang: self.lang.cst_decode(),
+                tags: self.tags.cst_decode(),
+                nsfw: self.nsfw.cst_decode(),
+                media_type: self.media_type.cst_decode(),
+                extension_kinds: self.extension_kinds.cst_decode(),
             }
         }
     }
@@ -13491,6 +13645,12 @@ mod io {
                 version: core::ptr::null_mut(),
                 compatible: Default::default(),
                 permissions: core::ptr::null_mut(),
+                authors: core::ptr::null_mut(),
+                lang: core::ptr::null_mut(),
+                tags: core::ptr::null_mut(),
+                nsfw: Default::default(),
+                media_type: core::ptr::null_mut(),
+                extension_kinds: core::ptr::null_mut(),
             }
         }
     }
@@ -14730,6 +14890,17 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_extension_kind(
+        len: i32,
+    ) -> *mut wire_cst_list_extension_kind {
+        let wrap = wire_cst_list_extension_kind {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(Default::default(), len),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_list_extension_type(
         len: i32,
     ) -> *mut wire_cst_list_extension_type {
@@ -15673,6 +15844,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_extension_kind {
+        ptr: *mut i32,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_extension_type {
         ptr: *mut wire_cst_extension_type,
         len: i32,
@@ -15922,6 +16099,12 @@ mod io {
         version: *mut wire_cst_list_prim_u_8_strict,
         compatible: bool,
         permissions: *mut wire_cst_list_permission,
+        authors: *mut wire_cst_list_String,
+        lang: *mut wire_cst_list_String,
+        tags: *mut wire_cst_list_String,
+        nsfw: bool,
+        media_type: *mut wire_cst_list_media_type,
+        extension_kinds: *mut wire_cst_list_extension_kind,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

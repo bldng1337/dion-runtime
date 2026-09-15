@@ -1243,6 +1243,23 @@ extension JsonExtensionRepo on ExtensionRepo {
       );
 }
 
+extension JsonExtensionKind on ExtensionKind {
+  dynamic toJson() => switch (this) {
+        ExtensionKind.entryProvider => "EntryProvider",
+        ExtensionKind.sourceProcessor => "SourceProcessor",
+        ExtensionKind.entryProcessor => "EntryProcessor",
+        ExtensionKind.urlHandler => "UrlHandler",
+      };
+  static ExtensionKind fromJson(dynamic value) =>
+      switch (value.toString().toLowerCase()) {
+        "entryprovider" => ExtensionKind.entryProvider,
+        "sourceprocessor" => ExtensionKind.sourceProcessor,
+        "entryprocessor" => ExtensionKind.entryProcessor,
+        "urlhandler" => ExtensionKind.urlHandler,
+        _ => throw FormatException("Unknown ExtensionKind: $value"),
+      };
+}
+
 extension JsonRemoteExtension on RemoteExtension {
   dynamic toJson() => {
         "id": id,
@@ -1254,6 +1271,12 @@ extension JsonRemoteExtension on RemoteExtension {
         "compatible": compatible,
         if (permissions != null)
           "permissions": permissions!.map((e) => e.toJson()).toList(),
+        "authors": authors,
+        "lang": lang,
+        "tags": tags,
+        "nsfw": nsfw,
+        "media_type": mediaType.map((e) => e.toJson()).toList(),
+        "extension_kinds": extensionKinds.map((e) => e.toJson()).toList(),
       };
 
   static RemoteExtension fromJson(dynamic value) => RemoteExtension(
@@ -1270,6 +1293,21 @@ extension JsonRemoteExtension on RemoteExtension {
                 .map((e) => JsonPermission.fromJson(e))
                 .toList()
             : null,
+        authors:
+            value["authors"] != null ? List<String>.from(value["authors"]) : [],
+        lang: value["lang"] != null ? List<String>.from(value["lang"]) : [],
+        tags: value["tags"] != null ? List<String>.from(value["tags"]) : [],
+        nsfw: value["nsfw"] ?? false,
+        mediaType: value["media_type"] != null
+            ? (value["media_type"] as List)
+                .map((e) => JsonMediaType.fromJson(e))
+                .toSet()
+            : {},
+        extensionKinds: value["extension_kinds"] != null
+            ? (value["extension_kinds"] as List)
+                .map((e) => JsonExtensionKind.fromJson(e))
+                .toList()
+            : [],
       );
 }
 

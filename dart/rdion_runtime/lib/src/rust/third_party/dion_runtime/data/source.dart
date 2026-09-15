@@ -237,11 +237,6 @@ class Episode {
   final String url;
   final Link? cover;
   final String? timestamp;
-
-  /// Marks an episode the source has listed ahead of its release; its
-  /// timestamp is the expected release time. Hosts must not treat such
-  /// episodes as playable until a fetch lists them without the flag: the
-  /// release may slip and the id can change on publication.
   final bool? announced;
 
   const Episode({

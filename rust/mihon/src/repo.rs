@@ -29,8 +29,8 @@ use prost::Message;
 use serde::{de, Deserialize, Deserializer};
 
 use dion_runtime::data::{
-    extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
-    source::Link,
+    extension_repo::{ExtensionKind, ExtensionRepo, RemoteExtension, RemoteExtensionResult},
+    source::{Link, MediaType},
 };
 
 use crate::apk::metadata::SUPPORTED_LIB_VERSIONS;
@@ -42,6 +42,10 @@ mod proto {
 
 /// Package prefix identifying novel extensions (tsundoku fork convention).
 const NOVEL_PKG_PREFIX: &str = "eu.kanade.tachiyomi.novelextension";
+/// Package prefix identifying anime extensions (Aniyomi fork convention).
+/// Repo indexes carry no media type; novel/anime detection relies on these
+/// prefix conventions, with the authoritative type only known after install.
+const ANIME_PKG_PREFIX: &str = "eu.kanade.tachiyomi.animeextension";
 /// Legacy index display names are prefixed with this; stripped on mapping.
 const LEGACY_NAME_PREFIX: &str = "Tachiyomi: ";
 /// Guard against `index_v2` redirect loops between store payloads.
@@ -170,6 +174,13 @@ impl RepoExtension {
             .first()
             .map(|s| format!("mihon:{}", s.id))
             .unwrap_or_else(|| self.pkg.clone());
+        let media_type = if self.is_novel {
+            HashSet::from([MediaType::Book])
+        } else if self.pkg.starts_with(ANIME_PKG_PREFIX) {
+            HashSet::from([MediaType::Video])
+        } else {
+            HashSet::from([MediaType::Comic])
+        };
         RemoteExtension {
             id,
             remote_id: self.apk_url.clone(),
@@ -186,6 +197,14 @@ impl RepoExtension {
             version: self.version.clone(),
             compatible: is_lib_compatible(self.lib_version),
             permissions: None,
+            // Author and tag lists don't exist in mihon indexes.
+            authors: Vec::new(),
+            lang: vec![self.lang.clone()],
+            tags: Vec::new(),
+            nsfw: self.nsfw,
+            media_type,
+            // Every mihon source is an entry provider with search.
+            extension_kinds: vec![ExtensionKind::EntryProvider],
         }
     }
 }
@@ -1278,6 +1297,43 @@ mod tests {
             remote.remote_id,
             "https://example.com/repo/apk/test-v1.0.apk"
         );
+    }
+
+    #[test]
+    fn to_remote_maps_media_type_and_kinds() {
+        // The index carries no media type; novel/anime come from package
+        // prefix conventions, everything else defaults to comic.
+        fn ext_with(pkg: &str, is_novel: bool) -> RepoExtension {
+            RepoExtension {
+                name: "Test".to_string(),
+                pkg: pkg.to_string(),
+                apk_url: "https://x/a.apk".to_string(),
+                icon_url: String::new(),
+                lang: "en".to_string(),
+                code: 0,
+                version: String::new(),
+                nsfw: true,
+                lib_version: None,
+                sources: vec![],
+                is_novel,
+            }
+        }
+
+        let comic = ext_with("eu.kanade.tachiyomi.extension.en.test", false).to_remote();
+        assert!(comic.media_type.contains(&MediaType::Comic));
+        let anime = ext_with("eu.kanade.tachiyomi.animeextension.all.test", false).to_remote();
+        assert!(anime.media_type.contains(&MediaType::Video));
+        let novel = ext_with("eu.kanade.tachiyomi.novelextension.all.test", true).to_remote();
+        assert!(novel.media_type.contains(&MediaType::Book));
+
+        for remote in [comic, anime, novel] {
+            assert_eq!(remote.extension_kinds, vec![ExtensionKind::EntryProvider]);
+            assert_eq!(remote.lang, vec!["en".to_string()]);
+            assert!(remote.nsfw);
+            // Not present in mihon indexes.
+            assert!(remote.authors.is_empty());
+            assert!(remote.tags.is_empty());
+        }
     }
 
     #[test]
