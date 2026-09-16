@@ -55,6 +55,12 @@ android {
 
     defaultConfig {
         minSdkVersion 26
+
+        // Keep/dontwarn rules for the Mihon extension adapter: extensions
+        // are loaded at runtime against the host APK, and the okhttp3 keep
+        // rules surface optional TLS provider references that R8 full mode
+        // rejects. Merged into every consuming app's shrinker config.
+        consumerProguardFiles 'consumer-rules.pro'
     }
 
     // Include compat-android Kotlin + Java sources (AndroidMihonBridge,
