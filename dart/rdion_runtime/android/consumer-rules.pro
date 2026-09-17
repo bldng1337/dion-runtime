@@ -21,6 +21,11 @@
 # reference (RxExtensionsKt.awaitSingle) — some extensions call them too.
 -keep class tachiyomi.core.common.** { *; }
 
+# androidx.preference backs `setupPreferenceScreen` of ConfigurableSource
+# extensions: they were compiled against the real library and bind to its
+# classes by name at runtime, so it must survive shrinking un-renamed.
+-keep class androidx.preference.** { *; }
+
 # Rhino-backed QuickJs bridge. Extensions evaluate JS via
 # app.cash.quickjs.QuickJs but no adapter code references it statically,
 # so without a keep rule R8 strips it and those extensions die with

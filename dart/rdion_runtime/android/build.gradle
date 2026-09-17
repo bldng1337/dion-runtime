@@ -135,6 +135,12 @@ dependencies {
     // Injekt - dependency injection used by Mihon extensions
     implementation "com.github.mihonapp:injekt:91edab2317"
 
+    // androidx.preference - ConfigurableSource extensions build their
+    // preference screens against it, so the host must provide the real
+    // classes at runtime. getPreferenceList/applyPreferences read and write
+    // them headlessly via PreferenceManager.
+    implementation "androidx.preference:preference:1.2.1"
+
     // Logging
     implementation "org.slf4j:slf4j-api:2.0.12"
     implementation "io.github.oshai:kotlin-logging-jvm:6.0.3"

@@ -16,6 +16,7 @@ import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.source.online.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import uy.kohesive.injekt.Injekt
@@ -848,6 +849,73 @@ object AndroidMihonBridge {
                 else -> return json.encodeToString(ErrorResult("Source is not a catalogue source: $sourceId"))
             }
             json.encodeToString(filters)
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    // ========== Source Preferences ==========
+
+    /**
+     * Get the configurable preferences for a source by invoking its
+     * `setupPreferenceScreen` and reading back the registered preferences.
+     *
+     * Works for both manga ([ConfigurableSource]) and anime
+     * ([ConfigurableAnimeSource]) sources; `setupPreferenceScreen` is located
+     * reflectively. Returns an empty list for non-configurable sources.
+     *
+     * @return JSON: PreferenceListResult { preferences: [...] }
+     */
+    @JvmStatic
+    fun getPreferenceList(sourceId: Long): String {
+        return try {
+            val source = sourceManager.get(sourceId)
+                ?: return json.encodeToString(ErrorResult("Source not found: $sourceId"))
+            val app = context
+                ?: return json.encodeToString(ErrorResult("Bridge context not initialized"))
+            val prefs = buildPreferenceList(app, sourceId, source)
+            json.encodeToString(PreferenceListResult(prefs))
+        } catch (e: Throwable) {
+            json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
+        }
+    }
+
+    /**
+     * Apply preference values to the source's backing SharedPreferences.
+     *
+     * Only the `key` and `value` fields of each [PreferenceDto] are read by
+     * the bridge. This writes to the conventional `source_<id>` SharedPreferences
+     * (and the package-name fallback) so the source observes the values.
+     *
+     * @param prefsJson JSON: List<PreferenceDto> (only `key` and `value` are
+     *                  read; everything else is ignored)
+     */
+    @JvmStatic
+    fun applyPreferences(sourceId: Long, prefsJson: String): String {
+        return try {
+            val app = context
+                ?: return json.encodeToString(ErrorResult("Bridge context not initialized"))
+            val updates = json.decodeFromString<List<PreferenceDto>>(prefsJson)
+            val targets = listOfNotNull(
+                "source_$sourceId",
+                app.packageName,
+            ).toSet()
+
+            for (name in targets) {
+                val sp = app.getSharedPreferences(name, Context.MODE_PRIVATE)
+                val editor = sp.edit()
+                for (pref in updates) {
+                    when (val v = pref.value) {
+                        is PrefValue.Bool -> editor.putBoolean(pref.key, v.data)
+                        is PrefValue.Str -> editor.putString(pref.key, v.data)
+                        is PrefValue.Num -> editor.putFloat(pref.key, v.data)
+                        is PrefValue.StrList ->
+                            editor.putStringSet(pref.key, v.data.toMutableSet())
+                    }
+                }
+                editor.apply()
+            }
+            json.encodeToString(SuccessResult(true))
         } catch (e: Throwable) {
             json.encodeToString(ErrorResult(e.message ?: "Unknown error", e.stackTraceToString()))
         }
