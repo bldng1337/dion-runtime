@@ -16,9 +16,9 @@ mod test {
         permission::Permission,
         settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI},
         source::{
-            Entry, EntryDetailed, EntryDetailedResult, EntryId, EntryList, Episode, EpisodeId,
-            ImageListAudio, Link, MediaType, MixedContent, Paragraph, ReleaseStatus, Source,
-            SourceResult, SourceType, StreamSource, Subtitles,
+            Chapter, ChapterKind, Entry, EntryDetailed, EntryDetailedResult, EntryId, EntryList,
+            Episode, EpisodeId, ImageListAudio, Link, MediaType, MixedContent, Paragraph,
+            ReleaseStatus, Source, SourceResult, SourceType, StreamSource, Subtitles,
         },
     };
 
@@ -1316,6 +1316,41 @@ mod test {
         ]
     }
 
+    fn generate_all_chapters() -> Vec<Chapter> {
+        vec![
+            Chapter {
+                title: "Recap".to_string(),
+                start: 0.0,
+                end: Some(30.0),
+                kind: Some(ChapterKind::Recap),
+            },
+            Chapter {
+                title: "Opening".to_string(),
+                start: 30.0,
+                end: Some(120.0),
+                kind: Some(ChapterKind::Intro),
+            },
+            Chapter {
+                title: "Episode".to_string(),
+                start: 120.0,
+                end: None,
+                kind: None,
+            },
+            Chapter {
+                title: "Ending".to_string(),
+                start: 1380.0,
+                end: Some(1440.0),
+                kind: Some(ChapterKind::Outro),
+            },
+            Chapter {
+                title: "Preview".to_string(),
+                start: 1440.0,
+                end: Some(1470.0),
+                kind: Some(ChapterKind::Preview),
+            },
+        ]
+    }
+
     fn generate_all_image_list_audios() -> Vec<ImageListAudio> {
         let links = generate_all_links();
         vec![
@@ -1359,16 +1394,20 @@ mod test {
             Source::Video {
                 sources: vec![stream_sources[0].clone()],
                 sub: vec![],
+                chapters: None,
             },
             Source::Video {
                 sources: stream_sources.clone(),
                 sub: subtitles.clone(),
+                chapters: Some(generate_all_chapters()),
             },
             Source::Audio {
                 sources: vec![stream_sources[0].clone()],
+                chapters: None,
             },
             Source::Audio {
                 sources: stream_sources.clone(),
+                chapters: Some(generate_all_chapters()),
             },
             Source::Paragraphlist {
                 paragraphs: vec![

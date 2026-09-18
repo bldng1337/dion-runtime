@@ -1302,9 +1302,12 @@ mixin _$Source {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -1313,8 +1316,11 @@ mixin _$Source {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
@@ -1323,8 +1329,11 @@ mixin _$Source {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) =>
@@ -1454,9 +1463,12 @@ class _$Source_EpubImpl extends Source_Epub {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return epub(link);
@@ -1468,8 +1480,11 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return epub?.call(link);
@@ -1481,8 +1496,11 @@ class _$Source_EpubImpl extends Source_Epub {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -1621,9 +1639,12 @@ class _$Source_PdfImpl extends Source_Pdf {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return pdf(link);
@@ -1635,8 +1656,11 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return pdf?.call(link);
@@ -1648,8 +1672,11 @@ class _$Source_PdfImpl extends Source_Pdf {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -1817,9 +1844,12 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return imagelist(links, this.audio);
@@ -1831,8 +1861,11 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return imagelist?.call(links, this.audio);
@@ -1844,8 +1877,11 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
@@ -1921,7 +1957,10 @@ abstract class _$$Source_VideoImplCopyWith<$Res> {
           _$Source_VideoImpl value, $Res Function(_$Source_VideoImpl) then) =
       __$$Source_VideoImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<StreamSource> sources, List<Subtitles> sub});
+  $Res call(
+      {List<StreamSource> sources,
+      List<Subtitles> sub,
+      List<Chapter>? chapters});
 }
 
 /// @nodoc
@@ -1939,6 +1978,7 @@ class __$$Source_VideoImplCopyWithImpl<$Res>
   $Res call({
     Object? sources = null,
     Object? sub = null,
+    Object? chapters = freezed,
   }) {
     return _then(_$Source_VideoImpl(
       sources: null == sources
@@ -1949,6 +1989,10 @@ class __$$Source_VideoImplCopyWithImpl<$Res>
           ? _value._sub
           : sub // ignore: cast_nullable_to_non_nullable
               as List<Subtitles>,
+      chapters: freezed == chapters
+          ? _value._chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
+              as List<Chapter>?,
     ));
   }
 }
@@ -1958,9 +2002,11 @@ class __$$Source_VideoImplCopyWithImpl<$Res>
 class _$Source_VideoImpl extends Source_Video {
   const _$Source_VideoImpl(
       {required final List<StreamSource> sources,
-      required final List<Subtitles> sub})
+      required final List<Subtitles> sub,
+      final List<Chapter>? chapters})
       : _sources = sources,
         _sub = sub,
+        _chapters = chapters,
         super._();
 
   final List<StreamSource> _sources;
@@ -1979,9 +2025,19 @@ class _$Source_VideoImpl extends Source_Video {
     return EqualUnmodifiableListView(_sub);
   }
 
+  final List<Chapter>? _chapters;
+  @override
+  List<Chapter>? get chapters {
+    final value = _chapters;
+    if (value == null) return null;
+    if (_chapters is EqualUnmodifiableListView) return _chapters;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'Source.video(sources: $sources, sub: $sub)';
+    return 'Source.video(sources: $sources, sub: $sub, chapters: $chapters)';
   }
 
   @override
@@ -1990,14 +2046,16 @@ class _$Source_VideoImpl extends Source_Video {
         (other.runtimeType == runtimeType &&
             other is _$Source_VideoImpl &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
-            const DeepCollectionEquality().equals(other._sub, _sub));
+            const DeepCollectionEquality().equals(other._sub, _sub) &&
+            const DeepCollectionEquality().equals(other._chapters, _chapters));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_sources),
-      const DeepCollectionEquality().hash(_sub));
+      const DeepCollectionEquality().hash(_sub),
+      const DeepCollectionEquality().hash(_chapters));
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2014,12 +2072,15 @@ class _$Source_VideoImpl extends Source_Video {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
-    return video(sources, sub);
+    return video(sources, sub, chapters);
   }
 
   @override
@@ -2028,11 +2089,14 @@ class _$Source_VideoImpl extends Source_Video {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
-    return video?.call(sources, sub);
+    return video?.call(sources, sub, chapters);
   }
 
   @override
@@ -2041,13 +2105,16 @@ class _$Source_VideoImpl extends Source_Video {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
     if (video != null) {
-      return video(sources, sub);
+      return video(sources, sub, chapters);
     }
     return orElse();
   }
@@ -2099,11 +2166,13 @@ class _$Source_VideoImpl extends Source_Video {
 abstract class Source_Video extends Source {
   const factory Source_Video(
       {required final List<StreamSource> sources,
-      required final List<Subtitles> sub}) = _$Source_VideoImpl;
+      required final List<Subtitles> sub,
+      final List<Chapter>? chapters}) = _$Source_VideoImpl;
   const Source_Video._() : super._();
 
   List<StreamSource> get sources;
   List<Subtitles> get sub;
+  List<Chapter>? get chapters;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2118,7 +2187,7 @@ abstract class _$$Source_AudioImplCopyWith<$Res> {
           _$Source_AudioImpl value, $Res Function(_$Source_AudioImpl) then) =
       __$$Source_AudioImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<StreamSource> sources});
+  $Res call({List<StreamSource> sources, List<Chapter>? chapters});
 }
 
 /// @nodoc
@@ -2135,12 +2204,17 @@ class __$$Source_AudioImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sources = null,
+    Object? chapters = freezed,
   }) {
     return _then(_$Source_AudioImpl(
       sources: null == sources
           ? _value._sources
           : sources // ignore: cast_nullable_to_non_nullable
               as List<StreamSource>,
+      chapters: freezed == chapters
+          ? _value._chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
+              as List<Chapter>?,
     ));
   }
 }
@@ -2148,8 +2222,11 @@ class __$$Source_AudioImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$Source_AudioImpl extends Source_Audio {
-  const _$Source_AudioImpl({required final List<StreamSource> sources})
+  const _$Source_AudioImpl(
+      {required final List<StreamSource> sources,
+      final List<Chapter>? chapters})
       : _sources = sources,
+        _chapters = chapters,
         super._();
 
   final List<StreamSource> _sources;
@@ -2160,9 +2237,19 @@ class _$Source_AudioImpl extends Source_Audio {
     return EqualUnmodifiableListView(_sources);
   }
 
+  final List<Chapter>? _chapters;
+  @override
+  List<Chapter>? get chapters {
+    final value = _chapters;
+    if (value == null) return null;
+    if (_chapters is EqualUnmodifiableListView) return _chapters;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'Source.audio(sources: $sources)';
+    return 'Source.audio(sources: $sources, chapters: $chapters)';
   }
 
   @override
@@ -2170,12 +2257,15 @@ class _$Source_AudioImpl extends Source_Audio {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Source_AudioImpl &&
-            const DeepCollectionEquality().equals(other._sources, _sources));
+            const DeepCollectionEquality().equals(other._sources, _sources) &&
+            const DeepCollectionEquality().equals(other._chapters, _chapters));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_sources));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_sources),
+      const DeepCollectionEquality().hash(_chapters));
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2192,12 +2282,15 @@ class _$Source_AudioImpl extends Source_Audio {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
-    return audio(sources);
+    return audio(sources, chapters);
   }
 
   @override
@@ -2206,11 +2299,14 @@ class _$Source_AudioImpl extends Source_Audio {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
-    return audio?.call(sources);
+    return audio?.call(sources, chapters);
   }
 
   @override
@@ -2219,13 +2315,16 @@ class _$Source_AudioImpl extends Source_Audio {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {
     if (audio != null) {
-      return audio(sources);
+      return audio(sources, chapters);
     }
     return orElse();
   }
@@ -2275,11 +2374,13 @@ class _$Source_AudioImpl extends Source_Audio {
 }
 
 abstract class Source_Audio extends Source {
-  const factory Source_Audio({required final List<StreamSource> sources}) =
-      _$Source_AudioImpl;
+  const factory Source_Audio(
+      {required final List<StreamSource> sources,
+      final List<Chapter>? chapters}) = _$Source_AudioImpl;
   const Source_Audio._() : super._();
 
   List<StreamSource> get sources;
+  List<Chapter>? get chapters;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2371,9 +2472,12 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     required TResult Function(Link link) pdf,
     required TResult Function(List<Link> links, List<ImageListAudio>? audio)
         imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub)
+    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)
         video,
-    required TResult Function(List<StreamSource> sources) audio,
+    required TResult Function(
+            List<StreamSource> sources, List<Chapter>? chapters)
+        audio,
     required TResult Function(List<Paragraph> paragraphs) paragraphlist,
   }) {
     return paragraphlist(paragraphs);
@@ -2385,8 +2489,11 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult? Function(Link link)? epub,
     TResult? Function(Link link)? pdf,
     TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult? Function(List<StreamSource> sources)? audio,
+    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
   }) {
     return paragraphlist?.call(paragraphs);
@@ -2398,8 +2505,11 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     TResult Function(Link link)? epub,
     TResult Function(Link link)? pdf,
     TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub)? video,
-    TResult Function(List<StreamSource> sources)? audio,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
     TResult Function(List<Paragraph> paragraphs)? paragraphlist,
     required TResult orElse(),
   }) {

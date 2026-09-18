@@ -3088,6 +3088,13 @@ const _: fn() = || {
             let _: Option<String> = scope;
         }
     }
+    {
+        let Chapter = None::<dion_runtime::data::source::Chapter>.unwrap();
+        let _: String = Chapter.title;
+        let _: f64 = Chapter.start;
+        let _: Option<f64> = Chapter.end;
+        let _: Option<dion_runtime::data::source::ChapterKind> = Chapter.kind;
+    }
     match None::<dion_runtime::data::custom_ui::CustomUI>.unwrap() {
         dion_runtime::data::custom_ui::CustomUI::Text { text, style } => {
             let _: String = text;
@@ -3656,12 +3663,18 @@ const _: fn() = || {
             let _: Vec<dion_runtime::data::source::Link> = links;
             let _: Option<Vec<dion_runtime::data::source::ImageListAudio>> = audio;
         }
-        dion_runtime::data::source::Source::Video { sources, sub } => {
+        dion_runtime::data::source::Source::Video {
+            sources,
+            sub,
+            chapters,
+        } => {
             let _: Vec<dion_runtime::data::source::StreamSource> = sources;
             let _: Vec<dion_runtime::data::source::Subtitles> = sub;
+            let _: Option<Vec<dion_runtime::data::source::Chapter>> = chapters;
         }
-        dion_runtime::data::source::Source::Audio { sources } => {
+        dion_runtime::data::source::Source::Audio { sources, chapters } => {
             let _: Vec<dion_runtime::data::source::StreamSource> = sources;
+            let _: Option<Vec<dion_runtime::data::source::Chapter>> = chapters;
         }
         dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
             let _: Vec<dion_runtime::data::source::Paragraph> = paragraphs;
@@ -4007,6 +4020,19 @@ impl CstDecode<dion_runtime::data::custom_ui::ButtonType> for i32 {
             1 => dion_runtime::data::custom_ui::ButtonType::Ghost,
             2 => dion_runtime::data::custom_ui::ButtonType::Elevated,
             _ => unreachable!("Invalid variant for ButtonType: {}", self),
+        }
+    }
+}
+impl CstDecode<dion_runtime::data::source::ChapterKind> for i32 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> dion_runtime::data::source::ChapterKind {
+        match self {
+            0 => dion_runtime::data::source::ChapterKind::Intro,
+            1 => dion_runtime::data::source::ChapterKind::Outro,
+            2 => dion_runtime::data::source::ChapterKind::Recap,
+            3 => dion_runtime::data::source::ChapterKind::Filler,
+            4 => dion_runtime::data::source::ChapterKind::Preview,
+            _ => unreachable!("Invalid variant for ChapterKind: {}", self),
         }
     }
 }
@@ -4649,6 +4675,38 @@ impl SseDecode for dion_runtime::data::custom_ui::ButtonType {
             1 => dion_runtime::data::custom_ui::ButtonType::Ghost,
             2 => dion_runtime::data::custom_ui::ButtonType::Elevated,
             _ => unreachable!("Invalid variant for ButtonType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::Chapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_start = <f64>::sse_decode(deserializer);
+        let mut var_end = <Option<f64>>::sse_decode(deserializer);
+        let mut var_kind =
+            <Option<dion_runtime::data::source::ChapterKind>>::sse_decode(deserializer);
+        return dion_runtime::data::source::Chapter {
+            title: var_title,
+            start: var_start,
+            end: var_end,
+            kind: var_kind,
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::source::ChapterKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => dion_runtime::data::source::ChapterKind::Intro,
+            1 => dion_runtime::data::source::ChapterKind::Outro,
+            2 => dion_runtime::data::source::ChapterKind::Recap,
+            3 => dion_runtime::data::source::ChapterKind::Filler,
+            4 => dion_runtime::data::source::ChapterKind::Preview,
+            _ => unreachable!("Invalid variant for ChapterKind: {}", inner),
         };
     }
 }
@@ -5628,6 +5686,20 @@ impl SseDecode for Vec<dion_runtime::data::auth::Account> {
     }
 }
 
+impl SseDecode for Vec<dion_runtime::data::source::Chapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<dion_runtime::data::source::Chapter>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -6152,6 +6224,19 @@ impl SseDecode for Option<dion_runtime::data::custom_ui::ButtonType> {
     }
 }
 
+impl SseDecode for Option<dion_runtime::data::source::ChapterKind> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<dion_runtime::data::source::ChapterKind>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<dion_runtime::data::custom_ui::ColorToken> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -6235,6 +6320,17 @@ impl SseDecode for Option<f32> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<f32>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<f64>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -6383,6 +6479,19 @@ impl SseDecode for Option<Vec<String>> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<Vec<String>>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<dion_runtime::data::source::Chapter>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<dion_runtime::data::source::Chapter>>::sse_decode(
+                deserializer,
+            ));
         } else {
             return None;
         }
@@ -6775,16 +6884,22 @@ impl SseDecode for dion_runtime::data::source::Source {
                     <Vec<dion_runtime::data::source::StreamSource>>::sse_decode(deserializer);
                 let mut var_sub =
                     <Vec<dion_runtime::data::source::Subtitles>>::sse_decode(deserializer);
+                let mut var_chapters =
+                    <Option<Vec<dion_runtime::data::source::Chapter>>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Source::Video {
                     sources: var_sources,
                     sub: var_sub,
+                    chapters: var_chapters,
                 };
             }
             4 => {
                 let mut var_sources =
                     <Vec<dion_runtime::data::source::StreamSource>>::sse_decode(deserializer);
+                let mut var_chapters =
+                    <Option<Vec<dion_runtime::data::source::Chapter>>>::sse_decode(deserializer);
                 return dion_runtime::data::source::Source::Audio {
                     sources: var_sources,
+                    chapters: var_chapters,
                 };
             }
             5 => {
@@ -7330,6 +7445,53 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui:
     for dion_runtime::data::custom_ui::ButtonType
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::ButtonType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::Chapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.title.into_into_dart().into_dart(),
+            self.0.start.into_into_dart().into_dart(),
+            self.0.end.into_into_dart().into_dart(),
+            self.0.kind.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::Chapter>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::Chapter>>
+    for dion_runtime::data::source::Chapter
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::Chapter> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::ChapterKind> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            dion_runtime::data::source::ChapterKind::Intro => 0.into_dart(),
+            dion_runtime::data::source::ChapterKind::Outro => 1.into_dart(),
+            dion_runtime::data::source::ChapterKind::Recap => 2.into_dart(),
+            dion_runtime::data::source::ChapterKind::Filler => 3.into_dart(),
+            dion_runtime::data::source::ChapterKind::Preview => 4.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::source::ChapterKind>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::source::ChapterKind>>
+    for dion_runtime::data::source::ChapterKind
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::source::ChapterKind> {
         self.into()
     }
 }
@@ -8760,15 +8922,23 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::So
                 audio.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::source::Source::Video { sources, sub } => [
+            dion_runtime::data::source::Source::Video {
+                sources,
+                sub,
+                chapters,
+            } => [
                 3.into_dart(),
                 sources.into_into_dart().into_dart(),
                 sub.into_into_dart().into_dart(),
+                chapters.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::source::Source::Audio { sources } => {
-                [4.into_dart(), sources.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::source::Source::Audio { sources, chapters } => [
+                4.into_dart(),
+                sources.into_into_dart().into_dart(),
+                chapters.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 [5.into_dart(), paragraphs.into_into_dart().into_dart()].into_dart()
             }
@@ -9448,6 +9618,35 @@ impl SseEncode for dion_runtime::data::custom_ui::ButtonType {
                 dion_runtime::data::custom_ui::ButtonType::Filled => 0,
                 dion_runtime::data::custom_ui::ButtonType::Ghost => 1,
                 dion_runtime::data::custom_ui::ButtonType::Elevated => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::Chapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.title, serializer);
+        <f64>::sse_encode(self.start, serializer);
+        <Option<f64>>::sse_encode(self.end, serializer);
+        <Option<dion_runtime::data::source::ChapterKind>>::sse_encode(self.kind, serializer);
+    }
+}
+
+impl SseEncode for dion_runtime::data::source::ChapterKind {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                dion_runtime::data::source::ChapterKind::Intro => 0,
+                dion_runtime::data::source::ChapterKind::Outro => 1,
+                dion_runtime::data::source::ChapterKind::Recap => 2,
+                dion_runtime::data::source::ChapterKind::Filler => 3,
+                dion_runtime::data::source::ChapterKind::Preview => 4,
                 _ => {
                     unimplemented!("");
                 }
@@ -10253,6 +10452,16 @@ impl SseEncode for Vec<dion_runtime::data::auth::Account> {
     }
 }
 
+impl SseEncode for Vec<dion_runtime::data::source::Chapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <dion_runtime::data::source::Chapter>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<dion_runtime::data::custom_ui::CustomUI> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10672,6 +10881,16 @@ impl SseEncode for Option<dion_runtime::data::custom_ui::ButtonType> {
     }
 }
 
+impl SseEncode for Option<dion_runtime::data::source::ChapterKind> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <dion_runtime::data::source::ChapterKind>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<dion_runtime::data::custom_ui::ColorToken> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10738,6 +10957,16 @@ impl SseEncode for Option<f32> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <f32>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <f64>::sse_encode(value, serializer);
         }
     }
 }
@@ -10858,6 +11087,16 @@ impl SseEncode for Option<Vec<String>> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <Vec<String>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<dion_runtime::data::source::Chapter>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<dion_runtime::data::source::Chapter>>::sse_encode(value, serializer);
         }
     }
 }
@@ -11174,14 +11413,24 @@ impl SseEncode for dion_runtime::data::source::Source {
                     audio, serializer,
                 );
             }
-            dion_runtime::data::source::Source::Video { sources, sub } => {
+            dion_runtime::data::source::Source::Video {
+                sources,
+                sub,
+                chapters,
+            } => {
                 <i32>::sse_encode(3, serializer);
                 <Vec<dion_runtime::data::source::StreamSource>>::sse_encode(sources, serializer);
                 <Vec<dion_runtime::data::source::Subtitles>>::sse_encode(sub, serializer);
+                <Option<Vec<dion_runtime::data::source::Chapter>>>::sse_encode(
+                    chapters, serializer,
+                );
             }
-            dion_runtime::data::source::Source::Audio { sources } => {
+            dion_runtime::data::source::Source::Audio { sources, chapters } => {
                 <i32>::sse_encode(4, serializer);
                 <Vec<dion_runtime::data::source::StreamSource>>::sse_encode(sources, serializer);
+                <Option<Vec<dion_runtime::data::source::Chapter>>>::sse_encode(
+                    chapters, serializer,
+                );
             }
             dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
                 <i32>::sse_encode(5, serializer);
@@ -11784,6 +12033,13 @@ mod io {
             CstDecode::<dion_runtime::data::custom_ui::ButtonType>::cst_decode(*wrap).into()
         }
     }
+    impl CstDecode<dion_runtime::data::source::ChapterKind> for *mut i32 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::ChapterKind {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<dion_runtime::data::source::ChapterKind>::cst_decode(*wrap).into()
+        }
+    }
     impl CstDecode<dion_runtime::data::custom_ui::ColorToken> for *mut i32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> dion_runtime::data::custom_ui::ColorToken {
@@ -11836,6 +12092,12 @@ mod io {
     impl CstDecode<f32> for *mut f32 {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> f32 {
+            unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
+        }
+    }
+    impl CstDecode<f64> for *mut f64 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> f64 {
             unsafe { *flutter_rust_bridge::for_generated::box_from_leak_ptr(self) }
         }
     }
@@ -11926,6 +12188,17 @@ mod io {
         fn cst_decode(self) -> Box<dion_runtime::data::action::Interaction> {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<dion_runtime::data::action::Interaction>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<dion_runtime::data::source::Chapter> for wire_cst_chapter {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::source::Chapter {
+            dion_runtime::data::source::Chapter {
+                title: self.title.cst_decode(),
+                start: self.start.cst_decode(),
+                end: self.end.cst_decode(),
+                kind: self.kind.cst_decode(),
+            }
         }
     }
     impl CstDecode<dion_runtime::data::custom_ui::CustomUI> for wire_cst_custom_ui {
@@ -12487,6 +12760,16 @@ mod io {
     impl CstDecode<Vec<String>> for *mut wire_cst_list_String {
         // Codec=Cst (C-struct based), see doc to use other codecs
         fn cst_decode(self) -> Vec<String> {
+            let vec = unsafe {
+                let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
+                flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
+            };
+            vec.into_iter().map(CstDecode::cst_decode).collect()
+        }
+    }
+    impl CstDecode<Vec<dion_runtime::data::source::Chapter>> for *mut wire_cst_list_chapter {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> Vec<dion_runtime::data::source::Chapter> {
             let vec = unsafe {
                 let wrap = flutter_rust_bridge::for_generated::box_from_leak_ptr(self);
                 flutter_rust_bridge::for_generated::vec_from_leak_ptr(wrap.ptr, wrap.len)
@@ -13066,12 +13349,14 @@ mod io {
                     dion_runtime::data::source::Source::Video {
                         sources: ans.sources.cst_decode(),
                         sub: ans.sub.cst_decode(),
+                        chapters: ans.chapters.cst_decode(),
                     }
                 }
                 4 => {
                     let ans = unsafe { self.kind.Audio };
                     dion_runtime::data::source::Source::Audio {
                         sources: ans.sources.cst_decode(),
+                        chapters: ans.chapters.cst_decode(),
                     }
                 }
                 5 => {
@@ -13204,6 +13489,21 @@ mod io {
         }
     }
     impl Default for wire_cst_auth_data {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
+    impl NewWithNullPtr for wire_cst_chapter {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                title: core::ptr::null_mut(),
+                start: Default::default(),
+                end: core::ptr::null_mut(),
+                kind: core::ptr::null_mut(),
+            }
+        }
+    }
+    impl Default for wire_cst_chapter {
         fn default() -> Self {
             Self::new_with_null_ptr()
         }
@@ -14664,6 +14964,13 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_chapter_kind(
+        value: i32,
+    ) -> *mut i32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_color_token(value: i32) -> *mut i32 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
@@ -14711,6 +15018,11 @@ mod io {
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_f_32(value: f32) -> *mut f32 {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_f_64(value: f64) -> *mut f64 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
@@ -14812,6 +15124,20 @@ mod io {
         let wrap = wire_cst_list_String {
             ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
                 <*mut wire_cst_list_prim_u_8_strict>::new_with_null_ptr(),
+                len,
+            ),
+            len,
+        };
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(wrap)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_list_chapter(
+        len: i32,
+    ) -> *mut wire_cst_list_chapter {
+        let wrap = wire_cst_list_chapter {
+            ptr: flutter_rust_bridge::for_generated::new_leak_vec_ptr(
+                <wire_cst_chapter>::new_with_null_ptr(),
                 len,
             ),
             len,
@@ -15283,6 +15609,14 @@ mod io {
         client_id: *mut wire_cst_list_prim_u_8_strict,
         client_secret: *mut wire_cst_list_prim_u_8_strict,
         scope: *mut wire_cst_list_prim_u_8_strict,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_chapter {
+        title: *mut wire_cst_list_prim_u_8_strict,
+        start: f64,
+        end: *mut f64,
+        kind: *mut i32,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
@@ -15814,6 +16148,12 @@ mod io {
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
+    pub struct wire_cst_list_chapter {
+        ptr: *mut wire_cst_chapter,
+        len: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
     pub struct wire_cst_list_custom_ui {
         ptr: *mut wire_cst_custom_ui,
         len: i32,
@@ -16267,11 +16607,13 @@ mod io {
     pub struct wire_cst_Source_Video {
         sources: *mut wire_cst_list_stream_source,
         sub: *mut wire_cst_list_subtitles,
+        chapters: *mut wire_cst_list_chapter,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_Source_Audio {
         sources: *mut wire_cst_list_stream_source,
+        chapters: *mut wire_cst_list_chapter,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

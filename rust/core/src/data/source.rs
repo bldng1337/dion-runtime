@@ -180,9 +180,13 @@ pub enum Source {
     Video {
         sources: Vec<StreamSource>,
         sub: Vec<Subtitles>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        chapters: Option<Vec<Chapter>>,
     },
     Audio {
         sources: Vec<StreamSource>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        chapters: Option<Vec<Chapter>>,
     },
     Paragraphlist {
         paragraphs: Vec<Paragraph>,
@@ -267,6 +271,36 @@ pub struct StreamSource {
     pub name: String,
     pub lang: String,
     pub url: Link,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct Chapter {
+    pub title: String,
+    /// Start time in seconds from the beginning of the media.
+    pub start: f64,
+    /// End time in seconds. When absent the client derives it from the next
+    /// chapter's start (or the media duration for the last chapter).
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub end: Option<f64>,
+    /// Semantic category used for auto-skip configuration. Sources may leave
+    /// this unset; the client then tries to infer it from the title.
+    #[cfg_attr(feature = "type", specta(optional))]
+    pub kind: Option<ChapterKind>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub enum ChapterKind {
+    Intro,
+    Outro,
+    Recap,
+    Filler,
+    Preview,
 }
 
 /// flutter_rust_bridge:non_opaque

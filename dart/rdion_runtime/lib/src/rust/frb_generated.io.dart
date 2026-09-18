@@ -234,6 +234,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ButtonType dco_decode_box_autoadd_button_type(dynamic raw);
 
   @protected
+  ChapterKind dco_decode_box_autoadd_chapter_kind(dynamic raw);
+
+  @protected
   ColorToken dco_decode_box_autoadd_color_token(dynamic raw);
 
   @protected
@@ -274,6 +277,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double dco_decode_box_autoadd_f_32(dynamic raw);
+
+  @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_i_32(dynamic raw);
@@ -325,6 +331,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ButtonType dco_decode_button_type(dynamic raw);
+
+  @protected
+  Chapter dco_decode_chapter(dynamic raw);
+
+  @protected
+  ChapterKind dco_decode_chapter_kind(dynamic raw);
 
   @protected
   ColorToken dco_decode_color_token(dynamic raw);
@@ -423,6 +435,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Account> dco_decode_list_account(dynamic raw);
+
+  @protected
+  List<Chapter> dco_decode_list_chapter(dynamic raw);
 
   @protected
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw);
@@ -543,6 +558,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ButtonType? dco_decode_opt_box_autoadd_button_type(dynamic raw);
 
   @protected
+  ChapterKind? dco_decode_opt_box_autoadd_chapter_kind(dynamic raw);
+
+  @protected
   ColorToken? dco_decode_opt_box_autoadd_color_token(dynamic raw);
 
   @protected
@@ -563,6 +581,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double? dco_decode_opt_box_autoadd_f_32(dynamic raw);
+
+  @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
@@ -600,6 +621,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String>? dco_decode_opt_list_String(dynamic raw);
+
+  @protected
+  List<Chapter>? dco_decode_opt_list_chapter(dynamic raw);
 
   @protected
   List<ImageListAudio>? dco_decode_opt_list_image_list_audio(dynamic raw);
@@ -862,6 +886,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ButtonType sse_decode_box_autoadd_button_type(SseDeserializer deserializer);
 
   @protected
+  ChapterKind sse_decode_box_autoadd_chapter_kind(SseDeserializer deserializer);
+
+  @protected
   ColorToken sse_decode_box_autoadd_color_token(SseDeserializer deserializer);
 
   @protected
@@ -907,6 +934,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer);
+
+  @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
@@ -962,6 +992,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ButtonType sse_decode_button_type(SseDeserializer deserializer);
+
+  @protected
+  Chapter sse_decode_chapter(SseDeserializer deserializer);
+
+  @protected
+  ChapterKind sse_decode_chapter_kind(SseDeserializer deserializer);
 
   @protected
   ColorToken sse_decode_color_token(SseDeserializer deserializer);
@@ -1063,6 +1099,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Account> sse_decode_list_account(SseDeserializer deserializer);
+
+  @protected
+  List<Chapter> sse_decode_list_chapter(SseDeserializer deserializer);
 
   @protected
   List<CustomUI> sse_decode_list_custom_ui(SseDeserializer deserializer);
@@ -1198,6 +1237,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ChapterKind? sse_decode_opt_box_autoadd_chapter_kind(
+      SseDeserializer deserializer);
+
+  @protected
   ColorToken? sse_decode_opt_box_autoadd_color_token(
       SseDeserializer deserializer);
 
@@ -1222,6 +1265,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double? sse_decode_opt_box_autoadd_f_32(SseDeserializer deserializer);
+
+  @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
@@ -1263,6 +1309,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<Chapter>? sse_decode_opt_list_chapter(SseDeserializer deserializer);
 
   @protected
   List<ImageListAudio>? sse_decode_opt_list_image_list_audio(
@@ -1505,6 +1554,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_chapter_kind(ChapterKind raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_chapter_kind(cst_encode_chapter_kind(raw));
+  }
+
+  @protected
   ffi.Pointer<ffi.Int32> cst_encode_box_autoadd_color_token(ColorToken raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_color_token(cst_encode_color_token(raw));
@@ -1565,6 +1620,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ffi.Pointer<ffi.Float> cst_encode_box_autoadd_f_32(double raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return wire.cst_new_box_autoadd_f_32(cst_encode_f_32(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Double> cst_encode_box_autoadd_f_64(double raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_f_64(cst_encode_f_64(raw));
   }
 
   @protected
@@ -1693,6 +1754,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ans = wire.cst_new_list_String(raw.length);
     for (var i = 0; i < raw.length; ++i) {
       ans.ref.ptr[i] = cst_encode_String(raw[i]);
+    }
+    return ans;
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_chapter> cst_encode_list_chapter(
+      List<Chapter> raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    final ans = wire.cst_new_list_chapter(raw.length);
+    for (var i = 0; i < raw.length; ++i) {
+      cst_api_fill_to_wire_chapter(raw[i], ans.ref.ptr[i]);
     }
     return ans;
   }
@@ -2031,6 +2103,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_chapter_kind(
+      ChapterKind? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_chapter_kind(raw);
+  }
+
+  @protected
   ffi.Pointer<ffi.Int32> cst_encode_opt_box_autoadd_color_token(
       ColorToken? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
@@ -2073,6 +2152,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ffi.Pointer<ffi.Float> cst_encode_opt_box_autoadd_f_32(double? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_box_autoadd_f_32(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Double> cst_encode_opt_box_autoadd_f_64(double? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_f_64(raw);
   }
 
   @protected
@@ -2158,6 +2243,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<String>? raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return raw == null ? ffi.nullptr : cst_encode_list_String(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_cst_list_chapter> cst_encode_opt_list_chapter(
+      List<Chapter>? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_list_chapter(raw);
   }
 
   @protected
@@ -2387,6 +2479,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void cst_api_fill_to_wire_box_interaction(
       Interaction apiObj, ffi.Pointer<wire_cst_interaction> wireObj) {
     cst_api_fill_to_wire_interaction(apiObj, wireObj.ref);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_chapter(Chapter apiObj, wire_cst_chapter wireObj) {
+    wireObj.title = cst_encode_String(apiObj.title);
+    wireObj.start = cst_encode_f_64(apiObj.start);
+    wireObj.end = cst_encode_opt_box_autoadd_f_64(apiObj.end);
+    wireObj.kind = cst_encode_opt_box_autoadd_chapter_kind(apiObj.kind);
   }
 
   @protected
@@ -3257,15 +3357,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     if (apiObj is Source_Video) {
       var pre_sources = cst_encode_list_stream_source(apiObj.sources);
       var pre_sub = cst_encode_list_subtitles(apiObj.sub);
+      var pre_chapters = cst_encode_opt_list_chapter(apiObj.chapters);
       wireObj.tag = 3;
       wireObj.kind.Video.sources = pre_sources;
       wireObj.kind.Video.sub = pre_sub;
+      wireObj.kind.Video.chapters = pre_chapters;
       return;
     }
     if (apiObj is Source_Audio) {
       var pre_sources = cst_encode_list_stream_source(apiObj.sources);
+      var pre_chapters = cst_encode_opt_list_chapter(apiObj.chapters);
       wireObj.tag = 4;
       wireObj.kind.Audio.sources = pre_sources;
+      wireObj.kind.Audio.chapters = pre_chapters;
       return;
     }
     if (apiObj is Source_Paragraphlist) {
@@ -3395,6 +3499,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int cst_encode_button_type(ButtonType raw);
+
+  @protected
+  int cst_encode_chapter_kind(ChapterKind raw);
 
   @protected
   int cst_encode_color_token(ColorToken raw);
@@ -3655,6 +3762,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ButtonType self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_chapter_kind(
+      ChapterKind self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_color_token(
       ColorToken self, SseSerializer serializer);
 
@@ -3706,6 +3817,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
@@ -3766,6 +3880,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_button_type(ButtonType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_chapter(Chapter self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_chapter_kind(ChapterKind self, SseSerializer serializer);
 
   @protected
   void sse_encode_color_token(ColorToken self, SseSerializer serializer);
@@ -3869,6 +3989,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_account(List<Account> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_chapter(List<Chapter> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_custom_ui(List<CustomUI> self, SseSerializer serializer);
@@ -4014,6 +4137,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ButtonType? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_chapter_kind(
+      ChapterKind? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_color_token(
       ColorToken? self, SseSerializer serializer);
 
@@ -4039,6 +4166,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_f_32(double? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
@@ -4082,6 +4212,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_chapter(
+      List<Chapter>? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_list_image_list_audio(
@@ -5909,6 +6043,18 @@ class RustLibWire implements BaseWire {
       _cst_new_box_autoadd_button_typePtr
           .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
 
+  ffi.Pointer<ffi.Int32> cst_new_box_autoadd_chapter_kind(int value) {
+    return _cst_new_box_autoadd_chapter_kind(value);
+  }
+
+  late final _cst_new_box_autoadd_chapter_kindPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int32> Function(ffi.Int32)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_chapter_kind',
+  );
+  late final _cst_new_box_autoadd_chapter_kind =
+      _cst_new_box_autoadd_chapter_kindPtr
+          .asFunction<ffi.Pointer<ffi.Int32> Function(int)>();
+
   ffi.Pointer<ffi.Int32> cst_new_box_autoadd_color_token(int value) {
     return _cst_new_box_autoadd_color_token(value);
   }
@@ -6000,6 +6146,17 @@ class RustLibWire implements BaseWire {
   );
   late final _cst_new_box_autoadd_f_32 = _cst_new_box_autoadd_f_32Ptr
       .asFunction<ffi.Pointer<ffi.Float> Function(double)>();
+
+  ffi.Pointer<ffi.Double> cst_new_box_autoadd_f_64(double value) {
+    return _cst_new_box_autoadd_f_64(value);
+  }
+
+  late final _cst_new_box_autoadd_f_64Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Double> Function(ffi.Double)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_f_64',
+  );
+  late final _cst_new_box_autoadd_f_64 = _cst_new_box_autoadd_f_64Ptr
+      .asFunction<ffi.Pointer<ffi.Double> Function(double)>();
 
   ffi.Pointer<ffi.Int32> cst_new_box_autoadd_i_32(int value) {
     return _cst_new_box_autoadd_i_32(value);
@@ -6183,6 +6340,17 @@ class RustLibWire implements BaseWire {
               ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_String');
   late final _cst_new_list_String = _cst_new_list_StringPtr
       .asFunction<ffi.Pointer<wire_cst_list_String> Function(int)>();
+
+  ffi.Pointer<wire_cst_list_chapter> cst_new_list_chapter(int len) {
+    return _cst_new_list_chapter(len);
+  }
+
+  late final _cst_new_list_chapterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<wire_cst_list_chapter> Function(
+              ffi.Int32)>>('frbgen_rdion_runtime_cst_new_list_chapter');
+  late final _cst_new_list_chapter = _cst_new_list_chapterPtr
+      .asFunction<ffi.Pointer<wire_cst_list_chapter> Function(int)>();
 
   ffi.Pointer<wire_cst_list_custom_ui> cst_new_list_custom_ui(int len) {
     return _cst_new_list_custom_ui(len);
@@ -7338,6 +7506,24 @@ final class wire_cst_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generated
   external int len;
 }
 
+final class wire_cst_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_list_prim_u_8_strict> title;
+
+  @ffi.Double()
+  external double start;
+
+  external ffi.Pointer<ffi.Double> end;
+
+  external ffi.Pointer<ffi.Int32> kind;
+}
+
+final class wire_cst_list_chapter extends ffi.Struct {
+  external ffi.Pointer<wire_cst_chapter> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
+
 final class wire_cst_list_entry extends ffi.Struct {
   external ffi.Pointer<wire_cst_entry> ptr;
 
@@ -7860,10 +8046,14 @@ final class wire_cst_Source_Video extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_stream_source> sources;
 
   external ffi.Pointer<wire_cst_list_subtitles> sub;
+
+  external ffi.Pointer<wire_cst_list_chapter> chapters;
 }
 
 final class wire_cst_Source_Audio extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_stream_source> sources;
+
+  external ffi.Pointer<wire_cst_list_chapter> chapters;
 }
 
 final class wire_cst_Source_Paragraphlist extends ffi.Struct {

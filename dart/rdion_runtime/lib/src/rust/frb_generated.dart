@@ -3029,6 +3029,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ChapterKind dco_decode_box_autoadd_chapter_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_chapter_kind(raw);
+  }
+
+  @protected
   ColorToken dco_decode_box_autoadd_color_token(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_color_token(raw);
@@ -3108,6 +3114,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   double dco_decode_box_autoadd_f_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as double;
+  }
+
+  @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
   }
@@ -3212,6 +3224,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ButtonType dco_decode_button_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ButtonType.values[raw as int];
+  }
+
+  @protected
+  Chapter dco_decode_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return Chapter(
+      title: dco_decode_String(arr[0]),
+      start: dco_decode_f_64(arr[1]),
+      end: dco_decode_opt_box_autoadd_f_64(arr[2]),
+      kind: dco_decode_opt_box_autoadd_chapter_kind(arr[3]),
+    );
+  }
+
+  @protected
+  ChapterKind dco_decode_chapter_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ChapterKind.values[raw as int];
   }
 
   @protected
@@ -3807,6 +3839,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Chapter> dco_decode_list_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_chapter).toList();
+  }
+
+  @protected
   List<CustomUI> dco_decode_list_custom_ui(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_custom_ui).toList();
@@ -4064,6 +4102,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ChapterKind? dco_decode_opt_box_autoadd_chapter_kind(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_chapter_kind(raw);
+  }
+
+  @protected
   ColorToken? dco_decode_opt_box_autoadd_color_token(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_color_token(raw);
@@ -4106,6 +4150,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double? dco_decode_opt_box_autoadd_f_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_f_32(raw);
+  }
+
+  @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_f_64(raw);
   }
 
   @protected
@@ -4179,6 +4229,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<String>? dco_decode_opt_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_list_String(raw);
+  }
+
+  @protected
+  List<Chapter>? dco_decode_opt_list_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_chapter(raw);
   }
 
   @protected
@@ -4477,10 +4533,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Source_Video(
           sources: dco_decode_list_stream_source(raw[1]),
           sub: dco_decode_list_subtitles(raw[2]),
+          chapters: dco_decode_opt_list_chapter(raw[3]),
         );
       case 4:
         return Source_Audio(
           sources: dco_decode_list_stream_source(raw[1]),
+          chapters: dco_decode_opt_list_chapter(raw[2]),
         );
       case 5:
         return Source_Paragraphlist(
@@ -5025,6 +5083,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ChapterKind sse_decode_box_autoadd_chapter_kind(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_chapter_kind(deserializer));
+  }
+
+  @protected
   ColorToken sse_decode_box_autoadd_color_token(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_color_token(deserializer));
@@ -5112,6 +5177,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double sse_decode_box_autoadd_f_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_f_32(deserializer));
+  }
+
+  @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_f_64(deserializer));
   }
 
   @protected
@@ -5219,6 +5290,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return ButtonType.values[inner];
+  }
+
+  @protected
+  Chapter sse_decode_chapter(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_title = sse_decode_String(deserializer);
+    var var_start = sse_decode_f_64(deserializer);
+    var var_end = sse_decode_opt_box_autoadd_f_64(deserializer);
+    var var_kind = sse_decode_opt_box_autoadd_chapter_kind(deserializer);
+    return Chapter(
+        title: var_title, start: var_start, end: var_end, kind: var_kind);
+  }
+
+  @protected
+  ChapterKind sse_decode_chapter_kind(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ChapterKind.values[inner];
   }
 
   @protected
@@ -5884,6 +5973,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Chapter> sse_decode_list_chapter(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Chapter>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_chapter(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<CustomUI> sse_decode_list_custom_ui(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -6343,6 +6444,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ChapterKind? sse_decode_opt_box_autoadd_chapter_kind(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_chapter_kind(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   ColorToken? sse_decode_opt_box_autoadd_color_token(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6419,6 +6532,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_f_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_f_64(deserializer));
     } else {
       return null;
     }
@@ -6556,6 +6680,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_list_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<Chapter>? sse_decode_opt_list_chapter(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_chapter(deserializer));
     } else {
       return null;
     }
@@ -6847,10 +6982,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 3:
         var var_sources = sse_decode_list_stream_source(deserializer);
         var var_sub = sse_decode_list_subtitles(deserializer);
-        return Source_Video(sources: var_sources, sub: var_sub);
+        var var_chapters = sse_decode_opt_list_chapter(deserializer);
+        return Source_Video(
+            sources: var_sources, sub: var_sub, chapters: var_chapters);
       case 4:
         var var_sources = sse_decode_list_stream_source(deserializer);
-        return Source_Audio(sources: var_sources);
+        var var_chapters = sse_decode_opt_list_chapter(deserializer);
+        return Source_Audio(sources: var_sources, chapters: var_chapters);
       case 5:
         var var_paragraphs = sse_decode_list_paragraph(deserializer);
         return Source_Paragraphlist(paragraphs: var_paragraphs);
@@ -7109,6 +7247,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   int cst_encode_button_type(ButtonType raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_32(raw.index);
+  }
+
+  @protected
+  int cst_encode_chapter_kind(ChapterKind raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     return cst_encode_i_32(raw.index);
   }
@@ -7703,6 +7847,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_chapter_kind(
+      ChapterKind self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_chapter_kind(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_color_token(
       ColorToken self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7795,6 +7946,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self, serializer);
   }
 
   @protected
@@ -7904,6 +8061,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void sse_encode_button_type(ButtonType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_chapter(Chapter self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.title, serializer);
+    sse_encode_f_64(self.start, serializer);
+    sse_encode_opt_box_autoadd_f_64(self.end, serializer);
+    sse_encode_opt_box_autoadd_chapter_kind(self.kind, serializer);
+  }
+
+  @protected
+  void sse_encode_chapter_kind(ChapterKind self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
   }
@@ -8486,6 +8658,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_chapter(List<Chapter> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_chapter(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_custom_ui(
       List<CustomUI> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8864,6 +9045,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_chapter_kind(
+      ChapterKind? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_chapter_kind(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_color_token(
       ColorToken? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8936,6 +9128,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_f_32(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_f_64(self, serializer);
     }
   }
 
@@ -9064,6 +9266,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_list_String(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_chapter(
+      List<Chapter>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_chapter(self, serializer);
     }
   }
 
@@ -9296,13 +9509,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(2, serializer);
         sse_encode_list_link(links, serializer);
         sse_encode_opt_list_image_list_audio(audio, serializer);
-      case Source_Video(sources: final sources, sub: final sub):
+      case Source_Video(
+          sources: final sources,
+          sub: final sub,
+          chapters: final chapters
+        ):
         sse_encode_i_32(3, serializer);
         sse_encode_list_stream_source(sources, serializer);
         sse_encode_list_subtitles(sub, serializer);
-      case Source_Audio(sources: final sources):
+        sse_encode_opt_list_chapter(chapters, serializer);
+      case Source_Audio(sources: final sources, chapters: final chapters):
         sse_encode_i_32(4, serializer);
         sse_encode_list_stream_source(sources, serializer);
+        sse_encode_opt_list_chapter(chapters, serializer);
       case Source_Paragraphlist(paragraphs: final paragraphs):
         sse_encode_i_32(5, serializer);
         sse_encode_list_paragraph(paragraphs, serializer);

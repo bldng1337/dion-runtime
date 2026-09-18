@@ -13,7 +13,56 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'source.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`, `hash`
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class Chapter {
+  final String title;
+
+  /// Start time in seconds from the beginning of the media.
+  final double start;
+
+  /// End time in seconds. When absent the client derives it from the next
+  /// chapter's start (or the media duration for the last chapter).
+  final double? end;
+
+  /// Semantic category used for auto-skip configuration. Sources may leave
+  /// this unset; the client then tries to infer it from the title.
+  final ChapterKind? kind;
+
+  const Chapter({
+    required this.title,
+    required this.start,
+    this.end,
+    this.kind,
+  });
+
+  @override
+  int get hashCode =>
+      title.hashCode ^ start.hashCode ^ end.hashCode ^ kind.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Chapter &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          start == other.start &&
+          end == other.end &&
+          kind == other.kind;
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+enum ChapterKind {
+  intro,
+  outro,
+  recap,
+  filler,
+  preview,
+  ;
+}
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -444,9 +493,11 @@ sealed class Source with _$Source {
   const factory Source.video({
     required List<StreamSource> sources,
     required List<Subtitles> sub,
+    List<Chapter>? chapters,
   }) = Source_Video;
   const factory Source.audio({
     required List<StreamSource> sources,
+    List<Chapter>? chapters,
   }) = Source_Audio;
   const factory Source.paragraphlist({
     required List<Paragraph> paragraphs,

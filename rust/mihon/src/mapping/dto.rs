@@ -661,6 +661,7 @@ pub fn videos_to_source(videos: Vec<VideoDto>) -> Source {
     Source::Video {
         sources: videos.into_iter().map(|v| v.into_stream_source()).collect(),
         sub: subs,
+        chapters: None,
     }
 }
 
@@ -887,7 +888,7 @@ mod tests {
         let source = videos_to_source(videos);
 
         match source {
-            Source::Video { sources, sub } => {
+            Source::Video { sources, sub, .. } => {
                 assert_eq!(sources.len(), 2);
                 assert_eq!(sub.len(), 2);
                 assert_eq!(sub[0].title, "English");
