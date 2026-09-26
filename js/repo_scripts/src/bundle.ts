@@ -25,6 +25,7 @@ async function build(): Promise<string> {
 			"store",
 			"cache",
 			"filesystem",
+			"metadata",
 		],
 		format: "esm",
 	});

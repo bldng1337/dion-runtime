@@ -5,7 +5,7 @@ use anyhow::Result;
 use boa_engine::boa_class;
 use boa_engine::{
     Context, JsData, JsError, JsNativeError, JsResult, JsString, JsValue, boa_module,
-    object::builtins::JsMap,
+    object::builtins::{JsMap, JsUint8Array},
 };
 use boa_gc::{Finalize, Trace};
 use http::{HeaderMap, StatusCode};
@@ -28,7 +28,7 @@ mod network {
         class::Class,
         job::NativeAsyncJob,
         js_object, js_string,
-        object::builtins::{JsArray, JsPromise},
+        object::builtins::{JsArray, JsPromise, JsUint8Array},
         value::Type,
     };
     use cookie::Expiration;
@@ -39,6 +39,22 @@ mod network {
     fn fetch(resource: String, options: JsValue, context: &mut Context) -> JsResult<JsValue> {
         let network: Option<&ExtensionRuntimeDataContainer> = context.get_data();
         let network = network.cloned();
+
+        // A binary request body cannot ride the JSON conversion below; lift it
+        // out beforehand and blank the field so the JSON path only ever sees
+        // string bodies.
+        let mut body_bytes: Option<Vec<u8>> = None;
+        if options.get_type() == Type::Object
+            && let Some(object) = options.as_object()
+        {
+            let body = object.get(js_string!("body"), context)?;
+            if let Some(array_object) = body.as_object()
+                && let Ok(array) = JsUint8Array::from_object(array_object.clone())
+            {
+                body_bytes = Some(array.to_vec(context)?);
+                object.set(js_string!("body"), JsValue::undefined(), false, context)?;
+            }
+        }
 
         let options = match options.get_type() {
             Type::Object => options.to_json(context),
@@ -109,15 +125,22 @@ mod network {
                         };
                         let mut rbuild =
                             networkcontainer.network.nclient.request(method, url.clone());
-                        if let Some(options) = &options && options.contains_key("body") {
+                        if let Some(options) = &options
+                            && options.contains_key("body")
+                            && body_bytes.is_none()
+                        {
                             rbuild = rbuild.body(
                                 options["body"]
                                     .as_str()
                                     .ok_or(JsError::from_native(
-                                        JsNativeError::error().with_message("Expected body to be a String"),
+                                        JsNativeError::error().with_message(
+                                            "Expected body to be a String or Uint8Array",
+                                        ),
                                     ))?
                                     .to_string(),
                             );
+                        } else if let Some(bytes) = body_bytes.take() {
+                            rbuild = rbuild.body(bytes);
                         }
                         if let Some(options) = &options &&options.contains_key("headers") {
                             let cheaders = options["headers"].as_object().ok_or(JsError::from_native(
@@ -138,7 +161,7 @@ mod network {
                         let res = Response {
                             status: response.status(),
                             header: response.headers().clone(),
-                            content: response.text().await.map_err(JsError::from_rust)?,
+                            content: response.bytes().await.map_err(JsError::from_rust)?.to_vec(),
                         };
                         // The request above may have updated the cookie jar;
                         // persist it (debounced) so logins survive restarts.
@@ -323,11 +346,31 @@ mod network {
 #[derive(Debug, Trace, Finalize, JsData)]
 struct Response {
     #[unsafe_ignore_trace]
-    content: String,
+    content: Vec<u8>,
     #[unsafe_ignore_trace]
     status: StatusCode,
     #[unsafe_ignore_trace]
     header: HeaderMap,
+}
+
+/// Decodes bytes the way reqwest's `text()` does: charset from the
+/// Content-Type header with BOM sniffing, defaulting to UTF-8 with
+/// replacement. Unlike reqwest it does not sniff `<meta charset>` inside
+/// HTML bodies.
+fn decode_text(header: &HeaderMap, content: &[u8]) -> String {
+    let charset = header
+        .get(http::header::CONTENT_TYPE)
+        .and_then(|value| value.to_str().ok())
+        .and_then(|content_type| {
+            content_type
+                .split(';')
+                .map(str::trim)
+                .find_map(|param| param.strip_prefix("charset="))
+        })
+        .and_then(|charset| encoding_rs::Encoding::for_label(charset.as_bytes()));
+    let encoding = charset.unwrap_or(encoding_rs::UTF_8);
+    let (text, _, _) = encoding.decode(content);
+    text.into_owned()
 }
 
 #[boa_class]
@@ -341,7 +384,15 @@ impl Response {
 
     #[boa(getter)]
     fn body(#[boa(error = "`this` was not an Response")] &self) -> String {
-        self.content.clone()
+        decode_text(&self.header, &self.content)
+    }
+
+    #[boa(getter)]
+    fn bytes(
+        #[boa(error = "`this` was not an Response")] &self,
+        context: &mut Context,
+    ) -> JsResult<JsUint8Array> {
+        JsUint8Array::from_iter(self.content.clone(), context)
     }
 
     #[boa(getter)]
@@ -367,10 +418,9 @@ impl Response {
         #[boa(error = "`this` was not an Response")] &self,
         context: &mut Context,
     ) -> JsResult<JsValue> {
-        let ret = &self.content;
-        let ret = serde_json::from_str(ret).map_err(|err| {
+        let ret = serde_json::from_slice(&self.content).map_err(|err| {
             JsError::from_native(JsNativeError::error().with_message(err.to_string()))
-        })?; //TODO: do a cleaner convert
+        })?;
         let ret = JsValue::from_json(&ret, context)?;
         Ok(ret)
     }

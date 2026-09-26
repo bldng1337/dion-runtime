@@ -20,7 +20,7 @@
     },
     "js/extension_types": {
       "name": "@dion-js/extension-types",
-      "version": "0.12.0",
+      "version": "0.13.0",
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",
         "valibot": "catalog:",
@@ -28,7 +28,7 @@
     },
     "js/lib": {
       "name": "@dion-js/runtime-lib",
-      "version": "0.11.0",
+      "version": "0.12.0",
       "devDependencies": {
         "@biomejs/biome": "catalog:",
         "@dion-js/config": "workspace:*",
@@ -38,7 +38,7 @@
     },
     "js/repo_scripts": {
       "name": "@dion-js/extension-scripts",
-      "version": "0.6.0",
+      "version": "0.6.2",
       "bin": {
         "dion-bundle": "./bin/bundle.ts",
         "dion-build-index": "./bin/index.ts",
@@ -59,7 +59,7 @@
     },
     "js/runtime": {
       "name": "@dion-js/runtime",
-      "version": "1.13.0",
+      "version": "1.13.1",
       "dependencies": {
         "@dion-js/runtime-types": "workspace:*",
       },
@@ -74,7 +74,7 @@
     },
     "js/runtime_types": {
       "name": "@dion-js/runtime-types",
-      "version": "0.12.0",
+      "version": "0.12.1",
       "devDependencies": {
         "@js-temporal/polyfill": "^0.5.1",
       },
@@ -198,6 +198,26 @@
     },
     "tests/extensions/html": {
       "name": "html",
+      "version": "1.0.0",
+      "dependencies": {
+        "@dion-js/runtime-lib": "workspace:*",
+        "@dion-js/unit-test-utils": "workspace:*",
+        "valibot": "catalog:",
+      },
+      "devDependencies": {
+        "@biomejs/biome": "catalog:",
+        "@dion-js/config": "workspace:*",
+        "@dion-js/extension-scripts": "workspace:*",
+        "@dion-js/extension-test-utils": "workspace:*",
+        "@dion-js/extension-types": "catalog:",
+        "@dion-js/runtime": "catalog:",
+        "@dion-js/runtime-types": "catalog:",
+        "@types/bun": "catalog:",
+        "typescript": "catalog:",
+      },
+    },
+    "tests/extensions/metadata": {
+      "name": "metadata",
       "version": "1.0.0",
       "dependencies": {
         "@dion-js/runtime-lib": "workspace:*",
@@ -753,6 +773,8 @@
     "lodash": ["lodash@4.17.21", "", {}, "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="],
 
     "m3u8-parser": ["m3u8-parser@7.2.0", "", { "dependencies": { "@babel/runtime": "^7.12.5", "@videojs/vhs-utils": "^4.1.1", "global": "^4.4.0" } }, "sha512-CRatFqpjVtMiMaKXxNvuI3I++vUumIXVVT/JpCpdU/FynV/ceVw1qpPyyBNindL+JlPMSesx+WX1QJaZEJSaMQ=="],
+
+    "metadata": ["metadata@workspace:tests/extensions/metadata"],
 
     "mime-db": ["mime-db@1.52.0", "", {}, "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="],
 

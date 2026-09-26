@@ -19,12 +19,15 @@ declare module "network" {
 			| "TRACE"
 			| "PATCH";
 		headers?: { [key: string]: string };
-		body?: string;
+		body?: string | Uint8Array;
 	}
 
 	interface DionResponse {
 		status: number;
 		headers: { [key: string]: string };
+		/** Raw response bytes, e.g. for downloaded books (epub, cbz, m4b). */
+		bytes: Uint8Array;
+		/** Decoded text (Content-Type charset with UTF-8 fallback). */
 		body: string;
 		json: unknown;
 		ok: boolean;
@@ -183,6 +186,118 @@ declare module "filesystem" {
 
 	/** Joins path fragments and normalizes the result (resolving `.`/`..`). */
 	export function joinPaths(parts: string[]): string;
+}
+
+declare module "metadata" {
+	/**
+	 * Parses a one-shot metadata snapshot of a container the extension holds
+	 * as bytes (from `filesystem.readFile` or `network.fetch(...).bytes`).
+	 * Supported: EPUB, ZIP/CBZ, MP4/M4A/M4B (chapters + artwork) and the
+	 * audio formats lofty understands (MP3, FLAC, OGG, OPUS, WAV, APE, ...).
+	 *
+	 * `hint` is a filename or extension used when the content is ambiguous
+	 * (e.g. an EPUB missing its `mimetype` entry).
+	 */
+	export function inspect(
+		data: Uint8Array,
+		hint?: string,
+	): Promise<EpubMetadata | ArchiveMetadata | Mp4Metadata | AudioMetadata>;
+
+	/**
+	 * Opens a reusable handle for reading entries (pages, covers,
+	 * stylesheets) out of an EPUB or ZIP/CBZ container. The parsed index
+	 * stays in runtime memory, so per-entry reads do not re-parse the file.
+	 * Audio/MP4 containers have no entries — use `inspect` for those.
+	 */
+	export function openArchive(
+		data: Uint8Array,
+		hint?: string,
+	): Promise<Archive>;
+
+	export interface Archive {
+		/** Container entries: manifest resources for EPUB, all files for ZIP. */
+		entries(): Promise<ArchiveEntry[]>;
+		/** Reads an entry as raw bytes. */
+		read(path: string): Promise<Uint8Array>;
+		/** Reads an entry as UTF-8 text (lossy). */
+		readText(path: string): Promise<string>;
+		/** Re-parses the metadata snapshot of the open container. */
+		readonly metadata: Promise<
+			EpubMetadata | ArchiveMetadata | Mp4Metadata | AudioMetadata
+		>;
+	}
+
+	export interface ArchiveEntry {
+		path: string;
+		/** Uncompressed size in bytes; `undefined` for EPUB manifest entries. */
+		size?: number;
+		isDir: boolean;
+	}
+
+	export interface EpubMetadata {
+		type: "epub";
+		title?: string;
+		creators: { name: string; roles: string[] }[];
+		publishers: string[];
+		languages: string[];
+		/** Publication date as written in the package document. */
+		published?: string;
+		description?: string;
+		identifiers: { scheme?: string; value: string }[];
+		subjects: string[];
+		/** Manifest path of the cover image, usable with `Archive.read`. */
+		coverPath?: string;
+		/** All manifest resources; `path` values work with `Archive.read`. */
+		resources: { path: string; mediaType?: string }[];
+		/** Flattened table of contents. */
+		toc: { title?: string; path: string }[];
+		/** Reading order as manifest paths. */
+		spine: string[];
+	}
+
+	export interface ArchiveMetadata {
+		type: "archive";
+		entries: ArchiveEntry[];
+	}
+
+	export interface Chapter {
+		title?: string;
+		startMs: number;
+		/** Derived from the next chapter's start (or the total duration). */
+		durationMs?: number;
+	}
+
+	export interface Mp4Metadata {
+		type: "mp4";
+		title?: string;
+		artist?: string;
+		album?: string;
+		albumArtist?: string;
+		year?: string;
+		genre?: string;
+		track?: number;
+		trackTotal?: number;
+		disc?: number;
+		discTotal?: number;
+		durationMs?: number;
+		description?: string;
+		chapters: Chapter[];
+		/** Embedded cover art, when present. */
+		artwork?: Uint8Array;
+	}
+
+	export interface AudioMetadata {
+		type: "audio";
+		title?: string;
+		artist?: string;
+		album?: string;
+		year?: number;
+		genre?: string;
+		track?: number;
+		durationMs?: number;
+		/** Embedded cover art, when present. */
+		artwork?: Uint8Array;
+	}
 }
 
 declare module "auth" {

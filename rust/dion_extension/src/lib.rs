@@ -4,6 +4,7 @@ mod extension_executor;
 pub mod extension_manager;
 mod filesystem;
 mod js;
+mod metadata;
 mod network;
 mod proxy;
 mod specta;

@@ -90,5 +90,12 @@ export type ProxyResponse =
 			type: "response";
 			status: number;
 			headers: { [key: string]: string[] };
-			body?: string;
+			/** Plain UTF-8 text, or raw bytes (served verbatim). */
+			body?: string | Uint8Array;
+			/**
+			 * How to interpret a string `body`. `"base64"` decodes the string
+			 * before serving, letting pure-JSON responses carry binary.
+			 * Defaults to `"utf8"`; ignored when `body` is a Uint8Array.
+			 */
+			bodyEncoding?: "utf8" | "base64";
 	  };

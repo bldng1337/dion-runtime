@@ -10,6 +10,7 @@ use crate::utils::{
     MapJsResult, Queue, ReadOnlyUserContextContainer, VirtualModuleLoader, await_promise,
 };
 use anyhow::{Context as ErrorContext, Result, anyhow};
+use boa_engine::object::builtins::JsUint8Array;
 use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
 use boa_engine::{Context, JsObject, JsValue, Module, js_string};
@@ -22,6 +23,7 @@ use dion_runtime::data::source::{
     EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
 };
 use hyper::Request;
+use hyper::body::Bytes;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use tokio::sync::oneshot::Sender;
@@ -133,12 +135,14 @@ impl ExtensionExecutor {
             .clone())
     }
 
-    async fn exec_raw(
+    /// Calls a plugin function and returns the raw JS value it resolved with
+    /// (before any JSON conversion).
+    async fn exec_value(
         context: &mut Context,
         func: &str,
         args: &[JsValue],
         token: Option<CancellationToken>,
-    ) -> Result<Value> {
+    ) -> Result<JsValue> {
         match token {
             Some(tok) => context
                 .insert_data::<CancellationTokenContainer>(ReadOnlyUserContextContainer::new(tok)),
@@ -158,10 +162,19 @@ impl ExtensionExecutor {
             .ok_or(anyhow!(
                 "Function {func} didnt return a Promise or is not async"
             ))?;
-        let val = await_promise(asd, context)
+        await_promise(asd, context)
             .await
             .map_anyhow_ctx(context)
-            .context(format!("Error while evaluating {func}"))?;
+            .context(format!("Error while evaluating {func}"))
+    }
+
+    async fn exec_raw(
+        context: &mut Context,
+        func: &str,
+        args: &[JsValue],
+        token: Option<CancellationToken>,
+    ) -> Result<Value> {
+        let val = Self::exec_value(context, func, args, token).await?;
         let json = val
             .to_json(context)
             .map_anyhow_ctx(context)
@@ -186,6 +199,53 @@ impl ExtensionExecutor {
 
 pub(crate) type CancellationTokenContainer = ReadOnlyUserContextContainer<CancellationToken>;
 pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Weak<InnerExtension>>;
+
+/// Converts a `handleProxy` result. A `response` body may be a `Uint8Array`;
+/// raw bytes cannot survive the JSON round-trip, so they are lifted out
+/// beforehand and attached to the parsed response directly.
+fn proxy_result_from_value(val: JsValue, context: &mut Context) -> Result<ProxyResult> {
+    let mut body_bytes: Option<Vec<u8>> = None;
+    if let Some(object) = val.as_object() {
+        let kind = object
+            .get(js_string!("type"), context)
+            .map_anyhow_ctx(context)
+            .context("Failed to read handleProxy result type")?;
+        if kind
+            .as_string()
+            .is_some_and(|kind| kind.to_std_string_escaped() == "response")
+        {
+            let body = object
+                .get(js_string!("body"), context)
+                .map_anyhow_ctx(context)
+                .context("Failed to read handleProxy response body")?;
+            if let Some(array_object) = body.as_object()
+                && let Ok(array) = JsUint8Array::from_object(array_object.clone())
+            {
+                body_bytes = Some(
+                    array
+                        .to_vec(context)
+                        .map_anyhow_ctx(context)
+                        .context("Failed to read Uint8Array proxy body")?,
+                );
+                object
+                    .set(js_string!("body"), js_string!(""), false, context)
+                    .map_anyhow_ctx(context)?;
+            }
+        }
+    }
+    let json = val
+        .to_json(context)
+        .map_anyhow_ctx(context)
+        .context("Failed to convert handleProxy result")?
+        .unwrap_or(Value::Null);
+    let mut result: ProxyResult = json
+        .try_into()
+        .context("Failed to convert serde Value to ProxyResult")?;
+    if let (Some(bytes), ProxyResult::Response(response)) = (body_bytes, &mut result) {
+        *response.body_mut() = Bytes::from(bytes);
+    }
+    Ok(result)
+}
 
 #[async_trait::async_trait(?Send)]
 impl JSExecutor<Task> for ExtensionExecutor {
@@ -293,11 +353,10 @@ impl JSExecutor<Task> for ExtensionExecutor {
                     )
                     .map_anyhow_ctx(context)
                     .context("Failed to convert Request to js")?];
-                    let val = Self::exec_raw(context, "handleProxy", vals, None)
+                    let val = Self::exec_value(context, "handleProxy", vals, None)
                         .await
                         .context("Failed to call handleProxy")?;
-                    let val: ProxyResult = val
-                        .try_into()
+                    let val: ProxyResult = proxy_result_from_value(val, context)
                         .context("Failed to convert serde Value to ProxyResult")?;
                     Ok(val)
                 }

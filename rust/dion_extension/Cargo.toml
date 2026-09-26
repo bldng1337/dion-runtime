@@ -83,6 +83,13 @@ http-cache = { version = "0.21.0", default-features = false, features = [
 governor = "0.6.0"
 nonzero_ext = "0.3.0"
 
+# metadata inspection for local/remote books (epub, cbz/zip, m4b/mp4, mp3, ...)
+rbook = { version = "0.7.10", default-features = false, features = ["threadsafe"] }
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+mp4ameta = "0.13.0"
+lofty = "0.25.4"
+encoding_rs = "0.8"
+
 tokio-util = "0.7.0"
 async-trait = "0.1.0"
 http = "1.1.0"

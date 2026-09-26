@@ -155,7 +155,7 @@ pub(crate) fn value_to_request(value: &serde_json::Value) -> Result<Request<Stri
     Ok(request)
 }
 
-pub(crate) fn value_to_response(value: serde_json::Value) -> Result<Response<String>> {
+pub(crate) fn value_to_response(value: serde_json::Value) -> Result<Response<Bytes>> {
     use anyhow::Context as _;
     let obj = value
         .as_object()
@@ -207,16 +207,30 @@ pub(crate) fn value_to_response(value: serde_json::Value) -> Result<Response<Str
         }
     }
 
-    // body (optional)
-    let body = obj
-        .get("body")
-        .and_then(|v| v.as_str())
-        .unwrap_or("")
-        .to_string();
+    // body (optional). `bodyEncoding: "base64"` lets a pure-JSON response
+    // carry binary; `handleProxy` results with a `Uint8Array` body are
+    // converted by the executor before they ever reach this JSON path.
+    let body = match obj.get("bodyEncoding").and_then(|v| v.as_str()) {
+        Some("base64") => {
+            use base64::Engine as _;
+            let encoded = obj.get("body").and_then(|v| v.as_str()).unwrap_or("");
+            Bytes::from(
+                base64::engine::general_purpose::STANDARD
+                    .decode(encoded)
+                    .context("Failed to decode base64 response body")?,
+            )
+        }
+        _ => Bytes::from(
+            obj.get("body")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string(),
+        ),
+    };
 
     let response = builder
         .body(body)
-        .context("Failed to build Response<String> from JSON")?;
+        .context("Failed to build Response<Bytes> from JSON")?;
 
     Ok(response)
 }
@@ -234,7 +248,7 @@ async fn convert_request_to_string(req: Request<Incoming>) -> Result<Request<Str
 #[derive(Debug)]
 pub(crate) enum ProxyResult {
     Redirect(Request<String>),
-    Response(Response<String>),
+    Response(Response<Bytes>),
 }
 
 impl TryFrom<serde_json::Value> for ProxyResult {
@@ -425,15 +439,10 @@ impl Proxy {
             match response.await?? {
                 ProxyResult::Response(resp) => {
                     fn convert_response(
-                        response: Response<String>,
+                        response: Response<Bytes>,
                     ) -> Response<BoxBody<Bytes, hyper::Error>> {
                         let (parts, body) = response.into_parts();
-
-                        // Convert String to Full<Bytes>, map error, and box it
-                        let boxed_body = Full::new(Bytes::from(body))
-                            .map_err(|never| match never {})
-                            .boxed();
-
+                        let boxed_body = Full::new(body).map_err(|never| match never {}).boxed();
                         Response::from_parts(parts, boxed_body)
                     }
                     let a = convert_response(resp);
@@ -493,5 +502,39 @@ impl ProxyExtensionRef {
         proxy.cleanup_dropped();
         proxy.register_extension(Arc::downgrade(&ext));
         ext
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn response_body_defaults_to_utf8() {
+        let json = serde_json::json!({
+            "type": "response",
+            "status": 200,
+            "body": "hello",
+        });
+        let result: ProxyResult = json.try_into().unwrap();
+        let ProxyResult::Response(resp) = result else {
+            panic!("expected response");
+        };
+        assert_eq!(resp.body(), &Bytes::from_static(b"hello"));
+    }
+
+    #[test]
+    fn response_body_base64_encoding() {
+        let json = serde_json::json!({
+            "type": "response",
+            "status": 200,
+            "bodyEncoding": "base64",
+            "body": "AAECA/8=",
+        });
+        let result: ProxyResult = json.try_into().unwrap();
+        let ProxyResult::Response(resp) = result else {
+            panic!("expected response");
+        };
+        assert_eq!(resp.body(), &Bytes::from_static(&[0, 1, 2, 3, 255]));
     }
 }

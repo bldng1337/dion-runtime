@@ -174,8 +174,9 @@ These are **external** — import them, do not bundle them. Ambient types come f
 `@dion-js/extension-types`; look there for full signatures and data types.
 
 - `network` — `fetch(url, options?)`, `getCookies()`, `getProxyAddress()`. `fetch` returns a
-  `DionResponse` with `status`, `headers`, `body` (string), `json`, `ok`. Cookies are managed
-  automatically by the host's cookie jar.
+  `DionResponse` with `status`, `headers`, `body` (string), `bytes` (`Uint8Array` — use this to
+  download books/covers as raw data), `json`, `ok`. Request bodies may be a string or a
+  `Uint8Array`. Cookies are managed automatically by the host's cookie jar.
 - `cache` — persistent, per-extension caches living below the extension data dir (they survive
   restarts). `openKvCache(name, { defaultTtl? })` for KV caches with optional TTL (seconds;
   per-`set` override: `set(key, value, ttlSeconds)`), `openLruCache(name, { maxEntries?, maxBytes?,
@@ -193,6 +194,15 @@ These are **external** — import them, do not bundle them. Ambient types come f
 - `parse` — `parseHtml(input)`, `parseHtmlFragment(input)`. Returns a `DionElement` tree
   with jQuery-like `select(new CSSSelector("div.foo"))`, `attr`, `children`, `text`,
   `paragraphs`. `DionElementArray` supports `map/filter/get/first/length`.
+- `metadata` — inspect book/audio containers you already hold as bytes (from
+  `filesystem.readFile` or `fetch(...).bytes`): `inspect(data, hint?)` parses a one-shot
+  metadata snapshot; `openArchive(data, hint?)` returns a reusable `Archive` whose
+  `read(path)`/`readText(path)`/`entries()` pull content (pages, covers, chapters) out of the
+  container without re-parsing it. Supported: EPUB (title, creators, TOC, spine, cover,
+  manifest resources), ZIP/CBZ, MP4/M4A/M4B (tags, chapters, artwork) and MP3/FLAC/OGG/WAV
+  audio (tags, artwork). `hint` is a filename/extension used for ambiguous content (e.g. an
+  EPUB missing its mimetype entry). EPUB resource paths are root-absolute (`/OEBPS/...`) —
+  pass the exact strings from `resources`/`coverPath`/`spine` back into `archive.read`.
 - `setting` — `getSetting(id, kind)`, `registerSetting(id, setting, kind)`,
   `setEntrySetting(entry, key, value)`. `kind` is `"Extension" | "Search"`. Prefer the typed
   helpers in `@dion-js/runtime-lib` (`ExtensionSetting`, `SettingStore`). A setting with the
@@ -212,6 +222,34 @@ For full signatures and the data types they use look at `@dion-js/extension-type
 
 ## Proxy handling
 The host runs an HTTP proxy and routes requests that target an extension's proxy path to its `handleProxy(request)`. Implement it only if you need to intercept/rewrite traffic. It **must** return a `ProxyResponse`: `{ type: "response", status, headers, body? }` to answer directly, or `{ type: "redirect", request: ProxyRequest }` to re-issue the request (optionally modified) — a `redirect` forwarding the original request is how you "pass through" unmodified. Get the address to send your own requests through via `network.getProxyAddress()`. `ProxyRequest`/`ProxyResponse` are defined in `@dion-js/runtime-types/extension`.
+
+A `response` body may be a string, a `Uint8Array` (served verbatim — this is how you expose
+binary content from containers the client cannot decode itself), or a base64 string with
+`bodyEncoding: "base64"`. Serving pages out of a local book looks like:
+
+```ts
+import { readFile } from "filesystem";
+import { openArchive } from "metadata";
+import { getProxyAddress } from "network";
+
+const archive = await openArchive(await readFile(bookPath), bookPath);
+const meta = await archive.metadata; // { type: "epub", resources, ... }
+const proxy = await getProxyAddress();
+// Client-fetchable page URLs pointing back at this extension:
+const pages = meta.resources
+  .filter((r) => r.mediaType?.startsWith("image/"))
+  .map((r) => ({ url: `${proxy}/page?path=${encodeURIComponent(r.path)}`, header: {} }));
+
+async handleProxy(request) {
+  const path = new URL(request.uri).searchParams.get("path") ?? "";
+  return {
+    type: "response",
+    status: 200,
+    headers: { "Content-Type": ["application/octet-stream"] },
+    body: await archive.read(path), // Uint8Array body
+  };
+}
+```
 
 ## Key data types (return these)
 
