@@ -4,4 +4,5 @@ pub mod cancel;
 pub mod client;
 pub mod error;
 pub mod extension;
+pub mod logger;
 pub mod manager;

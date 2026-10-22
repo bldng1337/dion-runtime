@@ -93,8 +93,9 @@ pub struct Episode {
     #[cfg_attr(feature = "type", specta(optional))]
     pub cover: Option<Link>,
 
+    #[serde(default, with = "crate::data::timestamp::option_ts")]
     #[cfg_attr(feature = "type", specta(optional))]
-    pub timestamp: Option<String>,
+    pub timestamp: Option<chrono::DateTime<chrono::Utc>>,
     #[cfg_attr(feature = "type", specta(optional))]
     pub announced: Option<bool>,
 }
@@ -190,6 +191,8 @@ pub enum Source {
     },
     Paragraphlist {
         paragraphs: Vec<Paragraph>,
+        #[cfg_attr(feature = "type", specta(optional))]
+        audio: Option<Vec<ImageListAudio>>,
     },
 }
 

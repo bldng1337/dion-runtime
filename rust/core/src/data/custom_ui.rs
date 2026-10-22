@@ -212,7 +212,9 @@ pub enum CustomUI {
         label: Option<String>,
     },
     Timestamp {
-        timestamp: String,
+        /// ISO-8601 on the wire (`DateTime` in Dart).
+        #[serde(with = "crate::data::timestamp::ts")]
+        timestamp: chrono::DateTime<chrono::Utc>,
         #[serde(default)]
         display: TimestampType,
     },

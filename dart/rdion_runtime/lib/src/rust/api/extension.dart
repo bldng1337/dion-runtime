@@ -15,6 +15,7 @@ import '../third_party/dion_runtime/data/extension_repo.dart';
 import '../third_party/dion_runtime/data/permission.dart';
 import '../third_party/dion_runtime/data/settings.dart';
 import '../third_party/dion_runtime/data/source.dart';
+import '../third_party/dion_runtime/data/storage.dart';
 import 'cancel.dart';
 import 'client.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
@@ -44,6 +45,10 @@ abstract class ProxyAdapter implements RustOpaqueInterface {
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
 abstract class ProxyExtension implements RustOpaqueInterface {
   Future<EntryList> browse({required int page, CancelToken? token});
+
+  /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
+  /// cache); settings, cookies and extension-written files are kept.
+  Future<void> clearCache();
 
   Future<EntryDetailedResult> detail(
       {required EntryId entryid,
@@ -131,6 +136,10 @@ abstract class ProxyExtension implements RustOpaqueInterface {
       {required EpisodeId epid,
       required Map<String, Setting> settings,
       CancelToken? token});
+
+  /// How much storage this extension uses, split into cache / extension /
+  /// data buckets.
+  Future<StorageUsage> storageUsage();
 
   Future<Account?> validate({required Account account, CancelToken? token});
 }

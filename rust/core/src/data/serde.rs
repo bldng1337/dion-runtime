@@ -22,6 +22,7 @@ mod test {
         },
     };
 
+    use chrono::TimeZone;
     use serde_json::{self, to_string_pretty};
     use std::fs;
 
@@ -391,11 +392,13 @@ mod test {
                 label: Some("Click Here".to_string()),
             },
             CustomUI::Timestamp {
-                timestamp: "1234567890".to_string(),
+                timestamp: chrono::Utc.timestamp_opt(1234567890, 0).single().unwrap(),
                 display: TimestampType::Relative,
             },
             CustomUI::Timestamp {
-                timestamp: "0987654321".to_string(),
+                timestamp: chrono::DateTime::parse_from_rfc3339("2023-12-01T00:00:00Z")
+                    .unwrap()
+                    .with_timezone(&chrono::Utc),
                 display: TimestampType::Absolute,
             },
             CustomUI::EntryCard {
@@ -1167,7 +1170,7 @@ mod test {
                 description: Some("Description for episode 2".to_string()),
                 url: "https://episode2.com".to_string(),
                 cover: Some(links[0].clone()),
-                timestamp: Some("1234567890".to_string()),
+                timestamp: chrono::Utc.timestamp_opt(1234567890, 0).single(),
                 announced: None,
             },
             Episode {
@@ -1176,7 +1179,9 @@ mod test {
                 description: Some("Description for episode 3".to_string()),
                 url: "https://episode3.com".to_string(),
                 cover: Some(links[1].clone()),
-                timestamp: Some("0987654321".to_string()),
+                timestamp: chrono::DateTime::parse_from_rfc3339("2001-02-18T03:45:21Z")
+                    .ok()
+                    .map(|dt| dt.with_timezone(&chrono::Utc)),
                 announced: Some(true),
             },
         ]
@@ -1462,6 +1467,14 @@ mod test {
                         ],
                     },
                 ],
+                audio: None,
+            },
+            Source::Paragraphlist {
+                paragraphs: vec![Paragraph::Text {
+                    content: "Narrated paragraph".to_string(),
+                    style: None,
+                }],
+                audio: Some(vec![image_list_audios[0].clone()]),
             },
         ]
     }

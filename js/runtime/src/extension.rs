@@ -270,6 +270,21 @@ impl ExtensionProxy {
     serde_json::to_value(res).map_to_node()
   }
 
+  /// How much storage this extension uses, split into `cache`, `extension`
+  /// (the bundle) and `data` (everything else in its private data dir).
+  #[napi(ts_return_type = "Promise<StorageUsage>")]
+  pub async fn storage_usage(&self) -> Result<serde_json::Value, napi::Error> {
+    let usage = self.extension.storage_usage().await.map_to_node()?;
+    serde_json::to_value(usage).map_to_node()
+  }
+
+  /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
+  /// cache). Settings, cookies and extension-written files are kept.
+  #[napi]
+  pub async fn clear_cache(&self) -> Result<(), napi::Error> {
+    self.extension.clear_cache().await.map_to_node()
+  }
+
   #[napi]
   pub async fn save(&self) -> Result<(), napi::Error> {
     let client = self.extension.get_client();

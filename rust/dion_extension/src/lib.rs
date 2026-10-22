@@ -1,4 +1,5 @@
 pub mod cache;
+pub mod content;
 pub(crate) mod extension;
 mod extension_executor;
 pub mod extension_manager;
@@ -7,6 +8,7 @@ mod js;
 mod metadata;
 mod network;
 mod proxy;
+mod range_file;
 mod specta;
 mod utils;
 
@@ -201,7 +203,11 @@ mod tests {
             then.status(200)
                 .header("content-type", "application/json")
                 .body(
-                    serde_json::to_string(&Source::Paragraphlist { paragraphs: vec![] }).unwrap(),
+                    serde_json::to_string(&Source::Paragraphlist {
+                        paragraphs: vec![],
+                        audio: None,
+                    })
+                    .unwrap(),
                 );
         });
         server
@@ -406,7 +412,10 @@ mod tests {
         let extension = setup_extension(EXTENSION_PATH, &server).await?;
         let source = extension
             .map_source(
-                Source::Paragraphlist { paragraphs: vec![] },
+                Source::Paragraphlist {
+                    paragraphs: vec![],
+                    audio: None,
+                },
                 EpisodeId {
                     uid: "Some".to_string(),
                     iddata: Default::default(),

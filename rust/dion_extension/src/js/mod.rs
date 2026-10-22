@@ -17,6 +17,7 @@ mod permission_js;
 mod setting_js;
 mod specta;
 mod store_js;
+mod text_encoding_js;
 mod url_js;
 
 pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
@@ -32,5 +33,6 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
     cache_js::declare(context, loader).context("Failed to declare cache lib")?;
     filesystem_js::declare(context, loader).context("Failed to declare filesystem lib")?;
     metadata_js::declare(context, loader).context("Failed to declare metadata lib")?;
+    text_encoding_js::declare(context).context("Failed to declare text encoding globals")?;
     Ok(())
 }

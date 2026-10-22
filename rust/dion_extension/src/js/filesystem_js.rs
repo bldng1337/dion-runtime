@@ -113,6 +113,17 @@ mod filesystem {
 
     #[boa(rename = "readTextFile")]
     fn read_text_file(path: String, context: &mut Context) -> JsResult<JsValue> {
+        if crate::content::is_content_uri(&path) {
+            return enqueue_job(
+                context,
+                move |_ext: Arc<InnerExtension>| async move {
+                    let bytes = crate::content::read_content(&path)?;
+                    String::from_utf8(bytes)
+                        .map_err(|e| anyhow::anyhow!("content is not valid UTF-8: {e}"))
+                },
+                |text: String, _ctx| Ok(JsValue::from(JsString::from(text))),
+            );
+        }
         enqueue_job(
             context,
             move |ext: Arc<InnerExtension>| async move {
@@ -127,6 +138,13 @@ mod filesystem {
 
     #[boa(rename = "readFile")]
     fn read_file(path: String, context: &mut Context) -> JsResult<JsValue> {
+        if crate::content::is_content_uri(&path) {
+            return enqueue_job(
+                context,
+                move |_ext: Arc<InnerExtension>| async move { crate::content::read_content(&path) },
+                |bytes: Vec<u8>, ctx| Ok(JsUint8Array::from_iter(bytes, ctx)?.into()),
+            );
+        }
         enqueue_job(
             context,
             move |ext: Arc<InnerExtension>| async move {
@@ -200,6 +218,15 @@ mod filesystem {
 
     #[boa(rename = "exists")]
     fn exists(path: String, context: &mut Context) -> JsResult<JsValue> {
+        if crate::content::is_content_uri(&path) {
+            return enqueue_job(
+                context,
+                move |_ext: Arc<InnerExtension>| async move {
+                    Ok(crate::content::stat_content(&path).is_ok())
+                },
+                |exists: bool, _ctx| Ok(JsValue::from(exists)),
+            );
+        }
         enqueue_job(
             context,
             move |ext: Arc<InnerExtension>| async move {
@@ -216,6 +243,23 @@ mod filesystem {
 
     #[boa(rename = "stat")]
     fn stat(path: String, context: &mut Context) -> JsResult<JsValue> {
+        if crate::content::is_content_uri(&path) {
+            return enqueue_job(
+                context,
+                move |_ext: Arc<InnerExtension>| async move {
+                    let stat = crate::content::stat_content(&path)?;
+                    Ok(serde_json::json!({
+                        "size": stat.size,
+                        "isDir": false,
+                        "isFile": true,
+                        "modifiedMs": serde_json::Value::Null,
+                        "createdMs": serde_json::Value::Null,
+                        "name": stat.name,
+                    }))
+                },
+                |stat: serde_json::Value, ctx| JsValue::from_json(&stat, ctx),
+            );
+        }
         enqueue_job(
             context,
             move |ext: Arc<InnerExtension>| async move {

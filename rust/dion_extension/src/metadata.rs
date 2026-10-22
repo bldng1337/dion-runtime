@@ -1,4 +1,5 @@
 use std::io::{Cursor, Read};
+use std::path::PathBuf;
 use std::time::Duration;
 
 use anyhow::{Context, Result, bail};
@@ -11,6 +12,10 @@ pub(crate) enum FormatKind {
     Epub,
     /// Plain ZIP archive (CBZ and friends).
     Zip,
+    /// RAR archive (CBR and friends).
+    Rar,
+    /// PDF document.
+    Pdf,
     /// ISO base media container (MP4, M4A, M4B).
     Mp4,
     /// Audio format handled by lofty (MP3, FLAC, OGG, OPUS, WAV, APE, ...).
@@ -31,6 +36,7 @@ pub(crate) struct InspectOutput {
 pub(crate) enum Metadata {
     Epub(EpubMetadata),
     Archive(ArchiveMetadata),
+    Pdf(PdfMetadata),
     Mp4(Mp4Metadata),
     Audio(AudioMetadata),
 }
@@ -99,6 +105,24 @@ pub(crate) struct ArchiveEntry {
     pub is_dir: bool,
 }
 
+/// Document-level metadata from a PDF info dictionary.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct PdfMetadata {
+    pub title: Option<String>,
+    pub author: Option<String>,
+    pub subject: Option<String>,
+    pub keywords: Vec<String>,
+    pub creator: Option<String>,
+    pub producer: Option<String>,
+    /// Creation date as ISO-8601, when the document carries a parseable one.
+    pub creation_date: Option<String>,
+    pub mod_date: Option<String>,
+    pub pages: u32,
+    /// PDF version from the file header (e.g. "1.7").
+    pub version: Option<String>,
+}
+
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Mp4Metadata {
@@ -145,6 +169,88 @@ pub(crate) struct Chapter {
 pub(crate) enum MetadataArchive {
     Epub(Box<rbook::Epub>),
     Zip(zip::ZipArchive<Cursor<Vec<u8>>>),
+    /// The unrar library only opens archives from the filesystem, so RAR
+    /// (CBR) data is staged to a temp file that is removed on drop. Entry
+    /// access re-opens the archive and skips to the wanted header (unrar has
+    /// no random access).
+    Rar(RarArchive),
+}
+
+/// Owns the staged temp file backing a RAR archive.
+#[derive(Debug)]
+pub(crate) struct RarArchive {
+    temp_path: PathBuf,
+}
+
+impl Drop for RarArchive {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_file(&self.temp_path);
+    }
+}
+
+/// Writes RAR bytes to a unique temp file the unrar library can open.
+fn stage_rar_tempfile(data: &[u8]) -> Result<RarArchive> {
+    let unique = format!(
+        "dion-cbr-{}-{}.rar",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos())
+            .unwrap_or(0),
+    );
+    let temp_path = std::env::temp_dir().join(unique);
+    std::fs::write(&temp_path, data)
+        .with_context(|| format!("Failed to stage RAR data at {:?}", temp_path))?;
+    Ok(RarArchive { temp_path })
+}
+
+/// Normalizes an entry name so CBR paths always use `/` separators.
+fn rar_entry_name(path: &std::path::Path) -> String {
+    path.to_string_lossy().replace('\\', "/")
+}
+
+impl RarArchive {
+    fn list(&self) -> Result<Vec<ArchiveEntry>> {
+        let archive = unrar::Archive::new(&self.temp_path)
+            .open_for_listing()
+            .map_err(|e| anyhow::anyhow!("failed to open RAR archive: {e}"))?;
+        let mut entries = Vec::new();
+        for header in archive {
+            let header = header.map_err(|e| anyhow::anyhow!("failed to read RAR entry: {e}"))?;
+            entries.push(ArchiveEntry {
+                path: rar_entry_name(&header.filename),
+                size: Some(header.unpacked_size),
+                is_dir: header.is_directory(),
+            });
+        }
+        Ok(entries)
+    }
+
+    fn read(&self, path: &str) -> Result<Vec<u8>> {
+        let archive = unrar::Archive::new(&self.temp_path)
+            .open_for_processing()
+            .map_err(|e| anyhow::anyhow!("failed to open RAR archive: {e}"))?;
+        let mut archive = Some(archive);
+        while let Some(open) = archive.take() {
+            let open = open
+                .read_header()
+                .map_err(|e| anyhow::anyhow!("failed to read RAR header: {e}"))?;
+            let Some(open) = open else {
+                bail!("no archive entry named `{path}`");
+            };
+            if !open.entry().is_directory() && rar_entry_name(&open.entry().filename) == path {
+                let (bytes, _) = open
+                    .read()
+                    .map_err(|e| anyhow::anyhow!("failed to extract RAR entry `{path}`: {e}"))?;
+                return Ok(bytes);
+            }
+            archive = Some(
+                open.skip()
+                    .map_err(|e| anyhow::anyhow!("failed to skip RAR entry: {e}"))?,
+            );
+        }
+        bail!("no archive entry named `{path}`");
+    }
 }
 
 /// Detects the container family from magic bytes, falling back to the
@@ -161,6 +267,15 @@ pub(crate) fn detect(data: &[u8], hint: Option<&str>) -> Option<FormatKind> {
         }
         return Some(FormatKind::Zip);
     }
+    // RAR4: "Rar!\x1a\x07\x00", RAR5: "Rar!\x1a\x07\x01\x00".
+    if data.starts_with(b"Rar!\x1a\x07") {
+        return Some(FormatKind::Rar);
+    }
+    // PDF: "%PDF-"; the spec allows leading junk but real-world files start
+    // with the magic (the hint covers the rest).
+    if data.starts_with(b"%PDF-") {
+        return Some(FormatKind::Pdf);
+    }
     if data.len() >= 12 && &data[4..8] == b"ftyp" {
         return Some(FormatKind::Mp4);
     }
@@ -176,6 +291,8 @@ pub(crate) fn detect(data: &[u8], hint: Option<&str>) -> Option<FormatKind> {
     match hint.and_then(hint_extension).as_deref() {
         Some("epub") => Some(FormatKind::Epub),
         Some("cbz" | "zip" | "ctbc") => Some(FormatKind::Zip),
+        Some("cbr" | "rar") => Some(FormatKind::Rar),
+        Some("pdf") => Some(FormatKind::Pdf),
         Some("mp4" | "m4a" | "m4b" | "m4p" | "m4r" | "mp4v") => Some(FormatKind::Mp4),
         Some("mp3" | "flac" | "ogg" | "oga" | "opus" | "wav" | "ape" | "aac" | "aif" | "aiff") => {
             Some(FormatKind::Audio)
@@ -228,6 +345,15 @@ pub(crate) fn inspect(data: Vec<u8>, hint: Option<&str>) -> Result<InspectOutput
                 artwork: None,
             })
         }
+        FormatKind::Rar => {
+            let staged = stage_rar_tempfile(&data)?;
+            let entries = staged.list()?;
+            Ok(InspectOutput {
+                metadata: Metadata::Archive(ArchiveMetadata { entries }),
+                artwork: None,
+            })
+        }
+        FormatKind::Pdf => pdf_metadata(data),
         FormatKind::Mp4 => {
             let mut cursor = Cursor::new(&data[..]);
             let tag = mp4ameta::Tag::read_from(&mut cursor)
@@ -339,6 +465,69 @@ fn zip_entries(archive: &mut zip::ZipArchive<Cursor<Vec<u8>>>) -> Vec<ArchiveEnt
         .collect()
 }
 
+/// Formats a PDF `D:...` date as ISO-8601.
+fn pdf_date_to_iso(date: &pdf::primitive::Date) -> String {
+    let base = format!(
+        "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}",
+        date.year, date.month, date.day, date.hour, date.minute, date.second
+    );
+    match date.rel {
+        pdf::primitive::TimeRel::Universal => format!("{base}Z"),
+        pdf::primitive::TimeRel::Earlier => {
+            format!("{base}-{:02}:{:02}", date.tz_hour, date.tz_minute)
+        }
+        pdf::primitive::TimeRel::Later => {
+            format!("{base}+{:02}:{:02}", date.tz_hour, date.tz_minute)
+        }
+    }
+}
+
+fn pdf_metadata(data: Vec<u8>) -> Result<InspectOutput> {
+    use pdf::object::ParseOptions;
+
+    let file = pdf::file::FileOptions::uncached()
+        .parse_options(ParseOptions::tolerant())
+        .load(data)
+        .map_err(|e| anyhow::anyhow!("failed to parse PDF: {e}"))?;
+    let info = file.trailer.info_dict.as_ref();
+    let text = |field: &dyn Fn(&pdf::object::InfoDict) -> Option<&pdf::primitive::PdfString>| {
+        info.and_then(field)
+            .map(|value| value.to_string_lossy())
+            .filter(|value| !value.trim().is_empty())
+    };
+    Ok(InspectOutput {
+        metadata: Metadata::Pdf(PdfMetadata {
+            title: text(&|info| info.title.as_ref()),
+            author: text(&|info| info.author.as_ref()),
+            subject: text(&|info| info.subject.as_ref()),
+            keywords: text(&|info| info.keywords.as_ref())
+                .map(|keywords| {
+                    keywords
+                        .split([',', ';'])
+                        .map(str::trim)
+                        .filter(|keyword| !keyword.is_empty())
+                        .map(str::to_string)
+                        .collect()
+                })
+                .unwrap_or_default(),
+            creator: text(&|info| info.creator.as_ref()),
+            producer: text(&|info| info.producer.as_ref()),
+            creation_date: info
+                .and_then(|info| info.creation_date.as_ref())
+                .map(pdf_date_to_iso),
+            mod_date: info
+                .and_then(|info| info.mod_date.as_ref())
+                .map(pdf_date_to_iso),
+            pages: file.num_pages(),
+            version: file
+                .version()
+                .ok()
+                .map(|v| v.strip_prefix("PDF-").unwrap_or(&v).to_string()),
+        }),
+        artwork: None,
+    })
+}
+
 fn chapter_list(chapters: &[(Duration, String)], total: Duration) -> Vec<Chapter> {
     let mut sorted: Vec<(Duration, String)> = chapters
         .iter()
@@ -430,7 +619,8 @@ impl MetadataArchive {
             FormatKind::Zip => Ok(MetadataArchive::Zip(zip::ZipArchive::new(Cursor::new(
                 data,
             ))?)),
-            FormatKind::Mp4 | FormatKind::Audio => {
+            FormatKind::Rar => Ok(MetadataArchive::Rar(stage_rar_tempfile(&data)?)),
+            FormatKind::Pdf | FormatKind::Mp4 | FormatKind::Audio => {
                 bail!("container has metadata but no archive entries; use inspect")
             }
         }
@@ -442,6 +632,12 @@ impl MetadataArchive {
             MetadataArchive::Zip(archive) => Ok(InspectOutput {
                 metadata: Metadata::Archive(ArchiveMetadata {
                     entries: zip_entries(archive),
+                }),
+                artwork: None,
+            }),
+            MetadataArchive::Rar(rar) => Ok(InspectOutput {
+                metadata: Metadata::Archive(ArchiveMetadata {
+                    entries: rar.list()?,
                 }),
                 artwork: None,
             }),
@@ -460,6 +656,7 @@ impl MetadataArchive {
                 })
                 .collect()),
             MetadataArchive::Zip(archive) => Ok(zip_entries(archive)),
+            MetadataArchive::Rar(rar) => rar.list(),
         }
     }
 
@@ -476,6 +673,7 @@ impl MetadataArchive {
                 entry.read_to_end(&mut buf)?;
                 Ok(buf)
             }
+            MetadataArchive::Rar(rar) => rar.read(path),
         }
     }
 
@@ -652,6 +850,68 @@ mod tests {
 
         let mut archive = MetadataArchive::open(data, None).unwrap();
         assert_eq!(archive.read("page002.jpg").unwrap(), b"image-two-longer");
+    }
+
+    #[test]
+    fn inspect_cbr_fixture() {
+        let data = std::fs::read(format!("{FIXTURES}/sample.cbr")).unwrap();
+        // RAR5 magic detection independent of the hint.
+        assert_eq!(detect(&data, None), Some(FormatKind::Rar));
+        assert_eq!(
+            detect(b"junk".to_vec().as_slice(), Some("book.cbr")),
+            Some(FormatKind::Rar)
+        );
+
+        let output = inspect(data.clone(), Some("chapter.cbr")).unwrap();
+        let Metadata::Archive(meta) = output.metadata else {
+            panic!("expected archive metadata");
+        };
+        assert_eq!(meta.entries.len(), 2);
+        assert_eq!(meta.entries[0].path, "page001.jpg");
+        assert_eq!(meta.entries[0].size, Some(9));
+        assert!(!meta.entries[0].is_dir);
+
+        let mut archive = MetadataArchive::open(data, None).unwrap();
+        assert_eq!(archive.entries().unwrap().len(), 2);
+        assert_eq!(archive.read("page002.jpg").unwrap(), b"image-two-longer");
+        assert!(
+            archive
+                .read_text("page001.jpg")
+                .unwrap()
+                .contains("image-one")
+        );
+    }
+
+    #[test]
+    fn inspect_pdf_fixture() {
+        let data = std::fs::read(format!("{FIXTURES}/sample.pdf")).unwrap();
+        assert_eq!(detect(&data, None), Some(FormatKind::Pdf));
+        assert_eq!(
+            detect(b"junk".to_vec().as_slice(), Some("book.pdf")),
+            Some(FormatKind::Pdf)
+        );
+
+        let output = inspect(data, None).unwrap();
+        let Metadata::Pdf(meta) = output.metadata else {
+            panic!("expected pdf metadata, got {:?}", output.metadata);
+        };
+        assert_eq!(meta.title.as_deref(), Some("Test PDF Book"));
+        assert_eq!(meta.author.as_deref(), Some("Test Author"));
+        assert_eq!(meta.subject.as_deref(), Some("A test"));
+        assert_eq!(meta.keywords, vec!["test", "pdf"]);
+        assert_eq!(meta.producer.as_deref(), Some("dion-test"));
+        assert_eq!(
+            meta.creation_date.as_deref(),
+            Some("2024-01-02T03:04:05+02:00")
+        );
+        assert_eq!(meta.pages, 1);
+        assert_eq!(meta.version.as_deref(), Some("1.7"));
+        // Serializes to camelCase JSON for the JS boundary.
+        let json = serde_json::to_value(Metadata::Pdf(meta)).unwrap();
+        assert_eq!(
+            json.get("creationDate").and_then(|v| v.as_str()),
+            Some("2024-01-02T03:04:05+02:00")
+        );
     }
 
     #[test]

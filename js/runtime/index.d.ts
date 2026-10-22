@@ -41,6 +41,16 @@ export declare class Extension {
   onEntryActivity(activity: EntryActivity, entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<void>
   mapSource(source: Source, epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken): Promise<Source>
   getData(): Promise<ExtensionData>
+  /**
+   * How much storage this extension uses, split into `cache`, `extension`
+   * (the bundle) and `data` (everything else in its private data dir).
+   */
+  storageUsage(): Promise<StorageUsage>
+  /**
+   * Drops all runtime-managed caches (JS `cache` module data and the HTTP
+   * cache). Settings, cookies and extension-written files are kept.
+   */
+  clearCache(): Promise<void>
   save(): Promise<void>
   getPermissions(): Promise<Permission[]>
   hasPermission(permission: Permission): Promise<boolean>
@@ -69,3 +79,31 @@ export declare class ManagerClient {
   constructor(getClient: ((err: Error | null, arg: ExtensionData) => ExtensionClient), getPath: ((err: Error | null, ) => string))
 }
 export type ClientManagerHandler = ManagerClient
+
+/** One runtime log record, forwarded from Rust to JS. */
+export interface LogEntry {
+  /** "error" | "warn" | "info" | "debug" | "trace" */
+  level: string
+  /** The Rust module that emitted the record. */
+  target: string
+  /** The fully formatted message. */
+  message: string
+}
+
+/**
+ * Installs a logging hook for embedding apps: every log record the Rust
+ * runtime emits (extension load failures during discovery, proxy errors,
+ * permission persist warnings, ...) is forwarded to `callback`. Without
+ * this, those records go nowhere — broken extension bundles then fail
+ * silently.
+ *
+ * Call once at startup, before creating an `Adapter`:
+ * `setLogger((entry) => console.log("[dion:" + entry.level + "] " + entry.message))`.
+ */
+export declare function setLogger(callback: ((err: Error | null, arg: LogEntry) => void)): void
+
+/**
+ * Narrows the records forwarded to the `setLogger` callback: one of
+ * "error", "warn", "info", "debug", "trace" or "off". Defaults to "trace".
+ */
+export declare function setLogLevel(level: string): void

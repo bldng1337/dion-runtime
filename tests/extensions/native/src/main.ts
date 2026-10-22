@@ -3,6 +3,7 @@ import {
 	assertDeepEqual,
 	DefaultExtension,
 } from "@dion-js/unit-test-utils/extension";
+import type { Episode } from "@dion-js/runtime-types/runtime";
 import { openKvCache, openLruCache } from "cache";
 import {
 	createDir,
@@ -199,9 +200,72 @@ async function filesystemModule(runId: string) {
 	});
 }
 
+/** The VM exposes WHATWG `TextEncoder`/`TextDecoder` globals and the
+ * Temporal API; timestamps crossing the JSON boundary are ISO-8601
+ * strings, so extensions convert with `Temporal.Instant.from`/`toJSON`. */
+function textEncodingAndTemporal() {
+	const encoder = new TextEncoder();
+	assertDeepEqual("utf-8", encoder.encoding);
+	assertDeepEqual(
+		[104, 195, 169, 108, 108, 111],
+		Array.from(encoder.encode("héllo")),
+		"TextEncoder encodes UTF-8",
+	);
+	const dst = new Uint8Array(1);
+	const into = encoder.encodeInto("ab", dst);
+	assertDeepEqual(1, into.read, "encodeInto reads what fits");
+	assertDeepEqual(1, into.written, "encodeInto writes what fits");
+
+	const decoder = new TextDecoder();
+	assertDeepEqual("héllo", decoder.decode(encoder.encode("héllo")));
+	const bom = new Uint8Array([0xef, 0xbb, 0xbf, 104, 105]); // BOM + "hi"
+	assertDeepEqual("hi", decoder.decode(bom), "BOM removed by default");
+	assertDeepEqual(
+		"\uFEFFhi",
+		new TextDecoder("utf-8", { ignoreBOM: true }).decode(bom),
+		"ignoreBOM keeps the BOM",
+	);
+	const latin = new TextDecoder("windows-1252");
+	assertDeepEqual(
+		"señor",
+		latin.decode(new Uint8Array([115, 101, 241, 111, 114])),
+	);
+	let threw = false;
+	try {
+		new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array([0xc3]));
+	} catch {
+		threw = true;
+	}
+	assert(threw, "fatal TextDecoder throws on malformed input");
+
+	// Temporal is available for real date math, and timestamp fields accept
+	// Temporal objects directly (the runtime converts them via toJSON).
+	const instant = Temporal.Instant.from("2024-01-02T03:04:05Z");
+	assertDeepEqual(
+		"2024-01-02T03:04:05Z",
+		instant.toString(),
+		"Temporal.Instant roundtrip",
+	);
+	const episode: Episode = {
+		id: { uid: "ep" },
+		name: "Episode",
+		url: "",
+		timestamp: instant,
+		announced: null,
+	};
+	const ts = episode.timestamp;
+	assert(typeof ts === "object" && ts !== null, "timestamp kept as object");
+	assertDeepEqual(
+		"2024-01-02T03:04:05Z",
+		ts.toJSON(),
+		"Episode.timestamp accepts a Temporal.Instant",
+	);
+}
+
 export default class extends DefaultExtension {
 	async load() {
 		urlGlobals();
+		textEncodingAndTemporal();
 		const runId = `${Date.now().toString(36)}${Math.random()
 			.toString(36)
 			.slice(2, 8)}`;

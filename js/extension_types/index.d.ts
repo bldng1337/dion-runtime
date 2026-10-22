@@ -133,6 +133,8 @@ declare module "filesystem" {
 		isFile: boolean;
 		modifiedMs: number | undefined;
 		createdMs: number | undefined;
+		/** Only set for content:// URIs (the provider's display name). */
+		name?: string;
 	}
 
 	export interface DirEntry {
@@ -146,10 +148,14 @@ declare module "filesystem" {
 	 * Reads a file as UTF-8 text. Paths inside the extension's private data
 	 * directory need no permission; anything else requires a granted
 	 * `Permission::Storage` (the user is prompted once per directory).
+	 *
+	 * On Android, `path` may also be a `content://` URI (e.g. from the
+	 * system file picker): the host resolves it through ContentResolver, no
+	 * storage permission required.
 	 */
 	export function readTextFile(path: string): Promise<string>;
 
-	/** Reads a file as raw bytes. */
+	/** Reads a file as raw bytes (`content://` URIs allowed on Android). */
 	export function readFile(path: string): Promise<Uint8Array>;
 
 	export function writeTextFile(
@@ -166,9 +172,10 @@ declare module "filesystem" {
 
 	export function deleteFile(path: string): Promise<void>;
 
-	/** Whether the path exists (follows symlinks). */
+	/** Whether the path exists (follows symlinks; content:// URIs allowed). */
 	export function exists(path: string): Promise<boolean>;
 
+	/** File facts (content:// URIs allowed on Android). */
 	export function stat(path: string): Promise<FileStat>;
 
 	export function createDir(path: string, options?: DirOptions): Promise<void>;
@@ -179,7 +186,7 @@ declare module "filesystem" {
 
 	/**
 	 * The extension's private data directory; reading and writing below it
-	 * never requires a Storage permission. On Android this is an
+	 * never requires a Storage Permission. On Android this is an
 	 * app-private directory that is always writable.
 	 */
 	export function getDataDir(): string;
@@ -192,8 +199,9 @@ declare module "metadata" {
 	/**
 	 * Parses a one-shot metadata snapshot of a container the extension holds
 	 * as bytes (from `filesystem.readFile` or `network.fetch(...).bytes`).
-	 * Supported: EPUB, ZIP/CBZ, MP4/M4A/M4B (chapters + artwork) and the
-	 * audio formats lofty understands (MP3, FLAC, OGG, OPUS, WAV, APE, ...).
+	 * Supported: EPUB, ZIP/CBZ, RAR/CBR, PDF, MP4/M4A/M4B (chapters +
+	 * artwork) and the audio formats lofty understands (MP3, FLAC, OGG,
+	 * OPUS, WAV, APE, ...).
 	 *
 	 * `hint` is a filename or extension used when the content is ambiguous
 	 * (e.g. an EPUB missing its `mimetype` entry).
@@ -201,13 +209,17 @@ declare module "metadata" {
 	export function inspect(
 		data: Uint8Array,
 		hint?: string,
-	): Promise<EpubMetadata | ArchiveMetadata | Mp4Metadata | AudioMetadata>;
+	): Promise<
+		EpubMetadata | ArchiveMetadata | PdfMetadata | Mp4Metadata | AudioMetadata
+	>;
 
 	/**
 	 * Opens a reusable handle for reading entries (pages, covers,
-	 * stylesheets) out of an EPUB or ZIP/CBZ container. The parsed index
-	 * stays in runtime memory, so per-entry reads do not re-parse the file.
-	 * Audio/MP4 containers have no entries — use `inspect` for those.
+	 * stylesheets) out of an EPUB, ZIP/CBZ or RAR/CBR container. The parsed
+	 * index stays in runtime memory, so per-entry reads do not re-parse the
+	 * file. RAR data is staged to a temporary file (the unrar library only
+	 * reads from disk) that is removed when the archive is garbage
+	 * collected. PDF/audio containers have no entries — use `inspect`.
 	 */
 	export function openArchive(
 		data: Uint8Array,
@@ -215,7 +227,7 @@ declare module "metadata" {
 	): Promise<Archive>;
 
 	export interface Archive {
-		/** Container entries: manifest resources for EPUB, all files for ZIP. */
+		/** Container entries: manifest resources for EPUB, all files for ZIP/RAR. */
 		entries(): Promise<ArchiveEntry[]>;
 		/** Reads an entry as raw bytes. */
 		read(path: string): Promise<Uint8Array>;
@@ -223,7 +235,7 @@ declare module "metadata" {
 		readText(path: string): Promise<string>;
 		/** Re-parses the metadata snapshot of the open container. */
 		readonly metadata: Promise<
-			EpubMetadata | ArchiveMetadata | Mp4Metadata | AudioMetadata
+			EpubMetadata | ArchiveMetadata | PdfMetadata | Mp4Metadata | AudioMetadata
 		>;
 	}
 
@@ -258,6 +270,24 @@ declare module "metadata" {
 	export interface ArchiveMetadata {
 		type: "archive";
 		entries: ArchiveEntry[];
+	}
+
+	/** Document-level metadata from a PDF's info dictionary. */
+	export interface PdfMetadata {
+		type: "pdf";
+		title?: string;
+		author?: string;
+		subject?: string;
+		keywords: string[];
+		creator?: string;
+		producer?: string;
+		/** Creation/modification date as ISO-8601, when present. */
+		creationDate?: string;
+		modDate?: string;
+		/** Page count. */
+		pages: number;
+		/** PDF version from the file header (e.g. "1.7"). */
+		version?: string;
 	}
 
 	export interface Chapter {
@@ -428,3 +458,85 @@ declare class URL {
 	toString(): string;
 	toJSON(): string;
 }
+
+/** WHATWG TextEncoder: encodes strings as UTF-8 bytes. */
+declare class TextEncoder {
+	constructor();
+	readonly encoding: "utf-8";
+	encode(input?: string): Uint8Array;
+	encodeInto(
+		source: string,
+		destination: Uint8Array,
+	): { read: number; written: number };
+}
+
+/**
+ * WHATWG TextDecoder: decodes bytes in any WHATWG encoding label
+ * ("utf-8", "latin1", "shift_jis", ...) with `fatal` and `ignoreBOM`
+ * options and incremental `decode(..., { stream: true })` decoding.
+ */
+declare class TextDecoder {
+	constructor(
+		encoding?: string,
+		options?: { fatal?: boolean; ignoreBOM?: boolean },
+	);
+	readonly encoding: string;
+	readonly fatal: boolean;
+	readonly ignoreBOM: boolean;
+	decode(input?: Uint8Array, options?: { stream?: boolean }): string;
+}
+
+/**
+ * The Temporal API (TC39 proposal) for calendar date/time math. Minimal
+ * ambient surface for the common timestamp flow; full types are available
+ * from `@js-temporal/polyfill` when extension authors need more.
+ *
+ * Timestamps on the runtime boundary are ISO-8601 strings:
+ * `Temporal.Instant.from(episode.timestamp)` in, `instant.toJSON()` out.
+ */
+// biome-ignore lint/style/noNamespace: ambient global types (proposal ships no d.ts)
+declare namespace Temporal {
+	class Instant {
+		static from(item: string): Temporal.Instant;
+		static fromEpochMilliseconds(epochMilliseconds: number): Temporal.Instant;
+		readonly epochMilliseconds: number;
+		toString(): string;
+		toJSON(): string;
+	}
+	class PlainDate {
+		static from(item: string): Temporal.PlainDate;
+		toString(): string;
+		toJSON(): string;
+	}
+	class ZonedDateTime {
+		static from(item: string): Temporal.ZonedDateTime;
+		toString(): string;
+		toJSON(): string;
+	}
+	class Duration {
+		constructor(
+			years?: number,
+			months?: number,
+			weeks?: number,
+			days?: number,
+			hours?: number,
+			minutes?: number,
+			seconds?: number,
+			milliseconds?: number,
+			microseconds?: number,
+			nanoseconds?: number,
+		);
+		total(unit: string): number;
+	}
+}
+declare var Temporal: {
+	Instant: typeof Temporal.Instant;
+	PlainDate: typeof Temporal.PlainDate;
+	ZonedDateTime: typeof Temporal.ZonedDateTime;
+	Duration: typeof Temporal.Duration;
+	now: {
+		instant(): Temporal.Instant;
+		plainDateISO(): Temporal.PlainDate;
+		zonedDateTimeISO(): Temporal.ZonedDateTime;
+	};
+};

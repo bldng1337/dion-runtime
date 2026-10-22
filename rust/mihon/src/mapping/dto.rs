@@ -363,11 +363,7 @@ impl ChapterDto {
             description: self.scanlator,
             url: self.url,
             cover: None,
-            timestamp: if self.date_upload > 0 {
-                Some(self.date_upload.to_string())
-            } else {
-                None
-            },
+            timestamp: epoch_millis_to_datetime(self.date_upload),
             announced: if self.date_upload > epoch_millis_now() {
                 Some(true)
             } else {
@@ -420,7 +416,10 @@ pub fn text_to_paragraph_source(text: String) -> Source {
             style: None,
         })
         .collect();
-    Source::Paragraphlist { paragraphs }
+    Source::Paragraphlist {
+        paragraphs,
+        audio: None,
+    }
 }
 
 /// Split a novel chapter's text into paragraph strings.
@@ -556,11 +555,7 @@ impl EpisodeDto {
             description: self.scanlator,
             url: self.url,
             cover: None,
-            timestamp: if self.date_upload > 0 {
-                Some(self.date_upload.to_string())
-            } else {
-                None
-            },
+            timestamp: epoch_millis_to_datetime(self.date_upload),
             announced: if self.date_upload > epoch_millis_now() {
                 Some(true)
             } else {
@@ -580,6 +575,16 @@ impl EpisodeDto {
             scanlator: None,
         }
     }
+}
+
+/// Converts epoch milliseconds into a `DateTime`, or `None` for the mihon
+/// "unset" value (0 / negative).
+fn epoch_millis_to_datetime(millis: i64) -> Option<chrono::DateTime<chrono::Utc>> {
+    if millis <= 0 {
+        return None;
+    }
+    use chrono::TimeZone as _;
+    chrono::Utc.timestamp_millis_opt(millis).single()
 }
 
 fn epoch_millis_now() -> i64 {
@@ -997,7 +1002,7 @@ mod tests {
         let html = "<p>First paragraph.</p><p>Second paragraph with <b>bold</b>.</p><p></p>";
         let source = text_to_paragraph_source(html.to_string());
         match source {
-            Source::Paragraphlist { paragraphs } => {
+            Source::Paragraphlist { paragraphs, .. } => {
                 assert_eq!(paragraphs.len(), 2, "empty <p></p> should be dropped");
                 // Each paragraph should have tags stripped.
                 for p in &paragraphs {
@@ -1016,7 +1021,7 @@ mod tests {
         let html = "<p>Tom &amp; Jerry &lt;3</p>";
         let source = text_to_paragraph_source(html.to_string());
         match source {
-            Source::Paragraphlist { paragraphs } => {
+            Source::Paragraphlist { paragraphs, .. } => {
                 assert_eq!(paragraphs.len(), 1);
                 match &paragraphs[0] {
                     Paragraph::Text { content, .. } => assert_eq!(content, "Tom & Jerry <3"),
@@ -1032,7 +1037,7 @@ mod tests {
         let text = "Line one.\nLine two.\n\nLine three.";
         let source = text_to_paragraph_source(text.to_string());
         match source {
-            Source::Paragraphlist { paragraphs } => {
+            Source::Paragraphlist { paragraphs, .. } => {
                 assert_eq!(paragraphs.len(), 3, "each non-empty line is a paragraph");
             }
             _ => panic!("expected Source::Paragraphlist"),
@@ -1043,7 +1048,7 @@ mod tests {
     fn text_to_paragraph_source_empty_yields_no_paragraphs() {
         let source = text_to_paragraph_source("   \n\n  ".to_string());
         match source {
-            Source::Paragraphlist { paragraphs } => assert!(paragraphs.is_empty()),
+            Source::Paragraphlist { paragraphs, .. } => assert!(paragraphs.is_empty()),
             _ => panic!("expected Source::Paragraphlist"),
         }
     }

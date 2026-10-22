@@ -19,6 +19,7 @@ use dion_runtime::data::source::EntryList;
 use dion_runtime::data::source::EpisodeId;
 use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
+use dion_runtime::data::storage::StorageUsage;
 use dion_runtime::extension::Extension;
 use dion_runtime::store::ExtensionStore;
 use dion_runtime::store::auth::AuthStore;
@@ -568,5 +569,32 @@ impl Extension for DionExtension {
             }
             None => bail!("Extension is not enabled"),
         }
+    }
+
+    async fn storage_usage(&self) -> Result<StorageUsage> {
+        let data_dir = &self.data.data_dir;
+        let cache = self.data.cache.disk_usage().await
+            + crate::filesystem::dir_size(&data_dir.join(".httpcache")).await;
+        let total = crate::filesystem::dir_size(data_dir).await;
+        let extension = tokio::fs::metadata(&self.path)
+            .await
+            .map(|meta| meta.len())
+            .unwrap_or(0);
+        Ok(StorageUsage {
+            cache: cache as f64,
+            extension_bytes: extension as f64,
+            // The cache lives inside the data dir; don't count it twice.
+            data: total.saturating_sub(cache) as f64,
+        })
+    }
+
+    async fn clear_cache(&self) -> Result<()> {
+        self.data.cache.clear_all().await?;
+        // The HTTP cache (cacache) creates its directories again on the next
+        // request; in-flight requests may fail while it is being removed.
+        tokio::fs::remove_dir_all(self.data.data_dir.join(".httpcache"))
+            .await
+            .ok();
+        Ok(())
     }
 }

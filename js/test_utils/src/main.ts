@@ -334,6 +334,11 @@ export async function assertValidSource(source: Source) {
 			for (const paragraph of sample(source.paragraphs, 5)) {
 				await assertValidParagraph(paragraph);
 			}
+			for (const audio of sample(source.audio, 5)) {
+				await assertValidURL(audio.link, {
+					assertmsg: `Source ${source.type} has an invalid url ${audio.link}`,
+				});
+			}
 			break;
 	}
 }

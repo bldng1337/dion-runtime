@@ -17,6 +17,7 @@ import type {
 	PopupAction,
 	SettingKind,
 	StackFit,
+	TimestampInput,
 	TimestampType,
 	ToastKind,
 	WrapAlignment,
@@ -39,13 +40,22 @@ export function Text(text: string, style?: TextStyle | null): CustomUI {
 	};
 }
 
+/**
+ * Builds a Timestamp UI node.
+ *
+ * Accepts anything the runtime parses leniently: an ISO-8601 string, an
+ * epoch-seconds/milliseconds number, or an object whose `toJSON()` returns
+ * an ISO-8601 string (`Date`, `Temporal.Instant.from(...)`, ...).
+ */
 export function Timestamp(
-	timestamp: string,
+	timestamp: TimestampInput,
 	display: TimestampType = "Relative",
 ): CustomUI {
+	const iso =
+		typeof timestamp === "object" ? timestamp.toJSON() : String(timestamp);
 	return {
 		type: "Timestamp",
-		timestamp: timestamp,
+		timestamp: iso,
 		display: display,
 	};
 }

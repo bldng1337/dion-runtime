@@ -1,6 +1,6 @@
 [package]
 name = "mihon-adapter"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Mihon/Tachiyomi extension adapter for dion-runtime"
 
@@ -27,6 +27,7 @@ reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"
 # Utils
 anyhow = "1.0"
 log = "0.4"
+chrono = { version = "0.4.41", default-features = false, features = ["clock", "std"] }
 thiserror = "1.0"
 tokio-util = "0.7"
 prost = "0.14.4"

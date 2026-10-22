@@ -1,6 +1,10 @@
 pub mod api;
 mod frb_generated;
 
+/// JNI-backed `content://` resolver for the `filesystem` JS module.
+#[cfg(target_os = "android")]
+mod content_android;
+
 /// Android-specific initialization.
 ///
 /// When the native library is loaded via `System.loadLibrary()` (triggered by
@@ -39,6 +43,9 @@ mod android_init {
         if let Err(e) = mihon_adapter::jni::init_android(vm as *mut _) {
             log::error!("JNI_OnLoad: init_android failed: {e}");
         }
+
+        // Resolve content:// URIs through ContentResolver for extensions.
+        content_android::install();
 
         JNI_VERSION_1_6
     }

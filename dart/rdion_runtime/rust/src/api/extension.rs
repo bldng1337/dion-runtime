@@ -127,6 +127,19 @@ impl ProxyExtension {
         Ok(store.data.clone())
     }
 
+    /// How much storage this extension uses, split into cache / extension /
+    /// data buckets.
+    #[frb(serialize)]
+    pub async fn storage_usage(&self) -> Result<dion_runtime::data::storage::StorageUsage> {
+        self.inner.inner.storage_usage().await
+    }
+
+    /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
+    /// cache); settings, cookies and extension-written files are kept.
+    pub async fn clear_cache(&self) -> Result<()> {
+        self.inner.inner.clear_cache().await
+    }
+
     #[frb(serialize)]
     pub async fn has_permission(&self, permission: Permission) -> bool {
         let store = self.inner.inner.get_data().read().await;

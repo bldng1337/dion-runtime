@@ -13,7 +13,7 @@ use anyhow::{Context as ErrorContext, Result, anyhow};
 use boa_engine::object::builtins::JsUint8Array;
 use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
-use boa_engine::{Context, JsObject, JsValue, Module, js_string};
+use boa_engine::{Context, JsError, JsNativeError, JsObject, JsResult, JsValue, Module, js_string};
 use boa_runtime::Console;
 use dion_runtime::data::action::{EventData, EventResult};
 use dion_runtime::data::activity::EntryActivity;
@@ -175,6 +175,11 @@ impl ExtensionExecutor {
         token: Option<CancellationToken>,
     ) -> Result<Value> {
         let val = Self::exec_value(context, func, args, token).await?;
+        let val = invoke_to_json_hooks(&val, context, 0)
+            .map_anyhow_ctx(context)
+            .context(format!(
+                "Failed to normalize toJSON values in {func} result"
+            ))?;
         let json = val
             .to_json(context)
             .map_anyhow_ctx(context)
@@ -199,6 +204,66 @@ impl ExtensionExecutor {
 
 pub(crate) type CancellationTokenContainer = ReadOnlyUserContextContainer<CancellationToken>;
 pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Weak<InnerExtension>>;
+
+fn invoke_to_json_hooks(value: &JsValue, context: &mut Context, depth: usize) -> JsResult<JsValue> {
+    const MAX_DEPTH: usize = 64;
+    let Some(object) = value.as_object() else {
+        return Ok(value.clone());
+    };
+    if depth > MAX_DEPTH {
+        return Ok(value.clone());
+    }
+    let to_json = object.get(js_string!("toJSON"), context)?;
+    if let Some(to_json) = to_json.as_callable() {
+        let result = to_json.call(&object.clone().into(), &[], context)?;
+        // The result itself may contain objects with `toJSON` hooks.
+        return invoke_to_json_hooks(&result, context, depth + 1);
+    }
+    if let Ok(array) = boa_engine::object::builtins::JsArray::from_object(object.clone()) {
+        let length = array.length(context)?;
+        for index in 0..length {
+            let item = array.at(index as i64, context)?;
+            if item.is_object() {
+                let converted = invoke_to_json_hooks(&item, context, depth + 1)?;
+                array.set(index as i64, converted, true, context)?;
+            }
+        }
+        return Ok(value.clone());
+    }
+    // Plain object: visit enumerable own string keys via Object.keys.
+    let object_ctor = context
+        .global_object()
+        .get(js_string!("Object"), context)?
+        .as_object()
+        .ok_or_else(|| {
+            JsError::from_native(JsNativeError::error().with_message("Object global is missing"))
+        })?;
+    let keys_fn = object_ctor
+        .get(js_string!("keys"), context)?
+        .as_callable()
+        .ok_or_else(|| {
+            JsError::from_native(JsNativeError::error().with_message("Object.keys is missing"))
+        })?
+        .clone();
+    let keys = keys_fn.call(&JsValue::undefined(), std::slice::from_ref(value), context)?;
+    let Some(keys) = keys.as_object() else {
+        return Ok(value.clone());
+    };
+    let keys = boa_engine::object::builtins::JsArray::from_object(keys).map_err(|_| {
+        JsError::from_native(JsNativeError::error().with_message("Object.keys result"))
+    })?;
+    let length = keys.length(context)?;
+    for index in 0..length {
+        let key = keys.at(index as i64, context)?;
+        let property_key = key.to_property_key(context)?;
+        let item = object.get(property_key.clone(), context)?;
+        if item.is_object() {
+            let converted = invoke_to_json_hooks(&item, context, depth + 1)?;
+            object.set(property_key, converted, true, context)?;
+        }
+    }
+    Ok(value.clone())
+}
 
 /// Converts a `handleProxy` result. A `response` body may be a `Uint8Array`;
 /// raw bytes cannot survive the JSON round-trip, so they are lifted out
@@ -638,5 +703,67 @@ impl JSExecutor<Task> for ExtensionExecutor {
                 let _ = send.send(res);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn temporal_globals_and_stringify() {
+        let mut context = Context::default();
+        // The boa `temporal` feature must be enabled for extension JS.
+        context
+            .eval(boa_engine::Source::from_bytes(
+                "typeof Temporal === 'object' && typeof Temporal.Instant === 'function'",
+            ))
+            .expect("Temporal globals missing")
+            .as_boolean()
+            .expect("expected boolean")
+            .then_some(())
+            .expect("Temporal.Instant not available");
+
+        let value = context
+            .eval(boa_engine::Source::from_bytes(
+                "({ aired: Temporal.Instant.from('2024-01-02T03:04:05Z'), list: [Temporal.PlainDate.from('2024-01-02')] })",
+            ))
+            .expect("eval failed");
+        let value = invoke_to_json_hooks(&value, &mut context, 0).expect("toJSON pass failed");
+        let json = value
+            .to_json(&mut context)
+            .expect("to_json failed")
+            .expect("expected json");
+        assert_eq!(json["aired"], "2024-01-02T03:04:05Z");
+        assert_eq!(json["list"][0], "2024-01-02");
+
+        // ZonedDateTime strings (with the bracketed zone annotation) are
+        // handed through as strings; the Rust side strips the annotation.
+        let zoned = context
+            .eval(boa_engine::Source::from_bytes(
+                "new Temporal.ZonedDateTime(0n, 'UTC').toJSON()",
+            ))
+            .expect("zdt failed");
+        let json = zoned.to_json(&mut context).unwrap().unwrap();
+        assert_eq!(json, "1970-01-01T00:00:00+00:00[UTC]");
+    }
+
+    #[test]
+    fn non_temporal_objects_pass_through() {
+        let mut context = Context::default();
+        let value = context
+            .eval(boa_engine::Source::from_bytes(
+                "({ nested: { keep: new Date(0) } })",
+            ))
+            .expect("eval failed");
+        let value = invoke_to_json_hooks(&value, &mut context, 0).expect("toJSON pass failed");
+        let json = value.to_json(&mut context).unwrap().unwrap();
+        // boa's own Date JSON handling stays intact (ISO string).
+        assert!(
+            json["nested"]["keep"]
+                .as_str()
+                .unwrap()
+                .starts_with("1970-01-01")
+        );
     }
 }

@@ -106,6 +106,33 @@ impl CacheManager {
         handles.insert(name.to_string(), inner.clone());
         Ok(inner)
     }
+
+    /// Removes the whole cache root and resets every open handle, so hosts
+    /// can reclaim an extension's cache space in one call. Caches that were
+    /// created earlier but have no live handle are removed too. Open
+    /// handles keep working: their next operation lazily recreates the
+    /// directory and starts from an empty index.
+    pub async fn clear_all(&self) -> Result<()> {
+        tokio::fs::remove_dir_all(&self.root).await.ok();
+        let handles = self
+            .handles
+            .lock()
+            .map_err(|_| anyhow!("Cache handle registry lock is poisoned"))?
+            .clone();
+        for inner in handles.values() {
+            *inner
+                .index
+                .lock()
+                .map_err(|_| anyhow!("Cache index lock is poisoned"))? = None;
+        }
+        Ok(())
+    }
+
+    /// Total size of all cache files on disk (index + entries), whether or
+    /// not a handle is currently open for them.
+    pub async fn disk_usage(&self) -> u64 {
+        crate::filesystem::dir_size(&self.root).await
+    }
 }
 
 #[derive(Debug)]

@@ -1,4 +1,5 @@
 use crate::extension::{container::InnerExtension, executor::Task};
+use crate::range_file::ProxyBody;
 use crate::utils::AbortOnDrop;
 use anyhow::{Context, Result};
 use dion_runtime::data::extension::ExtensionData;
@@ -249,6 +250,13 @@ async fn convert_request_to_string(req: Request<Incoming>) -> Result<Request<Str
 pub(crate) enum ProxyResult {
     Redirect(Request<String>),
     Response(Response<Bytes>),
+    /// Serve a local file directly from the runtime, streamed and with HTTP
+    /// `Range` support (see `range_file`). The path goes through the same
+    /// storage-permission checks as the `filesystem` module.
+    File {
+        path: String,
+        content_type: Option<String>,
+    },
 }
 
 impl TryFrom<serde_json::Value> for ProxyResult {
@@ -261,7 +269,7 @@ impl TryFrom<serde_json::Value> for ProxyResult {
 
         // Determine type field to decide whether this is a Redirect or a Response
         let type_str = obj.get("type").and_then(|v| v.as_str()).context(
-            "Missing or invalid 'type' field for ProxyResult; expected 'redirect' or 'response'",
+            "Missing or invalid 'type' field for ProxyResult; expected 'redirect', 'response' or 'file'",
         )?;
 
         match type_str.to_ascii_lowercase().as_str() {
@@ -277,6 +285,10 @@ impl TryFrom<serde_json::Value> for ProxyResult {
                 let resp =
                     value_to_response(value).context("Failed to parse Response for ProxyResult")?;
                 Ok(ProxyResult::Response(resp))
+            }
+            "file" => {
+                let (path, content_type) = crate::range_file::file_response_parts(&value)?;
+                Ok(ProxyResult::File { path, content_type })
             }
             other => anyhow::bail!("Unknown ProxyResult type: {}", other),
         }
@@ -312,7 +324,7 @@ impl Proxy {
             proxy_copy: Weak<RwLock<Proxy>>,
             client_ip: IpAddr,
             req: Request<Incoming>,
-        ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, Infallible> {
+        ) -> Result<Response<ProxyBody>, Infallible> {
             let Some(proxy) = proxy_copy.upgrade() else {
                 return Ok(Response::builder()
                     .status(StatusCode::SERVICE_UNAVAILABLE)
@@ -411,7 +423,7 @@ impl Proxy {
         extensions: &[Arc<ProxyExtensionRef>],
         _client_ip: IpAddr,
         req: Request<Incoming>,
-    ) -> Result<Response<BoxBody<Bytes, hyper::Error>>> {
+    ) -> Result<Response<ProxyBody>> {
         let req = convert_request_to_string(req).await?;
         for extension in extensions {
             let extension = match extension.runtime.upgrade() {
@@ -430,6 +442,11 @@ impl Proxy {
                 warn!("Extension at {} not enabled", ext_path);
                 continue;
             };
+            // Snapshot the request line/headers before the request value is
+            // moved into the extension task; file responses need them for
+            // method + Range handling.
+            let method = req.method().clone();
+            let request_headers = req.headers().clone();
             let (send, response) = oneshot::channel();
             let task = Task::HandleProxy { req, send };
             context
@@ -438,15 +455,29 @@ impl Proxy {
 
             match response.await?? {
                 ProxyResult::Response(resp) => {
-                    fn convert_response(
-                        response: Response<Bytes>,
-                    ) -> Response<BoxBody<Bytes, hyper::Error>> {
+                    fn convert_response(response: Response<Bytes>) -> Response<ProxyBody> {
                         let (parts, body) = response.into_parts();
                         let boxed_body = Full::new(body).map_err(|never| match never {}).boxed();
                         Response::from_parts(parts, boxed_body)
                     }
                     let a = convert_response(resp);
                     return Ok(a);
+                }
+                ProxyResult::File { path, content_type } => {
+                    // Same permission rules as the `filesystem` module: the
+                    // data dir is free, anything else needs a granted (or
+                    // prompted) Storage permission.
+                    let resolved =
+                        crate::filesystem::ensure_access(&extension, &path, false, false, "serve")
+                            .await?;
+                    let resp = crate::range_file::serve_file(
+                        &resolved,
+                        content_type.as_deref(),
+                        &method,
+                        &request_headers,
+                    )
+                    .await;
+                    return Ok(resp);
                 }
                 ProxyResult::Redirect(new_req) => {
                     let request_with_body = new_req.map(|body_string| {

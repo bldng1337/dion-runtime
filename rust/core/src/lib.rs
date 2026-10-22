@@ -2,6 +2,7 @@
 pub mod client_data;
 pub mod data;
 pub mod extension;
+pub mod logger;
 pub mod store;
 
 #[allow(unused_variables)]

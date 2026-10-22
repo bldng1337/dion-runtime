@@ -112,7 +112,8 @@ sealed class CustomUI with _$CustomUI {
     String? label,
   }) = CustomUI_Link;
   const factory CustomUI.timestamp({
-    required String timestamp,
+    /// ISO-8601 on the wire (`DateTime` in Dart).
+    required DateTime timestamp,
     required TimestampType display,
   }) = CustomUI_Timestamp;
   const factory CustomUI.entryCard({

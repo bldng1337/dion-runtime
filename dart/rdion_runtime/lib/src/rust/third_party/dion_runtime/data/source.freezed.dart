@@ -1308,7 +1308,9 @@ mixin _$Source {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1321,7 +1323,8 @@ mixin _$Source {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1334,7 +1337,8 @@ mixin _$Source {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1469,7 +1473,9 @@ class _$Source_EpubImpl extends Source_Epub {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
     return epub(link);
   }
@@ -1485,7 +1491,8 @@ class _$Source_EpubImpl extends Source_Epub {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
     return epub?.call(link);
   }
@@ -1501,7 +1508,8 @@ class _$Source_EpubImpl extends Source_Epub {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (epub != null) {
@@ -1645,7 +1653,9 @@ class _$Source_PdfImpl extends Source_Pdf {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
     return pdf(link);
   }
@@ -1661,7 +1671,8 @@ class _$Source_PdfImpl extends Source_Pdf {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
     return pdf?.call(link);
   }
@@ -1677,7 +1688,8 @@ class _$Source_PdfImpl extends Source_Pdf {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (pdf != null) {
@@ -1850,7 +1862,9 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
     return imagelist(links, this.audio);
   }
@@ -1866,7 +1880,8 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
     return imagelist?.call(links, this.audio);
   }
@@ -1882,7 +1897,8 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (imagelist != null) {
@@ -2078,7 +2094,9 @@ class _$Source_VideoImpl extends Source_Video {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
     return video(sources, sub, chapters);
   }
@@ -2094,7 +2112,8 @@ class _$Source_VideoImpl extends Source_Video {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
     return video?.call(sources, sub, chapters);
   }
@@ -2110,7 +2129,8 @@ class _$Source_VideoImpl extends Source_Video {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (video != null) {
@@ -2288,7 +2308,9 @@ class _$Source_AudioImpl extends Source_Audio {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
     return audio(sources, chapters);
   }
@@ -2304,7 +2326,8 @@ class _$Source_AudioImpl extends Source_Audio {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
     return audio?.call(sources, chapters);
   }
@@ -2320,7 +2343,8 @@ class _$Source_AudioImpl extends Source_Audio {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (audio != null) {
@@ -2395,7 +2419,7 @@ abstract class _$$Source_ParagraphlistImplCopyWith<$Res> {
           $Res Function(_$Source_ParagraphlistImpl) then) =
       __$$Source_ParagraphlistImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Paragraph> paragraphs});
+  $Res call({List<Paragraph> paragraphs, List<ImageListAudio>? audio});
 }
 
 /// @nodoc
@@ -2412,12 +2436,17 @@ class __$$Source_ParagraphlistImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? paragraphs = null,
+    Object? audio = freezed,
   }) {
     return _then(_$Source_ParagraphlistImpl(
       paragraphs: null == paragraphs
           ? _value._paragraphs
           : paragraphs // ignore: cast_nullable_to_non_nullable
               as List<Paragraph>,
+      audio: freezed == audio
+          ? _value._audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as List<ImageListAudio>?,
     ));
   }
 }
@@ -2425,8 +2454,11 @@ class __$$Source_ParagraphlistImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
-  const _$Source_ParagraphlistImpl({required final List<Paragraph> paragraphs})
+  const _$Source_ParagraphlistImpl(
+      {required final List<Paragraph> paragraphs,
+      final List<ImageListAudio>? audio})
       : _paragraphs = paragraphs,
+        _audio = audio,
         super._();
 
   final List<Paragraph> _paragraphs;
@@ -2437,9 +2469,24 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     return EqualUnmodifiableListView(_paragraphs);
   }
 
+  /// Background/narration audio spans, for parity with `Imagelist`.
+  /// `from`/`to` are paragraph indices (inclusive).
+  final List<ImageListAudio>? _audio;
+
+  /// Background/narration audio spans, for parity with `Imagelist`.
+  /// `from`/`to` are paragraph indices (inclusive).
+  @override
+  List<ImageListAudio>? get audio {
+    final value = _audio;
+    if (value == null) return null;
+    if (_audio is EqualUnmodifiableListView) return _audio;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'Source.paragraphlist(paragraphs: $paragraphs)';
+    return 'Source.paragraphlist(paragraphs: $paragraphs, audio: $audio)';
   }
 
   @override
@@ -2448,12 +2495,15 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
         (other.runtimeType == runtimeType &&
             other is _$Source_ParagraphlistImpl &&
             const DeepCollectionEquality()
-                .equals(other._paragraphs, _paragraphs));
+                .equals(other._paragraphs, _paragraphs) &&
+            const DeepCollectionEquality().equals(other._audio, _audio));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_paragraphs));
+      runtimeType,
+      const DeepCollectionEquality().hash(_paragraphs),
+      const DeepCollectionEquality().hash(_audio));
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
@@ -2478,9 +2528,11 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     required TResult Function(
             List<StreamSource> sources, List<Chapter>? chapters)
         audio,
-    required TResult Function(List<Paragraph> paragraphs) paragraphlist,
+    required TResult Function(
+            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
+        paragraphlist,
   }) {
-    return paragraphlist(paragraphs);
+    return paragraphlist(paragraphs, this.audio);
   }
 
   @override
@@ -2494,9 +2546,10 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
         video,
     TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult? Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
   }) {
-    return paragraphlist?.call(paragraphs);
+    return paragraphlist?.call(paragraphs, this.audio);
   }
 
   @override
@@ -2510,11 +2563,12 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
         video,
     TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
         audio,
-    TResult Function(List<Paragraph> paragraphs)? paragraphlist,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
     required TResult orElse(),
   }) {
     if (paragraphlist != null) {
-      return paragraphlist(paragraphs);
+      return paragraphlist(paragraphs, this.audio);
     }
     return orElse();
   }
@@ -2565,10 +2619,15 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
 
 abstract class Source_Paragraphlist extends Source {
   const factory Source_Paragraphlist(
-      {required final List<Paragraph> paragraphs}) = _$Source_ParagraphlistImpl;
+      {required final List<Paragraph> paragraphs,
+      final List<ImageListAudio>? audio}) = _$Source_ParagraphlistImpl;
   const Source_Paragraphlist._() : super._();
 
   List<Paragraph> get paragraphs;
+
+  /// Background/narration audio spans, for parity with `Imagelist`.
+  /// `from`/`to` are paragraph indices (inclusive).
+  List<ImageListAudio>? get audio;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.

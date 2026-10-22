@@ -170,9 +170,9 @@ pub(crate) async fn resolve_for_access(target: &Path) -> PathBuf {
 pub(crate) fn prepare_path(raw: &str) -> Result<PathBuf> {
     if raw.trim().starts_with("content://") {
         bail!(
-            "content:// URIs are not supported by the filesystem module; \
-             use a filesystem path (the host's directory picker can \
-             provide one)"
+            "content:// URIs are only supported by the read APIs \
+             (readFile, readTextFile, stat, exists); path-based operations \
+             need a filesystem path"
         );
     }
     let normalized = normalize_path(raw);
@@ -269,6 +269,29 @@ pub(crate) fn join_paths(parts: &[String]) -> Result<String> {
         bail!("joinPaths requires at least one non-empty part");
     }
     Ok(normalized.to_string_lossy().into_owned())
+}
+
+/// Recursively sums the size of every file below `path` (missing paths
+/// count as 0). Symlinked directories are not followed.
+pub(crate) async fn dir_size(path: &Path) -> u64 {
+    let mut stack = vec![path.to_path_buf()];
+    let mut total = 0u64;
+    while let Some(current) = stack.pop() {
+        let Ok(mut entries) = tokio::fs::read_dir(&current).await else {
+            continue;
+        };
+        while let Ok(Some(entry)) = entries.next_entry().await {
+            let Ok(file_type) = entry.file_type().await else {
+                continue;
+            };
+            if file_type.is_dir() {
+                stack.push(entry.path());
+            } else if file_type.is_file() {
+                total += entry.metadata().await.map(|meta| meta.len()).unwrap_or(0);
+            }
+        }
+    }
+    total
 }
 
 #[cfg(test)]

@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -898945943;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -53940966;
 
 // Section: executor
 
@@ -688,6 +688,51 @@ fn wire__crate__api__extension__ProxyExtension_browse_impl(
                             api_token,
                         )
                         .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyExtension_clear_cache_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    that: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_clear_cache",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::extension::ProxyExtension::clear_cache(&*api_that_guard)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -2449,6 +2494,63 @@ fn wire__crate__api__extension__ProxyExtension_source_impl(
         },
     )
 }
+fn wire__crate__api__extension__ProxyExtension_storage_usage_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyExtension_storage_usage",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueNom<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::extension::ProxyExtension::storage_usage(&*api_that_guard)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__extension__ProxyExtension_validate_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -2922,6 +3024,26 @@ fn wire__dion_runtime__data__custom_ui__stack_fit_default_impl(
         },
     )
 }
+fn wire__dion_runtime__data__storage__storage_usage_default_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::DcoCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "storage_usage_default",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            move |context| {
+                transform_result_dco::<_, _, ()>((move || {
+                    let output_ok =
+                        Result::<_, ()>::Ok(dion_runtime::data::storage::StorageUsage::default())?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__dion_runtime__data__source__text_style_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
 ) {
@@ -3114,7 +3236,7 @@ const _: fn() = || {
             let _: Option<String> = label;
         }
         dion_runtime::data::custom_ui::CustomUI::Timestamp { timestamp, display } => {
-            let _: String = timestamp;
+            let _: chrono::DateTime<chrono::Utc> = timestamp;
             let _: dion_runtime::data::custom_ui::TimestampType = display;
         }
         dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
@@ -3404,7 +3526,7 @@ const _: fn() = || {
         let _: Option<String> = Episode.description;
         let _: String = Episode.url;
         let _: Option<dion_runtime::data::source::Link> = Episode.cover;
-        let _: Option<String> = Episode.timestamp;
+        let _: Option<chrono::DateTime<chrono::Utc>> = Episode.timestamp;
         let _: Option<bool> = Episode.announced;
     }
     {
@@ -3676,8 +3798,9 @@ const _: fn() = || {
             let _: Vec<dion_runtime::data::source::StreamSource> = sources;
             let _: Option<Vec<dion_runtime::data::source::Chapter>> = chapters;
         }
-        dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
+        dion_runtime::data::source::Source::Paragraphlist { paragraphs, audio } => {
             let _: Vec<dion_runtime::data::source::Paragraph> = paragraphs;
+            let _: Option<Vec<dion_runtime::data::source::ImageListAudio>> = audio;
         }
     }
     {
@@ -3685,6 +3808,12 @@ const _: fn() = || {
         let _: dion_runtime::data::source::Source = SourceResult.source;
         let _: std::collections::HashMap<String, dion_runtime::data::settings::Setting> =
             SourceResult.settings;
+    }
+    {
+        let StorageUsage = None::<dion_runtime::data::storage::StorageUsage>.unwrap();
+        let _: f64 = StorageUsage.cache;
+        let _: f64 = StorageUsage.extension_bytes;
+        let _: f64 = StorageUsage.data;
     }
     {
         let StreamSource = None::<dion_runtime::data::source::StreamSource>.unwrap();
@@ -3989,6 +4118,19 @@ fn decode_DartFn_Inputs_permission_opt_String_Output_bool_AnyhowException(
 
 // Section: dart2rust
 
+impl CstDecode<chrono::DateTime<chrono::Utc>> for i64 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> chrono::DateTime<chrono::Utc> {
+        let flutter_rust_bridge::for_generated::Timestamp { s, ns } =
+            flutter_rust_bridge::for_generated::decode_timestamp(self);
+        chrono::DateTime::<chrono::Utc>::from_naive_utc_and_offset(
+            chrono::DateTime::from_timestamp(s, ns)
+                .expect("invalid or out-of-range datetime")
+                .naive_utc(),
+            chrono::Utc,
+        )
+    }
+}
 impl CstDecode<dion_runtime::data::custom_ui::Alignment> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> dion_runtime::data::custom_ui::Alignment {
@@ -4109,6 +4251,12 @@ impl CstDecode<f64> for f64 {
 impl CstDecode<i32> for i32 {
     // Codec=Cst (C-struct based), see doc to use other codecs
     fn cst_decode(self) -> i32 {
+        self
+    }
+}
+impl CstDecode<i64> for i64 {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    fn cst_decode(self) -> i64 {
         self
     }
 }
@@ -4314,6 +4462,19 @@ impl SseDecode for ProxyExtension {
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for chrono::DateTime<chrono::Utc> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i64>::sse_decode(deserializer);
+        return chrono::DateTime::<chrono::Utc>::from_naive_utc_and_offset(
+            chrono::DateTime::from_timestamp_micros(inner)
+                .expect("invalid or out-of-range datetime")
+                .naive_utc(),
+            chrono::Utc,
+        );
     }
 }
 
@@ -4796,7 +4957,7 @@ impl SseDecode for dion_runtime::data::custom_ui::CustomUI {
                 };
             }
             3 => {
-                let mut var_timestamp = <String>::sse_decode(deserializer);
+                let mut var_timestamp = <chrono::DateTime<chrono::Utc>>::sse_decode(deserializer);
                 let mut var_display =
                     <dion_runtime::data::custom_ui::TimestampType>::sse_decode(deserializer);
                 return dion_runtime::data::custom_ui::CustomUI::Timestamp {
@@ -5332,7 +5493,7 @@ impl SseDecode for dion_runtime::data::source::Episode {
         let mut var_description = <Option<String>>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_cover = <Option<dion_runtime::data::source::Link>>::sse_decode(deserializer);
-        let mut var_timestamp = <Option<String>>::sse_decode(deserializer);
+        let mut var_timestamp = <Option<chrono::DateTime<chrono::Utc>>>::sse_decode(deserializer);
         let mut var_announced = <Option<bool>>::sse_decode(deserializer);
         return dion_runtime::data::source::Episode {
             id: var_id,
@@ -5583,6 +5744,13 @@ impl SseDecode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_i32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for i64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i64::<NativeEndian>().unwrap()
     }
 }
 
@@ -6155,6 +6323,17 @@ impl SseDecode for Option<CancelToken> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<CancelToken>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<chrono::DateTime<chrono::Utc>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<chrono::DateTime<chrono::Utc>>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -6905,8 +7084,13 @@ impl SseDecode for dion_runtime::data::source::Source {
             5 => {
                 let mut var_paragraphs =
                     <Vec<dion_runtime::data::source::Paragraph>>::sse_decode(deserializer);
+                let mut var_audio =
+                    <Option<Vec<dion_runtime::data::source::ImageListAudio>>>::sse_decode(
+                        deserializer,
+                    );
                 return dion_runtime::data::source::Source::Paragraphlist {
                     paragraphs: var_paragraphs,
+                    audio: var_audio,
                 };
             }
             _ => {
@@ -6968,6 +7152,20 @@ impl SseDecode for dion_runtime::data::custom_ui::StackFit {
             1 => dion_runtime::data::custom_ui::StackFit::Expand,
             2 => dion_runtime::data::custom_ui::StackFit::Passthrough,
             _ => unreachable!("Invalid variant for StackFit: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for dion_runtime::data::storage::StorageUsage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_cache = <f64>::sse_decode(deserializer);
+        let mut var_extensionBytes = <f64>::sse_decode(deserializer);
+        let mut var_data = <f64>::sse_decode(deserializer);
+        return dion_runtime::data::storage::StorageUsage {
+            cache: var_cache,
+            extension_bytes: var_extensionBytes,
+            data: var_data,
         };
     }
 }
@@ -8939,9 +9137,12 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::source::So
                 chapters.into_into_dart().into_dart(),
             ]
             .into_dart(),
-            dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
-                [5.into_dart(), paragraphs.into_into_dart().into_dart()].into_dart()
-            }
+            dion_runtime::data::source::Source::Paragraphlist { paragraphs, audio } => [
+                5.into_dart(),
+                paragraphs.into_into_dart().into_dart(),
+                audio.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -9045,6 +9246,28 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::custom_ui:
     for dion_runtime::data::custom_ui::StackFit
 {
     fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::custom_ui::StackFit> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<dion_runtime::data::storage::StorageUsage> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.cache.into_into_dart().into_dart(),
+            self.0.extension_bytes.into_into_dart().into_dart(),
+            self.0.data.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<dion_runtime::data::storage::StorageUsage>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<dion_runtime::data::storage::StorageUsage>>
+    for dion_runtime::data::storage::StorageUsage
+{
+    fn into_into_dart(self) -> FrbWrapper<dion_runtime::data::storage::StorageUsage> {
         self.into()
     }
 }
@@ -9280,6 +9503,13 @@ impl SseEncode for ProxyExtension {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, StdArc<_>>(self), serializer);
+    }
+}
+
+impl SseEncode for chrono::DateTime<chrono::Utc> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i64>::sse_encode(self.timestamp_micros(), serializer);
     }
 }
 
@@ -9746,7 +9976,7 @@ impl SseEncode for dion_runtime::data::custom_ui::CustomUI {
             }
             dion_runtime::data::custom_ui::CustomUI::Timestamp { timestamp, display } => {
                 <i32>::sse_encode(3, serializer);
-                <String>::sse_encode(timestamp, serializer);
+                <chrono::DateTime<chrono::Utc>>::sse_encode(timestamp, serializer);
                 <dion_runtime::data::custom_ui::TimestampType>::sse_encode(display, serializer);
             }
             dion_runtime::data::custom_ui::CustomUI::EntryCard { entry } => {
@@ -10177,7 +10407,7 @@ impl SseEncode for dion_runtime::data::source::Episode {
         <Option<String>>::sse_encode(self.description, serializer);
         <String>::sse_encode(self.url, serializer);
         <Option<dion_runtime::data::source::Link>>::sse_encode(self.cover, serializer);
-        <Option<String>>::sse_encode(self.timestamp, serializer);
+        <Option<chrono::DateTime<chrono::Utc>>>::sse_encode(self.timestamp, serializer);
         <Option<bool>>::sse_encode(self.announced, serializer);
     }
 }
@@ -10371,6 +10601,13 @@ impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for i64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i64::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -10827,6 +11064,16 @@ impl SseEncode for Option<CancelToken> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <CancelToken>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<chrono::DateTime<chrono::Utc>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <chrono::DateTime<chrono::Utc>>::sse_encode(value, serializer);
         }
     }
 }
@@ -11432,9 +11679,12 @@ impl SseEncode for dion_runtime::data::source::Source {
                     chapters, serializer,
                 );
             }
-            dion_runtime::data::source::Source::Paragraphlist { paragraphs } => {
+            dion_runtime::data::source::Source::Paragraphlist { paragraphs, audio } => {
                 <i32>::sse_encode(5, serializer);
                 <Vec<dion_runtime::data::source::Paragraph>>::sse_encode(paragraphs, serializer);
+                <Option<Vec<dion_runtime::data::source::ImageListAudio>>>::sse_encode(
+                    audio, serializer,
+                );
             }
             _ => {
                 unimplemented!("");
@@ -11504,6 +11754,15 @@ impl SseEncode for dion_runtime::data::custom_ui::StackFit {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for dion_runtime::data::storage::StorageUsage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <f64>::sse_encode(self.cache, serializer);
+        <f64>::sse_encode(self.extension_bytes, serializer);
+        <f64>::sse_encode(self.data, serializer);
     }
 }
 
@@ -11997,6 +12256,13 @@ mod io {
         fn cst_decode(self) -> CancelToken {
             let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
             CstDecode::<CancelToken>::cst_decode(*wrap).into()
+        }
+    }
+    impl CstDecode<chrono::DateTime<chrono::Utc>> for *mut i64 {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> chrono::DateTime<chrono::Utc> {
+            let wrap = unsafe { flutter_rust_bridge::for_generated::box_from_leak_ptr(self) };
+            CstDecode::<chrono::DateTime<chrono::Utc>>::cst_decode(*wrap).into()
         }
     }
     impl CstDecode<dion_runtime::data::auth::Account> for *mut wire_cst_account {
@@ -13363,6 +13629,7 @@ mod io {
                     let ans = unsafe { self.kind.Paragraphlist };
                     dion_runtime::data::source::Source::Paragraphlist {
                         paragraphs: ans.paragraphs.cst_decode(),
+                        audio: ans.audio.cst_decode(),
                     }
                 }
                 _ => unreachable!(),
@@ -13375,6 +13642,16 @@ mod io {
             dion_runtime::data::source::SourceResult {
                 source: self.source.cst_decode(),
                 settings: self.settings.cst_decode(),
+            }
+        }
+    }
+    impl CstDecode<dion_runtime::data::storage::StorageUsage> for wire_cst_storage_usage {
+        // Codec=Cst (C-struct based), see doc to use other codecs
+        fn cst_decode(self) -> dion_runtime::data::storage::StorageUsage {
+            dion_runtime::data::storage::StorageUsage {
+                cache: self.cache.cst_decode(),
+                extension_bytes: self.extension_bytes.cst_decode(),
+                data: self.data.cst_decode(),
             }
         }
     }
@@ -14066,6 +14343,20 @@ mod io {
             Self::new_with_null_ptr()
         }
     }
+    impl NewWithNullPtr for wire_cst_storage_usage {
+        fn new_with_null_ptr() -> Self {
+            Self {
+                cache: Default::default(),
+                extension_bytes: Default::default(),
+                data: Default::default(),
+            }
+        }
+    }
+    impl Default for wire_cst_storage_usage {
+        fn default() -> Self {
+            Self::new_with_null_ptr()
+        }
+    }
     impl NewWithNullPtr for wire_cst_stream_source {
         fn new_with_null_ptr() -> Self {
             Self {
@@ -14264,6 +14555,14 @@ mod io {
             rust_vec_len_,
             data_len_,
         )
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_clear_cache(
+        port_: i64,
+        that: usize,
+    ) {
+        wire__crate__api__extension__ProxyExtension_clear_cache_impl(port_, that)
     }
 
     #[unsafe(no_mangle)]
@@ -14653,6 +14952,21 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_storage_usage(
+        port_: i64,
+        ptr_: *mut u8,
+        rust_vec_len_: i32,
+        data_len_: i32,
+    ) {
+        wire__crate__api__extension__ProxyExtension_storage_usage_impl(
+            port_,
+            ptr_,
+            rust_vec_len_,
+            data_len_,
+        )
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_validate(
         port_: i64,
         ptr_: *mut u8,
@@ -14806,6 +15120,13 @@ mod io {
     }
 
     #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__storage__storage_usage_default(
+        port_: i64,
+    ) {
+        wire__dion_runtime__data__storage__storage_usage_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_rdion_runtime_wire__dion_runtime__data__source__text_style_default(
         port_: i64,
     ) {
@@ -14932,6 +15253,11 @@ mod io {
     pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
         value: usize,
     ) -> *mut usize {
+        flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_cst_new_box_autoadd_Chrono_Utc(value: i64) -> *mut i64 {
         flutter_rust_bridge::for_generated::new_leak_box_ptr(value)
     }
 
@@ -15679,7 +16005,7 @@ mod io {
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_CustomUI_Timestamp {
-        timestamp: *mut wire_cst_list_prim_u_8_strict,
+        timestamp: i64,
         display: i32,
     }
     #[repr(C)]
@@ -15955,7 +16281,7 @@ mod io {
         description: *mut wire_cst_list_prim_u_8_strict,
         url: *mut wire_cst_list_prim_u_8_strict,
         cover: *mut wire_cst_link,
-        timestamp: *mut wire_cst_list_prim_u_8_strict,
+        timestamp: *mut i64,
         announced: *mut bool,
     }
     #[repr(C)]
@@ -16619,12 +16945,20 @@ mod io {
     #[derive(Clone, Copy)]
     pub struct wire_cst_Source_Paragraphlist {
         paragraphs: *mut wire_cst_list_paragraph,
+        audio: *mut wire_cst_list_image_list_audio,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]
     pub struct wire_cst_source_result {
         source: wire_cst_source,
         settings: *mut wire_cst_list_record_string_setting,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    pub struct wire_cst_storage_usage {
+        cache: f64,
+        extension_bytes: f64,
+        data: f64,
     }
     #[repr(C)]
     #[derive(Clone, Copy)]

@@ -21,7 +21,7 @@ mixin _$CustomUI {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -106,7 +106,7 @@ mixin _$CustomUI {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -184,7 +184,7 @@ mixin _$CustomUI {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -461,7 +461,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -549,7 +549,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -630,7 +630,7 @@ class _$CustomUI_TextImpl extends CustomUI_Text {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -929,7 +929,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -1017,7 +1017,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -1098,7 +1098,7 @@ class _$CustomUI_ImageImpl extends CustomUI_Image {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -1389,7 +1389,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -1477,7 +1477,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -1558,7 +1558,7 @@ class _$CustomUI_LinkImpl extends CustomUI_Link {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -1773,7 +1773,7 @@ abstract class _$$CustomUI_TimestampImplCopyWith<$Res> {
           $Res Function(_$CustomUI_TimestampImpl) then) =
       __$$CustomUI_TimestampImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String timestamp, TimestampType display});
+  $Res call({DateTime timestamp, TimestampType display});
 }
 
 /// @nodoc
@@ -1796,7 +1796,7 @@ class __$$CustomUI_TimestampImplCopyWithImpl<$Res>
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       display: null == display
           ? _value.display
           : display // ignore: cast_nullable_to_non_nullable
@@ -1812,8 +1812,9 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
       {required this.timestamp, required this.display})
       : super._();
 
+  /// ISO-8601 on the wire (`DateTime` in Dart).
   @override
-  final String timestamp;
+  final DateTime timestamp;
   @override
   final TimestampType display;
 
@@ -1850,7 +1851,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -1938,7 +1939,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -2019,7 +2020,7 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -2215,11 +2216,12 @@ class _$CustomUI_TimestampImpl extends CustomUI_Timestamp {
 
 abstract class CustomUI_Timestamp extends CustomUI {
   const factory CustomUI_Timestamp(
-      {required final String timestamp,
+      {required final DateTime timestamp,
       required final TimestampType display}) = _$CustomUI_TimestampImpl;
   const CustomUI_Timestamp._() : super._();
 
-  String get timestamp;
+  /// ISO-8601 on the wire (`DateTime` in Dart).
+  DateTime get timestamp;
   TimestampType get display;
 
   /// Create a copy of CustomUI
@@ -2301,7 +2303,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -2389,7 +2391,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -2470,7 +2472,7 @@ class _$CustomUI_EntryCardImpl extends CustomUI_EntryCard {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -2816,7 +2818,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -2904,7 +2906,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -2985,7 +2987,7 @@ class _$CustomUI_CardImpl extends CustomUI_Card {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -3243,7 +3245,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -3331,7 +3333,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -3412,7 +3414,7 @@ class _$CustomUI_SpinnerImpl extends CustomUI_Spinner {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -3691,7 +3693,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -3779,7 +3781,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -3860,7 +3862,7 @@ class _$CustomUI_FeedImpl extends CustomUI_Feed {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -4190,7 +4192,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -4278,7 +4280,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -4359,7 +4361,7 @@ class _$CustomUI_ButtonImpl extends CustomUI_Button {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -4685,7 +4687,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -4773,7 +4775,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -4854,7 +4856,7 @@ class _$CustomUI_InlineSettingImpl extends CustomUI_InlineSetting {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -5191,7 +5193,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -5279,7 +5281,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -5360,7 +5362,7 @@ class _$CustomUI_SlotImpl extends CustomUI_Slot {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -5706,7 +5708,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -5795,7 +5797,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -5877,7 +5879,7 @@ class _$CustomUI_ColumnImpl extends CustomUI_Column {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -6225,7 +6227,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -6314,7 +6316,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -6396,7 +6398,7 @@ class _$CustomUI_RowImpl extends CustomUI_Row {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -6750,7 +6752,7 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -6838,7 +6840,7 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -6919,7 +6921,7 @@ class _$CustomUI_TextInputImpl extends CustomUI_TextInput {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -7226,7 +7228,7 @@ class _$CustomUI_PaddingImpl extends CustomUI_Padding {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -7314,7 +7316,7 @@ class _$CustomUI_PaddingImpl extends CustomUI_Padding {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -7395,7 +7397,7 @@ class _$CustomUI_PaddingImpl extends CustomUI_Padding {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -7777,7 +7779,7 @@ class _$CustomUI_ContainerImpl extends CustomUI_Container {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -7866,7 +7868,7 @@ class _$CustomUI_ContainerImpl extends CustomUI_Container {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -7948,7 +7950,7 @@ class _$CustomUI_ContainerImpl extends CustomUI_Container {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -8306,7 +8308,7 @@ class _$CustomUI_ClickableImpl extends CustomUI_Clickable {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -8394,7 +8396,7 @@ class _$CustomUI_ClickableImpl extends CustomUI_Clickable {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -8475,7 +8477,7 @@ class _$CustomUI_ClickableImpl extends CustomUI_Clickable {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -8780,7 +8782,7 @@ class _$CustomUI_ExpandedImpl extends CustomUI_Expanded {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -8868,7 +8870,7 @@ class _$CustomUI_ExpandedImpl extends CustomUI_Expanded {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -8949,7 +8951,7 @@ class _$CustomUI_ExpandedImpl extends CustomUI_Expanded {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -9264,7 +9266,7 @@ class _$CustomUI_SizedBoxImpl extends CustomUI_SizedBox {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -9352,7 +9354,7 @@ class _$CustomUI_SizedBoxImpl extends CustomUI_SizedBox {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -9433,7 +9435,7 @@ class _$CustomUI_SizedBoxImpl extends CustomUI_SizedBox {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -9717,7 +9719,7 @@ class _$CustomUI_SpacerImpl extends CustomUI_Spacer {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -9805,7 +9807,7 @@ class _$CustomUI_SpacerImpl extends CustomUI_Spacer {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -9886,7 +9888,7 @@ class _$CustomUI_SpacerImpl extends CustomUI_Spacer {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -10212,7 +10214,7 @@ class _$CustomUI_WrapImpl extends CustomUI_Wrap {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -10300,7 +10302,7 @@ class _$CustomUI_WrapImpl extends CustomUI_Wrap {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -10381,7 +10383,7 @@ class _$CustomUI_WrapImpl extends CustomUI_Wrap {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -10679,7 +10681,7 @@ class _$CustomUI_CenterImpl extends CustomUI_Center {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -10767,7 +10769,7 @@ class _$CustomUI_CenterImpl extends CustomUI_Center {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -10848,7 +10850,7 @@ class _$CustomUI_CenterImpl extends CustomUI_Center {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -11150,7 +11152,7 @@ class _$CustomUI_AlignImpl extends CustomUI_Align {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -11238,7 +11240,7 @@ class _$CustomUI_AlignImpl extends CustomUI_Align {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -11319,7 +11321,7 @@ class _$CustomUI_AlignImpl extends CustomUI_Align {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -11628,7 +11630,7 @@ class _$CustomUI_StackImpl extends CustomUI_Stack {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -11716,7 +11718,7 @@ class _$CustomUI_StackImpl extends CustomUI_Stack {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -11797,7 +11799,7 @@ class _$CustomUI_StackImpl extends CustomUI_Stack {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -12053,7 +12055,7 @@ class _$CustomUI_DividerImpl extends CustomUI_Divider {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -12141,7 +12143,7 @@ class _$CustomUI_DividerImpl extends CustomUI_Divider {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -12222,7 +12224,7 @@ class _$CustomUI_DividerImpl extends CustomUI_Divider {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -12641,7 +12643,7 @@ class _$CustomUI_ListTileImpl extends CustomUI_ListTile {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -12729,7 +12731,7 @@ class _$CustomUI_ListTileImpl extends CustomUI_ListTile {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -12811,7 +12813,7 @@ class _$CustomUI_ListTileImpl extends CustomUI_ListTile {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -13121,7 +13123,7 @@ class _$CustomUI_BadgeImpl extends CustomUI_Badge {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -13209,7 +13211,7 @@ class _$CustomUI_BadgeImpl extends CustomUI_Badge {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -13290,7 +13292,7 @@ class _$CustomUI_BadgeImpl extends CustomUI_Badge {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -13603,7 +13605,7 @@ class _$CustomUI_FoldableTextImpl extends CustomUI_FoldableText {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -13691,7 +13693,7 @@ class _$CustomUI_FoldableTextImpl extends CustomUI_FoldableText {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -13772,7 +13774,7 @@ class _$CustomUI_FoldableTextImpl extends CustomUI_FoldableText {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -14069,7 +14071,7 @@ class _$CustomUI_StarDisplayImpl extends CustomUI_StarDisplay {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -14157,7 +14159,7 @@ class _$CustomUI_StarDisplayImpl extends CustomUI_StarDisplay {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -14238,7 +14240,7 @@ class _$CustomUI_StarDisplayImpl extends CustomUI_StarDisplay {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -14567,7 +14569,7 @@ class _$CustomUI_DropdownImpl extends CustomUI_Dropdown {
     required TResult Function(String text, TextStyle? style) text,
     required TResult Function(Link image, int? width, int? height) image,
     required TResult Function(String link, String? label) link,
-    required TResult Function(String timestamp, TimestampType display)
+    required TResult Function(DateTime timestamp, TimestampType display)
         timestamp,
     required TResult Function(Entry entry) entryCard,
     required TResult Function(
@@ -14655,7 +14657,7 @@ class _$CustomUI_DropdownImpl extends CustomUI_Dropdown {
     TResult? Function(String text, TextStyle? style)? text,
     TResult? Function(Link image, int? width, int? height)? image,
     TResult? Function(String link, String? label)? link,
-    TResult? Function(String timestamp, TimestampType display)? timestamp,
+    TResult? Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult? Function(Entry entry)? entryCard,
     TResult? Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?
@@ -14736,7 +14738,7 @@ class _$CustomUI_DropdownImpl extends CustomUI_Dropdown {
     TResult Function(String text, TextStyle? style)? text,
     TResult Function(Link image, int? width, int? height)? image,
     TResult Function(String link, String? label)? link,
-    TResult Function(String timestamp, TimestampType display)? timestamp,
+    TResult Function(DateTime timestamp, TimestampType display)? timestamp,
     TResult Function(Entry entry)? entryCard,
     TResult Function(
             Link image, CustomUI top, CustomUI bottom, Interaction? onClick)?

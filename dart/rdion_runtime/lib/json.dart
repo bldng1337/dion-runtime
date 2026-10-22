@@ -593,7 +593,7 @@ extension JsonCustomUI on CustomUI {
           },
         CustomUI_Timestamp(:final timestamp, :final display) => {
             "type": "Timestamp",
-            "timestamp": timestamp,
+            "timestamp": timestamp.toIso8601String(),
             "display": display.toJson(),
           },
         CustomUI_EntryCard(:final entry) => {
@@ -859,7 +859,7 @@ extension JsonCustomUI on CustomUI {
         return CustomUI.link(link: value["link"], label: value["label"]);
       case "Timestamp":
         return CustomUI.timestamp(
-          timestamp: value["timestamp"],
+          timestamp: DateTime.parse(value["timestamp"] as String),
           display: JsonTimestampType.fromJson(value["display"]),
         );
       case "EntryCard":
@@ -1609,7 +1609,7 @@ extension JsonEpisode on Episode {
         if (description != null) "description": description,
         "url": url,
         if (cover != null) "cover": cover!.toJson(),
-        if (timestamp != null) "timestamp": timestamp,
+        if (timestamp != null) "timestamp": timestamp!.toIso8601String(),
         if (announced != null) "announced": announced,
       };
 
@@ -1620,7 +1620,9 @@ extension JsonEpisode on Episode {
         url: value["url"],
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
-        timestamp: value["timestamp"],
+        timestamp: value["timestamp"] != null
+            ? DateTime.parse(value["timestamp"] as String)
+            : null,
         announced: value["announced"],
       );
 }
@@ -1675,9 +1677,10 @@ extension JsonSource on Source {
             "type": "Audio",
             "sources": sources.map((e) => e.toJson()).toList(),
           },
-        Source_Paragraphlist(:final paragraphs) => {
+        Source_Paragraphlist(:final paragraphs, :final audio) => {
             "type": "Paragraphlist",
             "paragraphs": paragraphs.map((e) => e.toJson()).toList(),
+            if (audio != null) "audio": audio.map((e) => e.toJson()).toList(),
           },
       };
 
@@ -1721,6 +1724,11 @@ extension JsonSource on Source {
           paragraphs: (value["paragraphs"] as List)
               .map((e) => JsonParagraph.fromJson(e))
               .toList(),
+          audio: value["audio"] != null
+              ? (value["audio"] as List)
+                  .map((e) => JsonImageListAudio.fromJson(e))
+                  .toList()
+              : null,
         );
       default:
         throw FormatException("Unknown Source type: $type");

@@ -14,6 +14,7 @@ use crate::{
         source::{
             EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
         },
+        storage::StorageUsage,
     },
     store::ExtensionStore,
 };
@@ -111,4 +112,12 @@ pub trait Extension: Send + Sync {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult>;
+
+    async fn storage_usage(&self) -> Result<StorageUsage> {
+        Ok(StorageUsage::default())
+    }
+
+    async fn clear_cache(&self) -> Result<()> {
+        Ok(())
+    }
 }

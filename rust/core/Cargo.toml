@@ -1,6 +1,6 @@
 [package]
 name = "dion-runtime"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [features]
@@ -17,7 +17,11 @@ tokio = { version = "1.46.0", features = [
 ] }
 
 anyhow = "1.0.0"
-log = "0.4.0"
+log = { version = "0.4.0", features = ["std"] }
+chrono = { version = "0.4.41", default-features = false, features = [
+    "clock",
+    "std",
+] }
 
 serde = { version = "1.0.0", features = ["derive"] }
 serde_json = "1.0.0"
@@ -25,7 +29,7 @@ serde_json = "1.0.0"
 tokio-util = "0.7.0"
 async-trait = "0.1.0"
 
-specta = { version = "1.0.5", features = ["export"], optional = true  }
+specta = { version = "1.0.5", features = ["export", "chrono"], optional = true  }
 specta-typescript = { version = "0.0.9",optional = true }
 #=2.0.0-rc.22
 specta-valibot= { path = "../specta_valibot", optional = true }

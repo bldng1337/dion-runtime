@@ -22,6 +22,7 @@ import 'third_party/dion_runtime/data/extension_repo.dart';
 import 'third_party/dion_runtime/data/permission.dart';
 import 'third_party/dion_runtime/data/settings.dart';
 import 'third_party/dion_runtime/data/source.dart';
+import 'third_party/dion_runtime/data/storage.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RustLibApiImplPlatform({
@@ -103,6 +104,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ProxyExtension
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
           dynamic raw);
+
+  @protected
+  DateTime dco_decode_Chrono_Utc(dynamic raw);
 
   @protected
   FutureOr<String> Function(String)
@@ -217,6 +221,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           dynamic raw);
+
+  @protected
+  DateTime dco_decode_box_autoadd_Chrono_Utc(dynamic raw);
 
   @protected
   Account dco_decode_box_autoadd_account(dynamic raw);
@@ -414,6 +421,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_i_32(dynamic raw);
 
   @protected
+  PlatformInt64 dco_decode_i_64(dynamic raw);
+
+  @protected
   ImageListAudio dco_decode_image_list_audio(dynamic raw);
 
   @protected
@@ -541,6 +551,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken?
       dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           dynamic raw);
+
+  @protected
+  DateTime? dco_decode_opt_box_autoadd_Chrono_Utc(dynamic raw);
 
   @protected
   Account? dco_decode_opt_box_autoadd_account(dynamic raw);
@@ -695,6 +708,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   StackFit dco_decode_stack_fit(dynamic raw);
 
   @protected
+  StorageUsage dco_decode_storage_usage(dynamic raw);
+
+  @protected
   StreamSource dco_decode_stream_source(dynamic raw);
 
   @protected
@@ -784,6 +800,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  DateTime sse_decode_Chrono_Utc(SseDeserializer deserializer);
+
+  @protected
   Object sse_decode_DartOpaque(SseDeserializer deserializer);
 
   @protected
@@ -869,6 +888,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
+
+  @protected
+  DateTime sse_decode_box_autoadd_Chrono_Utc(SseDeserializer deserializer);
 
   @protected
   Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
@@ -1078,6 +1100,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
+
+  @protected
   ImageListAudio sse_decode_image_list_audio(SseDeserializer deserializer);
 
   @protected
@@ -1218,6 +1243,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CancelToken?
       sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           SseDeserializer deserializer);
+
+  @protected
+  DateTime? sse_decode_opt_box_autoadd_Chrono_Utc(SseDeserializer deserializer);
 
   @protected
   Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
@@ -1390,6 +1418,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   StackFit sse_decode_stack_fit(SseDeserializer deserializer);
 
   @protected
+  StorageUsage sse_decode_storage_usage(SseDeserializer deserializer);
+
+  @protected
   StreamSource sse_decode_stream_source(SseDeserializer deserializer);
 
   @protected
@@ -1431,6 +1462,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       AnyhowException raw) {
     // Codec=Cst (C-struct based), see doc to use other codecs
     throw UnimplementedError();
+  }
+
+  @protected
+  int cst_encode_Chrono_Utc(DateTime raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return cst_encode_i_64(raw.microsecondsSinceEpoch);
   }
 
   @protected
@@ -1516,6 +1553,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
         .cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             cst_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
                 raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int64> cst_encode_box_autoadd_Chrono_Utc(DateTime raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return wire.cst_new_box_autoadd_Chrono_Utc(cst_encode_Chrono_Utc(raw));
   }
 
   @protected
@@ -1729,6 +1772,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     final ptr = wire.cst_new_box_interaction();
     cst_api_fill_to_wire_interaction(raw, ptr.ref);
     return ptr;
+  }
+
+  @protected
+  int cst_encode_i_64(PlatformInt64 raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw.toInt();
   }
 
   @protected
@@ -2074,6 +2123,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
         ? ffi.nullptr
         : cst_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.Int64> cst_encode_opt_box_autoadd_Chrono_Utc(DateTime? raw) {
+    // Codec=Cst (C-struct based), see doc to use other codecs
+    return raw == null ? ffi.nullptr : cst_encode_box_autoadd_Chrono_Utc(raw);
   }
 
   @protected
@@ -2519,7 +2574,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       return;
     }
     if (apiObj is CustomUI_Timestamp) {
-      var pre_timestamp = cst_encode_String(apiObj.timestamp);
+      var pre_timestamp = cst_encode_Chrono_Utc(apiObj.timestamp);
       var pre_display = cst_encode_timestamp_type(apiObj.display);
       wireObj.tag = 3;
       wireObj.kind.Timestamp.timestamp = pre_timestamp;
@@ -2907,7 +2962,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     wireObj.description = cst_encode_opt_String(apiObj.description);
     wireObj.url = cst_encode_String(apiObj.url);
     wireObj.cover = cst_encode_opt_box_autoadd_link(apiObj.cover);
-    wireObj.timestamp = cst_encode_opt_String(apiObj.timestamp);
+    wireObj.timestamp = cst_encode_opt_box_autoadd_Chrono_Utc(apiObj.timestamp);
     wireObj.announced = cst_encode_opt_box_autoadd_bool(apiObj.announced);
   }
 
@@ -3374,8 +3429,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     }
     if (apiObj is Source_Paragraphlist) {
       var pre_paragraphs = cst_encode_list_paragraph(apiObj.paragraphs);
+      var pre_audio = cst_encode_opt_list_image_list_audio(apiObj.audio);
       wireObj.tag = 5;
       wireObj.kind.Paragraphlist.paragraphs = pre_paragraphs;
+      wireObj.kind.Paragraphlist.audio = pre_audio;
       return;
     }
   }
@@ -3385,6 +3442,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SourceResult apiObj, wire_cst_source_result wireObj) {
     cst_api_fill_to_wire_source(apiObj.source, wireObj.source);
     wireObj.settings = cst_encode_Map_String_setting_None(apiObj.settings);
+  }
+
+  @protected
+  void cst_api_fill_to_wire_storage_usage(
+      StorageUsage apiObj, wire_cst_storage_usage wireObj) {
+    wireObj.cache = cst_encode_f_64(apiObj.cache);
+    wireObj.extension_bytes = cst_encode_f_64(apiObj.extensionBytes);
+    wireObj.data = cst_encode_f_64(apiObj.data);
   }
 
   @protected
@@ -3621,6 +3686,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           ProxyExtension self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Chrono_Utc(DateTime self, SseSerializer serializer);
+
+  @protected
   void sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
       FutureOr<String> Function(String) self, SseSerializer serializer);
 
@@ -3742,6 +3810,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_Chrono_Utc(
+      DateTime self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
@@ -3967,6 +4039,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
   void sse_encode_image_list_audio(
       ImageListAudio self, SseSerializer serializer);
 
@@ -4116,6 +4191,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           CancelToken? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_Chrono_Utc(
+      DateTime? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_account(
@@ -4294,6 +4373,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_stack_fit(StackFit self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_storage_usage(StorageUsage self, SseSerializer serializer);
 
   @protected
   void sse_encode_stream_source(StreamSource self, SseSerializer serializer);
@@ -4649,6 +4731,24 @@ class RustLibWire implements BaseWire {
   late final _wire__crate__api__extension__ProxyExtension_browse =
       _wire__crate__api__extension__ProxyExtension_browsePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
+  void wire__crate__api__extension__ProxyExtension_clear_cache(
+    int port_,
+    int that,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_clear_cache(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_clear_cachePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_clear_cache',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_clear_cache =
+      _wire__crate__api__extension__ProxyExtension_clear_cachePtr
+          .asFunction<void Function(int, int)>();
 
   void wire__crate__api__extension__ProxyExtension_detail(
     int port_,
@@ -5442,6 +5542,35 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyExtension_sourcePtr
           .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
 
+  void wire__crate__api__extension__ProxyExtension_storage_usage(
+    int port_,
+    ffi.Pointer<ffi.Uint8> ptr_,
+    int rust_vec_len_,
+    int data_len_,
+  ) {
+    return _wire__crate__api__extension__ProxyExtension_storage_usage(
+      port_,
+      ptr_,
+      rust_vec_len_,
+      data_len_,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyExtension_storage_usagePtr =
+      _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                ffi.Int64,
+                ffi.Pointer<ffi.Uint8>,
+                ffi.Int32,
+                ffi.Int32,
+              )>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyExtension_storage_usage',
+  );
+  late final _wire__crate__api__extension__ProxyExtension_storage_usage =
+      _wire__crate__api__extension__ProxyExtension_storage_usagePtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Uint8>, int, int)>();
+
   void wire__crate__api__extension__ProxyExtension_validate(
     int port_,
     ffi.Pointer<ffi.Uint8> ptr_,
@@ -5739,6 +5868,18 @@ class RustLibWire implements BaseWire {
       _wire__dion_runtime__data__custom_ui__stack_fit_defaultPtr
           .asFunction<void Function(int)>();
 
+  void wire__dion_runtime__data__storage__storage_usage_default(int port_) {
+    return _wire__dion_runtime__data__storage__storage_usage_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__storage__storage_usage_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__storage__storage_usage_default',
+  );
+  late final _wire__dion_runtime__data__storage__storage_usage_default =
+      _wire__dion_runtime__data__storage__storage_usage_defaultPtr
+          .asFunction<void Function(int)>();
+
   void wire__dion_runtime__data__source__text_style_default(int port_) {
     return _wire__dion_runtime__data__source__text_style_default(port_);
   }
@@ -5985,6 +6126,18 @@ class RustLibWire implements BaseWire {
   late final _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken =
       _cst_new_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelTokenPtr
           .asFunction<ffi.Pointer<ffi.UintPtr> Function(int)>();
+
+  ffi.Pointer<ffi.Int64> cst_new_box_autoadd_Chrono_Utc(int value) {
+    return _cst_new_box_autoadd_Chrono_Utc(value);
+  }
+
+  late final _cst_new_box_autoadd_Chrono_UtcPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int64> Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_cst_new_box_autoadd_Chrono_Utc',
+  );
+  late final _cst_new_box_autoadd_Chrono_Utc =
+      _cst_new_box_autoadd_Chrono_UtcPtr
+          .asFunction<ffi.Pointer<ffi.Int64> Function(int)>();
 
   ffi.Pointer<wire_cst_account> cst_new_box_autoadd_account() {
     return _cst_new_box_autoadd_account();
@@ -6879,7 +7032,8 @@ final class wire_cst_CustomUI_Link extends ffi.Struct {
 }
 
 final class wire_cst_CustomUI_Timestamp extends ffi.Struct {
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+  @ffi.Int64()
+  external int timestamp;
 
   @ffi.Int32()
   external int display;
@@ -7385,7 +7539,7 @@ final class wire_cst_episode extends ffi.Struct {
 
   external ffi.Pointer<wire_cst_link> cover;
 
-  external ffi.Pointer<wire_cst_list_prim_u_8_strict> timestamp;
+  external ffi.Pointer<ffi.Int64> timestamp;
 
   external ffi.Pointer<ffi.Bool> announced;
 }
@@ -8058,6 +8212,8 @@ final class wire_cst_Source_Audio extends ffi.Struct {
 
 final class wire_cst_Source_Paragraphlist extends ffi.Struct {
   external ffi.Pointer<wire_cst_list_paragraph> paragraphs;
+
+  external ffi.Pointer<wire_cst_list_image_list_audio> audio;
 }
 
 final class SourceKind extends ffi.Union {
@@ -8085,4 +8241,15 @@ final class wire_cst_source_result extends ffi.Struct {
   external wire_cst_source source;
 
   external ffi.Pointer<wire_cst_list_record_string_setting> settings;
+}
+
+final class wire_cst_storage_usage extends ffi.Struct {
+  @ffi.Double()
+  external double cache;
+
+  @ffi.Double()
+  external double extension_bytes;
+
+  @ffi.Double()
+  external double data;
 }

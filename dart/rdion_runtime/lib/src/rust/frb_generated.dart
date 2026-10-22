@@ -23,6 +23,7 @@ import 'third_party/dion_runtime/data/extension_repo.dart';
 import 'third_party/dion_runtime/data/permission.dart';
 import 'third_party/dion_runtime/data/settings.dart';
 import 'third_party/dion_runtime/data/source.dart';
+import 'third_party/dion_runtime/data/storage.dart';
 
 /// Main entrypoint of the Rust API
 class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
@@ -83,7 +84,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -898945943;
+  int get rustContentHash => -53940966;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -146,6 +147,9 @@ abstract class RustLibApi extends BaseApi {
 
   Future<EntryList> crateApiExtensionProxyExtensionBrowse(
       {required ProxyExtension that, required int page, CancelToken? token});
+
+  Future<void> crateApiExtensionProxyExtensionClearCache(
+      {required ProxyExtension that});
 
   Future<EntryDetailedResult> crateApiExtensionProxyExtensionDetail(
       {required ProxyExtension that,
@@ -272,6 +276,9 @@ abstract class RustLibApi extends BaseApi {
       required Map<String, Setting> settings,
       CancelToken? token});
 
+  Future<StorageUsage> crateApiExtensionProxyExtensionStorageUsage(
+      {required ProxyExtension that});
+
   Future<Account?> crateApiExtensionProxyExtensionValidate(
       {required ProxyExtension that,
       required Account account,
@@ -318,6 +325,8 @@ abstract class RustLibApi extends BaseApi {
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
 
   Future<StackFit> dionRuntimeDataCustomUiStackFitDefault();
+
+  Future<StorageUsage> dionRuntimeDataStorageStorageUsageDefault();
 
   Future<TextStyle> dionRuntimeDataSourceTextStyleDefault();
 
@@ -819,6 +828,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "ProxyExtension_browse",
         argNames: ["that", "page", "token"],
+      );
+
+  @override
+  Future<void> crateApiExtensionProxyExtensionClearCache(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+                that);
+        return wire.wire__crate__api__extension__ProxyExtension_clear_cache(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_unit,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionClearCacheConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionClearCacheConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_clear_cache",
+        argNames: ["that"],
       );
 
   @override
@@ -1751,6 +1787,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<StorageUsage> crateApiExtensionProxyExtensionStorageUsage(
+      {required ProxyExtension that}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            that, serializer);
+        final raw_ = serializer.intoRaw();
+        return wire.wire__crate__api__extension__ProxyExtension_storage_usage(
+            port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_storage_usage,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyExtensionStorageUsageConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyExtensionStorageUsageConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyExtension_storage_usage",
+        argNames: ["that"],
+      );
+
+  @override
   Future<Account?> crateApiExtensionProxyExtensionValidate(
       {required ProxyExtension that,
       required Account account,
@@ -2256,6 +2320,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<StorageUsage> dionRuntimeDataStorageStorageUsageDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__storage__storage_usage_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_storage_usage,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataStorageStorageUsageDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataStorageStorageUsageDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "storage_usage_default",
+        argNames: [],
+      );
+
+  @override
   Future<TextStyle> dionRuntimeDataSourceTextStyleDefault() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -2709,6 +2796,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DateTime dco_decode_Chrono_Utc(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeTimestamp(ts: dco_decode_i_64(raw).toInt(), isUtc: true);
+  }
+
+  @protected
   FutureOr<String> Function(String)
       dco_decode_DartFn_Inputs_String_Output_String_AnyhowException(
           dynamic raw) {
@@ -2999,6 +3092,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DateTime dco_decode_box_autoadd_Chrono_Utc(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_Chrono_Utc(raw);
+  }
+
+  @protected
   Account dco_decode_box_autoadd_account(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_account(raw);
@@ -3286,7 +3385,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 3:
         return CustomUI_Timestamp(
-          timestamp: dco_decode_String(raw[1]),
+          timestamp: dco_decode_Chrono_Utc(raw[1]),
           display: dco_decode_timestamp_type(raw[2]),
         );
       case 4:
@@ -3599,7 +3698,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       description: dco_decode_opt_String(arr[2]),
       url: dco_decode_String(arr[3]),
       cover: dco_decode_opt_box_autoadd_link(arr[4]),
-      timestamp: dco_decode_opt_String(arr[5]),
+      timestamp: dco_decode_opt_box_autoadd_Chrono_Utc(arr[5]),
       announced: dco_decode_opt_box_autoadd_bool(arr[6]),
     );
   }
@@ -3763,6 +3862,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  PlatformInt64 dco_decode_i_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeI64(raw);
   }
 
   @protected
@@ -4069,6 +4174,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         ? null
         : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             raw);
+  }
+
+  @protected
+  DateTime? dco_decode_opt_box_autoadd_Chrono_Utc(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_Chrono_Utc(raw);
   }
 
   @protected
@@ -4543,6 +4654,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 5:
         return Source_Paragraphlist(
           paragraphs: dco_decode_list_paragraph(raw[1]),
+          audio: dco_decode_opt_list_image_list_audio(raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -4577,6 +4689,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   StackFit dco_decode_stack_fit(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return StackFit.values[raw as int];
+  }
+
+  @protected
+  StorageUsage dco_decode_storage_usage(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return StorageUsage(
+      cache: dco_decode_f_64(arr[0]),
+      extensionBytes: dco_decode_f_64(arr[1]),
+      data: dco_decode_f_64(arr[2]),
+    );
   }
 
   @protected
@@ -4789,6 +4914,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ProxyExtensionImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  DateTime sse_decode_Chrono_Utc(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_64(deserializer);
+    return DateTime.fromMicrosecondsSinceEpoch(inner.toInt(), isUtc: true);
   }
 
   @protected
@@ -5050,6 +5182,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
         deserializer));
+  }
+
+  @protected
+  DateTime sse_decode_box_autoadd_Chrono_Utc(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_Chrono_Utc(deserializer));
   }
 
   @protected
@@ -5353,7 +5491,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_label = sse_decode_opt_String(deserializer);
         return CustomUI_Link(link: var_link, label: var_label);
       case 3:
-        var var_timestamp = sse_decode_String(deserializer);
+        var var_timestamp = sse_decode_Chrono_Utc(deserializer);
         var var_display = sse_decode_timestamp_type(deserializer);
         return CustomUI_Timestamp(
             timestamp: var_timestamp, display: var_display);
@@ -5703,7 +5841,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_description = sse_decode_opt_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_cover = sse_decode_opt_box_autoadd_link(deserializer);
-    var var_timestamp = sse_decode_opt_String(deserializer);
+    var var_timestamp = sse_decode_opt_box_autoadd_Chrono_Utc(deserializer);
     var var_announced = sse_decode_opt_box_autoadd_bool(deserializer);
     return Episode(
         id: var_id,
@@ -5888,6 +6026,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getPlatformInt64();
   }
 
   @protected
@@ -6380,6 +6524,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  DateTime? sse_decode_opt_box_autoadd_Chrono_Utc(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_Chrono_Utc(deserializer));
     } else {
       return null;
     }
@@ -6991,7 +7147,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Source_Audio(sources: var_sources, chapters: var_chapters);
       case 5:
         var var_paragraphs = sse_decode_list_paragraph(deserializer);
-        return Source_Paragraphlist(paragraphs: var_paragraphs);
+        var var_audio = sse_decode_opt_list_image_list_audio(deserializer);
+        return Source_Paragraphlist(
+            paragraphs: var_paragraphs, audio: var_audio);
       default:
         throw UnimplementedError('');
     }
@@ -7024,6 +7182,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return StackFit.values[inner];
+  }
+
+  @protected
+  StorageUsage sse_decode_storage_usage(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_cache = sse_decode_f_64(deserializer);
+    var var_extensionBytes = sse_decode_f_64(deserializer);
+    var var_data = sse_decode_f_64(deserializer);
+    return StorageUsage(
+        cache: var_cache, extensionBytes: var_extensionBytes, data: var_data);
   }
 
   @protected
@@ -7490,6 +7658,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Chrono_Utc(DateTime self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_64(
+        PlatformInt64Util.from(self.microsecondsSinceEpoch), serializer);
+  }
+
+  @protected
   void sse_encode_DartFn_Inputs_String_Output_String_AnyhowException(
       FutureOr<String> Function(String) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7814,6 +7989,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_Chrono_Utc(
+      DateTime self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Chrono_Utc(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_account(Account self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_account(self, serializer);
@@ -8125,7 +8307,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           display: final display
         ):
         sse_encode_i_32(3, serializer);
-        sse_encode_String(timestamp, serializer);
+        sse_encode_Chrono_Utc(timestamp, serializer);
         sse_encode_timestamp_type(display, serializer);
       case CustomUI_EntryCard(entry: final entry):
         sse_encode_i_32(4, serializer);
@@ -8445,7 +8627,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.description, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_opt_box_autoadd_link(self.cover, serializer);
-    sse_encode_opt_String(self.timestamp, serializer);
+    sse_encode_opt_box_autoadd_Chrono_Utc(self.timestamp, serializer);
     sse_encode_opt_box_autoadd_bool(self.announced, serializer);
   }
 
@@ -8588,6 +8770,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putPlatformInt64(self);
   }
 
   @protected
@@ -8987,6 +9175,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
           self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_Chrono_Utc(
+      DateTime? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_Chrono_Utc(self, serializer);
     }
   }
 
@@ -9522,9 +9721,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(4, serializer);
         sse_encode_list_stream_source(sources, serializer);
         sse_encode_opt_list_chapter(chapters, serializer);
-      case Source_Paragraphlist(paragraphs: final paragraphs):
+      case Source_Paragraphlist(
+          paragraphs: final paragraphs,
+          audio: final audio
+        ):
         sse_encode_i_32(5, serializer);
         sse_encode_list_paragraph(paragraphs, serializer);
+        sse_encode_opt_list_image_list_audio(audio, serializer);
     }
   }
 
@@ -9552,6 +9755,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_stack_fit(StackFit self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_storage_usage(StorageUsage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self.cache, serializer);
+    sse_encode_f_64(self.extensionBytes, serializer);
+    sse_encode_f_64(self.data, serializer);
   }
 
   @protected
@@ -9784,6 +9995,13 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
       RustLib.instance.api.crateApiExtensionProxyExtensionBrowse(
           that: this, page: page, token: token);
 
+  /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
+  /// cache); settings, cookies and extension-written files are kept.
+  Future<void> clearCache() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionClearCache(
+        that: this,
+      );
+
   Future<EntryDetailedResult> detail(
           {required EntryId entryid,
           required Map<String, Setting> settings,
@@ -9943,6 +10161,13 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
           CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionSource(
           that: this, epid: epid, settings: settings, token: token);
+
+  /// How much storage this extension uses, split into cache / extension /
+  /// data buckets.
+  Future<StorageUsage> storageUsage() =>
+      RustLib.instance.api.crateApiExtensionProxyExtensionStorageUsage(
+        that: this,
+      );
 
   Future<Account?> validate({required Account account, CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionValidate(

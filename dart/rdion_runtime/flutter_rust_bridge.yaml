@@ -1,4 +1,4 @@
-rust_input: crate::api,dion-runtime::data::action,dion-runtime::data::activity,dion-runtime::data::auth,dion-runtime::data::custom_ui,dion-runtime::data::extension,dion-runtime::data::extension_manager,dion-runtime::data::extension_repo,dion-runtime::data::permission,dion-runtime::data::settings,dion-runtime::data::source
+rust_input: crate::api,dion-runtime::data::action,dion-runtime::data::activity,dion-runtime::data::auth,dion-runtime::data::custom_ui,dion-runtime::data::extension,dion-runtime::data::extension_manager,dion-runtime::data::extension_repo,dion-runtime::data::permission,dion-runtime::data::settings,dion-runtime::data::source,dion-runtime::data::storage
 rust_root: rust/
 dart_output: lib/src/rust
 # enable_lifetime: true

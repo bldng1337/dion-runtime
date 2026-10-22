@@ -2,12 +2,13 @@
 [package]
 edition = "2021"
 name = "runtime"
-version = "0.1.0"
+version = "0.2.0"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
+log = "0.4"
 napi = {version="3.0.0", features=["serde-json","tokio_rt"]}
 napi-derive = "3.0.0"
 dion-runtime = { path = "../../rust/core" }

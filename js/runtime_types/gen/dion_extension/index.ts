@@ -98,4 +98,20 @@ export type ProxyResponse =
 			 * Defaults to `"utf8"`; ignored when `body` is a Uint8Array.
 			 */
 			bodyEncoding?: "utf8" | "base64";
+	  }
+	| {
+			/**
+			 * Serve a local file directly from the runtime: the response is
+			 * streamed in chunks (never buffered whole) and HTTP `Range`
+			 * requests are honored, which video players need for seeking
+			 * local files. The path goes through the same storage-permission
+			 * checks as the `filesystem` module.
+			 */
+			type: "file";
+			/** Absolute path of the file to serve. */
+			path: string;
+			/**
+			 * Overrides the Content-Type guessed from the file extension.
+			 */
+			contentType?: string;
 	  };

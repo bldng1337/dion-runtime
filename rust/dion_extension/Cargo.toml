@@ -1,6 +1,6 @@
 [package]
 name = "dion-extension"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [features]
@@ -17,13 +17,11 @@ http-body-util = "0.1"
 arc-swap = "1.7.1"
 
 lazy_static = { version = "1.5.0" }
-# boa 0.22 enables `temporal` by default; it stays off here (as in 0.21), so the
-# other defaults are re-enabled manually via default-features = false.
 boa_engine = { version="0.22.0", default-features = false, features = [
     "jsvalue-enum",
     "float16",
     "xsum",
-    # "temporal",
+    "temporal",
 ] }
 semver = "1.0.27"
 boa_runtime = { version="0.22.0" }
@@ -90,7 +88,7 @@ mp4ameta = "0.13.0"
 lofty = "0.25.4"
 encoding_rs = "0.8"
 
-tokio-util = "0.7.0"
+tokio-util = { version = "0.7.0", features = ["io"] }
 async-trait = "0.1.0"
 http = "1.1.0"
 
@@ -111,6 +109,8 @@ chrono = "0.4.41"
 specta = { version = "1.0.5", features = ["export"], optional = true  }
 specta-typescript = { version = "0.0.9",optional = true }
 specta-valibot= { path = "../specta_valibot", optional = true }
+pdf = { version = "0.10.0", default-features = false, features = ["globalcache"] }
+unrar = "0.5.8"
 [dev-dependencies]
 httpmock = "0.7.0"
 simple_logger = "5.0.0"
