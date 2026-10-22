@@ -65,6 +65,11 @@ pub struct MihonAdapter {
     /// Map from extension ID to its JAR/APK path (for artifact cleanup on uninstall)
     extension_jar_paths: RwLock<HashMap<String, PathBuf>>,
 
+    /// Map from extension ID to its Android package name (so uninstall can
+    /// persist a hidden-packages entry even when the artifact it points at
+    /// is a system-installed APK).
+    extension_packages: RwLock<HashMap<String, String>>,
+
     /// Base path for extension storage
     base_path: PathBuf,
 
@@ -117,6 +122,7 @@ impl MihonAdapter {
             jvm,
             bridge,
             extension_jar_paths: RwLock::new(HashMap::new()),
+            extension_packages: RwLock::new(HashMap::new()),
             base_path,
             repo_index_cache: RwLock::new(HashMap::new()),
         })
@@ -275,6 +281,52 @@ impl MihonAdapter {
         Ok(())
     }
 
+    /// Path of the persisted list of packages the user uninstalled even
+    /// though they are (also) installed as system apps. Without this,
+    /// every `get_extensions` re-discovers those APKs via the Android
+    /// PackageManager and "uninstalled" extensions reappear after restart.
+    fn hidden_packages_path(base_path: &Path) -> PathBuf {
+        base_path.join("hidden_packages.json")
+    }
+
+    async fn load_hidden_packages(base_path: &Path) -> HashSet<String> {
+        let Ok(contents) = tokio::fs::read_to_string(Self::hidden_packages_path(base_path)).await
+        else {
+            return HashSet::new();
+        };
+        serde_json::from_str(&contents).unwrap_or_default()
+    }
+
+    async fn persist_hidden_packages(base_path: &Path, hidden: &HashSet<String>) -> Result<()> {
+        let contents =
+            serde_json::to_string_pretty(hidden).context("Failed to serialize hidden packages")?;
+        tokio::fs::write(Self::hidden_packages_path(base_path), contents)
+            .await
+            .context("Failed to write hidden packages file")?;
+        Ok(())
+    }
+
+    /// Marks a package as hidden: PackageManager-discovered copies of it are
+    /// skipped by `get_extensions` until it is installed through the runtime
+    /// again.
+    async fn hide_package(&self, package: &str) -> Result<()> {
+        let mut hidden = Self::load_hidden_packages(&self.base_path).await;
+        if hidden.insert(package.to_string()) {
+            Self::persist_hidden_packages(&self.base_path, &hidden).await?;
+        }
+        Ok(())
+    }
+
+    /// Removes a package from the hidden list (called after a runtime
+    /// install of the same package).
+    async fn unhide_package(&self, package: &str) -> Result<()> {
+        let mut hidden = Self::load_hidden_packages(&self.base_path).await;
+        if hidden.remove(package) {
+            Self::persist_hidden_packages(&self.base_path, &hidden).await?;
+        }
+        Ok(())
+    }
+
     /// Fetch a Mihon extension repo index and resolve it to its store and
     /// extension list, caching the result in memory so repeated calls
     /// (pagination, lookups) don't re-download the potentially large file.
@@ -409,6 +461,14 @@ impl MihonAdapter {
                 .write()
                 .await
                 .insert(format!("mihon:{}", source_id), jar_path.to_path_buf());
+            // And the package name, so uninstall can hide system-installed
+            // copies of the same package (see `hide_package`).
+            if let Some(meta) = meta {
+                self.extension_packages
+                    .write()
+                    .await
+                    .insert(format!("mihon:{}", source_id), meta.package_name.clone());
+            }
 
             extensions.push(Box::new(ext) as Box<dyn Extension>);
         }
@@ -436,10 +496,22 @@ impl Adapter for MihonAdapter {
         // the "tachiyomi.extension" feature.
         #[cfg(target_os = "android")]
         {
+            // Packages the user uninstalled stay uninstalled: without this
+            // filter, PackageManager discovery would resurrect them on every
+            // restart (their APK lives outside our storage and cannot be
+            // deleted).
+            let hidden = self.load_hidden_packages(&self.base_path).await;
             match self.bridge.get_installed_extensions() {
                 Ok(installed) => {
                     log::info!("Found {} system-installed extension(s)", installed.len());
                     for ext in installed {
+                        if hidden.contains(&ext.metadata.package_name) {
+                            log::info!(
+                                "Skipping hidden (uninstalled) system extension {}",
+                                ext.metadata.package_name
+                            );
+                            continue;
+                        }
                         // Carry the metadata returned by the bridge (version,
                         // nsfw flag, extracted icon path) so installed
                         // extensions show up with the correct details and icon
@@ -679,6 +751,9 @@ impl Adapter for MihonAdapter {
             icon_path: install_result.icon_path.clone(),
         };
         Self::save_meta(&final_jar_path, &meta).await?;
+        // Installing through the runtime undoes a previous uninstall of the
+        // same package (including the system-app variant).
+        self.unhide_package(&meta.package_name).await?;
 
         // Load the installed extension
         let exts = self
@@ -711,8 +786,9 @@ impl Adapter for MihonAdapter {
             jar_paths.get(ext_id).cloned()
         };
 
-        // Remove from cache
+        // Remove from caches
         self.extension_jar_paths.write().await.remove(ext_id);
+        let package_name = self.extension_packages.write().await.remove(ext_id);
 
         // Delete the JAR/APK and its metadata sidecar
         if let Some(jar_path) = jar_path {
@@ -727,6 +803,9 @@ impl Adapter for MihonAdapter {
             // Delete the JAR/APK file
             if jar_path.exists() {
                 if let Err(e) = tokio::fs::remove_file(&jar_path).await {
+                    // System-installed APKs (/data/app/...) cannot be deleted
+                    // by us; hiding the package below is what actually
+                    // uninstalls those.
                     log::warn!("Failed to delete extension file {:?}: {:?}", jar_path, e);
                 }
             }
@@ -738,6 +817,20 @@ impl Adapter for MihonAdapter {
                     log::warn!("Failed to delete metadata file {:?}: {:?}", meta_path, e);
                 }
             }
+        }
+
+        // Remember the uninstall across restarts: the package may also be
+        // installed as a system app, which PackageManager discovery would
+        // otherwise resurrect on the next `get_extensions`.
+        if let Some(package) = package_name {
+            if let Err(e) = self.hide_package(&package).await {
+                log::warn!("Failed to persist hidden package {package}: {e:?}");
+            }
+        } else {
+            log::warn!(
+                "Uninstalled {:?} without a known package name; a system-installed copy could reappear",
+                ext_id
+            );
         }
 
         Ok(())
@@ -792,5 +885,35 @@ impl Adapter for MihonAdapter {
     async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
         let index = self.fetch_repo_index(&repo.remote_id).await?;
         Ok(repo::index_to_result(&index.extensions))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn hidden_packages_roundtrip() {
+        let dir = std::env::temp_dir().join(format!("mihon-hidden-{}", std::process::id()));
+        tokio::fs::create_dir_all(&dir).await.unwrap();
+
+        // Empty by default.
+        assert!(MihonAdapter::load_hidden_packages(&dir).await.is_empty());
+
+        // Persist + reload.
+        let mut hidden = HashSet::new();
+        hidden.insert("eu.kanade.tachiyomi.extension.en.test".to_string());
+        MihonAdapter::persist_hidden_packages(&dir, &hidden)
+            .await
+            .unwrap();
+        assert_eq!(MihonAdapter::load_hidden_packages(&dir).await, hidden);
+
+        // Corrupt file degrades to empty instead of breaking discovery.
+        tokio::fs::write(MihonAdapter::hidden_packages_path(&dir), "not json")
+            .await
+            .unwrap();
+        assert!(MihonAdapter::load_hidden_packages(&dir).await.is_empty());
+
+        tokio::fs::remove_dir_all(&dir).await.ok();
     }
 }
