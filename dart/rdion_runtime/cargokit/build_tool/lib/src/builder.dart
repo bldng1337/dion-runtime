@@ -106,7 +106,10 @@ class RustBuilder {
 
   RustBuilder({required this.target, required this.environment});
 
+  Rustup? _rustup;
+
   void prepare(Rustup rustup) {
+    _rustup = rustup;
     final toolchain = _toolchain;
     if (rustup.installedTargets(toolchain) == null) {
       rustup.installToolchain(toolchain);
@@ -122,7 +125,16 @@ class RustBuilder {
   CargoBuildOptions? get _buildOptions =>
       environment.crateOptions.cargo[environment.configuration];
 
-  String get _toolchain => _buildOptions?.toolchain.name ?? 'stable';
+  String? _resolvedToolchain;
+
+  String get _toolchain {
+    final channel = _buildOptions?.toolchain.name ?? 'stable';
+    final resolved = _resolvedToolchain ??= _rustup?.defaultToolchain();
+    if (resolved != null && resolved.startsWith('$channel-')) {
+      return resolved;
+    }
+    return channel;
+  }
 
   /// Returns the path of directory containing build artifacts.
   Future<String> build() async {

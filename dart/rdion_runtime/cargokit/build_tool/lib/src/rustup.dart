@@ -22,6 +22,13 @@ class Rustup {
     return targets != null ? List.unmodifiable(targets) : null;
   }
 
+  String? defaultToolchain() {
+    final res = runCommand("rustup", ['show', 'active-toolchain']);
+    final line = res.stdout.toString().trim();
+    if (line.isEmpty) return null;
+    return line.split(' ').first;
+  }
+
   void installToolchain(String toolchain) {
     log.info("Installing Rust toolchain: $toolchain");
     runCommand("rustup", ['toolchain', 'install', toolchain]);
