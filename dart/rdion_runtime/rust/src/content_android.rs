@@ -6,8 +6,7 @@
 //! after the Application context has been stored in `ndk_context`.
 
 use anyhow::{bail, Context, Result};
-use jni::objects::JObject;
-use jni::objects::JValue;
+use jni::objects::{JByteArray, JObject, JString, JValue};
 use jni::sys::{jint, jlong};
 use std::sync::Arc;
 
@@ -51,12 +50,7 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
             loop {
                 let read: jint = scope
                     .env()
-                    .call_method(
-                        &stream,
-                        "read",
-                        "([B)I",
-                        &[JValue::Object(&JObject::from(buf))],
-                    )
+                    .call_method(&stream, "read", "([B)I", &[JValue::Object(buf.as_ref())])
                     .context("InputStream.read failed")?
                     .i()
                     .context("InputStream.read returned non-int")?;
@@ -70,7 +64,7 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                         "write",
                         "([BII)V",
                         &[
-                            JValue::Object(&JObject::from(buf)),
+                            JValue::Object(buf.as_ref()),
                             JValue::Int(0),
                             JValue::Int(read),
                         ],
@@ -85,7 +79,7 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                 .context("toByteArray returned non-object")?;
             let bytes = scope
                 .env()
-                .convert_byte_array(&array.into())
+                .convert_byte_array(JByteArray::from(array))
                 .context("Failed to convert byte array")?;
             Ok(bytes)
         })
@@ -107,11 +101,11 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                 .context("Failed to allocate projection string")?;
             let projection = scope
                 .env()
-                .new_object_array(2, "java/lang/String", &JObject::from(name_str))
+                .new_object_array(2, "java/lang/String", &name_str)
                 .context("Failed to allocate projection array")?;
             scope
                 .env()
-                .set_object_array_element(&projection, 1, JObject::from(size_str))?;
+                .set_object_array_element(&projection, 1, &size_str)?;
 
             let cursor = scope
                 .env()
@@ -148,10 +142,7 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                     &cursor,
                     "getColumnIndex",
                     "(Ljava/lang/String;)I",
-                    &[{
-                        let s = scope.env().new_string("_display_name")?;
-                        JValue::Object(&JObject::from(s))
-                    }],
+                    &[JValue::Object(&JObject::from(name_str))],
                 )?
                 .i()
                 .context("getColumnIndex returned non-int")?;
@@ -161,10 +152,7 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                     &cursor,
                     "getColumnIndex",
                     "(Ljava/lang/String;)I",
-                    &[{
-                        let s = scope.env().new_string("_size")?;
-                        JValue::Object(&JObject::from(s))
-                    }],
+                    &[JValue::Object(&JObject::from(size_str))],
                 )?
                 .i()
                 .context("getColumnIndex returned non-int")?;
@@ -180,8 +168,14 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
                     )?
                     .l()
                     .ok()
-                    .and_then(|s| scope.env().get_string(&s.into()).ok())
-                    .map(|s| s.to_string_lossy().into_owned())
+                    .and_then(|s| {
+                        let s = JString::from(s);
+                        scope
+                            .env()
+                            .get_string(&s)
+                            .ok()
+                            .map(|s| s.to_string_lossy().into_owned())
+                    })
             } else {
                 None
             };
@@ -217,13 +211,17 @@ fn with_env<T>(work: impl FnOnce(&mut jni::JNIEnv) -> Result<T>) -> Result<T> {
 }
 
 /// Bundles the JNIEnv with a cached Application context and Uri class.
-struct JniScope<'a> {
-    env: &'a mut jni::JNIEnv<'a>,
-    context: JObject<'a>,
+///
+/// The borrow lifetime and the `JNIEnv` lifetime are separate parameters:
+/// `&mut JNIEnv<'e>` is invariant in `'e`, so tying both to one `'a` makes
+/// `JniScope::new` unusable inside a closure over an anonymous `JNIEnv`.
+struct JniScope<'env, 'env_ref> {
+    env: &'env_ref mut jni::JNIEnv<'env>,
+    context: JObject<'env>,
 }
 
-impl<'a> JniScope<'a> {
-    fn new(env: &'a mut jni::JNIEnv<'a>) -> Result<Self> {
+impl<'env, 'env_ref> JniScope<'env, 'env_ref> {
+    fn new(env: &'env_ref mut jni::JNIEnv<'env>) -> Result<Self> {
         let context_ptr = ndk_context::android_context().context();
         if context_ptr.is_null() {
             bail!("Application context is not available (ndk_context not initialized)");
@@ -236,12 +234,14 @@ impl<'a> JniScope<'a> {
         })
     }
 
-    fn env(&mut self) -> &mut jni::JNIEnv<'a> {
+    fn env(&mut self) -> &mut jni::JNIEnv<'env> {
         self.env
     }
 
-    fn content_resolver(&mut self) -> Result<JObject<'a>> {
-        self.env()
+    fn content_resolver(&mut self) -> Result<JObject<'env>> {
+        // Field access, not `self.env()`: the method would mutably borrow
+        // all of `self` and conflict with the `&self.context` argument.
+        self.env
             .call_method(
                 &self.context,
                 "getContentResolver",
@@ -252,7 +252,7 @@ impl<'a> JniScope<'a> {
             .context("getContentResolver returned non-object")
     }
 
-    fn parse_uri(&mut self, uri: &str) -> Result<JObject<'a>> {
+    fn parse_uri(&mut self, uri: &str) -> Result<JObject<'env>> {
         let uri_str = self.env().new_string(uri)?;
         let class = self.env().find_class("android/net/Uri")?;
         self.env()

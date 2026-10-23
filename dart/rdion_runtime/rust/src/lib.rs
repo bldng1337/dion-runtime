@@ -45,7 +45,7 @@ mod android_init {
         }
 
         // Resolve content:// URIs through ContentResolver for extensions.
-        content_android::install();
+        crate::content_android::install();
 
         JNI_VERSION_1_6
     }
