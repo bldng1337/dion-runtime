@@ -82,10 +82,16 @@ if not exist "%PRECOMPILED%" (
 )
 
 "%DART%" "%PRECOMPILED%" %*
+set DART_EXIT=%ERRORLEVEL%
 
 REM 253 means invalid snapshot version.
-If %ERRORLEVEL% equ 253 (
+If %DART_EXIT% equ 253 (
     "%DART%" pub get --no-precompile
     "%DART%" compile kernel bin/build_tool_runner.dart
     "%DART%" "%PRECOMPILED%" %*
+    set DART_EXIT=!ERRORLEVEL!
 )
+
+REM A false `If` resets ERRORLEVEL, so the exit code must be carried
+REM explicitly or gradle sees success even when the build tool failed.
+exit /b %DART_EXIT%

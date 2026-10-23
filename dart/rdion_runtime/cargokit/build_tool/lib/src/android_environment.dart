@@ -182,6 +182,14 @@ class AndroidEnvironment {
         path.join(workaroundDir, 'libunwind.a'),
       ).writeAsStringSync('INPUT(-lgcc)');
     }
+    // NDK r27 no longer ships a libpthread stub, but pthread functions are in
+    // bionic libc since Android 5.0. Build scripts emitting
+    // cargo:rustc-link-lib=pthread (e.g. unrar-sys) fail to link without it.
+    // An empty stub shadows the sysroot stub (if any) harmlessly.
+    File(path.join(workaroundDir, 'libpthread.a')).writeAsStringSync(
+      '/* stub: pthread is part of libc, see '
+      'https://developer.android.com/ndk/guides/stable_apis */',
+    );
 
     var rustFlags = Platform.environment['CARGO_ENCODED_RUSTFLAGS'] ?? '';
     if (rustFlags.isNotEmpty) {
