@@ -1,4 +1,7 @@
-#[cfg(feature = "type")]
+// The module only contains the export test: without the `test` gate the
+// lib target compiles it as an empty module and fails `-D warnings` on
+// the now-unused imports.
+#[cfg(all(feature = "type", test))]
 mod ts {
     use specta::ts::ExportConfiguration;
     use specta_valibot::{export::Exporter, BigIntExportBehavior, Config};

@@ -500,7 +500,7 @@ impl Adapter for MihonAdapter {
             // filter, PackageManager discovery would resurrect them on every
             // restart (their APK lives outside our storage and cannot be
             // deleted).
-            let hidden = self.load_hidden_packages(&self.base_path).await;
+            let hidden = Self::load_hidden_packages(&self.base_path).await;
             match self.bridge.get_installed_extensions() {
                 Ok(installed) => {
                     log::info!("Found {} system-installed extension(s)", installed.len());
