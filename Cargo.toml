@@ -27,3 +27,9 @@ lto = true
 codegen-units = 1
 panic = "abort"
 debug="none"
+
+# Local override: unrar_sys 0.5.8 gates Windows-only sources and libs on the
+# build HOST instead of the TARGET, so building for Android from a Windows
+# host compiles isnt.cpp for Android (fails) and links shell32/powrprof.
+[patch.crates-io]
+unrar_sys = { path = "rust/patches/unrar_sys" }
