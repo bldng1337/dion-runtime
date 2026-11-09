@@ -1,7 +1,10 @@
 plugins {
-    kotlin("jvm") version "2.1.20"
-    kotlin("plugin.serialization") version "2.1.20"
-    id("com.gradleup.shadow") version "9.0.0-beta12"
+    // Kotlin 2.2.x is required for Gradle 9 (2.1.x predates it); the wrapper
+    // must stay on Gradle >= 9.1.0 because that is the first version that can
+    // run on JDK 25 build hosts.
+    kotlin("jvm") version "2.2.20"
+    kotlin("plugin.serialization") version "2.2.20"
+    id("com.gradleup.shadow") version "9.6.1"
 }
 
 group = "dion.mihon"
@@ -111,5 +114,8 @@ tasks.build {
 }
 
 kotlin {
-    jvmToolchain(19)
+    // 21 is the LTS toolchain CI provides (temurin 21); older hosts get it
+    // auto-provisioned via the foojay resolver. The resulting class files
+    // still run on any runtime JDK >= 21, including JDK 25.
+    jvmToolchain(21)
 }

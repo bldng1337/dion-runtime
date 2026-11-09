@@ -62,6 +62,12 @@ jobs:
         with:
           bun-version: 1.2.19
 
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
       # npm trusted publishing requires node >= 22.14 and npm >= 11.5.1.
       - name: Setup Node
         uses: actions/setup-node@v5

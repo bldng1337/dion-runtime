@@ -950,4 +950,24 @@ mod tests {
 
         tokio::fs::remove_dir_all(&dir).await.ok();
     }
+
+    /// Regression guard: a desktop build must never embed the build.rs
+    /// placeholder (or any non-ZIP bytes) as the compat JAR, or adapter
+    /// startup bails with "Embedded mihon-compat.jar is not a valid JAR".
+    /// build.rs fails the build instead of embedding placeholders, so this
+    /// only trips if the embed pipeline regresses.
+    #[test]
+    #[cfg(not(target_os = "android"))]
+    fn embedded_compat_jar_is_a_real_jar() {
+        assert!(
+            MIHON_COMPAT_JAR.len() > 1_000_000,
+            "embedded mihon-compat.jar is only {} bytes; build.rs embedded the placeholder",
+            MIHON_COMPAT_JAR.len()
+        );
+        assert_eq!(
+            &MIHON_COMPAT_JAR[..4],
+            &[0x50, 0x4B, 0x03, 0x04],
+            "embedded mihon-compat.jar lacks the ZIP magic bytes"
+        );
+    }
 }

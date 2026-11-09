@@ -4,8 +4,11 @@
 //! for embedding into the binary via `include_bytes!`.
 //!
 //! A `cargo:rustc-cfg=mihon_compat_jar_available` flag is set when a real JAR
-//! is successfully built. When Gradle is unavailable, a placeholder is written
-//! instead, and the flag is NOT set.
+//! is successfully built.
+//!
+//! On desktop targets the JAR is required: a placeholder would compile fine and
+//! only fail at adapter startup, so any failure to produce a valid JAR aborts
+//! the build with an actionable error instead of embedding a placeholder.
 //!
 //! On Android targets, the compat JAR is not needed (native Android class loading
 //! is used instead), so the Gradle build is skipped entirely.
@@ -52,7 +55,11 @@ fn main() {
 
     let compat_dir = Path::new(&manifest_dir).join("compat");
 
-    // Emit rerun-if-changed so cargo re-runs this script if the gradle setup changes
+    // Emit rerun-if-changed so cargo re-runs this script if the gradle setup
+    // changes. The prebuilt-JAR path is tracked even when the file does not
+    // exist yet, so a JAR appearing later (e.g. after a manual gradle run)
+    // triggers a rebuild instead of leaving a stale placeholder embedded.
+    println!("cargo:rerun-if-changed=compat/src");
     println!("cargo:rerun-if-changed=compat/build.gradle.kts");
     println!("cargo:rerun-if-changed=compat/settings.gradle.kts");
     println!("cargo:rerun-if-changed=compat/gradle.properties");
@@ -60,14 +67,15 @@ fn main() {
     println!("cargo:rerun-if-changed=compat/gradlew.bat");
     println!("cargo:rerun-if-changed=compat/gradle/wrapper/gradle-wrapper.properties");
     println!("cargo:rerun-if-changed=compat/gradle/wrapper/gradle-wrapper.jar");
+    println!("cargo:rerun-if-changed=compat/build/libs/mihon-compat.jar");
 
     // Only try to build if the compat directory exists and has Gradle files
     if !compat_dir.join("build.gradle.kts").exists() {
-        println!("cargo:warning=compat/build.gradle.kts not found, skipping JAR build");
-        println!("cargo:warning=The embedded JAR will be a placeholder. Build the JAR with:");
-        println!("cargo:warning=  cd rust/mihon/compat && ./gradlew shadowJar");
-        write_placeholder(&output_jar);
-        return;
+        fail_build(
+            "compat/build.gradle.kts not found; cannot build mihon-compat.jar.\n\
+             The compat Gradle project is required for desktop builds.\n\
+             Restore rust/mihon/compat (including build.gradle.kts) and rebuild.",
+        );
     }
 
     // Check if the JAR was already built (e.g., by running gradle manually)
@@ -77,10 +85,6 @@ fn main() {
         .join("mihon-compat.jar");
 
     if prebuilt_jar.exists() && is_valid_jar(&prebuilt_jar) {
-        println!("cargo:rerun-if-changed=compat/src");
-        println!("cargo:rerun-if-changed=compat/build.gradle.kts");
-        println!("cargo:rerun-if-changed={}", prebuilt_jar.display());
-
         std::fs::copy(&prebuilt_jar, &output_jar)
             .expect("Failed to copy prebuilt mihon-compat.jar to OUT_DIR");
 
@@ -93,9 +97,6 @@ fn main() {
         println!("cargo:rustc-cfg=mihon_compat_jar_available");
         return;
     }
-
-    // Rerun if source changes
-    println!("cargo:rerun-if-changed=compat/src");
 
     // Check if Gradle wrapper exists
     let gradle_wrapper = if cfg!(windows) {
@@ -132,11 +133,12 @@ fn main() {
                 emit_jar_digest(&output_jar);
                 println!("cargo:rustc-cfg=mihon_compat_jar_available");
             } else {
-                println!(
-                    "cargo:warning=Gradle reported success but JAR not found at {:?}",
-                    prebuilt_jar
-                );
-                write_placeholder(&output_jar);
+                fail_build(&format!(
+                    "Gradle reported success but mihon-compat.jar was not found at {}.\n\
+                     Inspect the shadowJar task output: cd rust/mihon/compat && {} shadowJar",
+                    prebuilt_jar.display(),
+                    gradle_hint_command(using_wrapper),
+                ));
             }
         }
         Ok(output) => {
@@ -149,25 +151,50 @@ fn main() {
             if !stderr.is_empty() {
                 println!("cargo:warning=  stderr: {}", stderr.trim());
             }
-            println!("cargo:warning=The embedded JAR will be a placeholder.");
-            println!(
-                "cargo:warning=To build manually: cd rust/mihon/compat && {} shadowJar",
-                if using_wrapper { "./gradlew" } else { "gradle" }
-            );
-            write_placeholder(&output_jar);
+            fail_build(&format!(
+                "Gradle failed to build mihon-compat.jar (see warnings above).\n\
+                 Common cause: the JDK in JAVA_HOME is not supported by the Gradle \
+                 version pinned in rust/mihon/compat/gradle/wrapper/gradle-wrapper.properties \
+                 (Java 25 needs Gradle >= 9.1.0).\n\
+                 To reproduce with full output: cd rust/mihon/compat && {} shadowJar",
+                gradle_hint_command(using_wrapper),
+            ));
         }
         Err(e) => {
-            println!("cargo:warning=Failed to run Gradle: {}", e);
+            let mut hint = format!("Failed to run Gradle: {}", e);
             if !using_wrapper {
-                println!("cargo:warning=Gradle not found on PATH. Install Gradle or add a Gradle wrapper.");
+                hint.push_str(
+                    "\nGradle was not found on PATH and the wrapper is missing; \
+                     install Gradle or restore compat/gradlew.",
+                );
             }
-            println!("cargo:warning=The embedded JAR will be a placeholder.");
-            println!(
-                "cargo:warning=To build manually: cd rust/mihon/compat && ./gradlew shadowJar"
-            );
-            write_placeholder(&output_jar);
+            hint.push_str(&format!(
+                "\nDesktop builds require mihon-compat.jar; reproduce with: \
+                 cd rust/mihon/compat && {} shadowJar",
+                gradle_hint_command(using_wrapper),
+            ));
+            fail_build(&hint);
         }
     }
+}
+
+/// Shell command prefix to reproduce a Gradle build failure manually.
+fn gradle_hint_command(using_wrapper: bool) -> &'static str {
+    if using_wrapper {
+        "./gradlew"
+    } else {
+        "gradle"
+    }
+}
+
+/// Abort the build: on desktop there is no useful fallback for a missing
+/// compat JAR. A placeholder would compile fine and only blow up at adapter
+/// startup with a confusing error, so failing here keeps the problem at the
+/// point where it can actually be fixed.
+fn fail_build(message: &str) -> ! {
+    eprintln!();
+    eprintln!("error: failed to build mihon-adapter: {message}");
+    std::process::exit(1);
 }
 
 /// Check if a file looks like a valid JAR (ZIP) file by checking magic bytes
