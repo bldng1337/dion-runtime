@@ -354,6 +354,17 @@ impl MihonAdapter {
         Ok(index)
     }
 
+    async fn blocking_bridge<T, F>(&self, f: F) -> Result<T>
+    where
+        T: Send + 'static,
+        F: FnOnce(&MihonBridge) -> Result<T> + Send + 'static,
+    {
+        let bridge = self.bridge.clone();
+        tokio::task::spawn_blocking(move || f(&bridge))
+            .await
+            .context("Bridge call task panicked")?
+    }
+
     /// Load extension from a JAR file (desktop) or APK file (Android).
     ///
     /// On desktop, `jar_path` points to a converted JAR from dex2jar.
@@ -366,10 +377,14 @@ impl MihonAdapter {
     ) -> Result<Vec<Box<dyn Extension>>> {
         let jar_path_str = jar_path
             .to_str()
-            .ok_or_else(|| anyhow::anyhow!("Invalid JAR path"))?;
+            .ok_or_else(|| anyhow::anyhow!("Invalid JAR path"))?
+            .to_string();
 
         // Load extension via JNI (platform-specific bridge handles the details)
-        let source_ids = self.bridge.load_extension(jar_path_str, class_name)?;
+        let class = class_name.to_string();
+        let source_ids = self
+            .blocking_bridge(move |bridge| bridge.load_extension(&jar_path_str, &class))
+            .await?;
 
         if source_ids.is_empty() {
             log::warn!("No sources found in extension: {:?}", jar_path);
@@ -380,8 +395,14 @@ impl MihonAdapter {
 
         for source_id in source_ids {
             // Get source info
-            let source_info = self.bridge.get_source_info(source_id)?;
-            let source_type = self.bridge.get_source_type(source_id)?;
+            let (source_info, source_type) = self
+                .blocking_bridge(move |bridge| {
+                    Ok((
+                        bridge.get_source_info(source_id)?,
+                        bridge.get_source_type(source_id)?,
+                    ))
+                })
+                .await?;
 
             // Build ExtensionData
             let mut media_types = HashSet::new();
@@ -652,9 +673,8 @@ impl Adapter for MihonAdapter {
     /// On Android, the APK is used directly — only metadata is extracted.
     async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
         // Download APK
-        let apk_bytes = if url.starts_with("file://") {
+        let apk_bytes = if let Some(path) = dion_runtime::file_url::path_from_file_url(url) {
             // Local file
-            let path = url.strip_prefix("file://").unwrap();
             tokio::fs::read(path)
                 .await
                 .context("Failed to read local APK")?
@@ -680,6 +700,10 @@ impl Adapter for MihonAdapter {
                 .unwrap_or_default()
                 .as_millis()
         ));
+        let temp_apk_path = temp_apk
+            .to_str()
+            .context("Temp APK path is not valid UTF-8")?
+            .to_string();
         tokio::fs::write(&temp_apk, &apk_bytes)
             .await
             .context("Failed to write temp APK")?;
@@ -687,10 +711,16 @@ impl Adapter for MihonAdapter {
         // Install extension via JNI bridge.
         // On desktop: APK -> JAR conversion (dex2jar).
         // On Android: metadata extraction only (APK path returned as-is).
-        let temp_apk_path = temp_apk
-            .to_str()
-            .context("Temp APK path is not valid UTF-8")?;
-        let install_result = self.bridge.install_extension(temp_apk_path)?;
+        let install_result = match self
+            .blocking_bridge(move |bridge| bridge.install_extension(&temp_apk_path))
+            .await
+        {
+            Ok(result) => result,
+            Err(err) => {
+                tokio::fs::remove_file(&temp_apk).await.ok();
+                return Err(err);
+            }
+        };
 
         // On desktop, the temp APK is converted to a JAR. On Android, the APK is kept.
         // Clean up temp APK only on desktop (on Android, the bridge returns the APK path).
@@ -718,9 +748,10 @@ impl Adapter for MihonAdapter {
                 // re-installing the same package (e.g. on a filter re-run or
                 // after a crash left the previous copy behind).
                 tokio::fs::remove_file(&dest).await.ok();
-                tokio::fs::copy(&jar_path, &dest)
-                    .await
-                    .context("Failed to copy APK to jars directory")?;
+                if let Err(err) = tokio::fs::copy(&jar_path, &dest).await {
+                    tokio::fs::remove_file(&temp_apk).await.ok();
+                    return Err(err).context("Failed to copy APK to jars directory");
+                }
                 // Set file read-only to satisfy Android 14+ W^X enforcement
                 // for DEX loading. Writable DEX files are rejected by the runtime.
                 {
