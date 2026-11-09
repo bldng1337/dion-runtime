@@ -294,10 +294,9 @@ impl Extension for MihonExtension {
         }
 
         // Persist the refreshed definitions and any previously stored values.
-        {
-            let store = self.store.read().await;
-            store.settings.save_state(self.client.as_ref()).await?;
-        }
+        // From a snapshot: the host callback must not run under the store lock.
+        let settings = self.store.read().await.settings.clone();
+        settings.save_state(self.client.as_ref()).await?;
 
         Ok(())
     }

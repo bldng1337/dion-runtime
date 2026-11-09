@@ -62,16 +62,14 @@ impl ProxyExtension {
     }
 
     pub async fn save_settings(&self) -> Result<()> {
-        let store = self.inner.inner.get_data().read().await;
-        let client = self.inner.inner.get_client();
-        store.settings.save_state(client).await?;
+        let settings = self.inner.inner.get_data().read().await.settings.clone();
+        settings.save_state(self.inner.inner.get_client()).await?;
         Ok(())
     }
 
     pub async fn save_permissions(&self) -> Result<()> {
-        let store = self.inner.inner.get_data().read().await;
-        let client = self.inner.inner.get_client();
-        store.permission.save_state(client).await?;
+        let permission = self.inner.inner.get_data().read().await.permission.clone();
+        permission.save_state(self.inner.inner.get_client()).await?;
         Ok(())
     }
 
@@ -154,8 +152,13 @@ impl ProxyExtension {
 
     #[frb(serialize)]
     pub async fn remove_permission(&self, permission: Permission) -> Result<()> {
-        let mut store = self.inner.inner.get_data().write().await;
-        store.permission.remove_permission(permission);
+        let snapshot = {
+            let mut store = self.inner.inner.get_data().write().await;
+            store.permission.remove_permission(permission);
+            store.permission.get_permissions().clone()
+        };
+        let client = self.inner.inner.get_client();
+        dion_runtime::store::permission::PermissionStore::persist(&snapshot, client).await?;
         Ok(())
     }
 
@@ -339,9 +342,8 @@ impl ProxyExtension {
     }
 
     pub async fn save_auth_state(&self) -> Result<()> {
-        let store = self.inner.inner.get_data().read().await;
-        let client = self.inner.inner.get_client();
-        store.auth.save_state(client).await?;
+        let auth = self.inner.inner.get_data().read().await.auth.clone();
+        auth.save_state(self.inner.inner.get_client()).await?;
         Ok(())
     }
 }
