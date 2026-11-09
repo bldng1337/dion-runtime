@@ -6,19 +6,99 @@ use std::{
     time::{Duration, Instant},
 };
 
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 use governor::{DefaultKeyedRateLimiter, Quota, RateLimiter};
 use http::Extensions;
 use http_cache::{CACacheManager, CacheMode, HttpCache, HttpCacheOptions};
 use http_cache_reqwest::Cache;
+use hyper::body::Bytes;
 use nonzero_ext::nonzero;
-use reqwest::Request;
+use reqwest::header::{self, HeaderMap, HeaderValue};
+use reqwest::{Method, Request, StatusCode, Url, redirect};
 use reqwest_cookie_store::CookieStoreMutex;
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware, Middleware, Next};
 
 /// Cookies are persisted at most this often; more frequent changes coalesce
 /// into the next save.
 const COOKIE_SAVE_INTERVAL: Duration = Duration::from_secs(30);
+
+pub(crate) const CONNECT_TIMEOUT: Duration = Duration::from_secs(30);
+pub(crate) const READ_TIMEOUT: Duration = Duration::from_secs(60);
+
+const MAX_REDIRECTS: usize = 10;
+
+#[derive(Debug)]
+pub(crate) struct OutboundRequest {
+    pub method: Method,
+    pub url: Url,
+    pub headers: HeaderMap,
+    pub body: Option<Bytes>,
+}
+
+impl OutboundRequest {
+    fn redirect_target(&self, status: StatusCode, location: Option<&HeaderValue>) -> Option<Url> {
+        if !matches!(
+            status,
+            StatusCode::MOVED_PERMANENTLY
+                | StatusCode::FOUND
+                | StatusCode::SEE_OTHER
+                | StatusCode::TEMPORARY_REDIRECT
+                | StatusCode::PERMANENT_REDIRECT
+        ) {
+            return None;
+        }
+        let location = std::str::from_utf8(location?.as_bytes()).ok()?;
+        self.url.join(location).ok()
+    }
+
+    fn follow_redirect(&mut self, status: StatusCode, target: Url) {
+        if matches!(
+            status,
+            StatusCode::MOVED_PERMANENTLY | StatusCode::FOUND | StatusCode::SEE_OTHER
+        ) {
+            self.body = None;
+            for name in [
+                header::TRANSFER_ENCODING,
+                header::CONTENT_ENCODING,
+                header::CONTENT_TYPE,
+                header::CONTENT_LENGTH,
+            ] {
+                self.headers.remove(name);
+            }
+            if !matches!(self.method, Method::GET | Method::HEAD) {
+                self.method = Method::GET;
+            }
+        }
+        let same_host = target.host_str() == self.url.host_str()
+            && target.port_or_known_default() == self.url.port_or_known_default();
+        if !same_host {
+            for name in [
+                header::AUTHORIZATION,
+                header::COOKIE,
+                header::PROXY_AUTHORIZATION,
+                header::WWW_AUTHENTICATE,
+            ] {
+                self.headers.remove(name);
+            }
+            self.headers.remove("cookie2");
+        }
+        if let Some(referer) = referer_for(&self.url, &target) {
+            self.headers.insert(header::REFERER, referer);
+        }
+        self.url = target;
+    }
+}
+
+fn referer_for(previous: &Url, next: &Url) -> Option<HeaderValue> {
+    if previous.scheme() == "https" && next.scheme() == "http" {
+        return None;
+    }
+    let mut referer = previous.clone();
+    let _ = referer.set_username("");
+    let _ = referer.set_password(None);
+    referer.set_fragment(None);
+    HeaderValue::from_str(referer.as_str()).ok()
+}
 
 struct RateLimitingMiddleware {
     ratelimiter: DefaultKeyedRateLimiter<String>,
@@ -57,6 +137,14 @@ pub struct DionNetworkManager {
 
 impl DionNetworkManager {
     pub fn new(path: PathBuf) -> Result<Self> {
+        Self::build(path, redirect::Policy::default())
+    }
+
+    pub(crate) fn for_extension(path: PathBuf) -> Result<Self> {
+        Self::build(path, redirect::Policy::none())
+    }
+
+    fn build(path: PathBuf, redirects: redirect::Policy) -> Result<Self> {
         std::fs::create_dir_all(&path)
             .map_err(|e| anyhow!("Failed to create network data dir {:?}: {}", path, e))?;
         let cookie_store = {
@@ -73,6 +161,9 @@ impl DionNetworkManager {
 
         let client = reqwest::Client::builder()
             .cookie_provider(cookie_store.clone())
+            .connect_timeout(CONNECT_TIMEOUT)
+            .read_timeout(READ_TIMEOUT)
+            .redirect(redirects)
             .build()?;
         let client = ClientBuilder::new(client)
             .with(RateLimitingMiddleware::default())
@@ -88,6 +179,31 @@ impl DionNetworkManager {
             cookies_path: path.join(".cookies"),
             last_cookie_save: Arc::new(std::sync::Mutex::new(Instant::now())),
         })
+    }
+
+    pub(crate) async fn send_following_redirects(
+        &self,
+        mut request: OutboundRequest,
+        authorize: impl AsyncFn(&Url) -> Result<()>,
+    ) -> Result<reqwest::Response> {
+        for _ in 0..=MAX_REDIRECTS {
+            authorize(&request.url).await?;
+            let mut builder = self
+                .nclient
+                .request(request.method.clone(), request.url.clone())
+                .headers(request.headers.clone());
+            if let Some(body) = &request.body {
+                builder = builder.body(body.clone());
+            }
+            let response = builder.send().await?;
+            let status = response.status();
+            let location = response.headers().get(header::LOCATION);
+            let Some(target) = request.redirect_target(status, location) else {
+                return Ok(response);
+            };
+            request.follow_redirect(status, target);
+        }
+        bail!("Too many redirects (limit is {MAX_REDIRECTS})")
     }
 
     /// Persist the cookie jar now.
@@ -122,5 +238,135 @@ impl DionNetworkManager {
         if let Err(e) = self.save_cookies() {
             log::warn!("Failed to save cookies to {:?}: {}", self.cookies_path, e);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use httpmock::prelude::*;
+    use std::cell::RefCell;
+
+    fn request(method: Method, url: &str) -> OutboundRequest {
+        OutboundRequest {
+            method,
+            url: url.parse().unwrap(),
+            headers: HeaderMap::new(),
+            body: Some(Bytes::from_static(b"payload")),
+        }
+    }
+
+    fn test_manager(name: &str) -> (DionNetworkManager, PathBuf) {
+        let dir = std::env::temp_dir().join(format!("dion-net-{name}-{}", std::process::id()));
+        (DionNetworkManager::for_extension(dir.clone()).unwrap(), dir)
+    }
+
+    #[test]
+    fn found_redirect_becomes_a_bodyless_get() {
+        let mut req = request(Method::POST, "https://a.example/start");
+        req.headers
+            .insert(header::CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+
+        req.follow_redirect(StatusCode::FOUND, "https://a.example/end".parse().unwrap());
+
+        assert_eq!(req.method, Method::GET);
+        assert!(req.body.is_none());
+        assert!(!req.headers.contains_key(header::CONTENT_TYPE));
+    }
+
+    #[test]
+    fn temporary_redirect_replays_method_and_body() {
+        let mut req = request(Method::POST, "https://a.example/start");
+
+        req.follow_redirect(
+            StatusCode::TEMPORARY_REDIRECT,
+            "https://a.example/end".parse().unwrap(),
+        );
+
+        assert_eq!(req.method, Method::POST);
+        assert!(req.body.is_some());
+    }
+
+    #[test]
+    fn credentials_only_survive_same_host_redirects() {
+        let credentials = HeaderValue::from_static("secret");
+        let mut same = request(Method::GET, "https://a.example/start");
+        same.headers
+            .insert(header::AUTHORIZATION, credentials.clone());
+        same.follow_redirect(StatusCode::FOUND, "https://a.example/end".parse().unwrap());
+        assert!(same.headers.contains_key(header::AUTHORIZATION));
+
+        let mut other = request(Method::GET, "https://a.example/start");
+        other.headers.insert(header::AUTHORIZATION, credentials);
+        other.follow_redirect(StatusCode::FOUND, "https://b.example/end".parse().unwrap());
+        assert!(!other.headers.contains_key(header::AUTHORIZATION));
+    }
+
+    #[tokio::test]
+    async fn redirect_to_an_unauthorized_host_is_never_contacted() {
+        let server = MockServer::start_async().await;
+        let target = format!("http://localhost:{}/end", server.port());
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/start");
+                then.status(302).header("Location", target.as_str());
+            })
+            .await;
+        let end = server
+            .mock_async(|when, then| {
+                when.method(GET).path("/end");
+                then.status(200).body("secret");
+            })
+            .await;
+        let (manager, dir) = test_manager("denied");
+        let mut req = request(Method::GET, &server.url("/start"));
+        req.body = None;
+
+        let result = manager
+            .send_following_redirects(req, async |url: &Url| {
+                if url.host_str() == Some("localhost") {
+                    bail!("denied");
+                }
+                Ok(())
+            })
+            .await;
+
+        assert_eq!(result.unwrap_err().to_string(), "denied");
+        assert_eq!(end.hits_async().await, 0);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    #[tokio::test]
+    async fn every_redirect_hop_is_authorized() {
+        let server = MockServer::start_async().await;
+        let target = format!("http://localhost:{}/end", server.port());
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/start");
+                then.status(302).header("Location", target.as_str());
+            })
+            .await;
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/end");
+                then.status(200).body("done");
+            })
+            .await;
+        let (manager, dir) = test_manager("allowed");
+        let mut req = request(Method::GET, &server.url("/start"));
+        req.body = None;
+        let hosts = RefCell::new(Vec::new());
+
+        let response = manager
+            .send_following_redirects(req, async |url: &Url| {
+                hosts.borrow_mut().push(url.host_str().unwrap().to_string());
+                Ok(())
+            })
+            .await
+            .unwrap();
+
+        assert_eq!(response.text().await.unwrap(), "done");
+        assert_eq!(hosts.into_inner(), ["127.0.0.1", "localhost"]);
+        let _ = std::fs::remove_dir_all(dir);
     }
 }

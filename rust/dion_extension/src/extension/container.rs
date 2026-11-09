@@ -26,9 +26,9 @@ use dion_runtime::store::auth::AuthStore;
 use dion_runtime::store::permission::PermissionStore;
 use dion_runtime::store::settings::SettingStore;
 use tokio::fs;
-use tokio::sync::Notify;
 use tokio::sync::RwLock;
 use tokio::sync::oneshot;
+use tokio::sync::watch;
 use tokio_util::sync::CancellationToken;
 
 use crate::extension::executor::{ExtensionExecutor, Task};
@@ -57,11 +57,24 @@ pub struct InnerExtension {
 
 #[derive(Debug, Default)]
 pub(crate) struct NetworkPermissionCache {
-    inflight: HashMap<String, Arc<Notify>>,
+    inflight: HashMap<String, watch::Receiver<()>>,
     denied: HashSet<String>,
 }
 
 impl InnerExtension {
+    pub(crate) async fn authorize_url(&self, url: &reqwest::Url) -> Result<()> {
+        if !matches!(url.scheme(), "http" | "https") {
+            bail!("Unsupported URL scheme: {url}");
+        }
+        let host = url
+            .host_str()
+            .ok_or_else(|| anyhow!("URL has no host: {url}"))?;
+        if !self.ensure_network_permission(host).await? {
+            bail!("Network permission for {host} was denied");
+        }
+        Ok(())
+    }
+
     pub(crate) async fn ensure_network_permission(&self, host: &str) -> Result<bool> {
         let permission = Permission::Network {
             domains: vec![host.to_string()],
@@ -89,13 +102,15 @@ impl InnerExtension {
         if cache.denied.contains(host) {
             return Ok(false);
         }
-        if let Some(notify) = cache.inflight.get(host).cloned() {
+        let open_prompt = cache
+            .inflight
+            .get(host)
+            .filter(|prompt| prompt.has_changed().is_ok())
+            .cloned();
+        if let Some(mut prompt) = open_prompt {
             // Another fetch is already prompting for this host; wait for it.
-            // The `notified()` future must be created before dropping the
-            // cache lock so the promoter's `notify_waiters` wakes us.
-            let notified = notify.notified();
             drop(cache);
-            notified.await;
+            let _ = prompt.changed().await;
             return Ok(self
                 .store
                 .read()
@@ -103,8 +118,8 @@ impl InnerExtension {
                 .permission
                 .has_permission(&permission));
         }
-        let notify = Arc::new(Notify::new());
-        cache.inflight.insert(host.to_string(), notify.clone());
+        let (prompt_open, prompt) = watch::channel(());
+        cache.inflight.insert(host.to_string(), prompt);
         drop(cache);
         let ext_name = self.store.read().await.data.name.clone();
         let prompt = self
@@ -122,7 +137,7 @@ impl InnerExtension {
                 let mut cache = self.network_permissions.lock().await;
                 cache.inflight.remove(host);
                 drop(cache);
-                notify.notify_waiters();
+                drop(prompt_open);
                 return Err(err);
             }
         };
@@ -146,7 +161,7 @@ impl InnerExtension {
             cache.denied.insert(host.to_string());
         }
         drop(cache);
-        notify.notify_waiters();
+        drop(prompt_open);
         Ok(granted)
     }
 }
@@ -177,7 +192,7 @@ impl DionExtension {
             .await
             .context("Failed to get extension data path")?;
         let data_dir = crate::filesystem::normalize_path(&data_dir);
-        let network = DionNetworkManager::new(data_dir.clone())?;
+        let network = DionNetworkManager::for_extension(data_dir.clone())?;
         // The network manager just created the directory; canonicalize so a
         // symlinked data dir (e.g. /tmp on macOS) still matches the resolved
         // paths checked by the filesystem module.

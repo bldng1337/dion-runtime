@@ -37,6 +37,7 @@ tokio = { version = "1.46.0", features = [
     "macros",
     "rt",
     "rt-multi-thread",
+    "time",
 ] }
 
 anyhow = "^1.0.0"

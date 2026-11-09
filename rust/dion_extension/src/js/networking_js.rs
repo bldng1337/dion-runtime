@@ -23,6 +23,7 @@ pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Resul
 mod network {
     use super::Response;
     use crate::extension::executor::ExtensionRuntimeDataContainer;
+    use crate::network::OutboundRequest;
     use boa_engine::{
         Context, JsError, JsNativeError, JsResult, JsString, JsValue,
         class::Class,
@@ -32,7 +33,9 @@ mod network {
         value::Type,
     };
     use cookie::Expiration;
+    use hyper::body::Bytes;
     use reqwest::Method;
+    use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
     use serde_json::Value;
     use std::cell::RefCell;
 
@@ -81,21 +84,6 @@ mod network {
                                     .with_message(format!("Invalid URL: {resource}")),
                             )
                         })?;
-                        if matches!(url.scheme(), "http" | "https")
-                            && let Some(host) = url.host_str()
-                        {
-                            let granted = networkcontainer
-                                .ensure_network_permission(host)
-                                .await
-                                .map_err(|e| JsError::from_rust(&*e))?;
-                            if !granted {
-                                return Err(JsError::from_native(
-                                    JsNativeError::error().with_message(format!(
-                                        "Network permission for {host} was denied"
-                                    )),
-                                ));
-                            }
-                        }
                         let method = match &options {
                             Some(options) => {
                                 if options.contains_key("method") {
@@ -123,41 +111,47 @@ mod network {
                             }
                             None => Method::GET,
                         };
-                        let mut rbuild =
-                            networkcontainer.network.nclient.request(method, url.clone());
-                        if let Some(options) = &options
-                            && options.contains_key("body")
-                            && body_bytes.is_none()
-                        {
-                            rbuild = rbuild.body(
-                                options["body"]
-                                    .as_str()
+                        let body = if let Some(bytes) = body_bytes.take() {
+                            Some(Bytes::from(bytes))
+                        } else if let Some(body) = options.as_ref().and_then(|o| o.get("body")) {
+                            Some(Bytes::from(
+                                body.as_str()
                                     .ok_or(JsError::from_native(
                                         JsNativeError::error().with_message(
                                             "Expected body to be a String or Uint8Array",
                                         ),
                                     ))?
                                     .to_string(),
-                            );
-                        } else if let Some(bytes) = body_bytes.take() {
-                            rbuild = rbuild.body(bytes);
-                        }
+                            ))
+                        } else {
+                            None
+                        };
+                        let mut headers = HeaderMap::new();
                         if let Some(options) = &options &&options.contains_key("headers") {
                             let cheaders = options["headers"].as_object().ok_or(JsError::from_native(
                                 JsNativeError::error().with_message("Option Header should be a object"),
                             ))?;
                             for (header, content) in cheaders.iter() {
-                                rbuild = rbuild.header(
-                                    header,
-                                    content.as_str().ok_or(JsError::from_native(
-                                        JsNativeError::error().with_message(format!(
-                                            "Invalid Header value {header} expected String got {content}"
-                                        )),
-                                    ))?,
+                                let value = content.as_str().ok_or(JsError::from_native(
+                                    JsNativeError::error().with_message(format!(
+                                        "Invalid Header value {header} expected String got {content}"
+                                    )),
+                                ))?;
+                                headers.append(
+                                    HeaderName::from_bytes(header.as_bytes())
+                                        .map_err(JsError::from_rust)?,
+                                    HeaderValue::from_str(value).map_err(JsError::from_rust)?,
                                 );
                             }
                         }
-                        let response = rbuild.send().await.map_err(JsError::from_rust)?;
+                        let request = OutboundRequest { method, url, headers, body };
+                        let response = networkcontainer
+                            .network
+                            .send_following_redirects(request, async |url: &reqwest::Url| {
+                                networkcontainer.authorize_url(url).await
+                            })
+                            .await
+                            .map_err(|e| JsError::from_rust(&*e))?;
                         let res = Response {
                             status: response.status(),
                             header: response.headers().clone(),

@@ -1,4 +1,5 @@
 use crate::extension::{container::InnerExtension, executor::Task};
+use crate::network::{CONNECT_TIMEOUT, READ_TIMEOUT};
 use crate::range_file::ProxyBody;
 use crate::utils::AbortOnDrop;
 use anyhow::{Context, Result};
@@ -307,6 +308,7 @@ impl Proxy {
     pub async fn new() -> Arc<RwLock<Self>> {
         let mut http = HttpConnector::new();
         http.enforce_http(false);
+        http.set_connect_timeout(Some(CONNECT_TIMEOUT));
 
         let https = HttpsConnectorBuilder::new()
             .with_webpki_roots()
@@ -480,12 +482,21 @@ impl Proxy {
                     return Ok(resp);
                 }
                 ProxyResult::Redirect(new_req) => {
+                    let target: reqwest::Url = new_req
+                        .uri()
+                        .to_string()
+                        .parse()
+                        .context("Invalid handleProxy redirect target")?;
+                    extension.authorize_url(&target).await?;
                     let request_with_body = new_req.map(|body_string| {
                         Full::new(Bytes::from(body_string))
                             .map_err(|never| match never {})
                             .boxed()
                     });
-                    let response = client.request(request_with_body).await?;
+                    let response =
+                        tokio::time::timeout(READ_TIMEOUT, client.request(request_with_body))
+                            .await
+                            .context("Timed out waiting for handleProxy redirect target")??;
                     let (parts, body) = response.into_parts();
                     let boxed_body = body.map_err(Into::into).boxed();
                     return Ok(Response::from_parts(parts, boxed_body));
