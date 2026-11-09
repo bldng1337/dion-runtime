@@ -158,10 +158,16 @@ pub(crate) async fn resolve_for_access(target: &Path) -> PathBuf {
     if let Ok(canon) = tokio::fs::canonicalize(target).await {
         return strip_verbatim(canon);
     }
-    if let (Some(parent), Some(name)) = (target.parent(), target.file_name())
-        && let Ok(canon_parent) = tokio::fs::canonicalize(parent).await
-    {
-        return strip_verbatim(canon_parent).join(name);
+    let mut missing = Vec::new();
+    let mut current = target;
+    while let (Some(parent), Some(name)) = (current.parent(), current.file_name()) {
+        missing.push(name);
+        if let Ok(ancestor) = tokio::fs::canonicalize(parent).await {
+            let mut resolved = strip_verbatim(ancestor);
+            resolved.extend(missing.iter().rev());
+            return resolved;
+        }
+        current = parent;
     }
     target.to_path_buf()
 }
@@ -311,6 +317,18 @@ mod tests {
         assert_eq!(norm("/../a"), format!("{sep}a"));
         assert_eq!(norm("a/../.."), "..");
         assert_eq!(norm(""), "");
+    }
+
+    #[tokio::test]
+    async fn resolves_through_the_nearest_existing_ancestor() {
+        let dir = std::env::temp_dir().join(format!("dion-resolve-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let canonical = strip_verbatim(std::fs::canonicalize(&dir).unwrap());
+
+        let resolved = resolve_for_access(&dir.join("a").join("b").join("c.txt")).await;
+
+        assert_eq!(resolved, canonical.join("a").join("b").join("c.txt"));
+        let _ = std::fs::remove_dir_all(dir);
     }
 
     #[test]
