@@ -25,7 +25,7 @@ opt-level = 3
 strip = true
 lto = true
 codegen-units = 1
-panic = "abort"
+panic = "unwind"
 debug="none"
 
 # Local override: unrar_sys 0.5.8 gates Windows-only sources and libs on the
