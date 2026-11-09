@@ -247,7 +247,44 @@ mod tests {
             let _ = std::fs::remove_dir_all(dir);
         }
 
-        
+        #[tokio::test]
+        async fn remote_extension_is_found_in_the_repo_index() {
+            let (adapter, dir) = adapter("remote").await;
+            let server = MockServer::start_async().await;
+            let index = serde_json::json!({
+                "repo_index_version": 1,
+                "name": "repo",
+                "url": "https://repo.example",
+                "description": "",
+                "icon": "",
+                "content": [{ "path": "known.dion.js", "extdata": manifest("known") }],
+            });
+            server
+                .mock_async(|when, then| {
+                    when.method(GET).path("/index.repo.json");
+                    then.status(200).json_body(index.clone());
+                })
+                .await;
+            let repo = ExtensionRepo {
+                remote_id: server.url("/index.repo.json"),
+                name: "repo".to_string(),
+                description: String::new(),
+                url: "https://repo.example".to_string(),
+            };
+
+            let found = adapter
+                .get_remote_extension(&repo, "known".to_string())
+                .await
+                .unwrap();
+            let missing = adapter
+                .get_remote_extension(&repo, "unknown".to_string())
+                .await
+                .unwrap();
+
+            assert_eq!(found.unwrap().id, "known");
+            assert!(missing.is_none());
+            let _ = std::fs::remove_dir_all(dir);
+        }
     }
 
     fn setup_mock_server() -> MockServer {

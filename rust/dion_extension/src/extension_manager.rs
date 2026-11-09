@@ -397,17 +397,11 @@ impl Adapter for DionExtensionAdapter {
         repo: &ExtensionRepo,
         extension_id: String,
     ) -> Result<Option<RemoteExtension>> {
-        let res = self
-            .network
-            .nclient
-            .get(format!("{}/extensiondefs/{}", repo.remote_id, extension_id))
-            .send()
-            .await?;
-        if res.status() == 404 {
-            return Ok(None);
-        }
-        let res: RemoteExtension = res.json().await?;
-        Ok(Some(res))
+        let remote = self.browse_repo(repo, 0).await?;
+        Ok(remote
+            .content
+            .into_iter()
+            .find(|ext| ext.id == extension_id))
     }
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
