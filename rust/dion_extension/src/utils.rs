@@ -1,7 +1,10 @@
 use std::collections::{BTreeMap, HashMap};
 use std::ops::Deref;
 use std::ops::DerefMut;
+use std::pin::Pin;
 use std::rc::Rc;
+use std::task::Poll;
+use std::time::Duration;
 use std::{cell::RefCell, collections::VecDeque};
 
 use boa_engine::builtins::promise::PromiseState;
@@ -14,8 +17,9 @@ use boa_engine::{
 };
 use boa_gc::GcRefCell;
 use futures_concurrency::future::FutureGroup;
-use futures_lite::{StreamExt, future};
+use futures_lite::{Stream, StreamExt, future};
 use tokio::task::{self, JoinHandle};
+use tokio_util::sync::CancellationToken;
 
 use boa_engine::Finalize;
 use boa_engine::JsData;
@@ -115,9 +119,48 @@ pub async fn await_promise(promise: JsPromise, context: &mut Context) -> JsResul
     let context = RefCell::new(context);
     loop {
         match promise.state() {
-            PromiseState::Pending => queue.clone().run_jobs_async(&context).await?,
+            PromiseState::Pending => {
+                queue.clone().run_jobs_async(&context).await?;
+                if !matches!(promise.state(), PromiseState::Pending) {
+                    continue;
+                }
+                let delay = queue.next_timeout_delay(&context.borrow());
+                let Some(delay) = delay else {
+                    break Err(JsError::from_native(JsNativeError::error().with_message(
+                        "Promise can never settle: no pending jobs or timers remain",
+                    )));
+                };
+                tokio::time::sleep(delay).await;
+                queue.drain_jobs(&mut context.borrow_mut());
+                task::yield_now().await;
+            }
             PromiseState::Fulfilled(js_value) => break Ok(js_value),
             PromiseState::Rejected(js_value) => break Err(JsError::from_opaque(js_value)),
+        }
+    }
+}
+
+pub(crate) async fn await_promise_cancellable(
+    promise: JsPromise,
+    context: &mut Context,
+    token: Option<&CancellationToken>,
+) -> JsResult<JsValue> {
+    let Some(token) = token else {
+        return await_promise(promise, context).await;
+    };
+    let queue: Option<Rc<Queue>> = context.downcast_job_executor();
+    match token
+        .run_until_cancelled(await_promise(promise, context))
+        .await
+    {
+        Some(result) => result,
+        None => {
+            if let Some(queue) = queue {
+                queue.clear();
+            }
+            Err(JsError::from_native(
+                JsNativeError::error().with_message("Task was cancelled"),
+            ))
         }
     }
 }
@@ -223,6 +266,23 @@ impl Queue {
         }
     }
 
+    fn has_runnable_jobs(&self) -> bool {
+        !self.promise_jobs.borrow().is_empty() || !self.async_jobs.borrow().is_empty()
+    }
+
+    fn clear(&self) {
+        self.async_jobs.borrow_mut().clear();
+        self.promise_jobs.borrow_mut().clear();
+        self.timeout_jobs.borrow_mut().clear();
+    }
+
+    fn next_timeout_delay(&self, context: &Context) -> Option<Duration> {
+        let timeouts = self.timeout_jobs.borrow();
+        let (deadline, _) = timeouts.first_key_value()?;
+        let remaining = *deadline - context.clock().now();
+        Some(Duration::from_millis(remaining.as_millis()))
+    }
+
     fn drain_timeout_jobs(&self, context: &mut Context) {
         let now = context.clock().now();
 
@@ -303,10 +363,21 @@ impl JobExecutor for Queue {
                 return Ok(());
             }
 
-            // We have some jobs pending on the microtask queue. Try to poll the pending
-            // tasks once to see if any of them finished, and run the pending microtasks
-            // otherwise.
-            if let Some(Err(err)) = future::poll_once(group.next()).await.flatten() {
+            let finished = if self.promise_jobs.borrow().is_empty() {
+                let timer = self.next_timeout_delay(&context.borrow());
+                let progress =
+                    std::future::poll_fn(|cx| match Pin::new(&mut group).poll_next(cx) {
+                        Poll::Pending if self.has_runnable_jobs() => Poll::Ready(None),
+                        poll => poll,
+                    });
+                match timer {
+                    Some(delay) => tokio::time::timeout(delay, progress).await.ok().flatten(),
+                    None => progress.await,
+                }
+            } else {
+                future::poll_once(group.next()).await.flatten()
+            };
+            if let Some(Err(err)) = finished {
                 eprintln!("Uncaught {err}");
             };
 
@@ -353,5 +424,104 @@ impl<T> MapJsResult<T> for JsResult<T> {
                 None => Err(anyhow!("Error executing JS: {}", jserr)),
             },
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use boa_engine::job::TimeoutJob;
+    use std::cell::Cell;
+
+    fn test_context() -> Context {
+        Context::builder()
+            .job_executor(Rc::new(Queue::new()))
+            .build()
+            .expect("failed to build context")
+    }
+
+    #[tokio::test]
+    async fn never_settling_promise_is_an_error() {
+        let mut context = test_context();
+        let (promise, _resolvers) = JsPromise::new_pending(&mut context);
+
+        let err = await_promise(promise, &mut context).await.unwrap_err();
+
+        assert!(err.to_string().contains("never settle"), "{err}");
+    }
+
+    #[tokio::test]
+    async fn pending_promise_waits_for_its_timer() {
+        let mut context = test_context();
+        let (promise, resolvers) = JsPromise::new_pending(&mut context);
+        context.enqueue_job(
+            TimeoutJob::from_duration(
+                move |context: &mut Context| {
+                    resolvers
+                        .resolve
+                        .call(&JsValue::undefined(), &[JsValue::from(7)], context)
+                },
+                Duration::from_millis(10),
+            )
+            .into(),
+        );
+
+        let value = await_promise(promise, &mut context).await.unwrap();
+
+        assert_eq!(value.as_number(), Some(7.0));
+    }
+
+    #[tokio::test]
+    async fn cancelling_abandons_in_flight_jobs() {
+        let mut context = test_context();
+        let (promise, _resolvers) = JsPromise::new_pending(&mut context);
+        context.enqueue_job(
+            NativeAsyncJob::new(async |_context: &RefCell<&mut Context>| {
+                std::future::pending::<()>().await;
+                Ok(JsValue::undefined())
+            })
+            .into(),
+        );
+        let token = CancellationToken::new();
+        let canceller = token.clone();
+        tokio::spawn(async move {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+            canceller.cancel();
+        });
+
+        let err = await_promise_cancellable(promise, &mut context, Some(&token))
+            .await
+            .unwrap_err();
+
+        assert!(err.to_string().contains("cancelled"), "{err}");
+        let queue: Rc<Queue> = context.downcast_job_executor().unwrap();
+        assert!(!queue.has_runnable_jobs());
+    }
+
+    #[tokio::test]
+    async fn in_flight_jobs_are_only_polled_when_woken() {
+        let mut context = test_context();
+        let polls = Rc::new(Cell::new(0u32));
+        let counter = polls.clone();
+        context.enqueue_job(
+            NativeAsyncJob::new(async move |_context: &RefCell<&mut Context>| {
+                let mut sleep = std::pin::pin!(tokio::time::sleep(Duration::from_millis(50)));
+                std::future::poll_fn(|cx| {
+                    counter.set(counter.get() + 1);
+                    sleep.as_mut().poll(cx)
+                })
+                .await;
+                Ok(JsValue::undefined())
+            })
+            .into(),
+        );
+        let queue: Rc<Queue> = context.downcast_job_executor().unwrap();
+
+        queue
+            .run_jobs_async(&RefCell::new(&mut context))
+            .await
+            .unwrap();
+
+        assert!(polls.get() <= 3, "polled {} times", polls.get());
     }
 }
