@@ -296,6 +296,11 @@ impl TryFrom<serde_json::Value> for ProxyResult {
     }
 }
 
+fn path_belongs_to(path: &str, ext_path: &str) -> bool {
+    path.strip_prefix(ext_path)
+        .is_some_and(|rest| rest.is_empty() || rest.starts_with('/'))
+}
+
 #[derive(Debug)]
 pub(crate) struct Proxy {
     registered_extensions: Vec<Weak<ProxyExtensionRef>>,
@@ -436,7 +441,7 @@ impl Proxy {
                 let store = extension.store.read().await;
                 Self::extension_path(&store.data)
             };
-            if !req.uri().path().starts_with(ext_path.as_str()) {
+            if !path_belongs_to(req.uri().path(), &ext_path) {
                 continue;
             }
             let context = extension.context.load();
@@ -550,6 +555,13 @@ impl ProxyExtensionRef {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn proxy_routing_stops_at_the_extension_id() {
+        assert!(path_belongs_to("/extproxy/foo", "/extproxy/foo"));
+        assert!(path_belongs_to("/extproxy/foo/page", "/extproxy/foo"));
+        assert!(!path_belongs_to("/extproxy/foo2/page", "/extproxy/foo"));
+    }
 
     #[test]
     fn response_body_defaults_to_utf8() {
