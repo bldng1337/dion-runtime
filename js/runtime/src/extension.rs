@@ -235,7 +235,7 @@ impl ExtensionProxy {
 
   #[napi(
     ts_args_type = "source: Source, epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken",
-    ts_return_type = "Promise<Source>"
+    ts_return_type = "Promise<SourceResult>"
   )]
   pub async fn map_source(
     &self,

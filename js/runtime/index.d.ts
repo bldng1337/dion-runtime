@@ -39,7 +39,7 @@ export declare class Extension {
   source(epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken): Promise<SourceResult>
   mapEntry(entry:EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>
   onEntryActivity(activity: EntryActivity, entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<void>
-  mapSource(source: Source, epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken): Promise<Source>
+  mapSource(source: Source, epid: EpisodeId, settings: Record<string, Setting>, token?: CancelToken): Promise<SourceResult>
   getData(): Promise<ExtensionData>
   /**
    * How much storage this extension uses, split into `cache`, `extension`
