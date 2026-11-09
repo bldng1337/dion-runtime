@@ -9,7 +9,8 @@
 //!
 //! `content://` URIs are exempt from `Permission::Storage` prompts: access
 //! is already scoped by the OS to the URI grant the user made in the system
-//! picker.
+//! picker. That grant belongs to the app, not to one extension, so any
+//! extension that knows a granted URI can read it.
 
 use std::sync::{Arc, OnceLock};
 

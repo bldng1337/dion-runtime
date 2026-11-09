@@ -50,6 +50,10 @@ pub trait Extension: Send + Sync {
         token: Option<CancellationToken>,
     ) -> Result<Option<EventResult>>;
 
+    /// Checks `account` with the extension. On success the returned account
+    /// replaces the stored one, in memory only: the host decides when to
+    /// persist it (Dion calls `save_auth_state` after a successful login). On
+    /// any failure the previous account is restored.
     async fn validate(
         &self,
         account: Account,

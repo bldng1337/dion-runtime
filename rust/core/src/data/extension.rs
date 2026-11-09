@@ -35,6 +35,9 @@ pub struct ExtensionData {
     pub repo: Option<String>,
     pub version: String,
     pub license: String,
+    /// Whether the extension's `api_version` accepts this runtime. Advisory:
+    /// the runtime still loads and enables incompatible extensions, and hosts
+    /// decide what to do about it (Dion shows a badge).
     pub compatible: bool,
     #[cfg_attr(feature = "type", specta(optional))]
     #[serde(default)]
