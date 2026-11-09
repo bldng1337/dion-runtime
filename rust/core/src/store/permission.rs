@@ -73,13 +73,32 @@ impl PermissionStore {
 
     /// Remove exactly the stored permission equal to `permission`.
     pub fn remove_permission(&mut self, permission: Permission) {
-        self.permissions = self
-            .permissions
-            .extract_if(0.., |item| *item == permission)
-            .collect()
+        self.permissions.retain(|item| *item != permission);
     }
 
     pub fn get_permissions(&self) -> &Vec<Permission> {
         &self.permissions
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn network(domain: &str) -> Permission {
+        Permission::Network {
+            domains: vec![domain.to_string()],
+        }
+    }
+
+    #[test]
+    fn remove_permission_drops_only_the_matching_entry() {
+        let mut store = PermissionStore {
+            permissions: vec![network("a.example"), network("b.example")],
+        };
+
+        store.remove_permission(network("a.example"));
+
+        assert_eq!(store.get_permissions(), &vec![network("b.example")]);
     }
 }
