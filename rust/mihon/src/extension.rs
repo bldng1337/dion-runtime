@@ -1,6 +1,6 @@
 //! MihonExtension - Implements the Extension trait for a single Mihon source
 
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
 use async_trait::async_trait;
 use dion_runtime::{
     client_data::ExtensionClient,
@@ -55,7 +55,6 @@ pub struct MihonExtension {
     /// Source type (manga or anime)
     source_type: MihonSourceType,
 
-    /// Whether extension is enabled
     enabled: AtomicBool,
 
     /// Extension state store
@@ -93,6 +92,13 @@ impl MihonExtension {
             client,
             bridge,
         })
+    }
+
+    fn ensure_enabled(&self) -> Result<()> {
+        if !self.is_enabled() {
+            bail!("Extension is not enabled");
+        }
+        Ok(())
     }
 
     /// Run a blocking JNI bridge call on tokio's blocking pool so the async
@@ -299,6 +305,7 @@ impl Extension for MihonExtension {
     // ========== Content Discovery ==========
 
     async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
+        self.ensure_enabled()?;
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
         let source_type = self.source_type;
@@ -341,6 +348,7 @@ impl Extension for MihonExtension {
         filter: String,
         token: Option<CancellationToken>,
     ) -> Result<EntryList> {
+        self.ensure_enabled()?;
         // Parse the caller-supplied filter string. It may be a plain query,
         // a `{"query":..,"filters":[..]}` object, or a bare `[FilterDto..]` array.
         let (query, filters_json) = parse_filter_string(&filter);
@@ -373,8 +381,9 @@ impl Extension for MihonExtension {
         Ok(result.into_entry_list(self.source_type))
     }
 
+    /// Always `false`: Mihon sources only declare `EntryProvider`, so hosts
+    /// never route URLs here (Dion only asks `URLHandler` extensions).
     async fn handle_url(&self, _url: String, _token: Option<CancellationToken>) -> Result<bool> {
-        // TODO: Implement URL handling
         Ok(false)
     }
 
@@ -386,6 +395,7 @@ impl Extension for MihonExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
+        self.ensure_enabled()?;
         // Push the source's configurable preferences (union of the stored
         // Extension settings and any overrides the caller supplied) to the JVM
         // before fetching details, so the source observes the current values.
@@ -456,6 +466,7 @@ impl Extension for MihonExtension {
         settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
+        self.ensure_enabled()?;
         // Ensure the source observes the current preferences before resolving
         // the episode's content.
         self.apply_preferences(&settings).await;
@@ -528,6 +539,8 @@ impl Extension for MihonExtension {
 
     // ========== Activity & Events ==========
 
+    /// Always `None`: Mihon sources expose no accounts, so hosts have nothing
+    /// to validate.
     async fn validate(
         &self,
         _account: Account,
