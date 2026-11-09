@@ -8,6 +8,7 @@ use crate::js;
 use crate::proxy::{ProxyResult, request_to_value};
 use crate::utils::{
     MapJsResult, Queue, ReadOnlyUserContextContainer, VirtualModuleLoader, await_promise,
+    await_promise_cancellable,
 };
 use anyhow::{Context as ErrorContext, Result, anyhow};
 use boa_engine::object::builtins::JsUint8Array;
@@ -143,11 +144,9 @@ impl ExtensionExecutor {
         args: &[JsValue],
         token: Option<CancellationToken>,
     ) -> Result<JsValue> {
-        match token {
-            Some(tok) => context
-                .insert_data::<CancellationTokenContainer>(ReadOnlyUserContextContainer::new(tok)),
-            None => context.remove_data::<CancellationTokenContainer>(),
-        };
+        if token.as_ref().is_some_and(CancellationToken::is_cancelled) {
+            return Err(anyhow!("Task was cancelled before {func} started"));
+        }
         let plugin = Self::get_plugin(context).await?;
         let asd = plugin
             .get(js_string!(func), context)
@@ -162,7 +161,7 @@ impl ExtensionExecutor {
             .ok_or(anyhow!(
                 "Function {func} didnt return a Promise or is not async"
             ))?;
-        await_promise(asd, context)
+        await_promise_cancellable(asd, context, token.as_ref())
             .await
             .map_anyhow_ctx(context)
             .context(format!("Error while evaluating {func}"))
@@ -202,7 +201,6 @@ impl ExtensionExecutor {
     }
 }
 
-pub(crate) type CancellationTokenContainer = ReadOnlyUserContextContainer<CancellationToken>;
 pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Weak<InnerExtension>>;
 
 fn invoke_to_json_hooks(value: &JsValue, context: &mut Context, depth: usize) -> JsResult<JsValue> {

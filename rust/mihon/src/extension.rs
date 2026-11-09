@@ -99,15 +99,30 @@ impl MihonExtension {
     /// executor thread is never stalled by JVM work (the bridge performs
     /// network I/O inside the JVM). The bridge attaches the calling thread to
     /// the JVM as needed, so any blocking-pool thread works.
-    async fn blocking_bridge<T, F>(&self, f: F) -> Result<T>
+    ///
+    /// A JVM call can't be interrupted, so on cancellation the caller gets an
+    /// error right away while the abandoned call finishes in the background.
+    async fn blocking_bridge<T, F>(&self, token: Option<&CancellationToken>, f: F) -> Result<T>
     where
         T: Send + 'static,
         F: FnOnce(&MihonBridge) -> Result<T> + Send + 'static,
     {
+        if token.is_some_and(CancellationToken::is_cancelled) {
+            return Err(anyhow::anyhow!("Task was cancelled"));
+        }
         let bridge = self.bridge.clone();
-        tokio::task::spawn_blocking(move || f(&bridge))
-            .await
-            .context("Bridge call task panicked")?
+        let call = async move {
+            tokio::task::spawn_blocking(move || f(&bridge))
+                .await
+                .context("Bridge call task panicked")?
+        };
+        match token {
+            Some(token) => token
+                .run_until_cancelled(call)
+                .await
+                .unwrap_or_else(|| Err(anyhow::anyhow!("Task was cancelled"))),
+            None => call.await,
+        }
     }
 
     /// Push the source's configurable preferences to the JVM.
@@ -158,7 +173,9 @@ impl MihonExtension {
             Some(json) => {
                 let source_id = self.source_id;
                 if let Err(e) = self
-                    .blocking_bridge(move |bridge| bridge.apply_preferences(source_id, &json))
+                    .blocking_bridge(None, move |bridge| {
+                        bridge.apply_preferences(source_id, &json)
+                    })
                     .await
                 {
                     log::warn!("Failed to apply preferences: {e:#}");
@@ -281,7 +298,7 @@ impl Extension for MihonExtension {
 
     // ========== Content Discovery ==========
 
-    async fn browse(&self, page: i32, _token: Option<CancellationToken>) -> Result<EntryList> {
+    async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
         let source_type = self.source_type;
@@ -294,7 +311,7 @@ impl Extension for MihonExtension {
         // only honor their genre/filter on that path.
         if let Some(filters_json) = self.customized_search_filters().await {
             let result = self
-                .blocking_bridge(move |bridge| match source_type {
+                .blocking_bridge(token.as_ref(), move |bridge| match source_type {
                     MihonSourceType::Manga | MihonSourceType::Novel => {
                         bridge.search(source_id, mihon_page, "", &filters_json)
                     }
@@ -307,7 +324,7 @@ impl Extension for MihonExtension {
         }
 
         let result = self
-            .blocking_bridge(move |bridge| match source_type {
+            .blocking_bridge(token.as_ref(), move |bridge| match source_type {
                 MihonSourceType::Manga | MihonSourceType::Novel => {
                     bridge.get_popular(source_id, mihon_page)
                 }
@@ -322,7 +339,7 @@ impl Extension for MihonExtension {
         &self,
         page: i32,
         filter: String,
-        _token: Option<CancellationToken>,
+        token: Option<CancellationToken>,
     ) -> Result<EntryList> {
         // Parse the caller-supplied filter string. It may be a plain query,
         // a `{"query":..,"filters":[..]}` object, or a bare `[FilterDto..]` array.
@@ -343,7 +360,7 @@ impl Extension for MihonExtension {
         let source_type = self.source_type;
         let source_id = self.source_id;
         let result = self
-            .blocking_bridge(move |bridge| match source_type {
+            .blocking_bridge(token.as_ref(), move |bridge| match source_type {
                 MihonSourceType::Manga | MihonSourceType::Novel => {
                     bridge.search(source_id, mihon_page, &query, &filters_json)
                 }
@@ -367,7 +384,7 @@ impl Extension for MihonExtension {
         &self,
         entryid: EntryId,
         settings: HashMap<String, Setting>,
-        _token: Option<CancellationToken>,
+        token: Option<CancellationToken>,
     ) -> Result<EntryDetailedResult> {
         // Push the source's configurable preferences (union of the stored
         // Extension settings and any overrides the caller supplied) to the JVM
@@ -381,7 +398,7 @@ impl Extension for MihonExtension {
         match source_type {
             MihonSourceType::Manga | MihonSourceType::Novel => {
                 let (details, mut chapters) = self
-                    .blocking_bridge(move |bridge| {
+                    .blocking_bridge(token.as_ref(), move |bridge| {
                         let details = bridge.get_details(source_id, &entry_json)?;
                         let chapters = bridge.get_chapter_list(source_id, &entry_json)?;
                         Ok((details, chapters))
@@ -400,7 +417,7 @@ impl Extension for MihonExtension {
             }
             MihonSourceType::Anime => {
                 let (details, mut episodes) = self
-                    .blocking_bridge(move |bridge| {
+                    .blocking_bridge(token.as_ref(), move |bridge| {
                         let details = bridge.get_anime_details(source_id, &entry_json)?;
                         let episodes = bridge.get_episode_list(source_id, &entry_json)?;
                         Ok((details, episodes))
@@ -437,7 +454,7 @@ impl Extension for MihonExtension {
         &self,
         epid: EpisodeId,
         settings: HashMap<String, Setting>,
-        _token: Option<CancellationToken>,
+        token: Option<CancellationToken>,
     ) -> Result<SourceResult> {
         // Ensure the source observes the current preferences before resolving
         // the episode's content.
@@ -448,7 +465,9 @@ impl Extension for MihonExtension {
                 let chapter_json = serde_json::to_string(&ChapterDto::from_episode_id(&epid))?;
                 let source_id = self.source_id;
                 let pages = self
-                    .blocking_bridge(move |bridge| bridge.get_page_list(source_id, &chapter_json))
+                    .blocking_bridge(token.as_ref(), move |bridge| {
+                        bridge.get_page_list(source_id, &chapter_json)
+                    })
                     .await?;
                 Ok(SourceResult {
                     source: pages_to_source(pages),
@@ -461,7 +480,9 @@ impl Extension for MihonExtension {
                 let chapter_json = serde_json::to_string(&ChapterDto::from_episode_id(&epid))?;
                 let source_id = self.source_id;
                 let page_text = self
-                    .blocking_bridge(move |bridge| bridge.get_page_text(source_id, &chapter_json))
+                    .blocking_bridge(token.as_ref(), move |bridge| {
+                        bridge.get_page_text(source_id, &chapter_json)
+                    })
                     .await?;
                 Ok(SourceResult {
                     source: text_to_paragraph_source(page_text.text),
@@ -472,7 +493,9 @@ impl Extension for MihonExtension {
                 let episode_json = serde_json::to_string(&EpisodeDto::from_episode_id(&epid))?;
                 let source_id = self.source_id;
                 let videos = self
-                    .blocking_bridge(move |bridge| bridge.get_video_list(source_id, &episode_json))
+                    .blocking_bridge(token.as_ref(), move |bridge| {
+                        bridge.get_video_list(source_id, &episode_json)
+                    })
                     .await?;
                 Ok(SourceResult {
                     source: videos_to_source(videos),

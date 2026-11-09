@@ -687,7 +687,10 @@ impl Adapter for MihonAdapter {
         // Install extension via JNI bridge.
         // On desktop: APK -> JAR conversion (dex2jar).
         // On Android: metadata extraction only (APK path returned as-is).
-        let install_result = self.bridge.install_extension(temp_apk.to_str().unwrap())?;
+        let temp_apk_path = temp_apk
+            .to_str()
+            .context("Temp APK path is not valid UTF-8")?;
+        let install_result = self.bridge.install_extension(temp_apk_path)?;
 
         // On desktop, the temp APK is converted to a JAR. On Android, the APK is kept.
         // Clean up temp APK only on desktop (on Android, the bridge returns the APK path).
