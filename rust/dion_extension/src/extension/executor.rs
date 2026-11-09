@@ -174,7 +174,7 @@ impl ExtensionExecutor {
         token: Option<CancellationToken>,
     ) -> Result<Value> {
         let val = Self::exec_value(context, func, args, token).await?;
-        let val = invoke_to_json_hooks(&val, context, 0)
+        let val = invoke_to_json_hooks(&val, context)
             .map_anyhow_ctx(context)
             .context(format!(
                 "Failed to normalize toJSON values in {func} result"
@@ -203,7 +203,16 @@ impl ExtensionExecutor {
 
 pub type ExtensionRuntimeDataContainer = ReadOnlyUserContextContainer<Weak<InnerExtension>>;
 
-fn invoke_to_json_hooks(value: &JsValue, context: &mut Context, depth: usize) -> JsResult<JsValue> {
+fn invoke_to_json_hooks(value: &JsValue, context: &mut Context) -> JsResult<JsValue> {
+    normalize_json_value(value, context, 0, &mut HashMap::new())
+}
+
+fn normalize_json_value(
+    value: &JsValue,
+    context: &mut Context,
+    depth: usize,
+    seen: &mut HashMap<JsObject, JsValue>,
+) -> JsResult<JsValue> {
     const MAX_DEPTH: usize = 64;
     let Some(object) = value.as_object() else {
         return Ok(value.clone());
@@ -211,22 +220,42 @@ fn invoke_to_json_hooks(value: &JsValue, context: &mut Context, depth: usize) ->
     if depth > MAX_DEPTH {
         return Ok(value.clone());
     }
+    if let Some(normalized) = seen.get(&object) {
+        return Ok(normalized.clone());
+    }
+    seen.insert(object.clone(), value.clone());
+    let normalized = normalize_json_object(&object, value, context, depth, seen)?;
+    seen.insert(object, normalized.clone());
+    Ok(normalized)
+}
+
+fn normalize_json_object(
+    object: &JsObject,
+    value: &JsValue,
+    context: &mut Context,
+    depth: usize,
+    seen: &mut HashMap<JsObject, JsValue>,
+) -> JsResult<JsValue> {
     let to_json = object.get(js_string!("toJSON"), context)?;
     if let Some(to_json) = to_json.as_callable() {
         let result = to_json.call(&object.clone().into(), &[], context)?;
         // The result itself may contain objects with `toJSON` hooks.
-        return invoke_to_json_hooks(&result, context, depth + 1);
+        return normalize_json_value(&result, context, depth + 1, seen);
     }
     if let Ok(array) = boa_engine::object::builtins::JsArray::from_object(object.clone()) {
         let length = array.length(context)?;
+        let mut items = Vec::new();
+        let mut changed = false;
         for index in 0..length {
             let item = array.at(index as i64, context)?;
-            if item.is_object() {
-                let converted = invoke_to_json_hooks(&item, context, depth + 1)?;
-                array.set(index as i64, converted, true, context)?;
-            }
+            let converted = normalize_json_value(&item, context, depth + 1, seen)?;
+            changed |= !JsValue::same_value(&item, &converted);
+            items.push(converted);
         }
-        return Ok(value.clone());
+        if !changed {
+            return Ok(value.clone());
+        }
+        return Ok(boa_engine::object::builtins::JsArray::from_iter(items, context).into());
     }
     // Plain object: visit enumerable own string keys via Object.keys.
     let object_ctor = context
@@ -251,16 +280,24 @@ fn invoke_to_json_hooks(value: &JsValue, context: &mut Context, depth: usize) ->
         JsError::from_native(JsNativeError::error().with_message("Object.keys result"))
     })?;
     let length = keys.length(context)?;
+    let mut entries = Vec::new();
+    let mut changed = false;
     for index in 0..length {
         let key = keys.at(index as i64, context)?;
         let property_key = key.to_property_key(context)?;
         let item = object.get(property_key.clone(), context)?;
-        if item.is_object() {
-            let converted = invoke_to_json_hooks(&item, context, depth + 1)?;
-            object.set(property_key, converted, true, context)?;
-        }
+        let converted = normalize_json_value(&item, context, depth + 1, seen)?;
+        changed |= !JsValue::same_value(&item, &converted);
+        entries.push((property_key, converted));
     }
-    Ok(value.clone())
+    if !changed {
+        return Ok(value.clone());
+    }
+    let copy = JsObject::with_object_proto(context.intrinsics());
+    for (key, item) in entries {
+        copy.create_data_property_or_throw(key, item, context)?;
+    }
+    Ok(copy.into())
 }
 
 /// Converts a `handleProxy` result. A `response` body may be a `Uint8Array`;
@@ -574,7 +611,7 @@ impl JSExecutor<Task> for ExtensionExecutor {
                     let vals = &[
                         JsValue::from_json(
                             &serde_json::to_value(epid)
-                                .context("Failed to convert EntryId to serde Value")?,
+                                .context("Failed to convert EpisodeId to serde Value")?,
                             context,
                         )
                         .map_anyhow_ctx(context)
@@ -677,14 +714,14 @@ impl JSExecutor<Task> for ExtensionExecutor {
                             context,
                         )
                         .map_anyhow_ctx(context)
-                        .context("Failed to convert EpisodeId to js")?,
+                        .context("Failed to convert Source to js")?,
                         JsValue::from_json(
                             &serde_json::to_value(epid)
                                 .context("Failed to convert EpisodeId to serde Value")?,
                             context,
                         )
                         .map_anyhow_ctx(context)
-                        .context("Failed to convert Source to js")?,
+                        .context("Failed to convert EpisodeId to js")?,
                         JsValue::from_json(
                             &serde_json::to_value(settings)
                                 .context("Failed to convert Settings to serde Value")?,
@@ -727,7 +764,7 @@ mod tests {
                 "({ aired: Temporal.Instant.from('2024-01-02T03:04:05Z'), list: [Temporal.PlainDate.from('2024-01-02')] })",
             ))
             .expect("eval failed");
-        let value = invoke_to_json_hooks(&value, &mut context, 0).expect("toJSON pass failed");
+        let value = invoke_to_json_hooks(&value, &mut context).expect("toJSON pass failed");
         let json = value
             .to_json(&mut context)
             .expect("to_json failed")
@@ -754,7 +791,7 @@ mod tests {
                 "({ nested: { keep: new Date(0) } })",
             ))
             .expect("eval failed");
-        let value = invoke_to_json_hooks(&value, &mut context, 0).expect("toJSON pass failed");
+        let value = invoke_to_json_hooks(&value, &mut context).expect("toJSON pass failed");
         let json = value.to_json(&mut context).unwrap().unwrap();
         // boa's own Date JSON handling stays intact (ISO string).
         assert!(
@@ -763,5 +800,39 @@ mod tests {
                 .unwrap()
                 .starts_with("1970-01-01")
         );
+    }
+
+    #[test]
+    fn frozen_objects_are_converted_without_being_modified() {
+        let mut context = Context::default();
+        let value = context
+            .eval(boa_engine::Source::from_bytes(
+                "Object.freeze({ when: new Date(0), list: Object.freeze([new Date(0)]) })",
+            ))
+            .expect("eval failed");
+
+        let converted = invoke_to_json_hooks(&value, &mut context).expect("toJSON pass failed");
+
+        let json = converted.to_json(&mut context).unwrap().unwrap();
+        assert!(json["when"].as_str().unwrap().starts_with("1970-01-01"));
+        assert!(json["list"][0].as_str().unwrap().starts_with("1970-01-01"));
+    }
+
+    #[test]
+    fn shared_and_cyclic_references_are_visited_once() {
+        let mut context = Context::default();
+        let shared = context
+            .eval(boa_engine::Source::from_bytes(
+                "(() => { let o = { leaf: 1 }; for (let i = 0; i < 60; i++) o = { a: o, b: o }; return o; })()",
+            ))
+            .expect("eval failed");
+        let cyclic = context
+            .eval(boa_engine::Source::from_bytes(
+                "(() => { const o = { items: [] }; o.items.push(o, o); return o; })()",
+            ))
+            .expect("eval failed");
+
+        invoke_to_json_hooks(&shared, &mut context).expect("shared references failed");
+        invoke_to_json_hooks(&cyclic, &mut context).expect("cyclic references failed");
     }
 }
