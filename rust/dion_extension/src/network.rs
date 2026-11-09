@@ -1,7 +1,7 @@
 use std::{
     fs::File,
-    io::BufReader,
-    path::PathBuf,
+    io::{BufReader, Write},
+    path::{Path, PathBuf},
     sync::Arc,
     time::{Duration, Instant},
 };
@@ -132,7 +132,23 @@ pub struct DionNetworkManager {
     pub nclient: ClientWithMiddleware,
     pub cookies: Arc<CookieStoreMutex>,
     cookies_path: PathBuf,
-    last_cookie_save: Arc<std::sync::Mutex<Instant>>,
+    cookie_save: Arc<std::sync::Mutex<CookieSaveState>>,
+}
+
+#[derive(Debug, Default)]
+struct CookieSaveState {
+    last_save: Option<Instant>,
+    save_scheduled: bool,
+}
+
+fn load_cookies(path: &Path) -> reqwest_cookie_store::CookieStore {
+    let Ok(file) = File::open(path) else {
+        return reqwest_cookie_store::CookieStore::new();
+    };
+    cookie_store::serde::json::load(BufReader::new(file)).unwrap_or_else(|err| {
+        log::warn!("Ignoring unreadable cookie file {path:?}: {err:?}");
+        reqwest_cookie_store::CookieStore::new()
+    })
 }
 
 impl DionNetworkManager {
@@ -147,15 +163,7 @@ impl DionNetworkManager {
     fn build(path: PathBuf, redirects: redirect::Policy) -> Result<Self> {
         std::fs::create_dir_all(&path)
             .map_err(|e| anyhow!("Failed to create network data dir {:?}: {}", path, e))?;
-        let cookie_store = {
-            if let Ok(file) = File::open(path.join(".cookies")).map(BufReader::new) {
-                cookie_store::serde::json::load(file)
-            } else {
-                Ok(reqwest_cookie_store::CookieStore::new())
-            }
-        }
-        .map_err(|e| anyhow!("{:?}", e))?; //That Error conversion is not the cleanest
-
+        let cookie_store = load_cookies(&path.join(".cookies"));
         let cookie_store = reqwest_cookie_store::CookieStoreMutex::new(cookie_store);
         let cookie_store = std::sync::Arc::new(cookie_store);
 
@@ -177,7 +185,7 @@ impl DionNetworkManager {
             cookies: cookie_store,
             nclient: client,
             cookies_path: path.join(".cookies"),
-            last_cookie_save: Arc::new(std::sync::Mutex::new(Instant::now())),
+            cookie_save: Default::default(),
         })
     }
 
@@ -211,33 +219,73 @@ impl DionNetworkManager {
     /// Uses `save_all` so session cookies are included — many sites keep the
     /// login state in session cookies, and dropping them would log the user
     /// out on every restart.
+    ///
+    /// The file is replaced atomically, so a crash mid-save leaves the
+    /// previous jar intact.
     pub fn save_cookies(&self) -> Result<()> {
-        let mut file = File::create(&self.cookies_path)?;
-        let cookies = self
-            .cookies
+        // Held for the whole write so concurrent saves can't share the temp file.
+        let mut state = self
+            .cookie_save
             .lock()
-            .map_err(|_| anyhow!("Cookie store lock poisoned"))?;
-        cookie_store::serde::json::save_incl_expired_and_nonpersistent(&cookies, &mut file)
-            .map_err(|e| anyhow!("Failed to serialize cookies: {:?}", e))
+            .map_err(|_| anyhow!("Cookie save lock poisoned"))?;
+        let mut data = Vec::new();
+        {
+            let cookies = self
+                .cookies
+                .lock()
+                .map_err(|_| anyhow!("Cookie store lock poisoned"))?;
+            cookie_store::serde::json::save_incl_expired_and_nonpersistent(&cookies, &mut data)
+                .map_err(|e| anyhow!("Failed to serialize cookies: {:?}", e))?;
+        }
+        let temp = self.cookies_path.with_extension("tmp");
+        let mut file = File::create(&temp)?;
+        file.write_all(&data)?;
+        file.sync_all()?;
+        drop(file);
+        std::fs::rename(&temp, &self.cookies_path)?;
+        state.last_save = Some(Instant::now());
+        Ok(())
     }
 
-    /// Persist the cookie jar if the debounce interval has elapsed since the
-    /// last save. Cheap to call after every request; failures are logged, not
-    /// propagated, since losing a debounced save is not worth failing the
-    /// request that triggered it.
-    pub fn save_cookies_debounced(&self) {
-        let mut last = match self.last_cookie_save.lock() {
-            Ok(last) => last,
-            Err(_) => return,
-        };
-        if last.elapsed() < COOKIE_SAVE_INTERVAL {
-            return;
-        }
-        *last = Instant::now();
-        drop(last);
+    /// [`Self::save_cookies`], logging a failure instead of returning it.
+    pub(crate) fn save_cookies_logged(&self) {
         if let Err(e) = self.save_cookies() {
             log::warn!("Failed to save cookies to {:?}: {}", self.cookies_path, e);
         }
+    }
+
+    pub fn save_cookies_debounced(&self) {
+        self.save_cookies_within(COOKIE_SAVE_INTERVAL);
+    }
+
+    fn save_cookies_within(&self, interval: Duration) {
+        let delay = {
+            let Ok(mut state) = self.cookie_save.lock() else {
+                return;
+            };
+            let remaining = state.last_save.map_or(Duration::ZERO, |last| {
+                interval.saturating_sub(last.elapsed())
+            });
+            if !remaining.is_zero() {
+                if state.save_scheduled {
+                    return;
+                }
+                state.save_scheduled = true;
+            }
+            remaining
+        };
+        if delay.is_zero() {
+            self.save_cookies_logged();
+            return;
+        }
+        let this = self.clone();
+        tokio::spawn(async move {
+            tokio::time::sleep(delay).await;
+            if let Ok(mut state) = this.cookie_save.lock() {
+                state.save_scheduled = false;
+            }
+            this.save_cookies_logged();
+        });
     }
 }
 
@@ -259,6 +307,36 @@ mod tests {
     fn test_manager(name: &str) -> (DionNetworkManager, PathBuf) {
         let dir = std::env::temp_dir().join(format!("dion-net-{name}-{}", std::process::id()));
         (DionNetworkManager::for_extension(dir.clone()).unwrap(), dir)
+    }
+
+    #[test]
+    fn corrupt_cookie_file_does_not_block_startup() {
+        for contents in ["", "not json"] {
+            let (_, dir) = test_manager("corrupt-setup");
+            std::fs::write(dir.join(".cookies"), contents).unwrap();
+
+            assert!(DionNetworkManager::for_extension(dir.clone()).is_ok());
+
+            let _ = std::fs::remove_dir_all(dir);
+        }
+    }
+
+    #[tokio::test]
+    async fn changes_inside_the_interval_are_saved_when_it_ends() {
+        let (manager, dir) = test_manager("debounce");
+        let cookies = dir.join(".cookies");
+        let interval = Duration::from_millis(100);
+
+        manager.save_cookies_within(interval);
+        assert!(cookies.exists(), "the first save must not wait");
+
+        std::fs::remove_file(&cookies).unwrap();
+        manager.save_cookies_within(interval);
+        assert!(!cookies.exists(), "a save inside the interval must wait");
+
+        tokio::time::sleep(Duration::from_millis(300)).await;
+        assert!(cookies.exists(), "the delayed save must run");
+        let _ = std::fs::remove_dir_all(dir);
     }
 
     #[test]

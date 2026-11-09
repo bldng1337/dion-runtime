@@ -264,6 +264,12 @@ impl DionExtension {
     }
 }
 
+impl Drop for DionExtension {
+    fn drop(&mut self) {
+        self.data.network.save_cookies_logged();
+    }
+}
+
 #[async_trait::async_trait()]
 impl Extension for DionExtension {
     fn is_enabled(&self) -> bool {
@@ -285,7 +291,10 @@ impl Extension for DionExtension {
                 let context = ThreadedJSContext::create(executor).await?;
                 self.data.context.store(Some(Arc::new(context)));
             }
-            (false, true) => self.data.context.store(None),
+            (false, true) => {
+                self.data.context.store(None);
+                self.data.network.save_cookies_logged();
+            }
             (false, false) | (true, true) => (),
         }
         Ok(())
