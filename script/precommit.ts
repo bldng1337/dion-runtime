@@ -25,21 +25,21 @@ await $`bunx @biomejs/biome check .`;
 console.log("\n2. Running TypeScript type checks...");
 await $`bunx turbo check-types`;
 
-// Step 3: Run cargo tests
-console.log("\n3. Running cargo tests...");
+// Step 3: Run turbo build (cargo tests load the bundled test extensions)
+console.log("\n3. Running turbo build...");
+await $`bunx turbo build`;
+
+// Step 4: Run cargo tests
+console.log("\n4. Running cargo tests...");
 await $`cargo test`;
 
-// Step 4: Check Rust formatting (fail if not formatted)
-console.log("\n4. Checking Rust formatting...");
+// Step 5: Check Rust formatting (fail if not formatted)
+console.log("\n5. Checking Rust formatting...");
 await $`cargo fmt -- --check`;
 
-// Step 5: Run clippy with warnings as errors
-console.log("\n5. Running clippy...");
-await $`cargo clippy -- -D warnings`;
-
-// Step 6: Run turbo build
-console.log("\n6. Running turbo build...");
-await $`bunx turbo build`;
+// Step 6: Run clippy with warnings as errors
+console.log("\n6. Running clippy...");
+await $`cargo clippy --all-targets -- -D warnings`;
 
 // Step 7: Run bun tests
 console.log("\n7. Running bun tests...");

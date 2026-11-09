@@ -35,10 +35,11 @@ Prereqs on PATH: `bun`, `cargo`, `dart`, `flutter`, `biome`.
 
 - **`bun run precommit`** — the full gate; run it before finishing any change.
   It formats everything (biome, `cargo fmt`, `dart format` + `dart fix`), then
-  runs in order: biome check → `turbo check-types` → `cargo test` →
-  `cargo fmt --check` → `cargo clippy -- -D warnings` → `turbo build` →
-  `bun test` → `flutter analyze`. All steps must pass; fix at the failing step
-  and rerun.
+  runs in order: biome check → `turbo check-types` → `turbo build` →
+  `cargo test` → `cargo fmt --check` →
+  `cargo clippy --all-targets -- -D warnings` → `bun test` →
+  `flutter analyze lib`. All steps must pass; fix at the failing step and
+  rerun.
 - **`bun script/index.ts <action…> [-p path]… [-r] [-t]`** — targeted actions
   (`build`, `test`, `format`, `lint`, `clean`) across `rust/core`,
   `rust/dion_extension`, `dart/rdion_runtime`, and `js/runtime`. Use `-p` to
