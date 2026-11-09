@@ -392,20 +392,6 @@ export class Checkbox extends UI<boolean> {
 	}
 }
 
-// TODO: Implement on rust side
-// export class Textbox extends UI<string> {
-// 	label: string;
-// 	constructor(label: string) {
-// 		super();
-// 		this.label = label;
-// 	}
-// 	getDefinition(): SettingUI {
-// 		return {
-// 			type: "Textbox",
-// 			label: this.label,
-// 		};
-// 	}
-// }
 
 export class Dropdown extends UI<string> {
 	options: { value: string; label: string }[];

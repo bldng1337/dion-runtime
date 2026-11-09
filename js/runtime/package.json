@@ -10,7 +10,6 @@
 		"type": "git",
 		"url": "https://github.com/bldng1337/dion-runtime.git"
 	},
-	"browser": "browser.js",
 	"keywords": [
 		"napi-rs",
 		"NAPI",
@@ -22,7 +21,6 @@
 	"files": [
 		"index.d.ts",
 		"index.js",
-		"browser.js",
 		"*.node"
 	],
 	"napi": {
