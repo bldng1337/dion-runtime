@@ -33,8 +33,9 @@ fn validate_id(id: &str) -> Result<()> {
     }
     Ok(())
 }
+use dion_runtime::file_url::path_from_file_url;
 use tokio::{
-    fs::{self, copy, read_dir, remove_file, write},
+    fs::{self, copy, read_dir, remove_file, rename, write},
     sync::RwLock,
 };
 
@@ -246,6 +247,30 @@ async fn create_extension(
     Ok(Box::new(res))
 }
 
+fn staged_install_path(extension_dir: &Path, id: &str) -> PathBuf {
+    extension_dir.join(format!("{id}.dion.js.installing"))
+}
+
+impl DionExtensionAdapter {
+    async fn commit_install(&self, staged: PathBuf, target: PathBuf) -> Result<Box<dyn Extension>> {
+        let installed: Result<DionExtension> = async {
+            let mut extension = DionExtension::create(staged.clone(), self)
+                .await
+                .context("Failed to load Extension")?;
+            rename(&staged, &target)
+                .await
+                .context("Failed to replace the installed Extension")?;
+            extension.path = target;
+            Ok(extension)
+        }
+        .await;
+        if installed.is_err() {
+            remove_file(&staged).await.ok();
+        }
+        Ok(Box::new(installed?))
+    }
+}
+
 #[async_trait::async_trait()]
 impl Adapter for DionExtensionAdapter {
     async fn get_extensions(&self) -> Result<Vec<Box<dyn Extension>>> {
@@ -291,23 +316,14 @@ impl Adapter for DionExtensionAdapter {
                 let body = res.text().await?;
                 let manifest = peek_manifest_string(&body)?;
                 validate_id(&manifest.id)?;
-                let extpath = path.join(format!("{}.dion.js", manifest.id));
-                write(extpath.clone(), body).await?;
-                let ext = create_extension(extpath.clone(), self).await;
-                match ext {
-                    Ok(val) => Ok(val),
-                    Err(err) => {
-                        remove_file(extpath).await.map_err(|fileerr| anyhow!("While removing extension due to error: {err} failed to remove extension due to error {fileerr}"))?;
-                        Err(err.context("Failed to load Extension"))
-                    }
-                }
+                let staged = staged_install_path(&path, &manifest.id);
+                write(&staged, body).await?;
+                self.commit_install(staged, path.join(format!("{}.dion.js", manifest.id)))
+                    .await
             }
             location if location.starts_with("file://") => {
-                let path = PathBuf::from(
-                    location
-                        .strip_prefix("file://")
-                        .ok_or(anyhow!("Malformed file location: {location}"))?,
-                );
+                let path = path_from_file_url(location)
+                    .ok_or(anyhow!("Malformed file location: {location}"))?;
                 if !path.is_absolute() {
                     bail!(
                         "Malformed file location: {location}, Please only provide absolute file locations"
@@ -321,19 +337,12 @@ impl Adapter for DionExtensionAdapter {
                         .await
                         .context("Failed to get Extension Path")?,
                 );
-                let extpath = extpath.join(format!("{}.dion.js", manifest.id));
-                copy(path, &extpath)
+                let staged = staged_install_path(&extpath, &manifest.id);
+                copy(&path, &staged).await.with_context(|| {
+                    format!("Failed to copy Extension from {path:?} to {staged:?}")
+                })?;
+                self.commit_install(staged, extpath.join(format!("{}.dion.js", manifest.id)))
                     .await
-                    .context("Failed to Copy Extension from {path} to {extpath}")?;
-                let ext = create_extension(extpath.clone(), self).await;
-                match ext {
-                    Ok(val) => Ok(val),
-                    Err(err) => {
-                        remove_file(extpath).await
-                        .map_err(|fileerr| anyhow!("While removing extension due to error: {err} failed to remove extension due to error {fileerr}"))?;
-                        Err(err.context("Failed to load Extension"))
-                    }
-                }
             }
             _ => {
                 bail!("Unknown protocol: {url}")

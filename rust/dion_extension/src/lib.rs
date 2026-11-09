@@ -142,6 +142,114 @@ mod tests {
         panic!("No Extension found")
     }
 
+    mod install {
+        use super::*;
+        use crate::extension_manager::ExtensionMetadata;
+        use dion_runtime::data::extension_repo::ExtensionRepo;
+        use std::path::{Path, PathBuf};
+
+        const CODE: &str = "export default class {}";
+
+        fn manifest(id: &str) -> ExtensionMetadata {
+            ExtensionMetadata {
+                id: id.to_string(),
+                version: "1.0.0".to_string(),
+                api_version: "*".to_string(),
+                ..Default::default()
+            }
+        }
+
+        fn setting(label: &str) -> Setting {
+            let value = SettingValue::String {
+                data: label.to_string(),
+            };
+            Setting {
+                label: label.to_string(),
+                value: value.clone(),
+                default: value,
+                visible: true,
+                ui: None,
+            }
+        }
+
+        fn with_setting(mut manifest: ExtensionMetadata, id: &str) -> ExtensionMetadata {
+            manifest.settings.insert(
+                SettingKind::Extension,
+                [(id.to_string(), setting(id))].into(),
+            );
+            manifest
+        }
+
+        fn write_extension(path: &Path, manifest: &ExtensionMetadata) -> String {
+            let contents = format!("//{}\n{CODE}", serde_json::to_string(manifest).unwrap());
+            std::fs::write(path, &contents).unwrap();
+            contents
+        }
+
+        async fn adapter(name: &str) -> (DionExtensionAdapter, PathBuf) {
+            let dir = std::env::temp_dir().join(format!("dion-{name}-{}", std::process::id()));
+            let _ = std::fs::remove_dir_all(&dir);
+            std::fs::create_dir_all(&dir).unwrap();
+            let adapter = DionExtensionAdapter::new(Box::new(TestAdapterClient {
+                path: dir.to_string_lossy().into_owned(),
+            }))
+            .await
+            .unwrap();
+            (adapter, dir)
+        }
+
+        fn file_url(path: &Path) -> String {
+            format!("file://{}", path.display())
+        }
+
+        #[tokio::test]
+        async fn failed_update_keeps_the_installed_version() {
+            let (adapter, dir) = adapter("update").await;
+            let source = dir.join("source.js");
+            let good = write_extension(&source, &manifest("updated"));
+            adapter.install(&file_url(&source)).await.unwrap();
+            let installed = dir.join("updated.dion.js");
+            assert_eq!(std::fs::read_to_string(&installed).unwrap(), good);
+
+            // Ids containing '/' are rejected while the extension is created.
+            write_extension(&source, &with_setting(manifest("updated"), "bad/id"));
+            assert!(adapter.install(&file_url(&source)).await.is_err());
+
+            assert_eq!(std::fs::read_to_string(&installed).unwrap(), good);
+            assert!(!dir.join("updated.dion.js.installing").exists());
+            let _ = std::fs::remove_dir_all(dir);
+        }
+
+        #[tokio::test]
+        async fn reload_applies_the_new_manifest_and_survives_a_missing_file() {
+            let (adapter, dir) = adapter("reload").await;
+            let source = dir.join("source.js");
+            write_extension(&source, &manifest("reloaded"));
+            let mut extension = adapter.install(&file_url(&source)).await.unwrap();
+            extension.set_enabled(true).await.unwrap();
+            let installed = dir.join("reloaded.dion.js");
+
+            write_extension(&installed, &with_setting(manifest("reloaded"), "added"));
+            extension.reload().await.unwrap();
+            assert!(
+                extension
+                    .get_data()
+                    .read()
+                    .await
+                    .settings
+                    .get_setting("added", &SettingKind::Extension)
+                    .is_ok()
+            );
+
+            std::fs::remove_file(&installed).unwrap();
+            assert!(extension.reload().await.is_err());
+            assert!(extension.is_enabled());
+            let _ = std::fs::remove_dir_all(dir);
+        }
+
+        
+    }
+
     fn setup_mock_server() -> MockServer {
         let server: MockServer = MockServer::start();
 

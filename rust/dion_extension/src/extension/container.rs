@@ -223,29 +223,29 @@ impl DionExtension {
             path,
             code,
         };
-        // We should use into_iter to avoid clones but then we would need to remove the settings from the extension data, ideally we want to have another type of extension data for runtime that doesnt have the settings in it but then we would have the core extension data, the serialized extension data and the runtime extension data
-
-        {
-            let mut store = extension.data.store.write().await;
-            extdata
-                .settings
-                .iter()
-                .try_for_each(|(setting_kind, settings)| {
-                    settings.iter().try_for_each(|(name, def)| {
-                        store.settings.merge_setting_definition(
-                            name.clone(),
-                            setting_kind,
-                            def.clone(),
-                        )
-                    })
-                })?;
-
-            for account in &extdata.accounts {
-                store.auth.merge_auth(account);
-            }
-        }
+        extension.merge_manifest(&extdata).await?;
 
         Ok(extension)
+    }
+
+    async fn merge_manifest(&self, manifest: &ExtensionMetadata) -> Result<()> {
+        // We should use into_iter to avoid clones but then we would need to remove the settings from the extension data, ideally we want to have another type of extension data for runtime that doesnt have the settings in it but then we would have the core extension data, the serialized extension data and the runtime extension data
+        let mut store = self.data.store.write().await;
+        manifest
+            .settings
+            .iter()
+            .try_for_each(|(setting_kind, settings)| {
+                settings.iter().try_for_each(|(name, def)| {
+                    store
+                        .settings
+                        .merge_setting_definition(name.clone(), setting_kind, def.clone())
+                })
+            })?;
+
+        for account in &manifest.accounts {
+            store.auth.merge_auth(account);
+        }
+        Ok(())
     }
 
     async fn read_extension(extpath: &PathBuf) -> Result<(ExtensionMetadata, String)> {
@@ -292,9 +292,11 @@ impl Extension for DionExtension {
     }
 
     async fn reload(&mut self) -> Result<()> {
+        // Read and merge first, so a missing or broken file leaves the running version untouched.
+        let (ext, code) = Self::read_extension(&self.path).await?;
+        self.merge_manifest(&ext).await?;
         let enabled = self.is_enabled();
         self.set_enabled(false).await?;
-        let (ext, code) = Self::read_extension(&self.path).await?;
         {
             let mut store = self.data.store.write().await;
             store.data = ext.clone().into_extension_data();
