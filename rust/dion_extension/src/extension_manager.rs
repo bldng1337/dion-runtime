@@ -200,23 +200,87 @@ impl DionRepoIndex {
     }
 }
 
+/// Module specifiers taken by the runtime itself: the extension's own module and the built-in modules.
+const RESERVED_MODULE_NAMES: &[&str] = &[
+    "extension",
+    "network",
+    "parse",
+    "convert",
+    "permission",
+    "auth",
+    "setting",
+    "action",
+    "store",
+    "cache",
+    "filesystem",
+    "metadata",
+];
+
+/// An ES module the embedding adapter makes importable (by `name`) from every
+/// extension it loads, next to the built-in modules (`network`, `parse`, ...).
+/// Adapters for foreign extension formats use this to ship their runtime
+/// shim once instead of bundling it into each generated extension.
+#[derive(Debug, Clone)]
+pub struct HostModule {
+    pub name: String,
+    pub source: Arc<str>,
+}
+
+impl HostModule {
+    pub fn new(name: impl Into<String>, source: impl Into<Arc<str>>) -> Self {
+        Self {
+            name: name.into(),
+            source: source.into(),
+        }
+    }
+}
+
 pub struct DionExtensionAdapter {
     pub(crate) network: DionNetworkManager,
     pub(crate) client: Box<dyn AdapterClient>,
     pub(crate) proxy: Arc<RwLock<Proxy>>,
+    pub(crate) host_modules: Arc<[HostModule]>,
 }
 
 impl DionExtensionAdapter {
     pub async fn new(client: Box<dyn AdapterClient>) -> Result<Self> {
+        Self::with_host_modules(client, Vec::new()).await
+    }
+
+    pub async fn with_host_modules(
+        client: Box<dyn AdapterClient>,
+        host_modules: Vec<HostModule>,
+    ) -> Result<Self> {
         let path = client
             .get_path()
             .await
             .context("Failed to get Extension Path")?;
+        for module in &host_modules {
+            if RESERVED_MODULE_NAMES.contains(&module.name.as_str()) {
+                bail!("Host module name {:?} is reserved", module.name);
+            }
+        }
         Ok(DionExtensionAdapter {
             network: DionNetworkManager::new(path.into())?,
             proxy: Proxy::new().await,
             client,
+            host_modules: host_modules.into(),
         })
+    }
+
+    pub async fn install_source(&self, source: String) -> Result<Box<dyn Extension>> {
+        let path = PathBuf::from(
+            self.client
+                .get_path()
+                .await
+                .context("Failed to get Extension Path")?,
+        );
+        let manifest = peek_manifest_string(&source)?;
+        validate_id(&manifest.id)?;
+        let staged = staged_install_path(&path, &manifest.id);
+        write(&staged, source).await?;
+        self.commit_install(staged, path.join(format!("{}.dion.js", manifest.id)))
+            .await
     }
 }
 
@@ -304,22 +368,11 @@ impl Adapter for DionExtensionAdapter {
     }
 
     async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
-        let path = self
-            .client
-            .get_path()
-            .await
-            .context("Failed to get Extension Path")?;
-        let path = PathBuf::from(path);
         match url {
             location if location.starts_with("http://") || location.starts_with("https://") => {
                 let res = self.network.nclient.get(location).send().await?;
                 let body = res.text().await?;
-                let manifest = peek_manifest_string(&body)?;
-                validate_id(&manifest.id)?;
-                let staged = staged_install_path(&path, &manifest.id);
-                write(&staged, body).await?;
-                self.commit_install(staged, path.join(format!("{}.dion.js", manifest.id)))
-                    .await
+                self.install_source(body).await
             }
             location if location.starts_with("file://") => {
                 let path = path_from_file_url(location)

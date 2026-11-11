@@ -84,7 +84,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -53940966;
+  int get rustContentHash => -1386598880;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -134,6 +134,9 @@ abstract class RustLibApi extends BaseApi {
       {required ProxyAdapter that, required String url});
 
   Future<ProxyAdapter> crateApiExtensionProxyAdapterInitDion(
+      {required ManagerClient client});
+
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitLnreader(
       {required ManagerClient client});
 
   Future<ProxyAdapter> crateApiExtensionProxyAdapterInitMihon(
@@ -709,6 +712,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiExtensionProxyAdapterInitDionConstMeta =>
       const TaskConstMeta(
         debugName: "ProxyAdapter_init_dion",
+        argNames: ["client"],
+      );
+
+  @override
+  Future<ProxyAdapter> crateApiExtensionProxyAdapterInitLnreader(
+      {required ManagerClient client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        var arg0 =
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerManagerClient(
+                client);
+        return wire.wire__crate__api__extension__ProxyAdapter_init_lnreader(
+            port_, arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData:
+            dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyAdapter,
+        decodeErrorData: dco_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiExtensionProxyAdapterInitLnreaderConstMeta,
+      argValues: [client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiExtensionProxyAdapterInitLnreaderConstMeta =>
+      const TaskConstMeta(
+        debugName: "ProxyAdapter_init_lnreader",
         argNames: ["client"],
       );
 

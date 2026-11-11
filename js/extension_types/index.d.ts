@@ -31,6 +31,8 @@ declare module "network" {
 		body: string;
 		json: unknown;
 		ok: boolean;
+		/** The URL of the final response, after following redirects. */
+		url: string;
 	}
 }
 

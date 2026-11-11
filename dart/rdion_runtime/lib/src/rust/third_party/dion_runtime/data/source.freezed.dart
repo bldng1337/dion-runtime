@@ -2469,12 +2469,7 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     return EqualUnmodifiableListView(_paragraphs);
   }
 
-  /// Background/narration audio spans, for parity with `Imagelist`.
-  /// `from`/`to` are paragraph indices (inclusive).
   final List<ImageListAudio>? _audio;
-
-  /// Background/narration audio spans, for parity with `Imagelist`.
-  /// `from`/`to` are paragraph indices (inclusive).
   @override
   List<ImageListAudio>? get audio {
     final value = _audio;
@@ -2624,9 +2619,6 @@ abstract class Source_Paragraphlist extends Source {
   const Source_Paragraphlist._() : super._();
 
   List<Paragraph> get paragraphs;
-
-  /// Background/narration audio spans, for parity with `Imagelist`.
-  /// `from`/`to` are paragraph indices (inclusive).
   List<ImageListAudio>? get audio;
 
   /// Create a copy of Source

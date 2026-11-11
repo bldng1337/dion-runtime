@@ -31,6 +31,10 @@ class ExtensionData {
   final String? repo;
   final String version;
   final String license;
+
+  /// Whether the extension's `api_version` accepts this runtime. Advisory:
+  /// the runtime still loads and enables incompatible extensions, and hosts
+  /// decide what to do about it (Dion shows a badge).
   final bool compatible;
   final List<Permission>? permissions;
 

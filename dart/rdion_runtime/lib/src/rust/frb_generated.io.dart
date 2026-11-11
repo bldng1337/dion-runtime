@@ -4642,6 +4642,24 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__extension__ProxyAdapter_init_dionPtr
           .asFunction<void Function(int, int)>();
 
+  void wire__crate__api__extension__ProxyAdapter_init_lnreader(
+    int port_,
+    int client,
+  ) {
+    return _wire__crate__api__extension__ProxyAdapter_init_lnreader(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire__crate__api__extension__ProxyAdapter_init_lnreaderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.UintPtr)>>(
+    'frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_lnreader',
+  );
+  late final _wire__crate__api__extension__ProxyAdapter_init_lnreader =
+      _wire__crate__api__extension__ProxyAdapter_init_lnreaderPtr
+          .asFunction<void Function(int, int)>();
+
   void wire__crate__api__extension__ProxyAdapter_init_mihon(
     int port_,
     int client,

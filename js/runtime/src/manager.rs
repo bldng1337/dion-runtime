@@ -4,6 +4,7 @@ use dion_runtime::{
   data::extension_repo::{ExtensionRepo, RemoteExtensionResult},
   extension::Adapter,
 };
+use lnreader_adapter::LnReaderAdapter;
 use napi_derive::napi;
 use serde_json;
 
@@ -22,6 +23,18 @@ impl AdapterProxy {
     Ok(Self {
       manager: Box::new(
         DionExtensionAdapter::new(Box::new(handler))
+          .await
+          .map_to_node()?,
+      ),
+    })
+  }
+
+  #[napi(factory)]
+  pub async fn init_lnreader(handler: &ClientManagerHandler) -> Result<Self, napi::Error> {
+    let handler = (*handler).clone();
+    Ok(Self {
+      manager: Box::new(
+        LnReaderAdapter::new(Box::new(handler))
           .await
           .map_to_node()?,
       ),

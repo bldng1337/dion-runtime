@@ -18,6 +18,9 @@ arc-swap = "1.7.1"
 
 lazy_static = { version = "1.5.0" }
 boa_engine = { version="0.22.0", default-features = false, features = [
+    # Web-legacy builtins (String.prototype.substr, escape, ...) that bundled
+    # libraries and LNReader plugins rely on, like they do in browsers.
+    "annex-b",
     "jsvalue-enum",
     "float16",
     "xsum",

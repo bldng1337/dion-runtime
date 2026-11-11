@@ -146,7 +146,7 @@ class JSProject extends Project {
 	}
 }
 
-const rustPath = ["rust/core", "rust/dion_extension"];
+const rustPath = ["rust/core", "rust/dion_extension", "rust/lnreader"];
 const dartPath = ["dart/rdion_runtime"];
 const jsPath = ["js/runtime"];
 

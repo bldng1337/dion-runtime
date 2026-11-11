@@ -33,7 +33,7 @@ use tokio_util::sync::CancellationToken;
 
 use crate::extension::executor::{ExtensionExecutor, Task};
 use crate::extension_executor::ThreadedJSContext;
-use crate::extension_manager::{DionExtensionAdapter, ExtensionMetadata};
+use crate::extension_manager::{DionExtensionAdapter, ExtensionMetadata, HostModule};
 use crate::network::DionNetworkManager;
 use crate::proxy::Proxy;
 use crate::proxy::ProxyExtensionRef;
@@ -171,6 +171,7 @@ pub struct DionExtension {
     pub(crate) data: Arc<InnerExtension>,
     pub(crate) code: String,
     pub(crate) path: PathBuf,
+    pub(crate) host_modules: Arc<[HostModule]>,
     pub(crate) _proxy_ref: Arc<ProxyExtensionRef>,
 }
 
@@ -222,6 +223,7 @@ impl DionExtension {
             data,
             path,
             code,
+            host_modules: manager.host_modules.clone(),
         };
         extension.merge_manifest(&extdata).await?;
 

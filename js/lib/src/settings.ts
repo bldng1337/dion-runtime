@@ -392,7 +392,6 @@ export class Checkbox extends UI<boolean> {
 	}
 }
 
-
 export class Dropdown extends UI<string> {
 	options: { value: string; label: string }[];
 	constructor(options: { value: string; label: string }[]) {

@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -53940966;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1386598880;
 
 // Section: executor
 
@@ -468,6 +468,53 @@ fn wire__crate__api__extension__ProxyAdapter_init_dion_impl(
                         let api_client_guard = api_client_guard.unwrap();
                         let output_ok =
                             crate::api::extension::ProxyAdapter::init_dion(&*api_client_guard)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__extension__ProxyAdapter_init_lnreader_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    client: impl CstDecode<
+        RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ManagerClient>>,
+    >,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::DcoCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "ProxyAdapter_init_lnreader",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.cst_decode();
+            move |context| async move {
+                transform_result_dco::<_, _, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_client,
+                                    0,
+                                    false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_client_guard = api_client_guard.unwrap();
+                        let output_ok =
+                            crate::api::extension::ProxyAdapter::init_lnreader(&*api_client_guard)
                                 .await?;
                         Ok(output_ok)
                     })()
@@ -14514,6 +14561,14 @@ mod io {
         client: usize,
     ) {
         wire__crate__api__extension__ProxyAdapter_init_dion_impl(port_, client)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__extension__ProxyAdapter_init_lnreader(
+        port_: i64,
+        client: usize,
+    ) {
+        wire__crate__api__extension__ProxyAdapter_init_lnreader_impl(port_, client)
     }
 
     #[unsafe(no_mangle)]

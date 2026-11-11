@@ -4,6 +4,7 @@ use std::sync::{Arc, Weak};
 
 use crate::extension::container::{DionExtension, InnerExtension};
 use crate::extension_executor::JSExecutor;
+use crate::extension_manager::HostModule;
 use crate::js;
 use crate::proxy::{ProxyResult, request_to_value};
 use crate::utils::{
@@ -16,6 +17,9 @@ use boa_engine::property::Attribute;
 use boa_engine::value::TryIntoJs;
 use boa_engine::{Context, JsError, JsNativeError, JsObject, JsResult, JsValue, Module, js_string};
 use boa_runtime::Console;
+use boa_runtime::extensions::{
+    AbortControllerExtension, MicrotaskExtension, StructuredCloneExtension, TimeoutExtension,
+};
 use dion_runtime::data::action::{EventData, EventResult};
 use dion_runtime::data::activity::EntryActivity;
 use dion_runtime::data::auth::Account;
@@ -113,6 +117,7 @@ pub(crate) enum Task {
 pub(super) struct ExtensionExecutor {
     code: String,
     data: Weak<InnerExtension>,
+    host_modules: Arc<[HostModule]>,
 }
 
 impl ExtensionExecutor {
@@ -120,6 +125,7 @@ impl ExtensionExecutor {
         Self {
             code: ext.code.clone(),
             data: Arc::downgrade(&ext.data),
+            host_modules: ext.host_modules.clone(),
         }
     }
 
@@ -362,7 +368,6 @@ impl JSExecutor<Task> for ExtensionExecutor {
             .build()
             .map_anyhow()
             .context("Failed to build JsContext")?;
-        ctx.strict(true);
 
         let container = ExtensionRuntimeDataContainer::new(self.data.clone());
         ctx.insert_data::<ExtensionRuntimeDataContainer>(container);
@@ -372,6 +377,28 @@ impl JSExecutor<Task> for ExtensionExecutor {
             .map_anyhow_ctx(&mut ctx)
             .context("Failed to init console")?;
         js::declare(&mut ctx, &loader)?;
+        boa_runtime::register_extensions(
+            (
+                TimeoutExtension,
+                MicrotaskExtension,
+                StructuredCloneExtension,
+                AbortControllerExtension,
+            ),
+            None,
+            &mut ctx,
+        )
+        .map_anyhow_ctx(&mut ctx)
+        .context("Failed to register timer and abort globals")?;
+        for host_module in self.host_modules.iter() {
+            let module = Module::parse(
+                boa_engine::Source::from_bytes(host_module.source.as_ref()),
+                None,
+                &mut ctx,
+            )
+            .map_anyhow_ctx(&mut ctx)
+            .with_context(|| format!("Failed parsing host module {}", host_module.name))?;
+            loader.insert(host_module.name.clone(), module);
+        }
 
         let module = Module::parse(boa_engine::Source::from_bytes(&self.code), None, &mut ctx)
             .map_anyhow_ctx(&mut ctx)
@@ -744,6 +771,21 @@ impl JSExecutor<Task> for ExtensionExecutor {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use boa_engine::builtins::promise::PromiseState;
+
+    #[test]
+    fn modules_are_strict_without_forcing_strict_mode() {
+        let mut context = Context::default();
+        let module = Module::parse(
+            boa_engine::Source::from_bytes("undeclared = 1;"),
+            None,
+            &mut context,
+        )
+        .expect("parse failed");
+        let promise = module.load_link_evaluate(&mut context);
+        context.run_jobs().expect("jobs failed");
+        assert!(matches!(promise.state(), PromiseState::Rejected(_)));
+    }
 
     #[test]
     fn temporal_globals_and_stringify() {

@@ -2747,6 +2747,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 
 [[package]]
+name = "lnreader-adapter"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "boa_engine",
+ "dion-extension",
+ "dion-runtime",
+ "httpmock",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "url",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.4.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3958,6 +3976,7 @@ dependencies = [
  "dion-runtime",
  "flutter_rust_bridge",
  "jni",
+ "lnreader-adapter",
  "log",
  "mihon-adapter",
  "ndk-context",
@@ -4136,6 +4155,7 @@ dependencies = [
  "async-trait",
  "dion-extension",
  "dion-runtime",
+ "lnreader-adapter",
  "log",
  "napi",
  "napi-build",

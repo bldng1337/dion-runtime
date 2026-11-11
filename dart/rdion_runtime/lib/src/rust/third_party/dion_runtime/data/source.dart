@@ -285,10 +285,6 @@ class Episode {
   final String? description;
   final String url;
   final Link? cover;
-
-  /// Release/upload time. ISO-8601 on the wire (`DateTime` in Dart,
-  /// `Temporal.Instant`-compatible for extension JS); lenient parsing
-  /// accepts epoch seconds/milliseconds too.
   final DateTime? timestamp;
   final bool? announced;
 
@@ -505,9 +501,6 @@ sealed class Source with _$Source {
   }) = Source_Audio;
   const factory Source.paragraphlist({
     required List<Paragraph> paragraphs,
-
-    /// Background/narration audio spans, for parity with `Imagelist`.
-    /// `from`/`to` are paragraph indices (inclusive).
     List<ImageListAudio>? audio,
   }) = Source_Paragraphlist;
 }

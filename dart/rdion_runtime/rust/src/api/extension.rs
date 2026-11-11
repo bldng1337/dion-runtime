@@ -25,6 +25,7 @@ use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
 use dion_runtime::extension::Adapter;
 pub use dion_runtime::extension::Extension;
+use lnreader_adapter::LnReaderAdapter;
 use mihon_adapter::MihonAdapter;
 
 use flutter_rust_bridge::frb;
@@ -365,6 +366,17 @@ impl ProxyAdapter {
 
     pub async fn init_mihon(client: &ManagerClient) -> Result<ProxyAdapter> {
         MihonAdapter::new(Box::new(client.clone()))
+            .await
+            .map(|ext| ProxyAdapter {
+                inner: (Box::new(ext) as Box<dyn Adapter>).into(),
+            })
+    }
+
+    /// An adapter for LNReader plugins. Repositories are LNReader plugin
+    /// indexes such as
+    /// `https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v3.0.0/.dist/plugins.min.json`.
+    pub async fn init_lnreader(client: &ManagerClient) -> Result<ProxyAdapter> {
+        LnReaderAdapter::new(Box::new(client.clone()))
             .await
             .map(|ext| ProxyAdapter {
                 inner: (Box::new(ext) as Box<dyn Adapter>).into(),

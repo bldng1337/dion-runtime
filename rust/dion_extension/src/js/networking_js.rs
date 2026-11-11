@@ -155,6 +155,7 @@ mod network {
                         let res = Response {
                             status: response.status(),
                             header: response.headers().clone(),
+                            url: response.url().to_string(),
                             content: response.bytes().await.map_err(JsError::from_rust)?.to_vec(),
                         };
                         // The request above may have updated the cookie jar;
@@ -345,6 +346,7 @@ struct Response {
     status: StatusCode,
     #[unsafe_ignore_trace]
     header: HeaderMap,
+    url: String,
 }
 
 /// Decodes bytes the way reqwest's `text()` does: charset from the
@@ -427,5 +429,10 @@ impl Response {
     #[boa(getter)]
     fn status(#[boa(error = "`this` was not an Response")] &self) -> u16 {
         self.status.as_u16()
+    }
+
+    #[boa(getter)]
+    fn url(#[boa(error = "`this` was not an Response")] &self) -> String {
+        self.url.clone()
     }
 }

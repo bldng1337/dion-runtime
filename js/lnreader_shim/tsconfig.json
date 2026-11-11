@@ -1,0 +1,8 @@
+{
+	"extends": "@dion-js/config/typescript.json",
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"types": ["@dion-js/extension-types", "bun"]
+	},
+	"include": ["src/**/*", "build.ts"]
+}

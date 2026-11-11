@@ -3,6 +3,12 @@ import type { AuthCreds, Account, Action, EntryActivity, EntryDetailed, EntryDet
 /* eslint-disable */
 export declare class Adapter {
   static init(handler: ManagerClient): Promise<Adapter>
+  /**
+   * An adapter for LNReader plugins (https://github.com/lnreader/lnreader-plugins).
+   * Repositories are LNReader plugin indexes such as
+   * `https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v3.0.0/.dist/plugins.min.json`.
+   */
+  static initLnreader(handler: ManagerClient): Promise<Adapter>
   getExtensions(): Promise<Array<Extension>>
   install(url: string): Promise<Extension>
   uninstall(ext: Extension): Promise<void>

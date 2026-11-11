@@ -1,0 +1,31 @@
+[package]
+name = "lnreader-adapter"
+version = "0.2.0"
+edition = "2024"
+description = "LNReader plugin adapter for dion-runtime"
+
+[dependencies]
+dion-runtime = { path = "../core" }
+dion-extension = { path = "../dion_extension" }
+
+boa_engine = { version = "0.22.0", default-features = false }
+
+tokio = { version = "1.46.0", features = ["fs", "rt-multi-thread", "sync"] }
+async-trait = "0.1.0"
+anyhow = "1.0.0"
+log = "0.4.0"
+serde = { version = "1.0.0", features = ["derive"] }
+serde_json = "1.0.0"
+url = "2.5.0"
+reqwest = { version = "0.12.0", default-features = false, features = [
+    "charset",
+    "http2",
+    "rustls-tls",
+    "rustls-tls-native-roots",
+    "gzip",
+    "brotli",
+] }
+
+[dev-dependencies]
+httpmock = "0.7.0"
+tokio = { version = "1.46.0", features = ["macros", "rt-multi-thread"] }

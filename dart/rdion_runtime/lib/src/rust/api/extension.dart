@@ -33,6 +33,13 @@ abstract class ProxyAdapter implements RustOpaqueInterface {
       RustLib.instance.api
           .crateApiExtensionProxyAdapterInitDion(client: client);
 
+  /// An adapter for LNReader plugins. Repositories are LNReader plugin
+  /// indexes such as
+  /// `https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v3.0.0/.dist/plugins.min.json`.
+  static Future<ProxyAdapter> initLnreader({required ManagerClient client}) =>
+      RustLib.instance.api
+          .crateApiExtensionProxyAdapterInitLnreader(client: client);
+
   static Future<ProxyAdapter> initMihon({required ManagerClient client}) =>
       RustLib.instance.api
           .crateApiExtensionProxyAdapterInitMihon(client: client);

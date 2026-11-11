@@ -1,0 +1,4 @@
+[test]
+# Reference checkouts of upstream apps (see AGENTS.md) carry their own test
+# suites, which cannot run here.
+pathIgnorePatterns = ["external/**"]

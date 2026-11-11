@@ -22,7 +22,7 @@ import 'pages/reload_page.dart';
 import 'pages/repo_page.dart';
 import 'pages/log_page.dart';
 
-enum AdapterType { dion, mihon }
+enum AdapterType { dion, mihon, lnreader }
 
 class Playground extends StatefulWidget {
   const Playground({super.key});
@@ -227,6 +227,9 @@ class _PlaygroundState extends State<Playground> {
       final adapter = switch (_adapterType) {
         AdapterType.dion => await rdion.ProxyAdapter.initDion(client: client),
         AdapterType.mihon => await rdion.ProxyAdapter.initMihon(client: client),
+        AdapterType.lnreader => await rdion.ProxyAdapter.initLnreader(
+            client: client,
+          ),
       };
 
       final extensions = await adapter.getExtensions();
@@ -744,6 +747,17 @@ class _PlaygroundState extends State<Playground> {
                     Icon(Icons.android, size: 18),
                     SizedBox(width: 6),
                     Text('Mihon (Tachiyomi)'),
+                  ],
+                ),
+              ),
+              DropdownMenuItem(
+                value: AdapterType.lnreader,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.menu_book, size: 18),
+                    SizedBox(width: 6),
+                    Text('LNReader'),
                   ],
                 ),
               ),

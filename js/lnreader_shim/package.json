@@ -1,0 +1,28 @@
+{
+	"name": "@dion-js/lnreader-shim",
+	"version": "0.1.0",
+	"description": "LNReader plugin runtime for the Dion lnreader adapter (bundled into rust/lnreader)",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "bun run ./build.ts",
+		"test": "bun test",
+		"lint": "bunx biome check",
+		"format": "bunx biome format --write",
+		"check-types": "bunx tsc --noEmit"
+	},
+	"dependencies": {
+		"@noble/ciphers": "2.2.0",
+		"cheerio": "1.0.0-rc.12",
+		"dayjs": "1.11.21",
+		"htmlparser2": "12.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@dion-js/config": "workspace:*",
+		"@dion-js/extension-types": "workspace:*",
+		"@dion-js/runtime-types": "workspace:*",
+		"@types/bun": "catalog:",
+		"typescript": "catalog:"
+	}
+}
