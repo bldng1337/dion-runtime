@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,37 +9,165 @@ part of 'action.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Action {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is Action);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'Action()';
+  }
+}
+
+/// @nodoc
+class $ActionCopyWith<$Res> {
+  $ActionCopyWith(Action _, $Res Function(Action) __);
+}
+
+/// Adds pattern-matching-related methods to [Action].
+extension ActionPatterns on Action {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Action_OpenBrowser value)? openBrowser,
+    TResult Function(Action_Popup value)? popup,
+    TResult Function(Action_Nav value)? nav,
+    TResult Function(Action_PopView value)? popView,
+    TResult Function(Action_NavEntry value)? navEntry,
+    TResult Function(Action_ShowToast value)? showToast,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser() when openBrowser != null:
+        return openBrowser(_that);
+      case Action_Popup() when popup != null:
+        return popup(_that);
+      case Action_Nav() when nav != null:
+        return nav(_that);
+      case Action_PopView() when popView != null:
+        return popView(_that);
+      case Action_NavEntry() when navEntry != null:
+        return navEntry(_that);
+      case Action_ShowToast() when showToast != null:
+        return showToast(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(Action_OpenBrowser value) openBrowser,
+    required TResult Function(Action_Popup value) popup,
+    required TResult Function(Action_Nav value) nav,
+    required TResult Function(Action_PopView value) popView,
+    required TResult Function(Action_NavEntry value) navEntry,
+    required TResult Function(Action_ShowToast value) showToast,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser():
+        return openBrowser(_that);
+      case Action_Popup():
+        return popup(_that);
+      case Action_Nav():
+        return nav(_that);
+      case Action_PopView():
+        return popView(_that);
+      case Action_NavEntry():
+        return navEntry(_that);
+      case Action_ShowToast():
+        return showToast(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Action_OpenBrowser value)? openBrowser,
+    TResult? Function(Action_Popup value)? popup,
+    TResult? Function(Action_Nav value)? nav,
+    TResult? Function(Action_PopView value)? popView,
+    TResult? Function(Action_NavEntry value)? navEntry,
+    TResult? Function(Action_ShowToast value)? showToast,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser() when openBrowser != null:
+        return openBrowser(_that);
+      case Action_Popup() when popup != null:
+        return popup(_that);
+      case Action_Nav() when nav != null:
+        return nav(_that);
+      case Action_PopView() when popView != null:
+        return popView(_that);
+      case Action_NavEntry() when navEntry != null:
+        return navEntry(_that);
+      case Action_ShowToast() when showToast != null:
+        return showToast(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String url)? openBrowser,
@@ -50,88 +178,168 @@ mixin _$Action {
     TResult Function(EntryDetailed entry)? navEntry,
     TResult Function(String message, ToastKind kind)? showToast,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser() when openBrowser != null:
+        return openBrowser(_that.url);
+      case Action_Popup() when popup != null:
+        return popup(_that.title, _that.content, _that.actions);
+      case Action_Nav() when nav != null:
+        return nav(_that.title, _that.content);
+      case Action_PopView() when popView != null:
+        return popView();
+      case Action_NavEntry() when navEntry != null:
+        return navEntry(_that.entry);
+      case Action_ShowToast() when showToast != null:
+        return showToast(_that.message, _that.kind);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult when<TResult extends Object?>({
+    required TResult Function(String url) openBrowser,
+    required TResult Function(
+            String title, CustomUI content, List<PopupAction> actions)
+        popup,
+    required TResult Function(String title, CustomUI content) nav,
+    required TResult Function() popView,
+    required TResult Function(EntryDetailed entry) navEntry,
+    required TResult Function(String message, ToastKind kind) showToast,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser():
+        return openBrowser(_that.url);
+      case Action_Popup():
+        return popup(_that.title, _that.content, _that.actions);
+      case Action_Nav():
+        return nav(_that.title, _that.content);
+      case Action_PopView():
+        return popView();
+      case Action_NavEntry():
+        return navEntry(_that.entry);
+      case Action_ShowToast():
+        return showToast(_that.message, _that.kind);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String url)? openBrowser,
+    TResult? Function(
+            String title, CustomUI content, List<PopupAction> actions)?
+        popup,
+    TResult? Function(String title, CustomUI content)? nav,
+    TResult? Function()? popView,
+    TResult? Function(EntryDetailed entry)? navEntry,
+    TResult? Function(String message, ToastKind kind)? showToast,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Action_OpenBrowser() when openBrowser != null:
+        return openBrowser(_that.url);
+      case Action_Popup() when popup != null:
+        return popup(_that.title, _that.content, _that.actions);
+      case Action_Nav() when nav != null:
+        return nav(_that.title, _that.content);
+      case Action_PopView() when popView != null:
+        return popView();
+      case Action_NavEntry() when navEntry != null:
+        return navEntry(_that.entry);
+      case Action_ShowToast() when showToast != null:
+        return showToast(_that.message, _that.kind);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $ActionCopyWith<$Res> {
-  factory $ActionCopyWith(Action value, $Res Function(Action) then) =
-      _$ActionCopyWithImpl<$Res, Action>;
-}
 
-/// @nodoc
-class _$ActionCopyWithImpl<$Res, $Val extends Action>
-    implements $ActionCopyWith<$Res> {
-  _$ActionCopyWithImpl(this._value, this._then);
+class Action_OpenBrowser extends Action {
+  const Action_OpenBrowser({required this.url}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final String url;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Action_OpenBrowserCopyWith<Action_OpenBrowser> get copyWith =>
+      _$Action_OpenBrowserCopyWithImpl<Action_OpenBrowser>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Action_OpenBrowser &&
+            (identical(other.url, url) || other.url == url));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, url);
+
+  @override
+  String toString() {
+    return 'Action.openBrowser(url: $url)';
+  }
 }
 
 /// @nodoc
-abstract class _$$Action_OpenBrowserImplCopyWith<$Res> {
-  factory _$$Action_OpenBrowserImplCopyWith(_$Action_OpenBrowserImpl value,
-          $Res Function(_$Action_OpenBrowserImpl) then) =
-      __$$Action_OpenBrowserImplCopyWithImpl<$Res>;
+abstract mixin class $Action_OpenBrowserCopyWith<$Res>
+    implements $ActionCopyWith<$Res> {
+  factory $Action_OpenBrowserCopyWith(
+          Action_OpenBrowser value, $Res Function(Action_OpenBrowser) _then) =
+      _$Action_OpenBrowserCopyWithImpl;
   @useResult
   $Res call({String url});
 }
 
 /// @nodoc
-class __$$Action_OpenBrowserImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_OpenBrowserImpl>
-    implements _$$Action_OpenBrowserImplCopyWith<$Res> {
-  __$$Action_OpenBrowserImplCopyWithImpl(_$Action_OpenBrowserImpl _value,
-      $Res Function(_$Action_OpenBrowserImpl) _then)
-      : super(_value, _then);
+class _$Action_OpenBrowserCopyWithImpl<$Res>
+    implements $Action_OpenBrowserCopyWith<$Res> {
+  _$Action_OpenBrowserCopyWithImpl(this._self, this._then);
+
+  final Action_OpenBrowser _self;
+  final $Res Function(Action_OpenBrowser) _then;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? url = null,
   }) {
-    return _then(_$Action_OpenBrowserImpl(
+    return _then(Action_OpenBrowser(
       url: null == url
-          ? _value.url
+          ? _self.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -140,148 +348,56 @@ class __$$Action_OpenBrowserImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Action_OpenBrowserImpl extends Action_OpenBrowser {
-  const _$Action_OpenBrowserImpl({required this.url}) : super._();
+class Action_Popup extends Action {
+  const Action_Popup(
+      {required this.title,
+      required this.content,
+      required final List<PopupAction> actions})
+      : _actions = actions,
+        super._();
 
-  @override
-  final String url;
-
-  @override
-  String toString() {
-    return 'Action.openBrowser(url: $url)';
+  final String title;
+  final CustomUI content;
+  final List<PopupAction> _actions;
+  List<PopupAction> get actions {
+    if (_actions is EqualUnmodifiableListView) return _actions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_actions);
   }
+
+  /// Create a copy of Action
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Action_PopupCopyWith<Action_Popup> get copyWith =>
+      _$Action_PopupCopyWithImpl<Action_Popup>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Action_OpenBrowserImpl &&
-            (identical(other.url, url) || other.url == url));
+            other is Action_Popup &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.content, content) || other.content == content) &&
+            const DeepCollectionEquality().equals(other._actions, _actions));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, url);
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Action_OpenBrowserImplCopyWith<_$Action_OpenBrowserImpl> get copyWith =>
-      __$$Action_OpenBrowserImplCopyWithImpl<_$Action_OpenBrowserImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, title, content,
+      const DeepCollectionEquality().hash(_actions));
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return openBrowser(url);
+  String toString() {
+    return 'Action.popup(title: $title, content: $content, actions: $actions)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return openBrowser?.call(url);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (openBrowser != null) {
-      return openBrowser(url);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return openBrowser(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return openBrowser?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (openBrowser != null) {
-      return openBrowser(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Action_OpenBrowser extends Action {
-  const factory Action_OpenBrowser({required final String url}) =
-      _$Action_OpenBrowserImpl;
-  const Action_OpenBrowser._() : super._();
-
-  String get url;
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Action_OpenBrowserImplCopyWith<_$Action_OpenBrowserImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Action_PopupImplCopyWith<$Res> {
-  factory _$$Action_PopupImplCopyWith(
-          _$Action_PopupImpl value, $Res Function(_$Action_PopupImpl) then) =
-      __$$Action_PopupImplCopyWithImpl<$Res>;
+abstract mixin class $Action_PopupCopyWith<$Res>
+    implements $ActionCopyWith<$Res> {
+  factory $Action_PopupCopyWith(
+          Action_Popup value, $Res Function(Action_Popup) _then) =
+      _$Action_PopupCopyWithImpl;
   @useResult
   $Res call({String title, CustomUI content, List<PopupAction> actions});
 
@@ -289,33 +405,31 @@ abstract class _$$Action_PopupImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$Action_PopupImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_PopupImpl>
-    implements _$$Action_PopupImplCopyWith<$Res> {
-  __$$Action_PopupImplCopyWithImpl(
-      _$Action_PopupImpl _value, $Res Function(_$Action_PopupImpl) _then)
-      : super(_value, _then);
+class _$Action_PopupCopyWithImpl<$Res> implements $Action_PopupCopyWith<$Res> {
+  _$Action_PopupCopyWithImpl(this._self, this._then);
+
+  final Action_Popup _self;
+  final $Res Function(Action_Popup) _then;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? title = null,
     Object? content = null,
     Object? actions = null,
   }) {
-    return _then(_$Action_PopupImpl(
+    return _then(Action_Popup(
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       content: null == content
-          ? _value.content
+          ? _self.content
           : content // ignore: cast_nullable_to_non_nullable
               as CustomUI,
       actions: null == actions
-          ? _value._actions
+          ? _self._actions
           : actions // ignore: cast_nullable_to_non_nullable
               as List<PopupAction>,
     ));
@@ -326,176 +440,51 @@ class __$$Action_PopupImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get content {
-    return $CustomUICopyWith<$Res>(_value.content, (value) {
-      return _then(_value.copyWith(content: value));
+    return $CustomUICopyWith<$Res>(_self.content, (value) {
+      return _then(_self.copyWith(content: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$Action_PopupImpl extends Action_Popup {
-  const _$Action_PopupImpl(
-      {required this.title,
-      required this.content,
-      required final List<PopupAction> actions})
-      : _actions = actions,
-        super._();
+class Action_Nav extends Action {
+  const Action_Nav({required this.title, required this.content}) : super._();
 
-  @override
   final String title;
-  @override
   final CustomUI content;
-  final List<PopupAction> _actions;
-  @override
-  List<PopupAction> get actions {
-    if (_actions is EqualUnmodifiableListView) return _actions;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_actions);
-  }
 
-  @override
-  String toString() {
-    return 'Action.popup(title: $title, content: $content, actions: $actions)';
-  }
+  /// Create a copy of Action
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Action_NavCopyWith<Action_Nav> get copyWith =>
+      _$Action_NavCopyWithImpl<Action_Nav>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Action_PopupImpl &&
+            other is Action_Nav &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.content, content) || other.content == content) &&
-            const DeepCollectionEquality().equals(other._actions, _actions));
+            (identical(other.content, content) || other.content == content));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, content,
-      const DeepCollectionEquality().hash(_actions));
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Action_PopupImplCopyWith<_$Action_PopupImpl> get copyWith =>
-      __$$Action_PopupImplCopyWithImpl<_$Action_PopupImpl>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, title, content);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return popup(title, content, actions);
+  String toString() {
+    return 'Action.nav(title: $title, content: $content)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return popup?.call(title, content, actions);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (popup != null) {
-      return popup(title, content, actions);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return popup(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return popup?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (popup != null) {
-      return popup(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Action_Popup extends Action {
-  const factory Action_Popup(
-      {required final String title,
-      required final CustomUI content,
-      required final List<PopupAction> actions}) = _$Action_PopupImpl;
-  const Action_Popup._() : super._();
-
-  String get title;
-  CustomUI get content;
-  List<PopupAction> get actions;
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Action_PopupImplCopyWith<_$Action_PopupImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Action_NavImplCopyWith<$Res> {
-  factory _$$Action_NavImplCopyWith(
-          _$Action_NavImpl value, $Res Function(_$Action_NavImpl) then) =
-      __$$Action_NavImplCopyWithImpl<$Res>;
+abstract mixin class $Action_NavCopyWith<$Res>
+    implements $ActionCopyWith<$Res> {
+  factory $Action_NavCopyWith(
+          Action_Nav value, $Res Function(Action_Nav) _then) =
+      _$Action_NavCopyWithImpl;
   @useResult
   $Res call({String title, CustomUI content});
 
@@ -503,28 +492,26 @@ abstract class _$$Action_NavImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$Action_NavImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_NavImpl>
-    implements _$$Action_NavImplCopyWith<$Res> {
-  __$$Action_NavImplCopyWithImpl(
-      _$Action_NavImpl _value, $Res Function(_$Action_NavImpl) _then)
-      : super(_value, _then);
+class _$Action_NavCopyWithImpl<$Res> implements $Action_NavCopyWith<$Res> {
+  _$Action_NavCopyWithImpl(this._self, this._then);
+
+  final Action_Nav _self;
+  final $Res Function(Action_Nav) _then;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? title = null,
     Object? content = null,
   }) {
-    return _then(_$Action_NavImpl(
+    return _then(Action_Nav(
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       content: null == content
-          ? _value.content
+          ? _self.content
           : content // ignore: cast_nullable_to_non_nullable
               as CustomUI,
     ));
@@ -535,318 +522,90 @@ class __$$Action_NavImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get content {
-    return $CustomUICopyWith<$Res>(_value.content, (value) {
-      return _then(_value.copyWith(content: value));
+    return $CustomUICopyWith<$Res>(_self.content, (value) {
+      return _then(_self.copyWith(content: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$Action_NavImpl extends Action_Nav {
-  const _$Action_NavImpl({required this.title, required this.content})
-      : super._();
-
-  @override
-  final String title;
-  @override
-  final CustomUI content;
-
-  @override
-  String toString() {
-    return 'Action.nav(title: $title, content: $content)';
-  }
+class Action_PopView extends Action {
+  const Action_PopView() : super._();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$Action_NavImpl &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.content, content) || other.content == content));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, title, content);
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Action_NavImplCopyWith<_$Action_NavImpl> get copyWith =>
-      __$$Action_NavImplCopyWithImpl<_$Action_NavImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return nav(title, content);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return nav?.call(title, content);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (nav != null) {
-      return nav(title, content);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return nav(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return nav?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (nav != null) {
-      return nav(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Action_Nav extends Action {
-  const factory Action_Nav(
-      {required final String title,
-      required final CustomUI content}) = _$Action_NavImpl;
-  const Action_Nav._() : super._();
-
-  String get title;
-  CustomUI get content;
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Action_NavImplCopyWith<_$Action_NavImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$Action_PopViewImplCopyWith<$Res> {
-  factory _$$Action_PopViewImplCopyWith(_$Action_PopViewImpl value,
-          $Res Function(_$Action_PopViewImpl) then) =
-      __$$Action_PopViewImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$Action_PopViewImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_PopViewImpl>
-    implements _$$Action_PopViewImplCopyWith<$Res> {
-  __$$Action_PopViewImplCopyWithImpl(
-      _$Action_PopViewImpl _value, $Res Function(_$Action_PopViewImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$Action_PopViewImpl extends Action_PopView {
-  const _$Action_PopViewImpl() : super._();
-
-  @override
-  String toString() {
-    return 'Action.popView()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Action_PopViewImpl);
+        (other.runtimeType == runtimeType && other is Action_PopView);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return popView();
+  String toString() {
+    return 'Action.popView()';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return popView?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (popView != null) {
-      return popView();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return popView(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return popView?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (popView != null) {
-      return popView(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Action_PopView extends Action {
-  const factory Action_PopView() = _$Action_PopViewImpl;
-  const Action_PopView._() : super._();
 }
 
 /// @nodoc
-abstract class _$$Action_NavEntryImplCopyWith<$Res> {
-  factory _$$Action_NavEntryImplCopyWith(_$Action_NavEntryImpl value,
-          $Res Function(_$Action_NavEntryImpl) then) =
-      __$$Action_NavEntryImplCopyWithImpl<$Res>;
+
+class Action_NavEntry extends Action {
+  const Action_NavEntry({required this.entry}) : super._();
+
+  final EntryDetailed entry;
+
+  /// Create a copy of Action
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Action_NavEntryCopyWith<Action_NavEntry> get copyWith =>
+      _$Action_NavEntryCopyWithImpl<Action_NavEntry>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Action_NavEntry &&
+            (identical(other.entry, entry) || other.entry == entry));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, entry);
+
+  @override
+  String toString() {
+    return 'Action.navEntry(entry: $entry)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $Action_NavEntryCopyWith<$Res>
+    implements $ActionCopyWith<$Res> {
+  factory $Action_NavEntryCopyWith(
+          Action_NavEntry value, $Res Function(Action_NavEntry) _then) =
+      _$Action_NavEntryCopyWithImpl;
   @useResult
   $Res call({EntryDetailed entry});
 }
 
 /// @nodoc
-class __$$Action_NavEntryImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_NavEntryImpl>
-    implements _$$Action_NavEntryImplCopyWith<$Res> {
-  __$$Action_NavEntryImplCopyWithImpl(
-      _$Action_NavEntryImpl _value, $Res Function(_$Action_NavEntryImpl) _then)
-      : super(_value, _then);
+class _$Action_NavEntryCopyWithImpl<$Res>
+    implements $Action_NavEntryCopyWith<$Res> {
+  _$Action_NavEntryCopyWithImpl(this._self, this._then);
+
+  final Action_NavEntry _self;
+  final $Res Function(Action_NavEntry) _then;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? entry = null,
   }) {
-    return _then(_$Action_NavEntryImpl(
+    return _then(Action_NavEntry(
       entry: null == entry
-          ? _value.entry
+          ? _self.entry
           : entry // ignore: cast_nullable_to_non_nullable
               as EntryDetailed,
     ));
@@ -855,202 +614,25 @@ class __$$Action_NavEntryImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Action_NavEntryImpl extends Action_NavEntry {
-  const _$Action_NavEntryImpl({required this.entry}) : super._();
-
-  @override
-  final EntryDetailed entry;
-
-  @override
-  String toString() {
-    return 'Action.navEntry(entry: $entry)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$Action_NavEntryImpl &&
-            (identical(other.entry, entry) || other.entry == entry));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, entry);
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Action_NavEntryImplCopyWith<_$Action_NavEntryImpl> get copyWith =>
-      __$$Action_NavEntryImplCopyWithImpl<_$Action_NavEntryImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return navEntry(entry);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return navEntry?.call(entry);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (navEntry != null) {
-      return navEntry(entry);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return navEntry(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return navEntry?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (navEntry != null) {
-      return navEntry(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Action_NavEntry extends Action {
-  const factory Action_NavEntry({required final EntryDetailed entry}) =
-      _$Action_NavEntryImpl;
-  const Action_NavEntry._() : super._();
-
-  EntryDetailed get entry;
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Action_NavEntryImplCopyWith<_$Action_NavEntryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$Action_ShowToastImplCopyWith<$Res> {
-  factory _$$Action_ShowToastImplCopyWith(_$Action_ShowToastImpl value,
-          $Res Function(_$Action_ShowToastImpl) then) =
-      __$$Action_ShowToastImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message, ToastKind kind});
-}
-
-/// @nodoc
-class __$$Action_ShowToastImplCopyWithImpl<$Res>
-    extends _$ActionCopyWithImpl<$Res, _$Action_ShowToastImpl>
-    implements _$$Action_ShowToastImplCopyWith<$Res> {
-  __$$Action_ShowToastImplCopyWithImpl(_$Action_ShowToastImpl _value,
-      $Res Function(_$Action_ShowToastImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-    Object? kind = null,
-  }) {
-    return _then(_$Action_ShowToastImpl(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      kind: null == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
-              as ToastKind,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$Action_ShowToastImpl extends Action_ShowToast {
-  const _$Action_ShowToastImpl({required this.message, required this.kind})
+class Action_ShowToast extends Action {
+  const Action_ShowToast({required this.message, required this.kind})
       : super._();
 
-  @override
   final String message;
-  @override
   final ToastKind kind;
 
-  @override
-  String toString() {
-    return 'Action.showToast(message: $message, kind: $kind)';
-  }
+  /// Create a copy of Action
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Action_ShowToastCopyWith<Action_ShowToast> get copyWith =>
+      _$Action_ShowToastCopyWithImpl<Action_ShowToast>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Action_ShowToastImpl &&
+            other is Action_ShowToast &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.kind, kind) || other.kind == kind));
   }
@@ -1058,144 +640,216 @@ class _$Action_ShowToastImpl extends Action_ShowToast {
   @override
   int get hashCode => Object.hash(runtimeType, message, kind);
 
-  /// Create a copy of Action
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Action_ShowToastImplCopyWith<_$Action_ShowToastImpl> get copyWith =>
-      __$$Action_ShowToastImplCopyWithImpl<_$Action_ShowToastImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String url) openBrowser,
-    required TResult Function(
-            String title, CustomUI content, List<PopupAction> actions)
-        popup,
-    required TResult Function(String title, CustomUI content) nav,
-    required TResult Function() popView,
-    required TResult Function(EntryDetailed entry) navEntry,
-    required TResult Function(String message, ToastKind kind) showToast,
-  }) {
-    return showToast(message, kind);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String url)? openBrowser,
-    TResult? Function(
-            String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult? Function(String title, CustomUI content)? nav,
-    TResult? Function()? popView,
-    TResult? Function(EntryDetailed entry)? navEntry,
-    TResult? Function(String message, ToastKind kind)? showToast,
-  }) {
-    return showToast?.call(message, kind);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String url)? openBrowser,
-    TResult Function(String title, CustomUI content, List<PopupAction> actions)?
-        popup,
-    TResult Function(String title, CustomUI content)? nav,
-    TResult Function()? popView,
-    TResult Function(EntryDetailed entry)? navEntry,
-    TResult Function(String message, ToastKind kind)? showToast,
-    required TResult orElse(),
-  }) {
-    if (showToast != null) {
-      return showToast(message, kind);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Action_OpenBrowser value) openBrowser,
-    required TResult Function(Action_Popup value) popup,
-    required TResult Function(Action_Nav value) nav,
-    required TResult Function(Action_PopView value) popView,
-    required TResult Function(Action_NavEntry value) navEntry,
-    required TResult Function(Action_ShowToast value) showToast,
-  }) {
-    return showToast(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Action_OpenBrowser value)? openBrowser,
-    TResult? Function(Action_Popup value)? popup,
-    TResult? Function(Action_Nav value)? nav,
-    TResult? Function(Action_PopView value)? popView,
-    TResult? Function(Action_NavEntry value)? navEntry,
-    TResult? Function(Action_ShowToast value)? showToast,
-  }) {
-    return showToast?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Action_OpenBrowser value)? openBrowser,
-    TResult Function(Action_Popup value)? popup,
-    TResult Function(Action_Nav value)? nav,
-    TResult Function(Action_PopView value)? popView,
-    TResult Function(Action_NavEntry value)? navEntry,
-    TResult Function(Action_ShowToast value)? showToast,
-    required TResult orElse(),
-  }) {
-    if (showToast != null) {
-      return showToast(this);
-    }
-    return orElse();
+  String toString() {
+    return 'Action.showToast(message: $message, kind: $kind)';
   }
 }
 
-abstract class Action_ShowToast extends Action {
-  const factory Action_ShowToast(
-      {required final String message,
-      required final ToastKind kind}) = _$Action_ShowToastImpl;
-  const Action_ShowToast._() : super._();
+/// @nodoc
+abstract mixin class $Action_ShowToastCopyWith<$Res>
+    implements $ActionCopyWith<$Res> {
+  factory $Action_ShowToastCopyWith(
+          Action_ShowToast value, $Res Function(Action_ShowToast) _then) =
+      _$Action_ShowToastCopyWithImpl;
+  @useResult
+  $Res call({String message, ToastKind kind});
+}
 
-  String get message;
-  ToastKind get kind;
+/// @nodoc
+class _$Action_ShowToastCopyWithImpl<$Res>
+    implements $Action_ShowToastCopyWith<$Res> {
+  _$Action_ShowToastCopyWithImpl(this._self, this._then);
+
+  final Action_ShowToast _self;
+  final $Res Function(Action_ShowToast) _then;
 
   /// Create a copy of Action
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Action_ShowToastImplCopyWith<_$Action_ShowToastImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+    Object? kind = null,
+  }) {
+    return _then(Action_ShowToast(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      kind: null == kind
+          ? _self.kind
+          : kind // ignore: cast_nullable_to_non_nullable
+              as ToastKind,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$EventData {
-  String get handler => throw _privateConstructorUsedError;
+  String get handler;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventDataCopyWith<EventData> get copyWith =>
+      _$EventDataCopyWithImpl<EventData>(this as EventData, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is EventData &&
+            (identical(other.handler, handler) || other.handler == handler));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, handler);
+
+  @override
+  String toString() {
+    return 'EventData(handler: $handler)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $EventDataCopyWith<$Res> {
+  factory $EventDataCopyWith(EventData value, $Res Function(EventData) _then) =
+      _$EventDataCopyWithImpl;
+  @useResult
+  $Res call({String handler});
+}
+
+/// @nodoc
+class _$EventDataCopyWithImpl<$Res> implements $EventDataCopyWith<$Res> {
+  _$EventDataCopyWithImpl(this._self, this._then);
+
+  final EventData _self;
+  final $Res Function(EventData) _then;
+
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? handler = null,
+  }) {
+    return _then(_self.copyWith(
+      handler: null == handler
+          ? _self.handler
+          : handler // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [EventData].
+extension EventDataPatterns on EventData {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)
-        loadSlot,
-    required TResult Function(String handler, String data, int page) loadPage,
-    required TResult Function(String handler, String payload) invoke,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(EventData_LoadSlot value)? loadSlot,
+    TResult Function(EventData_LoadPage value)? loadPage,
+    TResult Function(EventData_Invoke value)? invoke,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot() when loadSlot != null:
+        return loadSlot(_that);
+      case EventData_LoadPage() when loadPage != null:
+        return loadPage(_that);
+      case EventData_Invoke() when invoke != null:
+        return invoke(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult? Function(String handler, String data, int page)? loadPage,
-    TResult? Function(String handler, String payload)? invoke,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventData_LoadSlot value) loadSlot,
+    required TResult Function(EventData_LoadPage value) loadPage,
+    required TResult Function(EventData_Invoke value) invoke,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot():
+        return loadSlot(_that);
+      case EventData_LoadPage():
+        return loadPage(_that);
+      case EventData_Invoke():
+        return invoke(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventData_LoadSlot value)? loadSlot,
+    TResult? Function(EventData_LoadPage value)? loadPage,
+    TResult? Function(EventData_Invoke value)? invoke,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot() when loadSlot != null:
+        return loadSlot(_that);
+      case EventData_LoadPage() when loadPage != null:
+        return loadPage(_that);
+      case EventData_Invoke() when invoke != null:
+        return invoke(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
@@ -1204,121 +858,90 @@ mixin _$EventData {
     TResult Function(String handler, String data, int page)? loadPage,
     TResult Function(String handler, String payload)? invoke,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventData_LoadSlot value) loadSlot,
-    required TResult Function(EventData_LoadPage value) loadPage,
-    required TResult Function(EventData_Invoke value) invoke,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventData_LoadSlot value)? loadSlot,
-    TResult? Function(EventData_LoadPage value)? loadPage,
-    TResult? Function(EventData_Invoke value)? invoke,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventData_LoadSlot value)? loadSlot,
-    TResult Function(EventData_LoadPage value)? loadPage,
-    TResult Function(EventData_Invoke value)? invoke,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $EventDataCopyWith<EventData> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $EventDataCopyWith<$Res> {
-  factory $EventDataCopyWith(EventData value, $Res Function(EventData) then) =
-      _$EventDataCopyWithImpl<$Res, EventData>;
-  @useResult
-  $Res call({String handler});
-}
-
-/// @nodoc
-class _$EventDataCopyWithImpl<$Res, $Val extends EventData>
-    implements $EventDataCopyWith<$Res> {
-  _$EventDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? handler = null,
   }) {
-    return _then(_value.copyWith(
-      handler: null == handler
-          ? _value.handler
-          : handler // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot() when loadSlot != null:
+        return loadSlot(_that.handler, _that.staticData, _that.values);
+      case EventData_LoadPage() when loadPage != null:
+        return loadPage(_that.handler, _that.data, _that.page);
+      case EventData_Invoke() when invoke != null:
+        return invoke(_that.handler, _that.payload);
+      case _:
+        return orElse();
+    }
   }
-}
 
-/// @nodoc
-abstract class _$$EventData_LoadSlotImplCopyWith<$Res>
-    implements $EventDataCopyWith<$Res> {
-  factory _$$EventData_LoadSlotImplCopyWith(_$EventData_LoadSlotImpl value,
-          $Res Function(_$EventData_LoadSlotImpl) then) =
-      __$$EventData_LoadSlotImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String handler, String staticData, Map<String, SlotValue> values});
-}
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
 
-/// @nodoc
-class __$$EventData_LoadSlotImplCopyWithImpl<$Res>
-    extends _$EventDataCopyWithImpl<$Res, _$EventData_LoadSlotImpl>
-    implements _$$EventData_LoadSlotImplCopyWith<$Res> {
-  __$$EventData_LoadSlotImplCopyWithImpl(_$EventData_LoadSlotImpl _value,
-      $Res Function(_$EventData_LoadSlotImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? handler = null,
-    Object? staticData = null,
-    Object? values = null,
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String handler, String staticData, Map<String, SlotValue> values)
+        loadSlot,
+    required TResult Function(String handler, String data, int page) loadPage,
+    required TResult Function(String handler, String payload) invoke,
   }) {
-    return _then(_$EventData_LoadSlotImpl(
-      handler: null == handler
-          ? _value.handler
-          : handler // ignore: cast_nullable_to_non_nullable
-              as String,
-      staticData: null == staticData
-          ? _value.staticData
-          : staticData // ignore: cast_nullable_to_non_nullable
-              as String,
-      values: null == values
-          ? _value._values
-          : values // ignore: cast_nullable_to_non_nullable
-              as Map<String, SlotValue>,
-    ));
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot():
+        return loadSlot(_that.handler, _that.staticData, _that.values);
+      case EventData_LoadPage():
+        return loadPage(_that.handler, _that.data, _that.page);
+      case EventData_Invoke():
+        return invoke(_that.handler, _that.payload);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String handler, String staticData, Map<String, SlotValue> values)?
+        loadSlot,
+    TResult? Function(String handler, String data, int page)? loadPage,
+    TResult? Function(String handler, String payload)? invoke,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventData_LoadSlot() when loadSlot != null:
+        return loadSlot(_that.handler, _that.staticData, _that.values);
+      case EventData_LoadPage() when loadPage != null:
+        return loadPage(_that.handler, _that.data, _that.page);
+      case EventData_Invoke() when invoke != null:
+        return invoke(_that.handler, _that.payload);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
-  const _$EventData_LoadSlotImpl(
+class EventData_LoadSlot extends EventData {
+  const EventData_LoadSlot(
       {required this.handler,
       required this.staticData,
       required final Map<String, SlotValue> values})
@@ -1327,26 +950,27 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
 
   @override
   final String handler;
-  @override
   final String staticData;
   final Map<String, SlotValue> _values;
-  @override
   Map<String, SlotValue> get values {
     if (_values is EqualUnmodifiableMapView) return _values;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_values);
   }
 
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'EventData.loadSlot(handler: $handler, staticData: $staticData, values: $values)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventData_LoadSlotCopyWith<EventData_LoadSlot> get copyWith =>
+      _$EventData_LoadSlotCopyWithImpl<EventData_LoadSlot>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EventData_LoadSlotImpl &&
+            other is EventData_LoadSlot &&
             (identical(other.handler, handler) || other.handler == handler) &&
             (identical(other.staticData, staticData) ||
                 other.staticData == staticData) &&
@@ -1357,179 +981,82 @@ class _$EventData_LoadSlotImpl extends EventData_LoadSlot {
   int get hashCode => Object.hash(runtimeType, handler, staticData,
       const DeepCollectionEquality().hash(_values));
 
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$EventData_LoadSlotImplCopyWith<_$EventData_LoadSlotImpl> get copyWith =>
-      __$$EventData_LoadSlotImplCopyWithImpl<_$EventData_LoadSlotImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)
-        loadSlot,
-    required TResult Function(String handler, String data, int page) loadPage,
-    required TResult Function(String handler, String payload) invoke,
-  }) {
-    return loadSlot(handler, staticData, values);
+  String toString() {
+    return 'EventData.loadSlot(handler: $handler, staticData: $staticData, values: $values)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult? Function(String handler, String data, int page)? loadPage,
-    TResult? Function(String handler, String payload)? invoke,
-  }) {
-    return loadSlot?.call(handler, staticData, values);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult Function(String handler, String data, int page)? loadPage,
-    TResult Function(String handler, String payload)? invoke,
-    required TResult orElse(),
-  }) {
-    if (loadSlot != null) {
-      return loadSlot(handler, staticData, values);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventData_LoadSlot value) loadSlot,
-    required TResult Function(EventData_LoadPage value) loadPage,
-    required TResult Function(EventData_Invoke value) invoke,
-  }) {
-    return loadSlot(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventData_LoadSlot value)? loadSlot,
-    TResult? Function(EventData_LoadPage value)? loadPage,
-    TResult? Function(EventData_Invoke value)? invoke,
-  }) {
-    return loadSlot?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventData_LoadSlot value)? loadSlot,
-    TResult Function(EventData_LoadPage value)? loadPage,
-    TResult Function(EventData_Invoke value)? invoke,
-    required TResult orElse(),
-  }) {
-    if (loadSlot != null) {
-      return loadSlot(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class EventData_LoadSlot extends EventData {
-  const factory EventData_LoadSlot(
-      {required final String handler,
-      required final String staticData,
-      required final Map<String, SlotValue> values}) = _$EventData_LoadSlotImpl;
-  const EventData_LoadSlot._() : super._();
-
-  @override
-  String get handler;
-  String get staticData;
-  Map<String, SlotValue> get values;
-
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EventData_LoadSlotImplCopyWith<_$EventData_LoadSlotImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$EventData_LoadPageImplCopyWith<$Res>
+abstract mixin class $EventData_LoadSlotCopyWith<$Res>
     implements $EventDataCopyWith<$Res> {
-  factory _$$EventData_LoadPageImplCopyWith(_$EventData_LoadPageImpl value,
-          $Res Function(_$EventData_LoadPageImpl) then) =
-      __$$EventData_LoadPageImplCopyWithImpl<$Res>;
+  factory $EventData_LoadSlotCopyWith(
+          EventData_LoadSlot value, $Res Function(EventData_LoadSlot) _then) =
+      _$EventData_LoadSlotCopyWithImpl;
   @override
   @useResult
-  $Res call({String handler, String data, int page});
+  $Res call({String handler, String staticData, Map<String, SlotValue> values});
 }
 
 /// @nodoc
-class __$$EventData_LoadPageImplCopyWithImpl<$Res>
-    extends _$EventDataCopyWithImpl<$Res, _$EventData_LoadPageImpl>
-    implements _$$EventData_LoadPageImplCopyWith<$Res> {
-  __$$EventData_LoadPageImplCopyWithImpl(_$EventData_LoadPageImpl _value,
-      $Res Function(_$EventData_LoadPageImpl) _then)
-      : super(_value, _then);
+class _$EventData_LoadSlotCopyWithImpl<$Res>
+    implements $EventData_LoadSlotCopyWith<$Res> {
+  _$EventData_LoadSlotCopyWithImpl(this._self, this._then);
+
+  final EventData_LoadSlot _self;
+  final $Res Function(EventData_LoadSlot) _then;
 
   /// Create a copy of EventData
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? handler = null,
-    Object? data = null,
-    Object? page = null,
+    Object? staticData = null,
+    Object? values = null,
   }) {
-    return _then(_$EventData_LoadPageImpl(
+    return _then(EventData_LoadSlot(
       handler: null == handler
-          ? _value.handler
+          ? _self.handler
           : handler // ignore: cast_nullable_to_non_nullable
               as String,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
+      staticData: null == staticData
+          ? _self.staticData
+          : staticData // ignore: cast_nullable_to_non_nullable
               as String,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
+      values: null == values
+          ? _self._values
+          : values // ignore: cast_nullable_to_non_nullable
+              as Map<String, SlotValue>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$EventData_LoadPageImpl extends EventData_LoadPage {
-  const _$EventData_LoadPageImpl(
+class EventData_LoadPage extends EventData {
+  const EventData_LoadPage(
       {required this.handler, required this.data, required this.page})
       : super._();
 
   @override
   final String handler;
-  @override
   final String data;
-  @override
   final int page;
 
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'EventData.loadPage(handler: $handler, data: $data, page: $page)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventData_LoadPageCopyWith<EventData_LoadPage> get copyWith =>
+      _$EventData_LoadPageCopyWithImpl<EventData_LoadPage>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EventData_LoadPageImpl &&
+            other is EventData_LoadPage &&
             (identical(other.handler, handler) || other.handler == handler) &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.page, page) || other.page == page));
@@ -1538,171 +1065,80 @@ class _$EventData_LoadPageImpl extends EventData_LoadPage {
   @override
   int get hashCode => Object.hash(runtimeType, handler, data, page);
 
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$EventData_LoadPageImplCopyWith<_$EventData_LoadPageImpl> get copyWith =>
-      __$$EventData_LoadPageImplCopyWithImpl<_$EventData_LoadPageImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)
-        loadSlot,
-    required TResult Function(String handler, String data, int page) loadPage,
-    required TResult Function(String handler, String payload) invoke,
-  }) {
-    return loadPage(handler, data, page);
+  String toString() {
+    return 'EventData.loadPage(handler: $handler, data: $data, page: $page)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult? Function(String handler, String data, int page)? loadPage,
-    TResult? Function(String handler, String payload)? invoke,
-  }) {
-    return loadPage?.call(handler, data, page);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult Function(String handler, String data, int page)? loadPage,
-    TResult Function(String handler, String payload)? invoke,
-    required TResult orElse(),
-  }) {
-    if (loadPage != null) {
-      return loadPage(handler, data, page);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventData_LoadSlot value) loadSlot,
-    required TResult Function(EventData_LoadPage value) loadPage,
-    required TResult Function(EventData_Invoke value) invoke,
-  }) {
-    return loadPage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventData_LoadSlot value)? loadSlot,
-    TResult? Function(EventData_LoadPage value)? loadPage,
-    TResult? Function(EventData_Invoke value)? invoke,
-  }) {
-    return loadPage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventData_LoadSlot value)? loadSlot,
-    TResult Function(EventData_LoadPage value)? loadPage,
-    TResult Function(EventData_Invoke value)? invoke,
-    required TResult orElse(),
-  }) {
-    if (loadPage != null) {
-      return loadPage(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class EventData_LoadPage extends EventData {
-  const factory EventData_LoadPage(
-      {required final String handler,
-      required final String data,
-      required final int page}) = _$EventData_LoadPageImpl;
-  const EventData_LoadPage._() : super._();
-
-  @override
-  String get handler;
-  String get data;
-  int get page;
-
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EventData_LoadPageImplCopyWith<_$EventData_LoadPageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$EventData_InvokeImplCopyWith<$Res>
+abstract mixin class $EventData_LoadPageCopyWith<$Res>
     implements $EventDataCopyWith<$Res> {
-  factory _$$EventData_InvokeImplCopyWith(_$EventData_InvokeImpl value,
-          $Res Function(_$EventData_InvokeImpl) then) =
-      __$$EventData_InvokeImplCopyWithImpl<$Res>;
+  factory $EventData_LoadPageCopyWith(
+          EventData_LoadPage value, $Res Function(EventData_LoadPage) _then) =
+      _$EventData_LoadPageCopyWithImpl;
   @override
   @useResult
-  $Res call({String handler, String payload});
+  $Res call({String handler, String data, int page});
 }
 
 /// @nodoc
-class __$$EventData_InvokeImplCopyWithImpl<$Res>
-    extends _$EventDataCopyWithImpl<$Res, _$EventData_InvokeImpl>
-    implements _$$EventData_InvokeImplCopyWith<$Res> {
-  __$$EventData_InvokeImplCopyWithImpl(_$EventData_InvokeImpl _value,
-      $Res Function(_$EventData_InvokeImpl) _then)
-      : super(_value, _then);
+class _$EventData_LoadPageCopyWithImpl<$Res>
+    implements $EventData_LoadPageCopyWith<$Res> {
+  _$EventData_LoadPageCopyWithImpl(this._self, this._then);
+
+  final EventData_LoadPage _self;
+  final $Res Function(EventData_LoadPage) _then;
 
   /// Create a copy of EventData
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? handler = null,
-    Object? payload = null,
+    Object? data = null,
+    Object? page = null,
   }) {
-    return _then(_$EventData_InvokeImpl(
+    return _then(EventData_LoadPage(
       handler: null == handler
-          ? _value.handler
+          ? _self.handler
           : handler // ignore: cast_nullable_to_non_nullable
               as String,
-      payload: null == payload
-          ? _value.payload
-          : payload // ignore: cast_nullable_to_non_nullable
+      data: null == data
+          ? _self.data
+          : data // ignore: cast_nullable_to_non_nullable
               as String,
+      page: null == page
+          ? _self.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$EventData_InvokeImpl extends EventData_Invoke {
-  const _$EventData_InvokeImpl({required this.handler, required this.payload})
+class EventData_Invoke extends EventData {
+  const EventData_Invoke({required this.handler, required this.payload})
       : super._();
 
   @override
   final String handler;
-  @override
   final String payload;
 
+  /// Create a copy of EventData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'EventData.invoke(handler: $handler, payload: $payload)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventData_InvokeCopyWith<EventData_Invoke> get copyWith =>
+      _$EventData_InvokeCopyWithImpl<EventData_Invoke>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EventData_InvokeImpl &&
+            other is EventData_Invoke &&
             (identical(other.handler, handler) || other.handler == handler) &&
             (identical(other.payload, payload) || other.payload == payload));
   }
@@ -1710,177 +1146,284 @@ class _$EventData_InvokeImpl extends EventData_Invoke {
   @override
   int get hashCode => Object.hash(runtimeType, handler, payload);
 
-  /// Create a copy of EventData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$EventData_InvokeImplCopyWith<_$EventData_InvokeImpl> get copyWith =>
-      __$$EventData_InvokeImplCopyWithImpl<_$EventData_InvokeImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)
-        loadSlot,
-    required TResult Function(String handler, String data, int page) loadPage,
-    required TResult Function(String handler, String payload) invoke,
-  }) {
-    return invoke(handler, payload);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult? Function(String handler, String data, int page)? loadPage,
-    TResult? Function(String handler, String payload)? invoke,
-  }) {
-    return invoke?.call(handler, payload);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String handler, String staticData, Map<String, SlotValue> values)?
-        loadSlot,
-    TResult Function(String handler, String data, int page)? loadPage,
-    TResult Function(String handler, String payload)? invoke,
-    required TResult orElse(),
-  }) {
-    if (invoke != null) {
-      return invoke(handler, payload);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventData_LoadSlot value) loadSlot,
-    required TResult Function(EventData_LoadPage value) loadPage,
-    required TResult Function(EventData_Invoke value) invoke,
-  }) {
-    return invoke(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventData_LoadSlot value)? loadSlot,
-    TResult? Function(EventData_LoadPage value)? loadPage,
-    TResult? Function(EventData_Invoke value)? invoke,
-  }) {
-    return invoke?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventData_LoadSlot value)? loadSlot,
-    TResult Function(EventData_LoadPage value)? loadPage,
-    TResult Function(EventData_Invoke value)? invoke,
-    required TResult orElse(),
-  }) {
-    if (invoke != null) {
-      return invoke(this);
-    }
-    return orElse();
+  String toString() {
+    return 'EventData.invoke(handler: $handler, payload: $payload)';
   }
 }
 
-abstract class EventData_Invoke extends EventData {
-  const factory EventData_Invoke(
-      {required final String handler,
-      required final String payload}) = _$EventData_InvokeImpl;
-  const EventData_Invoke._() : super._();
-
+/// @nodoc
+abstract mixin class $EventData_InvokeCopyWith<$Res>
+    implements $EventDataCopyWith<$Res> {
+  factory $EventData_InvokeCopyWith(
+          EventData_Invoke value, $Res Function(EventData_Invoke) _then) =
+      _$EventData_InvokeCopyWithImpl;
   @override
-  String get handler;
-  String get payload;
+  @useResult
+  $Res call({String handler, String payload});
+}
+
+/// @nodoc
+class _$EventData_InvokeCopyWithImpl<$Res>
+    implements $EventData_InvokeCopyWith<$Res> {
+  _$EventData_InvokeCopyWithImpl(this._self, this._then);
+
+  final EventData_Invoke _self;
+  final $Res Function(EventData_Invoke) _then;
 
   /// Create a copy of EventData
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EventData_InvokeImplCopyWith<_$EventData_InvokeImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? handler = null,
+    Object? payload = null,
+  }) {
+    return _then(EventData_Invoke(
+      handler: null == handler
+          ? _self.handler
+          : handler // ignore: cast_nullable_to_non_nullable
+              as String,
+      payload: null == payload
+          ? _self.payload
+          : payload // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$EventResult {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(CustomUI customui) slotContent,
-    required TResult Function(List<CustomUI> items, bool hasMore) feedPage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(CustomUI customui)? slotContent,
-    TResult? Function(List<CustomUI> items, bool hasMore)? feedPage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(CustomUI customui)? slotContent,
-    TResult Function(List<CustomUI> items, bool hasMore)? feedPage,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventResult_SlotContent value) slotContent,
-    required TResult Function(EventResult_FeedPage value) feedPage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventResult_SlotContent value)? slotContent,
-    TResult? Function(EventResult_FeedPage value)? feedPage,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is EventResult);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'EventResult()';
+  }
+}
+
+/// @nodoc
+class $EventResultCopyWith<$Res> {
+  $EventResultCopyWith(EventResult _, $Res Function(EventResult) __);
+}
+
+/// Adds pattern-matching-related methods to [EventResult].
+extension EventResultPatterns on EventResult {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(EventResult_SlotContent value)? slotContent,
     TResult Function(EventResult_FeedPage value)? feedPage,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent() when slotContent != null:
+        return slotContent(_that);
+      case EventResult_FeedPage() when feedPage != null:
+        return feedPage(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(EventResult_SlotContent value) slotContent,
+    required TResult Function(EventResult_FeedPage value) feedPage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent():
+        return slotContent(_that);
+      case EventResult_FeedPage():
+        return feedPage(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(EventResult_SlotContent value)? slotContent,
+    TResult? Function(EventResult_FeedPage value)? feedPage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent() when slotContent != null:
+        return slotContent(_that);
+      case EventResult_FeedPage() when feedPage != null:
+        return feedPage(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(CustomUI customui)? slotContent,
+    TResult Function(List<CustomUI> items, bool hasMore)? feedPage,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent() when slotContent != null:
+        return slotContent(_that.customui);
+      case EventResult_FeedPage() when feedPage != null:
+        return feedPage(_that.items, _that.hasMore);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(CustomUI customui) slotContent,
+    required TResult Function(List<CustomUI> items, bool hasMore) feedPage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent():
+        return slotContent(_that.customui);
+      case EventResult_FeedPage():
+        return feedPage(_that.items, _that.hasMore);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(CustomUI customui)? slotContent,
+    TResult? Function(List<CustomUI> items, bool hasMore)? feedPage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case EventResult_SlotContent() when slotContent != null:
+        return slotContent(_that.customui);
+      case EventResult_FeedPage() when feedPage != null:
+        return feedPage(_that.items, _that.hasMore);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $EventResultCopyWith<$Res> {
-  factory $EventResultCopyWith(
-          EventResult value, $Res Function(EventResult) then) =
-      _$EventResultCopyWithImpl<$Res, EventResult>;
-}
 
-/// @nodoc
-class _$EventResultCopyWithImpl<$Res, $Val extends EventResult>
-    implements $EventResultCopyWith<$Res> {
-  _$EventResultCopyWithImpl(this._value, this._then);
+class EventResult_SlotContent extends EventResult {
+  const EventResult_SlotContent({required this.customui}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final CustomUI customui;
 
   /// Create a copy of EventResult
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventResult_SlotContentCopyWith<EventResult_SlotContent> get copyWith =>
+      _$EventResult_SlotContentCopyWithImpl<EventResult_SlotContent>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is EventResult_SlotContent &&
+            (identical(other.customui, customui) ||
+                other.customui == customui));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, customui);
+
+  @override
+  String toString() {
+    return 'EventResult.slotContent(customui: $customui)';
+  }
 }
 
 /// @nodoc
-abstract class _$$EventResult_SlotContentImplCopyWith<$Res> {
-  factory _$$EventResult_SlotContentImplCopyWith(
-          _$EventResult_SlotContentImpl value,
-          $Res Function(_$EventResult_SlotContentImpl) then) =
-      __$$EventResult_SlotContentImplCopyWithImpl<$Res>;
+abstract mixin class $EventResult_SlotContentCopyWith<$Res>
+    implements $EventResultCopyWith<$Res> {
+  factory $EventResult_SlotContentCopyWith(EventResult_SlotContent value,
+          $Res Function(EventResult_SlotContent) _then) =
+      _$EventResult_SlotContentCopyWithImpl;
   @useResult
   $Res call({CustomUI customui});
 
@@ -1888,24 +1431,22 @@ abstract class _$$EventResult_SlotContentImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$EventResult_SlotContentImplCopyWithImpl<$Res>
-    extends _$EventResultCopyWithImpl<$Res, _$EventResult_SlotContentImpl>
-    implements _$$EventResult_SlotContentImplCopyWith<$Res> {
-  __$$EventResult_SlotContentImplCopyWithImpl(
-      _$EventResult_SlotContentImpl _value,
-      $Res Function(_$EventResult_SlotContentImpl) _then)
-      : super(_value, _then);
+class _$EventResult_SlotContentCopyWithImpl<$Res>
+    implements $EventResult_SlotContentCopyWith<$Res> {
+  _$EventResult_SlotContentCopyWithImpl(this._self, this._then);
+
+  final EventResult_SlotContent _self;
+  final $Res Function(EventResult_SlotContent) _then;
 
   /// Create a copy of EventResult
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? customui = null,
   }) {
-    return _then(_$EventResult_SlotContentImpl(
+    return _then(EventResult_SlotContent(
       customui: null == customui
-          ? _value.customui
+          ? _self.customui
           : customui // ignore: cast_nullable_to_non_nullable
               as CustomUI,
     ));
@@ -1916,190 +1457,42 @@ class __$$EventResult_SlotContentImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get customui {
-    return $CustomUICopyWith<$Res>(_value.customui, (value) {
-      return _then(_value.copyWith(customui: value));
+    return $CustomUICopyWith<$Res>(_self.customui, (value) {
+      return _then(_self.copyWith(customui: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$EventResult_SlotContentImpl extends EventResult_SlotContent {
-  const _$EventResult_SlotContentImpl({required this.customui}) : super._();
-
-  @override
-  final CustomUI customui;
-
-  @override
-  String toString() {
-    return 'EventResult.slotContent(customui: $customui)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EventResult_SlotContentImpl &&
-            (identical(other.customui, customui) ||
-                other.customui == customui));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, customui);
-
-  /// Create a copy of EventResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$EventResult_SlotContentImplCopyWith<_$EventResult_SlotContentImpl>
-      get copyWith => __$$EventResult_SlotContentImplCopyWithImpl<
-          _$EventResult_SlotContentImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(CustomUI customui) slotContent,
-    required TResult Function(List<CustomUI> items, bool hasMore) feedPage,
-  }) {
-    return slotContent(customui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(CustomUI customui)? slotContent,
-    TResult? Function(List<CustomUI> items, bool hasMore)? feedPage,
-  }) {
-    return slotContent?.call(customui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(CustomUI customui)? slotContent,
-    TResult Function(List<CustomUI> items, bool hasMore)? feedPage,
-    required TResult orElse(),
-  }) {
-    if (slotContent != null) {
-      return slotContent(customui);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventResult_SlotContent value) slotContent,
-    required TResult Function(EventResult_FeedPage value) feedPage,
-  }) {
-    return slotContent(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventResult_SlotContent value)? slotContent,
-    TResult? Function(EventResult_FeedPage value)? feedPage,
-  }) {
-    return slotContent?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventResult_SlotContent value)? slotContent,
-    TResult Function(EventResult_FeedPage value)? feedPage,
-    required TResult orElse(),
-  }) {
-    if (slotContent != null) {
-      return slotContent(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class EventResult_SlotContent extends EventResult {
-  const factory EventResult_SlotContent({required final CustomUI customui}) =
-      _$EventResult_SlotContentImpl;
-  const EventResult_SlotContent._() : super._();
-
-  CustomUI get customui;
-
-  /// Create a copy of EventResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EventResult_SlotContentImplCopyWith<_$EventResult_SlotContentImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$EventResult_FeedPageImplCopyWith<$Res> {
-  factory _$$EventResult_FeedPageImplCopyWith(_$EventResult_FeedPageImpl value,
-          $Res Function(_$EventResult_FeedPageImpl) then) =
-      __$$EventResult_FeedPageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<CustomUI> items, bool hasMore});
-}
-
-/// @nodoc
-class __$$EventResult_FeedPageImplCopyWithImpl<$Res>
-    extends _$EventResultCopyWithImpl<$Res, _$EventResult_FeedPageImpl>
-    implements _$$EventResult_FeedPageImplCopyWith<$Res> {
-  __$$EventResult_FeedPageImplCopyWithImpl(_$EventResult_FeedPageImpl _value,
-      $Res Function(_$EventResult_FeedPageImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of EventResult
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? items = null,
-    Object? hasMore = null,
-  }) {
-    return _then(_$EventResult_FeedPageImpl(
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<CustomUI>,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$EventResult_FeedPageImpl extends EventResult_FeedPage {
-  const _$EventResult_FeedPageImpl(
+class EventResult_FeedPage extends EventResult {
+  const EventResult_FeedPage(
       {required final List<CustomUI> items, required this.hasMore})
       : _items = items,
         super._();
 
   final List<CustomUI> _items;
-  @override
   List<CustomUI> get items {
     if (_items is EqualUnmodifiableListView) return _items;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_items);
   }
 
-  @override
   final bool hasMore;
 
-  @override
-  String toString() {
-    return 'EventResult.feedPage(items: $items, hasMore: $hasMore)';
-  }
+  /// Create a copy of EventResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $EventResult_FeedPageCopyWith<EventResult_FeedPage> get copyWith =>
+      _$EventResult_FeedPageCopyWithImpl<EventResult_FeedPage>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EventResult_FeedPageImpl &&
+            other is EventResult_FeedPage &&
             const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore));
   }
@@ -2108,190 +1501,309 @@ class _$EventResult_FeedPageImpl extends EventResult_FeedPage {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_items), hasMore);
 
-  /// Create a copy of EventResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$EventResult_FeedPageImplCopyWith<_$EventResult_FeedPageImpl>
-      get copyWith =>
-          __$$EventResult_FeedPageImplCopyWithImpl<_$EventResult_FeedPageImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(CustomUI customui) slotContent,
-    required TResult Function(List<CustomUI> items, bool hasMore) feedPage,
-  }) {
-    return feedPage(items, hasMore);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(CustomUI customui)? slotContent,
-    TResult? Function(List<CustomUI> items, bool hasMore)? feedPage,
-  }) {
-    return feedPage?.call(items, hasMore);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(CustomUI customui)? slotContent,
-    TResult Function(List<CustomUI> items, bool hasMore)? feedPage,
-    required TResult orElse(),
-  }) {
-    if (feedPage != null) {
-      return feedPage(items, hasMore);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(EventResult_SlotContent value) slotContent,
-    required TResult Function(EventResult_FeedPage value) feedPage,
-  }) {
-    return feedPage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(EventResult_SlotContent value)? slotContent,
-    TResult? Function(EventResult_FeedPage value)? feedPage,
-  }) {
-    return feedPage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(EventResult_SlotContent value)? slotContent,
-    TResult Function(EventResult_FeedPage value)? feedPage,
-    required TResult orElse(),
-  }) {
-    if (feedPage != null) {
-      return feedPage(this);
-    }
-    return orElse();
+  String toString() {
+    return 'EventResult.feedPage(items: $items, hasMore: $hasMore)';
   }
 }
 
-abstract class EventResult_FeedPage extends EventResult {
-  const factory EventResult_FeedPage(
-      {required final List<CustomUI> items,
-      required final bool hasMore}) = _$EventResult_FeedPageImpl;
-  const EventResult_FeedPage._() : super._();
+/// @nodoc
+abstract mixin class $EventResult_FeedPageCopyWith<$Res>
+    implements $EventResultCopyWith<$Res> {
+  factory $EventResult_FeedPageCopyWith(EventResult_FeedPage value,
+          $Res Function(EventResult_FeedPage) _then) =
+      _$EventResult_FeedPageCopyWithImpl;
+  @useResult
+  $Res call({List<CustomUI> items, bool hasMore});
+}
 
-  List<CustomUI> get items;
-  bool get hasMore;
+/// @nodoc
+class _$EventResult_FeedPageCopyWithImpl<$Res>
+    implements $EventResult_FeedPageCopyWith<$Res> {
+  _$EventResult_FeedPageCopyWithImpl(this._self, this._then);
+
+  final EventResult_FeedPage _self;
+  final $Res Function(EventResult_FeedPage) _then;
 
   /// Create a copy of EventResult
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EventResult_FeedPageImplCopyWith<_$EventResult_FeedPageImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? items = null,
+    Object? hasMore = null,
+  }) {
+    return _then(EventResult_FeedPage(
+      items: null == items
+          ? _self._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<CustomUI>,
+      hasMore: null == hasMore
+          ? _self.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$Interaction {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String handler, String payload) invoke,
-    required TResult Function(String key, String value) writeKey,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String handler, String payload)? invoke,
-    TResult? Function(String key, String value)? writeKey,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String handler, String payload)? invoke,
-    TResult Function(String key, String value)? writeKey,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Interaction_Invoke value) invoke,
-    required TResult Function(Interaction_WriteKey value) writeKey,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Interaction_Invoke value)? invoke,
-    TResult? Function(Interaction_WriteKey value)? writeKey,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is Interaction);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'Interaction()';
+  }
+}
+
+/// @nodoc
+class $InteractionCopyWith<$Res> {
+  $InteractionCopyWith(Interaction _, $Res Function(Interaction) __);
+}
+
+/// Adds pattern-matching-related methods to [Interaction].
+extension InteractionPatterns on Interaction {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Interaction_Invoke value)? invoke,
     TResult Function(Interaction_WriteKey value)? writeKey,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke() when invoke != null:
+        return invoke(_that);
+      case Interaction_WriteKey() when writeKey != null:
+        return writeKey(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Interaction_Invoke value) invoke,
+    required TResult Function(Interaction_WriteKey value) writeKey,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke():
+        return invoke(_that);
+      case Interaction_WriteKey():
+        return writeKey(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Interaction_Invoke value)? invoke,
+    TResult? Function(Interaction_WriteKey value)? writeKey,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke() when invoke != null:
+        return invoke(_that);
+      case Interaction_WriteKey() when writeKey != null:
+        return writeKey(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String handler, String payload)? invoke,
+    TResult Function(String key, String value)? writeKey,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke() when invoke != null:
+        return invoke(_that.handler, _that.payload);
+      case Interaction_WriteKey() when writeKey != null:
+        return writeKey(_that.key, _that.value);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String handler, String payload) invoke,
+    required TResult Function(String key, String value) writeKey,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke():
+        return invoke(_that.handler, _that.payload);
+      case Interaction_WriteKey():
+        return writeKey(_that.key, _that.value);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String handler, String payload)? invoke,
+    TResult? Function(String key, String value)? writeKey,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Interaction_Invoke() when invoke != null:
+        return invoke(_that.handler, _that.payload);
+      case Interaction_WriteKey() when writeKey != null:
+        return writeKey(_that.key, _that.value);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $InteractionCopyWith<$Res> {
-  factory $InteractionCopyWith(
-          Interaction value, $Res Function(Interaction) then) =
-      _$InteractionCopyWithImpl<$Res, Interaction>;
-}
 
-/// @nodoc
-class _$InteractionCopyWithImpl<$Res, $Val extends Interaction>
-    implements $InteractionCopyWith<$Res> {
-  _$InteractionCopyWithImpl(this._value, this._then);
+class Interaction_Invoke extends Interaction {
+  const Interaction_Invoke({required this.handler, required this.payload})
+      : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final String handler;
+  final String payload;
 
   /// Create a copy of Interaction
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Interaction_InvokeCopyWith<Interaction_Invoke> get copyWith =>
+      _$Interaction_InvokeCopyWithImpl<Interaction_Invoke>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Interaction_Invoke &&
+            (identical(other.handler, handler) || other.handler == handler) &&
+            (identical(other.payload, payload) || other.payload == payload));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, handler, payload);
+
+  @override
+  String toString() {
+    return 'Interaction.invoke(handler: $handler, payload: $payload)';
+  }
 }
 
 /// @nodoc
-abstract class _$$Interaction_InvokeImplCopyWith<$Res> {
-  factory _$$Interaction_InvokeImplCopyWith(_$Interaction_InvokeImpl value,
-          $Res Function(_$Interaction_InvokeImpl) then) =
-      __$$Interaction_InvokeImplCopyWithImpl<$Res>;
+abstract mixin class $Interaction_InvokeCopyWith<$Res>
+    implements $InteractionCopyWith<$Res> {
+  factory $Interaction_InvokeCopyWith(
+          Interaction_Invoke value, $Res Function(Interaction_Invoke) _then) =
+      _$Interaction_InvokeCopyWithImpl;
   @useResult
   $Res call({String handler, String payload});
 }
 
 /// @nodoc
-class __$$Interaction_InvokeImplCopyWithImpl<$Res>
-    extends _$InteractionCopyWithImpl<$Res, _$Interaction_InvokeImpl>
-    implements _$$Interaction_InvokeImplCopyWith<$Res> {
-  __$$Interaction_InvokeImplCopyWithImpl(_$Interaction_InvokeImpl _value,
-      $Res Function(_$Interaction_InvokeImpl) _then)
-      : super(_value, _then);
+class _$Interaction_InvokeCopyWithImpl<$Res>
+    implements $Interaction_InvokeCopyWith<$Res> {
+  _$Interaction_InvokeCopyWithImpl(this._self, this._then);
+
+  final Interaction_Invoke _self;
+  final $Res Function(Interaction_Invoke) _then;
 
   /// Create a copy of Interaction
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? handler = null,
     Object? payload = null,
   }) {
-    return _then(_$Interaction_InvokeImpl(
+    return _then(Interaction_Invoke(
       handler: null == handler
-          ? _value.handler
+          ? _self.handler
           : handler // ignore: cast_nullable_to_non_nullable
               as String,
       payload: null == payload
-          ? _value.payload
+          ? _self.payload
           : payload // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2300,179 +1812,26 @@ class __$$Interaction_InvokeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Interaction_InvokeImpl extends Interaction_Invoke {
-  const _$Interaction_InvokeImpl({required this.handler, required this.payload})
+class Interaction_WriteKey extends Interaction {
+  const Interaction_WriteKey({required this.key, required this.value})
       : super._();
 
-  @override
-  final String handler;
-  @override
-  final String payload;
-
-  @override
-  String toString() {
-    return 'Interaction.invoke(handler: $handler, payload: $payload)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$Interaction_InvokeImpl &&
-            (identical(other.handler, handler) || other.handler == handler) &&
-            (identical(other.payload, payload) || other.payload == payload));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, handler, payload);
+  final String key;
+  final String value;
 
   /// Create a copy of Interaction
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$Interaction_InvokeImplCopyWith<_$Interaction_InvokeImpl> get copyWith =>
-      __$$Interaction_InvokeImplCopyWithImpl<_$Interaction_InvokeImpl>(
+  $Interaction_WriteKeyCopyWith<Interaction_WriteKey> get copyWith =>
+      _$Interaction_WriteKeyCopyWithImpl<Interaction_WriteKey>(
           this, _$identity);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String handler, String payload) invoke,
-    required TResult Function(String key, String value) writeKey,
-  }) {
-    return invoke(handler, payload);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String handler, String payload)? invoke,
-    TResult? Function(String key, String value)? writeKey,
-  }) {
-    return invoke?.call(handler, payload);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String handler, String payload)? invoke,
-    TResult Function(String key, String value)? writeKey,
-    required TResult orElse(),
-  }) {
-    if (invoke != null) {
-      return invoke(handler, payload);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Interaction_Invoke value) invoke,
-    required TResult Function(Interaction_WriteKey value) writeKey,
-  }) {
-    return invoke(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Interaction_Invoke value)? invoke,
-    TResult? Function(Interaction_WriteKey value)? writeKey,
-  }) {
-    return invoke?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Interaction_Invoke value)? invoke,
-    TResult Function(Interaction_WriteKey value)? writeKey,
-    required TResult orElse(),
-  }) {
-    if (invoke != null) {
-      return invoke(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Interaction_Invoke extends Interaction {
-  const factory Interaction_Invoke(
-      {required final String handler,
-      required final String payload}) = _$Interaction_InvokeImpl;
-  const Interaction_Invoke._() : super._();
-
-  String get handler;
-  String get payload;
-
-  /// Create a copy of Interaction
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Interaction_InvokeImplCopyWith<_$Interaction_InvokeImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$Interaction_WriteKeyImplCopyWith<$Res> {
-  factory _$$Interaction_WriteKeyImplCopyWith(_$Interaction_WriteKeyImpl value,
-          $Res Function(_$Interaction_WriteKeyImpl) then) =
-      __$$Interaction_WriteKeyImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String key, String value});
-}
-
-/// @nodoc
-class __$$Interaction_WriteKeyImplCopyWithImpl<$Res>
-    extends _$InteractionCopyWithImpl<$Res, _$Interaction_WriteKeyImpl>
-    implements _$$Interaction_WriteKeyImplCopyWith<$Res> {
-  __$$Interaction_WriteKeyImplCopyWithImpl(_$Interaction_WriteKeyImpl _value,
-      $Res Function(_$Interaction_WriteKeyImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Interaction
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? key = null,
-    Object? value = null,
-  }) {
-    return _then(_$Interaction_WriteKeyImpl(
-      key: null == key
-          ? _value.key
-          : key // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$Interaction_WriteKeyImpl extends Interaction_WriteKey {
-  const _$Interaction_WriteKeyImpl({required this.key, required this.value})
-      : super._();
-
-  @override
-  final String key;
-  @override
-  final String value;
-
-  @override
-  String toString() {
-    return 'Interaction.writeKey(key: $key, value: $value)';
-  }
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Interaction_WriteKeyImpl &&
+            other is Interaction_WriteKey &&
             (identical(other.key, key) || other.key == key) &&
             (identical(other.value, value) || other.value == value));
   }
@@ -2480,163 +1839,286 @@ class _$Interaction_WriteKeyImpl extends Interaction_WriteKey {
   @override
   int get hashCode => Object.hash(runtimeType, key, value);
 
-  /// Create a copy of Interaction
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Interaction_WriteKeyImplCopyWith<_$Interaction_WriteKeyImpl>
-      get copyWith =>
-          __$$Interaction_WriteKeyImplCopyWithImpl<_$Interaction_WriteKeyImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String handler, String payload) invoke,
-    required TResult Function(String key, String value) writeKey,
-  }) {
-    return writeKey(key, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String handler, String payload)? invoke,
-    TResult? Function(String key, String value)? writeKey,
-  }) {
-    return writeKey?.call(key, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String handler, String payload)? invoke,
-    TResult Function(String key, String value)? writeKey,
-    required TResult orElse(),
-  }) {
-    if (writeKey != null) {
-      return writeKey(key, value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Interaction_Invoke value) invoke,
-    required TResult Function(Interaction_WriteKey value) writeKey,
-  }) {
-    return writeKey(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Interaction_Invoke value)? invoke,
-    TResult? Function(Interaction_WriteKey value)? writeKey,
-  }) {
-    return writeKey?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Interaction_Invoke value)? invoke,
-    TResult Function(Interaction_WriteKey value)? writeKey,
-    required TResult orElse(),
-  }) {
-    if (writeKey != null) {
-      return writeKey(this);
-    }
-    return orElse();
+  String toString() {
+    return 'Interaction.writeKey(key: $key, value: $value)';
   }
 }
 
-abstract class Interaction_WriteKey extends Interaction {
-  const factory Interaction_WriteKey(
-      {required final String key,
-      required final String value}) = _$Interaction_WriteKeyImpl;
-  const Interaction_WriteKey._() : super._();
+/// @nodoc
+abstract mixin class $Interaction_WriteKeyCopyWith<$Res>
+    implements $InteractionCopyWith<$Res> {
+  factory $Interaction_WriteKeyCopyWith(Interaction_WriteKey value,
+          $Res Function(Interaction_WriteKey) _then) =
+      _$Interaction_WriteKeyCopyWithImpl;
+  @useResult
+  $Res call({String key, String value});
+}
 
-  String get key;
-  String get value;
+/// @nodoc
+class _$Interaction_WriteKeyCopyWithImpl<$Res>
+    implements $Interaction_WriteKeyCopyWith<$Res> {
+  _$Interaction_WriteKeyCopyWithImpl(this._self, this._then);
+
+  final Interaction_WriteKey _self;
+  final $Res Function(Interaction_WriteKey) _then;
 
   /// Create a copy of Interaction
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Interaction_WriteKeyImplCopyWith<_$Interaction_WriteKeyImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? key = null,
+    Object? value = null,
+  }) {
+    return _then(Interaction_WriteKey(
+      key: null == key
+          ? _self.key
+          : key // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$SlotValue {
-  Object get value => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(SettingValue value) setting,
-    required TResult Function(String key, String value) store,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue value)? setting,
-    TResult? Function(String key, String value)? store,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SettingValue value)? setting,
-    TResult Function(String key, String value)? store,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SlotValue_Setting value) setting,
-    required TResult Function(SlotValue_Store value) store,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SlotValue_Setting value)? setting,
-    TResult? Function(SlotValue_Store value)? store,
-  }) =>
-      throw _privateConstructorUsedError;
+  Object get value;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SlotValue &&
+            const DeepCollectionEquality().equals(other.value, value));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
+
+  @override
+  String toString() {
+    return 'SlotValue(value: $value)';
+  }
+}
+
+/// @nodoc
+class $SlotValueCopyWith<$Res> {
+  $SlotValueCopyWith(SlotValue _, $Res Function(SlotValue) __);
+}
+
+/// Adds pattern-matching-related methods to [SlotValue].
+extension SlotValuePatterns on SlotValue {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SlotValue_Setting value)? setting,
     TResult Function(SlotValue_Store value)? store,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting() when setting != null:
+        return setting(_that);
+      case SlotValue_Store() when store != null:
+        return store(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SlotValue_Setting value) setting,
+    required TResult Function(SlotValue_Store value) store,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting():
+        return setting(_that);
+      case SlotValue_Store():
+        return store(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SlotValue_Setting value)? setting,
+    TResult? Function(SlotValue_Store value)? store,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting() when setting != null:
+        return setting(_that);
+      case SlotValue_Store() when store != null:
+        return store(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SettingValue value)? setting,
+    TResult Function(String key, String value)? store,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting() when setting != null:
+        return setting(_that.value);
+      case SlotValue_Store() when store != null:
+        return store(_that.key, _that.value);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SettingValue value) setting,
+    required TResult Function(String key, String value) store,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting():
+        return setting(_that.value);
+      case SlotValue_Store():
+        return store(_that.key, _that.value);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SettingValue value)? setting,
+    TResult? Function(String key, String value)? store,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SlotValue_Setting() when setting != null:
+        return setting(_that.value);
+      case SlotValue_Store() when store != null:
+        return store(_that.key, _that.value);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $SlotValueCopyWith<$Res> {
-  factory $SlotValueCopyWith(SlotValue value, $Res Function(SlotValue) then) =
-      _$SlotValueCopyWithImpl<$Res, SlotValue>;
-}
 
-/// @nodoc
-class _$SlotValueCopyWithImpl<$Res, $Val extends SlotValue>
-    implements $SlotValueCopyWith<$Res> {
-  _$SlotValueCopyWithImpl(this._value, this._then);
+class SlotValue_Setting extends SlotValue {
+  const SlotValue_Setting({required this.value}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  @override
+  final SettingValue value;
 
   /// Create a copy of SlotValue
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SlotValue_SettingCopyWith<SlotValue_Setting> get copyWith =>
+      _$SlotValue_SettingCopyWithImpl<SlotValue_Setting>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SlotValue_Setting &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @override
+  String toString() {
+    return 'SlotValue.setting(value: $value)';
+  }
 }
 
 /// @nodoc
-abstract class _$$SlotValue_SettingImplCopyWith<$Res> {
-  factory _$$SlotValue_SettingImplCopyWith(_$SlotValue_SettingImpl value,
-          $Res Function(_$SlotValue_SettingImpl) then) =
-      __$$SlotValue_SettingImplCopyWithImpl<$Res>;
+abstract mixin class $SlotValue_SettingCopyWith<$Res>
+    implements $SlotValueCopyWith<$Res> {
+  factory $SlotValue_SettingCopyWith(
+          SlotValue_Setting value, $Res Function(SlotValue_Setting) _then) =
+      _$SlotValue_SettingCopyWithImpl;
   @useResult
   $Res call({SettingValue value});
 
@@ -2644,23 +2126,22 @@ abstract class _$$SlotValue_SettingImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SlotValue_SettingImplCopyWithImpl<$Res>
-    extends _$SlotValueCopyWithImpl<$Res, _$SlotValue_SettingImpl>
-    implements _$$SlotValue_SettingImplCopyWith<$Res> {
-  __$$SlotValue_SettingImplCopyWithImpl(_$SlotValue_SettingImpl _value,
-      $Res Function(_$SlotValue_SettingImpl) _then)
-      : super(_value, _then);
+class _$SlotValue_SettingCopyWithImpl<$Res>
+    implements $SlotValue_SettingCopyWith<$Res> {
+  _$SlotValue_SettingCopyWithImpl(this._self, this._then);
+
+  final SlotValue_Setting _self;
+  final $Res Function(SlotValue_Setting) _then;
 
   /// Create a copy of SlotValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$SlotValue_SettingImpl(
+    return _then(SlotValue_Setting(
       value: null == value
-          ? _value.value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as SettingValue,
     ));
@@ -2671,182 +2152,33 @@ class __$$SlotValue_SettingImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $SettingValueCopyWith<$Res> get value {
-    return $SettingValueCopyWith<$Res>(_value.value, (value) {
-      return _then(_value.copyWith(value: value));
+    return $SettingValueCopyWith<$Res>(_self.value, (value) {
+      return _then(_self.copyWith(value: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$SlotValue_SettingImpl extends SlotValue_Setting {
-  const _$SlotValue_SettingImpl({required this.value}) : super._();
+class SlotValue_Store extends SlotValue {
+  const SlotValue_Store({required this.key, required this.value}) : super._();
 
-  @override
-  final SettingValue value;
-
-  @override
-  String toString() {
-    return 'SlotValue.setting(value: $value)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SlotValue_SettingImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  /// Create a copy of SlotValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SlotValue_SettingImplCopyWith<_$SlotValue_SettingImpl> get copyWith =>
-      __$$SlotValue_SettingImplCopyWithImpl<_$SlotValue_SettingImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(SettingValue value) setting,
-    required TResult Function(String key, String value) store,
-  }) {
-    return setting(value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue value)? setting,
-    TResult? Function(String key, String value)? store,
-  }) {
-    return setting?.call(value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SettingValue value)? setting,
-    TResult Function(String key, String value)? store,
-    required TResult orElse(),
-  }) {
-    if (setting != null) {
-      return setting(value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SlotValue_Setting value) setting,
-    required TResult Function(SlotValue_Store value) store,
-  }) {
-    return setting(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SlotValue_Setting value)? setting,
-    TResult? Function(SlotValue_Store value)? store,
-  }) {
-    return setting?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SlotValue_Setting value)? setting,
-    TResult Function(SlotValue_Store value)? store,
-    required TResult orElse(),
-  }) {
-    if (setting != null) {
-      return setting(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SlotValue_Setting extends SlotValue {
-  const factory SlotValue_Setting({required final SettingValue value}) =
-      _$SlotValue_SettingImpl;
-  const SlotValue_Setting._() : super._();
-
-  @override
-  SettingValue get value;
-
-  /// Create a copy of SlotValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SlotValue_SettingImplCopyWith<_$SlotValue_SettingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$SlotValue_StoreImplCopyWith<$Res> {
-  factory _$$SlotValue_StoreImplCopyWith(_$SlotValue_StoreImpl value,
-          $Res Function(_$SlotValue_StoreImpl) then) =
-      __$$SlotValue_StoreImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String key, String value});
-}
-
-/// @nodoc
-class __$$SlotValue_StoreImplCopyWithImpl<$Res>
-    extends _$SlotValueCopyWithImpl<$Res, _$SlotValue_StoreImpl>
-    implements _$$SlotValue_StoreImplCopyWith<$Res> {
-  __$$SlotValue_StoreImplCopyWithImpl(
-      _$SlotValue_StoreImpl _value, $Res Function(_$SlotValue_StoreImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SlotValue
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? key = null,
-    Object? value = null,
-  }) {
-    return _then(_$SlotValue_StoreImpl(
-      key: null == key
-          ? _value.key
-          : key // ignore: cast_nullable_to_non_nullable
-              as String,
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SlotValue_StoreImpl extends SlotValue_Store {
-  const _$SlotValue_StoreImpl({required this.key, required this.value})
-      : super._();
-
-  @override
   final String key;
   @override
   final String value;
 
-  @override
-  String toString() {
-    return 'SlotValue.store(key: $key, value: $value)';
-  }
+  /// Create a copy of SlotValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SlotValue_StoreCopyWith<SlotValue_Store> get copyWith =>
+      _$SlotValue_StoreCopyWithImpl<SlotValue_Store>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SlotValue_StoreImpl &&
+            other is SlotValue_Store &&
             (identical(other.key, key) || other.key == key) &&
             (identical(other.value, value) || other.value == value));
   }
@@ -2854,91 +2186,48 @@ class _$SlotValue_StoreImpl extends SlotValue_Store {
   @override
   int get hashCode => Object.hash(runtimeType, key, value);
 
+  @override
+  String toString() {
+    return 'SlotValue.store(key: $key, value: $value)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $SlotValue_StoreCopyWith<$Res>
+    implements $SlotValueCopyWith<$Res> {
+  factory $SlotValue_StoreCopyWith(
+          SlotValue_Store value, $Res Function(SlotValue_Store) _then) =
+      _$SlotValue_StoreCopyWithImpl;
+  @useResult
+  $Res call({String key, String value});
+}
+
+/// @nodoc
+class _$SlotValue_StoreCopyWithImpl<$Res>
+    implements $SlotValue_StoreCopyWith<$Res> {
+  _$SlotValue_StoreCopyWithImpl(this._self, this._then);
+
+  final SlotValue_Store _self;
+  final $Res Function(SlotValue_Store) _then;
+
   /// Create a copy of SlotValue
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$SlotValue_StoreImplCopyWith<_$SlotValue_StoreImpl> get copyWith =>
-      __$$SlotValue_StoreImplCopyWithImpl<_$SlotValue_StoreImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(SettingValue value) setting,
-    required TResult Function(String key, String value) store,
+  $Res call({
+    Object? key = null,
+    Object? value = null,
   }) {
-    return store(key, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue value)? setting,
-    TResult? Function(String key, String value)? store,
-  }) {
-    return store?.call(key, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SettingValue value)? setting,
-    TResult Function(String key, String value)? store,
-    required TResult orElse(),
-  }) {
-    if (store != null) {
-      return store(key, value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SlotValue_Setting value) setting,
-    required TResult Function(SlotValue_Store value) store,
-  }) {
-    return store(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SlotValue_Setting value)? setting,
-    TResult? Function(SlotValue_Store value)? store,
-  }) {
-    return store?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SlotValue_Setting value)? setting,
-    TResult Function(SlotValue_Store value)? store,
-    required TResult orElse(),
-  }) {
-    if (store != null) {
-      return store(this);
-    }
-    return orElse();
+    return _then(SlotValue_Store(
+      key: null == key
+          ? _self.key
+          : key // ignore: cast_nullable_to_non_nullable
+              as String,
+      value: null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class SlotValue_Store extends SlotValue {
-  const factory SlotValue_Store(
-      {required final String key,
-      required final String value}) = _$SlotValue_StoreImpl;
-  const SlotValue_Store._() : super._();
-
-  String get key;
-  @override
-  String get value;
-
-  /// Create a copy of SlotValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SlotValue_StoreImplCopyWith<_$SlotValue_StoreImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

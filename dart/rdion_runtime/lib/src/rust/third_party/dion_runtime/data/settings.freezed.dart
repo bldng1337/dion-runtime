@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,55 +9,50 @@ part of 'settings.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SettingValue {
-  Object get data => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String data) string,
-    required TResult Function(double data) number,
-    required TResult Function(bool data) boolean,
-    required TResult Function(List<String> data) stringList,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String data)? string,
-    TResult? Function(double data)? number,
-    TResult? Function(bool data)? boolean,
-    TResult? Function(List<String> data)? stringList,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String data)? string,
-    TResult Function(double data)? number,
-    TResult Function(bool data)? boolean,
-    TResult Function(List<String> data)? stringList,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingValue_String value) string,
-    required TResult Function(SettingValue_Number value) number,
-    required TResult Function(SettingValue_Boolean value) boolean,
-    required TResult Function(SettingValue_StringList value) stringList,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue_String value)? string,
-    TResult? Function(SettingValue_Number value)? number,
-    TResult? Function(SettingValue_Boolean value)? boolean,
-    TResult? Function(SettingValue_StringList value)? stringList,
-  }) =>
-      throw _privateConstructorUsedError;
+  Object get data;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SettingValue &&
+            const DeepCollectionEquality().equals(other.data, data));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+
+  @override
+  String toString() {
+    return 'SettingValue(data: $data)';
+  }
+}
+
+/// @nodoc
+class $SettingValueCopyWith<$Res> {
+  $SettingValueCopyWith(SettingValue _, $Res Function(SettingValue) __);
+}
+
+/// Adds pattern-matching-related methods to [SettingValue].
+extension SettingValuePatterns on SettingValue {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingValue_String value)? string,
@@ -65,58 +60,251 @@ mixin _$SettingValue {
     TResult Function(SettingValue_Boolean value)? boolean,
     TResult Function(SettingValue_StringList value)? stringList,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String() when string != null:
+        return string(_that);
+      case SettingValue_Number() when number != null:
+        return number(_that);
+      case SettingValue_Boolean() when boolean != null:
+        return boolean(_that);
+      case SettingValue_StringList() when stringList != null:
+        return stringList(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SettingValue_String value) string,
+    required TResult Function(SettingValue_Number value) number,
+    required TResult Function(SettingValue_Boolean value) boolean,
+    required TResult Function(SettingValue_StringList value) stringList,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String():
+        return string(_that);
+      case SettingValue_Number():
+        return number(_that);
+      case SettingValue_Boolean():
+        return boolean(_that);
+      case SettingValue_StringList():
+        return stringList(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SettingValue_String value)? string,
+    TResult? Function(SettingValue_Number value)? number,
+    TResult? Function(SettingValue_Boolean value)? boolean,
+    TResult? Function(SettingValue_StringList value)? stringList,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String() when string != null:
+        return string(_that);
+      case SettingValue_Number() when number != null:
+        return number(_that);
+      case SettingValue_Boolean() when boolean != null:
+        return boolean(_that);
+      case SettingValue_StringList() when stringList != null:
+        return stringList(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String data)? string,
+    TResult Function(double data)? number,
+    TResult Function(bool data)? boolean,
+    TResult Function(List<String> data)? stringList,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String() when string != null:
+        return string(_that.data);
+      case SettingValue_Number() when number != null:
+        return number(_that.data);
+      case SettingValue_Boolean() when boolean != null:
+        return boolean(_that.data);
+      case SettingValue_StringList() when stringList != null:
+        return stringList(_that.data);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String data) string,
+    required TResult Function(double data) number,
+    required TResult Function(bool data) boolean,
+    required TResult Function(List<String> data) stringList,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String():
+        return string(_that.data);
+      case SettingValue_Number():
+        return number(_that.data);
+      case SettingValue_Boolean():
+        return boolean(_that.data);
+      case SettingValue_StringList():
+        return stringList(_that.data);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String data)? string,
+    TResult? Function(double data)? number,
+    TResult? Function(bool data)? boolean,
+    TResult? Function(List<String> data)? stringList,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingValue_String() when string != null:
+        return string(_that.data);
+      case SettingValue_Number() when number != null:
+        return number(_that.data);
+      case SettingValue_Boolean() when boolean != null:
+        return boolean(_that.data);
+      case SettingValue_StringList() when stringList != null:
+        return stringList(_that.data);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $SettingValueCopyWith<$Res> {
-  factory $SettingValueCopyWith(
-          SettingValue value, $Res Function(SettingValue) then) =
-      _$SettingValueCopyWithImpl<$Res, SettingValue>;
-}
 
-/// @nodoc
-class _$SettingValueCopyWithImpl<$Res, $Val extends SettingValue>
-    implements $SettingValueCopyWith<$Res> {
-  _$SettingValueCopyWithImpl(this._value, this._then);
+class SettingValue_String extends SettingValue {
+  const SettingValue_String({required this.data}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  @override
+  final String data;
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingValue_StringCopyWith<SettingValue_String> get copyWith =>
+      _$SettingValue_StringCopyWithImpl<SettingValue_String>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SettingValue_String &&
+            (identical(other.data, data) || other.data == data));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, data);
+
+  @override
+  String toString() {
+    return 'SettingValue.string(data: $data)';
+  }
 }
 
 /// @nodoc
-abstract class _$$SettingValue_StringImplCopyWith<$Res> {
-  factory _$$SettingValue_StringImplCopyWith(_$SettingValue_StringImpl value,
-          $Res Function(_$SettingValue_StringImpl) then) =
-      __$$SettingValue_StringImplCopyWithImpl<$Res>;
+abstract mixin class $SettingValue_StringCopyWith<$Res>
+    implements $SettingValueCopyWith<$Res> {
+  factory $SettingValue_StringCopyWith(
+          SettingValue_String value, $Res Function(SettingValue_String) _then) =
+      _$SettingValue_StringCopyWithImpl;
   @useResult
   $Res call({String data});
 }
 
 /// @nodoc
-class __$$SettingValue_StringImplCopyWithImpl<$Res>
-    extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_StringImpl>
-    implements _$$SettingValue_StringImplCopyWith<$Res> {
-  __$$SettingValue_StringImplCopyWithImpl(_$SettingValue_StringImpl _value,
-      $Res Function(_$SettingValue_StringImpl) _then)
-      : super(_value, _then);
+class _$SettingValue_StringCopyWithImpl<$Res>
+    implements $SettingValue_StringCopyWith<$Res> {
+  _$SettingValue_StringCopyWithImpl(this._self, this._then);
+
+  final SettingValue_String _self;
+  final $Res Function(SettingValue_String) _then;
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? data = null,
   }) {
-    return _then(_$SettingValue_StringImpl(
+    return _then(SettingValue_String(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -125,154 +313,63 @@ class __$$SettingValue_StringImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingValue_StringImpl extends SettingValue_String {
-  const _$SettingValue_StringImpl({required this.data}) : super._();
+class SettingValue_Number extends SettingValue {
+  const SettingValue_Number({required this.data}) : super._();
 
   @override
-  final String data;
+  final double data;
 
-  @override
-  String toString() {
-    return 'SettingValue.string(data: $data)';
-  }
+  /// Create a copy of SettingValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingValue_NumberCopyWith<SettingValue_Number> get copyWith =>
+      _$SettingValue_NumberCopyWithImpl<SettingValue_Number>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingValue_StringImpl &&
+            other is SettingValue_Number &&
             (identical(other.data, data) || other.data == data));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SettingValue_StringImplCopyWith<_$SettingValue_StringImpl> get copyWith =>
-      __$$SettingValue_StringImplCopyWithImpl<_$SettingValue_StringImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String data) string,
-    required TResult Function(double data) number,
-    required TResult Function(bool data) boolean,
-    required TResult Function(List<String> data) stringList,
-  }) {
-    return string(data);
+  String toString() {
+    return 'SettingValue.number(data: $data)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String data)? string,
-    TResult? Function(double data)? number,
-    TResult? Function(bool data)? boolean,
-    TResult? Function(List<String> data)? stringList,
-  }) {
-    return string?.call(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String data)? string,
-    TResult Function(double data)? number,
-    TResult Function(bool data)? boolean,
-    TResult Function(List<String> data)? stringList,
-    required TResult orElse(),
-  }) {
-    if (string != null) {
-      return string(data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingValue_String value) string,
-    required TResult Function(SettingValue_Number value) number,
-    required TResult Function(SettingValue_Boolean value) boolean,
-    required TResult Function(SettingValue_StringList value) stringList,
-  }) {
-    return string(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue_String value)? string,
-    TResult? Function(SettingValue_Number value)? number,
-    TResult? Function(SettingValue_Boolean value)? boolean,
-    TResult? Function(SettingValue_StringList value)? stringList,
-  }) {
-    return string?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingValue_String value)? string,
-    TResult Function(SettingValue_Number value)? number,
-    TResult Function(SettingValue_Boolean value)? boolean,
-    TResult Function(SettingValue_StringList value)? stringList,
-    required TResult orElse(),
-  }) {
-    if (string != null) {
-      return string(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingValue_String extends SettingValue {
-  const factory SettingValue_String({required final String data}) =
-      _$SettingValue_StringImpl;
-  const SettingValue_String._() : super._();
-
-  @override
-  String get data;
-
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingValue_StringImplCopyWith<_$SettingValue_StringImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingValue_NumberImplCopyWith<$Res> {
-  factory _$$SettingValue_NumberImplCopyWith(_$SettingValue_NumberImpl value,
-          $Res Function(_$SettingValue_NumberImpl) then) =
-      __$$SettingValue_NumberImplCopyWithImpl<$Res>;
+abstract mixin class $SettingValue_NumberCopyWith<$Res>
+    implements $SettingValueCopyWith<$Res> {
+  factory $SettingValue_NumberCopyWith(
+          SettingValue_Number value, $Res Function(SettingValue_Number) _then) =
+      _$SettingValue_NumberCopyWithImpl;
   @useResult
   $Res call({double data});
 }
 
 /// @nodoc
-class __$$SettingValue_NumberImplCopyWithImpl<$Res>
-    extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_NumberImpl>
-    implements _$$SettingValue_NumberImplCopyWith<$Res> {
-  __$$SettingValue_NumberImplCopyWithImpl(_$SettingValue_NumberImpl _value,
-      $Res Function(_$SettingValue_NumberImpl) _then)
-      : super(_value, _then);
+class _$SettingValue_NumberCopyWithImpl<$Res>
+    implements $SettingValue_NumberCopyWith<$Res> {
+  _$SettingValue_NumberCopyWithImpl(this._self, this._then);
+
+  final SettingValue_Number _self;
+  final $Res Function(SettingValue_Number) _then;
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? data = null,
   }) {
-    return _then(_$SettingValue_NumberImpl(
+    return _then(SettingValue_Number(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as double,
     ));
@@ -281,154 +378,64 @@ class __$$SettingValue_NumberImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingValue_NumberImpl extends SettingValue_Number {
-  const _$SettingValue_NumberImpl({required this.data}) : super._();
+class SettingValue_Boolean extends SettingValue {
+  const SettingValue_Boolean({required this.data}) : super._();
 
   @override
-  final double data;
+  final bool data;
 
-  @override
-  String toString() {
-    return 'SettingValue.number(data: $data)';
-  }
+  /// Create a copy of SettingValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingValue_BooleanCopyWith<SettingValue_Boolean> get copyWith =>
+      _$SettingValue_BooleanCopyWithImpl<SettingValue_Boolean>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingValue_NumberImpl &&
+            other is SettingValue_Boolean &&
             (identical(other.data, data) || other.data == data));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SettingValue_NumberImplCopyWith<_$SettingValue_NumberImpl> get copyWith =>
-      __$$SettingValue_NumberImplCopyWithImpl<_$SettingValue_NumberImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String data) string,
-    required TResult Function(double data) number,
-    required TResult Function(bool data) boolean,
-    required TResult Function(List<String> data) stringList,
-  }) {
-    return number(data);
+  String toString() {
+    return 'SettingValue.boolean(data: $data)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String data)? string,
-    TResult? Function(double data)? number,
-    TResult? Function(bool data)? boolean,
-    TResult? Function(List<String> data)? stringList,
-  }) {
-    return number?.call(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String data)? string,
-    TResult Function(double data)? number,
-    TResult Function(bool data)? boolean,
-    TResult Function(List<String> data)? stringList,
-    required TResult orElse(),
-  }) {
-    if (number != null) {
-      return number(data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingValue_String value) string,
-    required TResult Function(SettingValue_Number value) number,
-    required TResult Function(SettingValue_Boolean value) boolean,
-    required TResult Function(SettingValue_StringList value) stringList,
-  }) {
-    return number(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue_String value)? string,
-    TResult? Function(SettingValue_Number value)? number,
-    TResult? Function(SettingValue_Boolean value)? boolean,
-    TResult? Function(SettingValue_StringList value)? stringList,
-  }) {
-    return number?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingValue_String value)? string,
-    TResult Function(SettingValue_Number value)? number,
-    TResult Function(SettingValue_Boolean value)? boolean,
-    TResult Function(SettingValue_StringList value)? stringList,
-    required TResult orElse(),
-  }) {
-    if (number != null) {
-      return number(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingValue_Number extends SettingValue {
-  const factory SettingValue_Number({required final double data}) =
-      _$SettingValue_NumberImpl;
-  const SettingValue_Number._() : super._();
-
-  @override
-  double get data;
-
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingValue_NumberImplCopyWith<_$SettingValue_NumberImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingValue_BooleanImplCopyWith<$Res> {
-  factory _$$SettingValue_BooleanImplCopyWith(_$SettingValue_BooleanImpl value,
-          $Res Function(_$SettingValue_BooleanImpl) then) =
-      __$$SettingValue_BooleanImplCopyWithImpl<$Res>;
+abstract mixin class $SettingValue_BooleanCopyWith<$Res>
+    implements $SettingValueCopyWith<$Res> {
+  factory $SettingValue_BooleanCopyWith(SettingValue_Boolean value,
+          $Res Function(SettingValue_Boolean) _then) =
+      _$SettingValue_BooleanCopyWithImpl;
   @useResult
   $Res call({bool data});
 }
 
 /// @nodoc
-class __$$SettingValue_BooleanImplCopyWithImpl<$Res>
-    extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_BooleanImpl>
-    implements _$$SettingValue_BooleanImplCopyWith<$Res> {
-  __$$SettingValue_BooleanImplCopyWithImpl(_$SettingValue_BooleanImpl _value,
-      $Res Function(_$SettingValue_BooleanImpl) _then)
-      : super(_value, _then);
+class _$SettingValue_BooleanCopyWithImpl<$Res>
+    implements $SettingValue_BooleanCopyWith<$Res> {
+  _$SettingValue_BooleanCopyWithImpl(this._self, this._then);
+
+  final SettingValue_Boolean _self;
+  final $Res Function(SettingValue_Boolean) _then;
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? data = null,
   }) {
-    return _then(_$SettingValue_BooleanImpl(
+    return _then(SettingValue_Boolean(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
@@ -437,167 +444,8 @@ class __$$SettingValue_BooleanImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingValue_BooleanImpl extends SettingValue_Boolean {
-  const _$SettingValue_BooleanImpl({required this.data}) : super._();
-
-  @override
-  final bool data;
-
-  @override
-  String toString() {
-    return 'SettingValue.boolean(data: $data)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SettingValue_BooleanImpl &&
-            (identical(other.data, data) || other.data == data));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, data);
-
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-      get copyWith =>
-          __$$SettingValue_BooleanImplCopyWithImpl<_$SettingValue_BooleanImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String data) string,
-    required TResult Function(double data) number,
-    required TResult Function(bool data) boolean,
-    required TResult Function(List<String> data) stringList,
-  }) {
-    return boolean(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String data)? string,
-    TResult? Function(double data)? number,
-    TResult? Function(bool data)? boolean,
-    TResult? Function(List<String> data)? stringList,
-  }) {
-    return boolean?.call(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String data)? string,
-    TResult Function(double data)? number,
-    TResult Function(bool data)? boolean,
-    TResult Function(List<String> data)? stringList,
-    required TResult orElse(),
-  }) {
-    if (boolean != null) {
-      return boolean(data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingValue_String value) string,
-    required TResult Function(SettingValue_Number value) number,
-    required TResult Function(SettingValue_Boolean value) boolean,
-    required TResult Function(SettingValue_StringList value) stringList,
-  }) {
-    return boolean(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue_String value)? string,
-    TResult? Function(SettingValue_Number value)? number,
-    TResult? Function(SettingValue_Boolean value)? boolean,
-    TResult? Function(SettingValue_StringList value)? stringList,
-  }) {
-    return boolean?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingValue_String value)? string,
-    TResult Function(SettingValue_Number value)? number,
-    TResult Function(SettingValue_Boolean value)? boolean,
-    TResult Function(SettingValue_StringList value)? stringList,
-    required TResult orElse(),
-  }) {
-    if (boolean != null) {
-      return boolean(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingValue_Boolean extends SettingValue {
-  const factory SettingValue_Boolean({required final bool data}) =
-      _$SettingValue_BooleanImpl;
-  const SettingValue_Boolean._() : super._();
-
-  @override
-  bool get data;
-
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingValue_BooleanImplCopyWith<_$SettingValue_BooleanImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$SettingValue_StringListImplCopyWith<$Res> {
-  factory _$$SettingValue_StringListImplCopyWith(
-          _$SettingValue_StringListImpl value,
-          $Res Function(_$SettingValue_StringListImpl) then) =
-      __$$SettingValue_StringListImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<String> data});
-}
-
-/// @nodoc
-class __$$SettingValue_StringListImplCopyWithImpl<$Res>
-    extends _$SettingValueCopyWithImpl<$Res, _$SettingValue_StringListImpl>
-    implements _$$SettingValue_StringListImplCopyWith<$Res> {
-  __$$SettingValue_StringListImplCopyWithImpl(
-      _$SettingValue_StringListImpl _value,
-      $Res Function(_$SettingValue_StringListImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$SettingValue_StringListImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SettingValue_StringListImpl extends SettingValue_StringList {
-  const _$SettingValue_StringListImpl({required final List<String> data})
+class SettingValue_StringList extends SettingValue {
+  const SettingValue_StringList({required final List<String> data})
       : _data = data,
         super._();
 
@@ -609,16 +457,19 @@ class _$SettingValue_StringListImpl extends SettingValue_StringList {
     return EqualUnmodifiableListView(_data);
   }
 
-  @override
-  String toString() {
-    return 'SettingValue.stringList(data: $data)';
-  }
+  /// Create a copy of SettingValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingValue_StringListCopyWith<SettingValue_StringList> get copyWith =>
+      _$SettingValue_StringListCopyWithImpl<SettingValue_StringList>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingValue_StringListImpl &&
+            other is SettingValue_StringList &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
@@ -626,301 +477,81 @@ class _$SettingValue_StringListImpl extends SettingValue_StringList {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of SettingValue
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-      get copyWith => __$$SettingValue_StringListImplCopyWithImpl<
-          _$SettingValue_StringListImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String data) string,
-    required TResult Function(double data) number,
-    required TResult Function(bool data) boolean,
-    required TResult Function(List<String> data) stringList,
-  }) {
-    return stringList(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String data)? string,
-    TResult? Function(double data)? number,
-    TResult? Function(bool data)? boolean,
-    TResult? Function(List<String> data)? stringList,
-  }) {
-    return stringList?.call(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String data)? string,
-    TResult Function(double data)? number,
-    TResult Function(bool data)? boolean,
-    TResult Function(List<String> data)? stringList,
-    required TResult orElse(),
-  }) {
-    if (stringList != null) {
-      return stringList(data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingValue_String value) string,
-    required TResult Function(SettingValue_Number value) number,
-    required TResult Function(SettingValue_Boolean value) boolean,
-    required TResult Function(SettingValue_StringList value) stringList,
-  }) {
-    return stringList(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingValue_String value)? string,
-    TResult? Function(SettingValue_Number value)? number,
-    TResult? Function(SettingValue_Boolean value)? boolean,
-    TResult? Function(SettingValue_StringList value)? stringList,
-  }) {
-    return stringList?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingValue_String value)? string,
-    TResult Function(SettingValue_Number value)? number,
-    TResult Function(SettingValue_Boolean value)? boolean,
-    TResult Function(SettingValue_StringList value)? stringList,
-    required TResult orElse(),
-  }) {
-    if (stringList != null) {
-      return stringList(this);
-    }
-    return orElse();
+  String toString() {
+    return 'SettingValue.stringList(data: $data)';
   }
 }
 
-abstract class SettingValue_StringList extends SettingValue {
-  const factory SettingValue_StringList({required final List<String> data}) =
-      _$SettingValue_StringListImpl;
-  const SettingValue_StringList._() : super._();
+/// @nodoc
+abstract mixin class $SettingValue_StringListCopyWith<$Res>
+    implements $SettingValueCopyWith<$Res> {
+  factory $SettingValue_StringListCopyWith(SettingValue_StringList value,
+          $Res Function(SettingValue_StringList) _then) =
+      _$SettingValue_StringListCopyWithImpl;
+  @useResult
+  $Res call({List<String> data});
+}
 
-  @override
-  List<String> get data;
+/// @nodoc
+class _$SettingValue_StringListCopyWithImpl<$Res>
+    implements $SettingValue_StringListCopyWith<$Res> {
+  _$SettingValue_StringListCopyWithImpl(this._self, this._then);
+
+  final SettingValue_StringList _self;
+  final $Res Function(SettingValue_StringList) _then;
 
   /// Create a copy of SettingValue
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingValue_StringListImplCopyWith<_$SettingValue_StringListImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? data = null,
+  }) {
+    return _then(SettingValue_StringList(
+      data: null == data
+          ? _self._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$SettingsUI {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SettingsUICopyWith<$Res> {
-  factory $SettingsUICopyWith(
-          SettingsUI value, $Res Function(SettingsUI) then) =
-      _$SettingsUICopyWithImpl<$Res, SettingsUI>;
-}
-
-/// @nodoc
-class _$SettingsUICopyWithImpl<$Res, $Val extends SettingsUI>
-    implements $SettingsUICopyWith<$Res> {
-  _$SettingsUICopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$SettingsUI_CheckBoxImplCopyWith<$Res> {
-  factory _$$SettingsUI_CheckBoxImplCopyWith(_$SettingsUI_CheckBoxImpl value,
-          $Res Function(_$SettingsUI_CheckBoxImpl) then) =
-      __$$SettingsUI_CheckBoxImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$SettingsUI_CheckBoxImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_CheckBoxImpl>
-    implements _$$SettingsUI_CheckBoxImplCopyWith<$Res> {
-  __$$SettingsUI_CheckBoxImplCopyWithImpl(_$SettingsUI_CheckBoxImpl _value,
-      $Res Function(_$SettingsUI_CheckBoxImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
-  const _$SettingsUI_CheckBoxImpl() : super._();
-
-  @override
-  String toString() {
-    return 'SettingsUI.checkBox()';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_CheckBoxImpl);
+        (other.runtimeType == runtimeType && other is SettingsUI);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return checkBox();
+  String toString() {
+    return 'SettingsUI()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return checkBox?.call();
-  }
+/// @nodoc
+class $SettingsUICopyWith<$Res> {
+  $SettingsUICopyWith(SettingsUI _, $Res Function(SettingsUI) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (checkBox != null) {
-      return checkBox();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [SettingsUI].
+extension SettingsUIPatterns on SettingsUI {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return checkBox(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return checkBox?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SettingsUI_CheckBox value)? checkBox,
@@ -931,85 +562,268 @@ class _$SettingsUI_CheckBoxImpl extends SettingsUI_CheckBox {
     TResult Function(SettingsUI_CustomUI value)? customUi,
     required TResult orElse(),
   }) {
-    if (checkBox != null) {
-      return checkBox(this);
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox() when checkBox != null:
+        return checkBox(_that);
+      case SettingsUI_Slider() when slider != null:
+        return slider(_that);
+      case SettingsUI_Dropdown() when dropdown != null:
+        return dropdown(_that);
+      case SettingsUI_MultiDropdown() when multiDropdown != null:
+        return multiDropdown(_that);
+      case SettingsUI_Directory() when directory != null:
+        return directory(_that);
+      case SettingsUI_CustomUI() when customUi != null:
+        return customUi(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
   }
-}
 
-abstract class SettingsUI_CheckBox extends SettingsUI {
-  const factory SettingsUI_CheckBox() = _$SettingsUI_CheckBoxImpl;
-  const SettingsUI_CheckBox._() : super._();
-}
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
 
-/// @nodoc
-abstract class _$$SettingsUI_SliderImplCopyWith<$Res> {
-  factory _$$SettingsUI_SliderImplCopyWith(_$SettingsUI_SliderImpl value,
-          $Res Function(_$SettingsUI_SliderImpl) then) =
-      __$$SettingsUI_SliderImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({double min, double max, int step});
-}
-
-/// @nodoc
-class __$$SettingsUI_SliderImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_SliderImpl>
-    implements _$$SettingsUI_SliderImplCopyWith<$Res> {
-  __$$SettingsUI_SliderImplCopyWithImpl(_$SettingsUI_SliderImpl _value,
-      $Res Function(_$SettingsUI_SliderImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? min = null,
-    Object? max = null,
-    Object? step = null,
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SettingsUI_CheckBox value) checkBox,
+    required TResult Function(SettingsUI_Slider value) slider,
+    required TResult Function(SettingsUI_Dropdown value) dropdown,
+    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
+    required TResult Function(SettingsUI_Directory value) directory,
+    required TResult Function(SettingsUI_CustomUI value) customUi,
   }) {
-    return _then(_$SettingsUI_SliderImpl(
-      min: null == min
-          ? _value.min
-          : min // ignore: cast_nullable_to_non_nullable
-              as double,
-      max: null == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as double,
-      step: null == step
-          ? _value.step
-          : step // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox():
+        return checkBox(_that);
+      case SettingsUI_Slider():
+        return slider(_that);
+      case SettingsUI_Dropdown():
+        return dropdown(_that);
+      case SettingsUI_MultiDropdown():
+        return multiDropdown(_that);
+      case SettingsUI_Directory():
+        return directory(_that);
+      case SettingsUI_CustomUI():
+        return customUi(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SettingsUI_CheckBox value)? checkBox,
+    TResult? Function(SettingsUI_Slider value)? slider,
+    TResult? Function(SettingsUI_Dropdown value)? dropdown,
+    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
+    TResult? Function(SettingsUI_Directory value)? directory,
+    TResult? Function(SettingsUI_CustomUI value)? customUi,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox() when checkBox != null:
+        return checkBox(_that);
+      case SettingsUI_Slider() when slider != null:
+        return slider(_that);
+      case SettingsUI_Dropdown() when dropdown != null:
+        return dropdown(_that);
+      case SettingsUI_MultiDropdown() when multiDropdown != null:
+        return multiDropdown(_that);
+      case SettingsUI_Directory() when directory != null:
+        return directory(_that);
+      case SettingsUI_CustomUI() when customUi != null:
+        return customUi(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkBox,
+    TResult Function(double min, double max, int step)? slider,
+    TResult Function(List<DropdownOption> options)? dropdown,
+    TResult Function(List<DropdownOption> options)? multiDropdown,
+    TResult Function(bool write)? directory,
+    TResult Function(CustomUI ui)? customUi,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox() when checkBox != null:
+        return checkBox();
+      case SettingsUI_Slider() when slider != null:
+        return slider(_that.min, _that.max, _that.step);
+      case SettingsUI_Dropdown() when dropdown != null:
+        return dropdown(_that.options);
+      case SettingsUI_MultiDropdown() when multiDropdown != null:
+        return multiDropdown(_that.options);
+      case SettingsUI_Directory() when directory != null:
+        return directory(_that.write);
+      case SettingsUI_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkBox,
+    required TResult Function(double min, double max, int step) slider,
+    required TResult Function(List<DropdownOption> options) dropdown,
+    required TResult Function(List<DropdownOption> options) multiDropdown,
+    required TResult Function(bool write) directory,
+    required TResult Function(CustomUI ui) customUi,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox():
+        return checkBox();
+      case SettingsUI_Slider():
+        return slider(_that.min, _that.max, _that.step);
+      case SettingsUI_Dropdown():
+        return dropdown(_that.options);
+      case SettingsUI_MultiDropdown():
+        return multiDropdown(_that.options);
+      case SettingsUI_Directory():
+        return directory(_that.write);
+      case SettingsUI_CustomUI():
+        return customUi(_that.ui);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkBox,
+    TResult? Function(double min, double max, int step)? slider,
+    TResult? Function(List<DropdownOption> options)? dropdown,
+    TResult? Function(List<DropdownOption> options)? multiDropdown,
+    TResult? Function(bool write)? directory,
+    TResult? Function(CustomUI ui)? customUi,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case SettingsUI_CheckBox() when checkBox != null:
+        return checkBox();
+      case SettingsUI_Slider() when slider != null:
+        return slider(_that.min, _that.max, _that.step);
+      case SettingsUI_Dropdown() when dropdown != null:
+        return dropdown(_that.options);
+      case SettingsUI_MultiDropdown() when multiDropdown != null:
+        return multiDropdown(_that.options);
+      case SettingsUI_Directory() when directory != null:
+        return directory(_that.write);
+      case SettingsUI_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
-  const _$SettingsUI_SliderImpl(
-      {required this.min, required this.max, required this.step})
-      : super._();
+class SettingsUI_CheckBox extends SettingsUI {
+  const SettingsUI_CheckBox() : super._();
 
   @override
-  final double min;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is SettingsUI_CheckBox);
+  }
+
   @override
-  final double max;
-  @override
-  final int step;
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
-    return 'SettingsUI.slider(min: $min, max: $max, step: $step)';
+    return 'SettingsUI.checkBox()';
   }
+}
+
+/// @nodoc
+
+class SettingsUI_Slider extends SettingsUI {
+  const SettingsUI_Slider(
+      {required this.min, required this.max, required this.step})
+      : super._();
+
+  final double min;
+  final double max;
+  final int step;
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingsUI_SliderCopyWith<SettingsUI_Slider> get copyWith =>
+      _$SettingsUI_SliderCopyWithImpl<SettingsUI_Slider>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_SliderImpl &&
+            other is SettingsUI_Slider &&
             (identical(other.min, min) || other.min == min) &&
             (identical(other.max, max) || other.max == max) &&
             (identical(other.step, step) || other.step == step));
@@ -1018,325 +832,121 @@ class _$SettingsUI_SliderImpl extends SettingsUI_Slider {
   @override
   int get hashCode => Object.hash(runtimeType, min, max, step);
 
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsUI_SliderImplCopyWith<_$SettingsUI_SliderImpl> get copyWith =>
-      __$$SettingsUI_SliderImplCopyWithImpl<_$SettingsUI_SliderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return slider(min, max, step);
+  String toString() {
+    return 'SettingsUI.slider(min: $min, max: $max, step: $step)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return slider?.call(min, max, step);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (slider != null) {
-      return slider(min, max, step);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return slider(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return slider?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) {
-    if (slider != null) {
-      return slider(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingsUI_Slider extends SettingsUI {
-  const factory SettingsUI_Slider(
-      {required final double min,
-      required final double max,
-      required final int step}) = _$SettingsUI_SliderImpl;
-  const SettingsUI_Slider._() : super._();
-
-  double get min;
-  double get max;
-  int get step;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsUI_SliderImplCopyWith<_$SettingsUI_SliderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsUI_DropdownImplCopyWith<$Res> {
-  factory _$$SettingsUI_DropdownImplCopyWith(_$SettingsUI_DropdownImpl value,
-          $Res Function(_$SettingsUI_DropdownImpl) then) =
-      __$$SettingsUI_DropdownImplCopyWithImpl<$Res>;
+abstract mixin class $SettingsUI_SliderCopyWith<$Res>
+    implements $SettingsUICopyWith<$Res> {
+  factory $SettingsUI_SliderCopyWith(
+          SettingsUI_Slider value, $Res Function(SettingsUI_Slider) _then) =
+      _$SettingsUI_SliderCopyWithImpl;
   @useResult
-  $Res call({List<DropdownOption> options});
+  $Res call({double min, double max, int step});
 }
 
 /// @nodoc
-class __$$SettingsUI_DropdownImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_DropdownImpl>
-    implements _$$SettingsUI_DropdownImplCopyWith<$Res> {
-  __$$SettingsUI_DropdownImplCopyWithImpl(_$SettingsUI_DropdownImpl _value,
-      $Res Function(_$SettingsUI_DropdownImpl) _then)
-      : super(_value, _then);
+class _$SettingsUI_SliderCopyWithImpl<$Res>
+    implements $SettingsUI_SliderCopyWith<$Res> {
+  _$SettingsUI_SliderCopyWithImpl(this._self, this._then);
+
+  final SettingsUI_Slider _self;
+  final $Res Function(SettingsUI_Slider) _then;
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? options = null,
+    Object? min = null,
+    Object? max = null,
+    Object? step = null,
   }) {
-    return _then(_$SettingsUI_DropdownImpl(
-      options: null == options
-          ? _value._options
-          : options // ignore: cast_nullable_to_non_nullable
-              as List<DropdownOption>,
+    return _then(SettingsUI_Slider(
+      min: null == min
+          ? _self.min
+          : min // ignore: cast_nullable_to_non_nullable
+              as double,
+      max: null == max
+          ? _self.max
+          : max // ignore: cast_nullable_to_non_nullable
+              as double,
+      step: null == step
+          ? _self.step
+          : step // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$SettingsUI_DropdownImpl extends SettingsUI_Dropdown {
-  const _$SettingsUI_DropdownImpl({required final List<DropdownOption> options})
+class SettingsUI_Dropdown extends SettingsUI {
+  const SettingsUI_Dropdown({required final List<DropdownOption> options})
       : _options = options,
         super._();
 
   final List<DropdownOption> _options;
-  @override
   List<DropdownOption> get options {
     if (_options is EqualUnmodifiableListView) return _options;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_options);
   }
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingsUI_DropdownCopyWith<SettingsUI_Dropdown> get copyWith =>
+      _$SettingsUI_DropdownCopyWithImpl<SettingsUI_Dropdown>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SettingsUI_Dropdown &&
+            const DeepCollectionEquality().equals(other._options, _options));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_options));
 
   @override
   String toString() {
     return 'SettingsUI.dropdown(options: $options)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_DropdownImpl &&
-            const DeepCollectionEquality().equals(other._options, _options));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_options));
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsUI_DropdownImplCopyWith<_$SettingsUI_DropdownImpl> get copyWith =>
-      __$$SettingsUI_DropdownImplCopyWithImpl<_$SettingsUI_DropdownImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return dropdown(options);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return dropdown?.call(options);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (dropdown != null) {
-      return dropdown(options);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return dropdown(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return dropdown?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) {
-    if (dropdown != null) {
-      return dropdown(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingsUI_Dropdown extends SettingsUI {
-  const factory SettingsUI_Dropdown(
-          {required final List<DropdownOption> options}) =
-      _$SettingsUI_DropdownImpl;
-  const SettingsUI_Dropdown._() : super._();
-
-  List<DropdownOption> get options;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsUI_DropdownImplCopyWith<_$SettingsUI_DropdownImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsUI_MultiDropdownImplCopyWith<$Res> {
-  factory _$$SettingsUI_MultiDropdownImplCopyWith(
-          _$SettingsUI_MultiDropdownImpl value,
-          $Res Function(_$SettingsUI_MultiDropdownImpl) then) =
-      __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>;
+abstract mixin class $SettingsUI_DropdownCopyWith<$Res>
+    implements $SettingsUICopyWith<$Res> {
+  factory $SettingsUI_DropdownCopyWith(
+          SettingsUI_Dropdown value, $Res Function(SettingsUI_Dropdown) _then) =
+      _$SettingsUI_DropdownCopyWithImpl;
   @useResult
   $Res call({List<DropdownOption> options});
 }
 
 /// @nodoc
-class __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_MultiDropdownImpl>
-    implements _$$SettingsUI_MultiDropdownImplCopyWith<$Res> {
-  __$$SettingsUI_MultiDropdownImplCopyWithImpl(
-      _$SettingsUI_MultiDropdownImpl _value,
-      $Res Function(_$SettingsUI_MultiDropdownImpl) _then)
-      : super(_value, _then);
+class _$SettingsUI_DropdownCopyWithImpl<$Res>
+    implements $SettingsUI_DropdownCopyWith<$Res> {
+  _$SettingsUI_DropdownCopyWithImpl(this._self, this._then);
+
+  final SettingsUI_Dropdown _self;
+  final $Res Function(SettingsUI_Dropdown) _then;
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? options = null,
   }) {
-    return _then(_$SettingsUI_MultiDropdownImpl(
+    return _then(SettingsUI_Dropdown(
       options: null == options
-          ? _value._options
+          ? _self._options
           : options // ignore: cast_nullable_to_non_nullable
               as List<DropdownOption>,
     ));
@@ -1345,30 +955,31 @@ class __$$SettingsUI_MultiDropdownImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
-  const _$SettingsUI_MultiDropdownImpl(
-      {required final List<DropdownOption> options})
+class SettingsUI_MultiDropdown extends SettingsUI {
+  const SettingsUI_MultiDropdown({required final List<DropdownOption> options})
       : _options = options,
         super._();
 
   final List<DropdownOption> _options;
-  @override
   List<DropdownOption> get options {
     if (_options is EqualUnmodifiableListView) return _options;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_options);
   }
 
-  @override
-  String toString() {
-    return 'SettingsUI.multiDropdown(options: $options)';
-  }
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingsUI_MultiDropdownCopyWith<SettingsUI_MultiDropdown> get copyWith =>
+      _$SettingsUI_MultiDropdownCopyWithImpl<SettingsUI_MultiDropdown>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_MultiDropdownImpl &&
+            other is SettingsUI_MultiDropdown &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
@@ -1376,144 +987,104 @@ class _$SettingsUI_MultiDropdownImpl extends SettingsUI_MultiDropdown {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_options));
 
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-      get copyWith => __$$SettingsUI_MultiDropdownImplCopyWithImpl<
-          _$SettingsUI_MultiDropdownImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return multiDropdown(options);
+  String toString() {
+    return 'SettingsUI.multiDropdown(options: $options)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return multiDropdown?.call(options);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (multiDropdown != null) {
-      return multiDropdown(options);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return multiDropdown(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return multiDropdown?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) {
-    if (multiDropdown != null) {
-      return multiDropdown(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingsUI_MultiDropdown extends SettingsUI {
-  const factory SettingsUI_MultiDropdown(
-          {required final List<DropdownOption> options}) =
-      _$SettingsUI_MultiDropdownImpl;
-  const SettingsUI_MultiDropdown._() : super._();
-
-  List<DropdownOption> get options;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsUI_MultiDropdownImplCopyWith<_$SettingsUI_MultiDropdownImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsUI_DirectoryImplCopyWith<$Res> {
-  factory _$$SettingsUI_DirectoryImplCopyWith(_$SettingsUI_DirectoryImpl value,
-          $Res Function(_$SettingsUI_DirectoryImpl) then) =
-      __$$SettingsUI_DirectoryImplCopyWithImpl<$Res>;
+abstract mixin class $SettingsUI_MultiDropdownCopyWith<$Res>
+    implements $SettingsUICopyWith<$Res> {
+  factory $SettingsUI_MultiDropdownCopyWith(SettingsUI_MultiDropdown value,
+          $Res Function(SettingsUI_MultiDropdown) _then) =
+      _$SettingsUI_MultiDropdownCopyWithImpl;
+  @useResult
+  $Res call({List<DropdownOption> options});
+}
+
+/// @nodoc
+class _$SettingsUI_MultiDropdownCopyWithImpl<$Res>
+    implements $SettingsUI_MultiDropdownCopyWith<$Res> {
+  _$SettingsUI_MultiDropdownCopyWithImpl(this._self, this._then);
+
+  final SettingsUI_MultiDropdown _self;
+  final $Res Function(SettingsUI_MultiDropdown) _then;
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? options = null,
+  }) {
+    return _then(SettingsUI_MultiDropdown(
+      options: null == options
+          ? _self._options
+          : options // ignore: cast_nullable_to_non_nullable
+              as List<DropdownOption>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class SettingsUI_Directory extends SettingsUI {
+  const SettingsUI_Directory({required this.write}) : super._();
+
+  final bool write;
+
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingsUI_DirectoryCopyWith<SettingsUI_Directory> get copyWith =>
+      _$SettingsUI_DirectoryCopyWithImpl<SettingsUI_Directory>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SettingsUI_Directory &&
+            (identical(other.write, write) || other.write == write));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, write);
+
+  @override
+  String toString() {
+    return 'SettingsUI.directory(write: $write)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $SettingsUI_DirectoryCopyWith<$Res>
+    implements $SettingsUICopyWith<$Res> {
+  factory $SettingsUI_DirectoryCopyWith(SettingsUI_Directory value,
+          $Res Function(SettingsUI_Directory) _then) =
+      _$SettingsUI_DirectoryCopyWithImpl;
   @useResult
   $Res call({bool write});
 }
 
 /// @nodoc
-class __$$SettingsUI_DirectoryImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_DirectoryImpl>
-    implements _$$SettingsUI_DirectoryImplCopyWith<$Res> {
-  __$$SettingsUI_DirectoryImplCopyWithImpl(_$SettingsUI_DirectoryImpl _value,
-      $Res Function(_$SettingsUI_DirectoryImpl) _then)
-      : super(_value, _then);
+class _$SettingsUI_DirectoryCopyWithImpl<$Res>
+    implements $SettingsUI_DirectoryCopyWith<$Res> {
+  _$SettingsUI_DirectoryCopyWithImpl(this._self, this._then);
+
+  final SettingsUI_Directory _self;
+  final $Res Function(SettingsUI_Directory) _then;
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? write = null,
   }) {
-    return _then(_$SettingsUI_DirectoryImpl(
+    return _then(SettingsUI_Directory(
       write: null == write
-          ? _value.write
+          ? _self.write
           : write // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
@@ -1522,144 +1093,41 @@ class __$$SettingsUI_DirectoryImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingsUI_DirectoryImpl extends SettingsUI_Directory {
-  const _$SettingsUI_DirectoryImpl({required this.write}) : super._();
+class SettingsUI_CustomUI extends SettingsUI {
+  const SettingsUI_CustomUI({required this.ui}) : super._();
 
-  @override
-  final bool write;
+  final CustomUI ui;
 
-  @override
-  String toString() {
-    return 'SettingsUI.directory(write: $write)';
-  }
+  /// Create a copy of SettingsUI
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SettingsUI_CustomUICopyWith<SettingsUI_CustomUI> get copyWith =>
+      _$SettingsUI_CustomUICopyWithImpl<SettingsUI_CustomUI>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_DirectoryImpl &&
-            (identical(other.write, write) || other.write == write));
+            other is SettingsUI_CustomUI &&
+            (identical(other.ui, ui) || other.ui == ui));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, write);
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsUI_DirectoryImplCopyWith<_$SettingsUI_DirectoryImpl>
-      get copyWith =>
-          __$$SettingsUI_DirectoryImplCopyWithImpl<_$SettingsUI_DirectoryImpl>(
-              this, _$identity);
+  int get hashCode => Object.hash(runtimeType, ui);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return directory(write);
+  String toString() {
+    return 'SettingsUI.customUi(ui: $ui)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return directory?.call(write);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (directory != null) {
-      return directory(write);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return directory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return directory?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) {
-    if (directory != null) {
-      return directory(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingsUI_Directory extends SettingsUI {
-  const factory SettingsUI_Directory({required final bool write}) =
-      _$SettingsUI_DirectoryImpl;
-  const SettingsUI_Directory._() : super._();
-
-  bool get write;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsUI_DirectoryImplCopyWith<_$SettingsUI_DirectoryImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsUI_CustomUIImplCopyWith<$Res> {
-  factory _$$SettingsUI_CustomUIImplCopyWith(_$SettingsUI_CustomUIImpl value,
-          $Res Function(_$SettingsUI_CustomUIImpl) then) =
-      __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>;
+abstract mixin class $SettingsUI_CustomUICopyWith<$Res>
+    implements $SettingsUICopyWith<$Res> {
+  factory $SettingsUI_CustomUICopyWith(
+          SettingsUI_CustomUI value, $Res Function(SettingsUI_CustomUI) _then) =
+      _$SettingsUI_CustomUICopyWithImpl;
   @useResult
   $Res call({CustomUI ui});
 
@@ -1667,23 +1135,22 @@ abstract class _$$SettingsUI_CustomUIImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>
-    extends _$SettingsUICopyWithImpl<$Res, _$SettingsUI_CustomUIImpl>
-    implements _$$SettingsUI_CustomUIImplCopyWith<$Res> {
-  __$$SettingsUI_CustomUIImplCopyWithImpl(_$SettingsUI_CustomUIImpl _value,
-      $Res Function(_$SettingsUI_CustomUIImpl) _then)
-      : super(_value, _then);
+class _$SettingsUI_CustomUICopyWithImpl<$Res>
+    implements $SettingsUI_CustomUICopyWith<$Res> {
+  _$SettingsUI_CustomUICopyWithImpl(this._self, this._then);
+
+  final SettingsUI_CustomUI _self;
+  final $Res Function(SettingsUI_CustomUI) _then;
 
   /// Create a copy of SettingsUI
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? ui = null,
   }) {
-    return _then(_$SettingsUI_CustomUIImpl(
+    return _then(SettingsUI_CustomUI(
       ui: null == ui
-          ? _value.ui
+          ? _self.ui
           : ui // ignore: cast_nullable_to_non_nullable
               as CustomUI,
     ));
@@ -1694,142 +1161,10 @@ class __$$SettingsUI_CustomUIImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get ui {
-    return $CustomUICopyWith<$Res>(_value.ui, (value) {
-      return _then(_value.copyWith(ui: value));
+    return $CustomUICopyWith<$Res>(_self.ui, (value) {
+      return _then(_self.copyWith(ui: value));
     });
   }
 }
 
-/// @nodoc
-
-class _$SettingsUI_CustomUIImpl extends SettingsUI_CustomUI {
-  const _$SettingsUI_CustomUIImpl({required this.ui}) : super._();
-
-  @override
-  final CustomUI ui;
-
-  @override
-  String toString() {
-    return 'SettingsUI.customUi(ui: $ui)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SettingsUI_CustomUIImpl &&
-            (identical(other.ui, ui) || other.ui == ui));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, ui);
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsUI_CustomUIImplCopyWith<_$SettingsUI_CustomUIImpl> get copyWith =>
-      __$$SettingsUI_CustomUIImplCopyWithImpl<_$SettingsUI_CustomUIImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() checkBox,
-    required TResult Function(double min, double max, int step) slider,
-    required TResult Function(List<DropdownOption> options) dropdown,
-    required TResult Function(List<DropdownOption> options) multiDropdown,
-    required TResult Function(bool write) directory,
-    required TResult Function(CustomUI ui) customUi,
-  }) {
-    return customUi(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? checkBox,
-    TResult? Function(double min, double max, int step)? slider,
-    TResult? Function(List<DropdownOption> options)? dropdown,
-    TResult? Function(List<DropdownOption> options)? multiDropdown,
-    TResult? Function(bool write)? directory,
-    TResult? Function(CustomUI ui)? customUi,
-  }) {
-    return customUi?.call(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? checkBox,
-    TResult Function(double min, double max, int step)? slider,
-    TResult Function(List<DropdownOption> options)? dropdown,
-    TResult Function(List<DropdownOption> options)? multiDropdown,
-    TResult Function(bool write)? directory,
-    TResult Function(CustomUI ui)? customUi,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(ui);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SettingsUI_CheckBox value) checkBox,
-    required TResult Function(SettingsUI_Slider value) slider,
-    required TResult Function(SettingsUI_Dropdown value) dropdown,
-    required TResult Function(SettingsUI_MultiDropdown value) multiDropdown,
-    required TResult Function(SettingsUI_Directory value) directory,
-    required TResult Function(SettingsUI_CustomUI value) customUi,
-  }) {
-    return customUi(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SettingsUI_CheckBox value)? checkBox,
-    TResult? Function(SettingsUI_Slider value)? slider,
-    TResult? Function(SettingsUI_Dropdown value)? dropdown,
-    TResult? Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult? Function(SettingsUI_Directory value)? directory,
-    TResult? Function(SettingsUI_CustomUI value)? customUi,
-  }) {
-    return customUi?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SettingsUI_CheckBox value)? checkBox,
-    TResult Function(SettingsUI_Slider value)? slider,
-    TResult Function(SettingsUI_Dropdown value)? dropdown,
-    TResult Function(SettingsUI_MultiDropdown value)? multiDropdown,
-    TResult Function(SettingsUI_Directory value)? directory,
-    TResult Function(SettingsUI_CustomUI value)? customUi,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SettingsUI_CustomUI extends SettingsUI {
-  const factory SettingsUI_CustomUI({required final CustomUI ui}) =
-      _$SettingsUI_CustomUIImpl;
-  const SettingsUI_CustomUI._() : super._();
-
-  CustomUI get ui;
-
-  /// Create a copy of SettingsUI
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsUI_CustomUIImplCopyWith<_$SettingsUI_CustomUIImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

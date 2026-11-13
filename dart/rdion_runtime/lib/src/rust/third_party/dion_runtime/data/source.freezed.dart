@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,112 +9,285 @@ part of 'source.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MixedContent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MixedContent_Text value) text,
-    required TResult Function(MixedContent_CustomUI value) customUi,
-    required TResult Function(MixedContent_Table value) table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MixedContent_Text value)? text,
-    TResult? Function(MixedContent_CustomUI value)? customUi,
-    TResult? Function(MixedContent_Table value)? table,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is MixedContent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'MixedContent()';
+  }
+}
+
+/// @nodoc
+class $MixedContentCopyWith<$Res> {
+  $MixedContentCopyWith(MixedContent _, $Res Function(MixedContent) __);
+}
+
+/// Adds pattern-matching-related methods to [MixedContent].
+extension MixedContentPatterns on MixedContent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MixedContent_Text value)? text,
     TResult Function(MixedContent_CustomUI value)? customUi,
     TResult Function(MixedContent_Table value)? table,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text() when text != null:
+        return text(_that);
+      case MixedContent_CustomUI() when customUi != null:
+        return customUi(_that);
+      case MixedContent_Table() when table != null:
+        return table(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MixedContent_Text value) text,
+    required TResult Function(MixedContent_CustomUI value) customUi,
+    required TResult Function(MixedContent_Table value) table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text():
+        return text(_that);
+      case MixedContent_CustomUI():
+        return customUi(_that);
+      case MixedContent_Table():
+        return table(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MixedContent_Text value)? text,
+    TResult? Function(MixedContent_CustomUI value)? customUi,
+    TResult? Function(MixedContent_Table value)? table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text() when text != null:
+        return text(_that);
+      case MixedContent_CustomUI() when customUi != null:
+        return customUi(_that);
+      case MixedContent_Table() when table != null:
+        return table(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String content, TextStyle? style)? text,
+    TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text() when text != null:
+        return text(_that.content, _that.style);
+      case MixedContent_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case MixedContent_Table() when table != null:
+        return table(_that.columns);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String content, TextStyle? style) text,
+    required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text():
+        return text(_that.content, _that.style);
+      case MixedContent_CustomUI():
+        return customUi(_that.ui);
+      case MixedContent_Table():
+        return table(_that.columns);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String content, TextStyle? style)? text,
+    TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case MixedContent_Text() when text != null:
+        return text(_that.content, _that.style);
+      case MixedContent_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case MixedContent_Table() when table != null:
+        return table(_that.columns);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $MixedContentCopyWith<$Res> {
-  factory $MixedContentCopyWith(
-          MixedContent value, $Res Function(MixedContent) then) =
-      _$MixedContentCopyWithImpl<$Res, MixedContent>;
-}
 
-/// @nodoc
-class _$MixedContentCopyWithImpl<$Res, $Val extends MixedContent>
-    implements $MixedContentCopyWith<$Res> {
-  _$MixedContentCopyWithImpl(this._value, this._then);
+class MixedContent_Text extends MixedContent {
+  const MixedContent_Text({required this.content, this.style}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final String content;
+  final TextStyle? style;
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $MixedContent_TextCopyWith<MixedContent_Text> get copyWith =>
+      _$MixedContent_TextCopyWithImpl<MixedContent_Text>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is MixedContent_Text &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.style, style) || other.style == style));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, content, style);
+
+  @override
+  String toString() {
+    return 'MixedContent.text(content: $content, style: $style)';
+  }
 }
 
 /// @nodoc
-abstract class _$$MixedContent_TextImplCopyWith<$Res> {
-  factory _$$MixedContent_TextImplCopyWith(_$MixedContent_TextImpl value,
-          $Res Function(_$MixedContent_TextImpl) then) =
-      __$$MixedContent_TextImplCopyWithImpl<$Res>;
+abstract mixin class $MixedContent_TextCopyWith<$Res>
+    implements $MixedContentCopyWith<$Res> {
+  factory $MixedContent_TextCopyWith(
+          MixedContent_Text value, $Res Function(MixedContent_Text) _then) =
+      _$MixedContent_TextCopyWithImpl;
   @useResult
   $Res call({String content, TextStyle? style});
 }
 
 /// @nodoc
-class __$$MixedContent_TextImplCopyWithImpl<$Res>
-    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_TextImpl>
-    implements _$$MixedContent_TextImplCopyWith<$Res> {
-  __$$MixedContent_TextImplCopyWithImpl(_$MixedContent_TextImpl _value,
-      $Res Function(_$MixedContent_TextImpl) _then)
-      : super(_value, _then);
+class _$MixedContent_TextCopyWithImpl<$Res>
+    implements $MixedContent_TextCopyWith<$Res> {
+  _$MixedContent_TextCopyWithImpl(this._self, this._then);
+
+  final MixedContent_Text _self;
+  final $Res Function(MixedContent_Text) _then;
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? content = null,
     Object? style = freezed,
   }) {
-    return _then(_$MixedContent_TextImpl(
+    return _then(MixedContent_Text(
       content: null == content
-          ? _value.content
+          ? _self.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
       style: freezed == style
-          ? _value.style
+          ? _self.style
           : style // ignore: cast_nullable_to_non_nullable
               as TextStyle?,
     ));
@@ -123,132 +296,42 @@ class __$$MixedContent_TextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MixedContent_TextImpl extends MixedContent_Text {
-  const _$MixedContent_TextImpl({required this.content, this.style})
-      : super._();
+class MixedContent_CustomUI extends MixedContent {
+  const MixedContent_CustomUI({required this.ui}) : super._();
 
-  @override
-  final String content;
-  @override
-  final TextStyle? style;
+  final CustomUI ui;
 
-  @override
-  String toString() {
-    return 'MixedContent.text(content: $content, style: $style)';
-  }
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $MixedContent_CustomUICopyWith<MixedContent_CustomUI> get copyWith =>
+      _$MixedContent_CustomUICopyWithImpl<MixedContent_CustomUI>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MixedContent_TextImpl &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.style, style) || other.style == style));
+            other is MixedContent_CustomUI &&
+            (identical(other.ui, ui) || other.ui == ui));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, content, style);
-
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MixedContent_TextImplCopyWith<_$MixedContent_TextImpl> get copyWith =>
-      __$$MixedContent_TextImplCopyWithImpl<_$MixedContent_TextImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, ui);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return text(content, style);
+  String toString() {
+    return 'MixedContent.customUi(ui: $ui)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return text?.call(content, style);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (text != null) {
-      return text(content, style);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MixedContent_Text value) text,
-    required TResult Function(MixedContent_CustomUI value) customUi,
-    required TResult Function(MixedContent_Table value) table,
-  }) {
-    return text(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MixedContent_Text value)? text,
-    TResult? Function(MixedContent_CustomUI value)? customUi,
-    TResult? Function(MixedContent_Table value)? table,
-  }) {
-    return text?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(MixedContent_Text value)? text,
-    TResult Function(MixedContent_CustomUI value)? customUi,
-    TResult Function(MixedContent_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (text != null) {
-      return text(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class MixedContent_Text extends MixedContent {
-  const factory MixedContent_Text(
-      {required final String content,
-      final TextStyle? style}) = _$MixedContent_TextImpl;
-  const MixedContent_Text._() : super._();
-
-  String get content;
-  TextStyle? get style;
-
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MixedContent_TextImplCopyWith<_$MixedContent_TextImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MixedContent_CustomUIImplCopyWith<$Res> {
-  factory _$$MixedContent_CustomUIImplCopyWith(
-          _$MixedContent_CustomUIImpl value,
-          $Res Function(_$MixedContent_CustomUIImpl) then) =
-      __$$MixedContent_CustomUIImplCopyWithImpl<$Res>;
+abstract mixin class $MixedContent_CustomUICopyWith<$Res>
+    implements $MixedContentCopyWith<$Res> {
+  factory $MixedContent_CustomUICopyWith(MixedContent_CustomUI value,
+          $Res Function(MixedContent_CustomUI) _then) =
+      _$MixedContent_CustomUICopyWithImpl;
   @useResult
   $Res call({CustomUI ui});
 
@@ -256,23 +339,22 @@ abstract class _$$MixedContent_CustomUIImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MixedContent_CustomUIImplCopyWithImpl<$Res>
-    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_CustomUIImpl>
-    implements _$$MixedContent_CustomUIImplCopyWith<$Res> {
-  __$$MixedContent_CustomUIImplCopyWithImpl(_$MixedContent_CustomUIImpl _value,
-      $Res Function(_$MixedContent_CustomUIImpl) _then)
-      : super(_value, _then);
+class _$MixedContent_CustomUICopyWithImpl<$Res>
+    implements $MixedContent_CustomUICopyWith<$Res> {
+  _$MixedContent_CustomUICopyWithImpl(this._self, this._then);
+
+  final MixedContent_CustomUI _self;
+  final $Res Function(MixedContent_CustomUI) _then;
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? ui = null,
   }) {
-    return _then(_$MixedContent_CustomUIImpl(
+    return _then(MixedContent_CustomUI(
       ui: null == ui
-          ? _value.ui
+          ? _self.ui
           : ui // ignore: cast_nullable_to_non_nullable
               as CustomUI,
     ));
@@ -283,186 +365,38 @@ class __$$MixedContent_CustomUIImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get ui {
-    return $CustomUICopyWith<$Res>(_value.ui, (value) {
-      return _then(_value.copyWith(ui: value));
+    return $CustomUICopyWith<$Res>(_self.ui, (value) {
+      return _then(_self.copyWith(ui: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$MixedContent_CustomUIImpl extends MixedContent_CustomUI {
-  const _$MixedContent_CustomUIImpl({required this.ui}) : super._();
-
-  @override
-  final CustomUI ui;
-
-  @override
-  String toString() {
-    return 'MixedContent.customUi(ui: $ui)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MixedContent_CustomUIImpl &&
-            (identical(other.ui, ui) || other.ui == ui));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, ui);
-
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
-      get copyWith => __$$MixedContent_CustomUIImplCopyWithImpl<
-          _$MixedContent_CustomUIImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return customUi(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return customUi?.call(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(ui);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MixedContent_Text value) text,
-    required TResult Function(MixedContent_CustomUI value) customUi,
-    required TResult Function(MixedContent_Table value) table,
-  }) {
-    return customUi(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MixedContent_Text value)? text,
-    TResult? Function(MixedContent_CustomUI value)? customUi,
-    TResult? Function(MixedContent_Table value)? table,
-  }) {
-    return customUi?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(MixedContent_Text value)? text,
-    TResult Function(MixedContent_CustomUI value)? customUi,
-    TResult Function(MixedContent_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class MixedContent_CustomUI extends MixedContent {
-  const factory MixedContent_CustomUI({required final CustomUI ui}) =
-      _$MixedContent_CustomUIImpl;
-  const MixedContent_CustomUI._() : super._();
-
-  CustomUI get ui;
-
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MixedContent_CustomUIImplCopyWith<_$MixedContent_CustomUIImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$MixedContent_TableImplCopyWith<$Res> {
-  factory _$$MixedContent_TableImplCopyWith(_$MixedContent_TableImpl value,
-          $Res Function(_$MixedContent_TableImpl) then) =
-      __$$MixedContent_TableImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<Row> columns});
-}
-
-/// @nodoc
-class __$$MixedContent_TableImplCopyWithImpl<$Res>
-    extends _$MixedContentCopyWithImpl<$Res, _$MixedContent_TableImpl>
-    implements _$$MixedContent_TableImplCopyWith<$Res> {
-  __$$MixedContent_TableImplCopyWithImpl(_$MixedContent_TableImpl _value,
-      $Res Function(_$MixedContent_TableImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? columns = null,
-  }) {
-    return _then(_$MixedContent_TableImpl(
-      columns: null == columns
-          ? _value._columns
-          : columns // ignore: cast_nullable_to_non_nullable
-              as List<Row>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$MixedContent_TableImpl extends MixedContent_Table {
-  const _$MixedContent_TableImpl({required final List<Row> columns})
+class MixedContent_Table extends MixedContent {
+  const MixedContent_Table({required final List<Row> columns})
       : _columns = columns,
         super._();
 
   final List<Row> _columns;
-  @override
   List<Row> get columns {
     if (_columns is EqualUnmodifiableListView) return _columns;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_columns);
   }
 
-  @override
-  String toString() {
-    return 'MixedContent.table(columns: $columns)';
-  }
+  /// Create a copy of MixedContent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $MixedContent_TableCopyWith<MixedContent_Table> get copyWith =>
+      _$MixedContent_TableCopyWithImpl<MixedContent_Table>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MixedContent_TableImpl &&
+            other is MixedContent_Table &&
             const DeepCollectionEquality().equals(other._columns, _columns));
   }
 
@@ -470,141 +404,81 @@ class _$MixedContent_TableImpl extends MixedContent_Table {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_columns));
 
-  /// Create a copy of MixedContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$MixedContent_TableImplCopyWith<_$MixedContent_TableImpl> get copyWith =>
-      __$$MixedContent_TableImplCopyWithImpl<_$MixedContent_TableImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return table(columns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return table?.call(columns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (table != null) {
-      return table(columns);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MixedContent_Text value) text,
-    required TResult Function(MixedContent_CustomUI value) customUi,
-    required TResult Function(MixedContent_Table value) table,
-  }) {
-    return table(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MixedContent_Text value)? text,
-    TResult? Function(MixedContent_CustomUI value)? customUi,
-    TResult? Function(MixedContent_Table value)? table,
-  }) {
-    return table?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(MixedContent_Text value)? text,
-    TResult Function(MixedContent_CustomUI value)? customUi,
-    TResult Function(MixedContent_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (table != null) {
-      return table(this);
-    }
-    return orElse();
+  String toString() {
+    return 'MixedContent.table(columns: $columns)';
   }
 }
 
-abstract class MixedContent_Table extends MixedContent {
-  const factory MixedContent_Table({required final List<Row> columns}) =
-      _$MixedContent_TableImpl;
-  const MixedContent_Table._() : super._();
+/// @nodoc
+abstract mixin class $MixedContent_TableCopyWith<$Res>
+    implements $MixedContentCopyWith<$Res> {
+  factory $MixedContent_TableCopyWith(
+          MixedContent_Table value, $Res Function(MixedContent_Table) _then) =
+      _$MixedContent_TableCopyWithImpl;
+  @useResult
+  $Res call({List<Row> columns});
+}
 
-  List<Row> get columns;
+/// @nodoc
+class _$MixedContent_TableCopyWithImpl<$Res>
+    implements $MixedContent_TableCopyWith<$Res> {
+  _$MixedContent_TableCopyWithImpl(this._self, this._then);
+
+  final MixedContent_Table _self;
+  final $Res Function(MixedContent_Table) _then;
 
   /// Create a copy of MixedContent
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MixedContent_TableImplCopyWith<_$MixedContent_TableImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? columns = null,
+  }) {
+    return _then(MixedContent_Table(
+      columns: null == columns
+          ? _self._columns
+          : columns // ignore: cast_nullable_to_non_nullable
+              as List<Row>,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$Paragraph {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(List<MixedContent> content) mixed,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(List<MixedContent> content)? mixed,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(List<MixedContent> content)? mixed,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Paragraph_Text value) text,
-    required TResult Function(Paragraph_Mixed value) mixed,
-    required TResult Function(Paragraph_CustomUI value) customUi,
-    required TResult Function(Paragraph_Table value) table,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Paragraph_Text value)? text,
-    TResult? Function(Paragraph_Mixed value)? mixed,
-    TResult? Function(Paragraph_CustomUI value)? customUi,
-    TResult? Function(Paragraph_Table value)? table,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is Paragraph);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'Paragraph()';
+  }
+}
+
+/// @nodoc
+class $ParagraphCopyWith<$Res> {
+  $ParagraphCopyWith(Paragraph _, $Res Function(Paragraph) __);
+}
+
+/// Adds pattern-matching-related methods to [Paragraph].
+extension ParagraphPatterns on Paragraph {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Paragraph_Text value)? text,
@@ -612,62 +486,257 @@ mixin _$Paragraph {
     TResult Function(Paragraph_CustomUI value)? customUi,
     TResult Function(Paragraph_Table value)? table,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text() when text != null:
+        return text(_that);
+      case Paragraph_Mixed() when mixed != null:
+        return mixed(_that);
+      case Paragraph_CustomUI() when customUi != null:
+        return customUi(_that);
+      case Paragraph_Table() when table != null:
+        return table(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Paragraph_Text value) text,
+    required TResult Function(Paragraph_Mixed value) mixed,
+    required TResult Function(Paragraph_CustomUI value) customUi,
+    required TResult Function(Paragraph_Table value) table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text():
+        return text(_that);
+      case Paragraph_Mixed():
+        return mixed(_that);
+      case Paragraph_CustomUI():
+        return customUi(_that);
+      case Paragraph_Table():
+        return table(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Paragraph_Text value)? text,
+    TResult? Function(Paragraph_Mixed value)? mixed,
+    TResult? Function(Paragraph_CustomUI value)? customUi,
+    TResult? Function(Paragraph_Table value)? table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text() when text != null:
+        return text(_that);
+      case Paragraph_Mixed() when mixed != null:
+        return mixed(_that);
+      case Paragraph_CustomUI() when customUi != null:
+        return customUi(_that);
+      case Paragraph_Table() when table != null:
+        return table(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String content, TextStyle? style)? text,
+    TResult Function(List<MixedContent> content)? mixed,
+    TResult Function(CustomUI ui)? customUi,
+    TResult Function(List<Row> columns)? table,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text() when text != null:
+        return text(_that.content, _that.style);
+      case Paragraph_Mixed() when mixed != null:
+        return mixed(_that.content);
+      case Paragraph_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case Paragraph_Table() when table != null:
+        return table(_that.columns);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String content, TextStyle? style) text,
+    required TResult Function(List<MixedContent> content) mixed,
+    required TResult Function(CustomUI ui) customUi,
+    required TResult Function(List<Row> columns) table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text():
+        return text(_that.content, _that.style);
+      case Paragraph_Mixed():
+        return mixed(_that.content);
+      case Paragraph_CustomUI():
+        return customUi(_that.ui);
+      case Paragraph_Table():
+        return table(_that.columns);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String content, TextStyle? style)? text,
+    TResult? Function(List<MixedContent> content)? mixed,
+    TResult? Function(CustomUI ui)? customUi,
+    TResult? Function(List<Row> columns)? table,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Paragraph_Text() when text != null:
+        return text(_that.content, _that.style);
+      case Paragraph_Mixed() when mixed != null:
+        return mixed(_that.content);
+      case Paragraph_CustomUI() when customUi != null:
+        return customUi(_that.ui);
+      case Paragraph_Table() when table != null:
+        return table(_that.columns);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $ParagraphCopyWith<$Res> {
-  factory $ParagraphCopyWith(Paragraph value, $Res Function(Paragraph) then) =
-      _$ParagraphCopyWithImpl<$Res, Paragraph>;
-}
 
-/// @nodoc
-class _$ParagraphCopyWithImpl<$Res, $Val extends Paragraph>
-    implements $ParagraphCopyWith<$Res> {
-  _$ParagraphCopyWithImpl(this._value, this._then);
+class Paragraph_Text extends Paragraph {
+  const Paragraph_Text({required this.content, this.style}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final String content;
+  final TextStyle? style;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Paragraph_TextCopyWith<Paragraph_Text> get copyWith =>
+      _$Paragraph_TextCopyWithImpl<Paragraph_Text>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Paragraph_Text &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.style, style) || other.style == style));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, content, style);
+
+  @override
+  String toString() {
+    return 'Paragraph.text(content: $content, style: $style)';
+  }
 }
 
 /// @nodoc
-abstract class _$$Paragraph_TextImplCopyWith<$Res> {
-  factory _$$Paragraph_TextImplCopyWith(_$Paragraph_TextImpl value,
-          $Res Function(_$Paragraph_TextImpl) then) =
-      __$$Paragraph_TextImplCopyWithImpl<$Res>;
+abstract mixin class $Paragraph_TextCopyWith<$Res>
+    implements $ParagraphCopyWith<$Res> {
+  factory $Paragraph_TextCopyWith(
+          Paragraph_Text value, $Res Function(Paragraph_Text) _then) =
+      _$Paragraph_TextCopyWithImpl;
   @useResult
   $Res call({String content, TextStyle? style});
 }
 
 /// @nodoc
-class __$$Paragraph_TextImplCopyWithImpl<$Res>
-    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_TextImpl>
-    implements _$$Paragraph_TextImplCopyWith<$Res> {
-  __$$Paragraph_TextImplCopyWithImpl(
-      _$Paragraph_TextImpl _value, $Res Function(_$Paragraph_TextImpl) _then)
-      : super(_value, _then);
+class _$Paragraph_TextCopyWithImpl<$Res>
+    implements $Paragraph_TextCopyWith<$Res> {
+  _$Paragraph_TextCopyWithImpl(this._self, this._then);
+
+  final Paragraph_Text _self;
+  final $Res Function(Paragraph_Text) _then;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? content = null,
     Object? style = freezed,
   }) {
-    return _then(_$Paragraph_TextImpl(
+    return _then(Paragraph_Text(
       content: null == content
-          ? _value.content
+          ? _self.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
       style: freezed == style
-          ? _value.style
+          ? _self.style
           : style // ignore: cast_nullable_to_non_nullable
               as TextStyle?,
     ));
@@ -676,158 +745,70 @@ class __$$Paragraph_TextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Paragraph_TextImpl extends Paragraph_Text {
-  const _$Paragraph_TextImpl({required this.content, this.style}) : super._();
+class Paragraph_Mixed extends Paragraph {
+  const Paragraph_Mixed({required final List<MixedContent> content})
+      : _content = content,
+        super._();
 
-  @override
-  final String content;
-  @override
-  final TextStyle? style;
-
-  @override
-  String toString() {
-    return 'Paragraph.text(content: $content, style: $style)';
+  final List<MixedContent> _content;
+  List<MixedContent> get content {
+    if (_content is EqualUnmodifiableListView) return _content;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_content);
   }
+
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Paragraph_MixedCopyWith<Paragraph_Mixed> get copyWith =>
+      _$Paragraph_MixedCopyWithImpl<Paragraph_Mixed>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Paragraph_TextImpl &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.style, style) || other.style == style));
+            other is Paragraph_Mixed &&
+            const DeepCollectionEquality().equals(other._content, _content));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, content, style);
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Paragraph_TextImplCopyWith<_$Paragraph_TextImpl> get copyWith =>
-      __$$Paragraph_TextImplCopyWithImpl<_$Paragraph_TextImpl>(
-          this, _$identity);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_content));
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(List<MixedContent> content) mixed,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return text(content, style);
+  String toString() {
+    return 'Paragraph.mixed(content: $content)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(List<MixedContent> content)? mixed,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return text?.call(content, style);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(List<MixedContent> content)? mixed,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (text != null) {
-      return text(content, style);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Paragraph_Text value) text,
-    required TResult Function(Paragraph_Mixed value) mixed,
-    required TResult Function(Paragraph_CustomUI value) customUi,
-    required TResult Function(Paragraph_Table value) table,
-  }) {
-    return text(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Paragraph_Text value)? text,
-    TResult? Function(Paragraph_Mixed value)? mixed,
-    TResult? Function(Paragraph_CustomUI value)? customUi,
-    TResult? Function(Paragraph_Table value)? table,
-  }) {
-    return text?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Paragraph_Text value)? text,
-    TResult Function(Paragraph_Mixed value)? mixed,
-    TResult Function(Paragraph_CustomUI value)? customUi,
-    TResult Function(Paragraph_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (text != null) {
-      return text(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Paragraph_Text extends Paragraph {
-  const factory Paragraph_Text(
-      {required final String content,
-      final TextStyle? style}) = _$Paragraph_TextImpl;
-  const Paragraph_Text._() : super._();
-
-  String get content;
-  TextStyle? get style;
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Paragraph_TextImplCopyWith<_$Paragraph_TextImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Paragraph_MixedImplCopyWith<$Res> {
-  factory _$$Paragraph_MixedImplCopyWith(_$Paragraph_MixedImpl value,
-          $Res Function(_$Paragraph_MixedImpl) then) =
-      __$$Paragraph_MixedImplCopyWithImpl<$Res>;
+abstract mixin class $Paragraph_MixedCopyWith<$Res>
+    implements $ParagraphCopyWith<$Res> {
+  factory $Paragraph_MixedCopyWith(
+          Paragraph_Mixed value, $Res Function(Paragraph_Mixed) _then) =
+      _$Paragraph_MixedCopyWithImpl;
   @useResult
   $Res call({List<MixedContent> content});
 }
 
 /// @nodoc
-class __$$Paragraph_MixedImplCopyWithImpl<$Res>
-    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_MixedImpl>
-    implements _$$Paragraph_MixedImplCopyWith<$Res> {
-  __$$Paragraph_MixedImplCopyWithImpl(
-      _$Paragraph_MixedImpl _value, $Res Function(_$Paragraph_MixedImpl) _then)
-      : super(_value, _then);
+class _$Paragraph_MixedCopyWithImpl<$Res>
+    implements $Paragraph_MixedCopyWith<$Res> {
+  _$Paragraph_MixedCopyWithImpl(this._self, this._then);
+
+  final Paragraph_Mixed _self;
+  final $Res Function(Paragraph_Mixed) _then;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? content = null,
   }) {
-    return _then(_$Paragraph_MixedImpl(
+    return _then(Paragraph_Mixed(
       content: null == content
-          ? _value._content
+          ? _self._content
           : content // ignore: cast_nullable_to_non_nullable
               as List<MixedContent>,
     ));
@@ -836,139 +817,41 @@ class __$$Paragraph_MixedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Paragraph_MixedImpl extends Paragraph_Mixed {
-  const _$Paragraph_MixedImpl({required final List<MixedContent> content})
-      : _content = content,
-        super._();
+class Paragraph_CustomUI extends Paragraph {
+  const Paragraph_CustomUI({required this.ui}) : super._();
 
-  final List<MixedContent> _content;
-  @override
-  List<MixedContent> get content {
-    if (_content is EqualUnmodifiableListView) return _content;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_content);
-  }
+  final CustomUI ui;
 
-  @override
-  String toString() {
-    return 'Paragraph.mixed(content: $content)';
-  }
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Paragraph_CustomUICopyWith<Paragraph_CustomUI> get copyWith =>
+      _$Paragraph_CustomUICopyWithImpl<Paragraph_CustomUI>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Paragraph_MixedImpl &&
-            const DeepCollectionEquality().equals(other._content, _content));
+            other is Paragraph_CustomUI &&
+            (identical(other.ui, ui) || other.ui == ui));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_content));
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Paragraph_MixedImplCopyWith<_$Paragraph_MixedImpl> get copyWith =>
-      __$$Paragraph_MixedImplCopyWithImpl<_$Paragraph_MixedImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, ui);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(List<MixedContent> content) mixed,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return mixed(content);
+  String toString() {
+    return 'Paragraph.customUi(ui: $ui)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(List<MixedContent> content)? mixed,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return mixed?.call(content);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(List<MixedContent> content)? mixed,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (mixed != null) {
-      return mixed(content);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Paragraph_Text value) text,
-    required TResult Function(Paragraph_Mixed value) mixed,
-    required TResult Function(Paragraph_CustomUI value) customUi,
-    required TResult Function(Paragraph_Table value) table,
-  }) {
-    return mixed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Paragraph_Text value)? text,
-    TResult? Function(Paragraph_Mixed value)? mixed,
-    TResult? Function(Paragraph_CustomUI value)? customUi,
-    TResult? Function(Paragraph_Table value)? table,
-  }) {
-    return mixed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Paragraph_Text value)? text,
-    TResult Function(Paragraph_Mixed value)? mixed,
-    TResult Function(Paragraph_CustomUI value)? customUi,
-    TResult Function(Paragraph_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (mixed != null) {
-      return mixed(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Paragraph_Mixed extends Paragraph {
-  const factory Paragraph_Mixed({required final List<MixedContent> content}) =
-      _$Paragraph_MixedImpl;
-  const Paragraph_Mixed._() : super._();
-
-  List<MixedContent> get content;
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Paragraph_MixedImplCopyWith<_$Paragraph_MixedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Paragraph_CustomUIImplCopyWith<$Res> {
-  factory _$$Paragraph_CustomUIImplCopyWith(_$Paragraph_CustomUIImpl value,
-          $Res Function(_$Paragraph_CustomUIImpl) then) =
-      __$$Paragraph_CustomUIImplCopyWithImpl<$Res>;
+abstract mixin class $Paragraph_CustomUICopyWith<$Res>
+    implements $ParagraphCopyWith<$Res> {
+  factory $Paragraph_CustomUICopyWith(
+          Paragraph_CustomUI value, $Res Function(Paragraph_CustomUI) _then) =
+      _$Paragraph_CustomUICopyWithImpl;
   @useResult
   $Res call({CustomUI ui});
 
@@ -976,23 +859,22 @@ abstract class _$$Paragraph_CustomUIImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$Paragraph_CustomUIImplCopyWithImpl<$Res>
-    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_CustomUIImpl>
-    implements _$$Paragraph_CustomUIImplCopyWith<$Res> {
-  __$$Paragraph_CustomUIImplCopyWithImpl(_$Paragraph_CustomUIImpl _value,
-      $Res Function(_$Paragraph_CustomUIImpl) _then)
-      : super(_value, _then);
+class _$Paragraph_CustomUICopyWithImpl<$Res>
+    implements $Paragraph_CustomUICopyWith<$Res> {
+  _$Paragraph_CustomUICopyWithImpl(this._self, this._then);
+
+  final Paragraph_CustomUI _self;
+  final $Res Function(Paragraph_CustomUI) _then;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? ui = null,
   }) {
-    return _then(_$Paragraph_CustomUIImpl(
+    return _then(Paragraph_CustomUI(
       ui: null == ui
-          ? _value.ui
+          ? _self.ui
           : ui // ignore: cast_nullable_to_non_nullable
               as CustomUI,
     ));
@@ -1003,192 +885,38 @@ class __$$Paragraph_CustomUIImplCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $CustomUICopyWith<$Res> get ui {
-    return $CustomUICopyWith<$Res>(_value.ui, (value) {
-      return _then(_value.copyWith(ui: value));
+    return $CustomUICopyWith<$Res>(_self.ui, (value) {
+      return _then(_self.copyWith(ui: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$Paragraph_CustomUIImpl extends Paragraph_CustomUI {
-  const _$Paragraph_CustomUIImpl({required this.ui}) : super._();
-
-  @override
-  final CustomUI ui;
-
-  @override
-  String toString() {
-    return 'Paragraph.customUi(ui: $ui)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$Paragraph_CustomUIImpl &&
-            (identical(other.ui, ui) || other.ui == ui));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, ui);
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Paragraph_CustomUIImplCopyWith<_$Paragraph_CustomUIImpl> get copyWith =>
-      __$$Paragraph_CustomUIImplCopyWithImpl<_$Paragraph_CustomUIImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(List<MixedContent> content) mixed,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return customUi(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(List<MixedContent> content)? mixed,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return customUi?.call(ui);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(List<MixedContent> content)? mixed,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(ui);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Paragraph_Text value) text,
-    required TResult Function(Paragraph_Mixed value) mixed,
-    required TResult Function(Paragraph_CustomUI value) customUi,
-    required TResult Function(Paragraph_Table value) table,
-  }) {
-    return customUi(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Paragraph_Text value)? text,
-    TResult? Function(Paragraph_Mixed value)? mixed,
-    TResult? Function(Paragraph_CustomUI value)? customUi,
-    TResult? Function(Paragraph_Table value)? table,
-  }) {
-    return customUi?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Paragraph_Text value)? text,
-    TResult Function(Paragraph_Mixed value)? mixed,
-    TResult Function(Paragraph_CustomUI value)? customUi,
-    TResult Function(Paragraph_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (customUi != null) {
-      return customUi(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Paragraph_CustomUI extends Paragraph {
-  const factory Paragraph_CustomUI({required final CustomUI ui}) =
-      _$Paragraph_CustomUIImpl;
-  const Paragraph_CustomUI._() : super._();
-
-  CustomUI get ui;
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Paragraph_CustomUIImplCopyWith<_$Paragraph_CustomUIImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$Paragraph_TableImplCopyWith<$Res> {
-  factory _$$Paragraph_TableImplCopyWith(_$Paragraph_TableImpl value,
-          $Res Function(_$Paragraph_TableImpl) then) =
-      __$$Paragraph_TableImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<Row> columns});
-}
-
-/// @nodoc
-class __$$Paragraph_TableImplCopyWithImpl<$Res>
-    extends _$ParagraphCopyWithImpl<$Res, _$Paragraph_TableImpl>
-    implements _$$Paragraph_TableImplCopyWith<$Res> {
-  __$$Paragraph_TableImplCopyWithImpl(
-      _$Paragraph_TableImpl _value, $Res Function(_$Paragraph_TableImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? columns = null,
-  }) {
-    return _then(_$Paragraph_TableImpl(
-      columns: null == columns
-          ? _value._columns
-          : columns // ignore: cast_nullable_to_non_nullable
-              as List<Row>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$Paragraph_TableImpl extends Paragraph_Table {
-  const _$Paragraph_TableImpl({required final List<Row> columns})
+class Paragraph_Table extends Paragraph {
+  const Paragraph_Table({required final List<Row> columns})
       : _columns = columns,
         super._();
 
   final List<Row> _columns;
-  @override
   List<Row> get columns {
     if (_columns is EqualUnmodifiableListView) return _columns;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_columns);
   }
 
-  @override
-  String toString() {
-    return 'Paragraph.table(columns: $columns)';
-  }
+  /// Create a copy of Paragraph
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Paragraph_TableCopyWith<Paragraph_Table> get copyWith =>
+      _$Paragraph_TableCopyWithImpl<Paragraph_Table>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Paragraph_TableImpl &&
+            other is Paragraph_Table &&
             const DeepCollectionEquality().equals(other._columns, _columns));
   }
 
@@ -1196,106 +924,247 @@ class _$Paragraph_TableImpl extends Paragraph_Table {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_columns));
 
-  /// Create a copy of Paragraph
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Paragraph_TableImplCopyWith<_$Paragraph_TableImpl> get copyWith =>
-      __$$Paragraph_TableImplCopyWithImpl<_$Paragraph_TableImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String content, TextStyle? style) text,
-    required TResult Function(List<MixedContent> content) mixed,
-    required TResult Function(CustomUI ui) customUi,
-    required TResult Function(List<Row> columns) table,
-  }) {
-    return table(columns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String content, TextStyle? style)? text,
-    TResult? Function(List<MixedContent> content)? mixed,
-    TResult? Function(CustomUI ui)? customUi,
-    TResult? Function(List<Row> columns)? table,
-  }) {
-    return table?.call(columns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String content, TextStyle? style)? text,
-    TResult Function(List<MixedContent> content)? mixed,
-    TResult Function(CustomUI ui)? customUi,
-    TResult Function(List<Row> columns)? table,
-    required TResult orElse(),
-  }) {
-    if (table != null) {
-      return table(columns);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Paragraph_Text value) text,
-    required TResult Function(Paragraph_Mixed value) mixed,
-    required TResult Function(Paragraph_CustomUI value) customUi,
-    required TResult Function(Paragraph_Table value) table,
-  }) {
-    return table(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Paragraph_Text value)? text,
-    TResult? Function(Paragraph_Mixed value)? mixed,
-    TResult? Function(Paragraph_CustomUI value)? customUi,
-    TResult? Function(Paragraph_Table value)? table,
-  }) {
-    return table?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Paragraph_Text value)? text,
-    TResult Function(Paragraph_Mixed value)? mixed,
-    TResult Function(Paragraph_CustomUI value)? customUi,
-    TResult Function(Paragraph_Table value)? table,
-    required TResult orElse(),
-  }) {
-    if (table != null) {
-      return table(this);
-    }
-    return orElse();
+  String toString() {
+    return 'Paragraph.table(columns: $columns)';
   }
 }
 
-abstract class Paragraph_Table extends Paragraph {
-  const factory Paragraph_Table({required final List<Row> columns}) =
-      _$Paragraph_TableImpl;
-  const Paragraph_Table._() : super._();
+/// @nodoc
+abstract mixin class $Paragraph_TableCopyWith<$Res>
+    implements $ParagraphCopyWith<$Res> {
+  factory $Paragraph_TableCopyWith(
+          Paragraph_Table value, $Res Function(Paragraph_Table) _then) =
+      _$Paragraph_TableCopyWithImpl;
+  @useResult
+  $Res call({List<Row> columns});
+}
 
-  List<Row> get columns;
+/// @nodoc
+class _$Paragraph_TableCopyWithImpl<$Res>
+    implements $Paragraph_TableCopyWith<$Res> {
+  _$Paragraph_TableCopyWithImpl(this._self, this._then);
+
+  final Paragraph_Table _self;
+  final $Res Function(Paragraph_Table) _then;
 
   /// Create a copy of Paragraph
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Paragraph_TableImplCopyWith<_$Paragraph_TableImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? columns = null,
+  }) {
+    return _then(Paragraph_Table(
+      columns: null == columns
+          ? _self._columns
+          : columns // ignore: cast_nullable_to_non_nullable
+              as List<Row>,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$Source {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is Source);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'Source()';
+  }
+}
+
+/// @nodoc
+class $SourceCopyWith<$Res> {
+  $SourceCopyWith(Source _, $Res Function(Source) __);
+}
+
+/// Adds pattern-matching-related methods to [Source].
+extension SourcePatterns on Source {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Source_Epub value)? epub,
+    TResult Function(Source_Pdf value)? pdf,
+    TResult Function(Source_Imagelist value)? imagelist,
+    TResult Function(Source_Video value)? video,
+    TResult Function(Source_Audio value)? audio,
+    TResult Function(Source_Paragraphlist value)? paragraphlist,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Source_Epub() when epub != null:
+        return epub(_that);
+      case Source_Pdf() when pdf != null:
+        return pdf(_that);
+      case Source_Imagelist() when imagelist != null:
+        return imagelist(_that);
+      case Source_Video() when video != null:
+        return video(_that);
+      case Source_Audio() when audio != null:
+        return audio(_that);
+      case Source_Paragraphlist() when paragraphlist != null:
+        return paragraphlist(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Source_Epub value) epub,
+    required TResult Function(Source_Pdf value) pdf,
+    required TResult Function(Source_Imagelist value) imagelist,
+    required TResult Function(Source_Video value) video,
+    required TResult Function(Source_Audio value) audio,
+    required TResult Function(Source_Paragraphlist value) paragraphlist,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Source_Epub():
+        return epub(_that);
+      case Source_Pdf():
+        return pdf(_that);
+      case Source_Imagelist():
+        return imagelist(_that);
+      case Source_Video():
+        return video(_that);
+      case Source_Audio():
+        return audio(_that);
+      case Source_Paragraphlist():
+        return paragraphlist(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Source_Epub value)? epub,
+    TResult? Function(Source_Pdf value)? pdf,
+    TResult? Function(Source_Imagelist value)? imagelist,
+    TResult? Function(Source_Video value)? video,
+    TResult? Function(Source_Audio value)? audio,
+    TResult? Function(Source_Paragraphlist value)? paragraphlist,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Source_Epub() when epub != null:
+        return epub(_that);
+      case Source_Pdf() when pdf != null:
+        return pdf(_that);
+      case Source_Imagelist() when imagelist != null:
+        return imagelist(_that);
+      case Source_Video() when video != null:
+        return video(_that);
+      case Source_Audio() when audio != null:
+        return audio(_that);
+      case Source_Paragraphlist() when paragraphlist != null:
+        return paragraphlist(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Link link)? epub,
+    TResult Function(Link link)? pdf,
+    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
+    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
+            List<Chapter>? chapters)?
+        video,
+    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
+        audio,
+    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
+        paragraphlist,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Source_Epub() when epub != null:
+        return epub(_that.link);
+      case Source_Pdf() when pdf != null:
+        return pdf(_that.link);
+      case Source_Imagelist() when imagelist != null:
+        return imagelist(_that.links, _that.audio);
+      case Source_Video() when video != null:
+        return video(_that.sources, _that.sub, _that.chapters);
+      case Source_Audio() when audio != null:
+        return audio(_that.sources, _that.chapters);
+      case Source_Paragraphlist() when paragraphlist != null:
+        return paragraphlist(_that.paragraphs, _that.audio);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Link link) epub,
@@ -1311,8 +1180,36 @@ mixin _$Source {
     required TResult Function(
             List<Paragraph> paragraphs, List<ImageListAudio>? audio)
         paragraphlist,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case Source_Epub():
+        return epub(_that.link);
+      case Source_Pdf():
+        return pdf(_that.link);
+      case Source_Imagelist():
+        return imagelist(_that.links, _that.audio);
+      case Source_Video():
+        return video(_that.sources, _that.sub, _that.chapters);
+      case Source_Audio():
+        return audio(_that.sources, _that.chapters);
+      case Source_Paragraphlist():
+        return paragraphlist(_that.paragraphs, _that.audio);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Link link)? epub,
@@ -1325,283 +1222,84 @@ mixin _$Source {
         audio,
     TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
         paragraphlist,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SourceCopyWith<$Res> {
-  factory $SourceCopyWith(Source value, $Res Function(Source) then) =
-      _$SourceCopyWithImpl<$Res, Source>;
-}
-
-/// @nodoc
-class _$SourceCopyWithImpl<$Res, $Val extends Source>
-    implements $SourceCopyWith<$Res> {
-  _$SourceCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$Source_EpubImplCopyWith<$Res> {
-  factory _$$Source_EpubImplCopyWith(
-          _$Source_EpubImpl value, $Res Function(_$Source_EpubImpl) then) =
-      __$$Source_EpubImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Link link});
-}
-
-/// @nodoc
-class __$$Source_EpubImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_EpubImpl>
-    implements _$$Source_EpubImplCopyWith<$Res> {
-  __$$Source_EpubImplCopyWithImpl(
-      _$Source_EpubImpl _value, $Res Function(_$Source_EpubImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? link = null,
   }) {
-    return _then(_$Source_EpubImpl(
-      link: null == link
-          ? _value.link
-          : link // ignore: cast_nullable_to_non_nullable
-              as Link,
-    ));
+    final _that = this;
+    switch (_that) {
+      case Source_Epub() when epub != null:
+        return epub(_that.link);
+      case Source_Pdf() when pdf != null:
+        return pdf(_that.link);
+      case Source_Imagelist() when imagelist != null:
+        return imagelist(_that.links, _that.audio);
+      case Source_Video() when video != null:
+        return video(_that.sources, _that.sub, _that.chapters);
+      case Source_Audio() when audio != null:
+        return audio(_that.sources, _that.chapters);
+      case Source_Paragraphlist() when paragraphlist != null:
+        return paragraphlist(_that.paragraphs, _that.audio);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$Source_EpubImpl extends Source_Epub {
-  const _$Source_EpubImpl({required this.link}) : super._();
+class Source_Epub extends Source {
+  const Source_Epub({required this.link}) : super._();
+
+  final Link link;
+
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_EpubCopyWith<Source_Epub> get copyWith =>
+      _$Source_EpubCopyWithImpl<Source_Epub>(this, _$identity);
 
   @override
-  final Link link;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Source_Epub &&
+            (identical(other.link, link) || other.link == link));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, link);
 
   @override
   String toString() {
     return 'Source.epub(link: $link)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$Source_EpubImpl &&
-            (identical(other.link, link) || other.link == link));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, link);
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$Source_EpubImplCopyWith<_$Source_EpubImpl> get copyWith =>
-      __$$Source_EpubImplCopyWithImpl<_$Source_EpubImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
-  }) {
-    return epub(link);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return epub?.call(link);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (epub != null) {
-      return epub(link);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return epub(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return epub?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (epub != null) {
-      return epub(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Source_Epub extends Source {
-  const factory Source_Epub({required final Link link}) = _$Source_EpubImpl;
-  const Source_Epub._() : super._();
-
-  Link get link;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_EpubImplCopyWith<_$Source_EpubImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_PdfImplCopyWith<$Res> {
-  factory _$$Source_PdfImplCopyWith(
-          _$Source_PdfImpl value, $Res Function(_$Source_PdfImpl) then) =
-      __$$Source_PdfImplCopyWithImpl<$Res>;
+abstract mixin class $Source_EpubCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_EpubCopyWith(
+          Source_Epub value, $Res Function(Source_Epub) _then) =
+      _$Source_EpubCopyWithImpl;
   @useResult
   $Res call({Link link});
 }
 
 /// @nodoc
-class __$$Source_PdfImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_PdfImpl>
-    implements _$$Source_PdfImplCopyWith<$Res> {
-  __$$Source_PdfImplCopyWithImpl(
-      _$Source_PdfImpl _value, $Res Function(_$Source_PdfImpl) _then)
-      : super(_value, _then);
+class _$Source_EpubCopyWithImpl<$Res> implements $Source_EpubCopyWith<$Res> {
+  _$Source_EpubCopyWithImpl(this._self, this._then);
+
+  final Source_Epub _self;
+  final $Res Function(Source_Epub) _then;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? link = null,
   }) {
-    return _then(_$Source_PdfImpl(
+    return _then(Source_Epub(
       link: null == link
-          ? _value.link
+          ? _self.link
           : link // ignore: cast_nullable_to_non_nullable
               as Link,
     ));
@@ -1610,200 +1308,77 @@ class __$$Source_PdfImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Source_PdfImpl extends Source_Pdf {
-  const _$Source_PdfImpl({required this.link}) : super._();
+class Source_Pdf extends Source {
+  const Source_Pdf({required this.link}) : super._();
 
-  @override
   final Link link;
 
-  @override
-  String toString() {
-    return 'Source.pdf(link: $link)';
-  }
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_PdfCopyWith<Source_Pdf> get copyWith =>
+      _$Source_PdfCopyWithImpl<Source_Pdf>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_PdfImpl &&
+            other is Source_Pdf &&
             (identical(other.link, link) || other.link == link));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, link);
 
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Source_PdfImplCopyWith<_$Source_PdfImpl> get copyWith =>
-      __$$Source_PdfImplCopyWithImpl<_$Source_PdfImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
-  }) {
-    return pdf(link);
+  String toString() {
+    return 'Source.pdf(link: $link)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return pdf?.call(link);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (pdf != null) {
-      return pdf(link);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return pdf(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return pdf?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (pdf != null) {
-      return pdf(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Source_Pdf extends Source {
-  const factory Source_Pdf({required final Link link}) = _$Source_PdfImpl;
-  const Source_Pdf._() : super._();
-
-  Link get link;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_PdfImplCopyWith<_$Source_PdfImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_ImagelistImplCopyWith<$Res> {
-  factory _$$Source_ImagelistImplCopyWith(_$Source_ImagelistImpl value,
-          $Res Function(_$Source_ImagelistImpl) then) =
-      __$$Source_ImagelistImplCopyWithImpl<$Res>;
+abstract mixin class $Source_PdfCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_PdfCopyWith(
+          Source_Pdf value, $Res Function(Source_Pdf) _then) =
+      _$Source_PdfCopyWithImpl;
   @useResult
-  $Res call({List<Link> links, List<ImageListAudio>? audio});
+  $Res call({Link link});
 }
 
 /// @nodoc
-class __$$Source_ImagelistImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_ImagelistImpl>
-    implements _$$Source_ImagelistImplCopyWith<$Res> {
-  __$$Source_ImagelistImplCopyWithImpl(_$Source_ImagelistImpl _value,
-      $Res Function(_$Source_ImagelistImpl) _then)
-      : super(_value, _then);
+class _$Source_PdfCopyWithImpl<$Res> implements $Source_PdfCopyWith<$Res> {
+  _$Source_PdfCopyWithImpl(this._self, this._then);
+
+  final Source_Pdf _self;
+  final $Res Function(Source_Pdf) _then;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? links = null,
-    Object? audio = freezed,
+    Object? link = null,
   }) {
-    return _then(_$Source_ImagelistImpl(
-      links: null == links
-          ? _value._links
-          : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>,
-      audio: freezed == audio
-          ? _value._audio
-          : audio // ignore: cast_nullable_to_non_nullable
-              as List<ImageListAudio>?,
+    return _then(Source_Pdf(
+      link: null == link
+          ? _self.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as Link,
     ));
   }
 }
 
 /// @nodoc
 
-class _$Source_ImagelistImpl extends Source_Imagelist {
-  const _$Source_ImagelistImpl(
+class Source_Imagelist extends Source {
+  const Source_Imagelist(
       {required final List<Link> links, final List<ImageListAudio>? audio})
       : _links = links,
         _audio = audio,
         super._();
 
   final List<Link> _links;
-  @override
   List<Link> get links {
     if (_links is EqualUnmodifiableListView) return _links;
     // ignore: implicit_dynamic_type
@@ -1811,7 +1386,6 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
   }
 
   final List<ImageListAudio>? _audio;
-  @override
   List<ImageListAudio>? get audio {
     final value = _audio;
     if (value == null) return null;
@@ -1820,16 +1394,18 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
     return EqualUnmodifiableListView(value);
   }
 
-  @override
-  String toString() {
-    return 'Source.imagelist(links: $links, audio: $audio)';
-  }
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_ImagelistCopyWith<Source_Imagelist> get copyWith =>
+      _$Source_ImagelistCopyWithImpl<Source_Imagelist>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_ImagelistImpl &&
+            other is Source_Imagelist &&
             const DeepCollectionEquality().equals(other._links, _links) &&
             const DeepCollectionEquality().equals(other._audio, _audio));
   }
@@ -1840,183 +1416,54 @@ class _$Source_ImagelistImpl extends Source_Imagelist {
       const DeepCollectionEquality().hash(_links),
       const DeepCollectionEquality().hash(_audio));
 
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Source_ImagelistImplCopyWith<_$Source_ImagelistImpl> get copyWith =>
-      __$$Source_ImagelistImplCopyWithImpl<_$Source_ImagelistImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
-  }) {
-    return imagelist(links, this.audio);
+  String toString() {
+    return 'Source.imagelist(links: $links, audio: $audio)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return imagelist?.call(links, this.audio);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (imagelist != null) {
-      return imagelist(links, this.audio);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return imagelist(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return imagelist?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (imagelist != null) {
-      return imagelist(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Source_Imagelist extends Source {
-  const factory Source_Imagelist(
-      {required final List<Link> links,
-      final List<ImageListAudio>? audio}) = _$Source_ImagelistImpl;
-  const Source_Imagelist._() : super._();
-
-  List<Link> get links;
-  List<ImageListAudio>? get audio;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_ImagelistImplCopyWith<_$Source_ImagelistImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_VideoImplCopyWith<$Res> {
-  factory _$$Source_VideoImplCopyWith(
-          _$Source_VideoImpl value, $Res Function(_$Source_VideoImpl) then) =
-      __$$Source_VideoImplCopyWithImpl<$Res>;
+abstract mixin class $Source_ImagelistCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_ImagelistCopyWith(
+          Source_Imagelist value, $Res Function(Source_Imagelist) _then) =
+      _$Source_ImagelistCopyWithImpl;
   @useResult
-  $Res call(
-      {List<StreamSource> sources,
-      List<Subtitles> sub,
-      List<Chapter>? chapters});
+  $Res call({List<Link> links, List<ImageListAudio>? audio});
 }
 
 /// @nodoc
-class __$$Source_VideoImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_VideoImpl>
-    implements _$$Source_VideoImplCopyWith<$Res> {
-  __$$Source_VideoImplCopyWithImpl(
-      _$Source_VideoImpl _value, $Res Function(_$Source_VideoImpl) _then)
-      : super(_value, _then);
+class _$Source_ImagelistCopyWithImpl<$Res>
+    implements $Source_ImagelistCopyWith<$Res> {
+  _$Source_ImagelistCopyWithImpl(this._self, this._then);
+
+  final Source_Imagelist _self;
+  final $Res Function(Source_Imagelist) _then;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? sources = null,
-    Object? sub = null,
-    Object? chapters = freezed,
+    Object? links = null,
+    Object? audio = freezed,
   }) {
-    return _then(_$Source_VideoImpl(
-      sources: null == sources
-          ? _value._sources
-          : sources // ignore: cast_nullable_to_non_nullable
-              as List<StreamSource>,
-      sub: null == sub
-          ? _value._sub
-          : sub // ignore: cast_nullable_to_non_nullable
-              as List<Subtitles>,
-      chapters: freezed == chapters
-          ? _value._chapters
-          : chapters // ignore: cast_nullable_to_non_nullable
-              as List<Chapter>?,
+    return _then(Source_Imagelist(
+      links: null == links
+          ? _self._links
+          : links // ignore: cast_nullable_to_non_nullable
+              as List<Link>,
+      audio: freezed == audio
+          ? _self._audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as List<ImageListAudio>?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$Source_VideoImpl extends Source_Video {
-  const _$Source_VideoImpl(
+class Source_Video extends Source {
+  const Source_Video(
       {required final List<StreamSource> sources,
       required final List<Subtitles> sub,
       final List<Chapter>? chapters})
@@ -2026,7 +1473,6 @@ class _$Source_VideoImpl extends Source_Video {
         super._();
 
   final List<StreamSource> _sources;
-  @override
   List<StreamSource> get sources {
     if (_sources is EqualUnmodifiableListView) return _sources;
     // ignore: implicit_dynamic_type
@@ -2034,7 +1480,6 @@ class _$Source_VideoImpl extends Source_Video {
   }
 
   final List<Subtitles> _sub;
-  @override
   List<Subtitles> get sub {
     if (_sub is EqualUnmodifiableListView) return _sub;
     // ignore: implicit_dynamic_type
@@ -2042,7 +1487,6 @@ class _$Source_VideoImpl extends Source_Video {
   }
 
   final List<Chapter>? _chapters;
-  @override
   List<Chapter>? get chapters {
     final value = _chapters;
     if (value == null) return null;
@@ -2051,16 +1495,18 @@ class _$Source_VideoImpl extends Source_Video {
     return EqualUnmodifiableListView(value);
   }
 
-  @override
-  String toString() {
-    return 'Source.video(sources: $sources, sub: $sub, chapters: $chapters)';
-  }
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_VideoCopyWith<Source_Video> get copyWith =>
+      _$Source_VideoCopyWithImpl<Source_Video>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_VideoImpl &&
+            other is Source_Video &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
             const DeepCollectionEquality().equals(other._sub, _sub) &&
             const DeepCollectionEquality().equals(other._chapters, _chapters));
@@ -2073,166 +1519,51 @@ class _$Source_VideoImpl extends Source_Video {
       const DeepCollectionEquality().hash(_sub),
       const DeepCollectionEquality().hash(_chapters));
 
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Source_VideoImplCopyWith<_$Source_VideoImpl> get copyWith =>
-      __$$Source_VideoImplCopyWithImpl<_$Source_VideoImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
-  }) {
-    return video(sources, sub, chapters);
+  String toString() {
+    return 'Source.video(sources: $sources, sub: $sub, chapters: $chapters)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return video?.call(sources, sub, chapters);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (video != null) {
-      return video(sources, sub, chapters);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return video(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return video?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (video != null) {
-      return video(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Source_Video extends Source {
-  const factory Source_Video(
-      {required final List<StreamSource> sources,
-      required final List<Subtitles> sub,
-      final List<Chapter>? chapters}) = _$Source_VideoImpl;
-  const Source_Video._() : super._();
-
-  List<StreamSource> get sources;
-  List<Subtitles> get sub;
-  List<Chapter>? get chapters;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_VideoImplCopyWith<_$Source_VideoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_AudioImplCopyWith<$Res> {
-  factory _$$Source_AudioImplCopyWith(
-          _$Source_AudioImpl value, $Res Function(_$Source_AudioImpl) then) =
-      __$$Source_AudioImplCopyWithImpl<$Res>;
+abstract mixin class $Source_VideoCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_VideoCopyWith(
+          Source_Video value, $Res Function(Source_Video) _then) =
+      _$Source_VideoCopyWithImpl;
   @useResult
-  $Res call({List<StreamSource> sources, List<Chapter>? chapters});
+  $Res call(
+      {List<StreamSource> sources,
+      List<Subtitles> sub,
+      List<Chapter>? chapters});
 }
 
 /// @nodoc
-class __$$Source_AudioImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_AudioImpl>
-    implements _$$Source_AudioImplCopyWith<$Res> {
-  __$$Source_AudioImplCopyWithImpl(
-      _$Source_AudioImpl _value, $Res Function(_$Source_AudioImpl) _then)
-      : super(_value, _then);
+class _$Source_VideoCopyWithImpl<$Res> implements $Source_VideoCopyWith<$Res> {
+  _$Source_VideoCopyWithImpl(this._self, this._then);
+
+  final Source_Video _self;
+  final $Res Function(Source_Video) _then;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? sources = null,
+    Object? sub = null,
     Object? chapters = freezed,
   }) {
-    return _then(_$Source_AudioImpl(
+    return _then(Source_Video(
       sources: null == sources
-          ? _value._sources
+          ? _self._sources
           : sources // ignore: cast_nullable_to_non_nullable
               as List<StreamSource>,
+      sub: null == sub
+          ? _self._sub
+          : sub // ignore: cast_nullable_to_non_nullable
+              as List<Subtitles>,
       chapters: freezed == chapters
-          ? _value._chapters
+          ? _self._chapters
           : chapters // ignore: cast_nullable_to_non_nullable
               as List<Chapter>?,
     ));
@@ -2241,8 +1572,8 @@ class __$$Source_AudioImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Source_AudioImpl extends Source_Audio {
-  const _$Source_AudioImpl(
+class Source_Audio extends Source {
+  const Source_Audio(
       {required final List<StreamSource> sources,
       final List<Chapter>? chapters})
       : _sources = sources,
@@ -2250,7 +1581,6 @@ class _$Source_AudioImpl extends Source_Audio {
         super._();
 
   final List<StreamSource> _sources;
-  @override
   List<StreamSource> get sources {
     if (_sources is EqualUnmodifiableListView) return _sources;
     // ignore: implicit_dynamic_type
@@ -2258,7 +1588,6 @@ class _$Source_AudioImpl extends Source_Audio {
   }
 
   final List<Chapter>? _chapters;
-  @override
   List<Chapter>? get chapters {
     final value = _chapters;
     if (value == null) return null;
@@ -2267,16 +1596,18 @@ class _$Source_AudioImpl extends Source_Audio {
     return EqualUnmodifiableListView(value);
   }
 
-  @override
-  String toString() {
-    return 'Source.audio(sources: $sources, chapters: $chapters)';
-  }
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_AudioCopyWith<Source_Audio> get copyWith =>
+      _$Source_AudioCopyWithImpl<Source_Audio>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_AudioImpl &&
+            other is Source_Audio &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
             const DeepCollectionEquality().equals(other._chapters, _chapters));
   }
@@ -2287,174 +1618,53 @@ class _$Source_AudioImpl extends Source_Audio {
       const DeepCollectionEquality().hash(_sources),
       const DeepCollectionEquality().hash(_chapters));
 
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$Source_AudioImplCopyWith<_$Source_AudioImpl> get copyWith =>
-      __$$Source_AudioImplCopyWithImpl<_$Source_AudioImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
-  }) {
-    return audio(sources, chapters);
+  String toString() {
+    return 'Source.audio(sources: $sources, chapters: $chapters)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return audio?.call(sources, chapters);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (audio != null) {
-      return audio(sources, chapters);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return audio(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return audio?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (audio != null) {
-      return audio(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Source_Audio extends Source {
-  const factory Source_Audio(
-      {required final List<StreamSource> sources,
-      final List<Chapter>? chapters}) = _$Source_AudioImpl;
-  const Source_Audio._() : super._();
-
-  List<StreamSource> get sources;
-  List<Chapter>? get chapters;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_AudioImplCopyWith<_$Source_AudioImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Source_ParagraphlistImplCopyWith<$Res> {
-  factory _$$Source_ParagraphlistImplCopyWith(_$Source_ParagraphlistImpl value,
-          $Res Function(_$Source_ParagraphlistImpl) then) =
-      __$$Source_ParagraphlistImplCopyWithImpl<$Res>;
+abstract mixin class $Source_AudioCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_AudioCopyWith(
+          Source_Audio value, $Res Function(Source_Audio) _then) =
+      _$Source_AudioCopyWithImpl;
   @useResult
-  $Res call({List<Paragraph> paragraphs, List<ImageListAudio>? audio});
+  $Res call({List<StreamSource> sources, List<Chapter>? chapters});
 }
 
 /// @nodoc
-class __$$Source_ParagraphlistImplCopyWithImpl<$Res>
-    extends _$SourceCopyWithImpl<$Res, _$Source_ParagraphlistImpl>
-    implements _$$Source_ParagraphlistImplCopyWith<$Res> {
-  __$$Source_ParagraphlistImplCopyWithImpl(_$Source_ParagraphlistImpl _value,
-      $Res Function(_$Source_ParagraphlistImpl) _then)
-      : super(_value, _then);
+class _$Source_AudioCopyWithImpl<$Res> implements $Source_AudioCopyWith<$Res> {
+  _$Source_AudioCopyWithImpl(this._self, this._then);
+
+  final Source_Audio _self;
+  final $Res Function(Source_Audio) _then;
 
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? paragraphs = null,
-    Object? audio = freezed,
+    Object? sources = null,
+    Object? chapters = freezed,
   }) {
-    return _then(_$Source_ParagraphlistImpl(
-      paragraphs: null == paragraphs
-          ? _value._paragraphs
-          : paragraphs // ignore: cast_nullable_to_non_nullable
-              as List<Paragraph>,
-      audio: freezed == audio
-          ? _value._audio
-          : audio // ignore: cast_nullable_to_non_nullable
-              as List<ImageListAudio>?,
+    return _then(Source_Audio(
+      sources: null == sources
+          ? _self._sources
+          : sources // ignore: cast_nullable_to_non_nullable
+              as List<StreamSource>,
+      chapters: freezed == chapters
+          ? _self._chapters
+          : chapters // ignore: cast_nullable_to_non_nullable
+              as List<Chapter>?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
-  const _$Source_ParagraphlistImpl(
+class Source_Paragraphlist extends Source {
+  const Source_Paragraphlist(
       {required final List<Paragraph> paragraphs,
       final List<ImageListAudio>? audio})
       : _paragraphs = paragraphs,
@@ -2462,7 +1672,6 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
         super._();
 
   final List<Paragraph> _paragraphs;
-  @override
   List<Paragraph> get paragraphs {
     if (_paragraphs is EqualUnmodifiableListView) return _paragraphs;
     // ignore: implicit_dynamic_type
@@ -2470,7 +1679,6 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
   }
 
   final List<ImageListAudio>? _audio;
-  @override
   List<ImageListAudio>? get audio {
     final value = _audio;
     if (value == null) return null;
@@ -2479,16 +1687,19 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
     return EqualUnmodifiableListView(value);
   }
 
-  @override
-  String toString() {
-    return 'Source.paragraphlist(paragraphs: $paragraphs, audio: $audio)';
-  }
+  /// Create a copy of Source
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $Source_ParagraphlistCopyWith<Source_Paragraphlist> get copyWith =>
+      _$Source_ParagraphlistCopyWithImpl<Source_Paragraphlist>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Source_ParagraphlistImpl &&
+            other is Source_Paragraphlist &&
             const DeepCollectionEquality()
                 .equals(other._paragraphs, _paragraphs) &&
             const DeepCollectionEquality().equals(other._audio, _audio));
@@ -2500,130 +1711,48 @@ class _$Source_ParagraphlistImpl extends Source_Paragraphlist {
       const DeepCollectionEquality().hash(_paragraphs),
       const DeepCollectionEquality().hash(_audio));
 
+  @override
+  String toString() {
+    return 'Source.paragraphlist(paragraphs: $paragraphs, audio: $audio)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $Source_ParagraphlistCopyWith<$Res>
+    implements $SourceCopyWith<$Res> {
+  factory $Source_ParagraphlistCopyWith(Source_Paragraphlist value,
+          $Res Function(Source_Paragraphlist) _then) =
+      _$Source_ParagraphlistCopyWithImpl;
+  @useResult
+  $Res call({List<Paragraph> paragraphs, List<ImageListAudio>? audio});
+}
+
+/// @nodoc
+class _$Source_ParagraphlistCopyWithImpl<$Res>
+    implements $Source_ParagraphlistCopyWith<$Res> {
+  _$Source_ParagraphlistCopyWithImpl(this._self, this._then);
+
+  final Source_Paragraphlist _self;
+  final $Res Function(Source_Paragraphlist) _then;
+
   /// Create a copy of Source
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$Source_ParagraphlistImplCopyWith<_$Source_ParagraphlistImpl>
-      get copyWith =>
-          __$$Source_ParagraphlistImplCopyWithImpl<_$Source_ParagraphlistImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Link link) epub,
-    required TResult Function(Link link) pdf,
-    required TResult Function(List<Link> links, List<ImageListAudio>? audio)
-        imagelist,
-    required TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)
-        video,
-    required TResult Function(
-            List<StreamSource> sources, List<Chapter>? chapters)
-        audio,
-    required TResult Function(
-            List<Paragraph> paragraphs, List<ImageListAudio>? audio)
-        paragraphlist,
+  $Res call({
+    Object? paragraphs = null,
+    Object? audio = freezed,
   }) {
-    return paragraphlist(paragraphs, this.audio);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Link link)? epub,
-    TResult? Function(Link link)? pdf,
-    TResult? Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult? Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult? Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult? Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-  }) {
-    return paragraphlist?.call(paragraphs, this.audio);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Link link)? epub,
-    TResult Function(Link link)? pdf,
-    TResult Function(List<Link> links, List<ImageListAudio>? audio)? imagelist,
-    TResult Function(List<StreamSource> sources, List<Subtitles> sub,
-            List<Chapter>? chapters)?
-        video,
-    TResult Function(List<StreamSource> sources, List<Chapter>? chapters)?
-        audio,
-    TResult Function(List<Paragraph> paragraphs, List<ImageListAudio>? audio)?
-        paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (paragraphlist != null) {
-      return paragraphlist(paragraphs, this.audio);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Source_Epub value) epub,
-    required TResult Function(Source_Pdf value) pdf,
-    required TResult Function(Source_Imagelist value) imagelist,
-    required TResult Function(Source_Video value) video,
-    required TResult Function(Source_Audio value) audio,
-    required TResult Function(Source_Paragraphlist value) paragraphlist,
-  }) {
-    return paragraphlist(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Source_Epub value)? epub,
-    TResult? Function(Source_Pdf value)? pdf,
-    TResult? Function(Source_Imagelist value)? imagelist,
-    TResult? Function(Source_Video value)? video,
-    TResult? Function(Source_Audio value)? audio,
-    TResult? Function(Source_Paragraphlist value)? paragraphlist,
-  }) {
-    return paragraphlist?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Source_Epub value)? epub,
-    TResult Function(Source_Pdf value)? pdf,
-    TResult Function(Source_Imagelist value)? imagelist,
-    TResult Function(Source_Video value)? video,
-    TResult Function(Source_Audio value)? audio,
-    TResult Function(Source_Paragraphlist value)? paragraphlist,
-    required TResult orElse(),
-  }) {
-    if (paragraphlist != null) {
-      return paragraphlist(this);
-    }
-    return orElse();
+    return _then(Source_Paragraphlist(
+      paragraphs: null == paragraphs
+          ? _self._paragraphs
+          : paragraphs // ignore: cast_nullable_to_non_nullable
+              as List<Paragraph>,
+      audio: freezed == audio
+          ? _self._audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as List<ImageListAudio>?,
+    ));
   }
 }
 
-abstract class Source_Paragraphlist extends Source {
-  const factory Source_Paragraphlist(
-      {required final List<Paragraph> paragraphs,
-      final List<ImageListAudio>? audio}) = _$Source_ParagraphlistImpl;
-  const Source_Paragraphlist._() : super._();
-
-  List<Paragraph> get paragraphs;
-  List<ImageListAudio>? get audio;
-
-  /// Create a copy of Source
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Source_ParagraphlistImplCopyWith<_$Source_ParagraphlistImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,32 +9,147 @@ part of 'auth.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AuthCreds {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AuthCreds);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthCreds()';
+  }
+}
+
+/// @nodoc
+class $AuthCredsCopyWith<$Res> {
+  $AuthCredsCopyWith(AuthCreds _, $Res Function(AuthCreds) __);
+}
+
+/// Adds pattern-matching-related methods to [AuthCreds].
+extension AuthCredsPatterns on AuthCreds {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, List<String>> cookies) cookies,
-    required TResult Function(String key) apiKey,
-    required TResult Function(String username, String password) userPass,
-    required TResult Function(
-            String accessToken, String? refreshToken, int? expiresAt)
-        oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthCreds_Cookies value)? cookies,
+    TResult Function(AuthCreds_ApiKey value)? apiKey,
+    TResult Function(AuthCreds_UserPass value)? userPass,
+    TResult Function(AuthCreds_OAuth value)? oAuth,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies() when cookies != null:
+        return cookies(_that);
+      case AuthCreds_ApiKey() when apiKey != null:
+        return apiKey(_that);
+      case AuthCreds_UserPass() when userPass != null:
+        return userPass(_that);
+      case AuthCreds_OAuth() when oAuth != null:
+        return oAuth(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, List<String>> cookies)? cookies,
-    TResult? Function(String key)? apiKey,
-    TResult? Function(String username, String password)? userPass,
-    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthCreds_Cookies value) cookies,
+    required TResult Function(AuthCreds_ApiKey value) apiKey,
+    required TResult Function(AuthCreds_UserPass value) userPass,
+    required TResult Function(AuthCreds_OAuth value) oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies():
+        return cookies(_that);
+      case AuthCreds_ApiKey():
+        return apiKey(_that);
+      case AuthCreds_UserPass():
+        return userPass(_that);
+      case AuthCreds_OAuth():
+        return oAuth(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthCreds_Cookies value)? cookies,
+    TResult? Function(AuthCreds_ApiKey value)? apiKey,
+    TResult? Function(AuthCreds_UserPass value)? userPass,
+    TResult? Function(AuthCreds_OAuth value)? oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies() when cookies != null:
+        return cookies(_that);
+      case AuthCreds_ApiKey() when apiKey != null:
+        return apiKey(_that);
+      case AuthCreds_UserPass() when userPass != null:
+        return userPass(_that);
+      case AuthCreds_OAuth() when oAuth != null:
+        return oAuth(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Map<String, List<String>> cookies)? cookies,
@@ -43,82 +158,159 @@ mixin _$AuthCreds {
     TResult Function(String accessToken, String? refreshToken, int? expiresAt)?
         oAuth,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies() when cookies != null:
+        return cookies(_that.cookies);
+      case AuthCreds_ApiKey() when apiKey != null:
+        return apiKey(_that.key);
+      case AuthCreds_UserPass() when userPass != null:
+        return userPass(_that.username, _that.password);
+      case AuthCreds_OAuth() when oAuth != null:
+        return oAuth(_that.accessToken, _that.refreshToken, _that.expiresAt);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthCreds_Cookies value) cookies,
-    required TResult Function(AuthCreds_ApiKey value) apiKey,
-    required TResult Function(AuthCreds_UserPass value) userPass,
-    required TResult Function(AuthCreds_OAuth value) oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult when<TResult extends Object?>({
+    required TResult Function(Map<String, List<String>> cookies) cookies,
+    required TResult Function(String key) apiKey,
+    required TResult Function(String username, String password) userPass,
+    required TResult Function(
+            String accessToken, String? refreshToken, int? expiresAt)
+        oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies():
+        return cookies(_that.cookies);
+      case AuthCreds_ApiKey():
+        return apiKey(_that.key);
+      case AuthCreds_UserPass():
+        return userPass(_that.username, _that.password);
+      case AuthCreds_OAuth():
+        return oAuth(_that.accessToken, _that.refreshToken, _that.expiresAt);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthCreds_Cookies value)? cookies,
-    TResult? Function(AuthCreds_ApiKey value)? apiKey,
-    TResult? Function(AuthCreds_UserPass value)? userPass,
-    TResult? Function(AuthCreds_OAuth value)? oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthCreds_Cookies value)? cookies,
-    TResult Function(AuthCreds_ApiKey value)? apiKey,
-    TResult Function(AuthCreds_UserPass value)? userPass,
-    TResult Function(AuthCreds_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Map<String, List<String>> cookies)? cookies,
+    TResult? Function(String key)? apiKey,
+    TResult? Function(String username, String password)? userPass,
+    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
+        oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthCreds_Cookies() when cookies != null:
+        return cookies(_that.cookies);
+      case AuthCreds_ApiKey() when apiKey != null:
+        return apiKey(_that.key);
+      case AuthCreds_UserPass() when userPass != null:
+        return userPass(_that.username, _that.password);
+      case AuthCreds_OAuth() when oAuth != null:
+        return oAuth(_that.accessToken, _that.refreshToken, _that.expiresAt);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $AuthCredsCopyWith<$Res> {
-  factory $AuthCredsCopyWith(AuthCreds value, $Res Function(AuthCreds) then) =
-      _$AuthCredsCopyWithImpl<$Res, AuthCreds>;
-}
 
-/// @nodoc
-class _$AuthCredsCopyWithImpl<$Res, $Val extends AuthCreds>
-    implements $AuthCredsCopyWith<$Res> {
-  _$AuthCredsCopyWithImpl(this._value, this._then);
+class AuthCreds_Cookies extends AuthCreds {
+  const AuthCreds_Cookies({required final Map<String, List<String>> cookies})
+      : _cookies = cookies,
+        super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final Map<String, List<String>> _cookies;
+  Map<String, List<String>> get cookies {
+    if (_cookies is EqualUnmodifiableMapView) return _cookies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_cookies);
+  }
 
   /// Create a copy of AuthCreds
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthCreds_CookiesCopyWith<AuthCreds_Cookies> get copyWith =>
+      _$AuthCreds_CookiesCopyWithImpl<AuthCreds_Cookies>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is AuthCreds_Cookies &&
+            const DeepCollectionEquality().equals(other._cookies, _cookies));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_cookies));
+
+  @override
+  String toString() {
+    return 'AuthCreds.cookies(cookies: $cookies)';
+  }
 }
 
 /// @nodoc
-abstract class _$$AuthCreds_CookiesImplCopyWith<$Res> {
-  factory _$$AuthCreds_CookiesImplCopyWith(_$AuthCreds_CookiesImpl value,
-          $Res Function(_$AuthCreds_CookiesImpl) then) =
-      __$$AuthCreds_CookiesImplCopyWithImpl<$Res>;
+abstract mixin class $AuthCreds_CookiesCopyWith<$Res>
+    implements $AuthCredsCopyWith<$Res> {
+  factory $AuthCreds_CookiesCopyWith(
+          AuthCreds_Cookies value, $Res Function(AuthCreds_Cookies) _then) =
+      _$AuthCreds_CookiesCopyWithImpl;
   @useResult
   $Res call({Map<String, List<String>> cookies});
 }
 
 /// @nodoc
-class __$$AuthCreds_CookiesImplCopyWithImpl<$Res>
-    extends _$AuthCredsCopyWithImpl<$Res, _$AuthCreds_CookiesImpl>
-    implements _$$AuthCreds_CookiesImplCopyWith<$Res> {
-  __$$AuthCreds_CookiesImplCopyWithImpl(_$AuthCreds_CookiesImpl _value,
-      $Res Function(_$AuthCreds_CookiesImpl) _then)
-      : super(_value, _then);
+class _$AuthCreds_CookiesCopyWithImpl<$Res>
+    implements $AuthCreds_CookiesCopyWith<$Res> {
+  _$AuthCreds_CookiesCopyWithImpl(this._self, this._then);
+
+  final AuthCreds_Cookies _self;
+  final $Res Function(AuthCreds_Cookies) _then;
 
   /// Create a copy of AuthCreds
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? cookies = null,
   }) {
-    return _then(_$AuthCreds_CookiesImpl(
+    return _then(AuthCreds_Cookies(
       cookies: null == cookies
-          ? _value._cookies
+          ? _self._cookies
           : cookies // ignore: cast_nullable_to_non_nullable
               as Map<String, List<String>>,
     ));
@@ -127,167 +319,62 @@ class __$$AuthCreds_CookiesImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthCreds_CookiesImpl extends AuthCreds_Cookies {
-  const _$AuthCreds_CookiesImpl(
-      {required final Map<String, List<String>> cookies})
-      : _cookies = cookies,
-        super._();
+class AuthCreds_ApiKey extends AuthCreds {
+  const AuthCreds_ApiKey({required this.key}) : super._();
 
-  final Map<String, List<String>> _cookies;
-  @override
-  Map<String, List<String>> get cookies {
-    if (_cookies is EqualUnmodifiableMapView) return _cookies;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_cookies);
-  }
+  final String key;
 
-  @override
-  String toString() {
-    return 'AuthCreds.cookies(cookies: $cookies)';
-  }
+  /// Create a copy of AuthCreds
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthCreds_ApiKeyCopyWith<AuthCreds_ApiKey> get copyWith =>
+      _$AuthCreds_ApiKeyCopyWithImpl<AuthCreds_ApiKey>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthCreds_CookiesImpl &&
-            const DeepCollectionEquality().equals(other._cookies, _cookies));
+            other is AuthCreds_ApiKey &&
+            (identical(other.key, key) || other.key == key));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_cookies));
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AuthCreds_CookiesImplCopyWith<_$AuthCreds_CookiesImpl> get copyWith =>
-      __$$AuthCreds_CookiesImplCopyWithImpl<_$AuthCreds_CookiesImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, key);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, List<String>> cookies) cookies,
-    required TResult Function(String key) apiKey,
-    required TResult Function(String username, String password) userPass,
-    required TResult Function(
-            String accessToken, String? refreshToken, int? expiresAt)
-        oAuth,
-  }) {
-    return cookies(this.cookies);
+  String toString() {
+    return 'AuthCreds.apiKey(key: $key)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, List<String>> cookies)? cookies,
-    TResult? Function(String key)? apiKey,
-    TResult? Function(String username, String password)? userPass,
-    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-  }) {
-    return cookies?.call(this.cookies);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, List<String>> cookies)? cookies,
-    TResult Function(String key)? apiKey,
-    TResult Function(String username, String password)? userPass,
-    TResult Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (cookies != null) {
-      return cookies(this.cookies);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthCreds_Cookies value) cookies,
-    required TResult Function(AuthCreds_ApiKey value) apiKey,
-    required TResult Function(AuthCreds_UserPass value) userPass,
-    required TResult Function(AuthCreds_OAuth value) oAuth,
-  }) {
-    return cookies(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthCreds_Cookies value)? cookies,
-    TResult? Function(AuthCreds_ApiKey value)? apiKey,
-    TResult? Function(AuthCreds_UserPass value)? userPass,
-    TResult? Function(AuthCreds_OAuth value)? oAuth,
-  }) {
-    return cookies?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthCreds_Cookies value)? cookies,
-    TResult Function(AuthCreds_ApiKey value)? apiKey,
-    TResult Function(AuthCreds_UserPass value)? userPass,
-    TResult Function(AuthCreds_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (cookies != null) {
-      return cookies(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthCreds_Cookies extends AuthCreds {
-  const factory AuthCreds_Cookies(
-          {required final Map<String, List<String>> cookies}) =
-      _$AuthCreds_CookiesImpl;
-  const AuthCreds_Cookies._() : super._();
-
-  Map<String, List<String>> get cookies;
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthCreds_CookiesImplCopyWith<_$AuthCreds_CookiesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthCreds_ApiKeyImplCopyWith<$Res> {
-  factory _$$AuthCreds_ApiKeyImplCopyWith(_$AuthCreds_ApiKeyImpl value,
-          $Res Function(_$AuthCreds_ApiKeyImpl) then) =
-      __$$AuthCreds_ApiKeyImplCopyWithImpl<$Res>;
+abstract mixin class $AuthCreds_ApiKeyCopyWith<$Res>
+    implements $AuthCredsCopyWith<$Res> {
+  factory $AuthCreds_ApiKeyCopyWith(
+          AuthCreds_ApiKey value, $Res Function(AuthCreds_ApiKey) _then) =
+      _$AuthCreds_ApiKeyCopyWithImpl;
   @useResult
   $Res call({String key});
 }
 
 /// @nodoc
-class __$$AuthCreds_ApiKeyImplCopyWithImpl<$Res>
-    extends _$AuthCredsCopyWithImpl<$Res, _$AuthCreds_ApiKeyImpl>
-    implements _$$AuthCreds_ApiKeyImplCopyWith<$Res> {
-  __$$AuthCreds_ApiKeyImplCopyWithImpl(_$AuthCreds_ApiKeyImpl _value,
-      $Res Function(_$AuthCreds_ApiKeyImpl) _then)
-      : super(_value, _then);
+class _$AuthCreds_ApiKeyCopyWithImpl<$Res>
+    implements $AuthCreds_ApiKeyCopyWith<$Res> {
+  _$AuthCreds_ApiKeyCopyWithImpl(this._self, this._then);
+
+  final AuthCreds_ApiKey _self;
+  final $Res Function(AuthCreds_ApiKey) _then;
 
   /// Create a copy of AuthCreds
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? key = null,
   }) {
-    return _then(_$AuthCreds_ApiKeyImpl(
+    return _then(AuthCreds_ApiKey(
       key: null == key
-          ? _value.key
+          ? _self.key
           : key // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -296,190 +383,25 @@ class __$$AuthCreds_ApiKeyImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthCreds_ApiKeyImpl extends AuthCreds_ApiKey {
-  const _$AuthCreds_ApiKeyImpl({required this.key}) : super._();
-
-  @override
-  final String key;
-
-  @override
-  String toString() {
-    return 'AuthCreds.apiKey(key: $key)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AuthCreds_ApiKeyImpl &&
-            (identical(other.key, key) || other.key == key));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, key);
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AuthCreds_ApiKeyImplCopyWith<_$AuthCreds_ApiKeyImpl> get copyWith =>
-      __$$AuthCreds_ApiKeyImplCopyWithImpl<_$AuthCreds_ApiKeyImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, List<String>> cookies) cookies,
-    required TResult Function(String key) apiKey,
-    required TResult Function(String username, String password) userPass,
-    required TResult Function(
-            String accessToken, String? refreshToken, int? expiresAt)
-        oAuth,
-  }) {
-    return apiKey(key);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, List<String>> cookies)? cookies,
-    TResult? Function(String key)? apiKey,
-    TResult? Function(String username, String password)? userPass,
-    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-  }) {
-    return apiKey?.call(key);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, List<String>> cookies)? cookies,
-    TResult Function(String key)? apiKey,
-    TResult Function(String username, String password)? userPass,
-    TResult Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (apiKey != null) {
-      return apiKey(key);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthCreds_Cookies value) cookies,
-    required TResult Function(AuthCreds_ApiKey value) apiKey,
-    required TResult Function(AuthCreds_UserPass value) userPass,
-    required TResult Function(AuthCreds_OAuth value) oAuth,
-  }) {
-    return apiKey(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthCreds_Cookies value)? cookies,
-    TResult? Function(AuthCreds_ApiKey value)? apiKey,
-    TResult? Function(AuthCreds_UserPass value)? userPass,
-    TResult? Function(AuthCreds_OAuth value)? oAuth,
-  }) {
-    return apiKey?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthCreds_Cookies value)? cookies,
-    TResult Function(AuthCreds_ApiKey value)? apiKey,
-    TResult Function(AuthCreds_UserPass value)? userPass,
-    TResult Function(AuthCreds_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (apiKey != null) {
-      return apiKey(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthCreds_ApiKey extends AuthCreds {
-  const factory AuthCreds_ApiKey({required final String key}) =
-      _$AuthCreds_ApiKeyImpl;
-  const AuthCreds_ApiKey._() : super._();
-
-  String get key;
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthCreds_ApiKeyImplCopyWith<_$AuthCreds_ApiKeyImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AuthCreds_UserPassImplCopyWith<$Res> {
-  factory _$$AuthCreds_UserPassImplCopyWith(_$AuthCreds_UserPassImpl value,
-          $Res Function(_$AuthCreds_UserPassImpl) then) =
-      __$$AuthCreds_UserPassImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String username, String password});
-}
-
-/// @nodoc
-class __$$AuthCreds_UserPassImplCopyWithImpl<$Res>
-    extends _$AuthCredsCopyWithImpl<$Res, _$AuthCreds_UserPassImpl>
-    implements _$$AuthCreds_UserPassImplCopyWith<$Res> {
-  __$$AuthCreds_UserPassImplCopyWithImpl(_$AuthCreds_UserPassImpl _value,
-      $Res Function(_$AuthCreds_UserPassImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? username = null,
-    Object? password = null,
-  }) {
-    return _then(_$AuthCreds_UserPassImpl(
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$AuthCreds_UserPassImpl extends AuthCreds_UserPass {
-  const _$AuthCreds_UserPassImpl(
-      {required this.username, required this.password})
+class AuthCreds_UserPass extends AuthCreds {
+  const AuthCreds_UserPass({required this.username, required this.password})
       : super._();
 
-  @override
   final String username;
-  @override
   final String password;
 
-  @override
-  String toString() {
-    return 'AuthCreds.userPass(username: $username, password: $password)';
-  }
+  /// Create a copy of AuthCreds
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthCreds_UserPassCopyWith<AuthCreds_UserPass> get copyWith =>
+      _$AuthCreds_UserPassCopyWithImpl<AuthCreds_UserPass>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthCreds_UserPassImpl &&
+            other is AuthCreds_UserPass &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.password, password) ||
@@ -489,177 +411,73 @@ class _$AuthCreds_UserPassImpl extends AuthCreds_UserPass {
   @override
   int get hashCode => Object.hash(runtimeType, username, password);
 
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$AuthCreds_UserPassImplCopyWith<_$AuthCreds_UserPassImpl> get copyWith =>
-      __$$AuthCreds_UserPassImplCopyWithImpl<_$AuthCreds_UserPassImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, List<String>> cookies) cookies,
-    required TResult Function(String key) apiKey,
-    required TResult Function(String username, String password) userPass,
-    required TResult Function(
-            String accessToken, String? refreshToken, int? expiresAt)
-        oAuth,
-  }) {
-    return userPass(username, password);
+  String toString() {
+    return 'AuthCreds.userPass(username: $username, password: $password)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, List<String>> cookies)? cookies,
-    TResult? Function(String key)? apiKey,
-    TResult? Function(String username, String password)? userPass,
-    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-  }) {
-    return userPass?.call(username, password);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, List<String>> cookies)? cookies,
-    TResult Function(String key)? apiKey,
-    TResult Function(String username, String password)? userPass,
-    TResult Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (userPass != null) {
-      return userPass(username, password);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthCreds_Cookies value) cookies,
-    required TResult Function(AuthCreds_ApiKey value) apiKey,
-    required TResult Function(AuthCreds_UserPass value) userPass,
-    required TResult Function(AuthCreds_OAuth value) oAuth,
-  }) {
-    return userPass(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthCreds_Cookies value)? cookies,
-    TResult? Function(AuthCreds_ApiKey value)? apiKey,
-    TResult? Function(AuthCreds_UserPass value)? userPass,
-    TResult? Function(AuthCreds_OAuth value)? oAuth,
-  }) {
-    return userPass?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthCreds_Cookies value)? cookies,
-    TResult Function(AuthCreds_ApiKey value)? apiKey,
-    TResult Function(AuthCreds_UserPass value)? userPass,
-    TResult Function(AuthCreds_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (userPass != null) {
-      return userPass(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthCreds_UserPass extends AuthCreds {
-  const factory AuthCreds_UserPass(
-      {required final String username,
-      required final String password}) = _$AuthCreds_UserPassImpl;
-  const AuthCreds_UserPass._() : super._();
-
-  String get username;
-  String get password;
-
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthCreds_UserPassImplCopyWith<_$AuthCreds_UserPassImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthCreds_OAuthImplCopyWith<$Res> {
-  factory _$$AuthCreds_OAuthImplCopyWith(_$AuthCreds_OAuthImpl value,
-          $Res Function(_$AuthCreds_OAuthImpl) then) =
-      __$$AuthCreds_OAuthImplCopyWithImpl<$Res>;
+abstract mixin class $AuthCreds_UserPassCopyWith<$Res>
+    implements $AuthCredsCopyWith<$Res> {
+  factory $AuthCreds_UserPassCopyWith(
+          AuthCreds_UserPass value, $Res Function(AuthCreds_UserPass) _then) =
+      _$AuthCreds_UserPassCopyWithImpl;
   @useResult
-  $Res call({String accessToken, String? refreshToken, int? expiresAt});
+  $Res call({String username, String password});
 }
 
 /// @nodoc
-class __$$AuthCreds_OAuthImplCopyWithImpl<$Res>
-    extends _$AuthCredsCopyWithImpl<$Res, _$AuthCreds_OAuthImpl>
-    implements _$$AuthCreds_OAuthImplCopyWith<$Res> {
-  __$$AuthCreds_OAuthImplCopyWithImpl(
-      _$AuthCreds_OAuthImpl _value, $Res Function(_$AuthCreds_OAuthImpl) _then)
-      : super(_value, _then);
+class _$AuthCreds_UserPassCopyWithImpl<$Res>
+    implements $AuthCreds_UserPassCopyWith<$Res> {
+  _$AuthCreds_UserPassCopyWithImpl(this._self, this._then);
+
+  final AuthCreds_UserPass _self;
+  final $Res Function(AuthCreds_UserPass) _then;
 
   /// Create a copy of AuthCreds
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? accessToken = null,
-    Object? refreshToken = freezed,
-    Object? expiresAt = freezed,
+    Object? username = null,
+    Object? password = null,
   }) {
-    return _then(_$AuthCreds_OAuthImpl(
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
+    return _then(AuthCreds_UserPass(
+      username: null == username
+          ? _self.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
-      refreshToken: freezed == refreshToken
-          ? _value.refreshToken
-          : refreshToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      expiresAt: freezed == expiresAt
-          ? _value.expiresAt
-          : expiresAt // ignore: cast_nullable_to_non_nullable
-              as int?,
+      password: null == password
+          ? _self.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 
-class _$AuthCreds_OAuthImpl extends AuthCreds_OAuth {
-  const _$AuthCreds_OAuthImpl(
+class AuthCreds_OAuth extends AuthCreds {
+  const AuthCreds_OAuth(
       {required this.accessToken, this.refreshToken, this.expiresAt})
       : super._();
 
-  @override
   final String accessToken;
-  @override
   final String? refreshToken;
-  @override
   final int? expiresAt;
 
-  @override
-  String toString() {
-    return 'AuthCreds.oAuth(accessToken: $accessToken, refreshToken: $refreshToken, expiresAt: $expiresAt)';
-  }
+  /// Create a copy of AuthCreds
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthCreds_OAuthCopyWith<AuthCreds_OAuth> get copyWith =>
+      _$AuthCreds_OAuthCopyWithImpl<AuthCreds_OAuth>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthCreds_OAuthImpl &&
+            other is AuthCreds_OAuth &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
@@ -672,134 +490,193 @@ class _$AuthCreds_OAuthImpl extends AuthCreds_OAuth {
   int get hashCode =>
       Object.hash(runtimeType, accessToken, refreshToken, expiresAt);
 
-  /// Create a copy of AuthCreds
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$AuthCreds_OAuthImplCopyWith<_$AuthCreds_OAuthImpl> get copyWith =>
-      __$$AuthCreds_OAuthImplCopyWithImpl<_$AuthCreds_OAuthImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, List<String>> cookies) cookies,
-    required TResult Function(String key) apiKey,
-    required TResult Function(String username, String password) userPass,
-    required TResult Function(
-            String accessToken, String? refreshToken, int? expiresAt)
-        oAuth,
-  }) {
-    return oAuth(accessToken, refreshToken, expiresAt);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, List<String>> cookies)? cookies,
-    TResult? Function(String key)? apiKey,
-    TResult? Function(String username, String password)? userPass,
-    TResult? Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-  }) {
-    return oAuth?.call(accessToken, refreshToken, expiresAt);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, List<String>> cookies)? cookies,
-    TResult Function(String key)? apiKey,
-    TResult Function(String username, String password)? userPass,
-    TResult Function(String accessToken, String? refreshToken, int? expiresAt)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (oAuth != null) {
-      return oAuth(accessToken, refreshToken, expiresAt);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthCreds_Cookies value) cookies,
-    required TResult Function(AuthCreds_ApiKey value) apiKey,
-    required TResult Function(AuthCreds_UserPass value) userPass,
-    required TResult Function(AuthCreds_OAuth value) oAuth,
-  }) {
-    return oAuth(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthCreds_Cookies value)? cookies,
-    TResult? Function(AuthCreds_ApiKey value)? apiKey,
-    TResult? Function(AuthCreds_UserPass value)? userPass,
-    TResult? Function(AuthCreds_OAuth value)? oAuth,
-  }) {
-    return oAuth?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthCreds_Cookies value)? cookies,
-    TResult Function(AuthCreds_ApiKey value)? apiKey,
-    TResult Function(AuthCreds_UserPass value)? userPass,
-    TResult Function(AuthCreds_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (oAuth != null) {
-      return oAuth(this);
-    }
-    return orElse();
+  String toString() {
+    return 'AuthCreds.oAuth(accessToken: $accessToken, refreshToken: $refreshToken, expiresAt: $expiresAt)';
   }
 }
 
-abstract class AuthCreds_OAuth extends AuthCreds {
-  const factory AuthCreds_OAuth(
-      {required final String accessToken,
-      final String? refreshToken,
-      final int? expiresAt}) = _$AuthCreds_OAuthImpl;
-  const AuthCreds_OAuth._() : super._();
+/// @nodoc
+abstract mixin class $AuthCreds_OAuthCopyWith<$Res>
+    implements $AuthCredsCopyWith<$Res> {
+  factory $AuthCreds_OAuthCopyWith(
+          AuthCreds_OAuth value, $Res Function(AuthCreds_OAuth) _then) =
+      _$AuthCreds_OAuthCopyWithImpl;
+  @useResult
+  $Res call({String accessToken, String? refreshToken, int? expiresAt});
+}
 
-  String get accessToken;
-  String? get refreshToken;
-  int? get expiresAt;
+/// @nodoc
+class _$AuthCreds_OAuthCopyWithImpl<$Res>
+    implements $AuthCreds_OAuthCopyWith<$Res> {
+  _$AuthCreds_OAuthCopyWithImpl(this._self, this._then);
+
+  final AuthCreds_OAuth _self;
+  final $Res Function(AuthCreds_OAuth) _then;
 
   /// Create a copy of AuthCreds
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthCreds_OAuthImplCopyWith<_$AuthCreds_OAuthImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? accessToken = null,
+    Object? refreshToken = freezed,
+    Object? expiresAt = freezed,
+  }) {
+    return _then(AuthCreds_OAuth(
+      accessToken: null == accessToken
+          ? _self.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: freezed == refreshToken
+          ? _self.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expiresAt: freezed == expiresAt
+          ? _self.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$AuthData {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AuthData);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthData()';
+  }
+}
+
+/// @nodoc
+class $AuthDataCopyWith<$Res> {
+  $AuthDataCopyWith(AuthData _, $Res Function(AuthData) __);
+}
+
+/// Adds pattern-matching-related methods to [AuthData].
+extension AuthDataPatterns on AuthData {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String loginpage, String logonpage) cookie,
-    required TResult Function() apiKey,
-    required TResult Function() userPass,
-    required TResult Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)
-        oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthData_Cookie value)? cookie,
+    TResult Function(AuthData_ApiKey value)? apiKey,
+    TResult Function(AuthData_UserPass value)? userPass,
+    TResult Function(AuthData_OAuth value)? oAuth,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie() when cookie != null:
+        return cookie(_that);
+      case AuthData_ApiKey() when apiKey != null:
+        return apiKey(_that);
+      case AuthData_UserPass() when userPass != null:
+        return userPass(_that);
+      case AuthData_OAuth() when oAuth != null:
+        return oAuth(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String loginpage, String logonpage)? cookie,
-    TResult? Function()? apiKey,
-    TResult? Function()? userPass,
-    TResult? Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)?
-        oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthData_Cookie value) cookie,
+    required TResult Function(AuthData_ApiKey value) apiKey,
+    required TResult Function(AuthData_UserPass value) userPass,
+    required TResult Function(AuthData_OAuth value) oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie():
+        return cookie(_that);
+      case AuthData_ApiKey():
+        return apiKey(_that);
+      case AuthData_UserPass():
+        return userPass(_that);
+      case AuthData_OAuth():
+        return oAuth(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthData_Cookie value)? cookie,
+    TResult? Function(AuthData_ApiKey value)? apiKey,
+    TResult? Function(AuthData_UserPass value)? userPass,
+    TResult? Function(AuthData_OAuth value)? oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie() when cookie != null:
+        return cookie(_that);
+      case AuthData_ApiKey() when apiKey != null:
+        return apiKey(_that);
+      case AuthData_UserPass() when userPass != null:
+        return userPass(_that);
+      case AuthData_OAuth() when oAuth != null:
+        return oAuth(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String loginpage, String logonpage)? cookie,
@@ -809,115 +686,118 @@ mixin _$AuthData {
             String clientSecret, String? scope)?
         oAuth,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthData_Cookie value) cookie,
-    required TResult Function(AuthData_ApiKey value) apiKey,
-    required TResult Function(AuthData_UserPass value) userPass,
-    required TResult Function(AuthData_OAuth value) oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthData_Cookie value)? cookie,
-    TResult? Function(AuthData_ApiKey value)? apiKey,
-    TResult? Function(AuthData_UserPass value)? userPass,
-    TResult? Function(AuthData_OAuth value)? oAuth,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthData_Cookie value)? cookie,
-    TResult Function(AuthData_ApiKey value)? apiKey,
-    TResult Function(AuthData_UserPass value)? userPass,
-    TResult Function(AuthData_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AuthDataCopyWith<$Res> {
-  factory $AuthDataCopyWith(AuthData value, $Res Function(AuthData) then) =
-      _$AuthDataCopyWithImpl<$Res, AuthData>;
-}
-
-/// @nodoc
-class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
-    implements $AuthDataCopyWith<$Res> {
-  _$AuthDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$AuthData_CookieImplCopyWith<$Res> {
-  factory _$$AuthData_CookieImplCopyWith(_$AuthData_CookieImpl value,
-          $Res Function(_$AuthData_CookieImpl) then) =
-      __$$AuthData_CookieImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String loginpage, String logonpage});
-}
-
-/// @nodoc
-class __$$AuthData_CookieImplCopyWithImpl<$Res>
-    extends _$AuthDataCopyWithImpl<$Res, _$AuthData_CookieImpl>
-    implements _$$AuthData_CookieImplCopyWith<$Res> {
-  __$$AuthData_CookieImplCopyWithImpl(
-      _$AuthData_CookieImpl _value, $Res Function(_$AuthData_CookieImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? loginpage = null,
-    Object? logonpage = null,
   }) {
-    return _then(_$AuthData_CookieImpl(
-      loginpage: null == loginpage
-          ? _value.loginpage
-          : loginpage // ignore: cast_nullable_to_non_nullable
-              as String,
-      logonpage: null == logonpage
-          ? _value.logonpage
-          : logonpage // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie() when cookie != null:
+        return cookie(_that.loginpage, _that.logonpage);
+      case AuthData_ApiKey() when apiKey != null:
+        return apiKey();
+      case AuthData_UserPass() when userPass != null:
+        return userPass();
+      case AuthData_OAuth() when oAuth != null:
+        return oAuth(_that.authorizationUrl, _that.tokenUrl, _that.clientId,
+            _that.clientSecret, _that.scope);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String loginpage, String logonpage) cookie,
+    required TResult Function() apiKey,
+    required TResult Function() userPass,
+    required TResult Function(String authorizationUrl, String? tokenUrl,
+            String clientId, String clientSecret, String? scope)
+        oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie():
+        return cookie(_that.loginpage, _that.logonpage);
+      case AuthData_ApiKey():
+        return apiKey();
+      case AuthData_UserPass():
+        return userPass();
+      case AuthData_OAuth():
+        return oAuth(_that.authorizationUrl, _that.tokenUrl, _that.clientId,
+            _that.clientSecret, _that.scope);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String loginpage, String logonpage)? cookie,
+    TResult? Function()? apiKey,
+    TResult? Function()? userPass,
+    TResult? Function(String authorizationUrl, String? tokenUrl,
+            String clientId, String clientSecret, String? scope)?
+        oAuth,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case AuthData_Cookie() when cookie != null:
+        return cookie(_that.loginpage, _that.logonpage);
+      case AuthData_ApiKey() when apiKey != null:
+        return apiKey();
+      case AuthData_UserPass() when userPass != null:
+        return userPass();
+      case AuthData_OAuth() when oAuth != null:
+        return oAuth(_that.authorizationUrl, _that.tokenUrl, _that.clientId,
+            _that.clientSecret, _that.scope);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$AuthData_CookieImpl extends AuthData_Cookie {
-  const _$AuthData_CookieImpl(
-      {required this.loginpage, required this.logonpage})
+class AuthData_Cookie extends AuthData {
+  const AuthData_Cookie({required this.loginpage, required this.logonpage})
       : super._();
 
-  @override
   final String loginpage;
-  @override
   final String logonpage;
 
-  @override
-  String toString() {
-    return 'AuthData.cookie(loginpage: $loginpage, logonpage: $logonpage)';
-  }
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthData_CookieCopyWith<AuthData_Cookie> get copyWith =>
+      _$AuthData_CookieCopyWithImpl<AuthData_Cookie>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthData_CookieImpl &&
+            other is AuthData_Cookie &&
             (identical(other.loginpage, loginpage) ||
                 other.loginpage == loginpage) &&
             (identical(other.logonpage, logonpage) ||
@@ -927,422 +807,94 @@ class _$AuthData_CookieImpl extends AuthData_Cookie {
   @override
   int get hashCode => Object.hash(runtimeType, loginpage, logonpage);
 
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AuthData_CookieImplCopyWith<_$AuthData_CookieImpl> get copyWith =>
-      __$$AuthData_CookieImplCopyWithImpl<_$AuthData_CookieImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String loginpage, String logonpage) cookie,
-    required TResult Function() apiKey,
-    required TResult Function() userPass,
-    required TResult Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)
-        oAuth,
-  }) {
-    return cookie(loginpage, logonpage);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String loginpage, String logonpage)? cookie,
-    TResult? Function()? apiKey,
-    TResult? Function()? userPass,
-    TResult? Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)?
-        oAuth,
-  }) {
-    return cookie?.call(loginpage, logonpage);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String loginpage, String logonpage)? cookie,
-    TResult Function()? apiKey,
-    TResult Function()? userPass,
-    TResult Function(String authorizationUrl, String? tokenUrl, String clientId,
-            String clientSecret, String? scope)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (cookie != null) {
-      return cookie(loginpage, logonpage);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthData_Cookie value) cookie,
-    required TResult Function(AuthData_ApiKey value) apiKey,
-    required TResult Function(AuthData_UserPass value) userPass,
-    required TResult Function(AuthData_OAuth value) oAuth,
-  }) {
-    return cookie(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthData_Cookie value)? cookie,
-    TResult? Function(AuthData_ApiKey value)? apiKey,
-    TResult? Function(AuthData_UserPass value)? userPass,
-    TResult? Function(AuthData_OAuth value)? oAuth,
-  }) {
-    return cookie?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthData_Cookie value)? cookie,
-    TResult Function(AuthData_ApiKey value)? apiKey,
-    TResult Function(AuthData_UserPass value)? userPass,
-    TResult Function(AuthData_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (cookie != null) {
-      return cookie(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthData_Cookie extends AuthData {
-  const factory AuthData_Cookie(
-      {required final String loginpage,
-      required final String logonpage}) = _$AuthData_CookieImpl;
-  const AuthData_Cookie._() : super._();
-
-  String get loginpage;
-  String get logonpage;
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthData_CookieImplCopyWith<_$AuthData_CookieImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AuthData_ApiKeyImplCopyWith<$Res> {
-  factory _$$AuthData_ApiKeyImplCopyWith(_$AuthData_ApiKeyImpl value,
-          $Res Function(_$AuthData_ApiKeyImpl) then) =
-      __$$AuthData_ApiKeyImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AuthData_ApiKeyImplCopyWithImpl<$Res>
-    extends _$AuthDataCopyWithImpl<$Res, _$AuthData_ApiKeyImpl>
-    implements _$$AuthData_ApiKeyImplCopyWith<$Res> {
-  __$$AuthData_ApiKeyImplCopyWithImpl(
-      _$AuthData_ApiKeyImpl _value, $Res Function(_$AuthData_ApiKeyImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$AuthData_ApiKeyImpl extends AuthData_ApiKey {
-  const _$AuthData_ApiKeyImpl() : super._();
-
   @override
   String toString() {
-    return 'AuthData.apiKey()';
+    return 'AuthData.cookie(loginpage: $loginpage, logonpage: $logonpage)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthData_ApiKeyImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String loginpage, String logonpage) cookie,
-    required TResult Function() apiKey,
-    required TResult Function() userPass,
-    required TResult Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)
-        oAuth,
-  }) {
-    return apiKey();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String loginpage, String logonpage)? cookie,
-    TResult? Function()? apiKey,
-    TResult? Function()? userPass,
-    TResult? Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)?
-        oAuth,
-  }) {
-    return apiKey?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String loginpage, String logonpage)? cookie,
-    TResult Function()? apiKey,
-    TResult Function()? userPass,
-    TResult Function(String authorizationUrl, String? tokenUrl, String clientId,
-            String clientSecret, String? scope)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (apiKey != null) {
-      return apiKey();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthData_Cookie value) cookie,
-    required TResult Function(AuthData_ApiKey value) apiKey,
-    required TResult Function(AuthData_UserPass value) userPass,
-    required TResult Function(AuthData_OAuth value) oAuth,
-  }) {
-    return apiKey(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthData_Cookie value)? cookie,
-    TResult? Function(AuthData_ApiKey value)? apiKey,
-    TResult? Function(AuthData_UserPass value)? userPass,
-    TResult? Function(AuthData_OAuth value)? oAuth,
-  }) {
-    return apiKey?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthData_Cookie value)? cookie,
-    TResult Function(AuthData_ApiKey value)? apiKey,
-    TResult Function(AuthData_UserPass value)? userPass,
-    TResult Function(AuthData_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (apiKey != null) {
-      return apiKey(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthData_ApiKey extends AuthData {
-  const factory AuthData_ApiKey() = _$AuthData_ApiKeyImpl;
-  const AuthData_ApiKey._() : super._();
 }
 
 /// @nodoc
-abstract class _$$AuthData_UserPassImplCopyWith<$Res> {
-  factory _$$AuthData_UserPassImplCopyWith(_$AuthData_UserPassImpl value,
-          $Res Function(_$AuthData_UserPassImpl) then) =
-      __$$AuthData_UserPassImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AuthData_UserPassImplCopyWithImpl<$Res>
-    extends _$AuthDataCopyWithImpl<$Res, _$AuthData_UserPassImpl>
-    implements _$$AuthData_UserPassImplCopyWith<$Res> {
-  __$$AuthData_UserPassImplCopyWithImpl(_$AuthData_UserPassImpl _value,
-      $Res Function(_$AuthData_UserPassImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$AuthData_UserPassImpl extends AuthData_UserPass {
-  const _$AuthData_UserPassImpl() : super._();
-
-  @override
-  String toString() {
-    return 'AuthData.userPass()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthData_UserPassImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String loginpage, String logonpage) cookie,
-    required TResult Function() apiKey,
-    required TResult Function() userPass,
-    required TResult Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)
-        oAuth,
-  }) {
-    return userPass();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String loginpage, String logonpage)? cookie,
-    TResult? Function()? apiKey,
-    TResult? Function()? userPass,
-    TResult? Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)?
-        oAuth,
-  }) {
-    return userPass?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String loginpage, String logonpage)? cookie,
-    TResult Function()? apiKey,
-    TResult Function()? userPass,
-    TResult Function(String authorizationUrl, String? tokenUrl, String clientId,
-            String clientSecret, String? scope)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (userPass != null) {
-      return userPass();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthData_Cookie value) cookie,
-    required TResult Function(AuthData_ApiKey value) apiKey,
-    required TResult Function(AuthData_UserPass value) userPass,
-    required TResult Function(AuthData_OAuth value) oAuth,
-  }) {
-    return userPass(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthData_Cookie value)? cookie,
-    TResult? Function(AuthData_ApiKey value)? apiKey,
-    TResult? Function(AuthData_UserPass value)? userPass,
-    TResult? Function(AuthData_OAuth value)? oAuth,
-  }) {
-    return userPass?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthData_Cookie value)? cookie,
-    TResult Function(AuthData_ApiKey value)? apiKey,
-    TResult Function(AuthData_UserPass value)? userPass,
-    TResult Function(AuthData_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (userPass != null) {
-      return userPass(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthData_UserPass extends AuthData {
-  const factory AuthData_UserPass() = _$AuthData_UserPassImpl;
-  const AuthData_UserPass._() : super._();
-}
-
-/// @nodoc
-abstract class _$$AuthData_OAuthImplCopyWith<$Res> {
-  factory _$$AuthData_OAuthImplCopyWith(_$AuthData_OAuthImpl value,
-          $Res Function(_$AuthData_OAuthImpl) then) =
-      __$$AuthData_OAuthImplCopyWithImpl<$Res>;
+abstract mixin class $AuthData_CookieCopyWith<$Res>
+    implements $AuthDataCopyWith<$Res> {
+  factory $AuthData_CookieCopyWith(
+          AuthData_Cookie value, $Res Function(AuthData_Cookie) _then) =
+      _$AuthData_CookieCopyWithImpl;
   @useResult
-  $Res call(
-      {String authorizationUrl,
-      String? tokenUrl,
-      String clientId,
-      String clientSecret,
-      String? scope});
+  $Res call({String loginpage, String logonpage});
 }
 
 /// @nodoc
-class __$$AuthData_OAuthImplCopyWithImpl<$Res>
-    extends _$AuthDataCopyWithImpl<$Res, _$AuthData_OAuthImpl>
-    implements _$$AuthData_OAuthImplCopyWith<$Res> {
-  __$$AuthData_OAuthImplCopyWithImpl(
-      _$AuthData_OAuthImpl _value, $Res Function(_$AuthData_OAuthImpl) _then)
-      : super(_value, _then);
+class _$AuthData_CookieCopyWithImpl<$Res>
+    implements $AuthData_CookieCopyWith<$Res> {
+  _$AuthData_CookieCopyWithImpl(this._self, this._then);
+
+  final AuthData_Cookie _self;
+  final $Res Function(AuthData_Cookie) _then;
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? authorizationUrl = null,
-    Object? tokenUrl = freezed,
-    Object? clientId = null,
-    Object? clientSecret = null,
-    Object? scope = freezed,
+    Object? loginpage = null,
+    Object? logonpage = null,
   }) {
-    return _then(_$AuthData_OAuthImpl(
-      authorizationUrl: null == authorizationUrl
-          ? _value.authorizationUrl
-          : authorizationUrl // ignore: cast_nullable_to_non_nullable
+    return _then(AuthData_Cookie(
+      loginpage: null == loginpage
+          ? _self.loginpage
+          : loginpage // ignore: cast_nullable_to_non_nullable
               as String,
-      tokenUrl: freezed == tokenUrl
-          ? _value.tokenUrl
-          : tokenUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      clientId: null == clientId
-          ? _value.clientId
-          : clientId // ignore: cast_nullable_to_non_nullable
+      logonpage: null == logonpage
+          ? _self.logonpage
+          : logonpage // ignore: cast_nullable_to_non_nullable
               as String,
-      clientSecret: null == clientSecret
-          ? _value.clientSecret
-          : clientSecret // ignore: cast_nullable_to_non_nullable
-              as String,
-      scope: freezed == scope
-          ? _value.scope
-          : scope // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$AuthData_OAuthImpl extends AuthData_OAuth {
-  const _$AuthData_OAuthImpl(
+class AuthData_ApiKey extends AuthData {
+  const AuthData_ApiKey() : super._();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AuthData_ApiKey);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthData.apiKey()';
+  }
+}
+
+/// @nodoc
+
+class AuthData_UserPass extends AuthData {
+  const AuthData_UserPass() : super._();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AuthData_UserPass);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthData.userPass()';
+  }
+}
+
+/// @nodoc
+
+class AuthData_OAuth extends AuthData {
+  const AuthData_OAuth(
       {required this.authorizationUrl,
       this.tokenUrl,
       required this.clientId,
@@ -1350,27 +902,24 @@ class _$AuthData_OAuthImpl extends AuthData_OAuth {
       this.scope})
       : super._();
 
-  @override
   final String authorizationUrl;
-  @override
   final String? tokenUrl;
-  @override
   final String clientId;
-  @override
   final String clientSecret;
-  @override
   final String? scope;
 
-  @override
-  String toString() {
-    return 'AuthData.oAuth(authorizationUrl: $authorizationUrl, tokenUrl: $tokenUrl, clientId: $clientId, clientSecret: $clientSecret, scope: $scope)';
-  }
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthData_OAuthCopyWith<AuthData_OAuth> get copyWith =>
+      _$AuthData_OAuthCopyWithImpl<AuthData_OAuth>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthData_OAuthImpl &&
+            other is AuthData_OAuth &&
             (identical(other.authorizationUrl, authorizationUrl) ||
                 other.authorizationUrl == authorizationUrl) &&
             (identical(other.tokenUrl, tokenUrl) ||
@@ -1386,115 +935,68 @@ class _$AuthData_OAuthImpl extends AuthData_OAuth {
   int get hashCode => Object.hash(
       runtimeType, authorizationUrl, tokenUrl, clientId, clientSecret, scope);
 
+  @override
+  String toString() {
+    return 'AuthData.oAuth(authorizationUrl: $authorizationUrl, tokenUrl: $tokenUrl, clientId: $clientId, clientSecret: $clientSecret, scope: $scope)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $AuthData_OAuthCopyWith<$Res>
+    implements $AuthDataCopyWith<$Res> {
+  factory $AuthData_OAuthCopyWith(
+          AuthData_OAuth value, $Res Function(AuthData_OAuth) _then) =
+      _$AuthData_OAuthCopyWithImpl;
+  @useResult
+  $Res call(
+      {String authorizationUrl,
+      String? tokenUrl,
+      String clientId,
+      String clientSecret,
+      String? scope});
+}
+
+/// @nodoc
+class _$AuthData_OAuthCopyWithImpl<$Res>
+    implements $AuthData_OAuthCopyWith<$Res> {
+  _$AuthData_OAuthCopyWithImpl(this._self, this._then);
+
+  final AuthData_OAuth _self;
+  final $Res Function(AuthData_OAuth) _then;
+
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$AuthData_OAuthImplCopyWith<_$AuthData_OAuthImpl> get copyWith =>
-      __$$AuthData_OAuthImplCopyWithImpl<_$AuthData_OAuthImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String loginpage, String logonpage) cookie,
-    required TResult Function() apiKey,
-    required TResult Function() userPass,
-    required TResult Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)
-        oAuth,
+  $Res call({
+    Object? authorizationUrl = null,
+    Object? tokenUrl = freezed,
+    Object? clientId = null,
+    Object? clientSecret = null,
+    Object? scope = freezed,
   }) {
-    return oAuth(authorizationUrl, tokenUrl, clientId, clientSecret, scope);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String loginpage, String logonpage)? cookie,
-    TResult? Function()? apiKey,
-    TResult? Function()? userPass,
-    TResult? Function(String authorizationUrl, String? tokenUrl,
-            String clientId, String clientSecret, String? scope)?
-        oAuth,
-  }) {
-    return oAuth?.call(
-        authorizationUrl, tokenUrl, clientId, clientSecret, scope);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String loginpage, String logonpage)? cookie,
-    TResult Function()? apiKey,
-    TResult Function()? userPass,
-    TResult Function(String authorizationUrl, String? tokenUrl, String clientId,
-            String clientSecret, String? scope)?
-        oAuth,
-    required TResult orElse(),
-  }) {
-    if (oAuth != null) {
-      return oAuth(authorizationUrl, tokenUrl, clientId, clientSecret, scope);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthData_Cookie value) cookie,
-    required TResult Function(AuthData_ApiKey value) apiKey,
-    required TResult Function(AuthData_UserPass value) userPass,
-    required TResult Function(AuthData_OAuth value) oAuth,
-  }) {
-    return oAuth(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthData_Cookie value)? cookie,
-    TResult? Function(AuthData_ApiKey value)? apiKey,
-    TResult? Function(AuthData_UserPass value)? userPass,
-    TResult? Function(AuthData_OAuth value)? oAuth,
-  }) {
-    return oAuth?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthData_Cookie value)? cookie,
-    TResult Function(AuthData_ApiKey value)? apiKey,
-    TResult Function(AuthData_UserPass value)? userPass,
-    TResult Function(AuthData_OAuth value)? oAuth,
-    required TResult orElse(),
-  }) {
-    if (oAuth != null) {
-      return oAuth(this);
-    }
-    return orElse();
+    return _then(AuthData_OAuth(
+      authorizationUrl: null == authorizationUrl
+          ? _self.authorizationUrl
+          : authorizationUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      tokenUrl: freezed == tokenUrl
+          ? _self.tokenUrl
+          : tokenUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      clientId: null == clientId
+          ? _self.clientId
+          : clientId // ignore: cast_nullable_to_non_nullable
+              as String,
+      clientSecret: null == clientSecret
+          ? _self.clientSecret
+          : clientSecret // ignore: cast_nullable_to_non_nullable
+              as String,
+      scope: freezed == scope
+          ? _self.scope
+          : scope // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
-abstract class AuthData_OAuth extends AuthData {
-  const factory AuthData_OAuth(
-      {required final String authorizationUrl,
-      final String? tokenUrl,
-      required final String clientId,
-      required final String clientSecret,
-      final String? scope}) = _$AuthData_OAuthImpl;
-  const AuthData_OAuth._() : super._();
-
-  String get authorizationUrl;
-  String? get tokenUrl;
-  String get clientId;
-  String get clientSecret;
-  String? get scope;
-
-  /// Create a copy of AuthData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthData_OAuthImplCopyWith<_$AuthData_OAuthImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

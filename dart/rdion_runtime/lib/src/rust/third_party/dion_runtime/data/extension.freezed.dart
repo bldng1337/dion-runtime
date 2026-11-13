@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,35 +9,149 @@ part of 'extension.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ExtensionType {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is ExtensionType);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ExtensionType()';
+  }
+}
+
+/// @nodoc
+class $ExtensionTypeCopyWith<$Res> {
+  $ExtensionTypeCopyWith(ExtensionType _, $Res Function(ExtensionType) __);
+}
+
+/// Adds pattern-matching-related methods to [ExtensionType].
+extension ExtensionTypePatterns on ExtensionType {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
-        sourceProcessor,
-    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
-        entryProcessor,
-    required TResult Function(List<String> urlPatterns) urlHandler,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
+    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
+    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
+    TResult Function(ExtensionType_URLHandler value)? urlHandler,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider() when entryProvider != null:
+        return entryProvider(_that);
+      case ExtensionType_SourceProcessor() when sourceProcessor != null:
+        return sourceProcessor(_that);
+      case ExtensionType_EntryProcessor() when entryProcessor != null:
+        return entryProcessor(_that);
+      case ExtensionType_URLHandler() when urlHandler != null:
+        return urlHandler(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+  TResult map<TResult extends Object?>({
+    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
+    required TResult Function(ExtensionType_SourceProcessor value)
         sourceProcessor,
-    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
+    required TResult Function(ExtensionType_EntryProcessor value)
         entryProcessor,
-    TResult? Function(List<String> urlPatterns)? urlHandler,
-  }) =>
-      throw _privateConstructorUsedError;
+    required TResult Function(ExtensionType_URLHandler value) urlHandler,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider():
+        return entryProvider(_that);
+      case ExtensionType_SourceProcessor():
+        return sourceProcessor(_that);
+      case ExtensionType_EntryProcessor():
+        return entryProcessor(_that);
+      case ExtensionType_URLHandler():
+        return urlHandler(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
+    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
+    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
+    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider() when entryProvider != null:
+        return entryProvider(_that);
+      case ExtensionType_SourceProcessor() when sourceProcessor != null:
+        return sourceProcessor(_that);
+      case ExtensionType_EntryProcessor() when entryProcessor != null:
+        return entryProcessor(_that);
+      case ExtensionType_URLHandler() when urlHandler != null:
+        return urlHandler(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasSearch)? entryProvider,
@@ -47,87 +161,160 @@ mixin _$ExtensionType {
         entryProcessor,
     TResult Function(List<String> urlPatterns)? urlHandler,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider() when entryProvider != null:
+        return entryProvider(_that.hasSearch);
+      case ExtensionType_SourceProcessor() when sourceProcessor != null:
+        return sourceProcessor(_that.sourcetypes, _that.opentype);
+      case ExtensionType_EntryProcessor() when entryProcessor != null:
+        return entryProcessor(
+            _that.triggerMapEntry, _that.triggerOnEntryActivity);
+      case ExtensionType_URLHandler() when urlHandler != null:
+        return urlHandler(_that.urlPatterns);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
-    required TResult Function(ExtensionType_SourceProcessor value)
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool hasSearch) entryProvider,
+    required TResult Function(
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
         sourceProcessor,
-    required TResult Function(ExtensionType_EntryProcessor value)
+    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
         entryProcessor,
-    required TResult Function(ExtensionType_URLHandler value) urlHandler,
-  }) =>
-      throw _privateConstructorUsedError;
+    required TResult Function(List<String> urlPatterns) urlHandler,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider():
+        return entryProvider(_that.hasSearch);
+      case ExtensionType_SourceProcessor():
+        return sourceProcessor(_that.sourcetypes, _that.opentype);
+      case ExtensionType_EntryProcessor():
+        return entryProcessor(
+            _that.triggerMapEntry, _that.triggerOnEntryActivity);
+      case ExtensionType_URLHandler():
+        return urlHandler(_that.urlPatterns);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult Function(ExtensionType_URLHandler value)? urlHandler,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool hasSearch)? entryProvider,
+    TResult? Function(
+            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
+        sourceProcessor,
+    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
+        entryProcessor,
+    TResult? Function(List<String> urlPatterns)? urlHandler,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ExtensionType_EntryProvider() when entryProvider != null:
+        return entryProvider(_that.hasSearch);
+      case ExtensionType_SourceProcessor() when sourceProcessor != null:
+        return sourceProcessor(_that.sourcetypes, _that.opentype);
+      case ExtensionType_EntryProcessor() when entryProcessor != null:
+        return entryProcessor(
+            _that.triggerMapEntry, _that.triggerOnEntryActivity);
+      case ExtensionType_URLHandler() when urlHandler != null:
+        return urlHandler(_that.urlPatterns);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $ExtensionTypeCopyWith<$Res> {
-  factory $ExtensionTypeCopyWith(
-          ExtensionType value, $Res Function(ExtensionType) then) =
-      _$ExtensionTypeCopyWithImpl<$Res, ExtensionType>;
-}
 
-/// @nodoc
-class _$ExtensionTypeCopyWithImpl<$Res, $Val extends ExtensionType>
-    implements $ExtensionTypeCopyWith<$Res> {
-  _$ExtensionTypeCopyWithImpl(this._value, this._then);
+class ExtensionType_EntryProvider extends ExtensionType {
+  const ExtensionType_EntryProvider({required this.hasSearch}) : super._();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final bool hasSearch;
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ExtensionType_EntryProviderCopyWith<ExtensionType_EntryProvider>
+      get copyWith => _$ExtensionType_EntryProviderCopyWithImpl<
+          ExtensionType_EntryProvider>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ExtensionType_EntryProvider &&
+            (identical(other.hasSearch, hasSearch) ||
+                other.hasSearch == hasSearch));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, hasSearch);
+
+  @override
+  String toString() {
+    return 'ExtensionType.entryProvider(hasSearch: $hasSearch)';
+  }
 }
 
 /// @nodoc
-abstract class _$$ExtensionType_EntryProviderImplCopyWith<$Res> {
-  factory _$$ExtensionType_EntryProviderImplCopyWith(
-          _$ExtensionType_EntryProviderImpl value,
-          $Res Function(_$ExtensionType_EntryProviderImpl) then) =
-      __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>;
+abstract mixin class $ExtensionType_EntryProviderCopyWith<$Res>
+    implements $ExtensionTypeCopyWith<$Res> {
+  factory $ExtensionType_EntryProviderCopyWith(
+          ExtensionType_EntryProvider value,
+          $Res Function(ExtensionType_EntryProvider) _then) =
+      _$ExtensionType_EntryProviderCopyWithImpl;
   @useResult
   $Res call({bool hasSearch});
 }
 
 /// @nodoc
-class __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>
-    extends _$ExtensionTypeCopyWithImpl<$Res, _$ExtensionType_EntryProviderImpl>
-    implements _$$ExtensionType_EntryProviderImplCopyWith<$Res> {
-  __$$ExtensionType_EntryProviderImplCopyWithImpl(
-      _$ExtensionType_EntryProviderImpl _value,
-      $Res Function(_$ExtensionType_EntryProviderImpl) _then)
-      : super(_value, _then);
+class _$ExtensionType_EntryProviderCopyWithImpl<$Res>
+    implements $ExtensionType_EntryProviderCopyWith<$Res> {
+  _$ExtensionType_EntryProviderCopyWithImpl(this._self, this._then);
+
+  final ExtensionType_EntryProvider _self;
+  final $Res Function(ExtensionType_EntryProvider) _then;
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? hasSearch = null,
   }) {
-    return _then(_$ExtensionType_EntryProviderImpl(
+    return _then(ExtensionType_EntryProvider(
       hasSearch: null == hasSearch
-          ? _value.hasSearch
+          ? _self.hasSearch
           : hasSearch // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
@@ -136,184 +323,8 @@ class __$$ExtensionType_EntryProviderImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ExtensionType_EntryProviderImpl extends ExtensionType_EntryProvider {
-  const _$ExtensionType_EntryProviderImpl({required this.hasSearch})
-      : super._();
-
-  @override
-  final bool hasSearch;
-
-  @override
-  String toString() {
-    return 'ExtensionType.entryProvider(hasSearch: $hasSearch)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_EntryProviderImpl &&
-            (identical(other.hasSearch, hasSearch) ||
-                other.hasSearch == hasSearch));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, hasSearch);
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ExtensionType_EntryProviderImplCopyWith<_$ExtensionType_EntryProviderImpl>
-      get copyWith => __$$ExtensionType_EntryProviderImplCopyWithImpl<
-          _$ExtensionType_EntryProviderImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
-        sourceProcessor,
-    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
-        entryProcessor,
-    required TResult Function(List<String> urlPatterns) urlHandler,
-  }) {
-    return entryProvider(hasSearch);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult? Function(List<String> urlPatterns)? urlHandler,
-  }) {
-    return entryProvider?.call(hasSearch);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult Function(List<String> urlPatterns)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (entryProvider != null) {
-      return entryProvider(hasSearch);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
-    required TResult Function(ExtensionType_SourceProcessor value)
-        sourceProcessor,
-    required TResult Function(ExtensionType_EntryProcessor value)
-        entryProcessor,
-    required TResult Function(ExtensionType_URLHandler value) urlHandler,
-  }) {
-    return entryProvider(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
-  }) {
-    return entryProvider?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult Function(ExtensionType_URLHandler value)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (entryProvider != null) {
-      return entryProvider(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ExtensionType_EntryProvider extends ExtensionType {
-  const factory ExtensionType_EntryProvider({required final bool hasSearch}) =
-      _$ExtensionType_EntryProviderImpl;
-  const ExtensionType_EntryProvider._() : super._();
-
-  bool get hasSearch;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_EntryProviderImplCopyWith<_$ExtensionType_EntryProviderImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ExtensionType_SourceProcessorImplCopyWith<$Res> {
-  factory _$$ExtensionType_SourceProcessorImplCopyWith(
-          _$ExtensionType_SourceProcessorImpl value,
-          $Res Function(_$ExtensionType_SourceProcessorImpl) then) =
-      __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Set<SourceType> sourcetypes, Set<SourceOpenType> opentype});
-}
-
-/// @nodoc
-class __$$ExtensionType_SourceProcessorImplCopyWithImpl<$Res>
-    extends _$ExtensionTypeCopyWithImpl<$Res,
-        _$ExtensionType_SourceProcessorImpl>
-    implements _$$ExtensionType_SourceProcessorImplCopyWith<$Res> {
-  __$$ExtensionType_SourceProcessorImplCopyWithImpl(
-      _$ExtensionType_SourceProcessorImpl _value,
-      $Res Function(_$ExtensionType_SourceProcessorImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? sourcetypes = null,
-    Object? opentype = null,
-  }) {
-    return _then(_$ExtensionType_SourceProcessorImpl(
-      sourcetypes: null == sourcetypes
-          ? _value._sourcetypes
-          : sourcetypes // ignore: cast_nullable_to_non_nullable
-              as Set<SourceType>,
-      opentype: null == opentype
-          ? _value._opentype
-          : opentype // ignore: cast_nullable_to_non_nullable
-              as Set<SourceOpenType>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ExtensionType_SourceProcessorImpl
-    extends ExtensionType_SourceProcessor {
-  const _$ExtensionType_SourceProcessorImpl(
+class ExtensionType_SourceProcessor extends ExtensionType {
+  const ExtensionType_SourceProcessor(
       {required final Set<SourceType> sourcetypes,
       required final Set<SourceOpenType> opentype})
       : _sourcetypes = sourcetypes,
@@ -321,7 +332,6 @@ class _$ExtensionType_SourceProcessorImpl
         super._();
 
   final Set<SourceType> _sourcetypes;
-  @override
   Set<SourceType> get sourcetypes {
     if (_sourcetypes is EqualUnmodifiableSetView) return _sourcetypes;
     // ignore: implicit_dynamic_type
@@ -329,23 +339,25 @@ class _$ExtensionType_SourceProcessorImpl
   }
 
   final Set<SourceOpenType> _opentype;
-  @override
   Set<SourceOpenType> get opentype {
     if (_opentype is EqualUnmodifiableSetView) return _opentype;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableSetView(_opentype);
   }
 
-  @override
-  String toString() {
-    return 'ExtensionType.sourceProcessor(sourcetypes: $sourcetypes, opentype: $opentype)';
-  }
+  /// Create a copy of ExtensionType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ExtensionType_SourceProcessorCopyWith<ExtensionType_SourceProcessor>
+      get copyWith => _$ExtensionType_SourceProcessorCopyWithImpl<
+          ExtensionType_SourceProcessor>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_SourceProcessorImpl &&
+            other is ExtensionType_SourceProcessor &&
             const DeepCollectionEquality()
                 .equals(other._sourcetypes, _sourcetypes) &&
             const DeepCollectionEquality().equals(other._opentype, _opentype));
@@ -357,182 +369,74 @@ class _$ExtensionType_SourceProcessorImpl
       const DeepCollectionEquality().hash(_sourcetypes),
       const DeepCollectionEquality().hash(_opentype));
 
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ExtensionType_SourceProcessorImplCopyWith<
-          _$ExtensionType_SourceProcessorImpl>
-      get copyWith => __$$ExtensionType_SourceProcessorImplCopyWithImpl<
-          _$ExtensionType_SourceProcessorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
-        sourceProcessor,
-    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
-        entryProcessor,
-    required TResult Function(List<String> urlPatterns) urlHandler,
-  }) {
-    return sourceProcessor(sourcetypes, opentype);
+  String toString() {
+    return 'ExtensionType.sourceProcessor(sourcetypes: $sourcetypes, opentype: $opentype)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult? Function(List<String> urlPatterns)? urlHandler,
-  }) {
-    return sourceProcessor?.call(sourcetypes, opentype);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult Function(List<String> urlPatterns)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (sourceProcessor != null) {
-      return sourceProcessor(sourcetypes, opentype);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
-    required TResult Function(ExtensionType_SourceProcessor value)
-        sourceProcessor,
-    required TResult Function(ExtensionType_EntryProcessor value)
-        entryProcessor,
-    required TResult Function(ExtensionType_URLHandler value) urlHandler,
-  }) {
-    return sourceProcessor(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
-  }) {
-    return sourceProcessor?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult Function(ExtensionType_URLHandler value)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (sourceProcessor != null) {
-      return sourceProcessor(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ExtensionType_SourceProcessor extends ExtensionType {
-  const factory ExtensionType_SourceProcessor(
-          {required final Set<SourceType> sourcetypes,
-          required final Set<SourceOpenType> opentype}) =
-      _$ExtensionType_SourceProcessorImpl;
-  const ExtensionType_SourceProcessor._() : super._();
-
-  Set<SourceType> get sourcetypes;
-  Set<SourceOpenType> get opentype;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_SourceProcessorImplCopyWith<
-          _$ExtensionType_SourceProcessorImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ExtensionType_EntryProcessorImplCopyWith<$Res> {
-  factory _$$ExtensionType_EntryProcessorImplCopyWith(
-          _$ExtensionType_EntryProcessorImpl value,
-          $Res Function(_$ExtensionType_EntryProcessorImpl) then) =
-      __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>;
+abstract mixin class $ExtensionType_SourceProcessorCopyWith<$Res>
+    implements $ExtensionTypeCopyWith<$Res> {
+  factory $ExtensionType_SourceProcessorCopyWith(
+          ExtensionType_SourceProcessor value,
+          $Res Function(ExtensionType_SourceProcessor) _then) =
+      _$ExtensionType_SourceProcessorCopyWithImpl;
   @useResult
-  $Res call({bool triggerMapEntry, bool triggerOnEntryActivity});
+  $Res call({Set<SourceType> sourcetypes, Set<SourceOpenType> opentype});
 }
 
 /// @nodoc
-class __$$ExtensionType_EntryProcessorImplCopyWithImpl<$Res>
-    extends _$ExtensionTypeCopyWithImpl<$Res,
-        _$ExtensionType_EntryProcessorImpl>
-    implements _$$ExtensionType_EntryProcessorImplCopyWith<$Res> {
-  __$$ExtensionType_EntryProcessorImplCopyWithImpl(
-      _$ExtensionType_EntryProcessorImpl _value,
-      $Res Function(_$ExtensionType_EntryProcessorImpl) _then)
-      : super(_value, _then);
+class _$ExtensionType_SourceProcessorCopyWithImpl<$Res>
+    implements $ExtensionType_SourceProcessorCopyWith<$Res> {
+  _$ExtensionType_SourceProcessorCopyWithImpl(this._self, this._then);
+
+  final ExtensionType_SourceProcessor _self;
+  final $Res Function(ExtensionType_SourceProcessor) _then;
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? triggerMapEntry = null,
-    Object? triggerOnEntryActivity = null,
+    Object? sourcetypes = null,
+    Object? opentype = null,
   }) {
-    return _then(_$ExtensionType_EntryProcessorImpl(
-      triggerMapEntry: null == triggerMapEntry
-          ? _value.triggerMapEntry
-          : triggerMapEntry // ignore: cast_nullable_to_non_nullable
-              as bool,
-      triggerOnEntryActivity: null == triggerOnEntryActivity
-          ? _value.triggerOnEntryActivity
-          : triggerOnEntryActivity // ignore: cast_nullable_to_non_nullable
-              as bool,
+    return _then(ExtensionType_SourceProcessor(
+      sourcetypes: null == sourcetypes
+          ? _self._sourcetypes
+          : sourcetypes // ignore: cast_nullable_to_non_nullable
+              as Set<SourceType>,
+      opentype: null == opentype
+          ? _self._opentype
+          : opentype // ignore: cast_nullable_to_non_nullable
+              as Set<SourceOpenType>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
-  const _$ExtensionType_EntryProcessorImpl(
+class ExtensionType_EntryProcessor extends ExtensionType {
+  const ExtensionType_EntryProcessor(
       {required this.triggerMapEntry, required this.triggerOnEntryActivity})
       : super._();
 
-  @override
   final bool triggerMapEntry;
-  @override
   final bool triggerOnEntryActivity;
 
-  @override
-  String toString() {
-    return 'ExtensionType.entryProcessor(triggerMapEntry: $triggerMapEntry, triggerOnEntryActivity: $triggerOnEntryActivity)';
-  }
+  /// Create a copy of ExtensionType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ExtensionType_EntryProcessorCopyWith<ExtensionType_EntryProcessor>
+      get copyWith => _$ExtensionType_EntryProcessorCopyWithImpl<
+          ExtensionType_EntryProcessor>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_EntryProcessorImpl &&
+            other is ExtensionType_EntryProcessor &&
             (identical(other.triggerMapEntry, triggerMapEntry) ||
                 other.triggerMapEntry == triggerMapEntry) &&
             (identical(other.triggerOnEntryActivity, triggerOnEntryActivity) ||
@@ -543,180 +447,78 @@ class _$ExtensionType_EntryProcessorImpl extends ExtensionType_EntryProcessor {
   int get hashCode =>
       Object.hash(runtimeType, triggerMapEntry, triggerOnEntryActivity);
 
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ExtensionType_EntryProcessorImplCopyWith<
-          _$ExtensionType_EntryProcessorImpl>
-      get copyWith => __$$ExtensionType_EntryProcessorImplCopyWithImpl<
-          _$ExtensionType_EntryProcessorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
-        sourceProcessor,
-    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
-        entryProcessor,
-    required TResult Function(List<String> urlPatterns) urlHandler,
-  }) {
-    return entryProcessor(triggerMapEntry, triggerOnEntryActivity);
+  String toString() {
+    return 'ExtensionType.entryProcessor(triggerMapEntry: $triggerMapEntry, triggerOnEntryActivity: $triggerOnEntryActivity)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult? Function(List<String> urlPatterns)? urlHandler,
-  }) {
-    return entryProcessor?.call(triggerMapEntry, triggerOnEntryActivity);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult Function(List<String> urlPatterns)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (entryProcessor != null) {
-      return entryProcessor(triggerMapEntry, triggerOnEntryActivity);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
-    required TResult Function(ExtensionType_SourceProcessor value)
-        sourceProcessor,
-    required TResult Function(ExtensionType_EntryProcessor value)
-        entryProcessor,
-    required TResult Function(ExtensionType_URLHandler value) urlHandler,
-  }) {
-    return entryProcessor(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
-  }) {
-    return entryProcessor?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult Function(ExtensionType_URLHandler value)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (entryProcessor != null) {
-      return entryProcessor(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ExtensionType_EntryProcessor extends ExtensionType {
-  const factory ExtensionType_EntryProcessor(
-          {required final bool triggerMapEntry,
-          required final bool triggerOnEntryActivity}) =
-      _$ExtensionType_EntryProcessorImpl;
-  const ExtensionType_EntryProcessor._() : super._();
-
-  bool get triggerMapEntry;
-  bool get triggerOnEntryActivity;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_EntryProcessorImplCopyWith<
-          _$ExtensionType_EntryProcessorImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ExtensionType_URLHandlerImplCopyWith<$Res> {
-  factory _$$ExtensionType_URLHandlerImplCopyWith(
-          _$ExtensionType_URLHandlerImpl value,
-          $Res Function(_$ExtensionType_URLHandlerImpl) then) =
-      __$$ExtensionType_URLHandlerImplCopyWithImpl<$Res>;
+abstract mixin class $ExtensionType_EntryProcessorCopyWith<$Res>
+    implements $ExtensionTypeCopyWith<$Res> {
+  factory $ExtensionType_EntryProcessorCopyWith(
+          ExtensionType_EntryProcessor value,
+          $Res Function(ExtensionType_EntryProcessor) _then) =
+      _$ExtensionType_EntryProcessorCopyWithImpl;
   @useResult
-  $Res call({List<String> urlPatterns});
+  $Res call({bool triggerMapEntry, bool triggerOnEntryActivity});
 }
 
 /// @nodoc
-class __$$ExtensionType_URLHandlerImplCopyWithImpl<$Res>
-    extends _$ExtensionTypeCopyWithImpl<$Res, _$ExtensionType_URLHandlerImpl>
-    implements _$$ExtensionType_URLHandlerImplCopyWith<$Res> {
-  __$$ExtensionType_URLHandlerImplCopyWithImpl(
-      _$ExtensionType_URLHandlerImpl _value,
-      $Res Function(_$ExtensionType_URLHandlerImpl) _then)
-      : super(_value, _then);
+class _$ExtensionType_EntryProcessorCopyWithImpl<$Res>
+    implements $ExtensionType_EntryProcessorCopyWith<$Res> {
+  _$ExtensionType_EntryProcessorCopyWithImpl(this._self, this._then);
+
+  final ExtensionType_EntryProcessor _self;
+  final $Res Function(ExtensionType_EntryProcessor) _then;
 
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? urlPatterns = null,
+    Object? triggerMapEntry = null,
+    Object? triggerOnEntryActivity = null,
   }) {
-    return _then(_$ExtensionType_URLHandlerImpl(
-      urlPatterns: null == urlPatterns
-          ? _value._urlPatterns
-          : urlPatterns // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+    return _then(ExtensionType_EntryProcessor(
+      triggerMapEntry: null == triggerMapEntry
+          ? _self.triggerMapEntry
+          : triggerMapEntry // ignore: cast_nullable_to_non_nullable
+              as bool,
+      triggerOnEntryActivity: null == triggerOnEntryActivity
+          ? _self.triggerOnEntryActivity
+          : triggerOnEntryActivity // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
-  const _$ExtensionType_URLHandlerImpl(
-      {required final List<String> urlPatterns})
+class ExtensionType_URLHandler extends ExtensionType {
+  const ExtensionType_URLHandler({required final List<String> urlPatterns})
       : _urlPatterns = urlPatterns,
         super._();
 
   final List<String> _urlPatterns;
-  @override
   List<String> get urlPatterns {
     if (_urlPatterns is EqualUnmodifiableListView) return _urlPatterns;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_urlPatterns);
   }
 
-  @override
-  String toString() {
-    return 'ExtensionType.urlHandler(urlPatterns: $urlPatterns)';
-  }
+  /// Create a copy of ExtensionType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ExtensionType_URLHandlerCopyWith<ExtensionType_URLHandler> get copyWith =>
+      _$ExtensionType_URLHandlerCopyWithImpl<ExtensionType_URLHandler>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ExtensionType_URLHandlerImpl &&
+            other is ExtensionType_URLHandler &&
             const DeepCollectionEquality()
                 .equals(other._urlPatterns, _urlPatterns));
   }
@@ -725,111 +527,43 @@ class _$ExtensionType_URLHandlerImpl extends ExtensionType_URLHandler {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_urlPatterns));
 
+  @override
+  String toString() {
+    return 'ExtensionType.urlHandler(urlPatterns: $urlPatterns)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $ExtensionType_URLHandlerCopyWith<$Res>
+    implements $ExtensionTypeCopyWith<$Res> {
+  factory $ExtensionType_URLHandlerCopyWith(ExtensionType_URLHandler value,
+          $Res Function(ExtensionType_URLHandler) _then) =
+      _$ExtensionType_URLHandlerCopyWithImpl;
+  @useResult
+  $Res call({List<String> urlPatterns});
+}
+
+/// @nodoc
+class _$ExtensionType_URLHandlerCopyWithImpl<$Res>
+    implements $ExtensionType_URLHandlerCopyWith<$Res> {
+  _$ExtensionType_URLHandlerCopyWithImpl(this._self, this._then);
+
+  final ExtensionType_URLHandler _self;
+  final $Res Function(ExtensionType_URLHandler) _then;
+
   /// Create a copy of ExtensionType
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$ExtensionType_URLHandlerImplCopyWith<_$ExtensionType_URLHandlerImpl>
-      get copyWith => __$$ExtensionType_URLHandlerImplCopyWithImpl<
-          _$ExtensionType_URLHandlerImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool hasSearch) entryProvider,
-    required TResult Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)
-        sourceProcessor,
-    required TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)
-        entryProcessor,
-    required TResult Function(List<String> urlPatterns) urlHandler,
+  $Res call({
+    Object? urlPatterns = null,
   }) {
-    return urlHandler(urlPatterns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasSearch)? entryProvider,
-    TResult? Function(
-            Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult? Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult? Function(List<String> urlPatterns)? urlHandler,
-  }) {
-    return urlHandler?.call(urlPatterns);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasSearch)? entryProvider,
-    TResult Function(Set<SourceType> sourcetypes, Set<SourceOpenType> opentype)?
-        sourceProcessor,
-    TResult Function(bool triggerMapEntry, bool triggerOnEntryActivity)?
-        entryProcessor,
-    TResult Function(List<String> urlPatterns)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (urlHandler != null) {
-      return urlHandler(urlPatterns);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ExtensionType_EntryProvider value) entryProvider,
-    required TResult Function(ExtensionType_SourceProcessor value)
-        sourceProcessor,
-    required TResult Function(ExtensionType_EntryProcessor value)
-        entryProcessor,
-    required TResult Function(ExtensionType_URLHandler value) urlHandler,
-  }) {
-    return urlHandler(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult? Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult? Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult? Function(ExtensionType_URLHandler value)? urlHandler,
-  }) {
-    return urlHandler?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ExtensionType_EntryProvider value)? entryProvider,
-    TResult Function(ExtensionType_SourceProcessor value)? sourceProcessor,
-    TResult Function(ExtensionType_EntryProcessor value)? entryProcessor,
-    TResult Function(ExtensionType_URLHandler value)? urlHandler,
-    required TResult orElse(),
-  }) {
-    if (urlHandler != null) {
-      return urlHandler(this);
-    }
-    return orElse();
+    return _then(ExtensionType_URLHandler(
+      urlPatterns: null == urlPatterns
+          ? _self._urlPatterns
+          : urlPatterns // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
   }
 }
 
-abstract class ExtensionType_URLHandler extends ExtensionType {
-  const factory ExtensionType_URLHandler(
-          {required final List<String> urlPatterns}) =
-      _$ExtensionType_URLHandlerImpl;
-  const ExtensionType_URLHandler._() : super._();
-
-  List<String> get urlPatterns;
-
-  /// Create a copy of ExtensionType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ExtensionType_URLHandlerImplCopyWith<_$ExtensionType_URLHandlerImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on
