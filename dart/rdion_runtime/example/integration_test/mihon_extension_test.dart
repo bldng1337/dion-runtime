@@ -349,7 +349,9 @@ Future<WorkflowOutcome> runExtensionCalls(
   print('\n=== Browse (Popular) ===');
   await Future.delayed(_kCallDelay);
   try {
-    final browse = await extension.browse(page: 0).timeout(_kOpTimeout);
+    final browse =
+        (await extension.browse(page: 0, settings: {}).timeout(_kOpTimeout))
+            .entries;
     print('✅ Browse returned ${browse.content.length} entries');
     if (browse.content.isNotEmpty) {
       print('  First entry: ${browse.content.first.title}');
@@ -370,8 +372,9 @@ Future<WorkflowOutcome> runExtensionCalls(
 
   rdion.EntryId searchId;
   try {
-    final search =
-        await extension.search(page: 0, filter: 'test').timeout(_kOpTimeout);
+    final search = (await extension
+            .search(page: 0, filter: 'test', settings: {}).timeout(_kOpTimeout))
+        .entries;
     print('✅ Search returned ${search.content.length} entries');
     if (search.content.isEmpty) {
       print('⚠️  Search returned no entries to drill into (tolerated)');

@@ -25,8 +25,8 @@ test("test arguments", async () => {
 	await utils.injectServer(server, ext);
 	await ext.setEnabled(true);
 
-	await ext.browse(0);
-	await ext.search(0, "");
+	await ext.browse(0, {});
+	await ext.search(0, "", {});
 	const entry = await ext.detail(
 		{
 			uid: "epid",

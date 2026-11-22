@@ -30,7 +30,11 @@ mod setting {
     fn get_setting(settingid: String, kind: String, context: &mut Context) -> JsResult<JsValue> {
         let settingkind = match kind.to_lowercase().as_str() {
             "extension" => SettingKind::Extension,
-            "search" => SettingKind::Search,
+            "search" => {
+                return Err(JsError::from_native(JsNativeError::error().with_message(
+                    "Read search settings from the settings passed to browse/search",
+                )));
+            }
             _ => {
                 return Err(JsError::from_native(
                     JsNativeError::error().with_message("Invalid Setting kind"),
@@ -104,7 +108,11 @@ mod setting {
     ) -> JsResult<JsValue> {
         let settingkind = match kind.to_lowercase().as_str() {
             "extension" => SettingKind::Extension,
-            "search" => SettingKind::Search,
+            "search" => {
+                return Err(JsError::from_native(JsNativeError::error().with_message(
+                    "Read search settings from the settings passed to browse/search",
+                )));
+            }
             _ => {
                 return Err(JsError::from_native(
                     JsNativeError::error().with_message("Invalid Setting kind"),

@@ -84,7 +84,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -1386598880;
+  int get rustContentHash => -621305511;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -148,8 +148,11 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiExtensionProxyAdapterUninstall(
       {required ProxyAdapter that, required ProxyExtension ext});
 
-  Future<EntryList> crateApiExtensionProxyExtensionBrowse(
-      {required ProxyExtension that, required int page, CancelToken? token});
+  Future<EntryListResult> crateApiExtensionProxyExtensionBrowse(
+      {required ProxyExtension that,
+      required int page,
+      required Map<String, Setting> settings,
+      CancelToken? token});
 
   Future<void> crateApiExtensionProxyExtensionClearCache(
       {required ProxyExtension that});
@@ -258,10 +261,11 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiExtensionProxyExtensionSaveSettings(
       {required ProxyExtension that});
 
-  Future<EntryList> crateApiExtensionProxyExtensionSearch(
+  Future<EntryListResult> crateApiExtensionProxyExtensionSearch(
       {required ProxyExtension that,
       required int page,
       required String filter,
+      required Map<String, Setting> settings,
       CancelToken? token});
 
   Future<void> crateApiExtensionProxyExtensionSetEnabled(
@@ -300,6 +304,8 @@ abstract class RustLibApi extends BaseApi {
   Future<EdgeInsets> dionRuntimeDataCustomUiEdgeInsetsDefault();
 
   Future<EntryList> dionRuntimeDataSourceEntryListDefault();
+
+  Future<EntryListResult> dionRuntimeDataSourceEntryListResultDefault();
 
   Future<ExtensionData> dionRuntimeDataExtensionExtensionDataDefault();
 
@@ -831,14 +837,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<EntryList> crateApiExtensionProxyExtensionBrowse(
-      {required ProxyExtension that, required int page, CancelToken? token}) {
+  Future<EntryListResult> crateApiExtensionProxyExtensionBrowse(
+      {required ProxyExtension that,
+      required int page,
+      required Map<String, Setting> settings,
+      CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
             that, serializer);
         sse_encode_i_32(page, serializer);
+        sse_encode_Map_String_setting_None(settings, serializer);
         sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             token, serializer);
         final raw_ = serializer.intoRaw();
@@ -846,11 +856,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_entry_list,
+        decodeSuccessData: sse_decode_entry_list_result,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiExtensionProxyExtensionBrowseConstMeta,
-      argValues: [that, page, token],
+      argValues: [that, page, settings, token],
       apiImpl: this,
     ));
   }
@@ -858,7 +868,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiExtensionProxyExtensionBrowseConstMeta =>
       const TaskConstMeta(
         debugName: "ProxyExtension_browse",
-        argNames: ["that", "page", "token"],
+        argNames: ["that", "page", "settings", "token"],
       );
 
   @override
@@ -1686,10 +1696,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<EntryList> crateApiExtensionProxyExtensionSearch(
+  Future<EntryListResult> crateApiExtensionProxyExtensionSearch(
       {required ProxyExtension that,
       required int page,
       required String filter,
+      required Map<String, Setting> settings,
       CancelToken? token}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1698,6 +1709,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that, serializer);
         sse_encode_i_32(page, serializer);
         sse_encode_String(filter, serializer);
+        sse_encode_Map_String_setting_None(settings, serializer);
         sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCancelToken(
             token, serializer);
         final raw_ = serializer.intoRaw();
@@ -1705,11 +1717,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             port_, raw_.ptr, raw_.rustVecLen, raw_.dataLen);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_entry_list,
+        decodeSuccessData: sse_decode_entry_list_result,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiExtensionProxyExtensionSearchConstMeta,
-      argValues: [that, page, filter, token],
+      argValues: [that, page, filter, settings, token],
       apiImpl: this,
     ));
   }
@@ -1717,7 +1729,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiExtensionProxyExtensionSearchConstMeta =>
       const TaskConstMeta(
         debugName: "ProxyExtension_search",
-        argNames: ["that", "page", "filter", "token"],
+        argNames: ["that", "page", "filter", "settings", "token"],
       );
 
   @override
@@ -2038,6 +2050,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kDionRuntimeDataSourceEntryListDefaultConstMeta =>
       const TaskConstMeta(
         debugName: "entry_list_default",
+        argNames: [],
+      );
+
+  @override
+  Future<EntryListResult> dionRuntimeDataSourceEntryListResultDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        return wire
+            .wire__dion_runtime__data__source__entry_list_result_default(port_);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_entry_list_result,
+        decodeErrorData: null,
+      ),
+      constMeta: kDionRuntimeDataSourceEntryListResultDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kDionRuntimeDataSourceEntryListResultDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "entry_list_result_default",
         argNames: [],
       );
 
@@ -3714,6 +3749,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       hasnext: dco_decode_opt_box_autoadd_bool(arr[0]),
       length: dco_decode_opt_box_autoadd_i_32(arr[1]),
       content: dco_decode_list_entry(arr[2]),
+    );
+  }
+
+  @protected
+  EntryListResult dco_decode_entry_list_result(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return EntryListResult(
+      entries: dco_decode_entry_list(arr[0]),
+      settings: dco_decode_Map_String_setting_None(arr[1]),
     );
   }
 
@@ -5862,6 +5909,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_content = sse_decode_list_entry(deserializer);
     return EntryList(
         hasnext: var_hasnext, length: var_length, content: var_content);
+  }
+
+  @protected
+  EntryListResult sse_decode_entry_list_result(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_entries = sse_decode_entry_list(deserializer);
+    var var_settings = sse_decode_Map_String_setting_None(deserializer);
+    return EntryListResult(entries: var_entries, settings: var_settings);
   }
 
   @protected
@@ -8651,6 +8706,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_entry_list_result(
+      EntryListResult self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_entry_list(self.entries, serializer);
+    sse_encode_Map_String_setting_None(self.settings, serializer);
+  }
+
+  @protected
   void sse_encode_episode(Episode self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_episode_id(self.id, serializer);
@@ -10022,9 +10085,12 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
         RustLib.instance.api.rust_arc_decrement_strong_count_ProxyExtensionPtr,
   );
 
-  Future<EntryList> browse({required int page, CancelToken? token}) =>
+  Future<EntryListResult> browse(
+          {required int page,
+          required Map<String, Setting> settings,
+          CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionBrowse(
-          that: this, page: page, token: token);
+          that: this, page: page, settings: settings, token: token);
 
   /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
   /// cache); settings, cookies and extension-written files are kept.
@@ -10171,10 +10237,17 @@ class ProxyExtensionImpl extends RustOpaque implements ProxyExtension {
         that: this,
       );
 
-  Future<EntryList> search(
-          {required int page, required String filter, CancelToken? token}) =>
+  Future<EntryListResult> search(
+          {required int page,
+          required String filter,
+          required Map<String, Setting> settings,
+          CancelToken? token}) =>
       RustLib.instance.api.crateApiExtensionProxyExtensionSearch(
-          that: this, page: page, filter: filter, token: token);
+          that: this,
+          page: page,
+          filter: filter,
+          settings: settings,
+          token: token);
 
   Future<void> setEnabled({required bool enabled}) => RustLib.instance.api
       .crateApiExtensionProxyExtensionSetEnabled(that: this, enabled: enabled);

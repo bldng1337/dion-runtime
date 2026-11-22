@@ -16,6 +16,10 @@ class LogEntry {
 }
 
 /// Controller that provides pages with access to shared playground state and actions.
+/// Browse settings shared by the Browse and Search pages. The host owns them:
+/// they go into every browse/search call and are replaced by the result's.
+final Map<String, rdion.Setting> browseSettings = {};
+
 class PlaygroundController {
   final rdion.ProxyExtension? Function() getExt;
   final rdion.ProxyAdapter? Function() getAdapter;

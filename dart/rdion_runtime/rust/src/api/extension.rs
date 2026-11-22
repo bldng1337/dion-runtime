@@ -19,7 +19,7 @@ use dion_runtime::data::settings::SettingValue;
 use dion_runtime::data::source::EntryDetailed;
 use dion_runtime::data::source::EntryDetailedResult;
 use dion_runtime::data::source::EntryId;
-use dion_runtime::data::source::EntryList;
+use dion_runtime::data::source::EntryListResult;
 use dion_runtime::data::source::EpisodeId;
 use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
@@ -211,10 +211,15 @@ impl ProxyExtension {
 
     // SourceProvider
     #[frb(serialize)]
-    pub async fn browse(&self, page: i32, token: Option<CancelToken>) -> Result<EntryList> {
+    pub async fn browse(
+        &self,
+        page: i32,
+        settings: HashMap<String, Setting>,
+        token: Option<CancelToken>,
+    ) -> Result<EntryListResult> {
         self.inner
             .inner
-            .browse(page, token.map(|token| token.into()))
+            .browse(page, settings, token.map(|token| token.into()))
             .await
     }
 
@@ -223,11 +228,12 @@ impl ProxyExtension {
         &self,
         page: i32,
         filter: String,
+        settings: HashMap<String, Setting>,
         token: Option<CancelToken>,
-    ) -> Result<EntryList> {
+    ) -> Result<EntryListResult> {
         self.inner
             .inner
-            .search(page, filter, token.map(|token| token.into()))
+            .search(page, filter, settings, token.map(|token| token.into()))
             .await
     }
 

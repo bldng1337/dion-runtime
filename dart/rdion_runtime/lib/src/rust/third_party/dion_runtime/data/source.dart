@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'settings.dart';
 part 'source.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`, `hash`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `hash`, `hash`, `hash`
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
@@ -275,6 +275,34 @@ class EntryList {
           hasnext == other.hasnext &&
           length == other.length &&
           content == other.content;
+}
+
+/// Result of `browse`/`search`. The browse settings are owned by the host:
+/// it passes them in and stores the returned ones, like entry settings.
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
+class EntryListResult {
+  final EntryList entries;
+  final Map<String, Setting> settings;
+
+  const EntryListResult({
+    required this.entries,
+    required this.settings,
+  });
+
+  static Future<EntryListResult> default_() =>
+      RustLib.instance.api.dionRuntimeDataSourceEntryListResultDefault();
+
+  @override
+  int get hashCode => entries.hashCode ^ settings.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EntryListResult &&
+          runtimeType == other.runtimeType &&
+          entries == other.entries &&
+          settings == other.settings;
 }
 
 /// flutter_rust_bridge:non_opaque

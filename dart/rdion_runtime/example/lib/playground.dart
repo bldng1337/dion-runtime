@@ -378,6 +378,9 @@ class _PlaygroundState extends State<Playground> {
           'content': result.content.map((e) => e.toJson()).toList(),
         });
       }
+      if (result is rdion.EntryListResult) {
+        return const JsonEncoder.withIndent('  ').convert(result.toJson());
+      }
       if (result is rdion.EntryDetailedResult) {
         return const JsonEncoder.withIndent('  ').convert({
           'settings': Map.fromEntries(

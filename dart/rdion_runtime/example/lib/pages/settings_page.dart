@@ -33,15 +33,13 @@ class _SettingsPageState extends State<SettingsPage> {
         final extSettings = await ext.getSettings(
           kind: rdion.SettingKind.extension_,
         );
-        final searchSettings = await ext.getSettings(
-          kind: rdion.SettingKind.search,
-        );
         final encoded = widget.controller.encodeResult({
           'extension': Map.fromEntries(
             extSettings.entries.map((e) => MapEntry(e.key, e.value.toJson())),
           ),
-          'search': Map.fromEntries(
-            searchSettings.entries.map(
+          // Host-owned: the settings returned by the last browse/search.
+          'browse': Map.fromEntries(
+            browseSettings.entries.map(
               (e) => MapEntry(e.key, e.value.toJson()),
             ),
           ),
@@ -122,10 +120,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       DropdownMenuItem(
                         value: rdion.SettingKind.extension_,
                         child: Text('Extension'),
-                      ),
-                      DropdownMenuItem(
-                        value: rdion.SettingKind.search,
-                        child: Text('Search'),
                       ),
                     ],
                     onChanged: (v) {

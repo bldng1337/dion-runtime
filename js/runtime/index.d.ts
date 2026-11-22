@@ -3,11 +3,6 @@ import type { AuthCreds, Account, Action, EntryActivity, EntryDetailed, EntryDet
 /* eslint-disable */
 export declare class Adapter {
   static init(handler: ManagerClient): Promise<Adapter>
-  /**
-   * An adapter for LNReader plugins (https://github.com/lnreader/lnreader-plugins).
-   * Repositories are LNReader plugin indexes such as
-   * `https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v3.0.0/.dist/plugins.min.json`.
-   */
   static initLnreader(handler: ManagerClient): Promise<Adapter>
   getExtensions(): Promise<Array<Extension>>
   install(url: string): Promise<Extension>
@@ -37,8 +32,8 @@ export declare class Extension {
    * Safety is handled by napi
    */
   reload(): Promise<void>
-  browse(page: number, token?: CancelToken | undefined | null): Promise<EntryList>
-  search(page: number, filter: string, token?: CancelToken | undefined | null): Promise<EntryList>
+  browse(page: number, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryListResult>
+  search(page: number, filter: string, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryListResult>
   fromurl(url: string, token?: CancelToken | undefined | null): Promise<boolean>
   detail(entryid: EntryId, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>
   refresh(entry: EntryDetailed, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryDetailedResult>

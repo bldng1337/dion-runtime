@@ -110,8 +110,8 @@ export default class extends DionExtension implements SourceProvider {
 
   async onEvent(_data: EventData): Promise<EventResult | undefined> { return undefined; }
 
-  async browse(page: number): Promise<EntryList> { /* … */ }
-  async search(page: number, filter: string): Promise<EntryList> { /* … */ }
+  async browse(page: number, settings: Record<string, Setting>): Promise<EntryListResult> { /* … */ }
+  async search(page: number, filter: string, settings: Record<string, Setting>): Promise<EntryListResult> { /* … */ }
   async detail(entryid: EntryId, settings: Record<string, Setting>): Promise<EntryDetailedResult> { /* … */ }
   async source(epid: EpisodeId, settings: Record<string, Setting>): Promise<SourceResult> { /* … */ }
   async handleUrl?(url: string): Promise<boolean> { return false; }
@@ -204,7 +204,8 @@ These are **external** — import them, do not bundle them. Ambient types come f
   EPUB missing its mimetype entry). EPUB resource paths are root-absolute (`/OEBPS/...`) —
   pass the exact strings from `resources`/`coverPath`/`spine` back into `archive.read`.
 - `setting` — `getSetting(id, kind)`, `registerSetting(id, setting, kind)`,
-  `setEntrySetting(entry, key, value)`. `kind` is `"Extension" | "Search"`. Prefer the typed
+  `setEntrySetting(entry, key, value)`. `kind` is `"Extension"` (browse settings are not stored by
+  the runtime: they are passed to `browse`/`search`). Prefer the typed
   helpers in `@dion-js/runtime-lib` (`ExtensionSetting`, `SettingStore`). A setting with the
   `Directory` UI (`new DirectoryPicker(write?)` from `runtime-lib/settings`) is rendered by the
   host as a system directory picker; its string value is the picked directory's filesystem path —
@@ -256,6 +257,10 @@ async handleProxy(request) {
 All defined in `@dion-js/runtime-types/runtime` read the ts types to get the most up to date schema. Tagged unions use a `"type"` discriminant. Below are some notes to pay attention to when implementing your extension:
 - `Entry`: `id.uid` must uniquely identify the entry within this extension.
 - `EntryDetailed`: `id.uid` must match with the `Entry`.
+- `EntryListResult` (from `browse`/`search`): `{ entries: EntryList, settings }`. `settings` are the
+  browse settings (filters, sort order, …), owned by the host (one set per browse profile) and
+  shared by `browse` and `search`. Return them with **every** browse setting defined, in both
+  methods: the host replaces its copy with what you return, so a setting you leave out is dropped.
 - `EntryDetailedResult`: Echo back the `settings` you received (or a transformed copy).
 - `refresh` (optional on `SourceProvider`): like `detail`, but receives the host's current
   (cached) `EntryDetailed` for the entry, so you can check what changed (e.g. compare episode
@@ -271,13 +276,29 @@ See `@dion-js/runtime-types/runtime`
 ## Settings & auth (use the `runtime-lib` helpers)
 Prefer declaring settings/auth on the `DionExtension` subclass rather than calling the raw
 `setting`/`auth` modules. From `@dion-js/runtime-lib` read the types to get the most up to date schema.
-- `ExtensionSetting<T>` — typed setting with a default, kind (`"Extension" | "Search"`),
-  optional `UI` (`.setUI(new Slider(0,10,1))`, `new Checkbox()`, `new Dropdown([...])`,
+- `ExtensionSetting<T>` — typed extension-wide setting with a default and optional `UI`
+  (`.setUI(new Slider(0,10,1))`, `new Checkbox()`, `new Dropdown([...])`,
   `new SettingCustomUI(ui)`), `.setVisible()`, `.setLabel()`. Register by listing it in
-  `this.settings`. `kind` denotes if the Setting is shown in the extension settings or in the search filter UI. e.g. for categories, use `"Search"`.
+  `this.settings`; it is shown in the extension settings.
+- `defineStoreSetting<T>(id, { default, label?, ui?, visible? })` — a browse setting (shown in the
+  browse/search filter UI, e.g. for categories or sort order). List it in `this.searchSettings`,
+  then in `browse`/`search` call `const store = this.convertSettingStore(settings)`, read values with
+  `this.searchSettings.x.get(store)` and return `settings: store.toMap()`:
+
+  ```ts
+  searchSettings = {
+    sort: StoreSetting<string>("sort", { default: "new", ui: new Dropdown(SORTS) }),
+  };
+  async browse(page: number, settings: Record<string, Setting>): Promise<EntryListResult> {
+    const store = this.convertSettingStore(settings);
+    const sort = this.searchSettings.sort.get(store);
+    return { entries: await this.list(page, sort), settings: store.toMap() };
+  }
+  ```
 - `AuthAccount` — `new AuthAccount(domain, authType, async validateFn)`; list in
   `this.accounts`. `validateFn` returns `{ userName?, profilePic? }` and validates if the account is valid.
-- `SettingStore` — read/write the per-call `settings` record handed to `detail`/`source`.
+- `SettingStore` — read/write the per-call `settings` record handed to `detail`/`source` (and,
+  via `convertSettingStore`, to `browse`/`search`).
 The Settings passed to `detail` and `source` are the same for each entry, they are for per entry settings. Always echo back the `settings` in your return values.
 
 ## Custom UI
@@ -376,7 +397,7 @@ repo settings. Useful flags: `--source <dir>`, `--out <dir>`, `--release-tag <ta
 ## Worked example checklist
 
 When asked to create an extension for a site end-to-end:
-1. **Research**: Look at the site, use curl or browser devtools to see: the type of content, the URL patterns, the HTML structure or API endpoints, any auth requirements. Think about how to best expose the content as Extension as good as possible. Think about what settings (extension, entry, search), auth, and custom UI you might want to expose.
+1. **Research**: Look at the site, use curl or browser devtools to see: the type of content, the URL patterns, the HTML structure or API endpoints, any auth requirements. Think about how to best expose the content as Extension as good as possible. Think about what settings (extension, entry, browse), auth, and custom UI you might want to expose.
 2. **Scaffold**: Run `dion-create` to generate the extension skeleton.
 3. **Implement**: Fill in the `browse`, `search`, `detail`, and `source` methods, plus any settings/auth/custom UI. Use `network.fetch` and `parse.parseHtml` to get and parse the content. Use `this.settings` and `this.accounts` to register settings and auth. Use `DionExtension` helpers for settings/auth/custom UI.
 4. **Build & test**: Run `bun run build && bun test && bun run check-types && bun run lint`. Fix any errors. If you made any custom UI or special edgecases/functions, write tests for them in `src/main.test.ts`.

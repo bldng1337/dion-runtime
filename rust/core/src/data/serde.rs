@@ -17,8 +17,8 @@ mod test {
         settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI},
         source::{
             Chapter, ChapterKind, Entry, EntryDetailed, EntryDetailedResult, EntryId, EntryList,
-            Episode, EpisodeId, ImageListAudio, Link, MediaType, MixedContent, Paragraph,
-            ReleaseStatus, Source, SourceResult, SourceType, StreamSource, Subtitles,
+            EntryListResult, Episode, EpisodeId, ImageListAudio, Link, MediaType, MixedContent,
+            Paragraph, ReleaseStatus, Source, SourceResult, SourceType, StreamSource, Subtitles,
         },
     };
 
@@ -351,9 +351,6 @@ mod test {
             SubscriptionSource::Setting {
                 kind: SettingKind::Extension,
             },
-            SubscriptionSource::Setting {
-                kind: SettingKind::Search,
-            },
             SubscriptionSource::EntrySetting,
         ]
     }
@@ -437,7 +434,7 @@ mod test {
             },
             CustomUI::InlineSetting {
                 setting_id: "setting_2".to_string(),
-                setting_kind: SettingKind::Search,
+                setting_kind: SettingKind::Extension,
                 on_commit: Some(Box::new(Interaction::WriteKey {
                     key: "search_query".to_string(),
                     value: "".to_string(),
@@ -920,7 +917,7 @@ mod test {
     // ============================================================================
 
     fn generate_all_setting_kinds() -> Vec<SettingKind> {
-        vec![SettingKind::Extension, SettingKind::Search]
+        vec![SettingKind::Extension]
     }
 
     fn generate_all_setting_values() -> Vec<SettingValue> {
@@ -1258,6 +1255,24 @@ mod test {
                 rating: Some(3.8),
                 views: Some(500.0),
                 length: Some(1800),
+            },
+        ]
+    }
+
+    fn generate_all_entry_list_results() -> Vec<EntryListResult> {
+        let lists = generate_all_entry_lists();
+        let settings = generate_all_settings();
+        vec![
+            EntryListResult {
+                entries: lists[0].clone(),
+                settings: HashMap::new(),
+            },
+            EntryListResult {
+                entries: lists[2].clone(),
+                settings: HashMap::from([
+                    ("filter".to_string(), settings[0].clone()),
+                    ("sort".to_string(), settings[1].clone()),
+                ]),
             },
         ]
     }
@@ -1600,6 +1615,7 @@ mod test {
         write_json_array("EntryId", &generate_all_entry_ids());
         write_json_array("Entry", &generate_all_entries());
         write_json_array("EntryList", &generate_all_entry_lists());
+        write_json_array("EntryListResult", &generate_all_entry_list_results());
         write_json_array("EpisodeId", &generate_all_episode_ids());
         write_json_array("Episode", &generate_all_episodes());
         write_json_array("ReleaseStatus", &generate_all_release_statuses());

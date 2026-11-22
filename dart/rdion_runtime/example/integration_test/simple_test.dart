@@ -95,7 +95,7 @@ void main() {
         kind: SettingKind.extension_,
       );
       await ext.setEnabled(enabled: true);
-      await ext.browse(page: 0);
+      await ext.browse(page: 0, settings: {});
       final entry = await ext.detail(
         entryid: const EntryId(uid: "asd"),
         settings: {},
@@ -116,7 +116,7 @@ void main() {
         epid: const EpisodeId(iddata: "asd", uid: "asd"),
         settings: {},
       );
-      await ext.search(filter: "", page: 2);
+      await ext.search(filter: "", page: 2, settings: {});
       await ext.reload();
     }
     server.close();

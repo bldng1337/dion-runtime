@@ -25,8 +25,8 @@ mod test {
             permission::Permission,
             settings::{Setting, SettingValue},
             source::{
-                EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Link, Source,
-                SourceResult,
+                EntryDetailed, EntryDetailedResult, EntryId, EntryListResult, EpisodeId, Link,
+                Source, SourceResult,
             },
         },
         extension::{Adapter, Extension},
@@ -167,8 +167,14 @@ mod test {
             Ok(None)
         }
 
-        async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
-            Ok(EntryList {
+        async fn browse(
+            &self,
+            page: i32,
+            settings: HashMap<String, Setting>,
+            token: Option<CancellationToken>,
+        ) -> Result<EntryListResult> {
+            Ok(EntryListResult {
+                settings,
                 ..Default::default()
             })
         }
@@ -177,9 +183,11 @@ mod test {
             &self,
             page: i32,
             filter: String,
+            settings: HashMap<String, Setting>,
             token: Option<CancellationToken>,
-        ) -> Result<EntryList> {
-            Ok(EntryList {
+        ) -> Result<EntryListResult> {
+            Ok(EntryListResult {
+                settings,
                 ..Default::default()
             })
         }

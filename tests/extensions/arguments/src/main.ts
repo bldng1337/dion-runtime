@@ -3,7 +3,7 @@ import type {
 	EntryDetailed,
 	EntryDetailedResult,
 	EntryId,
-	EntryList,
+	EntryListResult,
 	EpisodeId,
 	Setting,
 	Source,
@@ -12,9 +12,16 @@ import type {
 import { assert, DefaultExtension } from "@dion-js/unit-test-utils/extension";
 
 export default class extends DefaultExtension {
-	browse(page: number): Promise<EntryList> {
+	browse(
+		page: number,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
 		assert(typeof page === "number", "Argument page of browse is not a number");
-		return super.browse(page);
+		assert(
+			typeof settings === "object" && settings !== null,
+			"Argument settings of browse is not an object",
+		);
+		return super.browse(page, settings);
 	}
 	detail(
 		entryid: EntryId,
@@ -120,13 +127,21 @@ export default class extends DefaultExtension {
 		});
 	}
 
-	search(page: number, filter: string): Promise<EntryList> {
+	search(
+		page: number,
+		filter: string,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
 		assert(typeof page === "number", "Argument page of search is not a number");
 		assert(
 			typeof filter === "string",
 			"Argument filter of search is not a string",
 		);
-		return super.search(page, filter);
+		assert(
+			typeof settings === "object" && settings !== null,
+			"Argument settings of search is not an object",
+		);
+		return super.search(page, filter, settings);
 	}
 
 	source(

@@ -12,7 +12,7 @@ import type {
 	EntryDetailed,
 	EntryDetailedResult,
 	EntryId,
-	EntryList,
+	EntryListResult,
 	EpisodeId,
 	EventData,
 	EventResult,
@@ -80,18 +80,27 @@ export class DefaultExtension
 		// Empty implementation
 	}
 
-	async browse(_page: number): Promise<EntryList> {
+	async browse(
+		_page: number,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
 		const server = await getServer();
 		const data = await fetch(`${server}/getEntries`);
 		return {
-			content: data.json as Entry[],
+			entries: { content: data.json as Entry[] },
+			settings,
 		};
 	}
-	async search(_page: number, _filter: string): Promise<EntryList> {
+	async search(
+		_page: number,
+		_filter: string,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
 		const server = await getServer();
 		const data = await fetch(`${server}/getEntries`);
 		return {
-			content: data.json as Entry[],
+			entries: { content: data.json as Entry[] },
+			settings,
 		};
 	}
 	async handleUrl(_url: string): Promise<boolean> {

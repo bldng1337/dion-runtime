@@ -125,8 +125,8 @@ test("DionExtensionManager", async () => {
 		});
 		await ext.setEnabled(true);
 
-		await ext.browse(0);
-		await ext.search(0, "");
+		await ext.browse(0, {});
+		await ext.search(0, "", {});
 		const entry = await ext.detail(
 			{
 				uid: "epid",

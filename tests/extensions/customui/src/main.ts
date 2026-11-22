@@ -22,7 +22,7 @@ import { DionExtension } from "@dion-js/runtime-lib";
 import {
 	defineEntrySetting,
 	defineExtensionSetting,
-	defineSearchSetting,
+	StoreSetting,
 	SettingStore,
 } from "@dion-js/runtime-lib/settings";
 import { doAction } from "action";

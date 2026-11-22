@@ -3,7 +3,7 @@ export * as valibot from "./generated_validators.js";
 import type {
 	EventData,
 	EventResult,
-	EntryList,
+	EntryListResult,
 	EntryId,
 	EntryDetailedResult,
 	EpisodeId,
@@ -22,8 +22,15 @@ export interface Extension {
 }
 
 export interface SourceProvider {
-	browse(page: number): Promise<EntryList>;
-	search(page: number, filter: string): Promise<EntryList>;
+	browse(
+		page: number,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult>;
+	search(
+		page: number,
+		filter: string,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult>;
 	detail(
 		entryid: EntryId,
 		settings: Record<string, Setting>,

@@ -385,6 +385,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   EntryList dco_decode_entry_list(dynamic raw);
 
   @protected
+  EntryListResult dco_decode_entry_list_result(dynamic raw);
+
+  @protected
   Episode dco_decode_episode(dynamic raw);
 
   @protected
@@ -1061,6 +1064,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   EntryList sse_decode_entry_list(SseDeserializer deserializer);
+
+  @protected
+  EntryListResult sse_decode_entry_list_result(SseDeserializer deserializer);
 
   @protected
   Episode sse_decode_episode(SseDeserializer deserializer);
@@ -2956,6 +2962,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   }
 
   @protected
+  void cst_api_fill_to_wire_entry_list_result(
+      EntryListResult apiObj, wire_cst_entry_list_result wireObj) {
+    cst_api_fill_to_wire_entry_list(apiObj.entries, wireObj.entries);
+    wireObj.settings = cst_encode_Map_String_setting_None(apiObj.settings);
+  }
+
+  @protected
   void cst_api_fill_to_wire_episode(Episode apiObj, wire_cst_episode wireObj) {
     cst_api_fill_to_wire_episode_id(apiObj.id, wireObj.id);
     wireObj.name = cst_encode_String(apiObj.name);
@@ -4000,6 +4013,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_entry_list(EntryList self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_entry_list_result(
+      EntryListResult self, SseSerializer serializer);
 
   @protected
   void sse_encode_episode(Episode self, SseSerializer serializer);
@@ -5703,6 +5720,18 @@ class RustLibWire implements BaseWire {
   );
   late final _wire__dion_runtime__data__source__entry_list_default =
       _wire__dion_runtime__data__source__entry_list_defaultPtr
+          .asFunction<void Function(int)>();
+
+  void wire__dion_runtime__data__source__entry_list_result_default(int port_) {
+    return _wire__dion_runtime__data__source__entry_list_result_default(port_);
+  }
+
+  late final _wire__dion_runtime__data__source__entry_list_result_defaultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+    'frbgen_rdion_runtime_wire__dion_runtime__data__source__entry_list_result_default',
+  );
+  late final _wire__dion_runtime__data__source__entry_list_result_default =
+      _wire__dion_runtime__data__source__entry_list_result_defaultPtr
           .asFunction<void Function(int)>();
 
   void wire__dion_runtime__data__extension__extension_data_default(int port_) {
@@ -8081,6 +8110,12 @@ final class wire_cst_entry_list extends ffi.Struct {
   external ffi.Pointer<ffi.Int32> length;
 
   external ffi.Pointer<wire_cst_list_entry> content;
+}
+
+final class wire_cst_entry_list_result extends ffi.Struct {
+  external wire_cst_entry_list entries;
+
+  external ffi.Pointer<wire_cst_list_record_string_setting> settings;
 }
 
 final class wire_cst_EventData_LoadSlot extends ffi.Struct {

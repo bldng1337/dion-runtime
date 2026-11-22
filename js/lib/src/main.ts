@@ -2,6 +2,7 @@ import type {
 	Account,
 	EventData,
 	EventResult,
+	Setting,
 } from "@dion-js/runtime-types/runtime";
 import type {
 	Extension,
@@ -12,10 +13,12 @@ import type { AuthAccount } from "./auth.ts";
 import type { Component } from "./component.js";
 import type { FeedComponent } from "./feed.js";
 import type { Trigger } from "./trigger.js";
-import type {
-	EntrySettingHandle,
-	ExtensionSetting,
-	Settingvalues,
+import {
+	type EntrySettingHandle,
+	type ExtensionSetting,
+	type StoreSetting,
+	SettingStore,
+	type Settingvalues,
 } from "./settings.js";
 
 type bindable = { bind: (ext: DionExtension) => unknown }; //This is probably not really better than casting to any
@@ -52,6 +55,7 @@ export abstract class DionExtension implements Extension {
 	abstract settings: { [key: string]: ExtensionSetting<Settingvalues> };
 	abstract accounts: { [key: string]: AuthAccount };
 	abstract entrySettings: { [key: string]: EntrySettingHandle<Settingvalues> };
+	searchSettings: { [key: string]: StoreSetting<Settingvalues> } = {};
 
 	signals: { [key: string]: unknown } = {};
 	// biome-ignore lint/suspicious/noExplicitAny: registry holds heterogeneous handlers
@@ -143,6 +147,14 @@ export abstract class DionExtension implements Extension {
 				return undefined;
 			}
 		}
+	}
+
+	convertSettingStore(settings: Record<string, Setting>): SettingStore {
+		const store = new SettingStore(settings);
+		for (const setting of Object.values(this.searchSettings)) {
+			setting.get(store);
+		}
+		return store;
 	}
 
 	async handleProxy?(request: ProxyRequest): Promise<ProxyResponse>;

@@ -430,6 +430,20 @@ void main() {
     }
   });
 
+  test("JsonEntryListResult", () {
+    final data = File("$path/EntryListResult.json").readAsStringSync();
+    final json = jsonDecode(data) as List;
+    for (int i = 0; i < json.length; i++) {
+      final item = json[i];
+      final result = JsonEntryListResult.fromJson(item);
+      final encoded = result.toJson();
+      JsonEntryListResult.fromJson(encoded);
+
+      _deepEquals(encoded, item, "EntryListResult[$i]");
+      // Object equality not asserted: EntryListResult.== compares its `settings` Map by identity - Dart Maps have no value equality.
+    }
+  });
+
   test("JsonEpisode", () {
     final data = File("$path/Episode.json").readAsStringSync();
     final json = jsonDecode(data) as List;

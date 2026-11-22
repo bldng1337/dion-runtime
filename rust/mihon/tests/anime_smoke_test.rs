@@ -139,19 +139,33 @@ async fn anime_smoke_test() -> anyhow::Result<()> {
     // browse
     println!("\n=== Browse (Popular) ===");
     tokio::time::sleep(CALL_DELAY).await;
-    match extension.browse(0, None).await {
+    match extension.browse(0, HashMap::new(), None).await {
         Ok(browse_result) => {
-            println!("✅ Browse returned {} entries", browse_result.content.len());
-            if let Some(entry) = browse_result.content.first().cloned() {
+            println!(
+                "✅ Browse returned {} entries",
+                browse_result.entries.content.len()
+            );
+            if let Some(entry) = browse_result.entries.content.first().cloned() {
                 println!("  First entry: {} ({})", entry.title, entry.id.uid);
 
                 // search
                 println!("\n=== Search ===");
                 tokio::time::sleep(CALL_DELAY).await;
-                match extension.search(0, entry.title.clone(), None).await {
+                match extension
+                    .search(0, entry.title.clone(), HashMap::new(), None)
+                    .await
+                {
                     Ok(search_result) => {
-                        println!("✅ Search returned {} entries", search_result.content.len());
-                        let target = search_result.content.first().cloned().unwrap_or(entry);
+                        println!(
+                            "✅ Search returned {} entries",
+                            search_result.entries.content.len()
+                        );
+                        let target = search_result
+                            .entries
+                            .content
+                            .first()
+                            .cloned()
+                            .unwrap_or(entry);
                         // detail
                         println!("\n=== Detail ===");
                         tokio::time::sleep(CALL_DELAY).await;
@@ -247,10 +261,13 @@ async fn anime_batch_smoke_test() -> anyhow::Result<()> {
                 let name = extension.get_data().read().await.data.name.clone();
                 println!("✅ Installed: {}", name);
                 tokio::time::sleep(CALL_DELAY).await;
-                match extension.browse(0, None).await {
+                match extension.browse(0, HashMap::new(), None).await {
                     Ok(result) => {
-                        println!("✅ Browse returned {} entries", result.content.len());
-                        if let Some(entry) = result.content.first().cloned() {
+                        println!(
+                            "✅ Browse returned {} entries",
+                            result.entries.content.len()
+                        );
+                        if let Some(entry) = result.entries.content.first().cloned() {
                             println!("  First: {} ({})", entry.title, entry.id.uid);
                             tokio::time::sleep(CALL_DELAY).await;
                             match extension.detail(entry.id, HashMap::new(), None).await {

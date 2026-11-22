@@ -51,7 +51,10 @@ abstract class ProxyAdapter implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueNom<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ProxyExtension>>
 abstract class ProxyExtension implements RustOpaqueInterface {
-  Future<EntryList> browse({required int page, CancelToken? token});
+  Future<EntryListResult> browse(
+      {required int page,
+      required Map<String, Setting> settings,
+      CancelToken? token});
 
   /// Drops all runtime-managed caches (JS `cache` module data and the HTTP
   /// cache); settings, cookies and extension-written files are kept.
@@ -129,8 +132,11 @@ abstract class ProxyExtension implements RustOpaqueInterface {
 
   Future<void> saveSettings();
 
-  Future<EntryList> search(
-      {required int page, required String filter, CancelToken? token});
+  Future<EntryListResult> search(
+      {required int page,
+      required String filter,
+      required Map<String, Setting> settings,
+      CancelToken? token});
 
   Future<void> setEnabled({required bool enabled});
 

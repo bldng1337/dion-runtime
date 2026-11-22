@@ -37,7 +37,14 @@ class _SearchPageState extends State<SearchPage> {
     final label = 'Search (filter: "$filter", page: $page)';
     widget.controller.log(label, 'Running...');
     try {
-      final result = await ext.search(page: page, filter: filter);
+      final result = await ext.search(
+        page: page,
+        filter: filter,
+        settings: browseSettings,
+      );
+      browseSettings
+        ..clear()
+        ..addAll(result.settings);
       final encoded = widget.controller.encodeResult(result);
       setState(() {
         _result = encoded;

@@ -11,8 +11,8 @@ use dion_runtime::{
         extension::ExtensionData,
         settings::{DropdownOption, Setting, SettingKind, SettingValue, SettingsUI},
         source::{
-            EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, MediaType, Source,
-            SourceResult,
+            EntryDetailed, EntryDetailedResult, EntryId, EntryListResult, EpisodeId, MediaType,
+            Source, SourceResult,
         },
     },
     extension::Extension,
@@ -60,6 +60,10 @@ pub struct MihonExtension {
     /// Extension state store
     store: RwLock<ExtensionStore>,
 
+    /// The source's filters as setting definitions, refreshed by `reload`.
+    /// The values are host-owned and arrive with each browse/search call.
+    search_definitions: RwLock<HashMap<String, Setting>>,
+
     /// Extension client (from host)
     client: Box<dyn ExtensionClient>,
 
@@ -89,6 +93,7 @@ impl MihonExtension {
             source_type: MihonSourceType::parse(source_type),
             enabled: AtomicBool::new(true),
             store: RwLock::new(store),
+            search_definitions: RwLock::default(),
             client,
             bridge,
         })
@@ -191,26 +196,57 @@ impl MihonExtension {
         }
     }
 
-    /// Return the stored search-filter JSON if the user has customized any
-    /// search setting away from its default.
-    ///
-    /// This mirrors Mihon's browse-source behavior (external/mihon-upstream
-    /// `BrowseSourceScreen`/`GetRemoteManga`): the listing is "Popular" until
-    /// the user applies filters, after which it becomes a blank-query search
-    /// with those filters — the only path that filter-only sources (e.g. a
-    /// genre Select that ignores filters when a query is present) respond to.
-    async fn customized_search_filters(&self) -> Option<String> {
-        let store = self.store.read().await;
-        let settings = store.settings.get_settings(&SettingKind::Search);
-        let customized = settings
-            .iter()
-            .any(|(_, setting)| !setting_value_matches_default(&setting.value, &setting.default));
-        if !customized {
-            return None;
+    /// The filter definitions with the host's values carried over where the
+    /// type still matches. Without definitions (the filter list failed to
+    /// load) the host's settings pass through, so a transient bridge failure
+    /// does not wipe the values the host stores from our result.
+    async fn resolve_search_settings(
+        &self,
+        settings: HashMap<String, Setting>,
+    ) -> HashMap<String, Setting> {
+        let definitions = self.search_definitions.read().await;
+        if definitions.is_empty() {
+            return settings;
         }
-        let json = settings_to_filter_json(settings);
-        (!json.is_empty()).then_some(json)
+        merge_setting_values(&definitions, &settings)
     }
+}
+
+/// `definitions` with the values of `values` carried over by id where the
+/// value type matches; settings unknown to `definitions` are dropped.
+fn merge_setting_values(
+    definitions: &HashMap<String, Setting>,
+    values: &HashMap<String, Setting>,
+) -> HashMap<String, Setting> {
+    definitions
+        .iter()
+        .map(|(id, definition)| {
+            let mut setting = definition.clone();
+            if let Some(current) = values.get(id) {
+                let _ = setting.value.overwrite(&current.value);
+            }
+            (id.clone(), setting)
+        })
+        .collect()
+}
+
+/// The filter JSON for `settings` if the user customized any of them away
+/// from its default.
+///
+/// This mirrors Mihon's browse-source behavior (external/mihon-upstream
+/// `BrowseSourceScreen`/`GetRemoteManga`): the listing is "Popular" until
+/// the user applies filters, after which it becomes a blank-query search
+/// with those filters — the only path that filter-only sources (e.g. a
+/// genre Select that ignores filters when a query is present) respond to.
+fn customized_search_filters(settings: &HashMap<String, Setting>) -> Option<String> {
+    let customized = settings
+        .values()
+        .any(|setting| !setting_value_matches_default(&setting.value, &setting.default));
+    if !customized {
+        return None;
+    }
+    let json = settings_to_filter_json(settings);
+    (!json.is_empty()).then_some(json)
 }
 
 /// Structural equality for setting values (`SettingValue` does not implement
@@ -244,12 +280,12 @@ impl Extension for MihonExtension {
     }
 
     async fn reload(&mut self) -> Result<()> {
-        // Re-fetch the source's filter list and configurable preferences,
-        // merging them as setting definitions into the store. The host UI
-        // reads these definitions back via `get_settings()` and writes user
-        // values via `set_setting()`; `search()` then forwards the stored
-        // search values to the bridge, and preferences are pushed back to the
-        // JVM before content operations.
+        // Re-fetch the source's filter list and configurable preferences.
+        // Preferences are merged as definitions into the store (the host
+        // reads them via `get_settings()` and writes values via
+        // `set_setting()`; they are pushed to the JVM before content
+        // operations). Filters only become definitions: their values are
+        // host-owned and come back with every browse/search result.
         let (filters, preferences) = {
             let bridge = self.bridge.clone();
             let source_id = self.source_id;
@@ -263,23 +299,10 @@ impl Extension for MihonExtension {
             res
         };
 
+        *self.search_definitions.write().await =
+            filters.iter().filter_map(filter_to_setting).collect();
         {
             let mut store = self.store.write().await;
-            for filter in filters {
-                if let Some((id, setting)) = filter_to_setting(&filter) {
-                    // A single definition that can't be merged (e.g. a filter
-                    // name containing '/', which the store forbids in ids) is
-                    // logged and skipped so the remaining filters still become
-                    // visible instead of aborting the whole reload.
-                    if let Err(e) = store.settings.merge_setting_definition(
-                        id.clone(),
-                        &SettingKind::Search,
-                        setting,
-                    ) {
-                        log::warn!("Skipping search setting {id:?}: {e:#}");
-                    }
-                }
-            }
             for pref in preferences {
                 if let Some((id, setting)) = preference_to_setting(&pref) {
                     if let Err(e) = store.settings.merge_setting_definition(
@@ -303,8 +326,14 @@ impl Extension for MihonExtension {
 
     // ========== Content Discovery ==========
 
-    async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
+    async fn browse(
+        &self,
+        page: i32,
+        settings: HashMap<String, Setting>,
+        token: Option<CancellationToken>,
+    ) -> Result<EntryListResult> {
         self.ensure_enabled()?;
+        let settings = self.resolve_search_settings(settings).await;
         // Mihon/Tachiyomi uses 1-indexed pages, but the runtime uses 0-indexed
         let mihon_page = page + 1;
         let source_type = self.source_type;
@@ -312,52 +341,52 @@ impl Extension for MihonExtension {
 
         // Mirror Mihon's browse-source behavior: with default filters the
         // listing is "Popular"; once the user applies any filter, the listing
-        // becomes a blank-query search with the stored filters (see
+        // becomes a blank-query search with those filters (see
         // `customized_search_filters`). Filter-only sources like AnimeOnsen
         // only honor their genre/filter on that path.
-        if let Some(filters_json) = self.customized_search_filters().await {
-            let result = self
-                .blocking_bridge(token.as_ref(), move |bridge| match source_type {
-                    MihonSourceType::Manga | MihonSourceType::Novel => {
-                        bridge.search(source_id, mihon_page, "", &filters_json)
-                    }
-                    MihonSourceType::Anime => {
-                        bridge.search_anime(source_id, mihon_page, "", &filters_json)
-                    }
-                })
-                .await?;
-            return Ok(result.into_entry_list(self.source_type));
-        }
-
-        let result = self
-            .blocking_bridge(token.as_ref(), move |bridge| match source_type {
+        let result = if let Some(filters_json) = customized_search_filters(&settings) {
+            self.blocking_bridge(token.as_ref(), move |bridge| match source_type {
+                MihonSourceType::Manga | MihonSourceType::Novel => {
+                    bridge.search(source_id, mihon_page, "", &filters_json)
+                }
+                MihonSourceType::Anime => {
+                    bridge.search_anime(source_id, mihon_page, "", &filters_json)
+                }
+            })
+            .await?
+        } else {
+            self.blocking_bridge(token.as_ref(), move |bridge| match source_type {
                 MihonSourceType::Manga | MihonSourceType::Novel => {
                     bridge.get_popular(source_id, mihon_page)
                 }
                 MihonSourceType::Anime => bridge.get_popular_anime(source_id, mihon_page),
             })
-            .await?;
+            .await?
+        };
 
-        Ok(result.into_entry_list(self.source_type))
+        Ok(EntryListResult {
+            entries: result.into_entry_list(self.source_type),
+            settings,
+        })
     }
 
     async fn search(
         &self,
         page: i32,
         filter: String,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
-    ) -> Result<EntryList> {
+    ) -> Result<EntryListResult> {
         self.ensure_enabled()?;
+        let settings = self.resolve_search_settings(settings).await;
         // Parse the caller-supplied filter string. It may be a plain query,
         // a `{"query":..,"filters":[..]}` object, or a bare `[FilterDto..]` array.
         let (query, filters_json) = parse_filter_string(&filter);
 
-        // If no filters were supplied explicitly, fall back to the user's stored
-        // Search settings so saved filter choices still apply to plain-text and
-        // bare-query searches.
+        // Without explicit filters, the browse settings apply, so saved filter
+        // choices still affect plain-text and bare-query searches.
         let filters_json = if filters_json.is_empty() {
-            let store = self.store.read().await;
-            settings_to_filter_json(store.settings.get_settings(&SettingKind::Search))
+            settings_to_filter_json(&settings)
         } else {
             filters_json
         };
@@ -377,7 +406,10 @@ impl Extension for MihonExtension {
             })
             .await?;
 
-        Ok(result.into_entry_list(self.source_type))
+        Ok(EntryListResult {
+            entries: result.into_entry_list(self.source_type),
+            settings,
+        })
     }
 
     /// Always `false`: Mihon sources only declare `EntryProvider`, so hosts
@@ -602,12 +634,12 @@ fn parse_filter_string(filter: &str) -> (String, String) {
 //
 // These map the bridge's neutral `FilterDto`/`PreferenceDto` onto dion's
 // `Setting`/`SettingValue`/`SettingsUI`, and back. Filters become
-// `SettingKind::Search` settings (id = filter name, matching the bridge's
+// browse setting definitions (id = filter name, matching the bridge's
 // name-based filter matching); preferences become `SettingKind::Extension`
 // settings (id = SharedPreferences key).
 // ============================================================================
 
-/// Convert a search filter into a `SettingKind::Search` setting definition.
+/// Convert a search filter into a browse setting definition.
 ///
 /// `Header` and `Separator` filters carry no user-editable state and are
 /// dropped (returns `None`).
@@ -811,7 +843,7 @@ fn setting_value_to_pref(value: &SettingValue) -> Option<PrefValue> {
     })
 }
 
-/// Serialize the stored search settings back into the `FilterDto` JSON array
+/// Serialize browse settings back into the `FilterDto` JSON array
 /// the bridge's `search`/`searchAnime` expect. Each setting's value is
 /// flattened to the string state the bridge parses (booleans/numbers/indices
 /// as strings; string lists joined where applicable).
@@ -1116,5 +1148,39 @@ mod tests {
             &SettingValue::Boolean { data: true },
             &default
         ));
+    }
+
+    #[test]
+    fn host_values_carry_over_onto_filter_definitions() {
+        let (_, author) = filter_to_setting(&dto("Text", "Author", "")).unwrap();
+        let (_, done) = filter_to_setting(&dto("CheckBox", "Done", "false")).unwrap();
+        let definitions = HashMap::from([("Author".to_string(), author), ("Done".into(), done)]);
+
+        let (_, mut stored_author) = filter_to_setting(&dto("Text", "Author", "")).unwrap();
+        stored_author.value = SettingValue::String {
+            data: "glen".into(),
+        };
+        let (_, mut stale) = filter_to_setting(&dto("Text", "Done", "")).unwrap();
+        stale.value = SettingValue::String { data: "x".into() };
+        let (_, removed) = filter_to_setting(&dto("Text", "Gone", "old")).unwrap();
+        let values = HashMap::from([
+            ("Author".to_string(), stored_author),
+            ("Done".into(), stale),
+            ("Gone".into(), removed),
+        ]);
+
+        let merged = merge_setting_values(&definitions, &values);
+        assert_eq!(merged.len(), 2, "filters the source dropped are removed");
+        assert!(matches!(
+            &merged["Author"].value,
+            SettingValue::String { data } if data == "glen"
+        ));
+        // A value whose type no longer matches falls back to the definition.
+        assert!(matches!(
+            merged["Done"].value,
+            SettingValue::Boolean { data: false }
+        ));
+        assert!(customized_search_filters(&merged).is_some());
+        assert!(customized_search_filters(&definitions).is_none());
     }
 }

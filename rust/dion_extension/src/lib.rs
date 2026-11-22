@@ -27,6 +27,7 @@ mod tests {
     use dion_runtime::extension::{Adapter, Extension};
     use httpmock::Method::GET;
     use httpmock::MockServer;
+    use std::collections::HashMap;
 
     use crate::extension_manager::DionExtensionAdapter;
 
@@ -366,7 +367,7 @@ mod tests {
         simple_logger::SimpleLogger::new().env().init().unwrap();
         let server = setup_mock_server();
         let extension = setup_extension(EXTENSION_PATH, &server).await?;
-        extension.browse(1, None).await?;
+        extension.browse(1, HashMap::new(), None).await?;
         Ok(())
     }
 
@@ -375,7 +376,9 @@ mod tests {
         // simple_logger::SimpleLogger::new().env().init().unwrap();
         let server = setup_mock_server();
         let extension = setup_extension(EXTENSION_PATH, &server).await?;
-        extension.search(1, "".to_string(), None).await?;
+        extension
+            .search(1, "".to_string(), HashMap::new(), None)
+            .await?;
         Ok(())
     }
 
@@ -595,8 +598,10 @@ mod tests {
         // simple_logger::SimpleLogger::new().env().init().unwrap();
         let server = setup_mock_server();
         let mut extension = setup_extension(EXTENSION_PATH, &server).await?;
-        extension.browse(1, None).await?;
-        extension.search(1, "".to_string(), None).await?;
+        extension.browse(1, HashMap::new(), None).await?;
+        extension
+            .search(1, "".to_string(), HashMap::new(), None)
+            .await?;
         extension.handle_url("Some".to_string(), None).await?;
         let entry = extension
             .detail(

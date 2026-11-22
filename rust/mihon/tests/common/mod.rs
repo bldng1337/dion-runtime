@@ -371,29 +371,34 @@ async fn run_extension_calls(
     // ========== Browse (Popular) ==========
     println!("\n=== Browse (Popular) ===");
     tokio::time::sleep(CALL_DELAY).await;
-    let browse_entry = match tokio::time::timeout(OP_TIMEOUT, extension.browse(0, None)).await {
-        Ok(Ok(browse_result)) => {
-            println!("✅ Browse returned {} entries", browse_result.content.len());
-            browse_result
-                .content
-                .first()
-                .map(|e| (e.title.clone(), e.id.clone()))
-        }
-        Ok(Err(e)) => match abort_for_error("browse", e) {
-            StepAbort::Tolerated(msg) => {
-                tolerated.push(msg);
+    let browse_entry =
+        match tokio::time::timeout(OP_TIMEOUT, extension.browse(0, HashMap::new(), None)).await {
+            Ok(Ok(browse_result)) => {
+                println!(
+                    "✅ Browse returned {} entries",
+                    browse_result.entries.content.len()
+                );
+                browse_result
+                    .entries
+                    .content
+                    .first()
+                    .map(|e| (e.title.clone(), e.id.clone()))
+            }
+            Ok(Err(e)) => match abort_for_error("browse", e) {
+                StepAbort::Tolerated(msg) => {
+                    tolerated.push(msg);
+                    return WorkflowOutcome::Success { tolerated };
+                }
+                StepAbort::Compat(step) => {
+                    return WorkflowOutcome::CompatFailed(step);
+                }
+            },
+            Err(_elapsed) => {
+                println!("⚠️  browse timed out after {:?} (tolerated)", OP_TIMEOUT);
+                tolerated.push(format!("browse: timed out after {OP_TIMEOUT:?}"));
                 return WorkflowOutcome::Success { tolerated };
             }
-            StepAbort::Compat(step) => {
-                return WorkflowOutcome::CompatFailed(step);
-            }
-        },
-        Err(_elapsed) => {
-            println!("⚠️  browse timed out after {:?} (tolerated)", OP_TIMEOUT);
-            tolerated.push(format!("browse: timed out after {OP_TIMEOUT:?}"));
-            return WorkflowOutcome::Success { tolerated };
-        }
-    };
+        };
 
     let Some((browse_title, browse_id)) = browse_entry else {
         // Browse succeeded but returned nothing to drill into. That's a
@@ -416,31 +421,38 @@ async fn run_extension_calls(
     // ========== Search ==========
     println!("\n=== Search ===");
     tokio::time::sleep(CALL_DELAY).await;
-    let search_entry =
-        match tokio::time::timeout(OP_TIMEOUT, extension.search(0, "test".to_string(), None)).await
-        {
-            Ok(Ok(search_result)) => {
-                println!("✅ Search returned {} entries", search_result.content.len());
-                search_result
-                    .content
-                    .first()
-                    .map(|e| (e.title.clone(), e.id.clone()))
-            }
-            Ok(Err(e)) => match abort_for_error("search", e) {
-                StepAbort::Tolerated(msg) => {
-                    tolerated.push(msg);
-                    return WorkflowOutcome::Success { tolerated };
-                }
-                StepAbort::Compat(step) => {
-                    return WorkflowOutcome::CompatFailed(step);
-                }
-            },
-            Err(_elapsed) => {
-                println!("⚠️  search timed out after {:?} (tolerated)", OP_TIMEOUT);
-                tolerated.push(format!("search: timed out after {OP_TIMEOUT:?}"));
+    let search_entry = match tokio::time::timeout(
+        OP_TIMEOUT,
+        extension.search(0, "test".to_string(), HashMap::new(), None),
+    )
+    .await
+    {
+        Ok(Ok(search_result)) => {
+            println!(
+                "✅ Search returned {} entries",
+                search_result.entries.content.len()
+            );
+            search_result
+                .entries
+                .content
+                .first()
+                .map(|e| (e.title.clone(), e.id.clone()))
+        }
+        Ok(Err(e)) => match abort_for_error("search", e) {
+            StepAbort::Tolerated(msg) => {
+                tolerated.push(msg);
                 return WorkflowOutcome::Success { tolerated };
             }
-        };
+            StepAbort::Compat(step) => {
+                return WorkflowOutcome::CompatFailed(step);
+            }
+        },
+        Err(_elapsed) => {
+            println!("⚠️  search timed out after {:?} (tolerated)", OP_TIMEOUT);
+            tolerated.push(format!("search: timed out after {OP_TIMEOUT:?}"));
+            return WorkflowOutcome::Success { tolerated };
+        }
+    };
 
     let Some((search_title, search_id)) = search_entry else {
         println!("⚠️  Search returned no entries to drill into (tolerated)");

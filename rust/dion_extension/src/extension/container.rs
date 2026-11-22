@@ -15,7 +15,7 @@ use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::EntryDetailed;
 use dion_runtime::data::source::EntryDetailedResult;
 use dion_runtime::data::source::EntryId;
-use dion_runtime::data::source::EntryList;
+use dion_runtime::data::source::EntryListResult;
 use dion_runtime::data::source::EpisodeId;
 use dion_runtime::data::source::Source;
 use dion_runtime::data::source::SourceResult;
@@ -381,11 +381,21 @@ impl Extension for DionExtension {
         res
     }
 
-    async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList> {
+    async fn browse(
+        &self,
+        page: i32,
+        settings: HashMap<String, Setting>,
+        token: Option<CancellationToken>,
+    ) -> Result<EntryListResult> {
         match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
-                let task = Task::Browse { page, token, send };
+                let task = Task::Browse {
+                    page,
+                    settings,
+                    token,
+                    send,
+                };
                 context
                     .send(task)
                     .context("Failed to send message to Extension Thread")?;
@@ -417,14 +427,16 @@ impl Extension for DionExtension {
         &self,
         page: i32,
         filter: String,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
-    ) -> Result<EntryList> {
+    ) -> Result<EntryListResult> {
         match &*self.data.context.load() {
             Some(context) => {
                 let (send, response) = oneshot::channel();
                 let task = Task::Search {
                     page,
                     filter,
+                    settings,
                     token,
                     send,
                 };

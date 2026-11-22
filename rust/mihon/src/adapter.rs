@@ -463,13 +463,13 @@ impl MihonAdapter {
             )
             .await?;
 
-            // Populate the settings store (search filters + configurable
-            // preferences) right away. Hosts read the definitions back via
-            // get_settings/get_setting_ids when listing an extension's
-            // settings — none of them call Extension::reload themselves, so
-            // without this the source's filters would never be visible in the
-            // UI. A failure here only means missing settings; the extension
-            // stays usable.
+            // Load the search filter definitions and populate the settings
+            // store with the configurable preferences right away. Hosts read
+            // preferences back via get_settings/get_setting_ids and get the
+            // filters with each browse/search result — none of them call
+            // Extension::reload themselves, so without this neither would be
+            // visible in the UI. A failure here only means missing settings;
+            // the extension stays usable.
             if let Err(e) = ext.reload().await {
                 log::warn!(
                     "Failed to load filters/preferences for source {}: {e:#}",

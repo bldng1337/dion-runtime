@@ -1,7 +1,10 @@
 //! Installs an LNReader plugin from a (mock) repository and drives it through
 //! the Dion extension API, against a mock website.
 
-use std::path::{Path, PathBuf};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 use anyhow::{Result, bail};
 use dion_runtime::{
@@ -10,7 +13,7 @@ use dion_runtime::{
         action::Action,
         extension::ExtensionData,
         permission::Permission,
-        settings::{SettingKind, SettingValue},
+        settings::{Setting, SettingKind, SettingValue},
         source::{EntryId, EpisodeId, MediaType, Paragraph, ReleaseStatus, Source},
     },
     extension::{Adapter, Extension},
@@ -377,39 +380,43 @@ async fn installs_and_runs_a_plugin_from_a_repository() {
         assert_eq!(data.repo.as_deref(), Some(fixture.index_url().as_str()));
         assert!(data.media_type.contains(&MediaType::Book));
 
-        let search = store.settings.get_settings(&SettingKind::Search);
-        for id in ["genre", "tags", "tags:exclude", "lnreader:latest"] {
-            assert!(search.contains_key(id), "missing search setting {id}");
-        }
         let ext = store.settings.get_settings(&SettingKind::Extension);
         assert!(ext.contains_key("hideLocked"));
         assert!(ext.contains_key("lnreader:userAgent"));
     }
 
     // Settings reach the plugin without a reload: filters through
-    // popularNovels, plugin settings through @libs/storage (which this plugin
-    // reads in its constructor).
+    // popularNovels (from the host-owned browse settings), plugin settings
+    // through @libs/storage (which this plugin reads in its constructor).
+    let host_setting = |value: SettingValue| Setting {
+        label: "stale".into(),
+        default: value.clone(),
+        value,
+        visible: true,
+        ui: None,
+    };
+    let browse_settings = HashMap::from([
+        (
+            "genre".to_string(),
+            host_setting(SettingValue::String {
+                data: "fantasy".into(),
+            }),
+        ),
+        (
+            "tags:exclude".to_string(),
+            host_setting(SettingValue::StringList {
+                data: vec!["harem".into()],
+            }),
+        ),
+        // Dropped: the plugin defines no such filter.
+        (
+            "removed".to_string(),
+            host_setting(SettingValue::Boolean { data: true }),
+        ),
+    ]);
     {
         let mut store = extension.get_data().write().await;
         let settings = &mut store.settings;
-        settings
-            .set_setting(
-                "genre",
-                &SettingKind::Search,
-                SettingValue::String {
-                    data: "fantasy".into(),
-                },
-            )
-            .unwrap();
-        settings
-            .set_setting(
-                "tags:exclude",
-                &SettingKind::Search,
-                SettingValue::StringList {
-                    data: vec!["harem".into()],
-                },
-            )
-            .unwrap();
         settings
             .set_setting(
                 "hideLocked",
@@ -420,7 +427,17 @@ async fn installs_and_runs_a_plugin_from_a_repository() {
     }
     mock_site(&fixture.server);
 
-    let popular = extension.browse(0, None).await.unwrap();
+    let popular = extension
+        .browse(0, browse_settings.clone(), None)
+        .await
+        .unwrap();
+    let mut ids: Vec<_> = popular.settings.keys().map(String::as_str).collect();
+    ids.sort_unstable();
+    assert_eq!(ids, ["genre", "lnreader:latest", "tags", "tags:exclude"]);
+    let genre = &popular.settings["genre"];
+    assert_eq!(genre.label, "Genre", "definitions come from the plugin");
+    assert!(matches!(&genre.value, SettingValue::String { data } if data == "fantasy"));
+    let popular = popular.entries;
     assert_eq!(popular.content.len(), 2);
     assert_eq!(popular.hasnext, Some(true));
     let first = &popular.content[0];
@@ -437,9 +454,11 @@ async fn installs_and_runs_a_plugin_from_a_repository() {
     assert!(headers.contains_key("User-Agent"));
 
     let found = extension
-        .search(0, "hello world".into(), None)
+        .search(0, "hello world".into(), browse_settings, None)
         .await
         .unwrap();
+    assert_eq!(found.settings.len(), 4, "search keeps the browse settings");
+    let found = found.entries;
     assert_eq!(found.content.len(), 1);
     assert_eq!(found.content[0].id.uid, "novel/3");
 

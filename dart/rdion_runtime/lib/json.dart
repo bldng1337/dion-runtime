@@ -1369,12 +1369,10 @@ extension JsonPermission on Permission {
 extension JsonSettingKind on SettingKind {
   dynamic toJson() => switch (this) {
         SettingKind.extension_ => "Extension",
-        SettingKind.search => "Search",
       };
 
   static SettingKind fromJson(dynamic value) => switch (value.toString()) {
         "Extension" => SettingKind.extension_,
-        "Search" => SettingKind.search,
         _ => SettingKind.extension_,
       };
 }
@@ -1599,6 +1597,20 @@ extension JsonEntryList on EntryList {
         content: (value["content"] as List)
             .map((e) => JsonEntry.fromJson(e))
             .toList(),
+      );
+}
+
+extension JsonEntryListResult on EntryListResult {
+  dynamic toJson() => {
+        "entries": entries.toJson(),
+        "settings": settings.map((key, value) => MapEntry(key, value.toJson())),
+      };
+
+  static EntryListResult fromJson(dynamic value) => EntryListResult(
+        entries: JsonEntryList.fromJson(value["entries"]),
+        settings: (value["settings"] as Map).map(
+          (key, v) => MapEntry(key, JsonSetting.fromJson(v)),
+        ),
       );
 }
 

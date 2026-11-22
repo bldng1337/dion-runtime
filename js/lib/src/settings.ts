@@ -566,7 +566,55 @@ export function defineExtensionSetting<T extends Settingvalues>(
 	return setting;
 }
 
-export function defineSearchSetting<T extends Settingvalues>(
+export class StoreSetting<T extends Settingvalues> {
+	id: string;
+	defaultvalue: ExcludeLiteral<T>;
+	ui?: UI<ExcludeLiteral<T>>;
+	visible = true;
+	label?: string;
+
+	constructor(id: string, defaultvalue: ExcludeLiteral<T>) {
+		this.id = id;
+		this.defaultvalue = defaultvalue;
+	}
+
+	setUI(ui: UI<ExcludeLiteral<T>>) {
+		this.ui = ui;
+		return this;
+	}
+
+	setVisible(visible: boolean) {
+		this.visible = visible;
+		return this;
+	}
+
+	setLabel(label: string) {
+		this.label = label;
+		return this;
+	}
+
+	getDefinition(): Setting {
+		return {
+			value: toSettingValue(this.defaultvalue),
+			default: toSettingValue(this.defaultvalue),
+			ui: this.ui?.getDefinition() ?? null,
+			label: this.label ?? this.id,
+			visible: this.visible,
+		};
+	}
+
+	get(store: SettingStore): ExcludeLiteral<T> {
+		return store.getOrDefine<T>({
+			id: this.id,
+			defaultval: this.defaultvalue,
+			label: this.label,
+			visible: this.visible,
+			ui: this.ui as UI<T> | undefined,
+		});
+	}
+}
+
+export function defineStoreSetting<T extends Settingvalues>(
 	id: string,
 	options: {
 		label?: string;
@@ -574,8 +622,8 @@ export function defineSearchSetting<T extends Settingvalues>(
 		visible?: boolean;
 		ui?: UI<ExcludeLiteral<T>>;
 	},
-): ExtensionSetting<T> {
-	const setting = new ExtensionSetting<T>(id, options.default, "Search");
+): StoreSetting<T> {
+	const setting = new StoreSetting<T>(id, options.default);
 	if (options.label) {
 		setting.setLabel(options.label);
 	}

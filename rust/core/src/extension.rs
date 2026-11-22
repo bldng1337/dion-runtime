@@ -12,7 +12,8 @@ use crate::{
         extension_repo::{ExtensionRepo, RemoteExtension, RemoteExtensionResult},
         settings::Setting,
         source::{
-            EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
+            EntryDetailed, EntryDetailedResult, EntryId, EntryListResult, EpisodeId, Source,
+            SourceResult,
         },
         storage::StorageUsage,
     },
@@ -60,14 +61,23 @@ pub trait Extension: Send + Sync {
         token: Option<CancellationToken>,
     ) -> Result<Option<Account>>;
 
-    async fn browse(&self, page: i32, token: Option<CancellationToken>) -> Result<EntryList>;
+    /// `settings` are the host-owned browse settings; the extension returns
+    /// them, with its current definitions merged in, for the host to store.
+    async fn browse(
+        &self,
+        page: i32,
+        settings: HashMap<String, Setting>,
+        token: Option<CancellationToken>,
+    ) -> Result<EntryListResult>;
 
+    /// Shares the browse settings of [`Extension::browse`].
     async fn search(
         &self,
         page: i32,
         filter: String,
+        settings: HashMap<String, Setting>,
         token: Option<CancellationToken>,
-    ) -> Result<EntryList>;
+    ) -> Result<EntryListResult>;
 
     async fn handle_url(&self, url: String, token: Option<CancellationToken>) -> Result<bool>;
 

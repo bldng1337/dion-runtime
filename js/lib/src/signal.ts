@@ -8,7 +8,7 @@ import type { EntryId, SettingKind } from "@dion-js/runtime-types/runtime";
 /**
  * A reference to something a Slot can subscribe to.
  *  - `store`        : a key in the per-extension signal bus (transient).
- *  - `setting`      : an extension or search setting by id (durable, global).
+ *  - `setting`      : an extension setting by id (durable, global).
  *  - `entrySetting` : a per-(entry, settingId) value (durable, per-entry).
  *
  * The `type` field is phantom: it carries the TypeScript type of the value

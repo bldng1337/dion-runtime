@@ -64,28 +64,42 @@ impl ExtensionProxy {
     self.extension.reload().await.map_to_node()
   }
 
-  #[napi(ts_return_type = "Promise<EntryList>")]
+  #[napi(
+    ts_args_type = "page: number, settings: Record<string, Setting>, token?: CancelToken",
+    ts_return_type = "Promise<EntryListResult>"
+  )]
   pub async fn browse(
     &self,
     page: i32,
+    settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
     let token = token.map(|v| v.take_token());
-    let inner = self.extension.browse(page, token).await.map_to_node()?;
+    let settings = parse_settings(settings)?;
+    let inner = self
+      .extension
+      .browse(page, settings, token)
+      .await
+      .map_to_node()?;
     serde_json::to_value(inner).map_to_node()
   }
 
-  #[napi(ts_return_type = "Promise<EntryList>")]
+  #[napi(
+    ts_args_type = "page: number, filter: string, settings: Record<string, Setting>, token?: CancelToken",
+    ts_return_type = "Promise<EntryListResult>"
+  )]
   pub async fn search(
     &self,
     page: i32,
     filter: String,
+    settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
     let token = token.map(|v| v.take_token());
+    let settings = parse_settings(settings)?;
     let inner = self
       .extension
-      .search(page, filter, token)
+      .search(page, filter, settings, token)
       .await
       .map_to_node()?;
     serde_json::to_value(inner).map_to_node()
@@ -361,11 +375,7 @@ impl ExtensionProxy {
     kind: String,
   ) -> Result<serde_json::Value, napi::Error> {
     let extdata = self.extension.get_data().read().await;
-    let kind: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind: SettingKind = parse_setting_kind(&kind)?;
     let res = extdata
       .settings
       .get_setting(id.as_str(), &kind)
@@ -379,11 +389,7 @@ impl ExtensionProxy {
   )]
   pub async fn get_settings(&self, kind: String) -> Result<serde_json::Value, napi::Error> {
     let extdata = self.extension.get_data().read().await;
-    let kind_parsed: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let settings_map = extdata.settings.get_settings(&kind_parsed);
     serde_json::to_value(settings_map).map_to_node()
   }
@@ -396,11 +402,7 @@ impl ExtensionProxy {
     value: serde_json::Value,
   ) -> Result<(), napi::Error> {
     let mut extdata = self.extension.get_data().write().await;
-    let kind_parsed: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let setting_value: SettingValue = serde_json::from_value(value).map_to_node()?;
     extdata
       .settings
@@ -412,11 +414,7 @@ impl ExtensionProxy {
   #[napi(ts_args_type = "id: string, kind: SettingKind")]
   pub async fn remove_setting(&self, id: String, kind: String) -> Result<(), napi::Error> {
     let mut extdata = self.extension.get_data().write().await;
-    let kind_parsed: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     extdata
       .settings
       .remove_setting(id.as_str(), &kind_parsed)
@@ -430,11 +428,7 @@ impl ExtensionProxy {
   )]
   pub async fn get_setting_ids(&self, kind: String) -> Result<serde_json::Value, napi::Error> {
     let extdata = self.extension.get_data().read().await;
-    let kind_parsed: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let ids = extdata.settings.get_setting_ids(&kind_parsed);
     serde_json::to_value(ids).map_to_node()
   }
@@ -447,11 +441,7 @@ impl ExtensionProxy {
     definition: serde_json::Value,
   ) -> Result<(), napi::Error> {
     let mut extdata = self.extension.get_data().write().await;
-    let kind_parsed: SettingKind = match kind.to_lowercase().as_str() {
-      "extension" => SettingKind::Extension,
-      "search" => SettingKind::Search,
-      _ => return Err(napi::Error::from_reason("Incorrect SettingKind")),
-    };
+    let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let setting_def: Setting = serde_json::from_value(definition).map_to_node()?;
     extdata
       .settings
@@ -518,5 +508,21 @@ impl ExtensionProxy {
     })?;
 
     serde_json::to_value(creds.clone()).map_to_node()
+  }
+}
+
+fn parse_settings(
+  settings: HashMap<String, serde_json::Value>,
+) -> Result<HashMap<String, Setting>, napi::Error> {
+  settings
+    .into_iter()
+    .map(|(key, value)| Ok((key, serde_json::from_value(value).map_to_node()?)))
+    .collect()
+}
+
+fn parse_setting_kind(kind: &str) -> Result<SettingKind, napi::Error> {
+  match kind.to_lowercase().as_str() {
+    "extension" => Ok(SettingKind::Extension),
+    _ => Err(napi::Error::from_reason("Incorrect SettingKind")),
   }
 }

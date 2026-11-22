@@ -1,8 +1,9 @@
 // Maps LNReader filters and plugin settings onto Dion settings.
 //
-// Filters become `Search` settings keyed by the filter key, so the host's
-// search-filter UI edits them. An excludable checkbox group needs two lists,
-// stored under `<key>` (include) and `<key>:exclude`. Plugin settings become
+// Filters become browse settings keyed by the filter key: the host owns their
+// values and passes them to every browse/search call, which returns the merged
+// definitions. An excludable checkbox group needs two lists, stored under
+// `<key>` (include) and `<key>:exclude`. Plugin settings become
 // `Extension` settings keyed by their storage key; the app stores those values
 // in plugin storage, which is where plugins read them back.
 
@@ -155,39 +156,60 @@ function plainValue(value: SettingValue | undefined): unknown {
 	return value?.data;
 }
 
-async function readSetting(
-	id: string,
-	kind: "Search" | "Extension",
-): Promise<SettingValue | undefined> {
+async function readSetting(id: string): Promise<SettingValue | undefined> {
 	try {
-		return (await getSetting(id, kind)).value;
+		return (await getSetting(id, "Extension")).value;
 	} catch {
 		return undefined;
 	}
 }
 
-export async function registerFilters(
+/** Browse setting definitions for the plugin's filters. */
+export function filterDefinitions(
 	filters: Record<string, FilterDefinition> | undefined,
-): Promise<void> {
+): Record<string, Setting> {
+	const definitions: Record<string, Setting> = {};
 	for (const [key, filter] of Object.entries(filters ?? {})) {
 		for (const [id, definition] of filterToSettings(key, filter)) {
-			await registerSetting(id, definition, "Search");
+			definitions[id] = definition;
 		}
 	}
+	return definitions;
 }
 
 /**
- * The plugin's filters with the user's current values, shaped like the
+ * `definitions` with the host's values carried over by id where the value
+ * type still matches. Settings missing from `definitions` are dropped, so
+ * filters a plugin update removed disappear from the host as well.
+ */
+export function mergeSettings(
+	definitions: Record<string, Setting>,
+	values: Record<string, Setting>,
+): Record<string, Setting> {
+	const merged: Record<string, Setting> = {};
+	for (const [id, definition] of Object.entries(definitions)) {
+		const current = values[id];
+		merged[id] =
+			current && current.value.type === definition.value.type
+				? { ...definition, value: current.value }
+				: definition;
+	}
+	return merged;
+}
+
+/**
+ * The plugin's filters with the browse settings' values, shaped like the
  * definitions the app passes to `popularNovels` (each keeps `type`/`value`).
  */
-export async function currentFilters(
+export function currentFilters(
 	filters: Record<string, FilterDefinition> | undefined,
-): Promise<Record<string, FilterDefinition> | undefined> {
+	settings: Record<string, Setting>,
+): Record<string, FilterDefinition> | undefined {
 	if (!filters) return undefined;
 	const result: Record<string, FilterDefinition> = {};
 	for (const [key, filter] of Object.entries(filters)) {
 		let value: unknown = filter.value;
-		const stored = plainValue(await readSetting(key, "Search"));
+		const stored = plainValue(settings[key]?.value);
 		switch (filter.type) {
 			case FilterTypes.Switch:
 				if (typeof stored === "boolean") value = stored;
@@ -196,9 +218,7 @@ export async function currentFilters(
 				if (Array.isArray(stored)) value = stored;
 				break;
 			case FilterTypes.ExcludableCheckboxGroup: {
-				const exclude = plainValue(
-					await readSetting(key + EXCLUDE_SUFFIX, "Search"),
-				);
+				const exclude = plainValue(settings[key + EXCLUDE_SUFFIX]?.value);
 				const fallback = (filter.value ?? {}) as {
 					include?: string[];
 					exclude?: string[];
@@ -235,7 +255,7 @@ export async function pluginSettingValues(
 ): Promise<Map<string, unknown>> {
 	const values = new Map<string, unknown>();
 	for (const key of Object.keys(settings)) {
-		const value = await readSetting(key, "Extension");
+		const value = await readSetting(key);
 		if (value) values.set(key, plainValue(value));
 	}
 	return values;
@@ -243,16 +263,7 @@ export async function pluginSettingValues(
 
 export async function readStringSetting(
 	id: string,
-	kind: "Search" | "Extension",
 ): Promise<string | undefined> {
-	const value = await readSetting(id, kind);
+	const value = await readSetting(id);
 	return value?.type === "String" ? value.data : undefined;
-}
-
-export async function readBooleanSetting(
-	id: string,
-	kind: "Search" | "Extension",
-): Promise<boolean | undefined> {
-	const value = await readSetting(id, kind);
-	return value?.type === "Boolean" ? value.data : undefined;
 }

@@ -12,7 +12,6 @@ use crate::data::custom_ui::CustomUI;
 #[cfg_attr(feature = "type", derive(Type))]
 pub enum SettingKind {
     Extension,
-    Search,
 }
 
 /// flutter_rust_bridge:non_opaque

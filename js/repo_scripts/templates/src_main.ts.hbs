@@ -3,7 +3,7 @@ import { SourceProvider } from "@dion-js/runtime-types/extension";
 import type {
 	EntryDetailedResult,
 	EntryId,
-	EntryList,
+	EntryListResult,
 	EpisodeId,
 	EventData,
 	EventResult,
@@ -17,32 +17,47 @@ export default class extends DionExtension implements SourceProvider {
 	async onEvent(_data: EventData): Promise<EventResult | undefined> {
 		return undefined;
 	}
-	async browse(page: number): Promise<EntryList> {
+	async browse(
+		page: number,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
+		const store = this.convertSettingStore(settings);
 		return {
-			content: [
-				{
-					id: { uid: "test-entry" },
-					title: "Test Entry",
-					url: "https://example.com",
-					media_type: "Video",
-				},
-			],
-			hasnext: false,
-			length: 0,
+			entries: {
+				content: [
+					{
+						id: { uid: "test-entry" },
+						title: "Test Entry",
+						url: "https://example.com",
+						media_type: "Video",
+					},
+				],
+				hasnext: false,
+				length: 0,
+			},
+			settings: store.toMap(),
 		};
 	}
-	async search(page: number, filter: string): Promise<EntryList> {
+	async search(
+		page: number,
+		filter: string,
+		settings: Record<string, Setting>,
+	): Promise<EntryListResult> {
+		const store = this.convertSettingStore(settings);
 		return {
-			content: [
-				{
-					id: { uid: "test-entry" },
-					title: "Test Entry",
-					url: "https://example.com",
-					media_type: "Video",
-				},
-			],
-			hasnext: false,
-			length: 0,
+			entries: {
+				content: [
+					{
+						id: { uid: "test-entry" },
+						title: "Test Entry",
+						url: "https://example.com",
+						media_type: "Video",
+					},
+				],
+				hasnext: false,
+				length: 0,
+			},
+			settings: store.toMap(),
 		};
 	}
 	async detail(

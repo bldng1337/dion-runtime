@@ -80,7 +80,6 @@ class Setting {
 /// flutter_rust_bridge:unignore
 enum SettingKind {
   extension_,
-  search,
   ;
 }
 

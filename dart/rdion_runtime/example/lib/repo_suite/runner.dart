@@ -532,7 +532,9 @@ Future<WorkflowOutcome> _runExtensionCalls(
   await Future<void>.delayed(kCallDelay);
   rdion.EntryId? browseEntryId;
   try {
-    final browse = await extension.browse(page: 0).timeout(kOpTimeout);
+    final browse =
+        (await extension.browse(page: 0, settings: {}).timeout(kOpTimeout))
+            .entries;
     print('✅ Browse returned ${browse.content.length} entries');
     if (browse.content.isNotEmpty) {
       browseEntryId = browse.content.first.id;
@@ -576,8 +578,9 @@ Future<WorkflowOutcome> _runExtensionCalls(
   await Future<void>.delayed(kCallDelay);
   (String, rdion.EntryId)? searchEntry;
   try {
-    final search =
-        await extension.search(page: 0, filter: 'test').timeout(kOpTimeout);
+    final search = (await extension
+            .search(page: 0, filter: 'test', settings: {}).timeout(kOpTimeout))
+        .entries;
     print('✅ Search returned ${search.content.length} entries');
     if (search.content.isNotEmpty) {
       final first = search.content.first;

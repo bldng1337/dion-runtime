@@ -35,7 +35,10 @@ class _BrowsePageState extends State<BrowsePage> {
     final label = 'Browse (page: $page)';
     widget.controller.log(label, 'Running...');
     try {
-      final result = await ext.browse(page: page);
+      final result = await ext.browse(page: page, settings: browseSettings);
+      browseSettings
+        ..clear()
+        ..addAll(result.settings);
       final encoded = widget.controller.encodeResult(result);
       setState(() {
         _result = encoded;

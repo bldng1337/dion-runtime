@@ -18,7 +18,7 @@
 //!     let plugins = adapter.browse_repo(&repo, 0).await?;
 //!     let mut extension = adapter.install(&plugins.content[0].remote_id).await?;
 //!     extension.set_enabled(true).await?;
-//!     let popular = extension.browse(0, None).await?;
+//!     let popular = extension.browse(0, Default::default(), None).await?;
 //!     # let _ = popular;
 //!     Ok(())
 //! }
@@ -28,11 +28,11 @@
 //!
 //! | LNReader | Dion |
 //! | --- | --- |
-//! | `popularNovels(page, { filters, showLatestNovels })` | `browse(page - 1)`, and `search` with an empty query |
-//! | `searchNovels(term, page)` | `search(page - 1, term)` |
+//! | `popularNovels(page, { filters, showLatestNovels })` | `browse(page - 1, settings)`, and `search` with an empty query |
+//! | `searchNovels(term, page)` | `search(page - 1, term, settings)` |
 //! | `parseNovel` (+ `parsePage` for every page when `totalPages` is set) | `detail` |
 //! | `parseChapter` (HTML) | `source`, as a `Paragraphlist` |
-//! | `filters` | `Search` settings (`<key>`, plus `<key>:exclude` for excludable groups) |
+//! | `filters` | browse settings, host-owned and passed to `browse`/`search` (`<key>`, plus `<key>:exclude` for excludable groups) |
 //! | `pluginSettings` | `Extension` settings, visible to the plugin through `@libs/storage` |
 //! | `@libs/storage` | a persistent per-plugin cache |
 //!

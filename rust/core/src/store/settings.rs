@@ -9,14 +9,12 @@ use anyhow::{anyhow, bail, Result};
 #[derive(Debug, Clone)]
 pub struct SettingStore {
     extension_setting: HashMap<String, Setting>,
-    search_setting: HashMap<String, Setting>,
 }
 
 impl SettingStore {
     pub async fn new(client: &dyn ExtensionClient) -> Self {
         let mut ret = SettingStore {
             extension_setting: Default::default(),
-            search_setting: Default::default(),
         };
         // A failed load must not abort startup: the extension stays usable and
         // the persisted state is kept for a later successful load. Starting
@@ -32,10 +30,6 @@ impl SettingStore {
         if !extension_data.trim().is_empty() {
             self.extension_setting = serde_json::from_str(&extension_data)?;
         }
-        let search_data = client.load_data("search_settings").await?;
-        if !search_data.trim().is_empty() {
-            self.search_setting = serde_json::from_str(&search_data)?;
-        }
         Ok(())
     }
 
@@ -46,26 +40,18 @@ impl SettingStore {
                 serde_json::to_string(&self.extension_setting)?,
             )
             .await?;
-        client
-            .store_data(
-                "search_settings",
-                serde_json::to_string(&self.search_setting)?,
-            )
-            .await?;
         Ok(())
     }
 
     pub fn get_settings(&self, kind: &SettingKind) -> &HashMap<String, Setting> {
         match kind {
             SettingKind::Extension => &self.extension_setting,
-            SettingKind::Search => &self.search_setting,
         }
     }
 
     fn get_settings_mut(&mut self, kind: &SettingKind) -> &mut HashMap<String, Setting> {
         match kind {
             SettingKind::Extension => &mut self.extension_setting,
-            SettingKind::Search => &mut self.search_setting,
         }
     }
 
@@ -118,7 +104,6 @@ impl Display for SettingKind {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             SettingKind::Extension => f.write_str("Extension"),
-            SettingKind::Search => f.write_str("Search"),
         }
     }
 }

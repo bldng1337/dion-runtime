@@ -38,16 +38,16 @@ describe("Extension", () => {
 	});
 	it("should be able to browse", async () => {
 		if (extension.enabled === false) throw new Error("Extension not enabled");
-		const result = await extension!.browse(0);
+		const result = await extension!.browse(0, {});
 		expect(result).toBeDefined();
-		expect(result.content.length).toBeGreaterThan(0);
-		await assertValidEntries(result.content);
-		browseResult = result.content;
+		expect(result.entries.content.length).toBeGreaterThan(0);
+		await assertValidEntries(result.entries.content);
+		browseResult = result.entries.content;
 	});
 	it("should be able to search", async () => {
 		if (extension.enabled === false) throw new Error("Extension not enabled");
-		const result = await extension!.search(0, "second");
-		await assertValidEntries(result.content);
+		const result = await extension!.search(0, "second", {});
+		await assertValidEntries(result.entries.content);
 		expect(result).toBeDefined();
 	});
 	it("should be able to detail", async () => {

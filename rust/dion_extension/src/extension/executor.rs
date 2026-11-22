@@ -25,7 +25,7 @@ use dion_runtime::data::activity::EntryActivity;
 use dion_runtime::data::auth::Account;
 use dion_runtime::data::settings::Setting;
 use dion_runtime::data::source::{
-    EntryDetailed, EntryDetailedResult, EntryId, EntryList, EpisodeId, Source, SourceResult,
+    EntryDetailed, EntryDetailedResult, EntryId, EntryListResult, EpisodeId, Source, SourceResult,
 };
 use hyper::Request;
 use hyper::body::Bytes;
@@ -48,16 +48,18 @@ pub(crate) enum Task {
     },
     Browse {
         page: i32,
+        settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
-        send: Sender<Result<EntryList>>,
+        send: Sender<Result<EntryListResult>>,
     },
     Search {
         page: i32,
         filter: String,
+        settings: HashMap<String, Setting>,
 
         token: Option<CancellationToken>,
-        send: Sender<Result<EntryList>>,
+        send: Sender<Result<EntryListResult>>,
     },
     Event {
         event: EventData,
@@ -490,14 +492,34 @@ impl JSExecutor<Task> for ExtensionExecutor {
                 .await;
                 let _ = send.send(res);
             }
-            Task::Browse { page, token, send } => {
-                let vals = &[page.into()];
-                let browse_res = Self::exec(context, "browse", vals, token).await;
-                let _ = send.send(browse_res);
+            Task::Browse {
+                page,
+                settings,
+                token,
+                send,
+            } => {
+                let res = async {
+                    let vals = &[
+                        page.into(),
+                        JsValue::from_json(
+                            &serde_json::to_value(settings)
+                                .context("Failed to convert Settings to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert Settings to js")?,
+                    ];
+                    Self::exec(context, "browse", vals, token)
+                        .await
+                        .context("Failed to call browse")
+                }
+                .await;
+                let _ = send.send(res);
             }
             Task::Search {
                 page,
                 filter,
+                settings,
                 token,
                 send,
             } => {
@@ -508,8 +530,17 @@ impl JSExecutor<Task> for ExtensionExecutor {
                             .try_into_js(context)
                             .map_anyhow_ctx(context)
                             .context("Failed to convert filter to js")?,
+                        JsValue::from_json(
+                            &serde_json::to_value(settings)
+                                .context("Failed to convert Settings to serde Value")?,
+                            context,
+                        )
+                        .map_anyhow_ctx(context)
+                        .context("Failed to convert Settings to js")?,
                     ];
-                    Self::exec(context, "search", &vals, token).await
+                    Self::exec(context, "search", &vals, token)
+                        .await
+                        .context("Failed to call search")
                 }
                 .await;
                 let _ = send.send(res);

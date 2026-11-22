@@ -6,6 +6,7 @@ import type {
 	EntryDetailedResult,
 	EntryId,
 	EntryList,
+	EntryListResult,
 	Episode,
 	EpisodeId,
 	Link,
@@ -31,10 +32,10 @@ import {
 } from "./plugin.ts";
 import {
 	currentFilters,
+	filterDefinitions,
+	mergeSettings,
 	pluginSettingValues,
-	readBooleanSetting,
 	readStringSetting,
-	registerFilters,
 	registerPluginSettings,
 } from "./settings.ts";
 
@@ -47,6 +48,13 @@ export interface PluginMeta {
 }
 
 export const LATEST_SETTING = "lnreader:latest";
+const LATEST_DEFINITION: Setting = {
+	label: "Latest novels",
+	value: { type: "Boolean", data: false },
+	default: { type: "Boolean", data: false },
+	visible: true,
+	ui: { type: "CheckBox" },
+};
 export const USER_AGENT_SETTING = "lnreader:userAgent";
 const PAGE_CONCURRENCY = 4;
 
@@ -215,18 +223,7 @@ export function createExtension(meta: PluginMeta, code: string) {
 				},
 				"Extension",
 			);
-			await registerSetting(
-				LATEST_SETTING,
-				{
-					label: "Latest novels",
-					value: { type: "Boolean", data: false },
-					default: { type: "Boolean", data: false },
-					visible: true,
-					ui: { type: "CheckBox" },
-				},
-				"Search",
-			);
-			setUserAgent(await readStringSetting(USER_AGENT_SETTING, "Extension"));
+			setUserAgent(await readStringSetting(USER_AGENT_SETTING));
 			this.storage = await PluginStorage.open(`lnreader-${meta.pluginId}`);
 
 			let plugin = instantiatePlugin(code, this.storage);
@@ -238,7 +235,6 @@ export function createExtension(meta: PluginMeta, code: string) {
 				// it again now that the stored values are visible.
 				plugin = instantiatePlugin(code, this.storage);
 			}
-			await registerFilters(plugin.filters);
 			this.plugin = plugin;
 		}
 
@@ -262,7 +258,7 @@ export function createExtension(meta: PluginMeta, code: string) {
 		}
 
 		async beforeCall(): Promise<void> {
-			setUserAgent(await readStringSetting(USER_AGENT_SETTING, "Extension"));
+			setUserAgent(await readStringSetting(USER_AGENT_SETTING));
 			if (await this.syncPluginSettings(this.plugin)) {
 				// Settings changed: rebuild the plugin so constructor reads see them.
 				this.plugin = instantiatePlugin(code, this.storage);
@@ -305,25 +301,49 @@ export function createExtension(meta: PluginMeta, code: string) {
 			return undefined;
 		}
 
-		async browse(page: number): Promise<EntryList> {
+		/** The host's browse settings merged onto the current definitions. */
+		browseSettings(settings: Record<string, Setting>): Record<string, Setting> {
+			return mergeSettings(
+				{
+					[LATEST_SETTING]: LATEST_DEFINITION,
+					...filterDefinitions(this.plugin.filters),
+				},
+				settings,
+			);
+		}
+
+		async browse(
+			page: number,
+			settings: Record<string, Setting>,
+		): Promise<EntryListResult> {
 			await this.beforeCall();
-			const showLatestNovels =
-				(await readBooleanSetting(LATEST_SETTING, "Search")) ?? false;
-			const filters = await currentFilters(this.plugin.filters);
+			const merged = this.browseSettings(settings);
+			const latest = merged[LATEST_SETTING]?.value;
+			const showLatestNovels = latest?.type === "Boolean" && latest.data;
+			const filters = currentFilters(this.plugin.filters, merged);
 			// Dion pages start at 0, LNReader pages at 1.
 			const items = await pluginCall("popularNovels", () =>
 				this.plugin.popularNovels(page + 1, { showLatestNovels, filters }),
 			);
-			return this.toEntryList(items);
+			return { entries: this.toEntryList(items), settings: merged };
 		}
 
-		async search(page: number, filter: string): Promise<EntryList> {
-			if (!filter.trim()) return this.browse(page);
+		async search(
+			page: number,
+			filter: string,
+			settings: Record<string, Setting>,
+		): Promise<EntryListResult> {
+			if (!filter.trim()) return this.browse(page, settings);
 			await this.beforeCall();
 			const items = await pluginCall("searchNovels", () =>
 				this.plugin.searchNovels(filter, page + 1),
 			);
-			return this.toEntryList(items);
+			// searchNovels takes no filters, but the browse settings still go
+			// back so the host keeps them.
+			return {
+				entries: this.toEntryList(items),
+				settings: this.browseSettings(settings),
+			};
 		}
 
 		async chapters(path: string, novel: SourceNovel): Promise<ChapterItem[]> {

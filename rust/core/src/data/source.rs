@@ -64,6 +64,15 @@ pub struct EntryList {
 
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "type", derive(Type))]
+pub struct EntryListResult {
+    pub entries: EntryList,
+    pub settings: HashMap<String, Setting>,
+}
+
+/// flutter_rust_bridge:non_opaque
+/// flutter_rust_bridge:unignore
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "type", derive(Type))]
 pub struct EntryDetailedResult {
