@@ -257,13 +257,29 @@ jobs:
             ordered.push(...cyclic);
           }
 
+          // A failed publish must not stop the remaining packages: one
+          // package with a broken npm setup (e.g. no trusted publisher
+          // registered) would otherwise block every package ordered after
+          // it. Packages whose runtime dependencies failed are skipped, so
+          // nothing is published referencing a version missing from npm.
+          // The step still fails at the end if anything failed.
           const published = [];
+          const failed = new Map();
           for (const { dir, pkg } of ordered) {
             if (!pkg.version) {
               throw new Error(`${pkg.name} has no version field`);
             }
             if (publishedVersions(pkg.name).includes(pkg.version)) {
               console.log(`=  ${pkg.name}@${pkg.version} is already on npm, skipping`);
+              continue;
+            }
+
+            const blockedBy = ["dependencies", "optionalDependencies", "peerDependencies"]
+              .flatMap((field) => Object.keys(pkg[field] ?? {}))
+              .filter((depName) => failed.has(depName));
+            if (blockedBy.length > 0) {
+              console.error(`!! ${pkg.name}@${pkg.version} not published: depends on failed ${blockedBy.join(", ")}`);
+              failed.set(pkg.name, `blocked by ${blockedBy.join(", ")}`);
               continue;
             }
 
@@ -289,17 +305,28 @@ jobs:
               `${JSON.stringify(pkg, null, "\t")}\n`,
             );
             console.log(`-> publishing ${pkg.name}@${pkg.version}`);
-            execSync("npm publish --provenance --access public", {
-              cwd: dir,
-              stdio: "inherit",
-            });
-            published.push(`${pkg.name}@${pkg.version}`);
+            try {
+              execSync("npm publish --provenance --access public", {
+                cwd: dir,
+                stdio: "inherit",
+              });
+              published.push(`${pkg.name}@${pkg.version}`);
+            } catch (error) {
+              console.error(`!! publishing ${pkg.name}@${pkg.version} failed: ${error.message}`);
+              failed.set(pkg.name, "npm publish failed");
+            }
           }
 
           if (published.length === 0) {
-            console.log("No version changes, nothing published.");
+            console.log("Nothing published.");
           } else {
             console.log(`Published: ${published.join(", ")}`);
+          }
+          if (failed.size > 0) {
+            for (const [name, reason] of failed) {
+              console.log(`::error::${name} was not published (${reason})`);
+            }
+            process.exitCode = 1;
           }
           EOF
         env:
