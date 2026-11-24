@@ -1,7 +1,7 @@
 {
 	"name": "@dion-js/extension-scripts",
 	"type": "module",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/bldng1337/dion-runtime.git"
@@ -13,7 +13,8 @@
 		"dion-bundle": "./bin/bundle.ts",
 		"dion-build-index": "./bin/index.ts",
 		"dion-create": "./bin/create.ts",
-		"dion-build-site": "./bin/site.ts"
+		"dion-build-site": "./bin/site.ts",
+		"dion-publish": "./bin/publish.ts"
 	},
 	"exports": {
 		"./*": "./.dist/*"

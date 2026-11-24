@@ -370,7 +370,25 @@ Build each extension first (`extensions/<name>/.dist/<name>.dion.js`), then from
 root run `dion-build-index`. It copies each built file into `.index/<name>.dion.js` and
 writes `.index/index.repo.json` (schema `DionRepoIndex`: `repo_index_version: 1`, repo
 fields, and `content: [{ path, extdata }]`). The repo `url` is read from the repo
-`package.json` (falling back to `git remote get-url origin`).
+`package.json` (falling back to `git remote get-url origin`). Useful flags:
+`--extensions <dir>`, `--out <dir>`, `--repo-pkg <path>`.
+
+## Publishing to a GitHub release
+`dion-publish` (run from the repo root, after `dion-build-index`) publishes `.index/` to a
+GitHub release via the GitHub Releases API (no `gh` CLI required):
+
+- Ensures the target release tag exists (defaults to `extensions`), creating it if needed.
+- Uploads all assets in `.index/` (uploading `index.repo.json` last so consumers never read
+  an index referencing missing bundles), replacing existing assets of the same name.
+- Prunes stale assets left on the release from removed extensions (disable with `--no-prune`).
+
+Authentication uses `GH_TOKEN` or `GITHUB_TOKEN`. The target repo is resolved from
+`--repo <owner/repo>`, `GITHUB_REPOSITORY`, `package.json`, or `git remote origin`.
+
+One-time setup in a repository: `dion-publish --init` writes `.github/workflows/release.yml`
+(type-check → build → index → publish on push) and adds a `publish-extensions` script to
+`package.json`. Useful flags: `--source <dir>`, `--tag <tag>`, `--title <title>`,
+`--notes <text>`, `--repo <owner/repo>`, `--no-prune`, `--dry-run`, `--force`.
 
 ## Repository website
 `dion-build-site` (run from the repo root, after `dion-build-index`) generates a static

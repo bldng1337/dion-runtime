@@ -1,11 +1,16 @@
 #!/usr/bin/env bun
 import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { argv, file, $ } from "bun";
-import * as v from "valibot";
 import { valibot as vs } from "@dion-js/runtime-types/extension";
+import { argv, file } from "bun";
 import Handlebars from "handlebars";
+import * as v from "valibot";
 import { loadTemplate } from "../create/loader.ts" with { type: "macro" };
+import {
+	gitDefaultBranch,
+	gitRemoteUrl,
+	parseGitHubRepo,
+} from "../utils/github.ts";
 
 export type SiteOptions = {
 	cwd?: string;
@@ -29,39 +34,6 @@ export type SiteOptions = {
 const DEFAULT_SOURCE = ".index";
 const DEFAULT_OUT = ".site";
 const DEFAULT_RELEASE_TAG = "extensions";
-
-type GitHubRef = { owner: string; repo: string; homepage: string };
-
-function parseGitHubRepo(url: string | undefined): GitHubRef | undefined {
-	if (!url) return undefined;
-	const m = url.match(
-		/github\.com[/:]([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?[/?#]?$/i,
-	);
-	if (!m) return undefined;
-	return {
-		owner: m[1],
-		repo: m[2],
-		homepage: `https://github.com/${m[1]}/${m[2]}`,
-	};
-}
-
-async function gitRemoteUrl(cwd: string): Promise<string | undefined> {
-	const res = await $`git -C ${cwd} config --get remote.origin.url`
-		.quiet()
-		.nothrow();
-	const out = res.stdout.toString().trim();
-	return out.length ? out : undefined;
-}
-
-async function gitDefaultBranch(cwd: string): Promise<string> {
-	const res =
-		await $`git -C ${cwd} symbolic-ref --short refs/remotes/origin/HEAD`
-			.quiet()
-			.nothrow();
-	const out = res.stdout.toString().trim();
-	const branch = out.split("/").slice(1).join("/") || out;
-	return branch.length ? branch : "main";
-}
 
 function workflowYaml(branch: string): string {
 	return `name: Deploy extension site

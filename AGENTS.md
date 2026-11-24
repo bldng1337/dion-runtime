@@ -18,7 +18,7 @@ Rust-hosted boa_engine VM (see `skills/create-extension/SKILL.md` for that API).
 | `js/lib` | `@dion-js/runtime-lib` — TS convenience library for extension authors (net, html, auth, settings, ui, …). |
 | `js/extension_types` | `@dion-js/extension-types` — the TS API surface (`.d.ts`) extensions are written against. |
 | `js/runtime_types` | `@dion-js/runtime-types` — TS types **generated** from Rust via specta into `gen/`; don't edit by hand. |
-| `js/repo_scripts` | `@dion-js/extension-scripts` — CLI for extension devs: `dion-bundle`, `dion-create`. |
+| `js/repo_scripts` | `@dion-js/extension-scripts` — CLI for extension devs: `dion-bundle`, `dion-create`, `dion-build-index`, `dion-build-site`, `dion-publish`. |
 | `js/lnreader_shim` | `@dion-js/lnreader-shim` — the LNReader plugin environment (cheerio, htmlparser2, dayjs, `@libs/*`) and the Dion extension class wrapping a plugin. `bun run build` writes the bundle to `rust/lnreader/assets/generated_lnreader_shim.js`, which is committed: rebuild and commit it after changing the shim. |
 | `js/test_utils` | `@dion-js/extension-test-utils` — helpers for testing extensions. |
 | `js/config` | `@dion-js/config` — shared biome/tsconfig presets. |
