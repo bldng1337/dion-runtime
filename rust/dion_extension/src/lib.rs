@@ -286,6 +286,99 @@ mod tests {
             assert!(missing.is_none());
             let _ = std::fs::remove_dir_all(dir);
         }
+
+        /// Headers of a GitHub release asset: a long-past Last-Modified and no
+        /// Cache-Control, which the HTTP cache treats as heuristically fresh.
+        const OLD_LAST_MODIFIED: &str = "Mon, 01 Jan 2024 00:00:00 GMT";
+
+        fn index_with_version(version: &str) -> serde_json::Value {
+            let mut known = manifest("known");
+            known.version = version.to_string();
+            serde_json::json!({
+                "repo_index_version": 1,
+                "name": "repo",
+                "url": "https://repo.example",
+                "description": "",
+                "icon": "",
+                "content": [{ "path": "known.dion.js", "extdata": known }],
+            })
+        }
+
+        #[tokio::test]
+        async fn updated_repo_index_is_not_served_from_cache() {
+            let (adapter, dir) = adapter("repo-cache").await;
+            let server = MockServer::start_async().await;
+            let old = server
+                .mock_async(|when, then| {
+                    when.method(GET).path("/index.repo.json");
+                    then.status(200)
+                        .header("last-modified", OLD_LAST_MODIFIED)
+                        .json_body(index_with_version("1.0.0"));
+                })
+                .await;
+            let repo = adapter
+                .get_repo(&server.url("/index.repo.json"))
+                .await
+                .unwrap();
+            let before = adapter.browse_repo(&repo, 0).await.unwrap();
+            old.delete_async().await;
+            server
+                .mock_async(|when, then| {
+                    when.method(GET).path("/index.repo.json");
+                    then.status(200)
+                        .header("last-modified", OLD_LAST_MODIFIED)
+                        .json_body(index_with_version("2.0.0"));
+                })
+                .await;
+
+            let after = adapter.browse_repo(&repo, 0).await.unwrap();
+
+            assert_eq!(before.content[0].version, "1.0.0");
+            assert_eq!(after.content[0].version, "2.0.0");
+            let _ = std::fs::remove_dir_all(dir);
+        }
+
+        #[tokio::test]
+        async fn updated_extension_is_not_installed_from_cache() {
+            let (adapter, dir) = adapter("install-cache").await;
+            let server = MockServer::start_async().await;
+            let source = |version: &str| {
+                let mut known = manifest("known");
+                known.version = version.to_string();
+                format!(
+                    "//{}
+{CODE}",
+                    serde_json::to_string(&known).unwrap()
+                )
+            };
+            let old = server
+                .mock_async(|when, then| {
+                    when.method(GET).path("/known.dion.js");
+                    then.status(200)
+                        .header("last-modified", OLD_LAST_MODIFIED)
+                        .body(source("1.0.0"));
+                })
+                .await;
+            let url = server.url("/known.dion.js");
+            let before = adapter.install(&url).await.unwrap();
+            let before = before.get_data().read().await.data.version.clone();
+            old.delete_async().await;
+            server
+                .mock_async(|when, then| {
+                    when.method(GET).path("/known.dion.js");
+                    then.status(200)
+                        .header("last-modified", OLD_LAST_MODIFIED)
+                        .body(source("2.0.0"));
+                })
+                .await;
+
+            let after = adapter.install(&url).await.unwrap();
+            let after = after.get_data().read().await.data.version.clone();
+
+            assert_eq!(before, "1.0.0");
+            assert_eq!(after, "2.0.0");
+            let _ = std::fs::remove_dir_all(dir);
+        }
     }
 
     fn setup_mock_server() -> MockServer {

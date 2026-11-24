@@ -34,6 +34,8 @@ fn validate_id(id: &str) -> Result<()> {
     Ok(())
 }
 use dion_runtime::file_url::path_from_file_url;
+use http_cache::CacheMode;
+use reqwest_middleware::RequestBuilder;
 use tokio::{
     fs::{self, copy, read_dir, remove_file, rename, write},
     sync::RwLock,
@@ -316,6 +318,13 @@ fn staged_install_path(extension_dir: &Path, id: &str) -> PathBuf {
 }
 
 impl DionExtensionAdapter {
+    fn get_uncached(&self, url: &str) -> RequestBuilder {
+        self.network
+            .nclient
+            .get(url)
+            .with_extension(CacheMode::NoStore)
+    }
+
     async fn commit_install(&self, staged: PathBuf, target: PathBuf) -> Result<Box<dyn Extension>> {
         let installed: Result<DionExtension> = async {
             let mut extension = DionExtension::create(staged.clone(), self)
@@ -370,7 +379,7 @@ impl Adapter for DionExtensionAdapter {
     async fn install(&self, url: &str) -> Result<Box<dyn Extension>> {
         match url {
             location if location.starts_with("http://") || location.starts_with("https://") => {
-                let res = self.network.nclient.get(location).send().await?;
+                let res = self.get_uncached(location).send().await?;
                 let body = res.text().await?;
                 self.install_source(body).await
             }
@@ -458,13 +467,13 @@ impl Adapter for DionExtensionAdapter {
     }
 
     async fn get_repo(&self, url: &str) -> Result<ExtensionRepo> {
-        let res = self.network.nclient.get(url).send().await?;
+        let res = self.get_uncached(url).send().await?;
         let res: DionRepoIndex = res.json().await?;
         Ok(res.into_repo(url.to_string()))
     }
 
     async fn browse_repo(&self, repo: &ExtensionRepo, _page: i32) -> Result<RemoteExtensionResult> {
-        let res = self.network.nclient.get(&repo.remote_id).send().await?;
+        let res = self.get_uncached(&repo.remote_id).send().await?;
         let res: DionRepoIndex = res.json().await?;
         Ok(res.into_result(repo.remote_id.clone()))
     }
