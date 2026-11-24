@@ -22,7 +22,7 @@ use std::net::IpAddr;
 use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::{
     convert::Infallible,
-    sync::{Arc, Weak},
+    sync::{Arc, LazyLock, Weak},
 };
 use tokio::net::TcpListener;
 use tokio::sync::{RwLock, oneshot};
@@ -410,17 +410,15 @@ impl Proxy {
     }
 
     pub fn get_extension_uri(&self, data: &ExtensionData) -> Option<String> {
-        let addr = self.addr?;
+        self.addr?;
         Some(format!(
-            "http://{}:{}{}",
-            addr.ip(),
-            addr.port(),
-            Self::extension_path(data)
+            "{PROXY_URL_PREFIX}{EXTENSION_PATH_PREFIX}{}",
+            data.id
         ))
     }
 
     fn extension_path(data: &ExtensionData) -> String {
-        format!("/extproxy/{}", data.id)
+        format!("/{EXTENSION_PATH_PREFIX}{}", data.id)
     }
 
     /// Handle a proxied request against a snapshot of the proxy state. Must
@@ -543,13 +541,83 @@ pub(crate) struct ProxyExtensionRef {
 }
 
 impl ProxyExtensionRef {
-    pub async fn new(adapter: &RwLock<Proxy>, runtime: Weak<InnerExtension>) -> Arc<Self> {
-        let ext = Arc::new(ProxyExtensionRef { runtime });
+    pub async fn new(adapter: &RwLock<Proxy>, runtime: &Arc<InnerExtension>) -> Arc<Self> {
+        let id = runtime.store.read().await.data.id.clone();
+        let ext = Arc::new(ProxyExtensionRef {
+            runtime: Arc::downgrade(runtime),
+        });
         let mut proxy = adapter.write().await;
         proxy.cleanup_dropped();
         proxy.register_extension(Arc::downgrade(&ext));
+        if let Some(addr) = proxy.addr {
+            register_route(id, addr, Arc::downgrade(&ext));
+        }
         ext
     }
+}
+
+impl Drop for ProxyExtensionRef {
+    fn drop(&mut self) {
+        if let Ok(mut routes) = ROUTES.write() {
+            routes.retain(|route| route.owner.strong_count() > 0);
+        }
+    }
+}
+
+const PROXY_URL_PREFIX: &str = "proxy://";
+const EXTENSION_PATH_PREFIX: &str = "extproxy/";
+const LEGACY_URL_PREFIX: &str = "http://127.0.0.1:";
+
+static ROUTES: LazyLock<std::sync::RwLock<Vec<ProxyRoute>>> = LazyLock::new(Default::default);
+
+#[derive(Debug)]
+struct ProxyRoute {
+    id: String,
+    addr: SocketAddr,
+    owner: Weak<ProxyExtensionRef>,
+}
+
+fn register_route(id: String, addr: SocketAddr, owner: Weak<ProxyExtensionRef>) {
+    let Ok(mut routes) = ROUTES.write() else {
+        return;
+    };
+    routes.retain(|route| route.owner.strong_count() > 0);
+    routes.push(ProxyRoute { id, addr, owner });
+}
+
+fn route_for(id: &str) -> Option<SocketAddr> {
+    let routes = ROUTES.read().ok()?;
+    routes
+        .iter()
+        .rev()
+        .find(|route| route.id == id && route.owner.strong_count() > 0)
+        .map(|route| route.addr)
+}
+
+pub fn resolve_proxy_url(url: &str) -> Option<String> {
+    let path = if let Some(path) = strip_prefix_ignore_case(url, PROXY_URL_PREFIX) {
+        path
+    } else {
+        let rest = url.strip_prefix(LEGACY_URL_PREFIX)?;
+        let port_end = rest.find(|c: char| !c.is_ascii_digit())?;
+        rest[port_end..].strip_prefix('/')?
+    };
+    let after_prefix = path.strip_prefix(EXTENSION_PATH_PREFIX)?;
+    let id_end = after_prefix
+        .find(['/', '?', '#'])
+        .unwrap_or(after_prefix.len());
+    let id = &after_prefix[..id_end];
+    if id.is_empty() {
+        return None;
+    }
+    let addr = route_for(id)?;
+    Some(format!("http://{addr}/{path}"))
+}
+
+fn strip_prefix_ignore_case<'a>(value: &'a str, prefix: &str) -> Option<&'a str> {
+    let head = value.get(..prefix.len())?;
+    head.eq_ignore_ascii_case(prefix)
+        .then(|| &value[prefix.len()..])
 }
 
 #[cfg(test)]
@@ -561,6 +629,36 @@ mod tests {
         assert!(path_belongs_to("/extproxy/foo", "/extproxy/foo"));
         assert!(path_belongs_to("/extproxy/foo/page", "/extproxy/foo"));
         assert!(!path_belongs_to("/extproxy/foo2/page", "/extproxy/foo"));
+    }
+
+    #[test]
+    fn resolves_proxy_urls_to_the_live_port() {
+        let owner = Arc::new(ProxyExtensionRef {
+            runtime: Weak::new(),
+        });
+        let addr: SocketAddr = "127.0.0.1:4321".parse().unwrap();
+        register_route("resolve.Test".into(), addr, Arc::downgrade(&owner));
+
+        assert_eq!(
+            resolve_proxy_url("proxy://extproxy/resolve.Test/video.m3u8?q=1").as_deref(),
+            Some("http://127.0.0.1:4321/extproxy/resolve.Test/video.m3u8?q=1")
+        );
+        assert_eq!(
+            resolve_proxy_url("proxy://extproxy/resolve.Test").as_deref(),
+            Some("http://127.0.0.1:4321/extproxy/resolve.Test")
+        );
+        assert_eq!(
+            resolve_proxy_url("http://127.0.0.1:9999/extproxy/resolve.Test/a").as_deref(),
+            Some("http://127.0.0.1:4321/extproxy/resolve.Test/a")
+        );
+        assert_eq!(resolve_proxy_url("proxy://extproxy/resolve.Testx/a"), None);
+        assert_eq!(
+            resolve_proxy_url("https://example.com/extproxy/resolve.Test"),
+            None
+        );
+
+        drop(owner);
+        assert_eq!(resolve_proxy_url("proxy://extproxy/resolve.Test"), None);
     }
 
     #[test]

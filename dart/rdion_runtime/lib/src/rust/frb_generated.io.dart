@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'api/cancel.dart';
 import 'api/client.dart';
 import 'api/extension.dart';
+import 'api/proxy.dart';
 import 'dart:async';
 import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
@@ -5886,6 +5887,24 @@ class RustLibWire implements BaseWire {
   late final _wire__dion_runtime__data__extension_repo__remote_extension_result_default =
       _wire__dion_runtime__data__extension_repo__remote_extension_result_defaultPtr
           .asFunction<void Function(int)>();
+
+  WireSyncRust2DartDco wire__crate__api__proxy__resolve_proxy_url(
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> url,
+  ) {
+    return _wire__crate__api__proxy__resolve_proxy_url(url);
+  }
+
+  late final _wire__crate__api__proxy__resolve_proxy_urlPtr = _lookup<
+          ffi.NativeFunction<
+              WireSyncRust2DartDco Function(
+                ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+              )>>(
+      'frbgen_rdion_runtime_wire__crate__api__proxy__resolve_proxy_url');
+  late final _wire__crate__api__proxy__resolve_proxy_url =
+      _wire__crate__api__proxy__resolve_proxy_urlPtr.asFunction<
+          WireSyncRust2DartDco Function(
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
 
   void wire__dion_runtime__data__extension__source_open_type_default(
     int port_,

@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 import { expect, test } from "bun:test";
 import { MockManagerClient } from "@dion-js/extension-test-utils";
-import { Adapter } from "@dion-js/runtime";
+import { Adapter, resolveProxyUrl } from "@dion-js/runtime";
 import * as utils from "@dion-js/unit-test-utils/test";
 import { copyFile, mkdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -44,9 +44,9 @@ test("metadata inspection and binary proxy serving", async () => {
 
 	const proxyAddressSetting = await ext.getSetting("proxyAddress", "Extension");
 	expect(proxyAddressSetting.value.type).toBe("String");
-	const proxyAddr = (
-		proxyAddressSetting.value as { type: "String"; data: string }
-	).data;
+	const proxyAddr = resolveProxyUrl(
+		(proxyAddressSetting.value as { type: "String"; data: string }).data,
+	);
 	expect(proxyAddr).not.toBe("");
 
 	// The proxy serves the binary cover extracted from the local epub; the

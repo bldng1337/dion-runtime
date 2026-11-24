@@ -12,6 +12,8 @@ mod range_file;
 mod specta;
 mod utils;
 
+pub use proxy::resolve_proxy_url;
+
 #[cfg(test)]
 #[allow(unused_variables)]
 mod tests {

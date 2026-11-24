@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 import { expect, test } from "bun:test";
 import { MockManagerClient } from "@dion-js/extension-test-utils";
-import { Adapter } from "@dion-js/runtime";
+import { Adapter, resolveProxyUrl } from "@dion-js/runtime";
 import type {
 	Entry,
 	EntryDetailed,
@@ -147,9 +147,9 @@ test("test handleProxy", async () => {
 	expect(proxyAddressSetting).toBeDefined();
 	expect(proxyAddressSetting.value.type).toBe("String");
 
-	const proxyAddr = (
-		proxyAddressSetting.value as { type: "String"; data: string }
-	).data;
+	const proxyAddr = resolveProxyUrl(
+		(proxyAddressSetting.value as { type: "String"; data: string }).data,
+	);
 	expect(proxyAddr).toBeDefined();
 	expect(proxyAddr).not.toBe("");
 

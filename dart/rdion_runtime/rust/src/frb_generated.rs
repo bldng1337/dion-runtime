@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -621305511;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1914484500;
 
 // Section: executor
 
@@ -3058,6 +3058,24 @@ fn wire__dion_runtime__data__extension_repo__remote_extension_result_default_imp
                     Ok(output_ok)
                 })())
             }
+        },
+    )
+}
+fn wire__crate__api__proxy__resolve_proxy_url_impl(
+    url: impl CstDecode<String>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "resolve_proxy_url",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_url = url.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::proxy::resolve_proxy_url(api_url))?;
+                Ok(output_ok)
+            })())
         },
     )
 }
@@ -15267,6 +15285,13 @@ mod io {
         port_: i64,
     ) {
         wire__dion_runtime__data__extension_repo__remote_extension_result_default_impl(port_)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__proxy__resolve_proxy_url(
+        url: *mut wire_cst_list_prim_u_8_strict,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__proxy__resolve_proxy_url_impl(url)
     }
 
     #[unsafe(no_mangle)]

@@ -14,5 +14,6 @@ export 'src/rust/third_party/dion_runtime/data/auth.dart';
 export 'src/rust/api/client.dart';
 export 'src/rust/api/cancel.dart';
 export 'src/rust/api/extension.dart';
+export 'src/rust/api/proxy.dart';
 export 'json.dart';
 export 'src/rust/frb_generated.dart' show RustLib;

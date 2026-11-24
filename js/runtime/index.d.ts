@@ -92,6 +92,13 @@ export interface LogEntry {
 }
 
 /**
+ * Resolves a `proxy://` URL handed out by an extension (see
+ * `getProxyAddress`) to the `http://` URL its proxy serves on in this
+ * process; any other URL is returned unchanged.
+ */
+export declare function resolveProxyUrl(url: string): string
+
+/**
  * Installs a logging hook for embedding apps: every log record the Rust
  * runtime emits (extension load failures during discovery, proxy errors,
  * permission persist warnings, ...) is forwarded to `callback`. Without

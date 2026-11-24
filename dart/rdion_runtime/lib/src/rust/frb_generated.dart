@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'api/cancel.dart';
 import 'api/client.dart';
 import 'api/extension.dart';
+import 'api/proxy.dart';
 import 'dart:async';
 import 'frb_generated.dart';
 import 'frb_generated.io.dart'
@@ -84,7 +85,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -621305511;
+  int get rustContentHash => -1914484500;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -330,6 +331,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<RemoteExtensionResult>
       dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
+
+  String crateApiProxyResolveProxyUrl({required String url});
 
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
 
@@ -2337,6 +2340,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             debugName: "remote_extension_result_default",
             argNames: [],
           );
+
+  @override
+  String crateApiProxyResolveProxyUrl({required String url}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        var arg0 = cst_encode_String(url);
+        return wire.wire__crate__api__proxy__resolve_proxy_url(arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_String,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiProxyResolveProxyUrlConstMeta,
+      argValues: [url],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiProxyResolveProxyUrlConstMeta =>
+      const TaskConstMeta(
+        debugName: "resolve_proxy_url",
+        argNames: ["url"],
+      );
 
   @override
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault() {

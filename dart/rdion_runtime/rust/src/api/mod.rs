@@ -5,6 +5,7 @@ mod client_impls;
 /// flutter_rust_bridge:ignore
 mod ext_wrap;
 pub mod extension;
+pub mod proxy;
 pub mod value;
 use flutter_rust_bridge::frb;
 // pub mod data_comp;

@@ -217,7 +217,7 @@ impl DionExtension {
             network_permissions: Default::default(),
         });
         let proxy = manager.proxy.clone();
-        let proxy_ref = ProxyExtensionRef::new(&proxy, Arc::downgrade(&data)).await;
+        let proxy_ref = ProxyExtensionRef::new(&proxy, &data).await;
         let extension = Self {
             _proxy_ref: proxy_ref,
             data,

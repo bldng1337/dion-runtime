@@ -277,8 +277,6 @@ class EntryList {
           content == other.content;
 }
 
-/// Result of `browse`/`search`. The browse settings are owned by the host:
-/// it passes them in and stores the returned ones, like entry settings.
 /// flutter_rust_bridge:non_opaque
 /// flutter_rust_bridge:unignore
 class EntryListResult {
