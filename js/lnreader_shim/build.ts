@@ -5,7 +5,14 @@
 const OUTPUT = `${import.meta.dir}/../../rust/lnreader/assets/generated_lnreader_shim.js`;
 
 // Host modules provided by the Dion runtime.
-const external = ["network", "setting", "parse", "cache", "convert"];
+const external = [
+	"network",
+	"setting",
+	"parse",
+	"cache",
+	"convert",
+	"filesystem",
+];
 
 const result = await Bun.build({
 	entrypoints: [`${import.meta.dir}/src/index.ts`],

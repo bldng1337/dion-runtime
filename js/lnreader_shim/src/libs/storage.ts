@@ -3,8 +3,19 @@
 // The app backs it with synchronous MMKV. Dion's persistent stores are async,
 // so the plugin's items are loaded into memory once (`PluginStorage.open`) and
 // every change is written back in the background.
+//
+// Items live in a JSON file in the extension's data dir rather than in a
+// `cache` store: clearing an extension's cache must not wipe plugin data
+// (logins, settings plugins keep for themselves).
 
 import { type Cache, openKvCache } from "cache";
+import {
+	exists,
+	getDataDir,
+	joinPaths,
+	readTextFile,
+	writeTextFile,
+} from "filesystem";
 
 interface StoredItem {
 	created: string | Date;
@@ -17,30 +28,61 @@ export class PluginStorage {
 	// Values the host owns (plugin settings): readable through `get` like in
 	// the app, but never persisted here.
 	readonly #transient = new Map<string, unknown>();
-	readonly #cache: Cache | undefined;
+	readonly #path: string | undefined;
 	#pending: Promise<unknown> = Promise.resolve();
+	#dirty = false;
 
-	private constructor(cache: Cache | undefined) {
-		this.#cache = cache;
+	private constructor(path: string | undefined) {
+		this.#path = path;
 	}
 
 	static async open(name: string): Promise<PluginStorage> {
-		let cache: Cache | undefined;
+		let path: string | undefined;
 		try {
-			cache = openKvCache(name);
+			path = joinPaths([getDataDir(), `${name}.storage.json`]);
 		} catch (error) {
 			console.warn(`LNReader storage is not persistent: ${error}`);
 		}
-		const storage = new PluginStorage(cache);
-		if (cache) {
-			for (const key of await cache.keys()) {
-				const item = await cache.get(key);
-				if (item && typeof item === "object" && "value" in item) {
-					storage.#items.set(key, item as StoredItem);
+		const storage = new PluginStorage(path);
+		if (path && (await exists(path))) {
+			try {
+				const parsed = JSON.parse(await readTextFile(path)) as Record<
+					string,
+					StoredItem
+				>;
+				for (const [key, item] of Object.entries(parsed)) {
+					if (item && typeof item === "object" && "value" in item) {
+						storage.#items.set(key, item);
+					}
 				}
+			} catch (error) {
+				console.warn(`LNReader storage file is unreadable: ${error}`);
 			}
+		} else if (path) {
+			await storage.#migrateFromCache(name);
 		}
 		return storage;
+	}
+
+	/** Earlier versions kept the items in a kv cache of the same name. */
+	async #migrateFromCache(name: string): Promise<void> {
+		let cache: Cache;
+		try {
+			cache = openKvCache(name);
+		} catch {
+			return;
+		}
+		for (const key of await cache.keys()) {
+			const item = await cache.get(key);
+			if (item && typeof item === "object" && "value" in item) {
+				this.#items.set(key, item as StoredItem);
+			}
+		}
+		if (this.#items.size > 0) {
+			this.#schedulePersist();
+			await this.flush();
+			await cache.clear();
+		}
 	}
 
 	/** Resolves once every background write issued so far has finished. */
@@ -48,11 +90,20 @@ export class PluginStorage {
 		return this.#pending;
 	}
 
-	#persist(write: (cache: Cache) => Promise<unknown>): void {
-		const cache = this.#cache;
-		if (!cache) return;
+	/** Coalesces bursts of changes into one write of the whole file. */
+	#schedulePersist(): void {
+		const path = this.#path;
+		if (!path) return;
+		if (this.#dirty) return;
+		this.#dirty = true;
 		this.#pending = this.#pending
-			.then(() => write(cache))
+			.then(() => {
+				this.#dirty = false;
+				return writeTextFile(
+					path,
+					JSON.stringify(Object.fromEntries(this.#items)),
+				);
+			})
 			.catch((error) =>
 				console.warn(`LNReader storage write failed: ${error}`),
 			);
@@ -70,10 +121,9 @@ export class PluginStorage {
 		};
 		this.#transient.delete(key);
 		this.#items.set(key, item);
-		// Round-trip through JSON like the app does, so stored values never
-		// keep references to live plugin objects.
-		const stored = JSON.parse(JSON.stringify(item)) as StoredItem;
-		this.#persist((cache) => cache.set(key, stored));
+		// Persisted as JSON like the app does, so stored values never keep
+		// references to live plugin objects once reloaded.
+		this.#schedulePersist();
 	}
 
 	get(key: string, raw?: boolean): unknown {
@@ -83,7 +133,8 @@ export class PluginStorage {
 		}
 		const item = this.#items.get(key);
 		if (!item) return undefined;
-		if (item.expires) {
+		// `expires: 0` is a timestamp too (already expired), not "no expiry".
+		if (typeof item.expires === "number") {
 			if (Date.now() > item.expires) {
 				this.delete(key);
 				return undefined;
@@ -95,7 +146,7 @@ export class PluginStorage {
 	delete(key: string): void {
 		this.#transient.delete(key);
 		if (this.#items.delete(key)) {
-			this.#persist((cache) => cache.delete(key));
+			this.#schedulePersist();
 		}
 	}
 
