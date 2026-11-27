@@ -78,8 +78,12 @@ mod network {
                         };
                         let options = options?.unwrap_or(Value::Null);
                         let options = options.as_object().cloned();
-                        let resource =
-                            crate::proxy::resolve_proxy_url(&resource).unwrap_or(resource);
+                        if crate::proxy::is_proxy_url(&resource) {
+                            // Proxy URLs are for the app: fetching one would call another extension's handleProxy, or deadlock on this extension's own.
+                            return Err(JsError::from_native(JsNativeError::error().with_message(
+                                format!("Extensions cannot fetch proxy URLs: {resource}"),
+                            )));
+                        }
                         let url: reqwest::Url = resource.parse().map_err(|_| {
                             JsError::from_native(
                                 JsNativeError::error()

@@ -237,12 +237,20 @@ pub(crate) fn value_to_response(value: serde_json::Value) -> Result<Response<Byt
     Ok(response)
 }
 
+const MAX_REQUEST_BODY: usize = 16 * 1024 * 1024;
+
 async fn convert_request_to_string(req: Request<Incoming>) -> Result<Request<String>> {
     let (parts, body) = req.into_parts();
 
-    let whole_body = body.collect().await?.to_bytes();
+    let whole_body = http_body_util::Limited::new(body, MAX_REQUEST_BODY)
+        .collect()
+        .await
+        .map_err(|err| anyhow::anyhow!("Failed to read request body: {err}"))?
+        .to_bytes();
 
-    let body_string = String::from_utf8(whole_body.to_vec())?;
+    // The extension API carries the body as a string; binary bodies are
+    // passed lossily rather than failing the whole request.
+    let body_string = String::from_utf8_lossy(&whole_body).into_owned();
 
     Ok(Request::from_parts(parts, body_string))
 }
@@ -306,7 +314,56 @@ pub(crate) struct Proxy {
     registered_extensions: Vec<Weak<ProxyExtensionRef>>,
     abort_handle: Option<AbortOnDrop<JoinHandle<()>>>,
     addr: Option<SocketAddr>,
+    token: String,
     client: Client<HttpsConnector<HttpConnector>, BoxBody<Bytes, hyper::Error>>,
+}
+
+fn new_proxy_token() -> String {
+    let mut bytes = [0u8; 16];
+    if let Err(err) = getrandom::fill(&mut bytes) {
+        // Without OS randomness there is no secret
+        warn!("Failed to generate proxy token: {err}");
+        return String::new();
+    }
+    bytes.iter().map(|b| format!("{b:02x}")).collect()
+}
+
+fn plain_response(status: StatusCode, body: &'static str) -> Response<ProxyBody> {
+    Response::builder()
+        .status(status)
+        .header("Content-Type", "text/plain")
+        .body(
+            Full::new(Bytes::from(body))
+                .map_err(|never| match never {})
+                .boxed(),
+        )
+        .unwrap()
+}
+
+fn strip_token<'a>(path: &'a str, token: &str) -> Option<&'a str> {
+    if token.is_empty() {
+        return Some(path);
+    }
+    let rest = path.strip_prefix('/')?.strip_prefix(token)?;
+    rest.starts_with('/').then_some(rest)
+}
+
+fn is_loopback_host(host: Option<&str>, addr: Option<SocketAddr>) -> bool {
+    let Some(host) = host else {
+        return true;
+    };
+    let (name, port) = match host.rsplit_once(':') {
+        Some((name, port)) if !port.is_empty() && port.chars().all(|c| c.is_ascii_digit()) => {
+            (name, Some(port))
+        }
+        _ => (host, None),
+    };
+    if let (Some(port), Some(addr)) = (port, addr)
+        && port.parse::<u16>().ok() != Some(addr.port())
+    {
+        return false;
+    }
+    name.eq_ignore_ascii_case("localhost") || name == "127.0.0.1" || name == "[::1]"
 }
 
 impl Proxy {
@@ -325,6 +382,7 @@ impl Proxy {
             registered_extensions: Vec::new(),
             abort_handle: None,
             addr: None,
+            token: new_proxy_token(),
             client: Client::builder(TokioExecutor::new()).build(https),
         }));
         async fn handle(
@@ -347,20 +405,42 @@ impl Proxy {
             // for the whole request — including the outbound redirect fetch
             // and the extension JS round-trip — would block extension
             // (un)registration behind slow requests.
-            let (client, extensions) = {
+            let (client, extensions, token, addr) = {
                 let proxy = proxy.read().await;
-                (proxy.client.clone(), proxy.get_active_extensions().await)
+                (
+                    proxy.client.clone(),
+                    proxy.get_active_extensions().await,
+                    proxy.token.clone(),
+                    proxy.addr,
+                )
+            };
+            let host = req
+                .headers()
+                .get(hyper::header::HOST)
+                .and_then(|h| h.to_str().ok())
+                .map(str::to_owned);
+            if !is_loopback_host(host.as_deref(), addr) {
+                return Ok(plain_response(StatusCode::FORBIDDEN, "Forbidden"));
+            }
+            let Some(path) = strip_token(req.uri().path(), &token).map(str::to_owned) else {
+                return Ok(plain_response(StatusCode::NOT_FOUND, "Not found"));
+            };
+            let req = match Proxy::without_token(req, &path) {
+                Ok(req) => req,
+                Err(err) => {
+                    warn!("Rejected proxy request: {err:?}");
+                    return Ok(plain_response(StatusCode::BAD_REQUEST, "Bad request"));
+                }
             };
             match Proxy::handle_request(&client, &extensions, client_ip, req).await {
                 Ok(response) => Ok(response),
-                Err(err) => Ok(Response::builder()
-                    .status(StatusCode::INTERNAL_SERVER_ERROR)
-                    .body(
-                        Full::new(Bytes::from(format!("Internal server error: {:?}", err)))
-                            .map_err(|never| match never {})
-                            .boxed(),
-                    )
-                    .unwrap()),
+                Err(err) => {
+                    warn!("Proxy request failed: {err:?}");
+                    Ok(plain_response(
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        "Internal server error",
+                    ))
+                }
             }
         }
         let weak_proxy = Arc::downgrade(&proxy);
@@ -372,6 +452,7 @@ impl Proxy {
 
             let mut proxy_lock = proxy.write().await;
             proxy_lock.addr = Some(local_addr);
+            register_endpoint(local_addr, proxy_lock.token.clone());
 
             let server_task = tokio::spawn(async move {
                 let weak_proxy = weak_proxy;
@@ -419,6 +500,18 @@ impl Proxy {
 
     fn extension_path(data: &ExtensionData) -> String {
         format!("/{EXTENSION_PATH_PREFIX}{}", data.id)
+    }
+
+    fn without_token(req: Request<Incoming>, path: &str) -> Result<Request<Incoming>> {
+        let (mut parts, body) = req.into_parts();
+        let path_and_query = match parts.uri.query() {
+            Some(query) => format!("{path}?{query}"),
+            None => path.to_string(),
+        };
+        let mut uri = parts.uri.clone().into_parts();
+        uri.path_and_query = Some(path_and_query.parse()?);
+        parts.uri = hyper::Uri::from_parts(uri)?;
+        Ok(Request::from_parts(parts, body))
     }
 
     /// Handle a proxied request against a snapshot of the proxy state. Must
@@ -550,7 +643,7 @@ impl ProxyExtensionRef {
         proxy.cleanup_dropped();
         proxy.register_extension(Arc::downgrade(&ext));
         if let Some(addr) = proxy.addr {
-            register_route(id, addr, Arc::downgrade(&ext));
+            register_route(id, addr, proxy.token.clone(), Arc::downgrade(&ext));
         }
         ext
     }
@@ -574,24 +667,68 @@ static ROUTES: LazyLock<std::sync::RwLock<Vec<ProxyRoute>>> = LazyLock::new(Defa
 struct ProxyRoute {
     id: String,
     addr: SocketAddr,
+    token: String,
     owner: Weak<ProxyExtensionRef>,
 }
 
-fn register_route(id: String, addr: SocketAddr, owner: Weak<ProxyExtensionRef>) {
+static ENDPOINTS: LazyLock<std::sync::RwLock<Vec<(SocketAddr, String)>>> =
+    LazyLock::new(Default::default);
+
+fn register_endpoint(addr: SocketAddr, token: String) {
+    if let Ok(mut endpoints) = ENDPOINTS.write() {
+        endpoints.push((addr, token));
+    }
+}
+
+fn register_route(id: String, addr: SocketAddr, token: String, owner: Weak<ProxyExtensionRef>) {
     let Ok(mut routes) = ROUTES.write() else {
         return;
     };
     routes.retain(|route| route.owner.strong_count() > 0);
-    routes.push(ProxyRoute { id, addr, owner });
+    routes.push(ProxyRoute {
+        id,
+        addr,
+        token,
+        owner,
+    });
 }
 
-fn route_for(id: &str) -> Option<SocketAddr> {
+fn route_for(id: &str) -> Option<(SocketAddr, String)> {
     let routes = ROUTES.read().ok()?;
     routes
         .iter()
         .rev()
         .find(|route| route.id == id && route.owner.strong_count() > 0)
-        .map(|route| route.addr)
+        .map(|route| (route.addr, route.token.clone()))
+}
+
+pub fn is_proxy_url(url: &str) -> bool {
+    if strip_prefix_ignore_case(url, PROXY_URL_PREFIX).is_some() {
+        return true;
+    }
+    if let Some(rest) = url.strip_prefix(LEGACY_URL_PREFIX)
+        && let Some(port_end) = rest.find(|c: char| !c.is_ascii_digit())
+        && rest[port_end..]
+            .strip_prefix('/')
+            .is_some_and(|path| path.starts_with(EXTENSION_PATH_PREFIX))
+    {
+        return true;
+    }
+    let Ok(parsed) = url.parse::<reqwest::Url>() else {
+        return false;
+    };
+    let Some(port) = parsed.port_or_known_default() else {
+        return false;
+    };
+    let Ok(endpoints) = ENDPOINTS.read() else {
+        return false;
+    };
+    let is_loopback = parsed.host_str().is_some_and(|host| {
+        let host = host.trim_start_matches('[').trim_end_matches(']');
+        host.eq_ignore_ascii_case("localhost")
+            || host.parse::<IpAddr>().is_ok_and(|ip| ip.is_loopback())
+    });
+    is_loopback && endpoints.iter().any(|(addr, _)| addr.port() == port)
 }
 
 pub fn resolve_proxy_url(url: &str) -> Option<String> {
@@ -610,8 +747,11 @@ pub fn resolve_proxy_url(url: &str) -> Option<String> {
     if id.is_empty() {
         return None;
     }
-    let addr = route_for(id)?;
-    Some(format!("http://{addr}/{path}"))
+    let (addr, token) = route_for(id)?;
+    if token.is_empty() {
+        return Some(format!("http://{addr}/{path}"));
+    }
+    Some(format!("http://{addr}/{token}/{path}"))
 }
 
 fn strip_prefix_ignore_case<'a>(value: &'a str, prefix: &str) -> Option<&'a str> {
@@ -637,19 +777,24 @@ mod tests {
             runtime: Weak::new(),
         });
         let addr: SocketAddr = "127.0.0.1:4321".parse().unwrap();
-        register_route("resolve.Test".into(), addr, Arc::downgrade(&owner));
+        register_route(
+            "resolve.Test".into(),
+            addr,
+            "tok".into(),
+            Arc::downgrade(&owner),
+        );
 
         assert_eq!(
             resolve_proxy_url("proxy://extproxy/resolve.Test/video.m3u8?q=1").as_deref(),
-            Some("http://127.0.0.1:4321/extproxy/resolve.Test/video.m3u8?q=1")
+            Some("http://127.0.0.1:4321/tok/extproxy/resolve.Test/video.m3u8?q=1")
         );
         assert_eq!(
             resolve_proxy_url("proxy://extproxy/resolve.Test").as_deref(),
-            Some("http://127.0.0.1:4321/extproxy/resolve.Test")
+            Some("http://127.0.0.1:4321/tok/extproxy/resolve.Test")
         );
         assert_eq!(
             resolve_proxy_url("http://127.0.0.1:9999/extproxy/resolve.Test/a").as_deref(),
-            Some("http://127.0.0.1:4321/extproxy/resolve.Test/a")
+            Some("http://127.0.0.1:4321/tok/extproxy/resolve.Test/a")
         );
         assert_eq!(resolve_proxy_url("proxy://extproxy/resolve.Testx/a"), None);
         assert_eq!(
@@ -659,6 +804,32 @@ mod tests {
 
         drop(owner);
         assert_eq!(resolve_proxy_url("proxy://extproxy/resolve.Test"), None);
+    }
+
+    #[test]
+    fn token_and_host_checks() {
+        assert_eq!(
+            strip_token("/tok/extproxy/a/b", "tok"),
+            Some("/extproxy/a/b")
+        );
+        assert_eq!(strip_token("/extproxy/a/b", "tok"), None);
+        assert_eq!(strip_token("/tokx/extproxy/a", "tok"), None);
+        assert_eq!(strip_token("/extproxy/a", ""), Some("/extproxy/a"));
+
+        let addr: SocketAddr = "127.0.0.1:4321".parse().unwrap();
+        assert!(is_loopback_host(Some("127.0.0.1:4321"), Some(addr)));
+        assert!(is_loopback_host(Some("localhost:4321"), Some(addr)));
+        assert!(is_loopback_host(None, Some(addr)));
+        assert!(!is_loopback_host(Some("evil.example:4321"), Some(addr)));
+        assert!(!is_loopback_host(Some("127.0.0.1:80"), Some(addr)));
+    }
+
+    #[test]
+    fn proxy_urls_are_recognised() {
+        assert!(is_proxy_url("proxy://extproxy/a/b"));
+        assert!(is_proxy_url("PROXY://extproxy/a"));
+        assert!(is_proxy_url("http://127.0.0.1:1234/extproxy/a"));
+        assert!(!is_proxy_url("https://example.com/extproxy/a"));
     }
 
     #[test]
