@@ -145,6 +145,18 @@ pub fn extension_id(plugin_id: &str) -> String {
     while id.contains("..") {
         id = id.replace("..", "_");
     }
+    // A leading dot would make `lnreader..x`, a trailing one an id ending in
+    // `.`; both are rejected as extension ids.
+    if id.starts_with('.') {
+        id.replace_range(..1, "_");
+    }
+    if id.ends_with('.') {
+        let last = id.len() - 1;
+        id.replace_range(last.., "_");
+    }
+    if id.is_empty() {
+        id.push('_');
+    }
     format!("lnreader.{id}")
 }
 
@@ -328,6 +340,9 @@ mod tests {
         assert_eq!(extension_id("FWN.com"), "lnreader.FWN.com");
         assert_eq!(extension_id("a/b:c"), "lnreader.a_b_c");
         assert_eq!(extension_id("a..b"), "lnreader.a_b");
+        assert_eq!(extension_id(".foo"), "lnreader._foo");
+        assert_eq!(extension_id("foo."), "lnreader.foo_");
+        assert_eq!(extension_id(""), "lnreader._");
     }
 
     #[test]
