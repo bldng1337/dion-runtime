@@ -3,11 +3,16 @@
 use anyhow::{Context, Result};
 use jni::{InitArgsBuilder, JNIVersion, JavaVM};
 use std::path::{Path, PathBuf};
+use std::sync::{Arc, Mutex};
 
 /// Handle to the embedded JVM
 pub struct JvmHandle {
-    jvm: JavaVM,
+    jvm: Arc<JavaVM>,
 }
+
+/// A process can create exactly one JVM (`JNI_CreateJavaVM` fails with
+/// `JNI_EEXIST` afterwards), so every handle shares the first one.
+static SHARED_JVM: Mutex<Option<Arc<JavaVM>>> = Mutex::new(None);
 
 impl JvmHandle {
     /// Initialize JVM with classpath pointing to mihon-compat.jar
@@ -15,15 +20,18 @@ impl JvmHandle {
     /// # Arguments
     /// * `compat_jar_path` - Path to the mihon-compat.jar file
     pub fn new(compat_jar_path: &Path) -> Result<Self> {
+        let mut shared = SHARED_JVM.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some(jvm) = shared.as_ref() {
+            return Ok(Self { jvm: jvm.clone() });
+        }
+
         // Build classpath
         let classpath = format!("-Djava.class.path={}", compat_jar_path.display());
 
-        // Ensure we have a valid JAVA_HOME before attempting JVM init.
-        // The `jni` crate relies on JAVA_HOME to locate jvm.dll/jvm.so, so the
-        // env mutation unfortunately cannot be avoided — but it is performed at
-        // most once per process (before the first JVM init) to minimize the
-        // window in which other threads could race on the environment.
-        ensure_java_home()?;
+        // Located here and handed to the jni crate directly, instead of
+        // exporting JAVA_HOME for it: mutating the environment of a
+        // multithreaded process is undefined behaviour on POSIX.
+        let libjvm = locate_libjvm()?;
 
         let jvm_args = InitArgsBuilder::new()
             .version(JNIVersion::V8)
@@ -46,10 +54,12 @@ impl JvmHandle {
             .build()
             .context("Failed to build JVM args")?;
 
-        let jvm = JavaVM::new(jvm_args).context(
+        let jvm = JavaVM::with_libjvm(jvm_args, || Ok(libjvm)).context(
             "Failed to create JVM. Ensure a JDK/JRE with a JVM library is installed \
              and JAVA_HOME points to it.",
         )?;
+        let jvm = Arc::new(jvm);
+        *shared = Some(jvm.clone());
 
         Ok(Self { jvm })
     }
@@ -72,45 +82,26 @@ impl JvmHandle {
 unsafe impl Send for JvmHandle {}
 unsafe impl Sync for JvmHandle {}
 
-/// Validate JAVA_HOME and search for a valid JVM installation if needed.
-///
-/// Runs at most once per process; the result (including the env mutation
-/// below) is memoized so repeated JVM inits never touch the environment again.
-fn ensure_java_home() -> Result<()> {
-    // anyhow::Error is not Clone, so the memoized result stores the error as
-    // text and is converted back on every call.
-    static ENSURE_JAVA_HOME: std::sync::OnceLock<Result<(), String>> = std::sync::OnceLock::new();
-    ENSURE_JAVA_HOME
-        .get_or_init(|| ensure_java_home_inner().map_err(|e| format!("{e:#}")))
-        .clone()
-        .map_err(anyhow::Error::msg)
-}
-
-fn ensure_java_home_inner() -> Result<()> {
-    // Check if current JAVA_HOME is valid
-    if let Ok(java_home) = std::env::var("JAVA_HOME") {
+/// Path of the JVM library: from JAVA_HOME when that holds one, otherwise
+/// from the first discovered installation.
+fn locate_libjvm() -> Result<PathBuf> {
+    if let Some(java_home) = std::env::var_os("JAVA_HOME") {
         let java_home_path = PathBuf::from(&java_home);
-        if find_jvm_library(&java_home_path).is_some() {
-            log::debug!("JAVA_HOME is valid: {}", java_home);
-            return Ok(());
+        if let Some(lib) = find_jvm_library(&java_home_path) {
+            log::debug!("Using JVM library from JAVA_HOME: {}", lib.display());
+            return Ok(lib);
         }
         log::warn!(
             "JAVA_HOME is set to '{}' but no JVM library found there, searching for alternative installations...",
-            java_home
+            java_home_path.display()
         );
     }
 
-    // Search for a valid Java installation. The `jni` crate locates the
-    // JVM library through the JAVA_HOME env var, so the discovered
-    // path has to be exported via set_var before JavaVM::new runs.
     if let Some(found_home) = search_java_installations() {
         log::info!("Found Java installation at: {:?}", found_home);
-        // This runs once, before the first JVM init. The host app does
-        // not otherwise use Java, so no other component should be
-        // reading JAVA_HOME concurrently. (Edition 2024 would require
-        // an unsafe block here — revisit when the crate moves.)
-        std::env::set_var("JAVA_HOME", &found_home);
-        return Ok(());
+        if let Some(lib) = find_jvm_library(&found_home) {
+            return Ok(lib);
+        }
     }
 
     Err(anyhow::anyhow!(
@@ -256,8 +247,9 @@ fn find_jvm_library(java_home: &Path) -> Option<PathBuf> {
         vec![
             PathBuf::from("lib/server/libjvm.dylib"),
             PathBuf::from("jre/lib/server/libjvm.dylib"),
-            PathBuf::from("lib/jli/libjli.dylib"),
             PathBuf::from("Contents/Home/lib/server/libjvm.dylib"),
+            // Last: the launcher library, for layouts without a libjvm path.
+            PathBuf::from("lib/jli/libjli.dylib"),
         ]
     } else {
         vec![

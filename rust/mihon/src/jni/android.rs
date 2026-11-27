@@ -35,6 +35,19 @@ static BRIDGE_CLASS_CACHE: OnceLock<jni::objects::GlobalRef> = OnceLock::new();
 /// reference once the `GlobalRef` is dropped.
 static APP_CONTEXT_CACHE: OnceLock<jni::objects::GlobalRef> = OnceLock::new();
 
+/// Set once `init_android` completed: `ndk_context` asserts it is
+/// initialized only once, and the caches above keep their first value.
+static INITIALIZED: OnceLock<()> = OnceLock::new();
+
+/// Clears a pending exception after a failed reflective call; leaving it
+/// pending would abort the process on the next JNI call.
+fn clear_exception(env: &mut jni::JNIEnv) {
+    if env.exception_check().unwrap_or(false) {
+        let _ = env.exception_describe();
+        let _ = env.exception_clear();
+    }
+}
+
 /// Perform all Android JNI initialization from `JNI_OnLoad`.
 ///
 /// This **must** be called from `JNI_OnLoad`, which runs on a Java thread
@@ -56,6 +69,9 @@ static APP_CONTEXT_CACHE: OnceLock<jni::objects::GlobalRef> = OnceLock::new();
 /// `vm_ptr` must be a valid, non-null `JavaVM*` pointer provided by the
 /// Android runtime during `JNI_OnLoad`.
 pub unsafe fn init_android(vm_ptr: *mut jni::sys::JavaVM) -> Result<()> {
+    if INITIALIZED.get().is_some() {
+        return Ok(());
+    }
     let jvm = unsafe { jni::JavaVM::from_raw(vm_ptr) }.context("Failed to wrap JavaVM pointer")?;
 
     let mut env = jvm
@@ -70,13 +86,11 @@ pub unsafe fn init_android(vm_ptr: *mut jni::sys::JavaVM) -> Result<()> {
     // The context pointer must be a valid jobject; we store the raw pointer from
     // the global reference. ndk_context expects (*mut JavaVM, *mut android::Context).
     let context_ptr = match context {
+        // The pointer is taken from the cached GlobalRef, which lives for the
+        // whole process; a ref that lost the race to the cache is dropped and
+        // must not be the one handed to ndk_context.
         Some(global_ref) => {
-            let ptr = global_ref.as_raw() as *mut std::ffi::c_void;
-            // Store the GlobalRef in a static so it outlives this function call.
-            // Without this, the GlobalRef would be dropped here and the raw
-            // pointer stored in ndk_context would become a stale reference.
-            let _ = APP_CONTEXT_CACHE.set(global_ref);
-            ptr
+            APP_CONTEXT_CACHE.get_or_init(|| global_ref).as_raw() as *mut std::ffi::c_void
         }
         None => std::ptr::null_mut(),
     };
@@ -94,6 +108,7 @@ pub unsafe fn init_android(vm_ptr: *mut jni::sys::JavaVM) -> Result<()> {
     // --- 2. Cache the bridge class as a GlobalRef ---
     cache_bridge_class(&mut env)?;
 
+    let _ = INITIALIZED.set(());
     Ok(())
 }
 
@@ -110,6 +125,7 @@ fn get_application_context(env: &mut jni::JNIEnv) -> Option<jni::objects::Global
     let at_class = match env.find_class("android/app/ActivityThread") {
         Ok(c) => c,
         Err(e) => {
+            clear_exception(env);
             log::error!("Failed to find ActivityThread class: {e}");
             return None;
         }
@@ -124,6 +140,7 @@ fn get_application_context(env: &mut jni::JNIEnv) -> Option<jni::objects::Global
     ) {
         Ok(v) => v,
         Err(e) => {
+            clear_exception(env);
             log::error!("Failed to call ActivityThread.currentActivityThread(): {e}");
             return None;
         }
@@ -151,6 +168,7 @@ fn get_application_context(env: &mut jni::JNIEnv) -> Option<jni::objects::Global
     ) {
         Ok(v) => v,
         Err(e) => {
+            clear_exception(env);
             log::error!("Failed to call ActivityThread.getApplication(): {e}");
             return None;
         }
@@ -191,10 +209,19 @@ fn get_application_context(env: &mut jni::JNIEnv) -> Option<jni::objects::Global
 /// native-attached threads use `get_bridge_class()` to retrieve the cached
 /// reference instead of calling `FindClass` (which would fail).
 fn cache_bridge_class(env: &mut jni::JNIEnv) -> Result<()> {
-    let class = env.find_class(BRIDGE_CLASS).context(
-        "Failed to find AndroidMihonBridge class during JNI_OnLoad. \
+    if BRIDGE_CLASS_CACHE.get().is_some() {
+        return Ok(());
+    }
+    let class = match env.find_class(BRIDGE_CLASS) {
+        Ok(class) => class,
+        Err(err) => {
+            clear_exception(env);
+            return Err(err).context(
+                "Failed to find AndroidMihonBridge class during JNI_OnLoad. \
                   Ensure the compat-android Kotlin sources are compiled into the APK",
-    )?;
+            );
+        }
+    };
 
     // Create a global reference so the class survives across threads.
     // JClass -> JObject conversion is safe (jclass IS jobject in JNI).
@@ -203,9 +230,8 @@ fn cache_bridge_class(env: &mut jni::JNIEnv) -> Result<()> {
         .new_global_ref(&class_obj)
         .context("Failed to create GlobalRef for bridge class")?;
 
-    BRIDGE_CLASS_CACHE
-        .set(global_ref)
-        .map_err(|_| anyhow::anyhow!("Bridge class cache already initialized"))?;
+    // Losing a race to another initializer is fine: both refs are the class.
+    let _ = BRIDGE_CLASS_CACHE.set(global_ref);
 
     log::info!(
         "Cached {} as GlobalRef for native thread access",
@@ -224,30 +250,17 @@ fn cache_bridge_class(env: &mut jni::JNIEnv) -> Result<()> {
 /// Falls back to `FindClass` if the cache is not initialized (will
 /// only work when called from a Java thread).
 ///
-/// # Safety of the returned `JClass`
-///
-/// The returned `JClass<'a>` borrows from the `JNIEnv<'a>`, but the underlying
-/// reference is held by a `GlobalRef` in `BRIDGE_CLASS_CACHE` (a `OnceLock`,
-/// never cleared). Because the `GlobalRef` outlives any `JNIEnv` lifetime `'a`,
-/// the `JClass<'a>` is guaranteed to remain valid for the entirety of `'a`.
+/// The returned `JClass<'a>` is a new local reference; it is freed with the
+/// caller's local frame (or by `delete_local_ref`) like any other local.
 pub fn get_bridge_class<'a>(env: &mut jni::JNIEnv<'a>) -> Result<JClass<'a>> {
     if let Some(global_ref) = BRIDGE_CLASS_CACHE.get() {
-        // Convert the GlobalRef (jobject) to JClass.
-        //
-        // Safety:
-        // 1. The GlobalRef was created from a JClass obtained via FindClass,
-        //    so the underlying jobject IS a valid jclass.
-        // 2. In JNI C headers, jclass is typedef'd to jobject (both are _jobject*),
-        //    so the pointer cast is sound.
-        // 3. The GlobalRef is stored in a OnceLock and is never dropped, so the
-        //    underlying reference is valid for the entire program lifetime.
-        // 4. The JClass<'a> returned here is tied to the env's lifetime 'a, which
-        //    is fine because the GlobalRef keeps the reference alive beyond 'a.
-        // 5. We pass env as an explicit parameter to make the lifetime dependency
-        //    clear at the call site, even though we don't call any env methods here.
-        let _ = env; // Ensure the caller holds a valid JNIEnv for lifetime 'a
-        let class = unsafe { JClass::from_raw(global_ref.as_raw() as jni::sys::jclass) };
-        Ok(class)
+        // A real local ref rather than the global's raw pointer dressed up as
+        // a local: callers may delete it or let a local frame reclaim it,
+        // which must never touch the cached GlobalRef.
+        let local = env
+            .new_local_ref(global_ref.as_obj())
+            .context("Failed to create local ref for bridge class")?;
+        Ok(JClass::from(local))
     } else {
         log::warn!(
             "Bridge class cache not initialized, falling back to FindClass \

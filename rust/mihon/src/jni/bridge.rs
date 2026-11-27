@@ -60,13 +60,13 @@ impl MihonBridge {
     ///
     /// This centralizes two things every call site previously got wrong:
     ///
-    /// 1. **Pending-exception checks.** `JNIEnv::call_static_method` returns
-    ///    `Ok` even when a Java exception is *pending* (it only errors if the
-    ///    call fails at the JNI level). Without an explicit `exception_check`,
-    ///    an `Error`/`ExceptionInInitializerError` that escapes the Kotlin
-    ///    `try/catch` is silently swallowed and surfaces later as a confusing
-    ///    `get_string` failure. Here we detect it, describe it (to stderr for
-    ///    diagnostics), clear it so the JVM stays usable, and return the error.
+    /// 1. **Pending-exception checks.** When a Java exception escapes the
+    ///    Kotlin `try/catch`, `call_static_method` returns
+    ///    `Err(JavaException)` but leaves the exception *pending* on the env.
+    ///    The next JNI call on this thread would then abort the process on
+    ///    ART. The check therefore runs on the error path too: describe it
+    ///    (to stderr for diagnostics), clear it so the JVM stays usable, and
+    ///    return the error.
     /// 2. **Local-reference leaks.** `JObject`/`JString` do not auto-release.
     ///    Building argument strings and reading the result accumulates local
     ///    refs; across many extensions this can overflow the JVM local-ref
@@ -86,18 +86,15 @@ impl MihonBridge {
         // returns the result object, which is promoted out of the frame. All
         // other local refs created in the frame (argument strings, etc.) are
         // freed automatically on return.
-        let result_obj = env.with_local_frame_returning_local::<_, anyhow::Error>(8, |env| {
+        let result = env.with_local_frame_returning_local::<_, anyhow::Error>(8, |env| {
             let class = Self::get_bridge_class(env)
                 .context(format!("Failed to get bridge class for method {method}"))?;
             f(env, &class)
-        })?;
+        });
 
-        // Check for a pending exception that escaped the Kotlin try/catch.
-        if env.exception_check()? {
-            env.exception_describe()?;
-            env.exception_clear()?;
-            bail!("Java exception thrown while calling bridge method {method}");
-        }
+        // Before `?`: an Err may well be the pending exception itself.
+        clear_pending_exception(&mut env, method)?;
+        let result_obj = result?;
 
         let jstring = JString::from(result_obj);
         let rust_string: String = env.get_string(&jstring)?.into();
@@ -124,22 +121,17 @@ impl MihonBridge {
 
         let class = Self::get_bridge_class(&mut env)?;
 
-        env.call_static_method(
+        let result = env.call_static_method(
             &class,
             "setContext",
             "(Landroid/content/Context;)V",
             &[JValue::Object(context.as_obj())],
-        )
-        .context("Failed to call AndroidMihonBridge.setContext()")?;
-
-        // call_static_method returns Ok even when a Java exception is pending.
-        // Check and surface it so a failing setContext isn't silently ignored
-        // before initialize() runs.
-        if env.exception_check()? {
-            env.exception_describe()?;
-            env.exception_clear()?;
-            bail!("Java exception thrown while calling setContext");
-        }
+        );
+        // A throwing setContext returns Err with the exception still pending;
+        // clear it first so the env stays usable.
+        clear_pending_exception(&mut env, "setContext")?;
+        result.context("Failed to call AndroidMihonBridge.setContext()")?;
+        env.delete_local_ref(class)?;
 
         log::info!("Android context set successfully");
         Ok(())
@@ -640,4 +632,15 @@ struct PageListResult {
 #[derive(serde::Deserialize, Debug)]
 pub struct PageTextResult {
     pub text: String,
+}
+
+/// Describes and clears a pending Java exception, turning it into an error.
+/// Any further JNI call with an exception pending aborts the process on ART.
+pub(crate) fn clear_pending_exception(env: &mut jni::JNIEnv, what: &str) -> Result<()> {
+    if env.exception_check()? {
+        env.exception_describe()?;
+        env.exception_clear()?;
+        bail!("Java exception thrown while calling {what}");
+    }
+    Ok(())
 }
