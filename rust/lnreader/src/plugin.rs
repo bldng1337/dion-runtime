@@ -208,23 +208,44 @@ impl PluginPackage {
     /// The Dion single-file extension: the metadata line, then a module that
     /// hands the plugin code to the shim.
     pub fn extension_source(&self) -> Result<String> {
-        let manifest = serde_json::to_string(&self.metadata())?;
+        let manifest = js_safe_json(serde_json::to_string(&self.metadata())?);
         let lang = self.language().unwrap_or_default();
-        let meta = serde_json::to_string(&ShimMeta {
+        let meta = js_safe_json(serde_json::to_string(&ShimMeta {
             plugin_id: &self.info.id,
             lang: &lang,
-        })?;
+        })?);
         // A JSON string is a valid JS string literal.
-        let code = serde_json::to_string(&self.code)?;
+        let code = js_safe_json(serde_json::to_string(&self.code)?);
         Ok(format!(
             "//{manifest}\nimport {{ createExtension }} from \"{HOST_MODULE}\";\nexport default createExtension({meta}, {code});\n"
         ))
     }
 }
 
+/// serde_json leaves U+2028/U+2029 unescaped, but ECMAScript treats them as
+/// line terminators: inside the `//` manifest comment they would end the
+/// comment and let plugin metadata inject module code around the shim.
+fn js_safe_json(json: String) -> String {
+    if !json.contains(['\u{2028}', '\u{2029}']) {
+        return json;
+    }
+    json.replace('\u{2028}', "\\u2028")
+        .replace('\u{2029}', "\\u2029")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn line_separators_are_escaped() {
+        let escaped = js_safe_json(
+            serde_json::to_string("a\u{2028}import x from \"filesystem\"\u{2029}b").unwrap(),
+        );
+        assert!(!escaped.contains(['\u{2028}', '\u{2029}']));
+        let decoded: String = serde_json::from_str(&escaped).unwrap();
+        assert_eq!(decoded, "a\u{2028}import x from \"filesystem\"\u{2029}b");
+    }
 
     const TS_PLUGIN: &str = r#"var e=this&&this.__awaiter||function(){};Object.defineProperty(exports,"__esModule",{value:!0});var t=require("cheerio"),o=require("@libs/storage"),n=require("@libs/filterInputs"),u=function(){function e(){this.id="royalroad",this.name="Royal Road[test]",this.version="2.3.4",this.icon="src/en/royalroad/icon.png",this.site="https://www.royalroad.com/",this.enableVol=o.storage.get("enableVol"),this.filters={genre:{type:n.FilterTypes.Picker,label:"Genre",value:"",options:[]}}}return e.prototype.popularNovels=function(){},e}();exports.default=new u;"#;
 

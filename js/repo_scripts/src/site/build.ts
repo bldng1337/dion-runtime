@@ -5,6 +5,7 @@ import { valibot as vs } from "@dion-js/runtime-types/extension";
 import { argv, file } from "bun";
 import Handlebars from "handlebars";
 import * as v from "valibot";
+import { safeUrl, yamlScalar } from "../utils/quote.ts";
 import { loadTemplate } from "../create/loader.ts" with { type: "macro" };
 import {
 	gitDefaultBranch,
@@ -34,13 +35,15 @@ export type SiteOptions = {
 const DEFAULT_SOURCE = ".index";
 const DEFAULT_OUT = ".site";
 const DEFAULT_RELEASE_TAG = "extensions";
+const HTTP_SCHEMES = ["http:", "https:"];
+const IMAGE_SCHEMES = ["http:", "https:", "data:"];
 
 function workflowYaml(branch: string): string {
 	return `name: Deploy extension site
 
 on:
   push:
-    branches: [${branch}]
+    branches: [${yamlScalar(branch)}]
   workflow_dispatch:
 
 permissions:
@@ -172,6 +175,9 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 				"at the hosted index.repo.json.",
 		);
 	}
+	if (!safeUrl(indexUrl, HTTP_SCHEMES)) {
+		throw new Error(`The index URL must be an http(s) URL: ${indexUrl}`);
+	}
 	const baseDir = indexUrl.slice(0, indexUrl.lastIndexOf("/"));
 	const addRepoLink = `dion://repo/add?url=${encodeURIComponent(indexUrl)}`;
 
@@ -180,7 +186,10 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 	);
 	const extensions = entries.map((entry) => {
 		const e = entry.extdata;
-		const fileUrl = `${baseDir}/${entry.path}`;
+		const fileUrl = safeUrl(
+			`${baseDir}/${entry.path.split("/").map(encodeURIComponent).join("/")}`,
+			HTTP_SCHEMES,
+		);
 		const media = [...e.media_type].filter((m) => m !== "Unknown");
 		const langs = [...new Set((e.lang ?? []).map((l) => l.toUpperCase()))];
 		const kinds = orderedBy(
@@ -191,7 +200,7 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 			name: e.name,
 			version: e.version,
 			desc: e.desc ?? "",
-			icon: e.icon?.trim() ? e.icon : "",
+			icon: safeUrl(e.icon, IMAGE_SCHEMES),
 			initial: (e.name?.[0] ?? "?").toUpperCase(),
 			authorsAttr: e.authors?.length ? e.authors.join(", ") : "",
 			langs,
@@ -232,7 +241,7 @@ export async function buildSite(options: SiteOptions = {}): Promise<void> {
 		repo: {
 			name: index.name,
 			description: index.description ?? "",
-			icon: index.icon?.trim() ? index.icon : "",
+			icon: safeUrl(index.icon, IMAGE_SCHEMES),
 			githubUrl: ref?.homepage ?? "",
 		},
 		addRepoLink,

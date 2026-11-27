@@ -228,15 +228,15 @@ export async function main() {
 	const testTpl = await loadTemplate("src_main.test.ts");
 
 	const vars = {
-		name: slug,
-		id: uuid(),
-		description,
-		icon,
-		url,
-		author,
+		name: JSON.stringify(slug),
+		id: JSON.stringify(uuid()),
+		description: JSON.stringify(description),
+		icon: JSON.stringify(icon),
+		url: JSON.stringify(url),
+		author: JSON.stringify(author),
 		keywords: JSON.stringify(keywords),
 		media_type: JSON.stringify(mediaTypes),
-		title,
+		title: JSON.stringify(title),
 	} as Record<string, string>;
 
 	await ensureDir(outDir);
@@ -255,5 +255,4 @@ export async function main() {
 	console.log("- bun install");
 	console.log("- bun run build");
 	console.log("- bun test");
-	console.log("- bun run pushdev");
 }

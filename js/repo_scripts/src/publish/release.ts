@@ -1,6 +1,7 @@
 import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, join, relative, resolve } from "node:path";
 import { argv, file } from "bun";
+import { shellWord, yamlScalar } from "../utils/quote.ts";
 import {
 	detectBunVersion,
 	type GitHubRef,
@@ -204,7 +205,7 @@ function releaseWorkflowYaml(branch: string, bunVersion: string): string {
 
 on:
   push:
-    branches: [${branch}]
+    branches: [${yamlScalar(branch)}]
   workflow_dispatch:
 
 permissions:
@@ -224,7 +225,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${bunVersion}
+          bun-version: ${yamlScalar(bunVersion)}
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -246,14 +247,14 @@ function buildPublishScriptCommand(options: PublishOptions): string {
 	const indexParts = ["dion-build-index"];
 	const publishParts = ["dion-publish"];
 	if (options.source && options.source !== DEFAULT_SOURCE) {
-		indexParts.push("--out", options.source);
-		publishParts.push("--source", options.source);
+		indexParts.push("--out", shellWord(options.source));
+		publishParts.push("--source", shellWord(options.source));
 	}
 	if (options.tag && options.tag !== DEFAULT_TAG) {
-		publishParts.push("--tag", options.tag);
+		publishParts.push("--tag", shellWord(options.tag));
 	}
 	if (options.title && options.title !== (options.tag ?? DEFAULT_TAG)) {
-		publishParts.push("--title", JSON.stringify(options.title));
+		publishParts.push("--title", shellWord(options.title));
 	}
 	if (options.prune === false) {
 		publishParts.push("--no-prune");

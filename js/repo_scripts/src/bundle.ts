@@ -44,8 +44,12 @@ async function main() {
 	try {
 		await $`rm -rf .dist && mkdir .dist`;
 		const [pkg, source] = await Promise.all([getPackageMeta(), build()]);
+		// U+2028/U+2029 end a `//` comment in JS though JSON.stringify keeps them raw, which would let manifest fields inject module code.
+		const manifest = JSON.stringify(pkg)
+			.replaceAll("\u2028", "\\u2028")
+			.replaceAll("\u2029", "\\u2029");
 		await file(`./.dist/${bundleFileName(pkg.name)}`).write(
-			`//${JSON.stringify(pkg)}\n${source}`,
+			`//${manifest}\n${source}`,
 		);
 	} catch (e) {
 		console.error("Error during build:");
