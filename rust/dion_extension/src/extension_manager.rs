@@ -28,6 +28,12 @@ fn validate_id(id: &str) -> Result<()> {
         || id.contains('/')
         || id.contains('\\')
         || id.contains(':')
+        || id.chars().any(|c| {
+            c.is_control() || matches!(c, '?' | '#' | '*' | '|' | '<' | '>' | '"' | '%')
+        })
+        || id.starts_with('.')
+        || id.ends_with('.')
+        || id.trim() != id
     {
         bail!("Unsafe extension id: {id:?}");
     }

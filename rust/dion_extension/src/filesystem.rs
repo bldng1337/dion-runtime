@@ -90,6 +90,8 @@ pub(crate) fn normalize_path(input: &str) -> PathBuf {
             out.push(MAIN_SEPARATOR);
         }
         out.push_str(&components.join(std::path::MAIN_SEPARATOR_STR));
+    } else if absolute && !out.ends_with(MAIN_SEPARATOR) {
+        out.push(MAIN_SEPARATOR);
     }
     if out.is_empty() {
         out.push('.');
@@ -150,6 +152,21 @@ pub(crate) fn is_under(child: &Path, base: &Path) -> bool {
     child.starts_with(base)
 }
 
+const RESERVED_DATA_ENTRIES: &[&str] = &[".cookies", ".cookies.tmp", ".httpcache"];
+
+pub(crate) fn is_reserved_data_path(resolved: &Path, data_dir: &Path) -> bool {
+    resolved
+        .strip_prefix(data_dir)
+        .ok()
+        .and_then(|rel| rel.components().next())
+        .and_then(|first| first.as_os_str().to_str())
+        .is_some_and(|first| {
+            RESERVED_DATA_ENTRIES
+                .iter()
+                .any(|reserved| reserved.eq_ignore_ascii_case(first))
+        })
+}
+
 /// Resolves a normalized target for an access check: when the target (or its
 /// nearest existing ancestor) can be canonicalized, symlinks are resolved so
 /// they cannot point outside a granted root; otherwise the lexical form is
@@ -204,6 +221,10 @@ pub(crate) async fn ensure_access(
 ) -> Result<PathBuf> {
     let normalized = prepare_path(raw_path)?;
     let resolved = resolve_for_access(&normalized).await;
+
+    if is_reserved_data_path(&resolved, &ext.data_dir) {
+        bail!("{} is reserved for the runtime", resolved.to_string_lossy());
+    }
 
     if is_under(&resolved, &ext.data_dir) {
         return Ok(resolved);
@@ -346,6 +367,43 @@ mod tests {
         assert!(is_under(&normalize_path("/data/ext"), &base));
         assert!(!is_under(&normalize_path("/data/ext-other/file"), &base));
         assert!(!is_under(&normalize_path("/data"), &base));
+    }
+
+    #[test]
+    #[cfg(windows)]
+    fn drive_roots_stay_rooted() {
+        assert_eq!(normalize_path("C:\\"), PathBuf::from("C:\\"));
+        assert_eq!(normalize_path("c:"), PathBuf::from("C:\\"));
+        assert_eq!(normalize_path(r"C:\a\.."), PathBuf::from(r"C:\"));
+    }
+
+    #[test]
+    fn reserved_data_entries() {
+        let base = normalize_path("/data/ext");
+        assert!(is_reserved_data_path(
+            &normalize_path("/data/ext/.cookies"),
+            &base
+        ));
+        assert!(is_reserved_data_path(
+            &normalize_path("/data/ext/.httpcache/abc"),
+            &base
+        ));
+        assert!(is_reserved_data_path(
+            &normalize_path("/data/ext/.COOKIES"),
+            &base
+        ));
+        assert!(!is_reserved_data_path(
+            &normalize_path("/data/ext/store/.cookies"),
+            &base
+        ));
+        assert!(!is_reserved_data_path(
+            &normalize_path("/data/ext/cache"),
+            &base
+        ));
+        assert!(!is_reserved_data_path(
+            &normalize_path("/data/other/.cookies"),
+            &base
+        ));
     }
 
     #[test]

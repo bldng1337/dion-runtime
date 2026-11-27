@@ -5,6 +5,11 @@ use std::time::Duration;
 use anyhow::{Context, Result, bail};
 use serde::Serialize;
 
+/// Largest archive entry read into memory.
+const MAX_ENTRY_BYTES: u64 = 256 * 1024 * 1024;
+/// Largest buffer preallocated from an entry's declared size.
+const MAX_ENTRY_PREALLOC: usize = 16 * 1024 * 1024;
+
 /// Which container family a byte blob was detected as.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum FormatKind {
@@ -666,11 +671,14 @@ impl MetadataArchive {
                 .read_resource_bytes(path)
                 .map_err(|e| anyhow::anyhow!("failed to read `{path}` from EPUB: {e}")),
             MetadataArchive::Zip(archive) => {
-                let mut entry = archive
+                let entry = archive
                     .by_name(path)
                     .with_context(|| format!("no archive entry named `{path}`"))?;
-                let mut buf = Vec::with_capacity(entry.size() as usize);
-                entry.read_to_end(&mut buf)?;
+                let mut buf = Vec::with_capacity((entry.size() as usize).min(MAX_ENTRY_PREALLOC));
+                entry.take(MAX_ENTRY_BYTES + 1).read_to_end(&mut buf)?;
+                if buf.len() as u64 > MAX_ENTRY_BYTES {
+                    anyhow::bail!("archive entry `{path}` exceeds {MAX_ENTRY_BYTES} bytes");
+                }
                 Ok(buf)
             }
             MetadataArchive::Rar(rar) => rar.read(path),

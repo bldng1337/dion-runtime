@@ -6,6 +6,8 @@ use boa_engine::boa_module;
 
 use crate::utils::VirtualModuleLoader;
 
+const MAX_JOIN_PARTS: u64 = 4096;
+
 pub fn declare(context: &mut Context, loader: &Rc<VirtualModuleLoader>) -> Result<()> {
     loader.insert(
         "filesystem".to_string(),
@@ -389,6 +391,12 @@ mod filesystem {
     #[boa(rename = "joinPaths")]
     fn join_paths(parts: JsArray, context: &mut Context) -> JsResult<JsValue> {
         let length = parts.length(context)?;
+        // `length` is JS-controlled. no real path has this many parts.
+        if length > crate::js::filesystem_js::MAX_JOIN_PARTS {
+            return Err(JsError::from_native(
+                JsNativeError::range().with_message("joinPaths got too many parts"),
+            ));
+        }
         let mut list = Vec::with_capacity(length as usize);
         for index in 0..length {
             let value = parts.at(index as i64, context)?;

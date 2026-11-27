@@ -33,6 +33,8 @@ use serde::de::DeserializeOwned;
 use serde_json::Value;
 use tokio::sync::oneshot::Sender;
 use tokio_util::sync::CancellationToken;
+
+const MAX_LOOP_ITERATIONS: u64 = 500_000_000;
 #[derive(Debug)]
 pub(crate) enum Task {
     Validate {
@@ -370,6 +372,9 @@ impl JSExecutor<Task> for ExtensionExecutor {
             .build()
             .map_anyhow()
             .context("Failed to build JsContext")?;
+
+        ctx.runtime_limits_mut()
+            .set_loop_iteration_limit(MAX_LOOP_ITERATIONS);
 
         let container = ExtensionRuntimeDataContainer::new(self.data.clone());
         ctx.insert_data::<ExtensionRuntimeDataContainer>(container);
