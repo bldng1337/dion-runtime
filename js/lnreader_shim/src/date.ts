@@ -43,7 +43,9 @@ function toTime(parts: Parts): number {
 		day > 31 ||
 		hour > 24 ||
 		minute > 59 ||
-		second > 59
+		second > 59 ||
+		// 24:00:00 is end of day; any later time on hour 24 is invalid (V8).
+		(hour === 24 && (minute > 0 || second > 0 || millisecond > 0))
 	) {
 		return Number.NaN;
 	}

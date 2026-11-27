@@ -126,12 +126,20 @@ export function instantiatePlugin(
 		}
 		return packages[name];
 	};
+	// `module.exports` is read back after the code ran: plugins that assign it
+	// (`module.exports = plugin`) replace the object `exports` points to.
 	const factory = new Function(
 		"require",
 		"module",
-		`const exports = module.exports = {};\n${code};\nreturn exports.default`,
-	) as (require: (name: string) => unknown, module: object) => unknown;
-	const plugin = factory(requireShim, {}) as LnReaderPlugin | undefined;
+		`var exports = module.exports;\n${code};\nreturn module.exports`,
+	) as (
+		require: (name: string) => unknown,
+		module: { exports: unknown },
+	) => unknown;
+	const exported = factory(requireShim, { exports: {} }) as
+		| { default?: LnReaderPlugin }
+		| undefined;
+	const plugin = (exported?.default ?? exported) as LnReaderPlugin | undefined;
 	if (!plugin || typeof plugin !== "object") {
 		throw new Error("LNReader plugin has no default export");
 	}

@@ -282,6 +282,8 @@ export interface RawResponse {
 	readonly body: string;
 	readonly bytes: Uint8Array;
 	readonly headers: Map<string, string> | Record<string, string>;
+	/** Every header pair, repeats (Set-Cookie) included; newer runtimes. */
+	readonly headerList?: [string, string][];
 	readonly url?: string;
 }
 
@@ -297,8 +299,10 @@ export class ShimResponse {
 	constructor(raw: RawResponse, requestUrl: string) {
 		this.#raw = raw;
 		const headers = raw.headers;
+		// headerList keeps repeated headers; the map holds one value per name.
 		this.headers = new ShimHeaders(
-			headers instanceof Map ? [...headers.entries()] : headers,
+			raw.headerList ??
+				(headers instanceof Map ? [...headers.entries()] : headers),
 		);
 		this.url = raw.url || requestUrl;
 		this.redirected = this.url !== requestUrl;
@@ -349,13 +353,27 @@ export class ShimResponse {
 	}
 }
 
-/** Installs the polyfills as globals, without replacing native versions. */
+function isConstructible(value: unknown): boolean {
+	if (typeof value !== "function") return false;
+	try {
+		new (value as new (body?: unknown) => unknown)("");
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+/** Installs the polyfills as globals, without replacing usable native
+ * versions. */
 export function installGlobals(): void {
 	const scope = globalThis as Record<string, unknown>;
 	scope.Headers ??= ShimHeaders;
 	scope.FormData ??= ShimFormData;
 	scope.Blob ??= ShimBlob;
-	scope.Response ??= ShimResponse;
+	// The runtime registers a native Response that fetch returns but that
+	// cannot be constructed, so `??=` never installed the shim; plugins
+	// building responses (`new Response(...)`) need a constructible one.
+	if (!isConstructible(scope.Response)) scope.Response = ShimResponse;
 	scope.window ??= globalThis;
 	scope.self ??= globalThis;
 }

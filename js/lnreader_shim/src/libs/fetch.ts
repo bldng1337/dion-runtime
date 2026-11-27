@@ -35,6 +35,7 @@ interface AbortSignalLike {
 	aborted: boolean;
 	reason?: unknown;
 	addEventListener?: (type: string, listener: () => void) => void;
+	removeEventListener?: (type: string, listener: () => void) => void;
 }
 
 // The app's defaults (makeInit) minus `Connection` (illegal over HTTP/2) and
@@ -128,8 +129,13 @@ export async function fetchApi(
 	if (!signal?.addEventListener) return request;
 	// The host request cannot be cancelled, but the caller stops waiting.
 	return new Promise((resolve, reject) => {
-		signal.addEventListener?.("abort", () => reject(abortError(signal)));
-		request.then(resolve, reject);
+		const onAbort = () => reject(abortError(signal));
+		signal.addEventListener?.("abort", onAbort);
+		// Detached once settled: a long-lived signal reused across requests
+		// otherwise collects one listener per request.
+		request
+			.then(resolve, reject)
+			.finally(() => signal.removeEventListener?.("abort", onAbort));
 	});
 }
 
@@ -141,7 +147,9 @@ export async function fetchText(
 	try {
 		const res = await fetchApi(url, init);
 		if (!res.ok) return "";
-		if (encoding && !/^utf-?8$/i.test(encoding)) {
+		// An explicit encoding (utf-8 included) overrides the response's
+		// charset, as in the app.
+		if (encoding) {
 			return new TextDecoder(encoding).decode(await res.bytes());
 		}
 		return await res.text();

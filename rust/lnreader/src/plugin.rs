@@ -63,11 +63,13 @@ const INFO_SCRIPT: &str = r#"
     ]) {
         if (!(name in globalThis)) globalThis[name] = make();
     }
-    const plugin = Function(
+    // module.exports is read back after the code ran: plugins may assign it.
+    const exported = Function(
         "require",
         "module",
-        "const exports = module.exports = {};\n" + code + ";\nreturn exports.default",
-    )(() => proxy, {});
+        "var exports = module.exports;\n" + code + ";\nreturn module.exports",
+    )(() => proxy, { exports: {} });
+    const plugin = exported && exported.default !== undefined ? exported.default : exported;
     if (!plugin || typeof plugin !== "object") {
         throw new Error("plugin has no default export");
     }
