@@ -6,9 +6,11 @@
 //! after the Application context has been stored in `ndk_context`.
 
 use anyhow::{bail, Context, Result};
-use jni::objects::{JByteArray, JObject, JString, JValue};
-use jni::sys::{jint, jlong};
+use jni::objects::{JObject, JString, JValue};
+use jni::sys::jint;
 use std::sync::Arc;
+
+const READ_CHUNK: jint = 64 * 1024;
 
 /// Installs the process-wide handler in dion-extension.
 pub fn install() {
@@ -37,51 +39,13 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
             if stream.is_null() {
                 bail!("ContentResolver.openInputStream returned null for {uri}");
             }
-            // Copy the stream through a ByteArrayOutputStream so arbitrary
-            // InputStream implementations work (not just file descriptors).
-            let baos = scope
-                .env()
-                .new_object("java/io/ByteArrayOutputStream", "()V", &[])
-                .context("Failed to allocate ByteArrayOutputStream")?;
-            let buf = scope
-                .env()
-                .new_byte_array(64 * 1024)
-                .context("Failed to allocate read buffer")?;
-            loop {
-                let read: jint = scope
-                    .env()
-                    .call_method(&stream, "read", "([B)I", &[JValue::Object(buf.as_ref())])
-                    .context("InputStream.read failed")?
-                    .i()
-                    .context("InputStream.read returned non-int")?;
-                if read == -1 {
-                    break;
-                }
-                scope
-                    .env()
-                    .call_method(
-                        &baos,
-                        "write",
-                        "([BII)V",
-                        &[
-                            JValue::Object(buf.as_ref()),
-                            JValue::Int(0),
-                            JValue::Int(read),
-                        ],
-                    )
-                    .context("ByteArrayOutputStream.write failed")?;
-            }
+            let result = read_stream(scope.env(), &stream);
+            // Closed on every path; a pending exception from the read has to
+            // be cleared first or the close call itself would abort.
+            clear_exception(scope.env());
             let _ = scope.env().call_method(&stream, "close", "()V", &[]);
-            let array = scope
-                .env()
-                .call_method(&baos, "toByteArray", "()[B", &[])?
-                .l()
-                .context("toByteArray returned non-object")?;
-            let bytes = scope
-                .env()
-                .convert_byte_array(JByteArray::from(array))
-                .context("Failed to convert byte array")?;
-            Ok(bytes)
+            clear_exception(scope.env());
+            result
         })
     }
 
@@ -127,76 +91,126 @@ impl dion_extension::content::ContentUriHandler for AndroidContentResolver {
             if cursor.is_null() {
                 bail!("ContentResolver.query returned null for {uri}");
             }
-            let moved: bool = scope
-                .env()
-                .call_method(&cursor, "moveToFirst", "()Z", &[])?
-                .z()
-                .unwrap_or(false);
-            if !moved {
-                let _ = scope.env().call_method(&cursor, "close", "()V", &[]);
-                bail!("no rows for {uri}");
-            }
-            let name_idx = scope
-                .env()
-                .call_method(
-                    &cursor,
-                    "getColumnIndex",
-                    "(Ljava/lang/String;)I",
-                    &[JValue::Object(&JObject::from(name_str))],
-                )?
-                .i()
-                .context("getColumnIndex returned non-int")?;
-            let size_idx = scope
-                .env()
-                .call_method(
-                    &cursor,
-                    "getColumnIndex",
-                    "(Ljava/lang/String;)I",
-                    &[JValue::Object(&JObject::from(size_str))],
-                )?
-                .i()
-                .context("getColumnIndex returned non-int")?;
-
-            let name = if name_idx >= 0 {
-                scope
-                    .env()
-                    .call_method(
-                        &cursor,
-                        "getString",
-                        "(I)Ljava/lang/String;",
-                        &[JValue::Int(name_idx)],
-                    )?
-                    .l()
-                    .ok()
-                    .and_then(|s| {
-                        let s = JString::from(s);
-                        scope
-                            .env()
-                            .get_string(&s)
-                            .ok()
-                            .map(|s| s.to_string_lossy().into_owned())
-                    })
-            } else {
-                None
-            };
-            let size = if size_idx >= 0 {
-                scope
-                    .env()
-                    .call_method(&cursor, "getLong", "(I)J", &[JValue::Int(size_idx)])?
-                    .j()
-                    .ok()
-                    .map(|v: jlong| v as u64)
-            } else {
-                None
-            };
+            let result = read_stat_row(scope.env(), &cursor, &name_str, &size_str, uri);
+            // The cursor holds a provider connection; close it on every path.
+            clear_exception(scope.env());
             let _ = scope.env().call_method(&cursor, "close", "()V", &[]);
-            Ok(dion_extension::content::ContentStat { size, name })
+            clear_exception(scope.env());
+            result
         })
     }
 }
 
+/// Copies an `InputStream` into a Rust buffer through one reusable Java
+/// array, instead of collecting it in a `ByteArrayOutputStream` and copying
+/// that out again (three copies of the whole file at once).
+fn read_stream(env: &mut jni::JNIEnv, stream: &JObject) -> Result<Vec<u8>> {
+    let buf = env
+        .new_byte_array(READ_CHUNK)
+        .context("Failed to allocate read buffer")?;
+    let mut chunk = vec![0i8; READ_CHUNK as usize];
+    let mut bytes = Vec::new();
+    loop {
+        let read: jint = env
+            .call_method(stream, "read", "([B)I", &[JValue::Object(buf.as_ref())])
+            .context("InputStream.read failed")?
+            .i()
+            .context("InputStream.read returned non-int")?;
+        if read < 0 {
+            break;
+        }
+        let read = read.min(READ_CHUNK) as usize;
+        env.get_byte_array_region(&buf, 0, &mut chunk[..read])
+            .context("Failed to copy read buffer")?;
+        bytes.extend(chunk[..read].iter().map(|&b| b as u8));
+    }
+    env.delete_local_ref(buf)?;
+    Ok(bytes)
+}
+
+fn read_stat_row(
+    env: &mut jni::JNIEnv,
+    cursor: &JObject,
+    name_str: &JString,
+    size_str: &JString,
+    uri: &str,
+) -> Result<dion_extension::content::ContentStat> {
+    let moved: bool = env
+        .call_method(cursor, "moveToFirst", "()Z", &[])?
+        .z()
+        .unwrap_or(false);
+    if !moved {
+        bail!("no rows for {uri}");
+    }
+    let column = |env: &mut jni::JNIEnv, column: &JString| -> Result<jint> {
+        env.call_method(
+            cursor,
+            "getColumnIndex",
+            "(Ljava/lang/String;)I",
+            &[JValue::Object(column)],
+        )?
+        .i()
+        .context("getColumnIndex returned non-int")
+    };
+    let name_idx = column(env, name_str)?;
+    let size_idx = column(env, size_str)?;
+    let is_null = |env: &mut jni::JNIEnv, idx: jint| -> Result<bool> {
+        Ok(env
+            .call_method(cursor, "isNull", "(I)Z", &[JValue::Int(idx)])?
+            .z()
+            .unwrap_or(true))
+    };
+
+    let name = if name_idx >= 0 && !is_null(env, name_idx)? {
+        let value = env
+            .call_method(
+                cursor,
+                "getString",
+                "(I)Ljava/lang/String;",
+                &[JValue::Int(name_idx)],
+            )?
+            .l()?;
+        if value.is_null() {
+            None
+        } else {
+            let value = JString::from(value);
+            let name = env
+                .get_string(&value)
+                .ok()
+                .map(|s| s.to_string_lossy().into_owned());
+            env.delete_local_ref(value)?;
+            name
+        }
+    } else {
+        None
+    };
+    // A NULL `_size` reads as 0 through getLong and providers report -1 for
+    // unknown sizes; neither is a real size.
+    let size = if size_idx >= 0 && !is_null(env, size_idx)? {
+        let size = env
+            .call_method(cursor, "getLong", "(I)J", &[JValue::Int(size_idx)])?
+            .j()?;
+        u64::try_from(size).ok()
+    } else {
+        None
+    };
+    Ok(dion_extension::content::ContentStat { size, name })
+}
+
+/// Describes and clears a pending Java exception. Any further JNI call with
+/// an exception pending aborts the process on ART.
+fn clear_exception(env: &mut jni::JNIEnv) -> bool {
+    if env.exception_check().unwrap_or(false) {
+        let _ = env.exception_describe();
+        let _ = env.exception_clear();
+        return true;
+    }
+    false
+}
+
 /// Runs `work` with a JNIEnv for the current thread (attaching it to the JVM
-/// if needed).
+/// if needed), inside a local frame so every local reference it creates is
+/// released on return, and with any exception it left pending cleared.
 fn with_env<T>(work: impl FnOnce(&mut jni::JNIEnv) -> Result<T>) -> Result<T> {
     let ctx = ndk_context::android_context();
     let vm_ptr = ctx.vm();
@@ -207,7 +221,18 @@ fn with_env<T>(work: impl FnOnce(&mut jni::JNIEnv) -> Result<T>) -> Result<T> {
     let mut guard = vm
         .attach_current_thread()
         .context("Failed to attach thread to the JVM")?;
-    work(&mut guard)
+    let result = guard.with_local_frame(32, |env| {
+        let result = work(env);
+        // Inside the frame: popping it with an exception pending is itself
+        // an illegal JNI call.
+        let thrown = clear_exception(env);
+        Ok::<_, anyhow::Error>((result, thrown))
+    });
+    let (result, thrown) = result?;
+    match result {
+        Err(err) if thrown => Err(err.context("Java exception thrown")),
+        other => other,
+    }
 }
 
 /// Bundles the JNIEnv with a cached Application context and Uri class.
