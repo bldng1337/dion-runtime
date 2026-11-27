@@ -185,6 +185,9 @@ pub(crate) async fn serve_file(
         }
     };
     let len = match file.metadata().await {
+        Ok(meta) if !meta.is_file() => {
+            return error_response(StatusCode::NOT_FOUND, "not a file");
+        }
         Ok(meta) => meta.len(),
         Err(err) => {
             return error_response(
@@ -193,7 +196,9 @@ pub(crate) async fn serve_file(
             );
         }
     };
-    let mime = content_type.unwrap_or_else(|| guess_mime(path));
+    let mime = content_type
+        .and_then(|ct| hyper::header::HeaderValue::from_str(ct).ok())
+        .unwrap_or_else(|| hyper::header::HeaderValue::from_static(guess_mime(path)));
 
     let builder = Response::builder()
         .header(hyper::header::CONTENT_TYPE, mime)
