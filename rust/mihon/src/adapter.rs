@@ -76,7 +76,9 @@ pub struct MihonAdapter {
     /// In-memory cache for fetched repo indexes, keyed by index URL.
     /// Avoids re-downloading the (potentially large) `index.pb` / legacy
     /// `index.min.json` on every `browse_repo` / `get_remote_extension` call.
-    repo_index_cache: RwLock<HashMap<String, Arc<repo::RepoIndex>>>,
+    /// With the fetch time: entries expire after `REPO_INDEX_TTL` so repo
+    /// updates (new versions) are picked up without restarting the app.
+    repo_index_cache: RwLock<HashMap<String, (std::time::Instant, Arc<repo::RepoIndex>)>>,
 }
 
 impl MihonAdapter {
@@ -347,8 +349,10 @@ impl MihonAdapter {
     /// `index_v2` as needed.
     async fn fetch_repo_index(&self, index_url: &str) -> Result<Arc<repo::RepoIndex>> {
         // Fast path: already cached.
-        if let Some(cached) = self.repo_index_cache.read().await.get(index_url) {
-            return Ok(cached.clone());
+        if let Some((fetched, cached)) = self.repo_index_cache.read().await.get(index_url) {
+            if fetched.elapsed() < REPO_INDEX_TTL {
+                return Ok(cached.clone());
+            }
         }
 
         // Slow path: download + parse.
@@ -357,10 +361,10 @@ impl MihonAdapter {
                 .await
                 .with_context(|| format!("Failed to fetch/parse repo index from {index_url}"))?,
         );
-        self.repo_index_cache
-            .write()
-            .await
-            .insert(index_url.to_string(), index.clone());
+        self.repo_index_cache.write().await.insert(
+            index_url.to_string(),
+            (std::time::Instant::now(), index.clone()),
+        );
         Ok(index)
     }
 
@@ -931,6 +935,8 @@ impl Adapter for MihonAdapter {
         Ok(repo::index_to_result(&index.extensions))
     }
 }
+
+const REPO_INDEX_TTL: std::time::Duration = std::time::Duration::from_secs(10 * 60);
 
 #[cfg(test)]
 mod tests {
