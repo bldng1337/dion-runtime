@@ -96,6 +96,9 @@ test("publishRelease creates release and uploads index.repo.json last", async ()
 		if (method === "POST" && url.includes("uploads.github.com")) {
 			return new Response(JSON.stringify({ id: 1 }), { status: 201 });
 		}
+		if (method === "PATCH" && url.includes("/releases/assets/")) {
+			return new Response(JSON.stringify({}), { status: 200 });
+		}
 		throw new Error(`Unexpected request: ${method} ${url}`);
 	}) as typeof globalThis.fetch;
 
@@ -116,20 +119,21 @@ test("publishRelease creates release and uploads index.repo.json last", async ()
 	]);
 	expect(result.pruned).toEqual([]);
 
-	const uploadUrls = calls
+	const uploadNames = calls
 		.filter((c) => c.url.includes("uploads.github.com"))
 		.map((c) => new URL(c.url).searchParams.get("name"));
-	expect(uploadUrls.at(-1)).toBe("index.repo.json");
-	expect(uploadUrls.slice(0, -1).sort()).toEqual([
-		"bar.dion.js",
-		"foo.dion.js",
-	]);
+	expect(uploadNames.every((name) => name?.endsWith(".partial"))).toBe(true);
+	const renamed = calls
+		.filter((c) => c.method === "PATCH")
+		.map((c) => (JSON.parse(c.bodyText ?? "{}") as { name: string }).name);
+	expect(renamed.at(-1)).toBe("index.repo.json");
+	expect(renamed.slice(0, -1).sort()).toEqual(["bar.dion.js", "foo.dion.js"]);
 });
 
 test("publishRelease replaces existing assets, paginates asset list, and prunes stale assets", async () => {
 	const dir = await makeIndexFixture();
 	const deletedIds: number[] = [];
-	const uploadedNames: string[] = [];
+	const renamedNames: string[] = [];
 
 	const page1 = Array.from({ length: 100 }, (_, i) => ({
 		id: i + 1,
@@ -166,8 +170,12 @@ test("publishRelease replaces existing assets, paginates asset list, and prunes 
 			return new Response(null, { status: 204 });
 		}
 		if (method === "POST" && url.includes("uploads.github.com")) {
-			uploadedNames.push(new URL(url).searchParams.get("name") ?? "");
 			return new Response(JSON.stringify({ id: 999 }), { status: 201 });
+		}
+		if (method === "PATCH" && url.includes("/releases/assets/")) {
+			const { name } = JSON.parse(String(init?.body)) as { name: string };
+			renamedNames.push(name);
+			return new Response(JSON.stringify({}), { status: 200 });
 		}
 		throw new Error(`Unexpected request: ${method} ${url}`);
 	}) as typeof globalThis.fetch;
@@ -180,7 +188,7 @@ test("publishRelease replaces existing assets, paginates asset list, and prunes 
 	});
 
 	expect(result.createdRelease).toBe(false);
-	expect(uploadedNames.at(-1)).toBe("index.repo.json");
+	expect(renamedNames.at(-1)).toBe("index.repo.json");
 	// Replaced existing assets (foo.dion.js id=1, index.repo.json id=200)
 	expect(deletedIds).toContain(1);
 	expect(deletedIds).toContain(200);
@@ -222,6 +230,9 @@ test("publishRelease honors prune: false", async () => {
 		}
 		if (method === "POST" && url.includes("uploads.github.com")) {
 			return new Response(JSON.stringify({ id: 56 }), { status: 201 });
+		}
+		if (method === "PATCH" && url.includes("/releases/assets/")) {
+			return new Response(JSON.stringify({}), { status: 200 });
 		}
 		throw new Error(`Unexpected request: ${method} ${url}`);
 	}) as typeof globalThis.fetch;
@@ -275,6 +286,9 @@ test("publishRelease recovers when release creation races (422)", async () => {
 		}
 		if (method === "POST" && url.includes("uploads.github.com")) {
 			return new Response(JSON.stringify({ id: 1 }), { status: 201 });
+		}
+		if (method === "PATCH" && url.includes("/releases/assets/")) {
+			return new Response(JSON.stringify({}), { status: 200 });
 		}
 		throw new Error(`Unexpected request: ${method} ${url}`);
 	}) as typeof globalThis.fetch;
@@ -336,6 +350,7 @@ test("publishRelease --init writes workflow and package script without network",
 		"utf8",
 	);
 	expect(workflow).toContain("bun-version: 1.2.20");
+	expect(workflow).toContain("cancel-in-progress: false");
 	expect(workflow).toContain("bun run publish-extensions");
 	expect(workflow).toContain("GH_TOKEN: ${{ github.token }}");
 
@@ -396,4 +411,54 @@ test("parseArgs parses options and rejects invalid arguments", () => {
 	});
 	expect(() => parseArgs(["--unknown"])).toThrow(/Unknown argument/);
 	expect(() => parseArgs(["--tag"])).toThrow(/Missing value/);
+});
+
+test("publishRelease replaces a stale partial upload", async () => {
+	const dir = await makeIndexFixture({ "foo.dion.js": "//{}foo" });
+	const deletedIds: number[] = [];
+	const mockFetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+		const url = String(input);
+		const method = init?.method ?? "GET";
+		if (method === "GET" && url.endsWith("/releases/tags/extensions")) {
+			return new Response(
+				JSON.stringify({
+					id: 5,
+					upload_url:
+						"https://uploads.github.com/repos/example/extensions/releases/5/assets{?name,label}",
+				}),
+				{ status: 200 },
+			);
+		}
+		if (method === "GET" && url.includes("/releases/5/assets")) {
+			return new Response(
+				JSON.stringify([
+					{ id: 7, name: "foo.dion.js" },
+					{ id: 8, name: "foo.dion.js.partial" },
+				]),
+				{ status: 200 },
+			);
+		}
+		if (method === "DELETE") {
+			deletedIds.push(Number(url.split("/").pop()));
+			return new Response(null, { status: 204 });
+		}
+		if (method === "POST" && url.includes("uploads.github.com")) {
+			return new Response(JSON.stringify({ id: 9 }), { status: 201 });
+		}
+		if (method === "PATCH" && url.endsWith("/releases/assets/9")) {
+			return new Response(JSON.stringify({}), { status: 200 });
+		}
+		throw new Error(`Unexpected request: ${method} ${url}`);
+	}) as typeof globalThis.fetch;
+
+	const result = await publishRelease({
+		cwd: dir,
+		token: "test-token",
+		fetch: mockFetch,
+		log: () => undefined,
+	});
+
+	// The leftover partial goes first, then the live asset it replaces.
+	expect(deletedIds.slice(0, 2)).toEqual([8, 7]);
+	expect(result.uploaded).toContain("foo.dion.js");
 });

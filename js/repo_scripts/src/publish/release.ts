@@ -73,6 +73,7 @@ type GitHubAsset = {
 
 const DEFAULT_SOURCE = ".index";
 const DEFAULT_TAG = "extensions";
+const PARTIAL_SUFFIX = ".partial";
 const DEFAULT_NOTES = "Automated extension release";
 const DEFAULT_API_URL = "https://api.github.com";
 const DEFAULT_CONCURRENCY = 5;
@@ -213,7 +214,7 @@ permissions:
 
 concurrency:
   group: extensions-release
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   publish-release:
@@ -508,13 +509,32 @@ export async function publishRelease(
 
 	const uploadBaseUrl = release.upload_url.replace(/\{[^}]*\}$/, "");
 
+	async function renameAsset(assetId: number, name: string): Promise<void> {
+		const res = await fetchImpl(
+			`${apiUrl}/repos/${repoRef.slug}/releases/assets/${assetId}`,
+			{
+				method: "PATCH",
+				headers: { ...baseHeaders, "Content-Type": "application/json" },
+				body: JSON.stringify({ name }),
+			},
+		);
+		if (!res.ok) {
+			const msg = await readErrorBody(res);
+			throw new Error(
+				`Failed to rename asset ${assetId} to "${name}" (${res.status}): ${msg}`,
+			);
+		}
+	}
+
 	async function uploadAsset(asset: AssetFile): Promise<void> {
-		const existingId = existingAssets.get(asset.name);
-		if (existingId !== undefined) {
-			await deleteAsset(existingId, asset.name);
+		const tempName = `${asset.name}${PARTIAL_SUFFIX}`;
+		const staleTempId = existingAssets.get(tempName);
+		if (staleTempId !== undefined) {
+			await deleteAsset(staleTempId, tempName);
+			existingAssets.delete(tempName);
 		}
 		const bytes = await readFile(asset.path);
-		const url = `${uploadBaseUrl}?name=${encodeURIComponent(asset.name)}`;
+		const url = `${uploadBaseUrl}?name=${encodeURIComponent(tempName)}`;
 		const res = await fetchImpl(url, {
 			method: "POST",
 			headers: {
@@ -529,6 +549,12 @@ export async function publishRelease(
 				`Failed to upload asset "${asset.name}" (${res.status}): ${msg}`,
 			);
 		}
+		const uploaded = (await res.json()) as GitHubAsset;
+		const existingId = existingAssets.get(asset.name);
+		if (existingId !== undefined) {
+			await deleteAsset(existingId, asset.name);
+		}
+		await renameAsset(uploaded.id, asset.name);
 		log(`Uploaded ${asset.name}`);
 	}
 
