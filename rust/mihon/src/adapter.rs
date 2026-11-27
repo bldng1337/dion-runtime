@@ -735,6 +735,12 @@ impl Adapter for MihonAdapter {
                 return Err(err);
             }
         };
+        // The package name comes from the APK manifest and names files under
+        // `jars/`; a crafted one (`../../x`) would escape that directory.
+        if let Err(err) = validate_package_name(&install_result.metadata.package_name) {
+            tokio::fs::remove_file(&temp_apk).await.ok();
+            return Err(err);
+        }
 
         // On desktop, the temp APK is converted to a JAR. On Android, the APK is kept.
         // Clean up temp APK only on desktop (on Android, the bridge returns the APK path).
@@ -815,8 +821,10 @@ impl Adapter for MihonAdapter {
 
     /// Uninstall extension
     async fn uninstall(&self, ext: &Box<dyn Extension>) -> Result<()> {
-        let store = ext.get_data().read().await;
-        let ext_id = &store.data.id;
+        // Cloned so the store lock is not held across the awaits and the
+        // blocking JNI calls below.
+        let ext_id = ext.get_data().read().await.data.id.clone();
+        let ext_id = &ext_id;
 
         // Extract source ID from extension ID (format: "mihon:{source_id}")
         if let Some(source_id_str) = ext_id.strip_prefix("mihon:") {
@@ -834,9 +842,29 @@ impl Adapter for MihonAdapter {
             jar_paths.get(ext_id).cloned()
         };
 
-        // Remove from caches
-        self.extension_jar_paths.write().await.remove(ext_id);
-        let package_name = self.extension_packages.write().await.remove(ext_id);
+        // Remove from caches, together with the sibling sources of a
+        // multi-source package: they live in the same JAR/APK, which is
+        // unloaded and deleted below.
+        let package_name = {
+            let mut jar_paths = self.extension_jar_paths.write().await;
+            let mut packages = self.extension_packages.write().await;
+            let siblings: Vec<String> = match &jar_path {
+                Some(path) => jar_paths
+                    .iter()
+                    .filter(|(_, p)| *p == path)
+                    .map(|(id, _)| id.clone())
+                    .collect(),
+                None => vec![ext_id.clone()],
+            };
+            let mut package_name = packages.remove(ext_id);
+            for id in siblings.iter().chain(std::iter::once(ext_id)) {
+                jar_paths.remove(id);
+                if let Some(package) = packages.remove(id) {
+                    package_name.get_or_insert(package);
+                }
+            }
+            package_name
+        };
 
         // Delete the JAR/APK and its metadata sidecar
         if let Some(jar_path) = jar_path {
@@ -938,8 +966,37 @@ impl Adapter for MihonAdapter {
 
 const REPO_INDEX_TTL: std::time::Duration = std::time::Duration::from_secs(10 * 60);
 
+/// Java package names (`a.b_c.D1`): the only shape that is safe to use as a
+/// file name below the jars directory.
+fn validate_package_name(name: &str) -> Result<()> {
+    let valid = !name.is_empty()
+        && name.len() <= 255
+        && name.split('.').all(|segment| {
+            let mut chars = segment.chars();
+            chars
+                .next()
+                .is_some_and(|c| c.is_ascii_alphabetic() || c == '_')
+                && chars.all(|c| c.is_ascii_alphanumeric() || c == '_')
+        });
+    if !valid {
+        anyhow::bail!("Invalid APK package name {name:?}");
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn package_names() {
+        assert!(super::validate_package_name("eu.kanade.tachiyomi.extension.en.foo").is_ok());
+        assert!(super::validate_package_name("a_b.C1").is_ok());
+        assert!(super::validate_package_name("../../target").is_err());
+        assert!(super::validate_package_name("a/b").is_err());
+        assert!(super::validate_package_name("a..b").is_err());
+        assert!(super::validate_package_name("").is_err());
+        assert!(super::validate_package_name("1a.b").is_err());
+    }
+
     use super::*;
 
     #[tokio::test]
