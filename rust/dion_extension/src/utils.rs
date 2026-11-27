@@ -92,6 +92,16 @@ where
     Ok(ret.into())
 }
 
+pub(crate) async fn run_blocking<T, F>(work: F) -> Result<T>
+where
+    T: Send + 'static,
+    F: FnOnce() -> Result<T> + Send + 'static,
+{
+    tokio::task::spawn_blocking(work)
+        .await
+        .map_err(|err| anyhow!("Blocking task failed: {err}"))?
+}
+
 pub(crate) trait Abortable {
     fn abort(&self);
 }

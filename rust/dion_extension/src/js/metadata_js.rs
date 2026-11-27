@@ -83,7 +83,8 @@ mod metadata {
         super::enqueue_job(
             context,
             move |_ext: Arc<InnerExtension>| async move {
-                crate::metadata::inspect(data, hint.as_deref())
+                crate::utils::run_blocking(move || crate::metadata::inspect(data, hint.as_deref()))
+                    .await
             },
             inspect_to_js,
         )
@@ -98,7 +99,10 @@ mod metadata {
         let hint = opt_string(&hint);
         super::enqueue_job(
             context,
-            move |_ext: Arc<InnerExtension>| async move { MetadataArchive::open(data, hint.as_deref()) },
+            move |_ext: Arc<InnerExtension>| async move {
+                crate::utils::run_blocking(move || MetadataArchive::open(data, hint.as_deref()))
+                    .await
+            },
             |archive: MetadataArchive, ctx| {
                 let instance = Archive {
                     inner: Arc::new(Mutex::new(archive)),
@@ -120,18 +124,21 @@ impl Archive {
     /// converted result, mirroring the async API of the other modules.
     fn enqueue<T, F, C>(&self, context: &mut Context, work: F, convert: C) -> JsResult<JsValue>
     where
-        T: 'static,
-        F: FnOnce(&mut MetadataArchive) -> anyhow::Result<T> + 'static,
+        T: Send + 'static,
+        F: FnOnce(&mut MetadataArchive) -> anyhow::Result<T> + Send + 'static,
         C: FnOnce(T, &mut Context) -> JsResult<JsValue> + 'static,
     {
         let inner = self.inner.clone();
         enqueue_job(
             context,
             move |_ext: Arc<InnerExtension>| async move {
-                let mut guard = inner
-                    .lock()
-                    .map_err(|_| anyhow::anyhow!("Archive lock is poisoned"))?;
-                work(&mut guard)
+                crate::utils::run_blocking(move || {
+                    let mut guard = inner
+                        .lock()
+                        .map_err(|_| anyhow::anyhow!("Archive lock is poisoned"))?;
+                    work(&mut guard)
+                })
+                .await
             },
             convert,
         )

@@ -117,7 +117,9 @@ mod filesystem {
             return enqueue_job(
                 context,
                 move |_ext: Arc<InnerExtension>| async move {
-                    let bytes = crate::content::read_content(&path)?;
+                    let bytes =
+                        crate::utils::run_blocking(move || crate::content::read_content(&path))
+                            .await?;
                     String::from_utf8(bytes)
                         .map_err(|e| anyhow::anyhow!("content is not valid UTF-8: {e}"))
                 },
@@ -141,7 +143,9 @@ mod filesystem {
         if crate::content::is_content_uri(&path) {
             return enqueue_job(
                 context,
-                move |_ext: Arc<InnerExtension>| async move { crate::content::read_content(&path) },
+                move |_ext: Arc<InnerExtension>| async move {
+                    crate::utils::run_blocking(move || crate::content::read_content(&path)).await
+                },
                 |bytes: Vec<u8>, ctx| Ok(JsUint8Array::from_iter(bytes, ctx)?.into()),
             );
         }
@@ -222,7 +226,10 @@ mod filesystem {
             return enqueue_job(
                 context,
                 move |_ext: Arc<InnerExtension>| async move {
-                    Ok(crate::content::stat_content(&path).is_ok())
+                    crate::utils::run_blocking(move || {
+                        Ok(crate::content::stat_content(&path).is_ok())
+                    })
+                    .await
                 },
                 |exists: bool, _ctx| Ok(JsValue::from(exists)),
             );
@@ -247,7 +254,9 @@ mod filesystem {
             return enqueue_job(
                 context,
                 move |_ext: Arc<InnerExtension>| async move {
-                    let stat = crate::content::stat_content(&path)?;
+                    let stat =
+                        crate::utils::run_blocking(move || crate::content::stat_content(&path))
+                            .await?;
                     Ok(serde_json::json!({
                         "size": stat.size,
                         "isDir": false,
