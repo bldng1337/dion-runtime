@@ -51,6 +51,11 @@ mod action {
                                     .with_message("Runtime container has been dropped"),
                             ));
                         };
+                        if !matches!(action, Action::ShowToast { .. } | Action::PopView) {
+                            crate::js::action_js::ensure_action_permission(&runtime_data)
+                                .await
+                                .map_err(|e| JsError::from_rust(&*e))?;
+                        }
                         // Delegate to the per-platform ExtensionClient.
                         runtime_data
                             .client
@@ -83,4 +88,41 @@ mod action {
         );
         Ok(ret.into())
     }
+}
+
+pub(crate) async fn ensure_action_permission(
+    ext: &std::sync::Arc<crate::extension::container::InnerExtension>,
+) -> anyhow::Result<()> {
+    use dion_runtime::data::permission::Permission;
+    use dion_runtime::store::permission::PermissionStore;
+
+    let permission = Permission::ActionPopup;
+    if ext
+        .store
+        .read()
+        .await
+        .permission
+        .has_permission(&permission)
+    {
+        return Ok(());
+    }
+    let ext_name = ext.store.read().await.data.name.clone();
+    let granted = ext
+        .client
+        .request_permission(
+            &permission,
+            Some(format!(
+                "Extension \"{ext_name}\" wants to open dialogs and pages"
+            )),
+        )
+        .await?;
+    if !granted {
+        anyhow::bail!("ActionPopup permission was denied");
+    }
+    ext.store.write().await.permission.grant(permission);
+    let snapshot = ext.store.read().await.permission.get_permissions().clone();
+    if let Err(err) = PermissionStore::persist(&snapshot, ext.client.as_ref()).await {
+        log::warn!("Failed to persist granted permissions: {err:?}");
+    }
+    Ok(())
 }

@@ -31,7 +31,7 @@ mod permission {
     #[boa(rename = "requestPermission")]
     fn request_permission(
         permission: JsValue,
-        msg: String,
+        msg: Option<String>,
         context: &mut Context,
     ) -> JsResult<JsValue> {
         let permission: JsResult<Permission> = serde_json::from_value(
@@ -75,7 +75,7 @@ mod permission {
                         // on the RwLock. Grant under a fresh lock on success.
                         let granted = runtime_data
                             .client
-                            .request_permission(&permission, Some(msg))
+                            .request_permission(&permission, msg)
                             .await
                             .map_err(|e| JsError::from_rust(&*e))?;
                         if granted {
