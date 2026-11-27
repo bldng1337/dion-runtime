@@ -359,7 +359,7 @@ extension JsonTextStyle on TextStyle {
         strikethrough: value["strikethrough"],
         code: value["code"],
         link: value["link"],
-        fontSize: value["font_size"],
+        fontSize: (value["font_size"] as num?)?.toInt(),
       );
 }
 
@@ -1394,7 +1394,7 @@ extension JsonSettingValue on SettingValue {
       case "String":
         return SettingValue.string(data: value["data"]);
       case "Number":
-        return SettingValue.number(data: value["data"]);
+        return SettingValue.number(data: (value["data"] as num).toDouble());
       case "Boolean":
         return SettingValue.boolean(data: value["data"]);
       case "StringList":
@@ -1454,9 +1454,9 @@ extension JsonSettingsUI on SettingsUI {
         return const SettingsUI.checkBox();
       case "Slider":
         return SettingsUI.slider(
-          min: value["min"],
-          max: value["max"],
-          step: value["step"],
+          min: (value["min"] as num).toDouble(),
+          max: (value["max"] as num).toDouble(),
+          step: (value["step"] as num).toInt(),
         );
       case "Dropdown":
         return SettingsUI.dropdown(
@@ -1511,8 +1511,8 @@ extension JsonEntry on Entry {
         cover:
             value["cover"] != null ? JsonLink.fromJson(value["cover"]) : null,
         author: (value["author"] as List<dynamic>?)?.cast<String>(),
-        rating: value["rating"],
-        views: value["views"],
+        rating: (value["rating"] as num?)?.toDouble(),
+        views: (value["views"] as num?)?.toDouble(),
         length: value["length"],
       );
 }
@@ -1557,8 +1557,8 @@ extension JsonEntryDetailed on EntryDetailed {
             .map((e) => JsonEpisode.fromJson(e))
             .toList(),
         genres: (value["genres"] as List<dynamic>?)?.cast<String>(),
-        rating: value["rating"],
-        views: value["views"],
+        rating: (value["rating"] as num?)?.toDouble(),
+        views: (value["views"] as num?)?.toDouble(),
         length: value["length"],
       );
 }
@@ -1680,14 +1680,18 @@ extension JsonSource on Source {
             "links": links.map((e) => e.toJson()).toList(),
             if (audio != null) "audio": audio.map((e) => e.toJson()).toList(),
           },
-        Source_Video(:final sources, :final sub) => {
+        Source_Video(:final sources, :final sub, :final chapters) => {
             "type": "Video",
             "sources": sources.map((e) => e.toJson()).toList(),
             "sub": sub.map((e) => e.toJson()).toList(),
+            if (chapters != null)
+              "chapters": chapters.map((e) => e.toJson()).toList(),
           },
-        Source_Audio(:final sources) => {
+        Source_Audio(:final sources, :final chapters) => {
             "type": "Audio",
             "sources": sources.map((e) => e.toJson()).toList(),
+            if (chapters != null)
+              "chapters": chapters.map((e) => e.toJson()).toList(),
           },
         Source_Paragraphlist(:final paragraphs, :final audio) => {
             "type": "Paragraphlist",
@@ -1724,12 +1728,14 @@ extension JsonSource on Source {
                   .map((e) => JsonSubtitles.fromJson(e))
                   .toList()
               : [],
+          chapters: _chaptersFromJson(value["chapters"]),
         );
       case "Audio":
         return Source.audio(
           sources: (value["sources"] as List)
               .map((e) => JsonStreamSource.fromJson(e))
               .toList(),
+          chapters: _chaptersFromJson(value["chapters"]),
         );
       case "Paragraphlist":
         return Source.paragraphlist(
@@ -1746,6 +1752,45 @@ extension JsonSource on Source {
         throw FormatException("Unknown Source type: $type");
     }
   }
+}
+
+List<Chapter>? _chaptersFromJson(dynamic value) => value == null
+    ? null
+    : (value as List).map((e) => JsonChapter.fromJson(e)).toList();
+
+extension JsonChapterKind on ChapterKind {
+  dynamic toJson() => switch (this) {
+        ChapterKind.intro => "Intro",
+        ChapterKind.outro => "Outro",
+        ChapterKind.recap => "Recap",
+        ChapterKind.filler => "Filler",
+        ChapterKind.preview => "Preview",
+      };
+
+  static ChapterKind? fromJson(dynamic value) => switch (value?.toString()) {
+        "Intro" => ChapterKind.intro,
+        "Outro" => ChapterKind.outro,
+        "Recap" => ChapterKind.recap,
+        "Filler" => ChapterKind.filler,
+        "Preview" => ChapterKind.preview,
+        _ => null,
+      };
+}
+
+extension JsonChapter on Chapter {
+  dynamic toJson() => {
+        "title": title,
+        "start": start,
+        if (end != null) "end": end,
+        if (kind != null) "kind": kind!.toJson(),
+      };
+
+  static Chapter fromJson(dynamic value) => Chapter(
+        title: value["title"],
+        start: (value["start"] as num).toDouble(),
+        end: (value["end"] as num?)?.toDouble(),
+        kind: JsonChapterKind.fromJson(value["kind"]),
+      );
 }
 
 extension JsonSourceResult on SourceResult {
@@ -1805,7 +1850,11 @@ extension JsonRow on Row {
 
 extension JsonParagraph on Paragraph {
   dynamic toJson() => switch (this) {
-        Paragraph_Text(:final content) => {"type": "Text", "content": content},
+        Paragraph_Text(:final content, :final style) => {
+            "type": "Text",
+            "content": content,
+            if (style != null) "style": style.toJson(),
+          },
         Paragraph_Mixed(:final content) => {
             "type": "Mixed",
             "content": content.map((e) => e.toJson()).toList(),
@@ -1824,7 +1873,12 @@ extension JsonParagraph on Paragraph {
     final type = value["type"] as String;
     switch (type) {
       case "Text":
-        return Paragraph.text(content: value["content"]);
+        return Paragraph.text(
+          content: value["content"],
+          style: value["style"] != null
+              ? JsonTextStyle.fromJson(value["style"])
+              : null,
+        );
       case "CustomUI":
         return Paragraph.customUi(ui: JsonCustomUI.fromJson(value["ui"]));
       case "Mixed":
@@ -1847,9 +1901,10 @@ extension JsonParagraph on Paragraph {
 
 extension JsonMixedContent on MixedContent {
   dynamic toJson() => switch (this) {
-        MixedContent_Text(:final content) => {
+        MixedContent_Text(:final content, :final style) => {
             "type": "Text",
-            "content": content
+            "content": content,
+            if (style != null) "style": style.toJson(),
           },
         MixedContent_CustomUI(:final ui) => {
             "type": "CustomUI",
@@ -1865,7 +1920,12 @@ extension JsonMixedContent on MixedContent {
     final type = value["type"] as String;
     switch (type) {
       case "Text":
-        return MixedContent.text(content: value["content"]);
+        return MixedContent.text(
+          content: value["content"],
+          style: value["style"] != null
+              ? JsonTextStyle.fromJson(value["style"])
+              : null,
+        );
       case "CustomUI":
         return MixedContent.customUi(ui: JsonCustomUI.fromJson(value["ui"]));
       case "Table":
@@ -1938,7 +1998,7 @@ extension JsonAccount on Account {
         if (userName != null) "user_name": userName,
         if (cover != null) "cover": cover,
         "auth": auth.toJson(),
-        if (creds != null) "creds": creds,
+        if (creds != null) "creds": creds!.toJson(),
       };
 
   static Account fromJson(dynamic value) => Account(
