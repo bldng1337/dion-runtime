@@ -140,31 +140,44 @@ export function assert(condition: boolean, message: string): asserts condition {
 	if (!condition) throw new Error(message);
 }
 
-function assertWarn(condition: boolean, message: string): asserts condition {
-	if (!condition) console.warn(message);
+function check(
+	condition: boolean,
+	message: string,
+	lenient: boolean | undefined,
+): void {
+	if (condition) return;
+	if (lenient) {
+		console.warn(message);
+		return;
+	}
+	throw new Error(message);
 }
 
 export async function assertValidM3U8(
 	link: Link,
 	options?: {
 		assertmsg?: string;
+		/** Only warn instead of failing. */
+		lenient?: boolean;
 	},
 ) {
 	console.log(`Checking ${link.url}`);
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assertWarn(
+	check(
 		response.ok,
-		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
+		`${options?.assertmsg ?? ""} ${link.url} is not a valid url or not reachable`,
+		options?.lenient,
 	);
 	const parser = new Parser({
 		uri: link.url,
 	});
 	parser.push(await response.text());
 	parser.end();
-	assertWarn(
+	check(
 		parser.manifest.segments.length > 0,
-		`${options?.assertmsg} ${link.url} is not a valid m3u8 url`,
+		`${options?.assertmsg ?? ""} ${link.url} is not a valid m3u8 url`,
+		options?.lenient,
 	);
 }
 
@@ -172,20 +185,24 @@ export async function assertValidImageURL(
 	link: Link,
 	options?: {
 		assertmsg?: string;
+		/** Only warn instead of failing. */
+		lenient?: boolean;
 	},
 ) {
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assertWarn(
+	check(
 		response.ok,
-		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
+		`${options?.assertmsg ?? ""} ${link.url} is not a valid url or not reachable`,
+		options?.lenient,
 	);
-	assertWarn(
+	check(
 		response.headers
 			.get("content-type")
 			?.toLocaleLowerCase()
 			.includes("image") ?? false,
-		`${options?.assertmsg}  ${link.url} is not an image url`,
+		`${options?.assertmsg ?? ""}  ${link.url} is not an image url`,
+		options?.lenient,
 	);
 }
 
@@ -193,13 +210,16 @@ export async function assertValidURL(
 	link: Link,
 	options?: {
 		assertmsg?: string;
+		/** Only warn instead of failing. */
+		lenient?: boolean;
 	},
 ) {
 	await ratelimit(time);
 	const response = await fetch(link.url, { headers: link.header ?? undefined });
-	assertWarn(
+	check(
 		response.ok,
-		`${options?.assertmsg} ${link.url} is not a valid url or not reachable`,
+		`${options?.assertmsg ?? ""} ${link.url} is not a valid url or not reachable`,
+		options?.lenient,
 	);
 }
 
