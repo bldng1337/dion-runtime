@@ -319,6 +319,36 @@ impl DionExtension {
     }
 }
 
+struct RestoreAccountOnDrop {
+    data: Arc<InnerExtension>,
+    old: Option<Account>,
+}
+
+impl Drop for RestoreAccountOnDrop {
+    fn drop(&mut self) {
+        let Some(old) = self.old.take() else {
+            return;
+        };
+        fn restore(store: &mut ExtensionStore, old: Account) {
+            if let Some(account) = store.auth.get_mut(&old.domain) {
+                *account = old;
+            }
+        }
+        // Drop cannot await the lock; it is normally free, otherwise the restore is handed to the runtime.
+        match self.data.store.try_write() {
+            Ok(mut store) => restore(&mut store, old),
+            Err(_) => {
+                if let Ok(handle) = tokio::runtime::Handle::try_current() {
+                    let data = self.data.clone();
+                    handle.spawn(async move {
+                        restore(&mut *data.store.write().await, old);
+                    });
+                }
+            }
+        }
+    }
+}
+
 impl Drop for DionExtension {
     fn drop(&mut self) {
         self.data.network.save_cookies_logged();
@@ -391,6 +421,10 @@ impl Extension for DionExtension {
             *store_account = account.clone();
             old
         };
+        let mut restore = RestoreAccountOnDrop {
+            data: self.data.clone(),
+            old: Some(old),
+        };
         let auth_creds = account.creds.clone();
         let res: Result<Option<Account>> = match &*self.data.context.load() {
             Some(context) => {
@@ -407,7 +441,7 @@ impl Extension for DionExtension {
                     Ok(()) => match response.await {
                         Ok(inner) => inner.map(|opt| {
                             opt.map(|acc| Account {
-                                creds: auth_creds,
+                                creds: acc.creds.or(auth_creds),
                                 ..acc
                             })
                         }),
@@ -419,6 +453,7 @@ impl Extension for DionExtension {
             None => Err(anyhow!("Extension is not enabled")),
         };
         let mut store = self.data.store.write().await;
+        let old = restore.old.take().expect("restored only here or on drop");
         let store_account = store
             .auth
             .get_mut(&old.domain)
