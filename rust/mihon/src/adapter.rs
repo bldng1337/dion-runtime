@@ -694,7 +694,11 @@ impl Adapter for MihonAdapter {
                 .context("Failed to read local APK")?
         } else {
             // Remote URL
-            let response = reqwest::get(url).await.context("Failed to download APK")?;
+            let response = crate::repo::http_client()
+                .get(url)
+                .send()
+                .await
+                .context("Failed to download APK")?;
             let status = response.status();
             if !status.is_success() {
                 bail!("Failed to download APK: HTTP {}", status);

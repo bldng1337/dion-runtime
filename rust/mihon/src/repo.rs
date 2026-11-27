@@ -454,7 +454,9 @@ fn extension_list_from_payload(
 
 /// GET a URL and return its (gzip-decompressed) body.
 async fn get_bytes(url: &str) -> Result<Vec<u8>> {
-    let response = reqwest::get(url)
+    let response = http_client()
+        .get(url)
+        .send()
         .await
         .with_context(|| format!("Failed to fetch {url}"))?;
     let status = response.status();
@@ -473,11 +475,34 @@ async fn get_bytes(url: &str) -> Result<Vec<u8>> {
 fn decompress_if_gzipped(bytes: &[u8]) -> Vec<u8> {
     if bytes.starts_with(&[0x1f, 0x8b]) {
         let mut out = Vec::new();
-        if GzDecoder::new(bytes).read_to_end(&mut out).is_ok() {
+        // Capped: a small gzip bomb would otherwise inflate to gigabytes. An
+        // oversized index is left compressed and then fails to parse.
+        let read = GzDecoder::new(bytes)
+            .take(MAX_DECOMPRESSED_INDEX + 1)
+            .read_to_end(&mut out);
+        if read.is_ok() && out.len() as u64 <= MAX_DECOMPRESSED_INDEX {
             return out;
+        }
+        if read.is_ok() {
+            log::warn!("Repository index exceeds {MAX_DECOMPRESSED_INDEX} bytes once decompressed");
         }
     }
     bytes.to_vec()
+}
+
+const MAX_DECOMPRESSED_INDEX: u64 = 64 * 1024 * 1024;
+
+/// Shared client for repository and APK downloads: `reqwest::get` has no
+/// timeout, so a stalled server hung installs and repo refreshes forever.
+pub(crate) fn http_client() -> &'static reqwest::Client {
+    static CLIENT: std::sync::LazyLock<reqwest::Client> = std::sync::LazyLock::new(|| {
+        reqwest::Client::builder()
+            .connect_timeout(std::time::Duration::from_secs(15))
+            .timeout(std::time::Duration::from_secs(120))
+            .build()
+            .unwrap_or_default()
+    });
+    &CLIENT
 }
 
 // ---------------------------------------------------------------------------

@@ -133,8 +133,13 @@ impl BinaryXmlParser {
 
         let is_utf8 = (flags & (1 << 8)) != 0;
 
-        // Read string offsets
-        let mut offsets = Vec::with_capacity(string_count);
+        // Read string offsets. The count comes from the APK; each offset
+        // takes 4 bytes, so the remaining data bounds the preallocation.
+        let remaining = cursor
+            .get_ref()
+            .len()
+            .saturating_sub(cursor.position() as usize);
+        let mut offsets = Vec::with_capacity(string_count.min(remaining / 4));
         for _ in 0..string_count {
             offsets.push(cursor.read_u32::<LittleEndian>()?);
         }
@@ -189,7 +194,11 @@ impl BinaryXmlParser {
             len
         };
 
-        let mut chars = Vec::with_capacity(len);
+        let remaining = cursor
+            .get_ref()
+            .len()
+            .saturating_sub(cursor.position() as usize);
+        let mut chars = Vec::with_capacity(len.min(remaining / 2));
         for _ in 0..len {
             chars.push(cursor.read_u16::<LittleEndian>()?);
         }
