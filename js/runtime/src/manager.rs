@@ -63,7 +63,8 @@ impl AdapterProxy {
 
   #[napi]
   pub async fn uninstall(&self, ext: &ExtensionProxy) -> Result<(), napi::Error> {
-    self.manager.uninstall(&ext.extension).await.map_to_node()
+    let extension = ext.extension.read().await;
+    self.manager.uninstall(&extension).await.map_to_node()
   }
 
   #[napi(ts_return_type = "Promise<ExtensionRepo>")]

@@ -16,6 +16,10 @@ use napi::{
 use napi_derive::napi;
 use std::{fmt::Debug, sync::Arc};
 
+fn secure_key(key: &str) -> String {
+  format!("__secure__.{key}")
+}
+
 struct ClientExtensionHandlerInner {
   load_data: ThreadsafeFunction<String, String>,
   store_data: ThreadsafeFunction<FnArgs<(String, String)>, ()>,
@@ -107,12 +111,13 @@ impl ExtensionClient for ClientExtensionHandler {
     Ok(res)
   }
 
-  async fn load_data_secure(&self, _key: &str) -> Result<String> {
-    bail!("No loading implemented")
+  // This is not secure, but the js bindings are mostly used for testing, so its fine for this usecase.
+  async fn load_data_secure(&self, key: &str) -> Result<String> {
+    self.load_data(&secure_key(key)).await
   }
 
-  async fn store_data_secure(&self, _key: &str, _data: String) -> Result<()> {
-    Ok(())
+  async fn store_data_secure(&self, key: &str, data: String) -> Result<()> {
+    self.store_data(&secure_key(key), data).await
   }
 
   async fn store_data(&self, key: &str, data: String) -> Result<()> {
@@ -201,17 +206,21 @@ impl AdapterClient for ClientManagerHandler {
     extension: ExtensionData,
   ) -> Result<Box<dyn ExtensionClient>> {
     let (send, resp) = oneshot::channel();
-    self.inner.get_client.call_with_return_value(
+    let status = self.inner.get_client.call_with_return_value(
       Ok(serde_json::to_value(extension)?),
       ThreadsafeFunctionCallMode::Blocking,
       |res, _env| {
-        let res = res.map(|a| Box::new((*a).clone()));
-        //TODO: Error Handling
+        let res = res.map(|handler| Box::new((*handler).clone()));
         let _ = send.send(res);
         Ok(())
       },
     );
-    let res = resp.await?;
+    if status != napi::Status::Ok {
+      bail!("Failed to call getClient: {status}");
+    }
+    let res = resp
+      .await
+      .map_err(|_| anyhow::anyhow!("getClient never returned a client"))?;
     Ok(res?)
   }
 

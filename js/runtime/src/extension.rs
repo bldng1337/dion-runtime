@@ -11,17 +11,20 @@ use dion_runtime::{
   extension::Extension,
 };
 use napi_derive::napi;
+use tokio::sync::RwLock;
 
 use crate::{cancel::CancelTokenProxy, error::ErrorConverter};
 
 #[napi(js_name = "Extension")]
 pub struct ExtensionProxy {
-  pub(crate) extension: Box<dyn Extension>,
+  pub(crate) extension: RwLock<Box<dyn Extension>>,
 }
 
 impl From<Box<dyn Extension>> for ExtensionProxy {
   fn from(value: Box<dyn Extension>) -> Self {
-    Self { extension: value }
+    Self {
+      extension: RwLock::new(value),
+    }
   }
 }
 
@@ -29,7 +32,10 @@ impl From<Box<dyn Extension>> for ExtensionProxy {
 impl ExtensionProxy {
   #[napi(getter)]
   pub fn enabled(&self) -> bool {
-    self.extension.is_enabled()
+    self
+      .extension
+      .try_read()
+      .is_ok_and(|extension| extension.is_enabled())
   }
 
   #[napi(
@@ -41,27 +47,27 @@ impl ExtensionProxy {
     account: serde_json::Value,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let account: Account = serde_json::from_value(account).map_to_node()?;
-    let inner = self
-      .extension
-      .validate(account, token)
-      .await
-      .map_to_node()?;
+    let inner = extension.validate(account, token).await.map_to_node()?;
     serde_json::to_value(inner).map_to_node()
   }
 
-  /// # Safety
-  /// Safety is handled by napi
   #[napi]
-  pub async unsafe fn set_enabled(&mut self, enabled: bool) -> Result<(), napi::Error> {
-    self.extension.set_enabled(enabled).await.map_to_node()
+  pub async fn set_enabled(&self, enabled: bool) -> Result<(), napi::Error> {
+    self
+      .extension
+      .write()
+      .await
+      .set_enabled(enabled)
+      .await
+      .map_to_node()
   }
-  /// # Safety
-  /// Safety is handled by napi
+
   #[napi]
-  pub async unsafe fn reload(&mut self) -> Result<(), napi::Error> {
-    self.extension.reload().await.map_to_node()
+  pub async fn reload(&self) -> Result<(), napi::Error> {
+    self.extension.write().await.reload().await.map_to_node()
   }
 
   #[napi(
@@ -74,10 +80,10 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let settings = parse_settings(settings)?;
-    let inner = self
-      .extension
+    let inner = extension
       .browse(page, settings, token)
       .await
       .map_to_node()?;
@@ -95,10 +101,10 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let settings = parse_settings(settings)?;
-    let inner = self
-      .extension
+    let inner = extension
       .search(page, filter, settings, token)
       .await
       .map_to_node()?;
@@ -111,8 +117,9 @@ impl ExtensionProxy {
     url: String,
     token: Option<&CancelTokenProxy>,
   ) -> Result<bool, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
-    self.extension.handle_url(url, token).await.map_to_node()
+    extension.handle_url(url, token).await.map_to_node()
   }
 
   #[napi(
@@ -125,14 +132,14 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     for (key, value) in settings.into_iter() {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    let inner = self
-      .extension
+    let inner = extension
       .detail(
         serde_json::from_value(entryid).map_to_node()?,
         mapsettings,
@@ -153,6 +160,7 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     let entry: EntryDetailed = serde_json::from_value(entry).map_to_node()?;
@@ -160,8 +168,7 @@ impl ExtensionProxy {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    let inner = self
-      .extension
+    let inner = extension
       .refresh(entry, mapsettings, token)
       .await
       .map_to_node()?;
@@ -178,14 +185,14 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     for (key, value) in settings.into_iter() {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    let inner = self
-      .extension
+    let inner = extension
       .source(
         serde_json::from_value(epid).map_to_node()?,
         mapsettings,
@@ -206,6 +213,7 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     let entry: EntryDetailed = serde_json::from_value(entry).map_to_node()?;
@@ -213,8 +221,7 @@ impl ExtensionProxy {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    let inner = self
-      .extension
+    let inner = extension
       .map_entry(entry, mapsettings, token)
       .await
       .map_to_node()?;
@@ -231,6 +238,7 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<(), napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     let entry: EntryDetailed = serde_json::from_value(entry).map_to_node()?;
@@ -239,8 +247,7 @@ impl ExtensionProxy {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    self
-      .extension
+    extension
       .on_entry_activity(activity, entry, mapsettings, token)
       .await
       .map_to_node()?;
@@ -258,6 +265,7 @@ impl ExtensionProxy {
     settings: HashMap<String, serde_json::Value>,
     token: Option<&CancelTokenProxy>,
   ) -> Result<serde_json::Value, napi::Error> {
+    let extension = self.extension.read().await;
     let token = token.map(|v| v.take_token());
     let mut mapsettings: HashMap<String, Setting> = HashMap::with_capacity(settings.capacity());
     let source: Source = serde_json::from_value(source).map_to_node()?;
@@ -265,8 +273,7 @@ impl ExtensionProxy {
       let value = serde_json::from_value(value).map_to_node()?;
       mapsettings.insert(key, value);
     }
-    let inner = self
-      .extension
+    let inner = extension
       .map_source(
         source,
         serde_json::from_value(epid).map_to_node()?,
@@ -280,7 +287,8 @@ impl ExtensionProxy {
 
   #[napi(ts_return_type = "Promise<ExtensionData>")]
   pub async fn get_data(&self) -> Result<serde_json::Value, napi::Error> {
-    let res = self.extension.get_data().read().await.data.clone();
+    let extension = self.extension.read().await;
+    let res = extension.get_data().read().await.data.clone();
     serde_json::to_value(res).map_to_node()
   }
 
@@ -288,7 +296,8 @@ impl ExtensionProxy {
   /// (the bundle) and `data` (everything else in its private data dir).
   #[napi(ts_return_type = "Promise<StorageUsage>")]
   pub async fn storage_usage(&self) -> Result<serde_json::Value, napi::Error> {
-    let usage = self.extension.storage_usage().await.map_to_node()?;
+    let extension = self.extension.read().await;
+    let usage = extension.storage_usage().await.map_to_node()?;
     serde_json::to_value(usage).map_to_node()
   }
 
@@ -296,19 +305,21 @@ impl ExtensionProxy {
   /// cache). Settings, cookies and extension-written files are kept.
   #[napi]
   pub async fn clear_cache(&self) -> Result<(), napi::Error> {
-    self.extension.clear_cache().await.map_to_node()
+    let extension = self.extension.read().await;
+    extension.clear_cache().await.map_to_node()
   }
 
   #[napi]
   pub async fn save(&self) -> Result<(), napi::Error> {
-    let client = self.extension.get_client();
+    let extension = self.extension.read().await;
+    let client = extension.get_client();
     // Snapshot the stores instead of holding the read guard across the
     // store_data round-trip into JS: the host callback may re-enter any of
     // these napi methods, which would deadlock on the store RwLock. A
     // concurrent writer winning between snapshot and save is accepted
     // (last-writer-wins).
     let (settings, permission) = {
-      let extdata = self.extension.get_data().read().await;
+      let extdata = extension.get_data().read().await;
       (extdata.settings.clone(), extdata.permission.clone())
     };
     settings.save_state(client).await.map_to_node()?;
@@ -318,14 +329,16 @@ impl ExtensionProxy {
 
   #[napi(ts_return_type = "Promise<Permission[]>")]
   pub async fn get_permissions(&self) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let perms = extdata.permission.get_permissions().clone();
     serde_json::to_value(perms).map_to_node()
   }
 
   #[napi(ts_args_type = "permission: Permission")]
   pub async fn has_permission(&self, permission: serde_json::Value) -> Result<bool, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let permission: Permission = serde_json::from_value(permission).map_to_node()?;
     Ok(extdata.permission.has_permission(&permission))
   }
@@ -336,10 +349,11 @@ impl ExtensionProxy {
     permission: serde_json::Value,
     msg: Option<String>,
   ) -> Result<bool, napi::Error> {
+    let extension = self.extension.read().await;
     let permission: Permission = serde_json::from_value(permission).map_to_node()?;
-    let client = self.extension.get_client();
+    let client = extension.get_client();
     {
-      let extdata = self.extension.get_data().read().await;
+      let extdata = extension.get_data().read().await;
       if extdata.permission.has_permission(&permission) {
         return Ok(true);
       }
@@ -351,7 +365,7 @@ impl ExtensionProxy {
       .await
       .map_to_node()?;
     if granted {
-      let mut extdata = self.extension.get_data().write().await;
+      let mut extdata = extension.get_data().write().await;
       extdata.permission.grant(permission);
     }
     Ok(granted)
@@ -359,8 +373,9 @@ impl ExtensionProxy {
 
   #[napi(ts_args_type = "permission: Permission")]
   pub async fn remove_permission(&self, permission: serde_json::Value) -> Result<(), napi::Error> {
+    let extension = self.extension.read().await;
     let permission: Permission = serde_json::from_value(permission).map_to_node()?;
-    let mut extdata = self.extension.get_data().write().await;
+    let mut extdata = extension.get_data().write().await;
     extdata.permission.remove_permission(permission);
     Ok(())
   }
@@ -374,7 +389,8 @@ impl ExtensionProxy {
     id: String,
     kind: String,
   ) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let kind: SettingKind = parse_setting_kind(&kind)?;
     let res = extdata
       .settings
@@ -388,7 +404,8 @@ impl ExtensionProxy {
     ts_args_type = "kind: SettingKind"
   )]
   pub async fn get_settings(&self, kind: String) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let settings_map = extdata.settings.get_settings(&kind_parsed);
     serde_json::to_value(settings_map).map_to_node()
@@ -401,7 +418,8 @@ impl ExtensionProxy {
     kind: String,
     value: serde_json::Value,
   ) -> Result<(), napi::Error> {
-    let mut extdata = self.extension.get_data().write().await;
+    let extension = self.extension.read().await;
+    let mut extdata = extension.get_data().write().await;
     let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let setting_value: SettingValue = serde_json::from_value(value).map_to_node()?;
     extdata
@@ -413,7 +431,8 @@ impl ExtensionProxy {
 
   #[napi(ts_args_type = "id: string, kind: SettingKind")]
   pub async fn remove_setting(&self, id: String, kind: String) -> Result<(), napi::Error> {
-    let mut extdata = self.extension.get_data().write().await;
+    let extension = self.extension.read().await;
+    let mut extdata = extension.get_data().write().await;
     let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     extdata
       .settings
@@ -427,7 +446,8 @@ impl ExtensionProxy {
     ts_args_type = "kind: SettingKind"
   )]
   pub async fn get_setting_ids(&self, kind: String) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let ids = extdata.settings.get_setting_ids(&kind_parsed);
     serde_json::to_value(ids).map_to_node()
@@ -440,7 +460,8 @@ impl ExtensionProxy {
     kind: String,
     definition: serde_json::Value,
   ) -> Result<(), napi::Error> {
-    let mut extdata = self.extension.get_data().write().await;
+    let extension = self.extension.read().await;
+    let mut extdata = extension.get_data().write().await;
     let kind_parsed: SettingKind = parse_setting_kind(&kind)?;
     let setting_def: Setting = serde_json::from_value(definition).map_to_node()?;
     extdata
@@ -452,20 +473,22 @@ impl ExtensionProxy {
 
   #[napi(ts_return_type = "Promise<Account[]>")]
   pub async fn get_accounts(&self) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let accounts = extdata.auth.get_accounts().clone();
     serde_json::to_value(accounts).map_to_node()
   }
 
   #[napi(ts_args_type = "account: Account")]
   pub async fn merge_auth(&self, account: serde_json::Value) -> Result<(), napi::Error> {
+    let extension = self.extension.read().await;
     let account: Account = serde_json::from_value(account).map_to_node()?;
-    let client = self.extension.get_client();
+    let client = extension.get_client();
     // Mutate under the lock, then persist from a snapshot so the write guard
     // is never held across the JS round-trip (re-entrant host calls would
     // deadlock). Last-writer-wins on concurrent merges.
     let auth = {
-      let mut extdata = self.extension.get_data().write().await;
+      let mut extdata = extension.get_data().write().await;
       extdata.auth.merge_auth(&account);
       extdata.auth.clone()
     };
@@ -474,17 +497,19 @@ impl ExtensionProxy {
 
   #[napi(ts_args_type = "domain: string")]
   pub async fn is_logged_in(&self, domain: String) -> Result<bool, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     Ok(extdata.auth.is_logged_in(&domain))
   }
 
   #[napi(ts_args_type = "domain: string")]
   pub async fn invalidate(&self, domain: String) -> Result<(), napi::Error> {
-    let client = self.extension.get_client();
+    let extension = self.extension.read().await;
+    let client = extension.get_client();
     // Same lock discipline as merge_auth: mutate under the guard, persist from
     // a snapshot without holding it across the JS round-trip.
     let auth = {
-      let mut extdata = self.extension.get_data().write().await;
+      let mut extdata = extension.get_data().write().await;
       extdata.auth.invalidate(&domain);
       extdata.auth.clone()
     };
@@ -493,7 +518,8 @@ impl ExtensionProxy {
 
   #[napi(ts_return_type = "Promise<AuthCreds>", ts_args_type = "domain: string")]
   pub async fn get_auth_secret(&self, domain: String) -> Result<serde_json::Value, napi::Error> {
-    let extdata = self.extension.get_data().read().await;
+    let extension = self.extension.read().await;
+    let extdata = extension.get_data().read().await;
     let account = extdata
       .auth
       .get_accounts()

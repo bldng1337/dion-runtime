@@ -14,6 +14,13 @@ impl From<CancellationToken> for CancelTokenProxy {
 
 #[napi]
 impl CancelTokenProxy {
+  /// Creates a token to pass to extension calls; `cancel()` aborts them.
+  #[napi(constructor)]
+  #[allow(clippy::new_without_default)]
+  pub fn new() -> Self {
+    CancellationToken::new().into()
+  }
+
   #[napi]
   pub fn cancel(&self) {
     self.token.cancel();

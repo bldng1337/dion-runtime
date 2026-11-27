@@ -13,6 +13,8 @@ export declare class Adapter {
 export type AdapterProxy = Adapter
 
 export declare class CancelToken {
+  /** Creates a token to pass to extension calls; `cancel()` aborts them. */
+  constructor()
   cancel(): void
   get cancelled(): boolean
   getChild(): CancelToken
@@ -22,15 +24,7 @@ export type CancelTokenProxy = CancelToken
 export declare class Extension {
   get enabled(): boolean
   validate(account: Account,  token?: CancelToken): Promise<Account | null | undefined>
-  /**
-   * # Safety
-   * Safety is handled by napi
-   */
   setEnabled(enabled: boolean): Promise<void>
-  /**
-   * # Safety
-   * Safety is handled by napi
-   */
   reload(): Promise<void>
   browse(page: number, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryListResult>
   search(page: number, filter: string, settings: Record<string, Setting>, token?: CancelToken): Promise<EntryListResult>
