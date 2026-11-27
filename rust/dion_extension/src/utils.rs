@@ -5,11 +5,14 @@ use std::pin::Pin;
 use std::rc::Rc;
 use std::task::Poll;
 use std::time::Duration;
-use std::{cell::RefCell, collections::VecDeque};
+use std::{
+    cell::{Cell, RefCell},
+    collections::VecDeque,
+};
 
 use boa_engine::builtins::promise::PromiseState;
 use boa_engine::context::time::{JsDuration, JsInstant};
-use boa_engine::job::TimeoutJob;
+use boa_engine::job::{GenericJob, IntervalJob, TimeoutJob};
 use boa_engine::object::builtins::JsPromise;
 use boa_engine::{
     Context, JsNativeError, JsResult, JsValue,
@@ -67,10 +70,14 @@ where
             let mut guard = context.borrow_mut();
             let ctx: &mut Context = &mut guard;
             match result {
-                Ok(value) => {
-                    let val = convert(value, ctx)?;
-                    resolve.resolve.call(&promise.into(), &[val], ctx)?
-                }
+                Ok(value) => match convert(value, ctx) {
+                    Ok(val) => resolve.resolve.call(&promise.into(), &[val], ctx)?,
+                    Err(err) => resolve.reject.call(
+                        &promise.into(),
+                        &[error_to_reject_value(err, ctx)],
+                        ctx,
+                    )?,
+                },
                 Err(err) => {
                     let err = JsError::from_rust(&*err);
                     resolve
@@ -251,10 +258,17 @@ impl ModuleLoader for VirtualModuleLoader {
     }
 }
 
+enum Timer {
+    Once(TimeoutJob),
+    Interval(IntervalJob),
+}
+
 pub struct Queue {
     async_jobs: RefCell<VecDeque<NativeAsyncJob>>,
     promise_jobs: RefCell<VecDeque<PromiseJob>>,
-    timeout_jobs: RefCell<BTreeMap<JsInstant, TimeoutJob>>,
+    generic_jobs: RefCell<VecDeque<GenericJob>>,
+    timeout_jobs: RefCell<BTreeMap<(JsInstant, u64), Timer>>,
+    timer_seq: Cell<u64>,
 }
 
 impl Queue {
@@ -262,23 +276,36 @@ impl Queue {
         Self {
             async_jobs: RefCell::default(),
             promise_jobs: RefCell::default(),
+            generic_jobs: RefCell::default(),
             timeout_jobs: RefCell::default(),
+            timer_seq: Cell::new(0),
         }
     }
 
     fn has_runnable_jobs(&self) -> bool {
-        !self.promise_jobs.borrow().is_empty() || !self.async_jobs.borrow().is_empty()
+        !self.promise_jobs.borrow().is_empty()
+            || !self.async_jobs.borrow().is_empty()
+            || !self.generic_jobs.borrow().is_empty()
     }
 
     fn clear(&self) {
         self.async_jobs.borrow_mut().clear();
         self.promise_jobs.borrow_mut().clear();
+        self.generic_jobs.borrow_mut().clear();
         self.timeout_jobs.borrow_mut().clear();
+    }
+
+    fn schedule(&self, deadline: JsInstant, timer: Timer) {
+        let seq = self.timer_seq.get();
+        self.timer_seq.set(seq.wrapping_add(1));
+        self.timeout_jobs
+            .borrow_mut()
+            .insert((deadline, seq), timer);
     }
 
     fn next_timeout_delay(&self, context: &Context) -> Option<Duration> {
         let timeouts = self.timeout_jobs.borrow();
-        let (deadline, _) = timeouts.first_key_value()?;
+        let ((deadline, _), _) = timeouts.first_key_value()?;
         let remaining = *deadline - context.clock().now();
         Some(Duration::from_millis(remaining.as_millis()))
     }
@@ -290,13 +317,34 @@ impl Queue {
         // `split_off` returns the jobs after (or equal to) the key. So we need to add 1ms to
         // the current time to get the jobs that are due, then swap with the inner timeout
         // tree so that we get the jobs to actually run.
-        let jobs_to_keep = timeouts_borrow.split_off(&(now + JsDuration::from_millis(1)));
+        let jobs_to_keep = timeouts_borrow.split_off(&(now + JsDuration::from_millis(1), 0));
         let jobs_to_run = std::mem::replace(timeouts_borrow.deref_mut(), jobs_to_keep);
         drop(timeouts_borrow);
 
-        for job in jobs_to_run.into_values() {
-            if let Err(e) = job.call(context) {
-                eprintln!("Uncaught {e}");
+        for timer in jobs_to_run.into_values() {
+            match timer {
+                Timer::Once(job) => {
+                    if job.cancelled() {
+                        continue;
+                    }
+                    if let Err(e) = job.call(context) {
+                        eprintln!("Uncaught {e}");
+                    }
+                }
+                Timer::Interval(job) => {
+                    if job.cancelled() {
+                        continue;
+                    }
+                    if let Err(e) = job.call(context) {
+                        eprintln!("Uncaught {e}");
+                    }
+                    if !job.cancelled() {
+                        // At least 1ms, so a zero interval cannot re-run within the same drain.
+                        let interval = job.interval().as_millis().max(1);
+                        let next = context.clock().now() + JsDuration::from_millis(interval);
+                        self.schedule(next, Timer::Interval(job));
+                    }
+                }
             }
         }
     }
@@ -306,6 +354,12 @@ impl Queue {
         self.drain_timeout_jobs(context);
 
         let jobs = std::mem::take(&mut *self.promise_jobs.borrow_mut());
+        for job in jobs {
+            if let Err(e) = job.call(context) {
+                eprintln!("Uncaught {e}");
+            }
+        }
+        let jobs = std::mem::take(&mut *self.generic_jobs.borrow_mut());
         for job in jobs {
             if let Err(e) = job.call(context) {
                 eprintln!("Uncaught {e}");
@@ -321,9 +375,15 @@ impl JobExecutor for Queue {
             Job::AsyncJob(job) => self.async_jobs.borrow_mut().push_back(job),
             Job::TimeoutJob(t) => {
                 let now = context.clock().now();
-                self.timeout_jobs.borrow_mut().insert(now + t.timeout(), t);
+                self.schedule(now + t.timeout(), Timer::Once(t));
             }
-            _ => panic!("unsupported job type"),
+            Job::IntervalJob(t) => {
+                let now = context.clock().now();
+                self.schedule(now + t.interval(), Timer::Interval(t));
+            }
+            Job::GenericJob(job) => self.generic_jobs.borrow_mut().push_back(job),
+            Job::FinalizationRegistryCleanupJob(_) => {}
+            _ => log::warn!("Dropped an unsupported JS job"),
         }
     }
 
@@ -349,7 +409,7 @@ impl JobExecutor for Queue {
     // ...the async flavor won't, which allows concurrent execution with external async tasks.
     async fn run_jobs_async(self: Rc<Self>, context: &RefCell<&mut Context>) -> JsResult<()> {
         // Early return in case there were no jobs scheduled.
-        if self.promise_jobs.borrow().is_empty() && self.async_jobs.borrow().is_empty() {
+        if !self.has_runnable_jobs() {
             return Ok(());
         }
         let mut group = FutureGroup::new();
@@ -358,25 +418,29 @@ impl JobExecutor for Queue {
                 group.insert(job.call(context));
             }
 
-            if group.is_empty() && self.promise_jobs.borrow().is_empty() {
-                // Both queues are empty. We can exit.
+            if group.is_empty()
+                && self.promise_jobs.borrow().is_empty()
+                && self.generic_jobs.borrow().is_empty()
+            {
+                // All queues are empty. We can exit.
                 return Ok(());
             }
 
-            let finished = if self.promise_jobs.borrow().is_empty() {
-                let timer = self.next_timeout_delay(&context.borrow());
-                let progress =
-                    std::future::poll_fn(|cx| match Pin::new(&mut group).poll_next(cx) {
-                        Poll::Pending if self.has_runnable_jobs() => Poll::Ready(None),
-                        poll => poll,
-                    });
-                match timer {
-                    Some(delay) => tokio::time::timeout(delay, progress).await.ok().flatten(),
-                    None => progress.await,
-                }
-            } else {
-                future::poll_once(group.next()).await.flatten()
-            };
+            let finished =
+                if self.promise_jobs.borrow().is_empty() && self.generic_jobs.borrow().is_empty() {
+                    let timer = self.next_timeout_delay(&context.borrow());
+                    let progress =
+                        std::future::poll_fn(|cx| match Pin::new(&mut group).poll_next(cx) {
+                            Poll::Pending if self.has_runnable_jobs() => Poll::Ready(None),
+                            poll => poll,
+                        });
+                    match timer {
+                        Some(delay) => tokio::time::timeout(delay, progress).await.ok().flatten(),
+                        None => progress.await,
+                    }
+                } else {
+                    future::poll_once(group.next()).await.flatten()
+                };
             if let Some(Err(err)) = finished {
                 eprintln!("Uncaught {err}");
             };
