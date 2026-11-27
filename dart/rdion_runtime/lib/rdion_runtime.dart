@@ -15,5 +15,6 @@ export 'src/rust/api/client.dart';
 export 'src/rust/api/cancel.dart';
 export 'src/rust/api/extension.dart';
 export 'src/rust/api/proxy.dart';
+export 'src/rust/api.dart' show setRuntimeLogLevel;
 export 'json.dart';
 export 'src/rust/frb_generated.dart' show RustLib;

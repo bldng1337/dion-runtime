@@ -5,6 +5,7 @@ import 'dart:convert';
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api.dart';
 import 'api/cancel.dart';
 import 'api/client.dart';
 import 'api/extension.dart';
@@ -85,7 +86,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -1914484500;
+  int get rustContentHash => -24715756;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -333,6 +334,8 @@ abstract class RustLibApi extends BaseApi {
       dionRuntimeDataExtensionRepoRemoteExtensionResultDefault();
 
   String crateApiProxyResolveProxyUrl({required String url});
+
+  bool crateApiSetRuntimeLogLevel({required String level});
 
   Future<SourceOpenType> dionRuntimeDataExtensionSourceOpenTypeDefault();
 
@@ -1240,7 +1243,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
                 that);
         var arg1 = cst_encode_String(domain);
         return wire.wire__crate__api__extension__ProxyExtension_invalidate(
@@ -1395,7 +1398,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         var arg0 =
-            cst_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
+            cst_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerProxyExtension(
                 that);
         var arg1 = cst_encode_box_autoadd_account(account);
         return wire.wire__crate__api__extension__ProxyExtension_merge_auth(
@@ -2362,6 +2365,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "resolve_proxy_url",
         argNames: ["url"],
+      );
+
+  @override
+  bool crateApiSetRuntimeLogLevel({required String level}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        var arg0 = cst_encode_String(level);
+        return wire.wire__crate__api__set_runtime_log_level(arg0);
+      },
+      codec: DcoCodec(
+        decodeSuccessData: dco_decode_bool,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiSetRuntimeLogLevelConstMeta,
+      argValues: [level],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSetRuntimeLogLevelConstMeta => const TaskConstMeta(
+        debugName: "set_runtime_log_level",
+        argNames: ["level"],
       );
 
   @override

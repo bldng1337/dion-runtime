@@ -5,6 +5,7 @@ import 'dart:convert';
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api.dart';
 import 'api/cancel.dart';
 import 'api/client.dart';
 import 'api/extension.dart';
@@ -5902,6 +5903,23 @@ class RustLibWire implements BaseWire {
       'frbgen_rdion_runtime_wire__crate__api__proxy__resolve_proxy_url');
   late final _wire__crate__api__proxy__resolve_proxy_url =
       _wire__crate__api__proxy__resolve_proxy_urlPtr.asFunction<
+          WireSyncRust2DartDco Function(
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>();
+
+  WireSyncRust2DartDco wire__crate__api__set_runtime_log_level(
+    ffi.Pointer<wire_cst_list_prim_u_8_strict> level,
+  ) {
+    return _wire__crate__api__set_runtime_log_level(level);
+  }
+
+  late final _wire__crate__api__set_runtime_log_levelPtr = _lookup<
+      ffi.NativeFunction<
+          WireSyncRust2DartDco Function(
+            ffi.Pointer<wire_cst_list_prim_u_8_strict>,
+          )>>('frbgen_rdion_runtime_wire__crate__api__set_runtime_log_level');
+  late final _wire__crate__api__set_runtime_log_level =
+      _wire__crate__api__set_runtime_log_levelPtr.asFunction<
           WireSyncRust2DartDco Function(
             ffi.Pointer<wire_cst_list_prim_u_8_strict>,
           )>();

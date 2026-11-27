@@ -338,12 +338,12 @@ impl ProxyExtension {
         store.auth.is_logged_in(&domain)
     }
 
-    pub async fn invalidate(&mut self, domain: String) {
+    pub async fn invalidate(&self, domain: String) {
         let mut store = self.inner.inner.get_data().write().await;
         store.auth.invalidate(&domain);
     }
 
-    pub async fn merge_auth(&mut self, account: Account) {
+    pub async fn merge_auth(&self, account: Account) {
         let mut store = self.inner.inner.get_data().write().await;
         store.auth.merge_auth(&account);
     }

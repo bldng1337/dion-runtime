@@ -23,4 +23,20 @@ pub fn lets_init_app_here() {
             record.level, record.target, record.message
         );
     });
+    dion_runtime::logger::set_log_level(if cfg!(debug_assertions) {
+        log::LevelFilter::Debug
+    } else {
+        log::LevelFilter::Info
+    });
+}
+
+#[frb(sync)]
+pub fn set_runtime_log_level(level: String) -> bool {
+    match level.parse::<log::LevelFilter>() {
+        Ok(level) => {
+            dion_runtime::logger::set_log_level(level);
+            true
+        }
+        Err(_) => false,
+    }
 }

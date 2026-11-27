@@ -54,7 +54,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueNom,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1914484500;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -24715756;
 
 // Section: executor
 
@@ -1482,22 +1482,22 @@ fn wire__crate__api__extension__ProxyExtension_invalidate_impl(
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
                                 vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, true,
+                                    &api_that, 0, false,
                                 )],
                             );
                         for i in decode_indices_ {
                             match i {
                                 0 => {
                                     api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                        Some(api_that.lockable_decode_async_ref().await)
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        let mut api_that_guard = api_that_guard.unwrap();
+                        let api_that_guard = api_that_guard.unwrap();
                         let output_ok = Result::<_, ()>::Ok({
                             crate::api::extension::ProxyExtension::invalidate(
-                                &mut *api_that_guard,
+                                &*api_that_guard,
                                 api_domain,
                             )
                             .await;
@@ -1760,22 +1760,22 @@ fn wire__crate__api__extension__ProxyExtension_merge_auth_impl(
                         let decode_indices_ =
                             flutter_rust_bridge::for_generated::lockable_compute_decode_order(
                                 vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                    &api_that, 0, true,
+                                    &api_that, 0, false,
                                 )],
                             );
                         for i in decode_indices_ {
                             match i {
                                 0 => {
                                     api_that_guard =
-                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                        Some(api_that.lockable_decode_async_ref().await)
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        let mut api_that_guard = api_that_guard.unwrap();
+                        let api_that_guard = api_that_guard.unwrap();
                         let output_ok = Result::<_, ()>::Ok({
                             crate::api::extension::ProxyExtension::merge_auth(
-                                &mut *api_that_guard,
+                                &*api_that_guard,
                                 api_account,
                             )
                             .await;
@@ -3074,6 +3074,24 @@ fn wire__crate__api__proxy__resolve_proxy_url_impl(
             let api_url = url.cst_decode();
             transform_result_dco::<_, _, ()>((move || {
                 let output_ok = Result::<_, ()>::Ok(crate::api::proxy::resolve_proxy_url(api_url))?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__set_runtime_log_level_impl(
+    level: impl CstDecode<String>,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::DcoCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "set_runtime_log_level",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let api_level = level.cst_decode();
+            transform_result_dco::<_, _, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(crate::api::set_runtime_log_level(api_level))?;
                 Ok(output_ok)
             })())
         },
@@ -15292,6 +15310,13 @@ mod io {
         url: *mut wire_cst_list_prim_u_8_strict,
     ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
         wire__crate__api__proxy__resolve_proxy_url_impl(url)
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_rdion_runtime_wire__crate__api__set_runtime_log_level(
+        level: *mut wire_cst_list_prim_u_8_strict,
+    ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartDco {
+        wire__crate__api__set_runtime_log_level_impl(level)
     }
 
     #[unsafe(no_mangle)]
