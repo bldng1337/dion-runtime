@@ -14,6 +14,7 @@ import type {
 export default class extends DionExtension implements SourceProvider {
 	settings = {};
 	accounts = {};
+	entrySettings = {};
 	async onEvent(_data: EventData): Promise<EventResult | undefined> {
 		return undefined;
 	}
@@ -100,8 +101,10 @@ export default class extends DionExtension implements SourceProvider {
 					{
 						type: "Text",
 						content: "Some Content.",
+						style: null,
 					},
 				],
+				audio: null,
 			},
 		};
 	}

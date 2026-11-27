@@ -10,19 +10,20 @@ function prompt(question: string, def?: string): Promise<string> {
 	return new Promise((resolve) => {
 		process.stdout.write(`${question}${def ? ` (${def})` : ""}: `);
 		const chunks: Buffer[] = [];
-		process.stdin.resume();
-		process.stdin.on("data", (data) => {
-			const buf = data as Buffer;
-			const nl = buf.indexOf(0x0a);
+		const onData = (data: Buffer) => {
+			const nl = data.indexOf(0x0a);
 			if (nl === -1) {
-				chunks.push(buf);
+				chunks.push(data);
 				return;
 			}
-			chunks.push(buf.subarray(0, nl));
+			chunks.push(data.subarray(0, nl));
+			process.stdin.off("data", onData);
 			process.stdin.pause();
 			const ans = Buffer.concat(chunks).toString().trim();
 			resolve(ans.length ? ans : (def ?? ""));
-		});
+		};
+		process.stdin.resume();
+		process.stdin.on("data", onData);
 	});
 }
 
