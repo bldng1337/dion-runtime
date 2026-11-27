@@ -113,6 +113,9 @@ export class SettingStore {
 		const setting = this.settings[extension_setting.id];
 		const new_setting = extension_setting.getDefinition();
 		new_setting.value = toSettingValue(await extension_setting.get());
+		if (!this.touched.includes(extension_setting.id)) {
+			this.touched.push(extension_setting.id);
+		}
 		if (setting === undefined) {
 			this.settings[extension_setting.id] = new_setting;
 			return new_setting.value.data as ExcludeLiteral<T>;
@@ -501,7 +504,7 @@ export class EntrySetting<T extends Settingvalues> {
 		this.defaultvalue = defaultvalue;
 	}
 
-	get<T extends Settingvalues>(): ExcludeLiteral<T> {
+	get(): ExcludeLiteral<T> {
 		const id = this.handle.id;
 		assertDefined(
 			this.store.settings[id],
@@ -531,7 +534,7 @@ export class EntrySetting<T extends Settingvalues> {
 		return this;
 	}
 
-	tryGet<T extends Settingvalues>(id: string): ExcludeLiteral<T> | undefined {
+	tryGet(id: string = this.handle.id): ExcludeLiteral<T> | undefined {
 		return this.store.settings[id]?.value.data as ExcludeLiteral<T>;
 	}
 

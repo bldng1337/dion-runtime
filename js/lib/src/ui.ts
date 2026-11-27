@@ -150,7 +150,7 @@ function isColumnRowOpts(value: unknown): value is ColumnRowOpts {
 	return keys.length > 0 && keys.every((k) => allowed.has(k));
 }
 
-export function Column(...args: CustomUIMaybe[]): CustomUI {
+export function Column(...args: (CustomUIMaybe | ColumnRowOpts)[]): CustomUI {
 	const last = args[args.length - 1];
 	const opts = isColumnRowOpts(last) ? (args.pop() as ColumnRowOpts) : {};
 	const children = args.filter((x) => x !== undefined) as CustomUI[];
@@ -164,7 +164,7 @@ export function Column(...args: CustomUIMaybe[]): CustomUI {
 	};
 }
 
-export function Row(...args: CustomUIMaybe[]): CustomUI {
+export function Row(...args: (CustomUIMaybe | ColumnRowOpts)[]): CustomUI {
 	const last = args[args.length - 1];
 	const opts = isColumnRowOpts(last) ? (args.pop() as ColumnRowOpts) : {};
 	const children = args.filter((x) => x !== undefined) as CustomUI[];
@@ -381,7 +381,7 @@ export interface WrapOpts {
 	alignment?: WrapAlignment;
 }
 
-export function Wrap(...args: CustomUIMaybe[]): CustomUI {
+export function Wrap(...args: (CustomUIMaybe | WrapOpts)[]): CustomUI {
 	const last = args[args.length - 1];
 	const opts = isWrapOpts(last) ? (args.pop() as WrapOpts) : {};
 	const children = args.filter((x) => x !== undefined) as CustomUI[];
@@ -422,7 +422,7 @@ export interface StackOpts {
 	fit?: StackFit;
 }
 
-export function Stack(...args: CustomUIMaybe[]): CustomUI {
+export function Stack(...args: (CustomUIMaybe | StackOpts)[]): CustomUI {
 	const last = args[args.length - 1];
 	const opts = isStackOpts(last) ? (args.pop() as StackOpts) : {};
 	const children = args.filter((x) => x !== undefined) as CustomUI[];

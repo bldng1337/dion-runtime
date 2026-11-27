@@ -42,22 +42,21 @@ export function makeurl(
 	query: { [key: string]: unknown },
 	seperator: string = "&",
 ) {
-	return (
-		baseurl +
-		"?" +
-		Object.keys(query)
-			.filter((a) => query[a] !== undefined)
-			.map((a) =>
-				isList(query[a])
-					? (query[a] as Array<unknown>)
-							.map((e: unknown) => stringifypair(a, `${e}`))
-							.filter((e) => e !== "")
-							.join(seperator)
-					: stringifypair(a, `${query[a]}`),
-			)
-			.filter((e) => e !== "")
-			.join(seperator)
-	);
+	const params = Object.keys(query)
+		.filter((a) => query[a] !== undefined)
+		.map((a) =>
+			isList(query[a])
+				? (query[a] as Array<unknown>)
+						.map((e: unknown) => stringifypair(a, `${e}`))
+						.filter((e) => e !== "")
+						.join(seperator)
+				: stringifypair(a, `${query[a]}`),
+		)
+		.filter((e) => e !== "")
+		.join(seperator);
+	// No dangling "?" without parameters; "&" when the base has a query.
+	if (params === "") return baseurl;
+	return `${baseurl}${baseurl.includes("?") ? seperator : "?"}${params}`;
 }
 
 // export async function wait(ms: number): Promise<void> {

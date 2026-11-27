@@ -100,6 +100,9 @@ export abstract class DionExtension implements Extension {
 			this.onEntryActivity = (this.onEntryActivity as bindable).bind(this);
 		if ("mapSource" in this)
 			this.mapSource = (this.mapSource as bindable).bind(this);
+		this.onEvent = this.onEvent.bind(this);
+		this.validate = this.validate.bind(this);
+		if (this.handleProxy) this.handleProxy = this.handleProxy.bind(this);
 		await this.onload();
 	}
 

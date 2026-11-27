@@ -6,10 +6,16 @@ import type {
 import { getAuthSecret, invalidate, isLoggedIn, mergeAuth } from "auth";
 import { logerr } from "./util.js";
 
-type ValidateFunc = (account: AuthAccount) => Promise<{
-	userName?: string;
-	profilePic?: string;
-}>;
+/** Resolves to the account's profile when the credentials are valid, or to
+ * null/undefined when they are not (an empty object means valid). */
+type ValidateFunc = (account: AuthAccount) => Promise<
+	| {
+			userName?: string;
+			profilePic?: string;
+	  }
+	| null
+	| undefined
+>;
 
 export class AuthAccount {
 	domain: string;
