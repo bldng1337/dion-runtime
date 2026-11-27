@@ -31,12 +31,27 @@ mod convert {
 
     #[boa(rename = "atob")]
     fn atob(arg: String) -> JsResult<String> {
-        String::from_utf8(STANDARD.decode(arg).map_err(JsError::from_rust)?)
-            .map_err(JsError::from_rust)
+        // Whitespace is allowed in the input per the HTML spec.
+        let compact: String = arg.chars().filter(|c| !c.is_ascii_whitespace()).collect();
+        let bytes = STANDARD
+            .decode(compact)
+            .or_else(|_| base64::engine::general_purpose::STANDARD_NO_PAD.decode(arg.trim()))
+            .map_err(JsError::from_rust)?;
+        Ok(bytes.into_iter().map(char::from).collect())
     }
 
     #[boa(rename = "btoa")]
-    fn btoa(arg: String) -> String {
-        STANDARD.encode(arg)
+    fn btoa(arg: String) -> JsResult<String> {
+        let bytes = arg
+            .chars()
+            .map(|c| {
+                u8::try_from(u32::from(c)).map_err(|_| {
+                    JsError::from_native(boa_engine::JsNativeError::error().with_message(
+                        "btoa: the string contains characters outside of the Latin1 range",
+                    ))
+                })
+            })
+            .collect::<JsResult<Vec<u8>>>()?;
+        Ok(STANDARD.encode(bytes))
     }
 }

@@ -259,8 +259,13 @@ impl TextDecoderState {
                     .decode_to_string_without_replacement(src, &mut output, last);
             src = &src[read..];
             match result {
-                encoding_rs::DecoderResult::InputEmpty | encoding_rs::DecoderResult::OutputFull => {
-                    break;
+                encoding_rs::DecoderResult::InputEmpty => break,
+                encoding_rs::DecoderResult::OutputFull => {
+                    let more = slot
+                        .decoder
+                        .max_utf8_buffer_length(src.len())
+                        .unwrap_or(src.len().saturating_mul(3));
+                    output.reserve(more.max(16));
                 }
                 encoding_rs::DecoderResult::Malformed(_, _) => {
                     if self.fatal {

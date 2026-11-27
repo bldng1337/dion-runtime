@@ -670,24 +670,17 @@ impl ElementArray {
             .as_callable()
             .ok_or(JsNativeError::typ().with_message("callback is not callable"))?;
         let this = self.try_into_js(context)?;
-        let res: Vec<_> = self
-            .nodes
-            .iter()
-            .flat_map(|e| {
-                callback.call(
-                    &this,
-                    &[Class::from_data(
-                        Element {
-                            doc: self.doc.clone(),
-                            node: *e,
-                        },
-                        context,
-                    )?
-                    .into()],
-                    context,
-                )
-            })
-            .collect();
+        let mut res = Vec::with_capacity(self.nodes.len());
+        for node in &self.nodes {
+            let element = Class::from_data(
+                Element {
+                    doc: self.doc.clone(),
+                    node: *node,
+                },
+                context,
+            )?;
+            res.push(callback.call(&this, &[element.into()], context)?);
+        }
         Ok(res)
     }
 
@@ -700,27 +693,22 @@ impl ElementArray {
             .as_callable()
             .ok_or(JsNativeError::typ().with_message("callback is not callable"))?;
         let this = self.try_into_js(context)?;
-        let res: Vec<_> = self
-            .nodes
-            .iter()
-            .copied()
-            .filter(|e| {
-                let Ok(el) = Class::from_data(
-                    Element {
-                        doc: self.doc.clone(),
-                        node: *e,
-                    },
-                    context,
-                ) else {
-                    return false;
-                };
-                let Ok(res) = callback.call(&this, &[el.into()], context) else {
-                    return false;
-                };
-
-                res.as_boolean().unwrap_or(false)
-            })
-            .collect();
+        let mut res = Vec::new();
+        for node in &self.nodes {
+            let element = Class::from_data(
+                Element {
+                    doc: self.doc.clone(),
+                    node: *node,
+                },
+                context,
+            )?;
+            if callback
+                .call(&this, &[element.into()], context)?
+                .to_boolean()
+            {
+                res.push(*node);
+            }
+        }
         Ok(Class::from_data(
             ElementArray {
                 doc: self.doc.clone(),

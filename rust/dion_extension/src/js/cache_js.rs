@@ -84,7 +84,7 @@ fn ttl_duration(seconds: f64) -> JsResult<Duration> {
             JsNativeError::range().with_message("ttl must be a positive number of seconds"),
         ));
     }
-    Ok(Duration::from_secs_f64(seconds))
+    Ok(Duration::try_from_secs_f64(seconds).unwrap_or(Duration::MAX))
 }
 
 fn cache_policy(options: CacheOptions, lru: bool) -> JsResult<CachePolicy> {

@@ -24,7 +24,10 @@ declare module "network" {
 
 	interface DionResponse {
 		status: number;
-		headers: { [key: string]: string };
+		/** Header name to value; repeated headers are joined with ", ". */
+		headers: Map<string, string>;
+		/** Every header as a [name, value] pair, repeats (Set-Cookie) included. */
+		headerList: [string, string][];
 		/** Raw response bytes, e.g. for downloaded books (epub, cbz, m4b). */
 		bytes: Uint8Array;
 		/** Decoded text (Content-Type charset with UTF-8 fallback). */
@@ -133,8 +136,8 @@ declare module "filesystem" {
 		size: number;
 		isDir: boolean;
 		isFile: boolean;
-		modifiedMs: number | undefined;
-		createdMs: number | undefined;
+		modifiedMs: number | null;
+		createdMs: number | null;
 		/** Only set for content:// URIs (the provider's display name). */
 		name?: string;
 	}
@@ -368,7 +371,8 @@ declare module "parse" {
 	export function parseHtmlFragment(input: string): DionElement;
 	export function parseXml(input: string): DionElement;
 	export interface DionElement {
-		attr(name: string): string;
+		/** undefined when the element has no such attribute. */
+		attr(name: string): string | undefined;
 		select(selector: CSSSelector): DionElementArray;
 		parent: DionElement | undefined;
 		children: DionElementArray;
@@ -382,7 +386,8 @@ declare module "parse" {
 		attr(name: string): string[];
 		get(index: number): DionElement | undefined;
 		map<T>(callback: (element: DionElement) => T): T[];
-		filter(callback: (element: DionElement) => boolean): DionElementArray;
+		/** Keeps elements for which the callback returns a truthy value. */
+		filter(callback: (element: DionElement) => unknown): DionElementArray;
 		first: DionElement | undefined;
 		length: number;
 		text: string;
@@ -420,7 +425,7 @@ declare class URLSearchParams {
 	);
 	append(name: string, value: string): void;
 	delete(name: string, value?: string): void;
-	get(name: string): string | undefined;
+	get(name: string): string | null;
 	getAll(name: string): string[];
 	has(name: string, value?: string): boolean;
 	set(name: string, value: string): void;

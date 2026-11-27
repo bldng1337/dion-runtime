@@ -130,9 +130,8 @@ impl UrlSearchParams {
             .borrow()
             .iter()
             .find(|(n, _)| *n == name)
-            .map_or_else(JsValue::undefined, |(_, v)| {
-                JsString::from(v.as_str()).into()
-            })
+            // null, not undefined, for a missing name (WHATWG URL).
+            .map_or_else(JsValue::null, |(_, v)| JsString::from(v.as_str()).into())
     }
 
     fn get_all(&self, name: String, context: &mut Context) -> JsResult<JsValue> {

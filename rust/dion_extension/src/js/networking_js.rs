@@ -400,15 +400,46 @@ impl Response {
     ) -> JsResult<JsMap> {
         let header = &self.header;
         let map = JsMap::new(context);
-        for (name, value) in header.iter() {
-            let name = JsString::from(name.as_str());
+        for name in header.keys() {
+            let values: Vec<&str> = header
+                .get_all(name)
+                .iter()
+                .filter_map(|value| value.to_str().ok())
+                .collect();
+            if values.is_empty() {
+                continue;
+            }
+            map.set(
+                JsString::from(name.as_str()),
+                JsString::from(values.join(", ")),
+                context,
+            )?;
+        }
+        Ok(map)
+    }
+
+    #[boa(getter)]
+    #[boa(rename = "headerList")]
+    fn header_list(
+        #[boa(error = "`this` was not an Response")] &self,
+        context: &mut Context,
+    ) -> JsResult<boa_engine::object::builtins::JsArray> {
+        use boa_engine::object::builtins::JsArray;
+        let list = JsArray::new(context)?;
+        for (name, value) in self.header.iter() {
             let Ok(value) = value.to_str() else {
                 continue;
             };
-            let value = JsString::from(value);
-            map.set(name, value, context)?;
+            let pair = JsArray::from_iter(
+                [
+                    JsValue::from(JsString::from(name.as_str())),
+                    JsValue::from(JsString::from(value)),
+                ],
+                context,
+            );
+            list.push(pair, context)?;
         }
-        Ok(map)
+        Ok(list)
     }
 
     #[boa(getter)]
