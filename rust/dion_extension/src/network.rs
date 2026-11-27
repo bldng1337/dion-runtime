@@ -69,9 +69,11 @@ impl OutboundRequest {
                 self.method = Method::GET;
             }
         }
-        let same_host = target.host_str() == self.url.host_str()
+        // Same origin, scheme included: credentials sent over https must not follow a downgrade to plain http on the same host.
+        let same_origin = target.scheme() == self.url.scheme()
+            && target.host_str() == self.url.host_str()
             && target.port_or_known_default() == self.url.port_or_known_default();
-        if !same_host {
+        if !same_origin {
             for name in [
                 header::AUTHORIZATION,
                 header::COOKIE,
@@ -100,6 +102,8 @@ fn referer_for(previous: &Url, next: &Url) -> Option<HeaderValue> {
     HeaderValue::from_str(referer.as_str()).ok()
 }
 
+const RATE_LIMITER_PRUNE_AT: usize = 256;
+
 struct RateLimitingMiddleware {
     ratelimiter: DefaultKeyedRateLimiter<String>,
 }
@@ -120,8 +124,12 @@ impl Middleware for RateLimitingMiddleware {
         extensions: &mut Extensions,
         next: Next<'_>,
     ) -> reqwest_middleware::Result<reqwest::Response> {
-        if let Some(domain) = req.url().domain() {
-            self.ratelimiter.until_key_ready(&domain.to_string()).await;
+        if let Some(host) = req.url().host_str() {
+            self.ratelimiter.until_key_ready(&host.to_string()).await;
+            if self.ratelimiter.len() > RATE_LIMITER_PRUNE_AT {
+                self.ratelimiter.retain_recent();
+                self.ratelimiter.shrink_to_fit();
+            }
         }
         next.run(req, extensions).await
     }
@@ -284,7 +292,7 @@ impl DionNetworkManager {
             if let Ok(mut state) = this.cookie_save.lock() {
                 state.save_scheduled = false;
             }
-            this.save_cookies_logged();
+            let _ = tokio::task::spawn_blocking(move || this.save_cookies_logged()).await;
         });
     }
 }
