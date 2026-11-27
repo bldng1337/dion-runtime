@@ -71,6 +71,18 @@ impl PermissionStore {
         }
     }
 
+    pub fn grant_exact(&mut self, permission: Permission) {
+        if !self.permissions.contains(&permission) {
+            self.permissions.push(permission);
+        }
+    }
+
+    pub fn has_exact(&self, permission: &Permission) -> bool {
+        self.permissions.iter().any(|p| {
+            std::mem::discriminant(p) == std::mem::discriminant(permission) && p.allows(permission)
+        })
+    }
+
     /// Remove exactly the stored permission equal to `permission`.
     pub fn remove_permission(&mut self, permission: Permission) {
         self.permissions.retain(|item| *item != permission);

@@ -61,6 +61,25 @@ pub(crate) struct NetworkPermissionCache {
     denied: HashSet<String>,
 }
 
+fn is_local_host(host: &str) -> bool {
+    let host = host.trim_start_matches('[').trim_end_matches(']');
+    if host.eq_ignore_ascii_case("localhost") || host.to_ascii_lowercase().ends_with(".localhost") {
+        return true;
+    }
+    match host.parse::<std::net::IpAddr>() {
+        Ok(std::net::IpAddr::V4(ip)) => {
+            ip.is_loopback() || ip.is_link_local() || ip.is_unspecified()
+        }
+        Ok(std::net::IpAddr::V6(ip)) => {
+            if let Some(mapped) = ip.to_ipv4_mapped() {
+                return mapped.is_loopback() || mapped.is_link_local() || mapped.is_unspecified();
+            }
+            ip.is_loopback() || ip.is_unspecified() || (ip.segments()[0] & 0xffc0) == 0xfe80
+        }
+        Err(_) => false,
+    }
+}
+
 impl InnerExtension {
     pub(crate) async fn authorize_url(&self, url: &reqwest::Url) -> Result<()> {
         if !matches!(url.scheme(), "http" | "https") {
@@ -69,10 +88,44 @@ impl InnerExtension {
         let host = url
             .host_str()
             .ok_or_else(|| anyhow!("URL has no host: {url}"))?;
+        if is_local_host(host) {
+            if !self.ensure_local_network_permission(host).await? {
+                bail!("Network permission for {host} was denied");
+            }
+            return Ok(());
+        }
         if !self.ensure_network_permission(host).await? {
             bail!("Network permission for {host} was denied");
         }
         Ok(())
+    }
+
+    async fn ensure_local_network_permission(&self, host: &str) -> Result<bool> {
+        let permission = Permission::Network {
+            domains: vec![host.to_string()],
+        };
+        if self.store.read().await.permission.has_exact(&permission) {
+            return Ok(true);
+        }
+        let ext_name = self.store.read().await.data.name.clone();
+        let granted = self
+            .client
+            .request_permission(
+                &permission,
+                Some(format!(
+                    "Extension \"{ext_name}\" wants to access {host} on this device"
+                )),
+            )
+            .await?;
+        if !granted {
+            return Ok(false);
+        }
+        self.store.write().await.permission.grant_exact(permission);
+        let snapshot = self.store.read().await.permission.get_permissions().clone();
+        if let Err(err) = PermissionStore::persist(&snapshot, self.client.as_ref()).await {
+            log::warn!("Failed to persist granted permissions: {err:?}");
+        }
+        Ok(true)
     }
 
     pub(crate) async fn ensure_network_permission(&self, host: &str) -> Result<bool> {
