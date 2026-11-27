@@ -6,7 +6,7 @@ import {
 } from "@dion-js/runtime-types/extension";
 import { argv, file } from "bun";
 import * as v from "valibot";
-import { getPackageMeta } from "../utils/parse.ts";
+import { bundleFileName, getPackageMeta } from "../utils/parse.ts";
 
 export type BuildIndexOptions = {
 	cwd?: string;
@@ -63,7 +63,7 @@ async function resolveBundleFilename(
 
 	const candidates =
 		pkgName && pkgName !== dirName
-			? [`${pkgName}.dion.js`, `${dirName}.dion.js`]
+			? [bundleFileName(pkgName), `${pkgName}.dion.js`, `${dirName}.dion.js`]
 			: [`${dirName}.dion.js`];
 
 	for (const filename of candidates) {

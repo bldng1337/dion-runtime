@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { $, file } from "bun";
 import { ValiError } from "valibot";
-import { getPackageMeta } from "./utils/parse.ts";
+import { bundleFileName, getPackageMeta } from "./utils/parse.ts";
 
 async function build(): Promise<string> {
 	const res = await Bun.build({
@@ -44,7 +44,7 @@ async function main() {
 	try {
 		await $`rm -rf .dist && mkdir .dist`;
 		const [pkg, source] = await Promise.all([getPackageMeta(), build()]);
-		await file(`./.dist/${pkg.name}.dion.js`).write(
+		await file(`./.dist/${bundleFileName(pkg.name)}`).write(
 			`//${JSON.stringify(pkg)}\n${source}`,
 		);
 	} catch (e) {
