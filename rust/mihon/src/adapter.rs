@@ -112,9 +112,15 @@ impl MihonAdapter {
 
         // Initialize the bridge with the extensions directory.
         // On Android, this also sets the Android Context via ndk_context.
-        let jars_dir_str = jars_dir.to_str().context("Invalid jars directory path")?;
-        bridge
-            .initialize(jars_dir_str)
+        // Blocking JNI work; kept off the async worker threads.
+        let jars_dir_str = jars_dir
+            .to_str()
+            .context("Invalid jars directory path")?
+            .to_owned();
+        let init_bridge = bridge.clone();
+        tokio::task::spawn_blocking(move || init_bridge.initialize(&jars_dir_str))
+            .await
+            .context("MihonBridge initialization panicked")?
             .context("Failed to initialize MihonBridge")?;
 
         Ok(Self {
@@ -142,8 +148,12 @@ impl MihonAdapter {
         // Extract embedded compat JAR if not present or outdated
         Self::ensure_compat_jar(&compat_jar).await?;
 
-        // Initialize JVM with the compat JAR on the classpath
-        JvmHandle::new(&compat_jar).context("Failed to initialize JVM")
+        // Initialize JVM with the compat JAR on the classpath. Loading the
+        // JVM blocks for a long time; keep it off the async workers.
+        tokio::task::spawn_blocking(move || JvmHandle::new(&compat_jar))
+            .await
+            .context("JVM initialization panicked")?
+            .context("Failed to initialize JVM")
     }
 
     #[cfg(target_os = "android")]
