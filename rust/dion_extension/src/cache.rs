@@ -14,7 +14,6 @@
 
 use std::{
     collections::HashMap,
-    hash::{Hash, Hasher},
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
     time::{Duration, SystemTime, UNIX_EPOCH},
@@ -102,6 +101,7 @@ impl CacheManager {
             policy: Mutex::new(policy),
             index: Mutex::new(None),
             clock: std::sync::atomic::AtomicU64::new(0),
+            index_write: tokio::sync::Mutex::new(()),
         });
         handles.insert(name.to_string(), inner.clone());
         Ok(inner)
@@ -143,6 +143,7 @@ pub struct CacheInner {
     index: Mutex<Option<HashMap<String, CacheEntryMeta>>>,
     /// Monotonic recency ticks (see `CacheEntryMeta::last_access`).
     clock: std::sync::atomic::AtomicU64,
+    index_write: tokio::sync::Mutex<()>,
 }
 
 impl CacheInner {
@@ -162,7 +163,7 @@ impl CacheInner {
         let now = now_ms();
         let expires_at = ttl
             .or(self.policy()?.default_ttl)
-            .map(|d| now + duration_to_ms(d));
+            .map(|d| now.saturating_add(duration_to_ms(d)));
         let meta = CacheEntryMeta {
             hash: key_hash(key),
             binary: matches!(value, CacheValue::Binary(_)),
@@ -195,7 +196,7 @@ impl CacheInner {
             self.delete(key).await?;
             return Ok(None);
         }
-        let bytes = match tokio::fs::read(self.entry_path(key)).await {
+        let bytes = match tokio::fs::read(self.entries_dir().join(&meta.hash)).await {
             Ok(bytes) => bytes,
             // Index and file are out of sync (e.g. externally deleted):
             // treat the entry as absent instead of failing every access.
@@ -305,8 +306,15 @@ impl CacheInner {
         self.ensure_dirs().await?;
         let snapshot: IndexSnapshot = match tokio::fs::read(self.dir.join(INDEX_FILE)).await {
             Ok(bytes) if bytes.is_empty() => IndexSnapshot::default(),
-            Ok(bytes) => serde_json::from_slice(&bytes)
-                .map_err(|e| anyhow!("Failed to parse cache index: {e}"))?,
+            Ok(bytes) => match serde_json::from_slice(&bytes) {
+                Ok(snapshot) => snapshot,
+                Err(err) => {
+                    log::warn!("Discarding corrupt cache index in {:?}: {err}", self.dir);
+                    tokio::fs::remove_dir_all(self.entries_dir()).await.ok();
+                    self.ensure_dirs().await?;
+                    IndexSnapshot::default()
+                }
+            },
             Err(_) => IndexSnapshot::default(),
         };
         *self
@@ -421,8 +429,10 @@ impl CacheInner {
         }
     }
 
-    async fn write_index(&self, snapshot: &IndexSnapshot) -> Result<()> {
-        let bytes = serde_json::to_vec(snapshot)?;
+    async fn write_index(&self, _changed: &IndexSnapshot) -> Result<()> {
+        let _guard = self.index_write.lock().await;
+        let snapshot = self.with_index(|index| snapshot_of(index))?;
+        let bytes = serde_json::to_vec(&snapshot)?;
         write_atomic(&self.dir.join(INDEX_FILE), &bytes).await
     }
 
@@ -477,12 +487,13 @@ fn validate_key(key: &str) -> Result<()> {
     Ok(())
 }
 
-/// Deterministic across runs (fixed-key SipHash), so entries survive VM
-/// restarts. Collisions only matter within a single cache directory.
 fn key_hash(key: &str) -> String {
-    let mut hasher = std::collections::hash_map::DefaultHasher::new();
-    key.hash(&mut hasher);
-    format!("{:016x}", hasher.finish())
+    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
+    for byte in key.as_bytes() {
+        hash ^= u64::from(*byte);
+        hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
+    }
+    format!("{hash:016x}")
 }
 
 fn now_ms() -> u64 {
@@ -494,11 +505,13 @@ fn now_ms() -> u64 {
 
 fn duration_to_ms(duration: Duration) -> u64 {
     // Round sub-millisecond TTLs up so they still expire.
-    duration.as_millis().max(1) as u64
+    u64::try_from(duration.as_millis().max(1)).unwrap_or(u64::MAX)
 }
 
 async fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
-    let tmp = path.with_extension("tmp");
+    static NEXT_TMP: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let n = NEXT_TMP.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let tmp = path.with_extension(format!("tmp{}-{n}", std::process::id()));
     tokio::fs::write(&tmp, bytes).await?;
     if let Err(first) = tokio::fs::rename(&tmp, path).await {
         // Renaming over an existing file can fail; fall back to
